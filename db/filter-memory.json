@@ -1,0 +1,52 @@
+{
+  "_schema_version": "1.0.0",
+  "_description": "Higgsfield content filter memory. Stores blocked prompts, error messages, substitution strategies, and whether fixes worked.",
+  "_last_updated": "2026-02-28T00:00:00+00:00",
+  "_total_entries": 4,
+  "entries": [
+    {
+      "id": "filt-001",
+      "date": "2026-02-28",
+      "category": "real-person",
+      "blocked_terms": ["real person", "celebrity", "public figure", "named person", "likeness"],
+      "error_message": "Content policy: real person likeness not permitted",
+      "substitution": "Replace name with archetype description: age range, build, distinctive visual features, costume, energy",
+      "substitution_example": "Instead of 'Keanu Reeves' → 'A lean man in his late 50s, dark shoulder-length hair, stubble, intense calm expression, wearing a dark suit'",
+      "fix_confirmed": true,
+      "tags": ["real-person", "celebrity", "likeness", "content-filter"]
+    },
+    {
+      "id": "filt-002",
+      "date": "2026-02-28",
+      "category": "brand-ip",
+      "blocked_terms": ["franchise", "Marvel", "DC", "Disney", "anime", "copyrighted character", "IP"],
+      "error_message": "Content policy: copyrighted character not permitted",
+      "substitution": "Describe visual traits without naming the IP. Use geometry, color, and material descriptions only.",
+      "substitution_example": "Instead of 'Spider-Man' → 'blue-and-red form-fitting suit, face masked with white eye-shaped lenses, web fired from wrists'",
+      "fix_confirmed": true,
+      "tags": ["brand-ip", "franchise", "copyright", "character", "content-filter"]
+    },
+    {
+      "id": "filt-003",
+      "date": "2026-02-28",
+      "category": "violence",
+      "blocked_terms": ["violence", "gore", "blood", "injury", "explicit violence", "graphic"],
+      "error_message": "Content policy: explicit violence not permitted",
+      "substitution": "Describe aftermath, tension, or dread rather than explicit acts. Use atmosphere language: 'unsettling', 'wrong', 'something is off'. Use motion presets for horror effects.",
+      "substitution_example": "Instead of 'blood drips from his hands' → 'his hands tremble at his sides, something dark stains his sleeve'",
+      "fix_confirmed": true,
+      "tags": ["violence", "gore", "blood", "explicit", "content-filter", "horror"]
+    },
+    {
+      "id": "filt-004",
+      "date": "2026-02-28",
+      "category": "real-person",
+      "blocked_terms": ["real person", "face upload", "Seedance 2.0", "selfie", "photo upload"],
+      "error_message": "Real person face uploads are blocked on Seedance 2.0",
+      "substitution": "Use archetype descriptions and @Tag references instead. Generate a synthetic character image first, then use that as the reference.",
+      "substitution_example": "Generate a character with Soul 2.0 first → use that generated image as the @Image1 reference in Seedance 2.0",
+      "fix_confirmed": true,
+      "tags": ["real-person", "seedance-2.0", "face-upload", "content-filter"]
+    }
+  ]
+}

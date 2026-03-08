@@ -1,0 +1,504 @@
+# Changelog
+
+## v1.4.0 — 2026-03-05
+
+### Fixed: MODELS-DEEP-REFERENCE.md — Duplicate YAML key
+- Removed duplicate `user-invokable: true` key from frontmatter (kept correct `user-invocable: true`).
+
+### New: Cinematic Still Images section in prompt-examples.md
+- Added 3 fully worked cinematic still image examples using the v1.3.9 Image Prompt Formula (`[Shot size] + [Angle] + [Movement keyword] of [character]. [Pose]. [Environment]. [Lighting]. [Style].`).
+- **Example 8 — Sci-Fi Character Tension** (Nano Banana Pro 2, 16:9): MCU + Low Angle + Dolly Zoom. Cyber-enhanced operative in neon rain.
+- **Example 9 — Epic Fantasy Scale** (Seedream 4.5, 16:9): EWS + Overhead + Crane Up. Lone warrior on a shattered bridge over a lava chasm.
+- **Example 10 — Psychological Thriller Detail** (Nano Banana Pro 2, 3:4): ECU + Dutch Angle + Rack Focus. Lipstick-smeared mirror reflection in a dim bathroom.
+- Covers a mix of models, aspect ratios, and genres.
+
+### Fixed: higgsfield_memory.py — Directory fallback bug
+- Replaced fragile `if not DB_DIR.exists(): DB_DIR = SCRIPT_DIR` fallback with `DB_DIR.mkdir(parents=True, exist_ok=True)`.
+- Ensures the `db/` directory is always created rather than silently falling back to the script directory (which would misplace database files).
+
+### Fixed: prompt-examples.md — Audio duration correction
+- Example 5 (Audio-Driven Scene): changed duration from `10s` to `8s` to match Seedance 1.5 Pro's recommended lip-sync sweet spot (3–8s).
+
+### New: Memory summary for cold-start resolution
+- Generated `db/memory-summary.md` via `python3 higgsfield_memory.py export-summary`.
+- Human-readable snapshot of all 4 filter memory entries and 5 quality memory entries.
+- Added to project knowledge base for automatic context loading — eliminates cold-start gap where Claude previously had no recall of past generation failures.
+
+---
+
+## v1.3.9 — 2026-03-04
+
+### New: higgsfield-image-shots sub-skill — Cinematic Image Prompting
+- New dedicated sub-skill for **still image** prompt composition, separate from video camera controls.
+- **10 Distance & Size shots** with AI prompt keywords and examples: Extreme Wide Shot (EWS), Wide Shot / Long Shot, Full Shot, Medium Long Shot (MLS), Cowboy Shot, Medium Shot (MS), Medium Close-Up (MCU), Close-Up (CU), Extreme Close-Up (ECU), Macro Shot.
+- **10 Camera Angles** with emotional purpose and prompt patterns: Eye-Level, Low Angle, High Angle, Overhead / Bird's Eye, Worm's Eye, Dutch Angle / Canted Angle, Over-the-Shoulder (OTS), Point of View (POV), Selfie Angle, Ground Level.
+- **17 Camera Movements for stills** across three tiers — Static/Basic (Static, Pan, Tilt, Zoom In/Out, Pedestal), Advanced Physical (Dolly In/Out, Truck, Orbit, Crane), Cinematic & AI (Dolly Zoom/Vertigo, Crash Zoom, FPV, Bullet Time, Handheld Follow, Camera Roll, Rack Focus, Pull Back Reveal, Fly-Through).
+- Every entry includes: AI Prompt Keyword, definition, primary purpose/effect, and a ready-to-paste prompt example using the `[img 1]` reference pattern.
+- **Quick reference tables** for Distance & Size and Angles for fast lookup.
+- **Combination formula** — how to layer shot size + angle + movement keyword into a single image prompt with 4 worked examples.
+- **Image Prompt Formula** — structured pattern: `[Shot size] + [Angle] + [Movement keyword] of [character]. [Pose]. [Environment]. [Lighting]. [Style].`
+
+### Updated: Dispatcher SKILL.md
+- Added `higgsfield-image-shots` to routing table and sub-skills index.
+- Clarified `higgsfield-camera` label as video-specific to distinguish from the new image shots skill.
+- Version bumped to 1.3.9.
+
+### Updated: README.md
+- Added `higgsfield-image-shots/SKILL.md` to the directory structure listing.
+
+---
+
+## v1.3.8 — 2026-03-04
+
+### New: Cinema Studio 2.0 — Prompt Character Limit (512 chars)
+- Documented the **hard 512-character limit** on Cinema Studio prompt fields.
+- @ Element chips consume ~80–100 hidden characters each for internal metadata.
+- Added character budget guidelines: ~250 visible chars with 2 tags, ~350 with 1, ~450 with 0.
+
+### New: @ Element Persistence Rule
+- Discovered that @ Elements added in **Scene 1 persist across all scenes** in Multi-Shot Manual.
+- No need to re-add @ tags in Scenes 2–6. Characters carry through via Reference Anchor.
+- Recommended pattern: @ Elements in Scene 1, visual descriptions in subsequent scenes.
+
+### New: Fight Scene Rules (Tested)
+- Documented what Cinema Studio CAN and CANNOT render in two-character fight sequences.
+- CAN: facing each other, general fighting energy, pinned against wall, falling, walking away.
+- CANNOT: specific punch contact, kicks, martial arts, cause-and-effect choreography, prop weapons, grappling.
+- Documented **character swap problem**: two @ tags in action scenes causes the AI to confuse hero/villain roles.
+- Added fight sequence template alternating @ Element scenes (character) with plain text scenes (action).
+
+### New: Prompting Best Practices (from Higgsfield official)
+- Added **pre-prompt checklist**: Who, Where, What's happening, Camera, Mood/Genre.
+- Added **one action per scene rule** with breakdown strategy.
+- Added **fast motion trick**: generate in Slow Mo, speed up in post.
+
+### Updated: Common Prompt Mistakes table
+- Added 4 new entries: over 512 chars, impact before action, specific martial arts, multiple @ tags in action.
+
+## v1.3.7 — 2026-02-28
+
+### Architecture: De-duplication pass
+- **Root SKILL.md** stripped from 146 to 42 lines — removed full model tables and quick reference that duplicated `model-guide.md`. Now a lean index with cross-references only.
+- **Dispatcher SKILL.md** stripped from 219 to ~170 lines — removed duplicated MCSLA definition (lives in `higgsfield-prompt`), model selection table (lives in `higgsfield-models`), and platform quick reference. Keeps only workflow, routing table, output format.
+- Net token savings: ~300 lines of duplicated content removed from default context window load.
+
+### New: Fast Path for simple requests
+- Dispatcher now distinguishes between **fast path** (clear creative intent, no constraints → generate immediately with sensible defaults) and **full path** (production-grade → confirm parameters first).
+- Defaults: 16:9, 8s, Cinematic, Kling 3.0 (character) or Sora 2 (action), Soul 2.0 (portrait) or Nano Banana Pro 2 (other images).
+
+### Fixed: Recall system paths
+- `higgsfield_memory.py` path changed from `SCRIPT_DIR.parent / "db"` to `SCRIPT_DIR / "db"` with fallback to same-directory. Matches actual directory layout.
+- Created `db/` directory and moved `filter-memory.json` into it.
+- Created `quality-memory.json` (was missing entirely).
+- Updated all `higgsfield-recall/SKILL.md` bash commands from `scripts/higgsfield_memory.py` to `higgsfield_memory.py`.
+
+### New: Seeded memory databases
+- `filter-memory.json` seeded with 4 entries: real-person blocks, brand/IP blocks, violence filter, Seedance 2.0 face upload restriction.
+- `quality-memory.json` seeded with 5 entries: character drift (Sora 2), VHS style ignored (Kling 2.6), I2V static output, camera conflict, lip-sync desync (Seedance 1.5 Pro).
+
+### Slimmed: higgsfield-models
+- Split into compact `SKILL.md` (~200 lines, handles 90% of model selection) and `MODELS-DEEP-REFERENCE.md` (full 1021-line per-model documentation, loaded on-demand).
+- SKILL.md contains: comparison table, decision flowchart, image quick selection, budget tiers, unique feature matrix, key model notes.
+
+### New: higgsfield-audio sub-skill
+- Full audio prompting guide covering all audio-capable models (Kling 3.0, Seedance 1.5 Pro/2.0, Veo 3/3.1, Grok Imagine Video).
+- Four audio layers: Dialogue, SFX, Ambient, BGM — with prompt structure and best practices.
+- Lip-sync rules: timing, framing, token conflicts, multi-character workaround.
+- Per-model audio notes and common failure/fix table.
+
+### New: Before → After prompt examples
+- 5 transformation examples added to `prompt-examples.md` showing weak → strong prompt improvement.
+- Covers: vague→specific, over-described I2V, slop words, camera conflicts, missing audio direction.
+
+### Consistency pass
+- All sub-skills bumped to version 1.3.7.
+- `higgsfield-troubleshoot` updated: character consistency recommendation changed from "Kling 2.6" to "Kling 3.0 (or 2.6 if no audio needed)". VFX recommendation updated. Audio troubleshooting sections added.
+- Removed duplicate `user-invokable: true` typo key from all frontmatter blocks.
+- Dispatcher routing table updated with `higgsfield-audio` entry.
+
+---
+
+## v1.3.6 — 2026-02-28
+
+### higgsfield-models/SKILL.md — Grok Imagine family added (was completely absent)
+
+Grok Imagine (`grok-imagine-image` and `grok-imagine-video`) had zero entries anywhere in the library despite being live on the platform. Both models documented from scratch using the official xAI API docs (docs.x.ai/developers/model-capabilities/images/generation and video/generation).
+
+**Architecture context documented:**
+Aurora is an autoregressive mixture-of-experts network — architecturally distinct from diffusion models. Predicts next token from interleaved text+image data. This gives it tighter compositional control, stronger multi-element scene understanding, and reliable text/logo rendering where diffusion models fail.
+
+**`grok-imagine-image` — new complete entry:**
+- Text-to-image with full aspect ratio table (10 ratios including `auto`, `19.5:9`, `20:9`)
+- Resolution: 1k / 2k
+- Image editing (single image): source image + prompt, output follows input ratio. Critical note: OpenAI SDK `images.edit()` uses `multipart/form-data` which is NOT supported — must use xAI SDK or `application/json` directly
+- Multi-image editing (up to 3 source images): ordered input, cross-image compositing, aspect ratio override
+- Multi-turn iterative editing chain: use each output URL as next input — primary recommended workflow for complex compositions
+- Style transfer: photorealistic → anime → oil painting → pencil sketch → watercolor → pop art
+- Batch generation: up to 10 images per request via `n` parameter
+- Aurora differentiators table: text/logo rendering, multi-person scenes, precise prompt adherence, photorealism, iterative chains, batch A/B testing
+- Content moderation: `response.respect_moderation` flag documented
+
+**`grok-imagine-video` — new complete entry:**
+- Duration: 1–15s (generation); editing preserves source duration (not user-configurable)
+- Resolution: 720p (cap for both generation and editing; 1080p input downsized)
+- Audio: ✅ native — dialogue, SFX, ambient, music
+- Generation modes: T2V, I2V, video editing/restyling
+- Async workflow: `request_id` → poll until `status: "done"` → download from temporary URL
+- Video editing constraints: input must be publicly accessible URL; output capped at 720p; duration not configurable
+- Imagine 1.0 (Feb 1, 2026): duration extended to 10s, improved audio quality, video editing (add/remove objects, restyle, motion control)
+- Grok Imagine internal decision table (8 rows, image vs video routing)
+
+**model-guide.md:**
+- Grok Imagine Video added to video table
+- Grok Imagine Video added to decision flowchart
+
+**image-models.md:**
+- Grok Imagine Image added to pricing/capability table
+
+**Quick Decision Table (higgsfield-models SKILL.md):**
+- 7 new Grok Imagine rows added (5 image, 2 video)
+
+---
+
+## v1.3.5 — 2026-02-28
+
+
+### higgsfield-models/SKILL.md — Google Veo family complete rewrite
+
+The library had one thin "Veo 3 (Google)" entry (6 lines). The UI shows 4 Veo models on platform. Google's official API docs (ai.google.dev/gemini-api/docs/video) confirm Veo 3.1 has significant exclusive capabilities missing from all previous documentation.
+
+**New entries: Veo 3.1, Veo 3.1 Fast, Veo 3 Fast** (in addition to expanded Veo 3)
+
+**Veo 3.1 — new capabilities documented (3.1-exclusive features):**
+- Reference images (up to 3): `reference_type: "asset"` — preserves subject appearance (character face, outfit, prop) consistently throughout video. Veo 3.1 and 3.1 Fast only, not available in Veo 3/3 Fast.
+- First + last frame interpolation: specify opening and closing frame images; model generates the motion between them. Duration must be 8s when using this feature.
+- Video extension: extend any Veo-generated video by 7s, up to 20 times (max 148s total). Input must be 720p. Videos stored 2 days (timer resets on each reference). Voice extension requires audio in last 1s of source.
+- 4K output: 8s only, higher latency/cost. 1080p also 8s only. 720p supports all durations (4/6/8s).
+- Portrait mode (9:16): available across all Veo 3/3.1 models.
+
+**Duration constraints documented:**
+- Reference images / first+last frame / 1080p / 4K → duration must be 8s
+- Extension → input must be 720p; output combines original + extension up to 148s
+
+**Audio generation guidance added:**
+- Dialogue: use quotes for specific speech
+- SFX: describe sounds explicitly (tires screeching, not just "loud sounds")
+- Ambient: describe environment soundscape
+- Negative prompts: supported (describe what you don't want, no "no X" language)
+
+**Full Veo prompt element framework documented:**
+Subject / Action / Style / Camera / Composition / Focus+Lens / Ambiance / Audio
+
+**Veo 3.1 vs Veo 3 comparison table** — 8 capabilities across all 4 models (audio, reference images, first/last frame, extension, 4K, portrait, negative prompts, stable/preview status)
+
+**Veo 3.1 Fast, Veo 3 Fast** — new entries clarifying speed/quality/cost tradeoffs and use cases
+
+**Quick Decision Table** — Veo row expanded from 1 to 5 rows
+
+### model-guide.md
+- Video table: Veo row expanded from 1 to 4, audio column corrected to ✅ for all Veo 3/3.1 (was incorrectly ❌), durations added
+- Decision flowchart: Veo branch expanded to 5 decision points
+
+---
+
+## v1.3.4 — 2026-02-28
+
+
+### higgsfield-models/SKILL.md — Seedance 2.0 full production documentation
+
+Seedance 2.0 has not yet shipped on Higgsfield but is incoming. This version replaces the thin v1.3.3 stub with a complete, production-ready reference document built from two third-party Seedance 2.0 skill libraries (Emily/@iamemily2050's seedance-2.0 v3.8.0 and seedance-bot-1), both containing validated practitioner knowledge from 10,000+ generation testing on the Jimeng/Dreamina platform.
+
+**New sections added to the Seedance 2.0 entry:**
+
+- **Rule of 12** — Full asset budget table with the critical correction that video clips share a 15s combined limit (not 15s per clip). Audio 15s combined limit also documented.
+- **Generation Modes (T2V / I2V / V2V / R2V)** — All four modes documented with the critical V2V distinction: reference technique vs. direct edit trigger different model pathways
+- **Five-Layer Prompt Stack** — Subject/Action/Camera/Style/Sound architecture with Delegation Levels 1–4, word count ranges, decision rule, and complete examples at each level including Level 4 fight choreography
+- **6-Part Field Formula** — `[SHOT TYPE] + [SUBJECT] + [ACTION] + [STYLE] + [CAMERA MOVEMENT] + [AUDIO CUES]`, cross-validated on 10,000+ generations
+- **Anti-Slop / Prompt Hygiene** — Instant-delete word list and measurable replacement table; the one test: "can a camera, light meter, or stopwatch measure this word?"
+- **Camera Control** — Full camera contract (framing/move/speed/angle), reliable phrasing library, anti-drift rules, One-Take technique (一镜到底) with image waypoints, Nine-Grid storyboard method (九宫格)
+- **Audio Rules and Failure Modes** — Platform hard limits (MP3 only — WAV/AAC fail silently), sweet spot 3–8s, timestamp anchoring phrase for audio rewrite bug, multi-character compositing workaround, critical Jimeng platform distinction (Seedance 2.0 video generation vs. OmniHuman-1 Digital Human tool — Master/Quick/Standard modes do NOT exist in Seedance 2.0)
+- **Character Identity** — Character card format, identity anchoring syntax, multi-character @Tag patterns, 360° consistency test, hand safety rules
+- **Beat Density** — Max changes per duration table, Level 4 fight density guidance
+- **Genre Templates** — 5 ready-to-use starters: product ad, fight scene, short drama dialogue, music beat sync, architecture walkthrough
+- **Compliance / Copyright** — 6-gate pre-generation checklist, substitution table (Iron Man → descriptor, Spider-Man → descriptor, Eiffel Tower → descriptor, Bohemian Rhapsody → descriptor)
+- **Emergency Fixes** — 8-row quick-fix table for all common failure modes
+- **Platform Parameters** — Confirmed aspect ratios (16:9 · 9:16 · 4:3 · 3:4 · 21:9 · 1:1), resolution tiers, duration range
+- **Feb 2026 status note** — Real person face uploads blocked, API delayed, Higgsfield integration incoming
+
+**Quick Decision Table** — Seedance 2.0 expanded from 1 row to 3 rows (R2V / V2V / complex motion routing)
+
+**Key accuracy corrections from practitioner data (vs. earlier documentation):**
+- Video clip limit is 15s COMBINED total, not 15s per clip
+- Negative prompts (--no syntax) are NOT supported — positive constraints only
+- Lip-sync sweet spot is 3–8s, not the 15s technical maximum
+- Master/Quick/Standard modes belong to OmniHuman-1 Digital Human, NOT Seedance 2.0
+- API is delayed (was planned Feb 24) due to copyright enforcement actions
+
+---
+
+## v1.3.3 — 2026-02-28
+
+
+### higgsfield-models/SKILL.md — Seedance Family Complete Rewrite
+
+The library previously had a single thin "Seedance Pro" entry. Three properly documented tiers now replace it:
+
+**Seedance 2.0** — new entry (most advanced tier, was completely missing):
+- Architecture: unified multimodal audio-video joint generation (text + image + audio + video inputs)
+- 12 simultaneous asset inputs: 9 images + 3 video clips (15s each) + 3 audio files + text
+- Model auto-interprets each asset's role; use natural language to specify references
+- Motion realism: industry-leading complex multi-person interaction (synchronized sports, fight choreography)
+- Acoustic physics: audio calculated from visual environment geometry (not just layered on)
+- Frame-level precision: control fonts, transitions, screen rhythm per frame
+- Video extension + scene merging with maintained continuity
+- ~30% faster generation than comparable 2K models
+- Use case: reference choreography video + character images + audio clip → synchronized scene
+
+**Seedance 1.5 Pro** — new entry (was missing — different model from Pro):
+- Architecture: dual-branch Diffusion Transformer, simultaneous audio-video single-pass generation
+- Multilingual lip-sync: English, Chinese (Sichuanese, Cantonese, Taiwanese Mandarin, Shanghainese), Japanese, Korean, Spanish, Indonesian
+- Multi-character dialogue with correct lip-motion assignment per character
+- Audio types: speech, singing, non-verbal vocalizations, SFX, BGM — all native
+- Beats Kling 2.6 and Veo 3.1 on audio-visual synchronization (SeedVideoBench 1.5)
+- Cinematic camera: dolly zoom (Hitchcock zoom), long takes, orbital/arc/tracking shots
+- Strong in stylized content: comedy timing, theatrical/opera performance, short dramas
+- Architecture note: simultaneous generation (not post-production layering) is the key distinction vs competitors
+
+**Seedance Pro** — existing entry expanded:
+- Clarified as fast iteration tier, NO native audio
+- Pro (1080p) vs Lite (720p) distinction documented
+- Correct positioning: use when audio not required; iterate before committing to 1.5 Pro/2.0
+
+**Quick Decision Table** — Seedance row expanded from 1 to 3 rows
+
+### model-guide.md
+- Video table: Seedance row expanded from 1 to 3 with audio column correctly marked
+- Decision flowchart: Seedance branch updated with audio/no-audio split and Seedance 2.0 option
+
+---
+
+## v1.3.2 — 2026-02-28
+
+
+### higgsfield-models/SKILL.md — Kling Family Complete Rewrite
+
+**Kling 3.0** — fully documented (was a thin stub): duration 3–15s, native multilingual audio (6 languages + accents), AI Director multi-shot mode, physics-aware engine, stylized output (anime/Pixar/claymation), EXCLUSIVE badge.
+
+**Kling 3.0 Omni** — new entry: Performance Cloning (clone character appearance + voice from 3–8s video), Voice Extraction (static image + audio = voice profile), custom per-shot storyboard, Elements 3.0 (video-clip-based identity locking).
+
+**Kling 3.0 Omni Edit** — new entry: reference-guided video transformation at 3.0 quality tier.
+
+**Kling O1 Video** — new dedicated entry: Chain-of-Thought (CoT) reasoning pre-render, up to 7 simultaneous reference inputs, start/end frame mode, motion transfer from reference video.
+
+**Kling O1 Video Edit (Edit Video tab)** — new entry (entire tab was undocumented):
+- Relight & Atmosphere: 3D geometry-aware lighting transformation (featured UI capability)
+- Full edit type catalog: Restyle, Object swap, Add elements, Delete/remove, Scene transformation, Angle change, Character replacement
+- The Keep Rule prompt formula: `Change [Target] to [New State], keep [everything else] unchanged`
+- 5 example edit prompts. Auto settings toggle. Input: 3–10s video + up to 4 image refs, output: 720p.
+
+**Kling Motion Control** — new entry: up to 30s duration (longest in lineup), camera path control.
+
+**Kling 2.5 Turbo, 2.1, 2.1 Master** — new entries: fast iteration tier and legacy tier context.
+
+**Quick Decision Table** — expanded from 10 to 20 rows covering full Kling family + edit mode.
+
+### model-guide.md — Full Rewrite
+- Video table: 8 → 15 models, added Duration and Audio columns
+- Image table: updated Seedream entries with correct capability notes
+- Decision flowchart: added Edit Video branch, full Kling sub-tree, Seedream image sub-tree
+- New section: Kling Generation vs Edit Mode with two-tab distinction and edit prompt formula
+- Camera/preset compatibility tables updated with Kling 3.0 and Motion Control
+
+---
+
+## v1.3.1 — 2026-02-28
+
+### image-models.md — Seedream Family Expansion
+
+**Seedream 5.0 Lite** — full capability documentation: online search/real-time data grounding, deep reasoning for long complex prompts (1,000+ chars), native multi-image output, complex layout generation. Prompt tips for each.
+
+**Seedream 4.5** — full capability documentation: enhanced reference consistency (face/lighting/identity), accurate multi-image editing (stable with 10+ refs), dense text/typographic rendering, specific editing capabilities (selective deletion, material swap, in-image translation, font/color edits).
+
+**Seedream family** — architecture context note added (DiT + high-compression VAE, bilingual training, RLHF pipeline).
+
+### higgsfield-models/SKILL.md — Seedream Section Expansion
+- Added Seedream 5.0 Lite entry. Expanded Seedream 4.5 entry. Quick decision table: 2 new rows.
+
+---
+
+## v1.3.0 — 2026-02-28
+
+
+### higgsfield-cinema — Complete Rewrite
+
+Major corrections and additions based on actual Cinema Studio 2.0 UI review:
+
+**Elements system (new — was completely missing):**
+Characters, Locations, Props — create once, call via `@` in any prompt.
+Full creation workflow. Multi-element prompt examples. `@` + Soul ID combination rules.
+
+**Image Mode cameras — corrected (all previous names were wrong):**
+Correct camera bodies: Premium Large Format Digital, Classic 16mm Film, Modular 8K Digital,
+Full-Frame Cine Digital, Studio Digital S35, Grand Format 70mm Film.
+Correct lenses: Creative Tilt Lens, Compact Anamorphic, Halation Diffusion, Extreme Macro,
+70s Cinema Prime, Warm Cinema Prime, Swirl Bokeh Portrait, Vintage Prime,
+Classic Anamorphic, Clinical Sharp Prime.
+Focal lengths corrected: 8mm, 14mm, 35mm, 50mm.
+Aperture options: f/1.4, f/4, f/11.
+
+**Genre list — corrected:**
+Previous (wrong): Action/Horror/Comedy/Suspense/Drama/Romance.
+Correct: General/Action/Horror/Comedy/Western/Suspense/Intimate/Spectacle.
+
+**Director Panel — all 18 camera movements documented:**
+Static, Handheld, Zoom Out, Zoom In, Camera Follows, Pan Left, Pan Right,
+Tilt Up, Tilt Down, Orbit Around, Dolly In, Dolly Out, Jib Up, Jib Down,
+Drone Shot, Dolly Left, Dolly Right, 360 Roll (+ Auto).
+
+**Speed Ramp — new (was missing):**
+Linear, Slow Mo, Speed Up, Impact, Auto, Custom. Custom curve via blue line nodes.
+
+**Shot modes — fully documented:**
+Single Shot, Multi-Shot Auto, Multi-Shot Manual (6 scenes, full per-scene config).
+Cost transparency: Multi-Shot Manual × 4 variations = 24 generations.
+
+---
+
+## v1.2.0 — 2026-02-28
+
+### New Sub-Skills
+
+**higgsfield-vibe-motion** — Complete Vibe Motion guide
+- Core concept: Vibe Motion generates Remotion code, not pixel sequences — deterministic,
+  not predictive. Text is always crisp. Edits are non-destructive.
+- Powered by Claude (Anthropic) + Remotion open-source framework
+- Full chat-based workflow: describe → upload assets → apply template → refine
+- Color palette presets (Mosaic, Prism, Candy, Minimal, Dark, Brand)
+- Animation Speed / Physics slider documentation
+- Real-time editing controls (Font Family, Text Color, Font Size, Background, Speed)
+- Template categories: Text Animation, Infographics, Posters, Brand, Social, Product
+- Prompting patterns for: typography, logo animation, infographics/stats, social motion
+  graphics, product feature animation — all with fill-in-the-blank examples
+- Vibe Motion vs other Higgsfield tools decision guide
+- Combining Vibe Motion with video generation: 3 practical patterns (titles + cinematic,
+  product ad intro/outro, full social ad chain)
+- Technical notes: 4K output, Remotion code export, data-driven animation capabilities
+
+**higgsfield-pipeline** — End-to-end production chain skill
+- Master production chain documented: Popcorn → Seedream → Animate → Recast →
+  Lipsync → Vibe Motion → Upscale → Assembly (all 8 stages)
+- Pipeline A: Cinematic Short Film (full chain, character-consistent narrative)
+  - Stage-by-stage prompting templates with full example short film sequence
+  - Model selection matrix by scene type
+  - I2V animation prompt structure for multi-scene consistency
+- Pipeline B: Social Content Series (Soul ID + Moodboard locked, batch generation)
+  - Per-post prompt template
+  - Example 3-post series with consistent character and style
+- Pipeline C: Product Campaign (hero video + variants + social cuts)
+  - Product hero prompt structure
+  - App integration (Click to Ad, Packshot, Giant Product)
+- Pipeline D: Fast Iteration / Speed Run (5 creative directions in under an hour)
+- Pipeline decision guide (which pipeline for which goal)
+- 5 named pipeline pitfalls with specific fixes
+
+### Root SKILL.md Updates
+- Version bumped to 1.2.0
+- Routing table: 8 new rows for `higgsfield-vibe-motion` and `higgsfield-pipeline`
+- Sub-skills index: 2 new entries
+
+---
+
+## v1.1.0 — 2026-02-28
+
+
+### New Sub-Skills
+
+**higgsfield-cinema** — Cinema Studio 2.0 complete workflow
+- Full 8-step production workflow (Script → Reference → Optical Stack → Hero Frame →
+  Camera Config → Start/End Frames → Generate → Export)
+- Optical physics engine documentation: camera bodies (ARRI ALEXA, Panavision, Sony VENICE,
+  RED, 16mm, Super 8), lens types (16mm–135mm + Anamorphic), aperture/depth of field
+- Reference Anchor system — how to lock character geometry across shots
+- Manual Multi-Shot mode — 12-second sequences broken into up to 6 segments
+- Cinema Studio vs standard generation decision guide
+- Higgsfield Popcorn (storyboard tool) integration and workflow
+- Cinema Studio prompting format (adds optical stack + Reference Anchor)
+- Genre selection (Action, Horror, Comedy, Suspense, Drama, Romance)
+- Keyframe Interpolation — Start/End Frame for morph-free transitions
+- Model selection matrix for Cinema Studio specifically
+
+**higgsfield-moodboard** — Style definition and visual consistency
+- Soul Moodboard workflow (collect → upload → synthesize → export as modifier)
+- Soul Hex color transfer — extract palette from any reference image
+- Project-level style modifier template
+- Moodboard + Soul ID integration for complete character + aesthetic consistency
+- AI Influencer campaign moodboard workflow
+- When to use moodboard vs inline style descriptions
+
+**higgsfield-mixed-media** — Complete preset library
+- Full 50+ Mixed Media preset catalogue organized by category
+  (Textural, Light & Atmosphere, Geometric & Digital, Organic & Elemental,
+  Vintage & Film, Social / Trend, Surreal / Dark)
+- Each preset: name, visual look, best use cases
+- Layer Mixed Media feature — stacking presets
+- Effective preset combination table
+- Mixed Media vs Visual Styles decision guide
+- Social content series strategy using presets
+
+**higgsfield-assist** — GPT-5 copilot + credit optimization
+- Higgsfield Assist feature (GPT-5 powered, at higgsfield.ai/chat)
+- What Assist can do + how to use it
+- Claude skill vs Assist — when to use each
+- Coming features in Assist
+- Complete credit optimization guide:
+  - Plan comparison table with credit counts and costs
+  - Credit cost tiers by model
+  - 5 most common credit waste patterns + fixes
+  - Hero Frame Efficiency Method (the single highest-leverage technique)
+  - Model selection by budget scenario (tight/mid/high)
+  - Platform efficiency tips (presets, community gallery, batching, etc.)
+  - 4-week platform learning path
+
+### Additions to Existing Skills
+
+- `higgsfield-models` — Added Kling O1, Veo 3.1, Seedance 2.0 to video model list
+- `higgsfield-apps` — Added Nano Strike, Nano Theft, Vibe Motion, UGC Factory,
+  Draw to Video, Photodump Studio
+- `SKILL.md` — Updated routing table to include new v1.1 sub-skills
+- `references/model-guide.md` — Updated decision flowchart with Wan 2.6, Kling 3.0
+
+### Known Gaps (v1.2 targets)
+- Vibe Motion workflow (chat-based video generation)
+- UGC Factory deep-dive workflow
+- Contest / challenge strategy prompts
+- Draw to Video and Sketch to Video workflows
+- Kling O1 (reasoning-based video) specific prompting
+- Multi-reference image generation workflow
+- Upscale / Topaz post-processing workflow
+- Community strategy and sharing best practices
+
+---
+
+## v1.0.0 — 2026-02-28
+
+### Initial Release
+
+**Core files:**
+- `SKILL.md` — Root entry point with MCSLA formula and full workflow
+- `README.md` — Installation and usage guide
+
+**Sub-skills:**
+- `higgsfield-prompt` — MCSLA formula, T2V vs I2V, narrative structure
+- `higgsfield-models` — All video + image models with decision flowchart
+- `higgsfield-camera` — Complete camera control library (40+ controls)
+- `higgsfield-motion` — 100+ named motion presets organized by category
+- `higgsfield-style` — Five named styles + color grades + lighting vocabulary
+- `higgsfield-soul` — Soul ID character consistency + AI Influencer workflow
+- `higgsfield-apps` — 80+ one-click Apps organized by use case
+- `higgsfield-recipes` — 9 genre templates
+- `higgsfield-troubleshoot` — 10 failure patterns + pre-generation checklist
+
+**References:**
+- `vocab.md` — Full vocabulary for camera, shot size, style, lighting, atmosphere
+- `model-guide.md` — Head-to-head comparison tables + decision flowchart
+- `prompt-examples.md` — 18 original example prompts
