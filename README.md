@@ -17,7 +17,7 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 ## Structure
 
 ```
-higgsfield_v140/
+higgsfield_v150/
 ├── SKILL.md                          ← Model selection guide (routes model questions)
 ├── README.md                         ← This file
 ├── CHANGELOG.md                      ← Version history
@@ -58,7 +58,7 @@ higgsfield_v140/
 ## Usage
 
 ### In Claude Cowork
-Drop the `higgsfield_v140/` folder into your Cowork workspace. The main dispatcher is at `mnt/user-data/outputs/higgsfield/SKILL.md`.
+Drop the `higgsfield_v150/` folder into your Cowork workspace. The main dispatcher is at `mnt/user-data/outputs/higgsfield/SKILL.md`.
 
 ### In Claude Code
 ```bash
