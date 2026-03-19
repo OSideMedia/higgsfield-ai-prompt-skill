@@ -5,10 +5,10 @@ description: >
   a type of video (action, horror, romance, product ad, documentary, sci-fi,
   dance, etc.), or asks for prompt examples for a specific style of content.
 user-invocable: true
-tags: [higgsfield, recipes, templates, genre, action, horror, romance, ad, sci-fi]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, recipes, templates, genre, action, horror, romance, ad, sci-fi]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

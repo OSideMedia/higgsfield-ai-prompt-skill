@@ -4,10 +4,10 @@ description: >
   Use when a Higgsfield generation fails, produces poor quality, looks wrong,
   doesn't match the prompt, or the user needs to fix or improve an output.
 user-invocable: true
-tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

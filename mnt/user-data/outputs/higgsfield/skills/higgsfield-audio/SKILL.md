@@ -7,10 +7,10 @@ description: >
   1.5 Pro, Seedance 2.0, Veo 3/3.1, Grok Imagine Video). Also use when the user's
   prompt would benefit from audio direction but they haven't mentioned it.
 user-invocable: true
-tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

@@ -8,10 +8,10 @@ description: >
   & size shots, camera angles, and camera movement keywords optimized for
   AI image models (Soul 2.0, Nano Banana, Seedream, GPT Image, Flux, etc.).
 user-invocable: true
-tags: [higgsfield, image, shots, framing, angle, composition, cinematic, portrait, close-up, wide-shot]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, image, shots, framing, angle, composition, cinematic, portrait, close-up, wide-shot]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

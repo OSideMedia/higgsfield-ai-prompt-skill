@@ -1,5 +1,42 @@
 # Changelog
 
+## v1.5.1 — 2026-03-18
+
+### Fixed: higgsfield_memory.py — Critical error handling
+- Added try-except around `json.loads()` in `add_filter()` and `add_quality()` — malformed JSON no longer crashes the script; returns a structured error response instead.
+- Made `save_db()` atomic — writes to a `.tmp` file then renames it, preventing database corruption if the process is interrupted mid-write.
+- Added try-except to `load_db()` covering missing file and corrupted JSON cases.
+- Added deterministic secondary sort key (`date_added`) to `query_filter()` and `query_quality()` — equal-scored results now return in consistent order.
+- Improved tokenizer — hyphenated terms (e.g. `real-person`) now match as a whole phrase AND as individual component words, improving filter memory accuracy.
+- Removed unused `import os`.
+
+### Fixed: higgsfield_memory.py — New `health` command
+- Added `python3 higgsfield_memory.py health` — runs a quick integrity check on both database files (validates JSON, verifies entry counts match `_total_entries`).
+
+### Fixed: db/filter-memory.json — Schema completeness
+- Added missing `substitution_worked` field (was `null`-defaulted in code but absent from all 4 seeded entries).
+
+### Fixed: db/quality-memory.json — Field naming consistency
+- Renamed `model` → `model_used` and `category` → `failure_type` in all 5 entries to match what `add_quality()` writes.
+- Added missing `outcome` and `improvement_confirmed` fields to all 5 entries.
+
+### Fixed: SKILL.md frontmatter — Invalid top-level attributes
+- Moved `tags` from top-level into `metadata` block across all 20 SKILL.md files (`tags` is not a supported top-level skill attribute).
+- Moved `references` from top-level into `metadata` block in `SKILL.md` and `higgsfield-models/SKILL.md`.
+
+### Fixed: Broken relative paths
+- Main dispatcher (`mnt/user-data/outputs/higgsfield/SKILL.md`): corrected bare filenames `vocab.md`, `model-guide.md`, `prompt-examples.md` to proper relative paths (`../../../../`).
+- `higgsfield-models/SKILL.md`: corrected `image-models.md` reference to `../../../../../../image-models.md`.
+
+### Fixed: README — Incorrect install command
+- Changed `cp -r higgsfield_v140` to `git clone … && cp -r higgsfield_v150` with correct repo path.
+- Corrected directory diagram label from `higgsfield_v150/` to `higgsfield/ (repo root)`.
+- Corrected Cowork install instruction (was referencing a non-existent `higgsfield_v150/` subfolder).
+
+### New: validate.py — Pre-release health checker
+- Added `validate.py` at repo root: verifies all SKILL.md files have valid frontmatter, all relative path references resolve to real files, both JSON databases are valid and schema-complete, and all expected root files are present.
+- Run with `python3 validate.py` before any release. Exits 0 on pass, 1 on failure with itemised report.
+
 ## v1.5.0 — 2026-03-13
 
 ### New: Cinema Studio 2.0 — 3D Mode (Gaussian Splatting)

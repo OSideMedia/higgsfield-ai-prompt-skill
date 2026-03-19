@@ -5,10 +5,10 @@ description: >
   camera behavior in a Higgsfield prompt. Contains all named camera controls
   with descriptions, best use cases, and example prompt phrases.
 user-invocable: true
-tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

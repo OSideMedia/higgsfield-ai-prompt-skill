@@ -5,13 +5,14 @@ description: >
   or needs guidance on selecting between Kling, Sora 2, Wan, Seedance,
   Veo 3, MiniMax Hailuo, Soul, Nano Banana, or other Higgsfield engines.
 user-invocable: true
-tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  references:
+    - MODELS-DEEP-REFERENCE.md
+  tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
-references:
-  - MODELS-DEEP-REFERENCE.md
+
 ---
 
 # Higgsfield Model Selection Guide
@@ -111,7 +112,7 @@ Is this image or video?
 | Photorealistic + text/logo | Grok Imagine Image | — |
 | Image editing / inpainting | Flux Kontext | varies |
 
-Full image model specs + UI controls → `image-models.md`
+Full image model specs + UI controls → `../../../../../../image-models.md`
 
 ---
 

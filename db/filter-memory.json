@@ -13,6 +13,7 @@
       "substitution": "Replace name with archetype description: age range, build, distinctive visual features, costume, energy",
       "substitution_example": "Instead of 'Keanu Reeves' → 'A lean man in his late 50s, dark shoulder-length hair, stubble, intense calm expression, wearing a dark suit'",
       "fix_confirmed": true,
+      "substitution_worked": true,
       "tags": ["real-person", "celebrity", "likeness", "content-filter"]
     },
     {
@@ -24,6 +25,7 @@
       "substitution": "Describe visual traits without naming the IP. Use geometry, color, and material descriptions only.",
       "substitution_example": "Instead of 'Spider-Man' → 'blue-and-red form-fitting suit, face masked with white eye-shaped lenses, web fired from wrists'",
       "fix_confirmed": true,
+      "substitution_worked": true,
       "tags": ["brand-ip", "franchise", "copyright", "character", "content-filter"]
     },
     {
@@ -35,6 +37,7 @@
       "substitution": "Describe aftermath, tension, or dread rather than explicit acts. Use atmosphere language: 'unsettling', 'wrong', 'something is off'. Use motion presets for horror effects.",
       "substitution_example": "Instead of 'blood drips from his hands' → 'his hands tremble at his sides, something dark stains his sleeve'",
       "fix_confirmed": true,
+      "substitution_worked": true,
       "tags": ["violence", "gore", "blood", "explicit", "content-filter", "horror"]
     },
     {
@@ -46,6 +49,7 @@
       "substitution": "Use archetype descriptions and @Tag references instead. Generate a synthetic character image first, then use that as the reference.",
       "substitution_example": "Generate a character with Soul 2.0 first → use that generated image as the @Image1 reference in Seedance 2.0",
       "fix_confirmed": true,
+      "substitution_worked": true,
       "tags": ["real-person", "seedance-2.0", "face-upload", "content-filter"]
     }
   ]

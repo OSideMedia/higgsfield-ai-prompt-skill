@@ -5,10 +5,10 @@ description: >
   how to use the platform's native AI assistant, credit optimization strategies,
   plan selection, how to get more from fewer credits, or platform efficiency tips.
 user-invocable: true
-tags: [higgsfield, assist, GPT-5, copilot, credits, pricing, optimization, efficiency]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, assist, GPT-5, copilot, credits, pricing, optimization, efficiency]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

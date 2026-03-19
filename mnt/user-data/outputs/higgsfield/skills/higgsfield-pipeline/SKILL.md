@@ -7,10 +7,10 @@ description: >
   → audio → assembly, or wants to understand how the platform works as a production
   system rather than isolated tools.
 user-invocable: true
-tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

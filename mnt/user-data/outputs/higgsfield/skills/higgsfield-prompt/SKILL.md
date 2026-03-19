@@ -5,10 +5,10 @@ description: >
   Covers the MCSLA formula, prompt structure, narrative vs. timestamped formats,
   and how to write for both text-to-video and image-to-video workflows.
 user-invocable: true
-tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

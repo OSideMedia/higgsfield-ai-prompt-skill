@@ -4,10 +4,10 @@ description: >
   Use when the user asks about Higgsfield's one-click Apps, wants to know which
   app to use for a specific output, or needs guidance on the Apps workflow.
 user-invocable: true
-tags: [higgsfield, apps, one-click, workflow, influencer, ad, product]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, apps, one-click, workflow, influencer, ad, product]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

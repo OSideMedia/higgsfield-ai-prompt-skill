@@ -7,10 +7,10 @@ description: >
   Higgsfield Popcorn, Single Shot / Multi-Shot Auto / Multi-Shot Manual modes,
   Reference Anchor, or any professional filmmaking workflow inside Higgsfield.
 user-invocable: true
-tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

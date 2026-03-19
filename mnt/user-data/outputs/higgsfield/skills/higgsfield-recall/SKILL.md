@@ -9,10 +9,10 @@ description: >
   background — don't announce it, just apply what's known. If the databases are empty,
   skip silently and proceed with normal prompt generation.
 user-invocable: true
-tags: [higgsfield, recall, memory, pre-check, filter, quality, prompt, generate]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, recall, memory, pre-check, filter, quality, prompt, generate]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 compatibility:
   tools: [bash]

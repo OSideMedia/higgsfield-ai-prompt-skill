@@ -7,67 +7,107 @@
     {
       "id": "qual-001",
       "date": "2026-02-28",
-      "category": "character-drift",
-      "model": "Sora 2",
       "scenario": "Multi-shot character sequence — close-up to wide transition",
       "original_prompt": "A detective in a grey coat walks through a rainy alley. Camera transitions from close-up to wide establishing shot.",
       "failure_description": "Character face changed significantly between close-up and wide shot. Coat color shifted from grey to dark blue.",
       "fix_applied": "Switched to Kling 3.0 for character-driven sequences. Added explicit character description anchoring in each shot.",
       "improved_prompt": "A male detective, 45, weathered face, grey wool overcoat, walks through a rain-soaked alley. Camera: Dolly Out from medium close-up to wide. Grey overcoat, same face throughout.",
       "fix_confirmed": true,
-      "tags": ["character-drift", "sora-2", "multi-shot", "detective", "rain"]
+      "tags": [
+        "character-drift",
+        "sora-2",
+        "multi-shot",
+        "detective",
+        "rain"
+      ],
+      "model_used": "Sora 2",
+      "failure_type": "character-drift",
+      "outcome": "fixed",
+      "improvement_confirmed": true
     },
     {
       "id": "qual-002",
       "date": "2026-02-28",
-      "category": "style-ignored",
-      "model": "Kling 2.6",
       "scenario": "VHS style not rendering — output looked modern/clean",
       "original_prompt": "A woman walks down a hallway. VHS style.",
       "failure_description": "Output was clean digital look with no VHS artifacts. The style instruction was too vague.",
       "fix_applied": "Added explicit VHS artifact descriptions: scan lines, color bleed, tracking noise, 4:3 aspect ratio, desaturated greens.",
       "improved_prompt": "A woman walks down a dimly lit hallway. Style: VHS. Visible scan lines, slight color bleed on edges, tracking noise at bottom of frame, desaturated green-grey tones, 4:3 aspect ratio, practical fluorescent light only.",
       "fix_confirmed": true,
-      "tags": ["style-ignored", "VHS", "kling-2.6", "hallway", "artifacts"]
+      "tags": [
+        "style-ignored",
+        "VHS",
+        "kling-2.6",
+        "hallway",
+        "artifacts"
+      ],
+      "model_used": "Kling 2.6",
+      "failure_type": "style-ignored",
+      "outcome": "fixed",
+      "improvement_confirmed": true
     },
     {
       "id": "qual-003",
       "date": "2026-02-28",
-      "category": "motion-static",
-      "model": "Kling 2.6",
       "scenario": "Image-to-video produced near-static output — barely any movement",
       "original_prompt": "A woman in a red dress stands on a balcony overlooking the city at sunset. She has dark hair and brown eyes. The city has tall buildings. The sky is orange and pink.",
       "failure_description": "Output was essentially a still image with minimal breathing motion. No meaningful animation.",
       "fix_applied": "Removed redundant static descriptions (already visible in the input image). Added explicit motion cues and camera movement.",
       "improved_prompt": "Starting from the provided image. Her hair lifts gently in the evening breeze. She turns her head slowly to the right, a slight smile forming. Camera: slow Dolly In toward her profile. Wind catches the dress fabric.",
       "fix_confirmed": true,
-      "tags": ["motion-static", "I2V", "image-to-video", "kling-2.6", "re-describe"]
+      "tags": [
+        "motion-static",
+        "I2V",
+        "image-to-video",
+        "kling-2.6",
+        "re-describe"
+      ],
+      "model_used": "Kling 2.6",
+      "failure_type": "motion-static",
+      "outcome": "fixed",
+      "improvement_confirmed": true
     },
     {
       "id": "qual-004",
       "date": "2026-02-28",
-      "category": "prompt-conflict",
-      "model": "Sora 2",
       "scenario": "Prompt with contradictory camera instructions produced incoherent movement",
       "original_prompt": "Camera Dolly In toward the subject while pulling back to reveal the environment. FPV Drone weaving through the market. 360 Orbit around the fighter.",
       "failure_description": "Three contradictory camera movements in one prompt. Output had erratic, jarring camera path that looked broken.",
       "fix_applied": "One camera movement per shot. Split into separate generations if multiple movements needed.",
       "improved_prompt": "Camera: FPV Drone weaving through the crowded night market at speed, following the woman in the tactical jacket.",
       "fix_confirmed": true,
-      "tags": ["prompt-conflict", "camera", "contradictory", "sora-2", "multiple-movements"]
+      "tags": [
+        "prompt-conflict",
+        "camera",
+        "contradictory",
+        "sora-2",
+        "multiple-movements"
+      ],
+      "model_used": "Sora 2",
+      "failure_type": "prompt-conflict",
+      "outcome": "fixed",
+      "improvement_confirmed": true
     },
     {
       "id": "qual-005",
       "date": "2026-02-28",
-      "category": "audio-desync",
-      "model": "Seedance 1.5 Pro",
       "scenario": "Lip-sync failed — audio and mouth movement completely out of sync",
       "original_prompt": "Character says 'We need to leave now' while nodding vigorously and turning head side to side. Background music plays.",
       "failure_description": "Head motion tokens competed with lip-sync engine. Background music instruction triggered generative audio that replaced the dialogue.",
       "fix_applied": "Removed all head/face motion tokens. Removed ambient/music tokens. Kept dialogue and camera only. Trimmed audio to 5s.",
       "improved_prompt": "Character says: 'We need to leave now.' Framing: medium close-up, locked-off camera. Urgent expression.",
       "fix_confirmed": true,
-      "tags": ["audio-desync", "lip-sync", "seedance", "head-motion", "dialogue"]
+      "tags": [
+        "audio-desync",
+        "lip-sync",
+        "seedance",
+        "head-motion",
+        "dialogue"
+      ],
+      "model_used": "Seedance 1.5 Pro",
+      "failure_type": "audio-desync",
+      "outcome": "fixed",
+      "improvement_confirmed": true
     }
   ]
 }

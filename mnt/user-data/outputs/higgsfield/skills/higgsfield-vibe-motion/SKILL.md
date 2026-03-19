@@ -7,10 +7,10 @@ description: >
   Vibe Motion is fundamentally different from video generation — it creates
   deterministic code-based motion graphics, not AI-predicted pixel sequences.
 user-invocable: true
-tags: [higgsfield, vibe-motion, motion-graphics, typography, brand, animation, code, Remotion]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, vibe-motion, motion-graphics, typography, brand, animation, code, Remotion]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

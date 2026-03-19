@@ -7,15 +7,16 @@ description: >
   Reference, Reve, Seedream 4.0/4.5/5.0 Lite, Nano Banana/Pro/2, GPT Image/1.5,
   FLUX.2 Flex/Pro/Max, Flux Kontext/Max, Face Swap, Character Swap, or Photodump.
 user-invocable: true
-tags: [higgsfield, models, soul, seedream, nano-banana, flux, kling, wan, gpt-image, z-image, reve, photodump]
 metadata:
+  references:
+    - model-guide.md
+    - image-models.md
+    - photodump-presets.md
+  tags: [higgsfield, models, soul, seedream, nano-banana, flux, kling, wan, gpt-image, z-image, reve, photodump]
   version: 1.4.0
-  updated: 2026-03-08
+  updated: 2026-03-18
   parent: higgsfield
-references:
-  - model-guide.md
-  - image-models.md
-  - photodump-presets.md
+
 ---
 
 # Higgsfield Model Selection Guide

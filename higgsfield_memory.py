@@ -13,11 +13,11 @@ Usage:
   python higgsfield_memory.py update-filter <entry_id> <outcome>
   python higgsfield_memory.py stats
   python higgsfield_memory.py export-summary
+  python higgsfield_memory.py health
 """
 
 import json
 import sys
-import os
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -33,14 +33,28 @@ QUALITY_DB = DB_DIR / "quality-memory.json"
 # ── Helpers ────────────────────────────────────────────────────────────────────
 
 def load_db(path: Path) -> dict:
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(json.dumps({"status": "error", "message": f"Database file not found: {path}"}))
+        sys.exit(1)
+    except json.JSONDecodeError as e:
+        print(json.dumps({"status": "error", "message": f"Database file is corrupted: {e}"}))
+        sys.exit(1)
 
 def save_db(path: Path, data: dict):
     data["_last_updated"] = datetime.now(timezone.utc).isoformat()
     data["_total_entries"] = len(data["entries"])
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    tmp_path = path.with_suffix(".tmp")
+    try:
+        with open(tmp_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        tmp_path.replace(path)  # atomic on POSIX, best-effort on Windows
+    except OSError as e:
+        tmp_path.unlink(missing_ok=True)
+        print(json.dumps({"status": "error", "message": f"Failed to save database: {e}"}))
+        sys.exit(1)
 
 def next_id(entries: list, prefix: str) -> str:
     if not entries:
@@ -52,8 +66,15 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 def tokenize(text: str) -> set:
-    """Simple tokenizer for relevance matching."""
-    return set(re.findall(r'\b\w+\b', text.lower()))
+    """Tokenizer for relevance matching. Preserves hyphenated phrases as whole tokens
+    in addition to their individual parts (e.g. 'real-person' → {'real-person','real','person'})."""
+    lower = text.lower()
+    tokens = set(re.findall(r'\b[\w-]+\b', lower))  # includes hyphenated phrases
+    # also add individual words from within hyphenated terms
+    for token in list(tokens):
+        if '-' in token:
+            tokens.update(token.split('-'))
+    return tokens
 
 def relevance_score(entry: dict, query_tokens: set) -> int:
     """Score an entry against search tokens. Higher = more relevant."""
@@ -75,7 +96,11 @@ def relevance_score(entry: dict, query_tokens: set) -> int:
 def add_filter(entry_json: str):
     """Add a content filter block entry."""
     db = load_db(FILTER_DB)
-    entry = json.loads(entry_json)
+    try:
+        entry = json.loads(entry_json)
+    except json.JSONDecodeError as e:
+        print(json.dumps({"status": "error", "message": f"Invalid JSON: {e}"}))
+        return
 
     # Required fields with defaults
     entry.setdefault("id", next_id(db["entries"], "F"))
@@ -96,7 +121,11 @@ def add_filter(entry_json: str):
 def add_quality(entry_json: str):
     """Add a quality failure entry."""
     db = load_db(QUALITY_DB)
-    entry = json.loads(entry_json)
+    try:
+        entry = json.loads(entry_json)
+    except json.JSONDecodeError as e:
+        print(json.dumps({"status": "error", "message": f"Invalid JSON: {e}"}))
+        return
 
     entry.setdefault("id", next_id(db["entries"], "Q"))
     entry.setdefault("date_added", now_iso())
@@ -122,7 +151,7 @@ def query_filter(search_terms: str, top_n: int = 5):
 
     query_tokens = tokenize(search_terms)
     scored = [(relevance_score(e, query_tokens), e) for e in db["entries"]]
-    scored.sort(key=lambda x: x[0], reverse=True)
+    scored.sort(key=lambda x: (x[0], x[1].get("date_added", "")), reverse=True)
 
     results = [e for score, e in scored if score > 0][:top_n]
     print(json.dumps({
@@ -141,7 +170,7 @@ def query_quality(search_terms: str, top_n: int = 5):
 
     query_tokens = tokenize(search_terms)
     scored = [(relevance_score(e, query_tokens), e) for e in db["entries"]]
-    scored.sort(key=lambda x: x[0], reverse=True)
+    scored.sort(key=lambda x: (x[0], x[1].get("date_added", "")), reverse=True)
 
     results = [e for score, e in scored if score > 0][:top_n]
     print(json.dumps({
@@ -263,6 +292,44 @@ def export_summary():
     print(json.dumps({"status": "ok", "path": str(out_path), "filter_entries": len(f_db["entries"]), "quality_entries": len(q_db["entries"])}))
 
 
+def health():
+    """Run a quick integrity check on both database files."""
+    issues = []
+    results = {}
+
+    for label, path in [("filter", FILTER_DB), ("quality", QUALITY_DB)]:
+        if not path.exists():
+            issues.append(f"{label}: file missing ({path})")
+            results[label] = {"ok": False, "reason": "file missing"}
+            continue
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                db = json.load(f)
+        except json.JSONDecodeError as e:
+            issues.append(f"{label}: corrupted JSON — {e}")
+            results[label] = {"ok": False, "reason": f"corrupted JSON: {e}"}
+            continue
+
+        entry_count = len(db.get("entries", []))
+        declared = db.get("_total_entries", -1)
+        count_ok = entry_count == declared
+        if not count_ok:
+            issues.append(f"{label}: _total_entries mismatch (declared {declared}, actual {entry_count})")
+
+        results[label] = {
+            "ok": count_ok,
+            "entries": entry_count,
+            "declared_total": declared,
+            "last_updated": db.get("_last_updated"),
+        }
+
+    print(json.dumps({
+        "status": "ok" if not issues else "issues_found",
+        "databases": results,
+        "issues": issues,
+    }, indent=2))
+
+
 # ── Entry Point ────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
@@ -293,6 +360,8 @@ if __name__ == "__main__":
         stats()
     elif cmd == "export-summary":
         export_summary()
+    elif cmd == "health":
+        health()
     else:
         print(f"Unknown command: {cmd}")
         print(__doc__)

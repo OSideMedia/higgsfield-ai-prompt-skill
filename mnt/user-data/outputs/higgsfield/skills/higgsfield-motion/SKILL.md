@@ -5,10 +5,10 @@ description: >
   VFX presets, transformation effects, elemental effects, or transition presets.
   Contains the full named preset library with descriptions and prompt usage.
 user-invocable: true
-tags: [higgsfield, motion, presets, VFX, transformation, transitions, effects]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, motion, presets, VFX, transformation, transitions, effects]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

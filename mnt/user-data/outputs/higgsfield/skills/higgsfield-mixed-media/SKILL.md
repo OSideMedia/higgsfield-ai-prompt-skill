@@ -5,10 +5,10 @@ description: >
   to an image (Noir, Sketch, Paper, Canvas, Particles, Neon, etc.), combine
   multiple artistic treatments, or create stylized non-photorealistic outputs.
 user-invocable: true
-tags: [higgsfield, mixed-media, presets, artistic, noir, sketch, particles, style]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, mixed-media, presets, artistic, noir, sketch, particles, style]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

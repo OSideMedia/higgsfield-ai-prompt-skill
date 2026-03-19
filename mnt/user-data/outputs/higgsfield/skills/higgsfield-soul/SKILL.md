@@ -5,10 +5,10 @@ description: >
   generations, asks about Soul ID, creating reusable characters, or generating
   consistent people across different scenes and shots.
 user-invocable: true
-tags: [higgsfield, soul, character, consistency, Soul ID, identity]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, soul, character, consistency, Soul ID, identity]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 

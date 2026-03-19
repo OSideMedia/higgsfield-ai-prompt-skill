@@ -17,7 +17,7 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 ## Structure
 
 ```
-higgsfield_v150/
+higgsfield/  (repo root)
 ├── SKILL.md                          ← Model selection guide (routes model questions)
 ├── README.md                         ← This file
 ├── CHANGELOG.md                      ← Version history
@@ -58,11 +58,13 @@ higgsfield_v150/
 ## Usage
 
 ### In Claude Cowork
-Drop the `higgsfield_v150/` folder into your Cowork workspace. The main dispatcher is at `mnt/user-data/outputs/higgsfield/SKILL.md`.
+Drop the repo root (all files) into your Cowork workspace. The main dispatcher is at `mnt/user-data/outputs/higgsfield/SKILL.md`.
 
 ### In Claude Code
 ```bash
-cp -r higgsfield_v140 ~/.claude/skills/higgsfield
+# Clone the repo, then copy the root into your skills directory:
+git clone https://github.com/OSideMedia/higgsfield-ai-prompt-skill higgsfield_v150
+cp -r higgsfield_v150 ~/.claude/skills/higgsfield
 ```
 
 ### In Claude.ai Projects
@@ -98,4 +100,4 @@ Upload individual sub-skill files from `mnt/user-data/outputs/higgsfield/skills/
 
 ---
 
-Built February 2026 · v1.5.0 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v1.5.1 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)

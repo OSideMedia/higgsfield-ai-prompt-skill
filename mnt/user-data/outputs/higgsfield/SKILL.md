@@ -7,10 +7,10 @@ description: >
   "image to video", "motion presets", "camera controls", or discusses prompt engineering
   for Higgsfield AI's video and image generation platform.
 user-invocable: true
-tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
+  version: 1.5.1
+  updated: 2026-03-18
   author: O-Side Media
   license: MIT
 ---
@@ -185,7 +185,7 @@ Quick summary — five layers, every prompt:
 | `higgsfield-recall` | Pre-generation memory check / apply past failure fixes |
 | `higgsfield-audio` | Audio design, dialogue, SFX, ambient sound for audio-capable models |
 
-> Full vocabulary in `vocab.md`
+> Full vocabulary in `../../../../vocab.md`
 > Full motion preset library in `skills/higgsfield-motion/SKILL.md`
-> Model comparison in `model-guide.md`
-> Example prompts in `prompt-examples.md`
+> Model comparison in `../../../../model-guide.md`
+> Example prompts in `../../../../prompt-examples.md`

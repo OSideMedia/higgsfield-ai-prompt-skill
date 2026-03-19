@@ -4,10 +4,10 @@ description: >
   Use when the user asks about visual styles, aesthetics, color grades, film looks,
   or how to set the tone and atmosphere of a Higgsfield generation.
 user-invocable: true
-tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
 metadata:
-  version: 1.5.0
-  updated: 2026-03-13
+  tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
+  version: 1.5.1
+  updated: 2026-03-18
   parent: higgsfield
 ---
 
