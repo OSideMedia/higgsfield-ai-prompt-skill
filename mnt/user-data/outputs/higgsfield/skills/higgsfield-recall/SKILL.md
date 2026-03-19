@@ -11,7 +11,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, recall, memory, pre-check, filter, quality, prompt, generate]
-  version: 1.5.1
+  version: 1.5.2
   updated: 2026-03-18
   parent: higgsfield
 compatibility:
@@ -72,10 +72,10 @@ Extract:
 
 ```bash
 # Check for relevant filter blocks:
-python higgsfield_memory.py query-filter "<key terms from prompt>" 5
+python3 higgsfield_memory.py query-filter "<key terms from prompt>" 5
 
 # Check for relevant quality failures:
-python higgsfield_memory.py query-quality "<key terms from prompt>" 5
+python3 higgsfield_memory.py query-quality "<key terms from prompt>" 5
 ```
 
 **Query strategy:**
@@ -173,8 +173,8 @@ Before finalizing any prompt, check:
 
 To see current knowledge base size:
 ```bash
-python higgsfield_memory.py stats
+python3 higgsfield_memory.py stats
 ```
 
-Empty databases = no recall benefit yet. Start logging failures with `higgsfield-learn`
+Empty databases = no recall benefit yet. Start logging failures with `higgsfield-troubleshoot`
 and the recall system gets smarter with every entry.

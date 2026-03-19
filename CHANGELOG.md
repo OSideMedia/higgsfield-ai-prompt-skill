@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.5.2 — 2026-03-18
+
+### Fixed: higgsfield_memory.py — Robustness
+- Added `ValueError` handling around `int(sys.argv[3])` in `query-filter` and `query-quality` — passing a non-integer `top_n` argument now returns a clean JSON error instead of an unhandled crash.
+- Made `export_summary()` atomic — writes to `.tmp` then renames, consistent with `save_db()`. Prevents partial/corrupted output on interrupted writes.
+
+### Fixed: higgsfield-recall/SKILL.md — Broken command references
+- Changed `python higgsfield_memory.py ...` → `python3` in all three code blocks. `python` is not in PATH on modern macOS/Linux.
+- Replaced reference to non-existent `higgsfield-learn` skill with the correct `higgsfield-troubleshoot`.
+
+### Fixed: validate.py — Typo
+- Corrected "Highsfield" → "Higgsfield" in the validation report header.
+
 ## v1.5.1 — 2026-03-18
 
 ### Fixed: higgsfield_memory.py — Critical error handling

@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
-  version: 1.5.1
+  version: 1.5.2
   updated: 2026-03-18
   parent: higgsfield
 ---

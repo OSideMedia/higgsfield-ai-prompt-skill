@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, assist, GPT-5, copilot, credits, pricing, optimization, efficiency]
-  version: 1.5.1
+  version: 1.5.2
   updated: 2026-03-18
   parent: higgsfield
 ---

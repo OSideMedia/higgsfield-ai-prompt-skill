@@ -100,4 +100,4 @@ Upload individual sub-skill files from `mnt/user-data/outputs/higgsfield/skills/
 
 ---
 
-Built February 2026 · v1.5.1 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v1.5.2 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)

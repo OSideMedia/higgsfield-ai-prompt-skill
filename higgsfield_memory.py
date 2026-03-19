@@ -287,8 +287,15 @@ def export_summary():
 
     summary = "\n".join(lines)
     out_path = DB_DIR / "memory-summary.md"
-    with open(out_path, "w", encoding="utf-8") as f:
-        f.write(summary)
+    tmp_path = out_path.with_suffix(".tmp")
+    try:
+        with open(tmp_path, "w", encoding="utf-8") as f:
+            f.write(summary)
+        tmp_path.replace(out_path)
+    except OSError as e:
+        tmp_path.unlink(missing_ok=True)
+        print(json.dumps({"status": "error", "message": f"Failed to write summary: {e}"}))
+        sys.exit(1)
     print(json.dumps({"status": "ok", "path": str(out_path), "filter_entries": len(f_db["entries"]), "quality_entries": len(q_db["entries"])}))
 
 
@@ -344,10 +351,18 @@ if __name__ == "__main__":
     elif cmd == "add-quality" and len(sys.argv) >= 3:
         add_quality(sys.argv[2])
     elif cmd == "query-filter" and len(sys.argv) >= 3:
-        top_n = int(sys.argv[3]) if len(sys.argv) >= 4 else 5
+        try:
+            top_n = int(sys.argv[3]) if len(sys.argv) >= 4 else 5
+        except ValueError:
+            print(json.dumps({"status": "error", "message": f"top_n must be an integer, got: {sys.argv[3]}"}))
+            sys.exit(1)
         query_filter(sys.argv[2], top_n)
     elif cmd == "query-quality" and len(sys.argv) >= 3:
-        top_n = int(sys.argv[3]) if len(sys.argv) >= 4 else 5
+        try:
+            top_n = int(sys.argv[3]) if len(sys.argv) >= 4 else 5
+        except ValueError:
+            print(json.dumps({"status": "error", "message": f"top_n must be an integer, got: {sys.argv[3]}"}))
+            sys.exit(1)
         query_quality(sys.argv[2], top_n)
     elif cmd == "update-filter" and len(sys.argv) >= 4:
         notes = sys.argv[4] if len(sys.argv) >= 5 else ""

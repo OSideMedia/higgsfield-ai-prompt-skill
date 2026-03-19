@@ -112,7 +112,7 @@ def check_json_db(label: str, path: Path, required_fields: set):
 
 
 def main():
-    print(f"\nHighsfield Skill Repo — Validation Report")
+    print(f"\nHiggsfield Skill Repo — Validation Report")
     print(f"Root: {ROOT}\n")
 
     # ── 1. Find all SKILL.md files ──────────────────────────────────────────

@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
-  version: 1.5.1
+  version: 1.5.2
   updated: 2026-03-18
   parent: higgsfield
 ---

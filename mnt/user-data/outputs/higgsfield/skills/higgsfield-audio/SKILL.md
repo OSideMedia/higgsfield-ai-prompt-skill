@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
-  version: 1.5.1
+  version: 1.5.2
   updated: 2026-03-18
   parent: higgsfield
 ---
