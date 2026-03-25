@@ -1,3 +1,7 @@
+[![Version](https://img.shields.io/badge/version-1.5.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+
 # Higgsfield AI Prompt Skill
 
 A comprehensive Claude skill library for generating high-quality prompts on
@@ -14,10 +18,29 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 - Troubleshooting for failed or poor generations
 - Cinema Studio 2.0 advanced features: 3D Mode (Gaussian Splatting), Grid Generation, Resolution Settings, Frame Extraction Loop, Object & Person Insertion, Per-Character Emotions, Clustering, 12-Second Runtime Cap
 
+## Quick Start
+
+### 1. Claude Cowork (recommended)
+Drop the entire repo folder into your Cowork workspace. The main dispatcher is at:
+```
+mnt/user-data/outputs/higgsfield/SKILL.md
+```
+
+### 2. Claude Code
+```bash
+git clone https://github.com/OSideMedia/higgsfield-ai-prompt-skill
+cp -r higgsfield-ai-prompt-skill ~/.claude/skills/higgsfield
+```
+
+### 3. Claude.ai Projects
+Upload `SKILL.md` (the root-level one) as your project instruction base, then upload the sub-skill files from `mnt/user-data/outputs/higgsfield/skills/` as project documents.
+
+> **Path note:** The `mnt/user-data/outputs/higgsfield/` directory mirrors the Claude Cowork filesystem layout intentionally. If you're using Claude Code or Claude.ai Projects, adapt the paths to your own environment (e.g. `~/.claude/skills/higgsfield/`).
+
 ## Structure
 
 ```
-higgsfield/  (repo root)
+.
 ├── SKILL.md                          ← Model selection guide (routes model questions)
 ├── README.md                         ← This file
 ├── CHANGELOG.md                      ← Version history
@@ -54,22 +77,6 @@ higgsfield/  (repo root)
         ├── higgsfield-cinema/SKILL.md      ← Cinema Studio 2.0 (3D Mode, Grid Gen, Resolution, Frame Extraction, Object Insertion, Emotions, Clustering)
         └── higgsfield-vibe-motion/SKILL.md ← Vibe-based motion direction
 ```
-
-## Usage
-
-### In Claude Cowork
-Drop the repo root (all files) into your Cowork workspace. The main dispatcher is at `mnt/user-data/outputs/higgsfield/SKILL.md`.
-
-### In Claude Code
-```bash
-# Clone the repo, then copy the root into your skills directory:
-git clone https://github.com/OSideMedia/higgsfield-ai-prompt-skill higgsfield_v150
-cp -r higgsfield_v150 ~/.claude/skills/higgsfield
-```
-
-### In Claude.ai Projects
-Upload `SKILL.md` as your project instruction base.
-Upload individual sub-skill files from `mnt/user-data/outputs/higgsfield/skills/` as project documents.
 
 ## Example Prompts
 
