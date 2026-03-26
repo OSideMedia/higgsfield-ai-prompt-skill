@@ -9,8 +9,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
-  version: 1.5.2
-  updated: 2026-03-18
+  version: 1.6.0
+  updated: 2026-03-26
   parent: higgsfield
 ---
 
@@ -159,11 +159,22 @@ The production workaround:
 
 ## Audio by Model — What Works Best Where
 
-### Kling 3.0 / 3.0 Omni
+### Kling 3.0 (V3) / 3.0 Omni (O3)
 - Best overall audio-visual integration
-- Multi-language dialogue (English, Chinese, Japanese, Korean, Spanish + accents)
+- Multi-language dialogue (English, Chinese, Japanese, Korean, Spanish + regional accents: American English, British English, Indian English)
+- Multi-character dialogue: 3+ characters with correct speaker attribution and lip-sync per character
+- Voice Binding: lock specific voice profiles to specific characters across shots
+- O3 adds Voice Extraction from static images: upload audio clip (min 3s) + image to build a voice profile
+- O3 adds Performance Cloning: act out a scene on camera → AI re-renders preserving likeness and voice
 - Include dialogue, ambient, and SFX naturally in the prompt
 - Prompt like a script: action + camera + mood + dialogue cues together
+
+**Audio Speaker Attribution Format (V3/O3):**
+```
+[Speaker: Character Name] "dialogue" in a [warm/confident/excited] [male/female] voice with [accent].
+Add [sound: footsteps / rain / door closing] when [action].
+Background ambient: [environment description].
+```
 
 ### Seedance 1.5 Pro
 - Best lip-sync accuracy of all models

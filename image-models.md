@@ -19,6 +19,19 @@ G = Google-powered model
 
 ---
 
+### Soul Cinema Preview
+**Credits:** Low (cheaper per generation than most models)
+**Best for:** Cinematic-grade image generation — rich textures, natural compositions, "spontaneous look," deep depth of field, film grain aesthetics
+**Excels at:** Close-up shots specifically
+**Unique:** No preset selection panel — unlike Soul 2.0, it's **purely prompt-driven**
+**Key workflow:** Generate cinematic keyframe with Soul Cinema Preview → feed into video model (e.g., Kling 3.0 I2V) for best results
+**Works with:** Soul ID (character consistency) and Soul HEX (precise color control)
+**Status:** Preview version — full Soul Cinema coming soon
+
+**Soul HEX** — Extracts color palettes from reference photos for brand-consistent, color-matched visuals. Works across Soul 2.0, Soul Cinema Preview, and Cinema Studio 2.5.
+
+---
+
 ### Higgsfield Soul (Legacy)
 **Credits:** 0.5 per generation
 **UI:** Higgsfield Soul · 1:1 · 2K · Style On/Off · 1/4 · Unlimited · Character slot
@@ -45,6 +58,32 @@ G = Google-powered model
 **vs Z-Image:** 3x the cost but 2K resolution and Kling model quality
 **Default aspect:** 1:1 — native square. Good for Instagram/social.
 **Note:** Image-only version of the Kling engine (same family as Kling 2.6/3.0 video)
+
+---
+
+### Kling Image 3.0
+**Credits:** TBD
+**UI:** Kling Image 3.0 · 16:9 · 4K
+**Best for:** Native 4K stills (up to 3840×2160) · Image Series Mode for storyboarding · multi-reference workflows
+**Key features:**
+- **Native 4K** (up to 3840×2160) — no upscaling. Also supports 1K and 2K
+- **Image Series Mode**: generate sequential frames with consistent characters, style, and tone across varied camera angles (storyboarding use case)
+- **Up to 10 reference images** per generation
+- **Visual Chain-of-Thought**: model reasons through composition before rendering
+- **Style transfer + portrait reference + character reference + multi-image blending** all in one workflow
+- **Local re-editing**: add/remove/modify elements without switching tools
+- **Batch optimization**
+- **Cinematic color grading** built in
+- **Aspect ratios**: 1:1, 3:4, 4:3, 16:9, 9:16
+
+---
+
+### Kling Image 3.0 Omni
+**Credits:** TBD
+**UI:** Kling Image 3.0 Omni · 16:9 · 4K
+**Best for:** Advanced editing · refining styles and subjects · strongest prompt fidelity
+**What it adds over Image 3.0:** Enhanced editing capabilities, stronger prompt adherence, refining styles and subjects with greater precision
+**Resolution:** Native 2K and 4K output
 
 ---
 
@@ -176,28 +215,41 @@ Tip: Name each reference's role — "Use Image A for pose, Image B for style, Im
 
 ### Nano Banana 2
 **Google model:** Gemini 3.1 Flash Image
-**Released:** February 26, 2026 — brand new (2 days old at time of writing)
+**Released:** February 26, 2026
 **Credits:** 1.5 per generation
 **UI:** Nano Banana 2 · 16:9 · 1K · 1/4
-**Best for:** Pro-quality output at Flash speed · rapid iteration on complex prompts · character-consistent multi-image workflows
+**Best for:** Pro-quality output at Flash speed · rapid iteration on complex prompts · character-consistent multi-image workflows · text rendering · storyboarding
 
-**What it is:** Google's "best of both worlds" — Nano Banana Pro's intelligence at Nano Banana's speed. Now the default image model across most Google surfaces (Gemini app, Search, Flow, Google Ads). Pro remains available for maximum-fidelity specialized tasks.
+**What it is:** Google's "best of both worlds" — Nano Banana Pro's intelligence at Nano Banana's speed. Now the default image model across most Google surfaces (Gemini app, Search, Flow, Google Ads). Also powers **Soul Cast** in Cinema Studio 2.5.
 
-**Capabilities (inherited from Pro, delivered at Flash speed):**
-- Advanced world knowledge and real-time Search grounding
-- Precision text rendering and in-image translation
-- Subject consistency: up to 5 characters and 14 objects in one workflow
-- Precise instruction following for complex, multi-part prompts
-- Production-ready specs: 512px to 4K, all major aspect ratios
+**Capabilities:**
+- **Subject consistency**: maintains resemblance of up to **5 characters** and fidelity of up to **14 objects** in a single workflow — critical for storyboarding
+- **Precision text rendering + translation**: accurate legible text in images, can translate/localize text within an image while preserving layout
+- **Advanced world knowledge**: pulls from Gemini's knowledge base + real-time web search to accurately render specific subjects, places, landmarks
+- **Resolution**: 512px to 4K native
+- **Aspect ratios**: 1:1, 16:9, 9:16, 4:3, 3:4, 3:2, 2:3, 4:5, 5:4, 21:9
+- **Infographics, diagrams, data visualizations**: strong at generating from text prompts
+- **Reference image editing**: edit/transform/combine existing images via text prompts
+- **Style transfer**: combine multiple reference images into one output
+- **Photorealistic quality**: vibrant lighting, richer textures, sharper details vs original Nano Banana
+
+**Prompting patterns that work well:**
+- **Structured JSON prompts** for complex scenes (subject → accessories → photography → background breakdown)
+- **Short direct prompts** also work ("Create a realistic photo of this character")
+- **Style transfer**: "Show me the animation style image version" / "Show me the real-life photo version"
+- **Location + time**: coordinates or place name + "at sunset" generates accurate scenes
+- **Blueprint/schematic**: "hand drawn isometric schematic diagram of [subject]"
+- **Infographic overlays**: detailed annotation instructions on top of photos
+- **Multi-panel comics**: single prompt with per-panel descriptions
+- **Product ad recreation**: "Recreate this ad concept using my product instead" + reference image
 
 **When to use NB2 vs Pro:**
-- NB2: rapid iteration, strong results fast, character consistency, text accuracy
-- Pro: absolute maximum fidelity, Thinking mode reasoning, 14-ref-image compositing, when quality matters more than speed
+- **NB2** = best for rapid generation, precise instruction following, speed, integrated image-search grounding
+- **NB Pro** = best for high-fidelity tasks requiring maximum factual accuracy, complex compositions, Thinking mode reasoning, 14-ref compositing
 
 **When to use NB2 vs base Nano Banana:**
 - NB2 is dramatically better at everything — base is only worth using for its Draw feature
 
-**Status:** Rolling out — processing slower than usual during initial deployment
 **No Draw yet** — Draw feature exists only in base Nano Banana and Nano Banana Pro
 
 **SynthID + C2PA:** All Nano Banana family outputs include an invisible SynthID watermark and C2PA Content Credentials for AI provenance verification
@@ -304,7 +356,10 @@ These are upload-based transformation tools, not text-to-image generators.
 | WAN 2.2 | 1 | — | Artistic |
 | Reve | 1 | — | New |
 | Soul 2.0 | Free | 2K | 5K free gens |
-| Nano Banana 2 | 1.5 | 1K | New, slow rollout |
+| Soul Cinema Preview | Low | — | Cinematic keyframes |
+| Kling Image 3.0 | TBD | 4K | Native 4K, series mode |
+| Kling Image 3.0 Omni | TBD | 4K | Advanced editing |
+| Nano Banana 2 | 1.5 | 1K | Pro quality at Flash speed |
 | FLUX.2 Pro | 1.5 | 2K | ⚠ External |
 | Flux Kontext Max | 1.5 | — | ⚠ Edit |
 | Multi Reference | 1.5 | — | Multi-image blend |

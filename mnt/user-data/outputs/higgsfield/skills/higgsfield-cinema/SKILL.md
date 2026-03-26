@@ -1,20 +1,20 @@
 ---
 name: higgsfield-cinema
 description: >
-  Use when the user mentions Cinema Studio, Cinema Studio 2.0, multi-shot video,
-  shot sequences, storyboard workflow, Hero Frame, optical stack, keyframe interpolation,
-  Elements system (@Characters/@Locations/@Props), Speed Ramp, Director Panel,
-  Higgsfield Popcorn, Single Shot / Multi-Shot Auto / Multi-Shot Manual modes,
-  Reference Anchor, or any professional filmmaking workflow inside Higgsfield.
+  Use when the user mentions Cinema Studio, Cinema Studio 2.5, Soul Cast, color grading,
+  multi-shot video, shot sequences, storyboard workflow, Hero Frame, optical stack,
+  keyframe interpolation, Elements system (@Characters/@Locations/@Props), Speed Ramp,
+  Director Panel, Higgsfield Popcorn, Single Shot / Multi-Shot Auto / Multi-Shot Manual
+  modes, Reference Anchor, or any professional filmmaking workflow inside Higgsfield.
 user-invocable: true
 metadata:
-  tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp]
-  version: 1.5.2
-  updated: 2026-03-18
+  tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
+  version: 1.6.0
+  updated: 2026-03-26
   parent: higgsfield
 ---
 
-# Higgsfield Cinema Studio 2.0
+# Higgsfield Cinema Studio 2.5
 
 Cinema Studio is Higgsfield's professional filmmaking environment — a full production
 workflow for multi-shot, character-consistent cinematic content. It's fundamentally
@@ -24,12 +24,14 @@ different from single-clip generation: you're building sequences, not individual
 
 ## Cinema Studio vs Standard Generation
 
-| | Standard Generation | Cinema Studio 2.0 |
+| | Standard Generation | Cinema Studio 2.5 |
 |--|--------------------|--------------------|
 | Output | Single clip | Multi-shot sequence |
 | Character consistency | Manual / Soul ID only | Reference Anchor system |
+| AI actor generation | Not available | Soul Cast — generate actors from parameters (no photos) |
 | Camera control | Named presets | Director Panel (18 movements) |
 | Optical physics | Not available | Full camera body + lens stack |
+| Color grading | Not available | Built-in suite (temp, contrast, grain, bloom, etc.) |
 | Shot structure | One prompt = one clip | Up to 6 scenes, 12s total max, per-scene config |
 | 3D exploration | Not available | Gaussian splatting — move inside any generated image |
 | Batch generation | Not available | Grid generation — up to 16 variations per credit |
@@ -50,17 +52,22 @@ different from single-clip generation: you're building sequences, not individual
 
 ---
 
-## The 8-Step Cinema Studio Workflow
+## The 10-Step Cinema Studio 2.5 Workflow
+
+Cinema Studio 2.5 extends the pipeline in both directions: **pre-production** (Soul Cast +
+location prompt) before generation, and **post-production** (color grading) after.
 
 ```
-1. SCRIPT        → Write or paste your scene description / shot list
-2. REFERENCE     → Upload character photo → create Reference Anchor
-3. ELEMENTS      → (Optional) Define @Characters, @Locations, @Props if needed
-4. OPTICAL STACK → Select camera body + lens + focal length + aperture (image mode)
-5. HERO FRAME    → Generate a key image that defines the visual tone
-6. CAMERA CONFIG → Set Director Panel movement + Speed Ramp + Duration in UI
-7. SHOT MODE     → Choose Single Shot / Multi-Shot Auto / Multi-Shot Manual
-8. GENERATE → EXPORT → Chain into timeline or export to editing
+ 1. SCRIPT        → Write or paste your scene description / shot list
+ 2. SOUL CAST     → (New in 2.5) Generate AI actors from parameters or use saved Elements
+ 3. REFERENCE     → Upload character photo → create Reference Anchor (or use Soul Cast actor)
+ 4. ELEMENTS      → (Optional) Define @Characters, @Locations, @Props if needed
+ 5. OPTICAL STACK → Select camera body + lens + focal length + aperture (image mode)
+ 6. HERO FRAME    → Generate a key image that defines the visual tone
+ 7. COLOR GRADE   → (New in 2.5) Apply color grading to keyframes before video generation
+ 8. CAMERA CONFIG → Set Director Panel movement + Speed Ramp + Duration in UI
+ 9. SHOT MODE     → Choose Single Shot / Multi-Shot Auto / Multi-Shot Manual
+10. GENERATE → EXPORT → Chain into timeline or export to editing
 ```
 
 ---
@@ -124,6 +131,86 @@ She stops under a streetlight, turns to camera.
 
 **Key rule:** Match exactly what the user gives you. No more, no less.
 Tags they give you = Element exists. Anything else = write it as description.
+
+---
+
+## Soul Cast — AI Actor Generation
+
+Soul Cast is Cinema Studio 2.5's character generation system — create AI actors from
+parameters instead of uploading photos. This is fundamentally different from Soul ID.
+
+### Soul Cast vs Soul ID
+
+| | Soul Cast | Soul ID |
+|--|-----------|---------|
+| Input | Parameter selection | 20+ photos of real person |
+| Purpose | Generate AI actors from scratch | Maintain consistency of a known face |
+| Photo required | No | Yes |
+| Powered by | Nano Banana 2 | — |
+
+### Soul Cast Parameter Categories (8 total)
+
+| # | Category | Options |
+|---|----------|---------|
+| 1 | **Genre** | Action, Adventure, Comedy, Drama, Thriller, Horror, Detective, Romance, Sci-Fi, Fantasy, War, Western, Historical, Sitcom (14 options) |
+| 2 | **Budget** | Production budget slider (in millions) — higher = refined blockbuster look, lower = raw/gritty |
+| 3 | **Era** | Decade selection starting from 1900s — grounds character in correct time period |
+| 4 | **Archetype** | Innocent, Everyman, Hero, Caregiver, Explorer, Rebel, Lover, Creator, Jester, Sage, Magician, Ruler (12 options) |
+| 5 | **Identity** | Gender, race, age |
+| 6 | **Physical Appearance** | Height, eye color, hair, facial hair, etc. |
+| 7 | **Details** | Scars, tattoos, freckles, other imperfections |
+| 8 | **Outfit** | Casual, Formal, High Fashion, Military, Sporty, Workwear, Vintage (7 styles) |
+
+### Key Features
+
+- Add up to **3 Soul Cast characters per keyframe** — choose from saved Elements or generate on the spot
+- **"Save to elements"** button to reuse a specific Soul Cast actor across projects
+- Every actor auto-generates a **backstory + character sheet** (personality traits, motivation, fear, flaw, strength)
+- Designed to eliminate the "plastic/waxy" AI look — excels at **skin textures and emotions**
+- Powered by the **Nano Banana 2** model under the hood
+
+### Soul Cast Workflow
+
+```
+1. Open Cinema Studio → Navigate to Soul Cast panel
+2. Set Genre + Era + Budget to establish the visual world
+3. Select Archetype + Identity + Physical Appearance
+4. Add Details (imperfections) + Outfit
+5. Generate → Review backstory + character sheet
+6. Save to Elements → Now available as @CharacterName across all shots
+7. Repeat for additional characters (up to 3 per keyframe)
+```
+
+---
+
+## Built-in Color Grading Suite
+
+Cinema Studio 2.5 adds a post-production color grading suite applied to keyframes
+**before** video generation — enabling unified visual cohesion across all clips.
+
+### Controls
+
+| Control | Effect |
+|---------|--------|
+| Color temperature | Warm ↔ cool shift |
+| Contrast | Shadow/highlight separation |
+| Saturation | Color intensity |
+| Sharpness + effects | Detail enhancement |
+| Highlights | Bright area control |
+| Film grain | Analog texture overlay |
+| Exposure | Overall brightness |
+| Bloom | Highlight glow/diffusion |
+
+### Workflow
+
+1. Generate your keyframe image (Hero Frame or grid selection)
+2. Click the keyframe → **"Colorgrade"** button
+3. Adjust settings to taste
+4. Apply — grade is baked into the keyframe before video generation
+5. Repeat for each keyframe to maintain visual cohesion across the sequence
+
+**Tip:** Grade your Hero Frame first, then match subsequent keyframes to it.
+This is the post-production equivalent of a DIT (Digital Imaging Technician) on set.
 
 ---
 
@@ -518,7 +605,7 @@ credits.
 
 ## Frame Extraction Loop — Build, Animate, Extract, Repeat
 
-One of Cinema Studio 2.0's most powerful workflows is the **frame extraction loop**. You
+One of Cinema Studio 2.5's most powerful workflows is the **frame extraction loop**. You
 can extract the **start frame or end frame** from any generated video and feed it back into
 the image workflow — creating an iterative creative cycle.
 
@@ -547,7 +634,7 @@ the image workflow — creating an iterative creative cycle.
 
 ## Object & Person Insertion
 
-Cinema Studio 2.0 can **insert characters and objects into a scene** that weren't present
+Cinema Studio 2.5 can **insert characters and objects into a scene** that weren't present
 in the original start frame. This was essentially impossible before — the model would
 ignore new subjects or break the scene trying to add them.
 

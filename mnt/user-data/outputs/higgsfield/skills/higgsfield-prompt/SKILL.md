@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 1.5.2
-  updated: 2026-03-18
+  version: 1.6.0
+  updated: 2026-03-26
   parent: higgsfield
 ---
 
@@ -104,6 +104,11 @@ a multi-phase action sequence, or a beat-synced music video.
 ---
 
 ## High-Performing Prompt Patterns
+
+> **The #1 mistake in video prompting**: over-describing appearance and under-describing
+> behavior. Give your subject something to DO. Give them an internal state that creates
+> visible behavior. A verb that describes motion or intention is more important than
+> adjectives.
 
 **Specificity beats generality:**
 - ❌ "the camera moves dramatically"

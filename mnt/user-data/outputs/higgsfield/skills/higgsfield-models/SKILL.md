@@ -9,8 +9,8 @@ metadata:
   references:
     - MODELS-DEEP-REFERENCE.md
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana]
-  version: 1.5.2
-  updated: 2026-03-18
+  version: 1.6.0
+  updated: 2026-03-26
   parent: higgsfield
 
 ---
@@ -32,8 +32,8 @@ specifics, parameters, edge cases, API details) → read `MODELS-DEEP-REFERENCE.
 | Kling 3.0 Omni Edit | ★★★★★ | ★★★★★ | — | ★★★★☆ | 3–10s | ✅ | Edit footage at 3.0 quality |
 | Kling O1 Video | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Multi-ref (7), start/end frame |
 | Kling O1 Video Edit | ★★★★☆ | ★★★★★ | — | ★★★★★ | 3–10s | ❌ | Relight, restyle, swap, remove |
-| Kling Motion Control | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★☆☆ | 3–30s | ❌ | Long camera motion sequences |
-| Kling 2.6 | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Character drama, realism (no audio) |
+| Kling 3.0 Motion Control | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★☆☆ | 3–30s | Optional | Motion transfer from reference video |
+| Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Character drama, realism (no audio) |
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration |
 | Sora 2 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | ❌ | Epic scale, physics, action |
 | Wan 2.5/2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Artistic, stylized, fantasy |
@@ -53,7 +53,10 @@ specifics, parameters, edge cases, API details) → read `MODELS-DEEP-REFERENCE.
 Is this image or video?
 ├── IMAGE
 │   ├── Person / portrait? → Soul 2.0
-│   ├── Maximum sharpness / 4K? → Nano Banana Pro 2
+│   ├── Cinematic keyframe for I2V pipeline? → Soul Cinema Preview
+│   ├── Native 4K / image series / storyboarding? → Kling Image 3.0
+│   ├── Maximum sharpness / 4K? → Nano Banana Pro
+│   ├── Fast pro-quality / text rendering? → Nano Banana 2
 │   ├── Reference consistency or dense text? → Seedream 4.5
 │   ├── Complex layout / multi-panel? → Seedream 5.0 Lite
 │   ├── Text/logo in image? → GPT Image 1.5 or Grok Imagine Image
@@ -70,6 +73,9 @@ Is this image or video?
     │   ├── Best lip-sync + multilingual → Seedance 1.5 Pro
     │   ├── No audio needed, great character → Kling 2.6
     │   └── Fast iteration → Kling 2.5 Turbo
+    │
+    ├── Need motion transfer from reference video?
+    │   └── → Kling 3.0 Motion Control
     │
     ├── Is the environment/phenomenon the hero?
     │   ├── Nature, documentary, stable → Veo 3
@@ -98,17 +104,20 @@ Is this image or video?
 | Need | Model | Credits |
 |------|-------|---------|
 | Fashion / cultural portrait | Soul 2.0 | Free |
+| Cinematic keyframe for I2V | Soul Cinema Preview | Low |
 | Cheapest generation | Z-Image | 0.15 |
 | Low-cost portrait | Higgsfield Soul | 0.5 |
 | Low-cost 2K square | Kling O1 | 0.5 |
+| Native 4K / image series | Kling Image 3.0 | — |
+| 4K + advanced editing | Kling Image 3.0 Omni | — |
 | Fast versatile 2K | Seedream 5.0 Lite | 1 |
 | 4K versatile | Seedream 4.5 | 1 |
 | Sketch-to-image (Draw) | Nano Banana | 1 |
 | Artistic / stylized | WAN 2.2 | 1 |
 | Blend multiple references | Multi Reference | 1.5 |
-| Latest Nano Banana quality | Nano Banana 2 | 1.5 |
+| Fast pro-quality + text rendering | Nano Banana 2 | 1.5 |
 | Complex prompts / text in image | GPT Image 1.5 | 2 |
-| Sharp 4K anything | Nano Banana Pro | 2 |
+| Max fidelity / Thinking mode / 14 refs | Nano Banana Pro | 2 |
 | Photorealistic + text/logo | Grok Imagine Image | — |
 | Image editing / inpainting | Flux Kontext | varies |
 
@@ -138,7 +147,11 @@ Full image model specs + UI controls → `../../../../../../image-models.md`
 | Start/end frame control | Kling O1 Video · Veo 3.1 |
 | Video extension (up to 148s) | Veo 3.1 |
 | Performance cloning from video | Kling 3.0 Omni |
-| Up to 30s camera motion | Kling Motion Control |
+| Up to 30s camera/motion transfer | Kling 3.0 Motion Control |
+| Soul Cast AI actors | Cinema Studio 2.5 |
+| Built-in color grading | Cinema Studio 2.5 |
+| Soul HEX color matching | Soul 2.0 · Soul Cinema Preview · Cinema Studio 2.5 |
+| Native 4K image series | Kling Image 3.0 |
 | Style presets + Color Transfer | Soul 2.0 |
 | Google Search grounding | Nano Banana Pro |
 | Negative prompts supported | Veo 3/3.1 only |
@@ -148,8 +161,16 @@ Full image model specs + UI controls → `../../../../../../image-models.md`
 ## Key Model Notes
 
 **Kling 3.0 vs 2.6:** 3.0 is the current top model — longer clips (15s vs 10s), native audio,
-multi-shot AI direction, stylized output engine. Use 2.6 only when you don't need audio
-or want lower cost.
+multi-shot AI direction, physics engine, 4K HDR, stylized output engine. 2.6 is now legacy —
+use 3.0 for all new work unless cost is the primary constraint.
+
+**Kling V3 vs O3:** Use V3 for prompt-driven cinematic work (text-to-video, image-to-video).
+Use O3 when you have reference media (video or image+audio) to anchor character identity —
+O3's reference-based consistency is its defining advantage.
+
+**Kling 3.0 Motion Control:** Upload a 3–30s reference clip to transfer full-body motion,
+hand gestures, facial expressions. Image Orientation for camera/talking head; Video
+Orientation for complex motions (dancing, action, full-body movement).
 
 **Seedance 2.0:** Coming to Higgsfield — document ready. Rule of 12 (up to 12 assets per
 generation). Real person face uploads blocked — use synthetic character references.

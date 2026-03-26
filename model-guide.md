@@ -9,10 +9,10 @@
 | Kling 3.0 Omni Edit | ★★★★★ | ★★★★★ | — | ★★★★☆ | 3–10s in | ✅ | Edit footage at 3.0 quality |
 | Kling O1 Video | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Multi-ref (7), start/end frame |
 | Kling O1 Video Edit | ★★★★☆ | ★★★★★ | — | ★★★★★ | 3–10s in | ❌ | Relight, restyle, swap, remove |
-| Kling Motion Control | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★☆☆ | 3–30s | ❌ | Long camera motion sequences |
-| Kling 2.6 | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Character drama, realism |
+| Kling 3.0 Motion Control | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★☆☆ | 3–30s | Optional | Motion transfer from reference video |
+| Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Character drama, realism |
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration |
-| Kling 2.1 Master | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 5–10s | ❌ | Legacy, lower cost |
+| Kling 2.1 Master (legacy) | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 5–10s | ❌ | Legacy, lower cost |
 | Sora 2 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | ❌ | Epic scale, physics, action |
 | Wan 2.5 | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Artistic, stylized, fantasy |
 | Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Improved Wan 2.5 |
@@ -31,9 +31,15 @@
 | Model | Quality | Faces | Style range | Speed | Best for |
 |-------|---------|-------|-------------|-------|----------|
 | Soul 2.0 | ★★★★★ | ★★★★★ | ★★★☆☆ | ★★★★☆ | Fashion, portrait, aesthetic |
-| Nano Banana Pro 2 | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★★☆ | Max sharpness, 4K detail |
+| Soul Cinema Preview | ★★★★★ | ★★★★★ | ★★★☆☆ | ★★★★☆ | Cinematic keyframes, close-ups, film grain |
+| Kling Image 3.0 | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★★☆ | Native 4K, series mode, storyboarding |
+| Kling Image 3.0 Omni | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★★☆ | Advanced editing, strongest prompt fidelity |
+| Nano Banana Pro | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | Max fidelity, Thinking mode, 14 refs |
+| Nano Banana 2 | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★★☆ | Fast pro-quality, text rendering, consistency |
 | Seedream 4.5 | ★★★★☆ | ★★★★★ | ★★★★★ | ★★★★☆ | Reference consistency, dense text, 4K |
 | Seedream 5.0 Lite | ★★★★☆ | ★★★★☆ | ★★★★★ | ★★★★★ | Reasoning, search, multi-output, layouts |
+| GPT Image 1.5 | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | Text-in-image, instruction following |
+| Flux 2 | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | High-quality FLUX generation |
 | Flux Kontext | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★★☆ | Editing existing images |
 
 ---
@@ -44,7 +50,10 @@
 Is this image or video?
 ├── IMAGE
 │   ├── Is it a person / portrait? → Soul 2.0
-│   ├── Need maximum sharpness / 4K? → Nano Banana Pro 2
+│   ├── Need cinematic keyframe for I2V pipeline? → Soul Cinema Preview
+│   ├── Need native 4K / image series / storyboarding? → Kling Image 3.0
+│   ├── Need maximum sharpness / 4K? → Nano Banana Pro
+│   ├── Fast pro-quality / text rendering / consistency? → Nano Banana 2
 │   ├── Need reference consistency or dense text? → Seedream 4.5
 │   ├── Complex layout / real-time data / multi-panel output? → Seedream 5.0 Lite
 │   └── Need to edit an existing image? → Flux Kontext
@@ -62,8 +71,11 @@ Is this image or video?
     │   ├── Fast iteration on Kling quality? → Kling 2.5 Turbo
     │   └── No audio, standard length? → Kling 2.6
     │
+    ├── Need motion transfer from reference video?
+    │   └── → Kling 3.0 Motion Control
+    │
     ├── Need very long camera motion (up to 30s)?
-    │   └── → Kling Motion Control
+    │   └── → Kling 3.0 Motion Control
     │
     ├── Is scale / spectacle the focus?
     │   └── Explosions, crowds, physics, epic landscapes? → Sora 2
@@ -130,7 +142,8 @@ Some camera controls perform better on certain models:
 | Action Run (physical chase) | MiniMax Hailuo, Kling 2.6 |
 | Super Dolly Out (scale reveal) | Sora 2 |
 | Dutch Angle (horror/tension) | Wan 2.5, Kling 2.6 |
-| Long camera motion path | Kling Motion Control |
+| Long camera motion path | Kling 3.0 Motion Control |
+| Motion transfer from reference | Kling 3.0 Motion Control |
 
 ---
 
@@ -162,6 +175,7 @@ Some camera controls perform better on certain models:
 | Sora 2 | Medium–High |
 | Kling O1 Video Edit | ~9 credits |
 | Kling 3.0 | ~10 credits |
+| Kling 3.0 Motion Control | Medium–High |
 | Veo 3 | High |
 
 Plans: Free (25 credits/mo) · Basic $6/mo (150) · Pro $27/mo (700) · Ultimate $55/mo (1500)

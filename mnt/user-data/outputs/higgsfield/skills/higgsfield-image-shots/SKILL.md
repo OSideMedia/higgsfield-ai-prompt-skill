@@ -10,8 +10,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, image, shots, framing, angle, composition, cinematic, portrait, close-up, wide-shot]
-  version: 1.5.2
-  updated: 2026-03-18
+  version: 1.6.0
+  updated: 2026-03-26
   parent: higgsfield
 ---
 

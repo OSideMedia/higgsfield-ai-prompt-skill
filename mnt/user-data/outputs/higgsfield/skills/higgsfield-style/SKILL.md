@@ -6,8 +6,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
-  version: 1.5.2
-  updated: 2026-03-18
+  version: 1.6.0
+  updated: 2026-03-26
   parent: higgsfield
 ---
 
@@ -121,6 +121,29 @@ Use these in any prompt regardless of style preset:
 | Backlit | Subject silhouetted or rimlit from behind | Mystery, romance, epic reveal |
 | Low key | Mostly dark with small pools of light | Horror, thriller, noir |
 | High key | Bright, even, minimal shadows | Comedy, commercial, lifestyle |
+
+---
+
+## Cinematic Lighting Techniques
+
+Specific lighting setups that AI models respond to well. Use these terms directly
+in your prompts for precise control over how light shapes the scene.
+
+| Technique | Effect | Best for |
+|-----------|--------|----------|
+| Rembrandt lighting | Triangle of light on the shadowed cheek, one eye lit | Portrait drama, character intros, moody interviews |
+| Butterfly / Paramount lighting | Overhead light casting a shadow under the nose | Glamour, fashion, beauty shots, classic Hollywood |
+| Split lighting | Half the face lit, half in complete shadow | Duality, inner conflict, villain reveals |
+| Rim lighting / backlit | Edge glow outlining the subject's silhouette | Mystery, epic reveal, separation from background |
+| Motivated lighting | Light source visible or implied in the scene (lamp, window, fire) | Realism, narrative grounding, naturalistic drama |
+| Practical lighting | In-scene light sources (neon signs, candles, screens) | Night scenes, cyberpunk, intimate realism |
+| Chiaroscuro | Extreme contrast between light and dark areas | Renaissance feel, high drama, painterly compositions |
+| High-key | Bright, minimal shadows, even illumination | Comedy, commercial, lifestyle, clean aesthetic |
+| Low-key | Deep shadows dominate, small pools of light | Noir, thriller, horror, psychological tension |
+| Golden hour / Magic hour | Warm amber directional light, long soft shadows | Romance, beauty, epic landscapes, emotional beats |
+| Blue hour | Cool steel-blue ambient light just after sunset | Melancholy, transition, quiet tension, urban solitude |
+| Harsh midday sun | Hard overhead light, strong defined shadows | Desert, confrontation, exposed vulnerability |
+| Overcast diffused / softbox | Even soft light, no hard shadows | Portraits, documentary, grounded realism |
 
 ---
 

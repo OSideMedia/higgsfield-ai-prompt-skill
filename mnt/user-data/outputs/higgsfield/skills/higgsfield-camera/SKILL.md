@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
-  version: 1.5.2
-  updated: 2026-03-18
+  version: 1.6.0
+  updated: 2026-03-26
   parent: higgsfield
 ---
 
@@ -117,6 +117,41 @@ Higgsfield recognizes these names directly.
 | **Car Chasing** | Low ground-level follow of speeding vehicles | High-speed pursuits | "Car Chasing — camera hugs the side of the black car through the streets" |
 | **Car Grip** | Camera mounted on vehicle, rides with it | Immersive vehicle sequences | "Car Grip — fixed to the hood, shaking on every bump" |
 | **Buckle Up** | Jarring, turbulent shaking camera | Rough rides, turbulence, loss of control | "Buckle Up as the car skids around the corner" |
+
+---
+
+## Pitch & Perspective — Camera Angles
+
+| Control | What it does | Best for | Prompt phrase |
+|---------|-------------|----------|---------------|
+| **Low Angle** | Camera looks up at subject | Power, dominance, heroism | "Low angle looking up at the general on horseback" |
+| **High Angle** | Camera looks down at subject | Vulnerability, smallness, exposure | "High angle looking down at the child in the empty hall" |
+| **Eye Level** | Neutral height, conversational | Dialogue, documentary, grounded scenes | "Eye level, two characters facing each other" |
+| **Bird's-Eye View** | Directly overhead, looking straight down | Maps, choreography, god-like perspective | "Bird's-eye view of the marketplace from above" |
+| **Worm's-Eye View** | Extreme low, looking straight up | Towering scale, surreal, otherworldly | "Worm's-eye view looking up through the forest canopy" |
+| **Ground Level** | Camera resting on the ground surface | Intimacy with terrain, small subjects, impact | "Ground level — ants marching across cracked earth" |
+| **Canted Angle Left** | Tilted horizon, left lean (Dutch Tilt) | Unease, tension, psychological distortion | "Canted angle left as the hallway stretches ahead" |
+| **Canted Angle Right** | Tilted horizon, right lean (Dutch Tilt) | Unease, tension, psychological distortion | "Canted angle right — the interrogation room feels wrong" |
+| **Static Oblique** | Angled perspective, off-axis framing | Stylized composition, unease, visual interest | "Static oblique angle on the staircase" |
+| **Over-the-Shoulder (OTS)** | Camera behind one subject's shoulder, facing the other | Conversation framing, shot-reverse-shot | "OTS from behind the detective, facing the suspect" |
+| **POV / First Person** | Camera IS the character's eyes | Immersion, horror, subjective experience | "POV — hands push open the heavy wooden door" |
+| **Two-Shot** | Two subjects framed together | Relationship, confrontation, dialogue | "Two-shot of the couple walking along the pier" |
+| **Cowboy Shot** | Framed from mid-thigh up | Western standoffs, character swagger, action-ready | "Cowboy shot — hands hovering near the holster" |
+
+---
+
+## Shot Sizes
+
+| Control | What it does | Best for | Prompt phrase |
+|---------|-------------|----------|---------------|
+| **Extreme Long Shot (ELS)** | Vast landscape, subject tiny or absent | Establishing location, isolation, epic scale | "Extreme long shot — lone figure crossing the salt flat" |
+| **Long Shot / Wide Shot (LS/WS)** | Full body visible + surrounding environment | Establishing character in context, action scenes | "Wide shot of the dancer on the empty stage" |
+| **Medium Long Shot / Cowboy (MLS)** | Mid-thigh up | Character stance, western standoffs, group dynamics | "Medium long shot — the three outlaws face the sheriff" |
+| **Medium Shot (MS)** | Waist up | Dialogue, interviews, general narrative | "Medium shot — she leans against the bar, arms crossed" |
+| **Medium Close-Up (MCU)** | Chest up | Emotional conversation, reaction shots | "Medium close-up as he reads the letter aloud" |
+| **Close-Up (CU)** | Face fills the frame | Raw emotion, intensity, intimacy | "Close-up on her face — tears welling, jaw tight" |
+| **Extreme Close-Up (ECU)** | Single feature (eye, hand, mouth) | Tension, detail, psychological intensity | "Extreme close-up on the twitching eye" |
+| **Insert Shot** | Detail of an object or action | Plot detail, time pressure, texture | "Insert shot — the clock hand ticking past midnight" |
 
 ---
 

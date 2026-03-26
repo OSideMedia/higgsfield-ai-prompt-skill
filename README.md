@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-1.5.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-1.6.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -12,11 +12,11 @@ A comprehensive Claude skill library for generating high-quality prompts on
 Transforms natural language requests into production-ready Higgsfield prompts using:
 - The **MCSLA formula** (Model · Camera · Subject · Look · Action)
 - Named camera controls and motion presets the platform recognizes
-- Model selection guidance across Kling, Sora 2, Wan, Seedance, Veo 3, Grok Imagine, and more
+- Model selection guidance across Kling 3.0, Sora 2, Veo 3.1, WAN, Seedance, MiniMax Hailuo, Higgsfield DOP, and more
 - Genre recipe templates for action, horror, romance, sci-fi, product ads, and more
 - Soul ID character consistency guidance + Character Sheet creation
 - Troubleshooting for failed or poor generations
-- Cinema Studio 2.0 advanced features: 3D Mode (Gaussian Splatting), Grid Generation, Resolution Settings, Frame Extraction Loop, Object & Person Insertion, Per-Character Emotions, Clustering, 12-Second Runtime Cap
+- Cinema Studio 2.5 advanced features: Soul Cast AI actors, built-in color grading, 3D Mode (Gaussian Splatting), Grid Generation, Resolution Settings, Frame Extraction Loop, Object & Person Insertion, Per-Character Emotions, Clustering
 
 ## Quick Start
 
@@ -74,7 +74,7 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
         ├── higgsfield-moodboard/SKILL.md   ← Moodboard creation workflows
         ├── higgsfield-pipeline/SKILL.md    ← Multi-step generation pipelines
         ├── higgsfield-recall/SKILL.md      ← Recall + regeneration patterns
-        ├── higgsfield-cinema/SKILL.md      ← Cinema Studio 2.0 (3D Mode, Grid Gen, Resolution, Frame Extraction, Object Insertion, Emotions, Clustering)
+        ├── higgsfield-cinema/SKILL.md      ← Cinema Studio 2.5 (Soul Cast, Color Grading, 3D Mode, Grid Gen, Resolution, Frame Extraction, Object Insertion, Emotions, Clustering)
         └── higgsfield-vibe-motion/SKILL.md ← Vibe-based motion direction
 ```
 
@@ -90,7 +90,7 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 > "I have a Soul ID character. Write 3 different scene prompts with her — office, party, rooftop"
 
 **Model question:**
-> "Should I use Kling 2.6 or Sora 2 for a large-scale battle scene?"
+> "Should I use Kling 3.0 or Sora 2 for a large-scale battle scene?"
 
 **Troubleshoot:**
 > "My image-to-video isn't animating, it's just static. What am I doing wrong?"
@@ -99,7 +99,7 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 
 | Letter | Layer | Example |
 |--------|-------|---------|
-| M | Model | Kling 2.6 |
+| M | Model | Kling 3.0 |
 | C | Camera | FPV Drone weaving through the alley |
 | S | Subject | A woman in a tactical jacket |
 | L | Look | Cinematic, cold blue shadows, 16:9 |
@@ -107,4 +107,4 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 
 ---
 
-Built February 2026 · v1.5.2 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v1.6.0 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)

@@ -5,10 +5,10 @@ description: >
   or needs guidance on selecting between Kling, Sora 2, Wan, Seedance,
   Veo 3, MiniMax Hailuo, Soul, Nano Banana, or other Higgsfield engines.
 user-invocable: true
-tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana]
+tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, v1.6.0]
 metadata:
-  version: 1.0.0
-  updated: 2026-02-28
+  version: 1.6.0
+  updated: 2026-03-26
   parent: higgsfield
 ---
 
@@ -26,13 +26,36 @@ The Kling lineup in Higgsfield spans two generations (2.x and 3.0) plus the O1 r
 ---
 
 ### Kling 3.0 ⭐ EXCLUSIVE — Current Top Model
-**Duration:** 3s–15s · **Resolution:** 1080p · **Audio:** Native
+**Duration:** 3s–15s · **Resolution:** 1080p + 4K HDR · **FPS:** 30fps (60fps in some configurations) · **Audio:** Native
 **Best for:** Cinematic realism · character drama · long sequences · multi-shot storytelling · native audio dialogue
 **Strengths:** Longest clip duration on the platform (up to 15s) · native multilingual audio (English, Chinese, Japanese, Korean, Spanish + accents) · superior subject consistency · precise text rendering in video · physics-aware motion (object interactions, hugging, fighting, complex machinery) · AI Director mode understands shot-reverse-shot, cross-cutting, camera blocking from a prompt alone · stylized output engine for anime, Pixar/claymation, felt/fabric textures
 **Use when:** You need a long cinematic clip with audio, multi-shot narrative, or high-consistency character performance
-**Multi-shot:** Describe an entire sequence in one prompt — model generates a coherent multi-shot video with edited camera cuts, not just a single clip
-**Audio:** Specify dialogue in quotes, ambient sound, and SFX — all generated natively alongside the video. Multi-character dialogue supported.
-**Prompt note:** Treat the prompt like a script: describe action, camera, mood, and dialogue cues together
+
+**Multi-shot generation:** Up to 6 camera cuts in a single generation. Per-shot control over duration, shot size, perspective, narrative content, and camera movement. Describe an entire sequence in one prompt — model generates a coherent multi-shot video with edited camera cuts, not just a single clip.
+
+**Audio:** Native audio-visual co-generation — dialogue, SFX, and ambient sound are generated WITH the video in a single pass, not layered after. Specify dialogue in quotes, ambient sound, and SFX — all generated natively alongside the video.
+
+**Voice Binding:** Lock specific voice profiles to specific characters for consistent vocal identity across shots.
+
+**Multilingual audio:** English, Chinese, Japanese, Korean, Spanish — including regional accents (American English, British English, Indian English).
+
+**Multi-character dialogue:** 3+ characters with correct speaker attribution and lip-sync per character.
+
+**Physics engine:** Gravity, inertia, weight transfer, collision detection, cloth dynamics, hair movement, fluid behavior — all simulated for realistic motion.
+
+**Output:** 1080p standard + 4K HDR, 30fps (60fps in some configurations).
+
+**Professional export:** 16-bit HDR, linear EXR sequences (compatible with Nuke, After Effects, DaVinci Resolve).
+
+**Text rendering:** Legible signage, logos, CTAs preserved throughout motion sequences.
+
+**Elements system:** Upload reference images to lock character identity across shots. Use `@element_name` syntax (Elements 3.0 tagging) for cross-shot subject consistency.
+
+**Prompt note:** Treat the prompt like a script: describe action, camera, mood, and dialogue cues together. Optimal prompt length: 100–200 words.
+
+**Sequential action syntax (3.0-specific):** Use "first / then / finally" structure for multi-step scenes.
+
+**Motion endpoint pattern:** Append "returns to starting position" or "then settles" to prevent stuck-at-99% generation hang.
 
 ```
 Example use case: A 12-second scene — a detective enters a rain-soaked alley, hears a
@@ -43,14 +66,21 @@ noise, turns to camera. Two cuts. Footsteps, rain ambiance, tense score.
 ---
 
 ### Kling 3.0 Omni ⭐ EXCLUSIVE
-**Duration:** 3s–15s · **Resolution:** 1080p · **Audio:** Native
+**Duration:** 3s–15s · **Resolution:** 4K · **FPS:** 60fps · **Audio:** Native
 **Best for:** Reference-driven generation · video-based character cloning · custom multi-shot storyboards · maximum consistency workflows
 **vs Kling 3.0:** Same generation quality. Omni = more control knobs. 3.0 = AI auto-directs from prompt alone. Omni = you control per-shot.
 **Key features:**
-- **Performance Cloning** — Upload a 3–8s reference video. Model extracts the character's visual traits AND voice. Re-renders them in new scenes with full identity and audio fidelity. Act in a clip yourself, AI re-renders you as your character.
+- **Performance Cloning** — Upload a 3–8s reference video. Model extracts the character's visual traits AND voice. Re-renders them in new scenes with full identity and audio fidelity. Act out a scene on camera → AI re-renders with your character in a new setting, preserving likeness and voice.
+- **Video Element referencing** — Upload a 3–8s reference video to extract visual traits AND voice simultaneously. Goes beyond static image references.
 - **Voice Extraction from static images** — Upload a character image + 3s audio clip → builds a voice profile for that character
 - **Custom storyboard** — Specify duration, shot size, perspective, narrative content, and camera movement per shot. Director-level granular control across a full multi-shot sequence.
+- **Multi-character coreference** — 3+ characters maintained across shots with consistent identity.
 - **Elements 3.0** — Most advanced version of the character/object reference system. References video clips, not just static images, for deeper identity lock.
+- **Video-to-video** — Reshaping existing footage as a primary mode. Upload source footage and transform it while preserving motion structure.
+- **Natural language editing** — Add, remove, or transform elements without leaving the generation flow.
+
+**V3 vs O3 selection guidance:** Use V3 (Kling 3.0) for prompt-driven cinematic work — text-to-video, image-to-video where the prompt is the primary creative driver. Use O3 (Kling 3.0 Omni) when you have reference media (video or image+audio) to anchor character identity.
+
 **Use when:** You need to clone a character's appearance and voice from reference footage, or you want per-shot storyboard control rather than AI auto-direction
 
 ```
@@ -66,6 +96,34 @@ and voice → generate a 15s branded ad campaign with your AI double in a studio
 **Best for:** Transforming existing video with reference-guided edits at 3.0 quality
 **What it does:** Upload existing footage → describe or show the change → model applies it while preserving original motion, camera angles, and scene structure. 3D spatial awareness means edits respect lighting geometry and don't break scene coherence.
 **Use when:** You have footage you want to restyle, relight, or transform with the power of the 3.0 Omni architecture
+
+---
+
+### Kling 3.0 Motion Control ⭐ NEW (March 25, 2026)
+**Duration:** 3s–30s · **Resolution:** 1080p
+**Best for:** Reference-video motion transfer · full-body choreography · complex dance/action sequences · talking head with precise gestures
+
+**Core capability:** Upload a 3–30s reference clip → model transfers full-body motion capture, hand gestures, facial expressions, and complex choreography to a new character or scene.
+
+**Two orientation modes:**
+- **Image Orientation** — Camera movements, talking head, static body. Best for dialogue, presentations, upper-body content.
+- **Video Orientation** — Complex motions like dancing, action sequences, full-body movement. Best for choreography, sports, physical performance.
+
+**Element Binding:** Connects facial identity to motion data for stable face during movement. Prevents face drift that normally occurs during fast or complex motion.
+
+**Camera sync:** Pans, tracking shots, and zoom are synced from the reference clip — the output inherits the reference video's camera work.
+
+**Audio passthrough:** Option to preserve the reference video's audio in the output.
+
+**Prompt note:** Describe camera direction + scene context in the prompt — the reference video handles the movement. Don't describe the motion itself; let the reference clip drive it.
+
+**Use when:** You need camera motion control over a longer duration than standard models allow, or you need to transfer specific human motion from a reference performance
+
+```
+Example use case: Upload a 15s dance clip → transfer the choreography to an anime
+character in a neon-lit cityscape. Reference video drives all motion; prompt sets the scene.
+→ Kling 3.0 Motion Control
+```
 
 ---
 
@@ -123,7 +181,7 @@ a single coherent scene where all elements appear correctly.
 
 ---
 
-### Kling 2.6
+### Kling 2.6 (Legacy — use Kling 3.0 for new work)
 **Duration:** 5s–10s · **Resolution:** 1080p
 **Best for:** Cinematic realism · character drama · emotional scenes · dialogue moments
 **Strengths:** Natural human motion, subtle facial expressions, strong character consistency
@@ -151,6 +209,31 @@ natural lighting, emotional authenticity needed.
 **Best for:** Legacy workflows · lower cost when 2.5/2.6 quality isn't required
 **2.1 Master:** Higher quality tier of the 2.1 generation — better motion fidelity than standard 2.1
 **Note:** Older generation. Use 2.6 or 3.0 for current work unless cost is the constraint.
+
+---
+
+### Audio Speaker Attribution Format (V3, O3, 2.6)
+
+Use this format when prompting dialogue scenes with multiple speakers, sound effects, and ambient audio:
+
+```
+[Speaker: Character Name] "dialogue" in a [warm/confident/excited] [male/female] voice with [accent].
+Add [sound: footsteps / rain / door closing] when [action].
+Background ambient: [environment description].
+```
+
+---
+
+### Multi-Shot Storyboard Format (V3/O3 only)
+
+Use this format for multi-shot sequences with per-shot control:
+
+```
+Shot 1 ([Xs]): [Wide establishing shot]. Camera: static.
+Shot 2 ([Xs]): [Medium shot, action begins]. Camera: slow push in.
+Shot 3 ([Xs]): [Close-up, reaction or detail]. Camera: static.
+Shot 4 ([Xs]): [Resolution]. Camera: tracking / pull back.
+```
 
 ---
 
@@ -988,6 +1071,7 @@ Best use cases:
 | Best cinematic video, long sequence, with audio | Kling 3.0 |
 | Clone a character from reference video footage | Kling 3.0 Omni |
 | Per-shot storyboard control + reference video | Kling 3.0 Omni |
+| Transfer motion/choreography from reference video | Kling 3.0 Motion Control |
 | Best human character, shorter clip, no audio needed | Kling 2.6 |
 | Fast iteration on Kling quality | Kling 2.5 Turbo |
 | Long camera-motion sequence (up to 30s) | Kling Motion Control |

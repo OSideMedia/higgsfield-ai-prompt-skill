@@ -1,5 +1,57 @@
 # Changelog
 
+## v1.6.0 — 2026-03-26
+
+### New: Kling 3.0 Model Family
+- **Kling Video 3.0 (V3)**: 15s max duration, multi-shot generation (up to 6 camera cuts), native audio-visual co-generation with multilingual support (EN, ZH, JA, KO, ES + regional accents), Voice Binding, multi-character dialogue (3+ speakers), physics engine, 4K HDR output, professional export (16-bit HDR, EXR sequences), text rendering, Elements 3.0 tagging, sequential action syntax, motion endpoint pattern.
+- **Kling Video 3.0 Omni (O3)**: Same quality as V3 plus Video Element referencing, Performance Cloning, Voice Extraction from static images, custom storyboard, multi-character coreference, video-to-video, natural language editing, 4K/60fps.
+- **Kling 3.0 Motion Control**: Reference video → motion transfer (3–30s), Image/Video Orientation modes, Element Binding for face stability, camera sync, audio passthrough.
+- **Kling Image 3.0**: Native 4K (up to 3840×2160), Image Series Mode, up to 10 reference images, Visual Chain-of-Thought, style transfer + portrait + character reference + multi-image blending, local re-editing, cinematic color grading.
+- **Kling Image 3.0 Omni**: Same as Image 3.0 plus advanced editing with stronger prompt fidelity. Native 2K and 4K output.
+- Added V3 vs O3 selection guidance, Audio Speaker Attribution Format, Multi-Shot Storyboard Format.
+- Marked Kling 2.6 and O1 as legacy (still documented).
+- Updated model comparison tables, decision flowcharts, and unique feature matrix across all model reference files.
+
+### New: Cinema Studio 2.5
+- Updated Cinema Studio from 2.0 to 2.5 across all files.
+- **Soul Cast integration**: Character-and-location-first workflow with up to 3 AI actors per keyframe. 8 parameter categories (Genre, Budget, Era, Archetype, Identity, Physical Appearance, Details, Outfit). Auto-generated backstory + character sheet. Powered by Nano Banana 2.
+- **Soul Cast vs Soul ID** distinction documented: Soul Cast = generate AI actors from parameters (no photos needed); Soul ID = upload 20+ photos to train identity consistency.
+- **Built-in Color Grading Suite**: Color temperature, contrast, saturation, sharpness, film grain, exposure, bloom. Applied to keyframes before video generation.
+- Extended workflow: pre-production (Soul Cast + location) → generation → post-production (color grade).
+
+### New: Nano Banana 2 expanded documentation
+- Expanded prompting-relevant capabilities: subject consistency (5 characters, 14 objects), precision text rendering + translation, advanced world knowledge, 512px to 4K, full aspect ratio list, infographic/diagram generation, reference image editing, style transfer.
+- Added prompting patterns: structured JSON, short direct, style transfer, location+time, blueprint/schematic, infographic overlays, multi-panel comics, product ad recreation.
+- Added NB2 vs NB Pro comparison note.
+
+### New: Soul Cinema Preview (image model)
+- Higgsfield proprietary cinematic-grade image model (launched March 4, 2026).
+- Prompt-driven only (no preset panel). Excels at close-up shots. Works with Soul ID + Soul HEX.
+- Key workflow: generate cinematic keyframe → feed into Kling 3.0 I2V.
+- Documented Soul HEX color palette system.
+
+### New: Expanded cinematic vocabulary (UPDATE 5)
+- **Camera angles**: Low Angle, High Angle, Eye Level, Bird's-Eye View, Worm's-Eye View, Ground Level, Canted Angle Left/Right, Static Oblique, OTS, POV, Two-Shot, Cowboy Shot added to `higgsfield-camera`.
+- **Shot sizes**: Full standard ladder (ELS through Insert Shot) added to `higgsfield-camera`.
+- **Micro-expressions**: 19 nuanced facial performance directions (Core set + Extended set) added to `higgsfield-soul`.
+- **Cinematic lighting techniques**: 13 named lighting techniques (Rembrandt, Butterfly, Split, Rim, Motivated, Practical, Chiaroscuro, High-key, Low-key, Golden hour, Blue hour, Harsh midday, Overcast diffused) added to `higgsfield-style`.
+- **Key prompting principle**: "#1 mistake in video prompting" callout added to `higgsfield-prompt`.
+
+### Updated: Platform model lineup
+- Video: Kling 3.0, Kling O1, Kling 2.6, Kling 2.5 Turbo, Kling 3.0 Motion Control, Sora 2, Google Veo 3.1, WAN 2.5/2.6, Seedance Pro, MiniMax Hailuo 02, Higgsfield DOP.
+- Image: Nano Banana Pro, Nano Banana 2, Soul 2.0, Soul Cinema Preview, Soul Cast, Flux 2, Flux Kontext, GPT Image 1.5, Seedream 4.0.
+- Updated root SKILL.md, dispatcher, model-guide.md, and higgsfield-models sub-skill.
+
+### Updated: Audio skill for Kling 3.0
+- Multi-character dialogue (3+ speakers with correct attribution).
+- Voice Binding and Voice Extraction (O3).
+- Performance Cloning (O3).
+- Audio Speaker Attribution Format template.
+
+### All sub-skills version bumped to 1.6.0
+
+---
+
 ## v1.5.2 — 2026-03-18
 
 ### Fixed: higgsfield_memory.py — Robustness

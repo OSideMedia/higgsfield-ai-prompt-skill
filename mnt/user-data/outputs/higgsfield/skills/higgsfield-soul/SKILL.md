@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 1.5.2
-  updated: 2026-03-18
+  version: 1.6.0
+  updated: 2026-03-26
   parent: higgsfield
 ---
 
@@ -122,6 +122,42 @@ Then use 3D Mode to orbit and capture additional angles from the same generation
 **Why it matters:** A multi-angle character sheet gives Soul ID far more geometry data
 than a single photo. This translates directly into better consistency across extreme
 angle changes, action shots, and profile views.
+
+---
+
+## Micro-Expressions — Nuanced Performance Direction
+
+Use these facial performance directions to add emotional depth to Soul ID characters.
+Combine with Soul Cast or character prompting for precise actor-level control.
+
+### Core Set
+
+| Name | Description | Best for |
+|------|-------------|----------|
+| **Deadpan Neutral** | Flat affect, no visible emotion, mask-like stillness | Thriller, interrogation, AI/android characters |
+| **Fierce Focus** | Intense locked gaze, brow slightly lowered, total attention | Action, competition, confrontation |
+| **Subtle Arrogance** | Chin slightly raised, half-lidded eyes, faint smirk | Villain intros, power dynamics, fashion |
+| **Candid Profile** | Unposed side angle, natural and unaware of camera | Documentary, street photography, slice-of-life |
+| **Post-Workout Fatigue** | Heavy lids, parted lips, light sheen of sweat, relaxed muscles | Fitness, aftermath, exhaustion scenes |
+| **Predator Glare** | Unblinking stare, head slightly lowered, eyes locked forward | Horror, thriller, intimidation |
+| **Sunblind Squint** | Eyes narrowed against bright light, slight grimace | Outdoor scenes, desert, beach, golden hour |
+| **Total Dissociation** | Thousand-yard stare, eyes unfocused, emotionally absent | Trauma, shock, psychological drama |
+| **Controlled Breath** | Lips slightly parted, nostrils flared, deliberate calm | Pre-action tension, meditation, recovery |
+
+### Extended Set
+
+| Name | Description | Best for |
+|------|-------------|----------|
+| **Suppressed Smile** | Fighting back a grin, corner of mouth twitching | Comedy, secret joy, romantic tension |
+| **Quiet Devastation** | Eyes glassy, jaw tight, holding it together | Drama, grief, emotional climax |
+| **Wary Recognition** | Eyes widen slightly, head tilts back a fraction | Reunion, suspicion, plot twist reaction |
+| **Nervous Composure** | Calm face but swallowing, micro-tension in jaw | Interviews, lies, high-stakes poker |
+| **Cold Calculation** | Eyes scanning, no emotional leakage, clinical | Villain strategy, heist planning, espionage |
+| **Bitter Amusement** | One-sided smirk, eyes not smiling | Cynicism, dark humor, betrayal aftermath |
+| **Exhausted Relief** | Eyes closing, shoulders dropping, breath release | Survival, rescue, end of ordeal |
+| **Frozen Shock** | Mouth slightly open, eyes fixed, body still | Jump scares, bad news, sudden revelation |
+| **Simmering Rage** | Clenched jaw, flared nostrils, steady stare | Confrontation, injustice, slow burn tension |
+| **Vulnerable Openness** | Soft eyes, slightly parted lips, unguarded | Romance, confession, emotional honesty |
 
 ---
 

@@ -3,9 +3,10 @@ name: higgsfield-model-guide
 description: >
   Use when the user asks which model to use, wants to compare models, asks about
   credit costs, or needs guidance selecting between any Higgsfield image or video
-  model including Soul 2.0, Higgsfield Soul, Z-Image, Kling O1, WAN 2.2, Multi
-  Reference, Reve, Seedream 4.0/4.5/5.0 Lite, Nano Banana/Pro/2, GPT Image/1.5,
-  FLUX.2 Flex/Pro/Max, Flux Kontext/Max, Face Swap, Character Swap, or Photodump.
+  model including Kling 3.0/Omni/Motion Control, Sora 2, Veo 3.1, WAN 2.5/2.6,
+  Seedance Pro, MiniMax Hailuo 02, Higgsfield DOP, Soul 2.0, Soul Cinema Preview,
+  Soul Cast, Nano Banana/Pro/2, Kling Image 3.0/Omni, Seedream 4.0, GPT Image 1.5,
+  Flux 2/Kontext, Face Swap, Character Swap, or Photodump.
 user-invocable: true
 metadata:
   references:
@@ -13,8 +14,8 @@ metadata:
     - image-models.md
     - photodump-presets.md
   tags: [higgsfield, models, soul, seedream, nano-banana, flux, kling, wan, gpt-image, z-image, reve, photodump]
-  version: 1.4.0
-  updated: 2026-03-18
+  version: 1.6.0
+  updated: 2026-03-26
   parent: higgsfield
 
 ---
@@ -31,9 +32,9 @@ Two model types: **Video** and **Image**.
 
 ## Quick Orientation
 
-**Video models** (10+ engines): Kling 3.0/3.0 Omni (top-tier cinematic, audio), Kling 2.6 (character drama), Sora 2 (epic scale), Wan 2.5/2.6 (artistic), Seedance Pro/1.5 Pro/2.0 (fast–to–multimodal), Veo 3/3.1 (nature, environment), Grok Imagine Video (social, editing), MiniMax Hailuo (dance, motion)
+**Video models** (10+ engines): Kling 3.0/3.0 Omni (top-tier cinematic, audio), Kling 3.0 Motion Control (motion transfer), Sora 2 (epic scale), Google Veo 3.1 (nature, ref images), WAN 2.5/2.6 (artistic), Seedance Pro (fast iteration), MiniMax Hailuo 02 (dance, motion), Higgsfield DOP
 
-**Image models** (15+ options): Soul 2.0 (fashion, free), Nano Banana family (Google-powered), Seedream family, GPT Image, FLUX family, plus swap/edit tools
+**Image models** (15+ options): Soul 2.0 (fashion, free), Soul Cinema Preview (cinematic keyframes), Soul Cast (AI actors), Nano Banana family (Google-powered), Kling Image 3.0/Omni (native 4K), Seedream 4.0, GPT Image 1.5, Flux 2/Kontext, plus swap/edit tools
 
 **Photodump** (style transformation): 29 named cartoon/illustration presets applied to uploaded photos — see `photodump-presets.md`
 

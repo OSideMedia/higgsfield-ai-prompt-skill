@@ -9,8 +9,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 1.5.2
-  updated: 2026-03-18
+  version: 1.6.0
+  updated: 2026-03-26
   author: O-Side Media
   license: MIT
 ---
@@ -25,10 +25,11 @@ metadata:
 
 Higgsfield is a cinematic AI video and image generation platform built for filmmakers and
 creators. Unlike single-model tools, Higgsfield hosts **multiple generation engines** on one
-platform — Kling 2.6/3.0/3.0 Omni, Wan 2.5/2.6, Seedance Pro/1.5 Pro/2.0, Sora 2,
-Veo 3/3.1, Grok Imagine, MiniMax Hailuo for video; Soul 2.0, Nano Banana Pro/2,
-Seedream 4.5/5.0 Lite, Grok Imagine Image, Flux Kontext for images — plus a library
-of 100+ named **Motion Presets**, a **Soul ID** character consistency system, and 80+
+platform — Kling 3.0/3.0 Omni/3.0 Motion Control, Sora 2, Google Veo 3.1, WAN 2.5/2.6,
+Seedance Pro, MiniMax Hailuo 02, Higgsfield DOP for video; Soul 2.0, Soul Cinema Preview,
+Soul Cast, Nano Banana Pro/2, Kling Image 3.0/Omni, Seedream 4.0, GPT Image 1.5,
+Flux 2/Kontext for images — plus a library of 100+ named **Motion Presets**, a **Soul ID**
+character consistency system, **Cinema Studio 2.5** with Soul Cast AI actors, and 80+
 one-click **Apps**.
 
 ---
@@ -46,7 +47,7 @@ with no specific constraints, **generate immediately** using these sensible defa
 | Duration | 8s |
 | Style | Cinematic |
 | Video model | Kling 3.0 (character-focused) or Sora 2 (action/scale) |
-| Image model | Soul 2.0 (portrait) or Nano Banana Pro 2 (everything else) |
+| Image model | Soul 2.0 (portrait) or Nano Banana 2 (everything else) |
 
 Do not ask clarifying questions. Deliver a ready-to-paste prompt. Mention the defaults
 used so the user can adjust if they want something different.
@@ -93,7 +94,7 @@ budget constraints, client work), **confirm before generating:**
 | Artistic style transformation, preset stacking | `higgsfield-mixed-media` |
 | Higgsfield Assist (GPT-5 copilot) | `higgsfield-assist` |
 | Credit optimization, plan selection, budget strategy | `higgsfield-assist` |
-| Cinema Studio 2.0 / multi-shot sequence workflow | `higgsfield-cinema` |
+| Cinema Studio 2.5 / multi-shot sequence workflow / Soul Cast | `higgsfield-cinema` |
 | Optical physics, camera bodies, lenses, Hero Frame | `higgsfield-cinema` |
 | Elements system (@Characters/@Locations/@Props) | `higgsfield-cinema` |
 | Director Panel, Speed Ramp, shot modes, Popcorn | `higgsfield-cinema` |
@@ -179,7 +180,7 @@ Quick summary — five layers, every prompt:
 | `higgsfield-moodboard` | Moodboard / Soul Hex / project-level style consistency |
 | `higgsfield-mixed-media` | Artistic preset overlays (Noir, Sketch, Particles, etc.) |
 | `higgsfield-assist` | Higgsfield Assist copilot / credit optimization / plan selection |
-| `higgsfield-cinema` | Cinema Studio 2.0 / optical physics / multi-shot / Elements / Popcorn |
+| `higgsfield-cinema` | Cinema Studio 2.5 / Soul Cast / color grading / optical physics / multi-shot / Elements / Popcorn |
 | `higgsfield-pipeline` | Multi-shot workflow / tool chaining / full production pipeline |
 | `higgsfield-vibe-motion` | Vibe Motion / motion graphics / kinetic typography / brand animation |
 | `higgsfield-recall` | Pre-generation memory check / apply past failure fixes |
