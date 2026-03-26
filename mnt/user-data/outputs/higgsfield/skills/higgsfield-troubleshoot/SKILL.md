@@ -89,7 +89,7 @@ metadata:
 - Specify the background surface: "raw concrete", "warm wood grain", "black velvet"
 - Add specific lighting: "soft side-light", "overhead product lighting", "practical only"
 - Add texture cues: "camera reveals material grain", "surface catches light on edges"
-- Use Nano Banana Pro 2 for maximum image sharpness on product images
+- Use Nano Banana Pro for maximum image sharpness on product images
 
 ---
 

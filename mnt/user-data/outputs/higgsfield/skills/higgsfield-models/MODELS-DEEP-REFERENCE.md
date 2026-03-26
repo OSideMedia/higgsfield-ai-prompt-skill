@@ -127,7 +127,7 @@ character in a neon-lit cityscape. Reference video drives all motion; prompt set
 
 ---
 
-### Kling O1 Video
+### Kling O1 Video (Legacy)
 **Duration:** 5s–10s · **Resolution:** 1080p
 **Best for:** Reference-based generation · character-consistent multi-shot sequences · start/end frame controlled motion · up to 7 simultaneous reference inputs
 **Strengths:** Chain-of-Thought (CoT) reasoning — model "thinks" before rendering, breaking the prompt into scene elements, motion paths, lighting plan, then executing. Handles complex multi-element prompts reliably. Up to 7 reference inputs simultaneously (characters, props, environments).
@@ -143,7 +143,7 @@ a single coherent scene where all elements appear correctly.
 
 ---
 
-### Kling O1 Video Edit (Edit Video tab)
+### Kling O1 Video Edit (Legacy — Edit Video tab)
 **Input video:** 3–10s · **Resolution:** 720p output · **Cost:** ~9 credits
 **Interface:** Separate "Edit Video" tab (not in the main model list) — upload existing video + optional up to 4 image/element references + text prompt
 **Auto settings toggle:** On = model determines best edit parameters automatically
@@ -170,14 +170,6 @@ a single coherent scene where all elements appear correctly.
 - "Transform the street scene to a rainy night, wet reflections, moody lighting, keep character identity"
 
 **Use when:** You have real or AI-generated footage and want to transform it without reshooting. This is the primary video editing workflow in Higgsfield.
-
----
-
-### Kling Motion Control
-**Duration:** 3s–30s · **Resolution:** 1080p
-**Best for:** Precise camera path control · long-duration motion sequences
-**Unique:** Longest duration option in the Kling lineup (up to 30s). Designed for workflows where camera movement itself is the deliverable — architectural flythroughs, product reveals, camera-driven transitions.
-**Use when:** You need camera motion control over a longer duration than standard models allow
 
 ---
 
@@ -1042,10 +1034,10 @@ Best use cases:
 
 ---
 
-### Nano Banana Pro 2
+### Nano Banana Pro
 **Best for:** Maximum sharpness · 4K detail · product photography · any subject requiring ultra clarity
-**Strengths:** Best image quality on the platform, exceptional detail
-**Use when:** Image quality is the top priority
+**Strengths:** Best image quality on the platform, exceptional detail, Thinking mode reasoning, up to 14 reference images
+**Use when:** Image quality is the top priority and speed is secondary
 **Prompt note:** Works for any subject — not limited to portraits
 
 ---
@@ -1098,7 +1090,7 @@ Best use cases:
 | 10s video with native audio (text or image-to-video) | Grok Imagine Video |
 | Edit/restyle existing video footage | Grok Imagine Video |
 | Best portrait / fashion image | Soul 2.0 |
-| Sharpest 4K image | Nano Banana Pro 2 |
+| Sharpest 4K image | Nano Banana Pro |
 | Edit / modify an existing image | Flux Kontext |
 | Reference-consistent editing / 4K assets | Seedream 4.5 |
 | Complex layout / multi-panel / real-time data image | Seedream 5.0 Lite |

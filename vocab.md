@@ -40,6 +40,18 @@
 - **Overhead** — direct top-down
 - **Flying** — free-floating aerial glide
 
+### Camera Angles
+- **Low Angle** — camera looks up at subject (power, dominance)
+- **High Angle** — camera looks down at subject (vulnerability, smallness)
+- **Eye Level** — neutral, conversational
+- **Bird's-Eye View** — directly overhead
+- **Worm's-Eye View** — extreme low, looking straight up
+- **Ground Level** — camera on the ground surface
+- **Canted Angle / Dutch Tilt** — tilted horizon for unease/tension
+- **Static Oblique** — angled perspective, off-axis
+- **Over-the-Shoulder (OTS)** — conversation framing, shot-reverse-shot
+- **POV / First Person** — camera IS the character's eyes
+
 ### Time-Based
 - **Hyperlapse** — moving camera + time-lapse
 - **Timelapse Human / Landscape** — fixed camera, fast-forward time
@@ -51,16 +63,20 @@
 
 | Term | Frame content |
 |------|--------------|
+| Extreme Long Shot (ELS) | Vast landscape, subject tiny or absent |
 | Extreme Wide (EWS) | Subject tiny in environment |
-| Wide Shot (WS) | Full body + surroundings |
+| Wide Shot / Long Shot (WS/LS) | Full body + surroundings |
+| Medium Long Shot / Cowboy (MLS) | Subject from mid-thigh up |
 | Medium Wide (MWS) | Subject from knees up |
 | Medium (MS) | Waist up |
 | Medium Close-Up (MCU) | Chest up |
 | Close-Up (CU) | Face |
 | Extreme Close-Up (ECU) | Detail — eyes, hands, object |
+| Insert Shot | Detail of an object or action |
 | Over-the-Shoulder (OTS) | Looking over a character's shoulder |
 | POV | First-person character perspective |
 | Two-Shot | Two characters in frame |
+| Cowboy Shot | Mid-thigh up, posture and readiness |
 
 ---
 
@@ -100,9 +116,9 @@
 
 | Type | Description |
 |------|-------------|
-| Golden hour | Warm directional, sun near horizon |
+| Golden hour / Magic hour | Warm directional, sun near horizon |
 | Blue hour | Cool, soft, just after sunset |
-| Overcast | Diffused, soft, no shadows |
+| Overcast / Softbox | Diffused, soft, no shadows |
 | Neon | Colored artificial from signs/screens |
 | Volumetric | Light rays visible (fog/dust/smoke) |
 | Practical only | Light from sources visible in frame |
@@ -111,6 +127,13 @@
 | Motivated | Light that matches a logical source in scene |
 | Hard light | Strong single source, defined shadows |
 | Soft light | Diffused, wrapped, minimal shadows |
+| Rembrandt | Triangle of light on shadowed cheek |
+| Butterfly / Paramount | Overhead, shadow under nose (glamour) |
+| Split lighting | Half face lit, half in shadow |
+| Chiaroscuro | Extreme light/dark contrast |
+| High-key | Bright, minimal shadows (comedy, commercial) |
+| Low-key | Deep shadows, moody (noir, horror) |
+| Harsh midday sun | Hard overhead, strong defined shadows |
 
 ---
 
@@ -176,3 +199,38 @@
 | Mechanical | "engine revving", "metal scrape", "hydraulic hiss" |
 | Human | "breathing", "heartbeat rising", "crowd murmur" |
 | Music cue | "tense strings build", "low bass drone", "electronic pulse" |
+
+---
+
+## Platform Feature Vocabulary
+
+| Term | Definition |
+|------|-----------|
+| Soul ID | Upload 20+ photos of a real person to train identity consistency across generations |
+| Soul Cast | Generate AI actors from parameters (no photos needed) — Cinema Studio 2.5 feature, powered by Nano Banana 2 |
+| Soul HEX | Extract color palettes from reference photos for brand-consistent, color-matched visuals |
+| Soul Cinema Preview | Higgsfield proprietary cinematic-grade image model, prompt-driven only, excels at close-ups |
+| Elements 3.0 | Reference system using `@element_name` syntax for cross-shot subject consistency (Kling 3.0) |
+| Voice Binding | Lock specific voice profiles to specific characters across shots (Kling 3.0) |
+| Performance Cloning | Act out a scene on camera → AI re-renders preserving likeness and voice (Kling 3.0 Omni) |
+| Motion Control | Transfer motion from reference video to new character/scene (Kling 3.0 Motion Control) |
+| Reference Anchor | Cinema Studio system that locks character geometry across all shots |
+| Hero Frame | Key image generated before video to define visual tone, lighting, and composition |
+
+---
+
+## Micro-Expression Vocabulary
+
+Performance directions for Soul Cast actors and character prompting:
+
+| Expression | Description |
+|-----------|-------------|
+| Deadpan Neutral | Flat affect, no visible emotion |
+| Fierce Focus | Intense locked gaze, total attention |
+| Suppressed Smile | Fighting back a grin, corner of mouth twitching |
+| Quiet Devastation | Eyes glassy, jaw tight, holding it together |
+| Cold Calculation | Eyes scanning, no emotional leakage, clinical |
+| Bitter Amusement | One-sided smirk, eyes not smiling |
+| Frozen Shock | Mouth slightly open, eyes fixed, body still |
+| Simmering Rage | Clenched jaw, flared nostrils, steady stare |
+| Vulnerable Openness | Soft eyes, slightly parted lips, unguarded |

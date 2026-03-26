@@ -261,7 +261,7 @@ Higgsfield doesn't have a native timeline editor — assemble in your editing to
 ```
 [1] SOUL ID          → Character locked once, reused forever
 [2] MOODBOARD        → Aesthetic locked once, appended to every prompt
-[3] GENERATE IMAGE   → Soul 2.0 or Nano Banana Pro 2 for each post
+[3] GENERATE IMAGE   → Soul 2.0 or Nano Banana 2 for each post
 [4] ANIMATE          → Kling 2.6 I2V, simple motion per post
 [5] VIBE MOTION      → Caption/CTA overlay per post format
 ```

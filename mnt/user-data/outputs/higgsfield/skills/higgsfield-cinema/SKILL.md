@@ -479,7 +479,7 @@ after generation costs full video credits. Get the look right on the image first
 
 **Hero Frame workflow:**
 1. Describe your opening shot with full optical stack
-2. Generate as image (Soul 2.0 or Nano Banana Pro 2)
+2. Generate as image (Soul 2.0 or Nano Banana 2)
 3. Review: Is the lighting right? Color? Character look?
 4. Iterate on image until it's exactly right
 5. Use as the first frame / style reference for video generation
@@ -1014,7 +1014,7 @@ Different models perform differently inside Cinema Studio's environment:
 | Artistic / stylized sequence | Wan 2.6 |
 | Nature / environment sequence | Veo 3 / Veo 3.1 |
 | Fast iteration on sequence | Kling 2.5 Turbo |
-| Hero Frame image generation | Soul 2.0 / Nano Banana Pro 2 |
+| Hero Frame image generation | Soul 2.0 / Nano Banana 2 |
 
 ---
 

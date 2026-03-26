@@ -30,8 +30,8 @@ specifics, parameters, edge cases, API details) → read `MODELS-DEEP-REFERENCE.
 | Kling 3.0 | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 3–15s | ✅ | Cinematic, long, audio, multi-shot |
 | Kling 3.0 Omni | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 3–15s | ✅ | Video clone, storyboard control |
 | Kling 3.0 Omni Edit | ★★★★★ | ★★★★★ | — | ★★★★☆ | 3–10s | ✅ | Edit footage at 3.0 quality |
-| Kling O1 Video | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Multi-ref (7), start/end frame |
-| Kling O1 Video Edit | ★★★★☆ | ★★★★★ | — | ★★★★★ | 3–10s | ❌ | Relight, restyle, swap, remove |
+| Kling O1 Video (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Multi-ref (7), start/end frame |
+| Kling O1 Video Edit (legacy) | ★★★★☆ | ★★★★★ | — | ★★★★★ | 3–10s | ❌ | Relight, restyle, swap, remove |
 | Kling 3.0 Motion Control | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★☆☆ | 3–30s | Optional | Motion transfer from reference video |
 | Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Character drama, realism (no audio) |
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration |

@@ -87,7 +87,7 @@ The quality of your Soul ID reference image determines consistency quality.
 
 **Image models to generate your Soul ID reference:**
 - **Soul 2.0** — best for fashion-forward, high-aesthetic characters
-- **Nano Banana Pro 2** — best for maximum photorealistic sharpness
+- **Nano Banana Pro** — best for maximum photorealistic sharpness
 - **Seedream 4.5** — good for a range of styles
 
 ---

@@ -81,7 +81,7 @@ Slightly desaturated. 16:9.
 ## Recipe 3: Product Advertisement
 
 **Core pattern:** Texture reveal → Feature showcase → Emotional connection → End frame
-**Best models:** Kling 2.6, Nano Banana Pro 2 (for image)
+**Best models:** Kling 3.0, Nano Banana Pro (for image)
 **Camera:** Lazy Susan, Dolly In, Robo Arm
 **Style:** Cinematic
 
