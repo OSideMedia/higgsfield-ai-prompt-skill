@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -369,3 +369,24 @@ The Seedream edit only affects the still — not the video.
 **Pitfall 5: Over-engineering a single shot**
 Save the full pipeline for multi-shot sequences. A single 5-second clip doesn't
 need 8 stages. Run it through standard generation → upscale → post.
+
+---
+
+> **Identity vs. Motion:** In all pipeline stages involving Soul ID characters, split prompts
+> into Identity Block + Motion Block. The Identity Block stays identical across all stages;
+> only the Motion Block changes per shot. See `higgsfield-prompt` and `higgsfield-soul`.
+
+> **Negative constraints:** For artifacts specific to multi-shot workflows (identity drift,
+> scene continuity breaking, camera contradictions), see `shared/negative-constraints.md` —
+> Temporal/Consistency and Face/Identity sections.
+
+---
+
+## Related skills
+- `higgsfield-prompt` — MCSLA formula, Identity/Motion separation
+- `higgsfield-soul` — Soul ID character consistency
+- `higgsfield-cinema` — Cinema Studio workflow (alternative to manual pipeline)
+- `higgsfield-models` — Model selection per pipeline stage
+- `higgsfield-vibe-motion` — Motion graphics for overlay stages
+- `higgsfield-recall` — Pre-generation memory check before each stage
+- `templates/` — Annotated genre-specific templates for pipeline starting points

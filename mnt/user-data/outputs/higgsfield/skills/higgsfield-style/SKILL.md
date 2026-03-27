@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -157,3 +157,18 @@ in your prompts for precise control over how light shapes the scene.
 | 1:1 | Square | Instagram posts, artistic |
 | 4:5 | Portrait | Instagram feed, social portrait |
 | 4:3 | Classic TV | Retro, VHS feel, vintage |
+
+---
+
+> **Negative constraints:** For texture/lighting artifacts (flickering textures, style ignored,
+> over-lit output, color grade inconsistency) and their prevention phrases, see
+> `shared/negative-constraints.md` — Texture/Lighting Artifacts section.
+
+---
+
+## Related skills
+- `higgsfield-camera` — Camera controls to pair with styles
+- `higgsfield-mixed-media` — Artistic style overlays (non-photorealistic)
+- `higgsfield-moodboard` — Moodboard + Soul Hex for project-level style locking
+- `higgsfield-cinema` — Cinema Studio built-in color grading suite
+- `templates/` — Annotated genre-specific prompt templates with style examples

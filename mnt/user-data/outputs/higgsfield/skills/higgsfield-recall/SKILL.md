@@ -11,7 +11,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, recall, memory, pre-check, filter, quality, prompt, generate]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 compatibility:
@@ -178,3 +178,17 @@ python3 higgsfield_memory.py stats
 
 Empty databases = no recall benefit yet. Start logging failures with `higgsfield-troubleshoot`
 and the recall system gets smarter with every entry.
+
+---
+
+> **Negative constraints:** The recall system complements `shared/negative-constraints.md`.
+> The shared file covers universal prevention rules; this recall system covers
+> user-specific past failures and confirmed fixes.
+
+---
+
+## Related skills
+- `higgsfield-troubleshoot` — Diagnose and fix specific failures (feeds recall DB)
+- `higgsfield-prompt` — MCSLA formula, Identity/Motion separation
+- `higgsfield-soul` — Character drift prevention (common recall topic)
+- `higgsfield-models` — Model-specific failure patterns

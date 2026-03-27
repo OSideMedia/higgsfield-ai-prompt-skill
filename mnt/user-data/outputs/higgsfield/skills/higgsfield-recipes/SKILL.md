@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, recipes, templates, genre, action, horror, romance, ad, sci-fi]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -292,3 +292,24 @@ Her suit tears at the shoulders. Her form expands.
 Style: Cinematic, cold fluorescent transitioning to deep red. 16:9.
 Apply Monstrosity preset for the transformation sequence.
 ```
+
+---
+
+> **Negative constraints:** Before generating from any recipe, check the relevant artifact
+> categories in `shared/negative-constraints.md`. Action recipes → Body/Motion; Horror →
+> Content Filter/Safety; Character-focused → Face/Identity.
+
+> **Identity vs. Motion:** For recipes involving Soul ID characters, split the output into
+> Identity Block + Motion Block. See `higgsfield-prompt` and `higgsfield-soul` for the rule
+> and examples.
+
+---
+
+## Related skills
+- `higgsfield-prompt` — MCSLA formula, Identity/Motion separation
+- `higgsfield-camera` — Camera controls referenced in recipes
+- `higgsfield-motion` — Motion presets referenced in recipes
+- `higgsfield-style` — Visual styles and color grades
+- `higgsfield-soul` — Soul ID for character-consistent sequences
+- `higgsfield-models` — Model selection per recipe type
+- `templates/` — Annotated prompt templates expand on these recipes with line-by-line breakdowns

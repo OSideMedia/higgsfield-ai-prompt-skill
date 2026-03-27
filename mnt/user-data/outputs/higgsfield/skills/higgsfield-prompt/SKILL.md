@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -167,6 +167,58 @@ renders cleaner physics in slow motion.
 
 ---
 
+## Identity vs. Motion Separation Rule
+
+When a prompt involves Soul ID or any character who must stay consistent across shots,
+**always split the output into two clearly labeled blocks**:
+
+### Identity Block — Static visual descriptors ONLY
+- Face features, skin tone, body type, distinguishing marks
+- Clothing, accessories, color palette
+- NO motion, NO camera, NO temporal language
+
+### Motion Block — Temporal and camera ONLY
+- Camera movement, action choreography, speed
+- Environmental motion, atmospheric changes
+- NO character appearance repetition
+
+**Why this matters:** Mixing identity descriptors with motion language causes the model
+to re-interpret the character's face on every frame, creating identity drift — the face
+shifts during camera moves.
+
+**Bad (mixed) — identity drifts:**
+```
+A woman with sharp cheekbones and auburn hair in a blue trench coat runs through
+a rain-soaked alley, her coat flapping, sharp cheekbones catching the neon light,
+camera chasing her at full speed, her auburn hair streaming behind her.
+```
+The model re-reads "sharp cheekbones" and "auburn hair" while also processing motion,
+causing the face to morph mid-clip.
+
+**Good (separated) — identity stays locked:**
+
+**Identity Block:**
+```
+The Soul ID character — sharp cheekbones, auburn hair shoulder-length,
+wearing a blue trench coat with silver buttons, lean athletic build.
+```
+
+**Motion Block:**
+```
+She runs through a rain-soaked alley, coat flapping behind her.
+Camera: Action Run — low behind, matching pace.
+Neon reflections streak across wet concrete.
+Style: Cinematic, cold blue shadows, warm neon accents. 16:9.
+```
+
+**When to apply this rule:**
+- Always when Soul ID is active
+- Always in multi-shot sequences where the same character appears
+- Always when camera movement is involved alongside a character
+- In Cinema Studio, identity goes in the @ Element definition; motion goes in the prompt
+
+---
+
 ## Common Prompt Mistakes
 
 | Mistake | Fix |
@@ -180,3 +232,18 @@ renders cleaner physics in slow motion.
 | Describing impact before action | Just describe the action, let AI render the result |
 | Specific martial arts moves | Use general fighting energy instead of named moves |
 | Multiple @ Elements in action scenes | Use @ for static scenes, plain text for action |
+| Mixing identity + motion in one block | Separate into Identity Block + Motion Block (see above) |
+
+> **Negative constraints:** For a comprehensive list of artifacts to avoid (floating limbs,
+> face warping, flickering textures, etc.) and the prompt phrasing to prevent them, see
+> `shared/negative-constraints.md`. Always check the relevant categories for your prompt type.
+
+---
+
+## Related skills
+- `higgsfield-soul` — Character consistency, Soul ID, micro-expressions
+- `higgsfield-camera` — All named camera controls
+- `higgsfield-style` — Visual styles, color grades, lighting
+- `higgsfield-models` — Model selection
+- `higgsfield-troubleshoot` — Fix failing generations
+- `templates/` — Annotated genre-specific prompt templates

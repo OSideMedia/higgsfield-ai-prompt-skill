@@ -9,7 +9,7 @@ metadata:
   references:
     - MODELS-DEEP-REFERENCE.md
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 
@@ -182,3 +182,12 @@ generation). Real person face uploads blocked — use synthetic character refere
 rendering and multi-image compositing. Image editing supports multi-turn iterative chains.
 
 For deep documentation on any specific model → read `MODELS-DEEP-REFERENCE.md`
+
+---
+
+## Related skills
+- `higgsfield-prompt` — MCSLA formula, prompt structure
+- `higgsfield-cinema` — Cinema Studio model selection
+- `higgsfield-assist` — Credit optimization and plan selection
+- `higgsfield-audio` — Audio-capable model details
+- `templates/` — Annotated templates with per-genre model recommendations

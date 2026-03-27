@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -167,3 +167,17 @@ Layering two compatible movements creates richer shots:
 | Handheld + Action Run | Raw realism + pursuit urgency | Escape sequence |
 
 **Avoid conflicting moves:** Don't combine Dolly In with Dolly Out, or Crane Up with Crane Down in the same shot — it creates visual contradiction.
+
+> **Negative constraints:** For temporal/consistency artifacts related to camera (contradictory
+> movements, camera not working, static I2V) and their prevention phrases, see
+> `shared/negative-constraints.md` — Temporal/Consistency Artifacts section.
+
+---
+
+## Related skills
+- `higgsfield-motion` — Named motion presets (VFX overlays applied with camera moves)
+- `higgsfield-cinema` — Director Panel (18 Cinema Studio camera movements)
+- `higgsfield-image-shots` — Camera angles and implied movement for still images
+- `higgsfield-prompt` — MCSLA formula, prompt structure
+- `higgsfield-style` — Visual styles to pair with camera choices
+- `templates/` — Annotated genre-specific prompt templates demonstrating camera use

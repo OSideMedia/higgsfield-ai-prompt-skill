@@ -5,9 +5,9 @@ description: >
   or needs guidance on selecting between Kling, Sora 2, Wan, Seedance,
   Veo 3, MiniMax Hailuo, Soul, Nano Banana, or other Higgsfield engines.
 user-invocable: true
-tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, v1.6.0]
+tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, v2.0.0]
 metadata:
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---

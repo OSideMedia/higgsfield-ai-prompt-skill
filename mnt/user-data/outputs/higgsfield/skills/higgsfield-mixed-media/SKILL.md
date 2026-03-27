@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, mixed-media, presets, artistic, noir, sketch, particles, style]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -190,3 +190,16 @@ Post 3: [Architecture scene]. Mixed Media: J-Magazine
 ```
 
 Result: Diverse content, unified by a consistent artistic treatment.
+
+---
+
+> **Negative constraints:** For texture/lighting artifacts when using Mixed Media overlays,
+> see `shared/negative-constraints.md` — Texture/Lighting Artifacts section.
+
+---
+
+## Related skills
+- `higgsfield-style` — Cinematic styles (photorealistic territory; Mixed Media is artistic territory)
+- `higgsfield-motion` — Motion presets (different from Mixed Media presets)
+- `higgsfield-moodboard` — Moodboard for project-level style consistency
+- `templates/` — Annotated genre templates

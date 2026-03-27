@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-1.6.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -17,6 +17,9 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 - Soul ID character consistency guidance + Character Sheet creation
 - Troubleshooting for failed or poor generations
 - Cinema Studio 2.5 advanced features: Soul Cast AI actors, built-in color grading, 3D Mode (Gaussian Splatting), Grid Generation, Resolution Settings, Frame Extraction Loop, Object & Person Insertion, Per-Character Emotions, Clustering
+- **Shared negative constraints reference** — categorized artifacts + prevention phrases
+- **Identity vs. Motion separation** — hard rule for character consistency across shots
+- **10 annotated genre templates** — production-quality examples with line-by-line breakdowns
 
 ## Quick Start
 
@@ -55,9 +58,22 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 │   └── quality-memory.json           ← Quality failure memory (seeded)
 └── mnt/user-data/outputs/higgsfield/
     ├── SKILL.md                      ← Main dispatcher (routes to sub-skills — start here)
+    ├── templates/                     ← 10 annotated genre-specific prompt templates (NEW v2.0)
+    │   ├── 01-cinematic-action-chase.md
+    │   ├── 02-product-ugc-showcase.md
+    │   ├── 03-horror-atmosphere.md
+    │   ├── 04-fashion-editorial.md
+    │   ├── 05-sci-fi-vfx.md
+    │   ├── 06-portrait-character-intro.md
+    │   ├── 07-landscape-establishing-shot.md
+    │   ├── 08-comedy-social-media.md
+    │   ├── 09-romantic-intimate.md
+    │   └── 10-dance-music-performance.md
     └── skills/
         ├── higgsfield-image-shots/SKILL.md   ← Cinematic image prompting (shots, angles, composition) NEW
-        ├── higgsfield-prompt/SKILL.md      ← Core MCSLA formula + prompt structure
+        ├── shared/
+        │   └── negative-constraints.md   ← Shared artifact prevention reference (NEW v2.0)
+        ├── higgsfield-prompt/SKILL.md      ← Core MCSLA formula + prompt structure + Identity/Motion separation
         ├── higgsfield-models/
         │   ├── SKILL.md                    ← Compact model selection guide
         │   └── MODELS-DEEP-REFERENCE.md    ← Full per-model documentation (on-demand)
@@ -107,4 +123,4 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 
 ---
 
-Built February 2026 · v1.6.0 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v2.0.0 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)

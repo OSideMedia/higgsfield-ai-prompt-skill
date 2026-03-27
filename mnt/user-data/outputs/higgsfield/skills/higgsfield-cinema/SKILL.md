@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -1029,3 +1029,26 @@ Different models perform differently inside Cinema Studio's environment:
 | Need motion graphics / text animation | Vibe Motion (not Cinema Studio) |
 | Edit existing footage | Kling O1 Video Edit (not Cinema Studio) |
 | Just need audio added to a clip | Lipsync Studio / Kling 3.0 |
+
+---
+
+> **Identity vs. Motion:** In Cinema Studio, identity goes in the @ Element definition (or
+> Soul Cast parameters); motion goes in the prompt field. Never put face/clothing descriptors
+> in the prompt when @ Elements are active. See `higgsfield-prompt` and `higgsfield-soul`
+> for the full separation rule.
+
+> **Negative constraints:** For Cinema Studio–specific artifacts (prompt rejected, @ Element
+> character swap, 3D Mode holes, optical stack mismatch) and all general artifacts, see
+> `shared/negative-constraints.md`.
+
+---
+
+## Related skills
+- `higgsfield-prompt` — MCSLA formula, Identity/Motion separation, 512-char awareness
+- `higgsfield-soul` — Soul ID + Soul Cast character consistency
+- `higgsfield-pipeline` — Full production pipeline (Cinema Studio is one stage)
+- `higgsfield-camera` — Standard camera presets (Cinema Studio uses Director Panel instead)
+- `higgsfield-style` — Visual styles (Cinema Studio has built-in color grading)
+- `higgsfield-models` — Model selection within Cinema Studio
+- `higgsfield-audio` — Audio design for Kling 3.0 sequences
+- `templates/` — Genre-specific annotated templates

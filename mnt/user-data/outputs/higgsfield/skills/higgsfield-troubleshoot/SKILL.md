@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -139,3 +139,21 @@ Before generating, verify:
 - [ ] No conflicting instructions
 - [ ] Soul ID referenced if character consistency needed
 - [ ] Motion preset named at end if using one
+- [ ] Identity Block separated from Motion Block (if Soul ID active)
+
+---
+
+> **Full negative constraints reference:** For a comprehensive, categorized list of all
+> generation artifacts and the prompt phrasing to prevent them, see
+> `shared/negative-constraints.md`. This troubleshooting guide covers diagnosis and fixes;
+> the shared constraints file covers prevention.
+
+---
+
+## Related skills
+- `higgsfield-prompt` — MCSLA formula, prompt structure, Identity/Motion separation
+- `higgsfield-recall` — Pre-generation memory check for past failures
+- `higgsfield-models` — Model selection (wrong model = many quality issues)
+- `higgsfield-audio` — Audio-specific failures and fixes
+- `higgsfield-cinema` — Cinema Studio–specific issues (512 char limit, @ Element bugs)
+- `shared/negative-constraints.md` — Prevention-focused constraint reference

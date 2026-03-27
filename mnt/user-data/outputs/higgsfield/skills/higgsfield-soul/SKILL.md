@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -71,6 +71,120 @@ Style: Cinematic, warm golden chandelier light.
 
 **Key rule:** Don't re-describe the face or core features — the Soul ID handles that.
 Only describe what is *different* from the base character.
+
+---
+
+## Identity vs. Motion Separation — Hard Rule
+
+When Soul ID is active, **every prompt MUST be split into two blocks**. This is the
+single most important rule for preventing identity drift.
+
+### Identity Block — Static descriptors only
+Contains: face features, clothing, body type, distinguishing marks, color palette.
+Does NOT contain: any motion, camera, speed, or temporal language.
+
+### Motion Block — Temporal and camera only
+Contains: camera movement, action choreography, speed, environmental changes.
+Does NOT contain: any character appearance repetition.
+
+**Why this separation prevents identity drift:**
+
+The AI video model renders character identity frame-by-frame. When identity descriptors
+("sharp cheekbones", "auburn hair") are interleaved with motion tokens ("runs", "camera
+chasing"), the model re-interprets the face while simultaneously processing motion —
+causing the face geometry to shift with each frame. Separating the blocks lets the model
+lock the face first (from the Identity Block or Soul ID reference) and then apply motion
+independently.
+
+### Before/After Examples
+
+**Example 1 — Action scene:**
+
+❌ **Mixed (bad) — causes identity drift:**
+```
+A tall woman with green eyes and freckles in a leather jacket sprints through
+a warehouse while the camera tracks her and her green eyes flash with determination
+and her freckles catch the fluorescent light as she vaults over a railing.
+```
+The model keeps re-reading face descriptors ("green eyes", "freckles") while processing
+the sprint + vault. Face morphs mid-clip.
+
+✅ **Separated (good) — identity stays locked:**
+
+**Identity Block:**
+```
+The Soul ID character — tall build, green eyes, light freckles across the nose
+and cheeks, wearing a fitted black leather jacket, dark jeans.
+```
+
+**Motion Block:**
+```
+She sprints through a dimly lit warehouse, vaults over a metal railing
+without breaking stride.
+Camera: Action Run — low behind her, matching pace.
+Fluorescent lights flicker overhead.
+Style: Cinematic, cold industrial blue, high contrast. 16:9.
+```
+
+---
+
+**Example 2 — Emotional close-up:**
+
+❌ **Mixed (bad) — face warps during camera move:**
+```
+A weathered man with deep wrinkles and sad brown eyes wearing a grey wool coat
+sits on a park bench as the camera slowly dollies in on his wrinkled face and
+sad brown eyes while autumn leaves drift past his grey coat.
+```
+
+✅ **Separated (good) — face stays sharp:**
+
+**Identity Block:**
+```
+The Soul ID character — man in his 60s, deep wrinkles, warm brown eyes,
+wearing a heavy grey wool coat, brown leather gloves.
+```
+
+**Motion Block:**
+```
+He sits on a park bench, hands folded in his lap, staring at the ground.
+A single autumn leaf drifts into frame and lands on the bench beside him.
+Camera: slow Dolly In toward his face.
+Style: Cinematic. Overcast diffused light, muted earth tones. 16:9.
+```
+
+---
+
+**Example 3 — Cinema Studio (@ Elements):**
+
+❌ **Mixed (bad) — identity in the prompt field:**
+```
+@Sarah with her dark curly hair and tattoo sleeve walks into the bar.
+```
+
+✅ **Separated (good) — identity in the Element, motion in the prompt:**
+
+**@ Element definition (set in Cinema Studio UI):**
+```
+@Sarah: dark curly hair, tattoo sleeve on left arm, wearing a vintage band tee.
+```
+
+**Prompt field:**
+```
+@Sarah pushes open the door and steps inside. She scans the room, then walks
+to the far end of the bar. The bartender nods.
+```
+
+### Which descriptors belong where
+
+| Identity Block | Motion Block |
+|---------------|-------------|
+| Face shape, skin tone, eye color | Camera movement name |
+| Hair style, color, length | Action verbs (runs, turns, sits) |
+| Body type, height, build | Environmental motion (wind, rain, lights) |
+| Clothing, accessories, jewelry | Speed and timing cues |
+| Scars, tattoos, distinguishing marks | Atmospheric changes (light shifts, fog) |
+| Color palette of the character | Style and color grade of the scene |
 
 ---
 
@@ -197,3 +311,19 @@ The Soul ID character [name] is in a modern kitchen at golden hour.
 She holds a coffee mug, steam rising. She looks directly at camera with a warm smile.
 Camera: slight Dolly In. Style: Lifestyle, warm tones, 9:16 vertical.
 ```
+
+---
+
+> **Negative constraints:** For face/identity artifacts (face morphing, identity drift,
+> character swap, plastic skin) and their prevention phrases, see
+> `shared/negative-constraints.md` — Face/Identity Artifacts section.
+
+---
+
+## Related skills
+- `higgsfield-prompt` — MCSLA formula, Identity vs. Motion separation rule
+- `higgsfield-cinema` — Cinema Studio Reference Anchor, Soul Cast, @ Elements
+- `higgsfield-moodboard` — Soul Hex color palette for character consistency
+- `higgsfield-pipeline` — Multi-shot workflow with Soul ID
+- `higgsfield-recall` — Pre-generation memory check for character drift history
+- `templates/` — Templates 03, 04, 05, 06, 08, 09, 10 include Identity/Motion Block examples

@@ -1,5 +1,56 @@
 # Changelog
 
+## v2.0.0 — 2026-03-26
+
+### New: Shared Negative Constraints Reference
+- Created `skills/shared/negative-constraints.md` — a consolidated, categorized reference of all AI video/image generation artifacts and the prompt phrasing to prevent them.
+- Six categories: Body/Motion Artifacts, Face/Identity Artifacts, Texture/Lighting Artifacts, Temporal/Consistency Artifacts, Content Filter/Safety Artifacts, Cinema Studio–Specific Artifacts.
+- Each entry includes: the artifact, why it happens in AI video, and the recommended prevention phrase.
+- All 18 sub-skills updated to reference this shared file for their relevant artifact categories.
+- Domain-specific constraints that only apply to one sub-skill remain in that sub-skill — the shared file supplements, not replaces.
+
+### New: Identity vs. Motion Separation Rule
+- Added hard rule to `higgsfield-prompt` and `higgsfield-soul`: when Soul ID or character consistency is involved, prompts must be split into two blocks:
+  - **Identity Block** — static visual descriptors only (face, clothing, body, marks). No motion, no camera, no temporal language.
+  - **Motion Block** — camera movement, action, speed, environmental changes. No character description repetition.
+- Includes 3 before/after examples showing mixed (bad) vs. separated (good) prompts with explanations.
+- Added "which descriptors belong where" reference table.
+- Updated `higgsfield-recipes`, `higgsfield-pipeline`, `higgsfield-cinema`, and `higgsfield-recall` to reference this separation rule.
+- All 10 genre templates include Identity Block + Motion Block sections for character-involved prompts.
+
+### New: Templates Folder (10 annotated genre templates)
+- Created `templates/` directory with 10 production-quality annotated prompt templates:
+  1. `01-cinematic-action-chase.md` — Chase/pursuit sequences
+  2. `02-product-ugc-showcase.md` — Product ads and UGC content
+  3. `03-horror-atmosphere.md` — Horror and atmospheric dread
+  4. `04-fashion-editorial.md` — Fashion/editorial portraits
+  5. `05-sci-fi-vfx.md` — Sci-fi and VFX spectacle
+  6. `06-portrait-character-intro.md` — Character introductions
+  7. `07-landscape-establishing-shot.md` — Landscape/establishing shots
+  8. `08-comedy-social-media.md` — Comedy and social media content
+  9. `09-romantic-intimate.md` — Romance and intimate moments
+  10. `10-dance-music-performance.md` — Dance/music performances
+- Each template includes: genre header, trigger conditions, recommended model, full example prompt, line-by-line annotation, negative constraints reference, common mistakes, and 3-4 variations.
+- Templates based on and expanded from proven `prompt-examples.md` prompts.
+- Main dispatcher SKILL.md updated with genre-matching routing table for templates.
+
+### New: Sub-Skill Cross-References
+- Added "Related skills" footer to all 18 sub-skills pointing to relevant sibling skills.
+- Added `shared/` and `templates/` paths to the main dispatcher routing table.
+- Updated dispatcher with new "Shared Resources" section.
+
+### Updated: Main Dispatcher
+- Version bumped to 2.0.0.
+- Added template genre-matching routing table ("Check Templates for Genre Match").
+- Added Shared Resources section with paths to `shared/negative-constraints.md` and `templates/`.
+- Added template and shared constraint references to the footer resource list.
+
+### Updated: All sub-skills version bumped to 2.0.0
+- All 18 sub-skill SKILL.md files + MODELS-DEEP-REFERENCE.md bumped from 1.6.0 to 2.0.0.
+- Root SKILL.md and dispatcher SKILL.md both at 2.0.0.
+
+---
+
 ## v1.6.0 — 2026-03-26
 
 ### New: Kling 3.0 Model Family

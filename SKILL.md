@@ -14,7 +14,7 @@ metadata:
     - image-models.md
     - photodump-presets.md
   tags: [higgsfield, models, soul, seedream, nano-banana, flux, kling, wan, gpt-image, z-image, reve, photodump]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 

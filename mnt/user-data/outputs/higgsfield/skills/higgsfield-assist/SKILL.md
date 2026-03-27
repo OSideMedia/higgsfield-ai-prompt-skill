@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, assist, GPT-5, copilot, credits, pricing, optimization, efficiency]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -209,3 +209,11 @@ using the same Reference Anchor.
 - Mix Cinema Studio with Apps for efficiency
 - Add Moodboard + Soul ID for consistent series content
 - Use Higgsfield Assist for rapid iteration
+
+---
+
+## Related skills
+- `higgsfield-models` — Detailed model comparison beyond what Assist provides
+- `higgsfield-prompt` — MCSLA formula for structured prompt building
+- `higgsfield-apps` — Apps Assist can recommend
+- `higgsfield-pipeline` — Full production workflows

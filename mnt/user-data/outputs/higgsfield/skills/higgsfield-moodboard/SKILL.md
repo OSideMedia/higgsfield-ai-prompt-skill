@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, moodboard, style, reference, soul-hex, color, presets, Y2K, editorial]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -201,3 +201,12 @@ Film look: medium format digital, razor-sharp
 Lighting character: single hard source, theatrical — all else falls to black
 Cultural reference: stage photography, Helmut Newton editorial
 ```
+
+---
+
+## Related skills
+- `higgsfield-soul` — Soul ID character consistency (combine with Moodboard for full visual lock)
+- `higgsfield-style` — Visual styles and color grades
+- `higgsfield-mixed-media` — Artistic preset overlays
+- `higgsfield-pipeline` — Pipeline B uses Moodboard as a core stage
+- `templates/` — Annotated genre templates demonstrating style direction

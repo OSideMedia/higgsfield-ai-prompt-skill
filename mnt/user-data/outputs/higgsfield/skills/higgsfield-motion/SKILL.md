@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, motion, presets, VFX, transformation, transitions, effects]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -190,3 +190,18 @@ Camera: Bullet Time as the first punch lands.
 Style: Anamorphic, desaturated, high contrast.
 Apply the Flame Transition preset to cut to the next scene.
 ```
+
+---
+
+> **Negative constraints:** For motion/VFX artifacts (preset not visible, VFX looks cartoonish,
+> jittery motion) and their prevention phrases, see `shared/negative-constraints.md` —
+> Body/Motion Artifacts and Temporal/Consistency Artifacts sections.
+
+---
+
+## Related skills
+- `higgsfield-camera` — Camera controls (combine with motion presets)
+- `higgsfield-style` — Visual styles (pair with motion effects)
+- `higgsfield-mixed-media` — Artistic preset overlays (different from motion presets)
+- `higgsfield-recipes` — Genre templates referencing specific presets
+- `templates/` — Annotated templates showing preset usage in context

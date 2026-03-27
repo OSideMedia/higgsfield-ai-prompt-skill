@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -222,3 +222,17 @@ Not every prompt needs audio direction. Skip audio cues when:
 - The content is purely visual (product beauty shots, abstract motion, landscape)
 - Audio will be added entirely in post-production
 - The prompt is already at the 200-word limit and visual direction is more important
+
+---
+
+> **Negative constraints:** For audio-specific artifacts (lip-sync desync, background music
+> overriding dialogue, SFX drowning dialogue) and their prevention phrases, see
+> `shared/negative-constraints.md` — Temporal/Consistency Artifacts section.
+
+---
+
+## Related skills
+- `higgsfield-models` — Which models support native audio
+- `higgsfield-troubleshoot` — Audio failure diagnosis
+- `higgsfield-cinema` — Cinema Studio audio workflow with Kling 3.0
+- `higgsfield-vibe-motion` — Motion graphics with audio (different from AI-generated audio)

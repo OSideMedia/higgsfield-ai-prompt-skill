@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, apps, one-click, workflow, influencer, ad, product]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -128,3 +128,11 @@ workflow tool for creating longer, multi-shot cinematic content.
 3. Animate with Kling 2.6/3.0 or Sora 2
 4. Chain shots in Cinema Studio timeline
 5. Add audio with Kling 3.0 or Lipsync Studio
+
+---
+
+## Related skills
+- `higgsfield-cinema` — Cinema Studio for multi-shot sequences
+- `higgsfield-models` — Model selection for manual prompting
+- `higgsfield-pipeline` — Full production pipelines using Apps as stages
+- `higgsfield-assist` — Higgsfield Assist copilot for in-platform guidance

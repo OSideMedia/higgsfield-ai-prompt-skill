@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, vibe-motion, motion-graphics, typography, brand, animation, code, Remotion]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -287,3 +287,11 @@ The real power is combining both:
 **Code export:** Remotion code can be deployed for data-driven or programmatic use cases
   (auto-generate 10,000 personalized videos from a database, responsive video that
   adapts to different platforms, etc.)
+
+---
+
+## Related skills
+- `higgsfield-pipeline` — Vibe Motion as a stage in the full production pipeline
+- `higgsfield-cinema` — Cinema Studio for cinematic content (not motion graphics)
+- `higgsfield-style` — Visual styles for the video content Vibe Motion overlays
+- `higgsfield-apps` — One-click Apps as alternatives for simple motion tasks

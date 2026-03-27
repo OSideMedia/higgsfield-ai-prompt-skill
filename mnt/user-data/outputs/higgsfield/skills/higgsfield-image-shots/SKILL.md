@@ -10,7 +10,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, image, shots, framing, angle, composition, cinematic, portrait, close-up, wide-shot]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -427,3 +427,18 @@ one shoulder. A frozen battlefield stretches behind her, smoke rising from
 distant fires. Golden hour backlight rims her silhouette.
 Style: Cinematic, Kodak Vision3 500T, desaturated teal shadows, warm highlights.
 ```
+
+---
+
+> **Negative constraints:** For face/identity and texture/lighting artifacts in image generation,
+> see `shared/negative-constraints.md`.
+
+---
+
+## Related skills
+- `higgsfield-camera` — Video camera controls (this skill covers still-image composition)
+- `higgsfield-style` — Visual styles and lighting techniques
+- `higgsfield-soul` — Soul ID for character-consistent image series
+- `higgsfield-cinema` — Cinema Studio optical physics engine for image generation
+- `higgsfield-models` — Image model selection (Soul 2.0, Nano Banana, Seedream, etc.)
+- `templates/` — Annotated genre-specific prompt templates

@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 1.6.0
+  version: 2.0.0
   updated: 2026-03-26
   author: O-Side Media
   license: MIT
@@ -107,6 +107,31 @@ budget constraints, client work), **confirm before generating:**
 
 ---
 
+### Check Templates for Genre Match
+
+Before writing a prompt from scratch, check if the user's request matches a common genre
+pattern. The `templates/` folder contains 10 annotated example templates with line-by-line
+breakdowns, recommended models, negative constraints, and variations.
+
+| User request matches | Check template |
+|---------------------|----------------|
+| Chase, pursuit, action, parkour | `templates/01-cinematic-action-chase.md` |
+| Product, commercial, ad, UGC | `templates/02-product-ugc-showcase.md` |
+| Horror, scary, creepy, dread | `templates/03-horror-atmosphere.md` |
+| Fashion, editorial, lookbook | `templates/04-fashion-editorial.md` |
+| Sci-fi, cyberpunk, VFX, space | `templates/05-sci-fi-vfx.md` |
+| Portrait, character intro, close-up | `templates/06-portrait-character-intro.md` |
+| Landscape, nature, establishing shot | `templates/07-landscape-establishing-shot.md` |
+| Comedy, social media, TikTok, skit | `templates/08-comedy-social-media.md` |
+| Romance, intimate, couple, wedding | `templates/09-romantic-intimate.md` |
+| Dance, music, performance, concert | `templates/10-dance-music-performance.md` |
+
+Use the template as a starting point — adapt the example prompt to the user's specific
+request. The annotations explain WHY each element works, helping you make informed
+substitutions.
+
+---
+
 ### Build the Prompt Using the MCSLA Formula
 
 Full MCSLA definition and prompt structure → `skills/higgsfield-prompt/SKILL.md`
@@ -163,6 +188,15 @@ Quick summary — five layers, every prompt:
 
 ---
 
+## Shared Resources
+
+| Resource | What it contains | When to use |
+|----------|-----------------|-------------|
+| `skills/shared/negative-constraints.md` | All generation artifacts + prevention phrases, by category | Check before every prompt — append relevant constraints |
+| `templates/` | 10 annotated genre templates with examples, models, annotations, variations | When user request matches a common genre — use as starting point |
+
+---
+
 ## Sub-Skills (auto-loaded as needed)
 
 | Skill | Trigger |
@@ -190,3 +224,5 @@ Quick summary — five layers, every prompt:
 > Full motion preset library in `skills/higgsfield-motion/SKILL.md`
 > Model comparison in `../../../../model-guide.md`
 > Example prompts in `../../../../prompt-examples.md`
+> Shared negative constraints in `skills/shared/negative-constraints.md`
+> Genre-specific annotated templates in `templates/`
