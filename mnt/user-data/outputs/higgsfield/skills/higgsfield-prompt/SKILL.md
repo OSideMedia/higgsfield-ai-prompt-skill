@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -236,7 +236,7 @@ Style: Cinematic, cold blue shadows, warm neon accents. 16:9.
 
 > **Negative constraints:** For a comprehensive list of artifacts to avoid (floating limbs,
 > face warping, flickering textures, etc.) and the prompt phrasing to prevent them, see
-> `shared/negative-constraints.md`. Always check the relevant categories for your prompt type.
+> `../shared/negative-constraints.md`. Always check the relevant categories for your prompt type.
 
 ---
 

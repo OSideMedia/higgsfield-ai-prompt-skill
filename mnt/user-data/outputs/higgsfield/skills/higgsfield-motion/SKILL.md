@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, motion, presets, VFX, transformation, transitions, effects]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -194,7 +194,7 @@ Apply the Flame Transition preset to cut to the next scene.
 ---
 
 > **Negative constraints:** For motion/VFX artifacts (preset not visible, VFX looks cartoonish,
-> jittery motion) and their prevention phrases, see `shared/negative-constraints.md` —
+> jittery motion) and their prevention phrases, see `../shared/negative-constraints.md` —
 > Body/Motion Artifacts and Temporal/Consistency Artifacts sections.
 
 ---

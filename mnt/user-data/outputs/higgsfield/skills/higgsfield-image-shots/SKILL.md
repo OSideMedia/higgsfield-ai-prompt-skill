@@ -10,7 +10,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, image, shots, framing, angle, composition, cinematic, portrait, close-up, wide-shot]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -431,7 +431,7 @@ Style: Cinematic, Kodak Vision3 500T, desaturated teal shadows, warm highlights.
 ---
 
 > **Negative constraints:** For face/identity and texture/lighting artifacts in image generation,
-> see `shared/negative-constraints.md`.
+> see `../shared/negative-constraints.md`.
 
 ---
 

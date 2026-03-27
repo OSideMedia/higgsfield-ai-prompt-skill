@@ -64,7 +64,7 @@ These occur across frames in video or across multiple generations in a sequence.
 | **Contradictory camera movements** | Multiple conflicting cameras in one prompt (Dolly In + Dolly Out, Crane Up + Crane Down) | One primary camera movement per shot; if you need multiple, generate separate clips and chain them |
 | **Scene continuity breaking** | Different character/environment descriptions between shots | Copy-paste character description verbatim; use Reference Anchor in Cinema Studio; lock Moodboard style |
 | **Motion preset not visible** | Preset not named exactly, or scene doesn't support the effect contextually | Name preset exactly as listed: "Apply Explosion preset"; place instruction at end of prompt; ensure scene context supports the effect |
-| **Lip-sync desync** | Audio > 8s, head motion tokens competing with lip engine, or non-MP3 format | Trim dialogue clips to 3–8s; remove all head/face motion tokens; use MP3 only for Seedance 2.0; lock camera to static or slow Dolly In |
+| **Lip-sync desync** | Audio > 8s, head motion tokens competing with lip engine, or non-MP3 format | Trim dialogue clips to 3–8s; remove all head/face motion tokens; use MP3 only for Seedance 2.0 (when available); lock camera to static or slow Dolly In |
 | **Background music overriding dialogue** | Ambient/music tokens invite the generative audio engine to replace uploaded audio | Add timestamp anchoring: "Audio @Audio1 plays exactly as uploaded from 0s to end"; remove ALL ambient/SFX/music tokens |
 
 ---

@@ -48,11 +48,7 @@ Apply Horror Face preset in the mirror reflection.
 1. **Describing explicit gore/injury** — gets blocked by content filters. Describe the dread and atmosphere, let the viewer's imagination do the work.
 2. **Too many scares in one clip** — one "wrong detail" per generation. Stack them across a sequence, not in a single shot.
 
-## Variations
-- **Found footage style**: Handheld camera, VHS style, 4:3, "camera glitches occasionally"
-- **Psychological (no supernatural)**: Remove Horror Face preset, rely on Dutch Angle + slow Dolly In + "wrong detail"
-- **Body horror**: Use Monstrosity or Gas Transformation preset instead of Horror Face
-- **Jump scare setup**: Slow Dolly In for 6s, then Crash Zoom In on the reveal for the final 2s
+> **Identity/Motion separation:** When this horror scene features a Soul ID character, use the following block structure.
 
 ### Identity Block (if using Soul ID character)
 ```
@@ -66,3 +62,9 @@ She steps inside, sets down her keys. Turns toward the kitchen.
 Camera: slow Dolly In toward the hallway mirror.
 Dutch Angle as she freezes.
 ```
+
+## Variations
+- **Found footage style**: Handheld camera, VHS style, 4:3, "camera glitches occasionally"
+- **Psychological (no supernatural)**: Remove Horror Face preset, rely on Dutch Angle + slow Dolly In + "wrong detail"
+- **Body horror**: Use Monstrosity or Gas Transformation preset instead of Horror Face
+- **Jump scare setup**: Slow Dolly In for 6s, then Crash Zoom In on the reveal for the final 2s

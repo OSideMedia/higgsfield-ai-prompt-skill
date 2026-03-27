@@ -39,6 +39,8 @@ Style: Cinematic, natural grade, no artificial treatment. 16:9.
 - **Texture/Lighting**: Specify "natural grade" to prevent the model from adding cinematic color grading to nature footage.
 - **Temporal/Consistency**: One environmental change per clip. "Storm + earthquake + volcanic eruption" = chaos.
 
+> **Identity/Motion separation:** If a person appears in this shot and you're using Soul ID, split the prompt into Identity Block and Motion Block per the rule in `higgsfield-soul`. See template 06 (Portrait/Character Intro) for the full pattern.
+
 ## Common mistakes
 1. **Adding a character to a landscape shot** — if the environment is the subject, let it be the subject. Characters in establishing shots should be tiny ("a lone figure" at most).
 2. **No temporal change** — landscapes need something to happen: weather moves, light shifts, tide changes. A static description produces a still image, not video.

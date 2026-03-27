@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -108,7 +108,7 @@ metadata:
 **Fix:**
 - Remove all head/face motion tokens (nodding, turning head, looking around)
 - Keep dialogue clips 3–8s (not 15s — accuracy degrades)
-- Use MP3 format only for Seedance 2.0 (WAV/AAC fail silently)
+- Use MP3 format only for Seedance 2.0 (when available) (WAV/AAC fail silently)
 - Lock camera: medium close-up, static or slow Dolly In only
 - One face per shot — multiple faces break audio routing
 - For detailed audio guidance → `higgsfield-audio` skill
@@ -145,7 +145,7 @@ Before generating, verify:
 
 > **Full negative constraints reference:** For a comprehensive, categorized list of all
 > generation artifacts and the prompt phrasing to prevent them, see
-> `shared/negative-constraints.md`. This troubleshooting guide covers diagnosis and fixes;
+> `../shared/negative-constraints.md`. This troubleshooting guide covers diagnosis and fixes;
 > the shared constraints file covers prevention.
 
 ---
@@ -156,4 +156,4 @@ Before generating, verify:
 - `higgsfield-models` — Model selection (wrong model = many quality issues)
 - `higgsfield-audio` — Audio-specific failures and fixes
 - `higgsfield-cinema` — Cinema Studio–specific issues (512 char limit, @ Element bugs)
-- `shared/negative-constraints.md` — Prevention-focused constraint reference
+- `../shared/negative-constraints.md` — Prevention-focused constraint reference

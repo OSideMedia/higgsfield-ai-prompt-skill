@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -1039,7 +1039,7 @@ Different models perform differently inside Cinema Studio's environment:
 
 > **Negative constraints:** For Cinema Studio–specific artifacts (prompt rejected, @ Element
 > character swap, 3D Mode holes, optical stack mismatch) and all general artifacts, see
-> `shared/negative-constraints.md`.
+> `../shared/negative-constraints.md`.
 
 ---
 

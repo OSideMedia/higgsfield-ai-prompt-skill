@@ -11,13 +11,13 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, recall, memory, pre-check, filter, quality, prompt, generate]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
-compatibility:
-  tools: [bash]
-  scripts: [higgsfield_memory.py]
-  databases: [db/filter-memory.json, db/quality-memory.json]
+  compatibility:
+    tools: [bash]
+    scripts: [higgsfield_memory.py]
+    databases: [db/filter-memory.json, db/quality-memory.json]
 ---
 
 # Higgsfield Recall — Pre-Generation Memory Check
@@ -181,7 +181,7 @@ and the recall system gets smarter with every entry.
 
 ---
 
-> **Negative constraints:** The recall system complements `shared/negative-constraints.md`.
+> **Negative constraints:** The recall system complements `../shared/negative-constraints.md`.
 > The shared file covers universal prevention rules; this recall system covers
 > user-specific past failures and confirmed fixes.
 

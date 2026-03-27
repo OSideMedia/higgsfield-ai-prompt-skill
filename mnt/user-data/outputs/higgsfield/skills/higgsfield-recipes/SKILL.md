@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, recipes, templates, genre, action, horror, romance, ad, sci-fi]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -235,7 +235,7 @@ Style: Cinematic, natural light, neutral grade. 16:9.
 ## Recipe 8: Dance / Music Video
 
 **Core pattern:** Establish space → Performance builds → Beat sync climax
-**Best models:** MiniMax Hailuo, Kling 2.6
+**Best models:** Minimax Hailuo, Kling 2.6
 **Camera:** 360 Orbit, Dolly In/Out on beat, Overhead, Crash Zoom In
 **Style:** Cinematic or Anamorphic
 **Motion presets:** Glow Trace, Live Concert, Color Rain
@@ -296,7 +296,7 @@ Apply Monstrosity preset for the transformation sequence.
 ---
 
 > **Negative constraints:** Before generating from any recipe, check the relevant artifact
-> categories in `shared/negative-constraints.md`. Action recipes → Body/Motion; Horror →
+> categories in `../shared/negative-constraints.md`. Action recipes → Body/Motion; Horror →
 > Content Filter/Safety; Character-focused → Face/Identity.
 
 > **Identity vs. Motion:** For recipes involving Soul ID characters, split the output into

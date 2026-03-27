@@ -7,12 +7,12 @@ Product reveals, commercial beauty shots, UGC-style product demos, unboxing aest
 User asks for a product ad, commercial, product video, "make my product look good," unboxing, packshot, or any prompt where the hero subject is an object (not a person).
 
 ## Recommended model
-**Nano Banana Pro 2** for the hero image (maximum sharpness, 4K). **Kling 3.0** for video animation (best texture rendering). **Robo Arm** or **Lazy Susan** camera for product reveals.
+**Nano Banana Pro** for the hero image (maximum sharpness, 4K). **Kling 3.0** for video animation (best texture rendering). **Robo Arm** or **Lazy Susan** camera for product reveals.
 
 ## Example prompt
 
 ```
-Model: Kling 3.0 (video) / Nano Banana Pro 2 (image)
+Model: Kling 3.0 (video) / Nano Banana Pro (image)
 Aspect: 16:9 | Duration: 5s | Style: Cinematic commercial
 
 A matte black insulated travel mug, minimal design, no branding.
@@ -42,6 +42,8 @@ Sound: gentle liquid pour, soft ceramic texture.
 - **Texture/Lighting**: Specify background surface and lighting source — generic = cheap-looking output
 - **Temporal/Consistency**: One camera movement for the reveal, one for the detail shot — don't combine
 - **Content Filter/Safety**: Never use brand names — describe the product by appearance only
+
+> **Identity/Motion separation:** If a person appears in this shot and you're using Soul ID, split the prompt into Identity Block and Motion Block per the rule in `higgsfield-soul`. See template 06 (Portrait/Character Intro) for the full pattern.
 
 ## Common mistakes
 1. **Naming the brand** — "A Nike sneaker" gets filtered. Say "a white athletic sneaker with a minimal swoosh-like logo" (or no logo at all).

@@ -5,8 +5,8 @@
   "_total_entries": 5,
   "entries": [
     {
-      "id": "qual-001",
-      "date": "2026-02-28",
+      "id": "Q-001",
+      "date_added": "2026-02-28",
       "scenario": "Multi-shot character sequence — close-up to wide transition",
       "original_prompt": "A detective in a grey coat walks through a rainy alley. Camera transitions from close-up to wide establishing shot.",
       "failure_description": "Character face changed significantly between close-up and wide shot. Coat color shifted from grey to dark blue.",
@@ -26,8 +26,8 @@
       "improvement_confirmed": true
     },
     {
-      "id": "qual-002",
-      "date": "2026-02-28",
+      "id": "Q-002",
+      "date_added": "2026-02-28",
       "scenario": "VHS style not rendering — output looked modern/clean",
       "original_prompt": "A woman walks down a hallway. VHS style.",
       "failure_description": "Output was clean digital look with no VHS artifacts. The style instruction was too vague.",
@@ -47,8 +47,8 @@
       "improvement_confirmed": true
     },
     {
-      "id": "qual-003",
-      "date": "2026-02-28",
+      "id": "Q-003",
+      "date_added": "2026-02-28",
       "scenario": "Image-to-video produced near-static output — barely any movement",
       "original_prompt": "A woman in a red dress stands on a balcony overlooking the city at sunset. She has dark hair and brown eyes. The city has tall buildings. The sky is orange and pink.",
       "failure_description": "Output was essentially a still image with minimal breathing motion. No meaningful animation.",
@@ -68,8 +68,8 @@
       "improvement_confirmed": true
     },
     {
-      "id": "qual-004",
-      "date": "2026-02-28",
+      "id": "Q-004",
+      "date_added": "2026-02-28",
       "scenario": "Prompt with contradictory camera instructions produced incoherent movement",
       "original_prompt": "Camera Dolly In toward the subject while pulling back to reveal the environment. FPV Drone weaving through the market. 360 Orbit around the fighter.",
       "failure_description": "Three contradictory camera movements in one prompt. Output had erratic, jarring camera path that looked broken.",
@@ -89,8 +89,8 @@
       "improvement_confirmed": true
     },
     {
-      "id": "qual-005",
-      "date": "2026-02-28",
+      "id": "Q-005",
+      "date_added": "2026-02-28",
       "scenario": "Lip-sync failed — audio and mouth movement completely out of sync",
       "original_prompt": "Character says 'We need to leave now' while nodding vigorously and turning head side to side. Background music plays.",
       "failure_description": "Head motion tokens competed with lip-sync engine. Background music instruction triggered generative audio that replaced the dialogue.",

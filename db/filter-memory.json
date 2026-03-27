@@ -5,8 +5,8 @@
   "_total_entries": 4,
   "entries": [
     {
-      "id": "filt-001",
-      "date": "2026-02-28",
+      "id": "F-001",
+      "date_added": "2026-02-28",
       "category": "real-person",
       "blocked_terms": ["real person", "celebrity", "public figure", "named person", "likeness"],
       "error_message": "Content policy: real person likeness not permitted",
@@ -14,11 +14,12 @@
       "substitution_example": "Instead of 'Keanu Reeves' → 'A lean man in his late 50s, dark shoulder-length hair, stubble, intense calm expression, wearing a dark suit'",
       "fix_confirmed": true,
       "substitution_worked": true,
+      "outcome": "workaround",
       "tags": ["real-person", "celebrity", "likeness", "content-filter"]
     },
     {
-      "id": "filt-002",
-      "date": "2026-02-28",
+      "id": "F-002",
+      "date_added": "2026-02-28",
       "category": "brand-ip",
       "blocked_terms": ["franchise", "Marvel", "DC", "Disney", "anime", "copyrighted character", "IP"],
       "error_message": "Content policy: copyrighted character not permitted",
@@ -26,11 +27,12 @@
       "substitution_example": "Instead of 'Spider-Man' → 'blue-and-red form-fitting suit, face masked with white eye-shaped lenses, web fired from wrists'",
       "fix_confirmed": true,
       "substitution_worked": true,
+      "outcome": "workaround",
       "tags": ["brand-ip", "franchise", "copyright", "character", "content-filter"]
     },
     {
-      "id": "filt-003",
-      "date": "2026-02-28",
+      "id": "F-003",
+      "date_added": "2026-02-28",
       "category": "violence",
       "blocked_terms": ["violence", "gore", "blood", "injury", "explicit violence", "graphic"],
       "error_message": "Content policy: explicit violence not permitted",
@@ -38,11 +40,12 @@
       "substitution_example": "Instead of 'blood drips from his hands' → 'his hands tremble at his sides, something dark stains his sleeve'",
       "fix_confirmed": true,
       "substitution_worked": true,
+      "outcome": "workaround",
       "tags": ["violence", "gore", "blood", "explicit", "content-filter", "horror"]
     },
     {
-      "id": "filt-004",
-      "date": "2026-02-28",
+      "id": "F-004",
+      "date_added": "2026-02-28",
       "category": "real-person",
       "blocked_terms": ["real person", "face upload", "Seedance 2.0", "selfie", "photo upload"],
       "error_message": "Real person face uploads are blocked on Seedance 2.0",
@@ -50,6 +53,7 @@
       "substitution_example": "Generate a character with Soul 2.0 first → use that generated image as the @Image1 reference in Seedance 2.0",
       "fix_confirmed": true,
       "substitution_worked": true,
+      "outcome": "workaround",
       "tags": ["real-person", "seedance-2.0", "face-upload", "content-filter"]
     }
   ]

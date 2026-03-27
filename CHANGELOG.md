@@ -1,5 +1,70 @@
 # Changelog
 
+## v2.0.2 — 2026-03-26
+
+### Fixed: Higgsfield DoP documented as model family
+- "Higgsfield DOP" was treated as a single model. DoP is actually the family/brand name for Higgsfield's I2V system with three quality tiers: Higgsfield Lite, Standard, and Turbo (all 720p, 3–5s).
+- Added DoP family section to model-guide.md with tier breakdown, 50+ preset categories, and optical physics capabilities.
+- Added DoP row to video model comparison tables and decision flowcharts in model-guide.md and higgsfield-models/SKILL.md.
+- Updated root SKILL.md, dispatcher SKILL.md, README.md, and CHANGELOG.md references from "Higgsfield DOP" to "Higgsfield DoP (Lite/Standard/Turbo)".
+
+### Fixed: Kling 2.1 Master marked as deprecated
+- Kling 2.1 Master is no longer on the platform. Marked as "(deprecated)" in model-guide.md and MODELS-DEEP-REFERENCE.md with notice to use Kling 2.6 or 3.0.
+- Removed from Create Video tab model list in model-guide.md.
+
+### Fixed: Grok Imagine Image removed from image model listings
+- "Grok Imagine Image" does not exist on the Higgsfield platform — Grok Imagine is a video-only model family.
+- Removed from image model quick selection table and decision flowchart in higgsfield-models/SKILL.md.
+- Removed from cost table in image-models.md.
+- Added "NOT available on Higgsfield" notice to the xAI API documentation section in MODELS-DEEP-REFERENCE.md (documentation preserved for reference).
+- Updated Quick Decision Table to redirect former Grok Imagine Image recommendations to GPT Image 1.5, Multi Reference, and Flux Kontext.
+
+### Fixed: Seedance 2.0 labeled as upcoming
+- Seedance 2.0 is pre-documented but not yet live on the platform. Added "(upcoming)" labels across model-guide.md, higgsfield-models/SKILL.md, MODELS-DEEP-REFERENCE.md, higgsfield-audio/SKILL.md, higgsfield-troubleshoot/SKILL.md, and shared/negative-constraints.md.
+- Decision flowcharts now note "use Seedance 1.5 Pro until launch" as fallback.
+
+### Updated: Version bumped to 2.0.2
+- All 21 SKILL.md files, MODELS-DEEP-REFERENCE.md, and README.md bumped from 2.0.1 to 2.0.2.
+
+---
+
+## v2.0.1 — 2026-03-26
+
+### Fixed: Broken shared/negative-constraints.md paths (14 instances)
+- 13 sub-skill SKILL.md files referenced `shared/negative-constraints.md` using paths relative to their own directory, which didn't resolve. Fixed to `../shared/negative-constraints.md` in all sub-skills.
+
+### Fixed: Model name accuracy
+- **"Nano Banana Pro 2" does not exist.** Corrected to "Nano Banana Pro" across 5 files (13 instances). "Nano Banana", "Nano Banana 2", and "Nano Banana Pro" are three separate models — they were previously conflated.
+- **"MiniMax" → "Minimax"** — platform spells it "Minimax Hailuo" (lowercase 'imax'). Fixed across 13 files (26 instances).
+
+### Fixed: Templates missing Identity/Motion guidance
+- Templates 01 (action chase), 02 (product UGC), and 07 (landscape) now include Identity/Motion Block callouts referencing template 06 and `higgsfield-soul`.
+- Template 03 (horror) restructured: Identity/Motion Block sections moved before Variations to match the format used by the other 9 templates.
+
+### Fixed: MODELS-DEEP-REFERENCE.md frontmatter regression
+- `tags` was at the top level instead of inside `metadata` — the exact bug v1.5.1 fixed. Moved back inside `metadata`.
+
+### Fixed: Memory system bugs (higgsfield_memory.py + JSON DBs)
+- **ID prefix mismatch:** Seeded entries used `filt-`/`qual-` prefixes but code generates `F-`/`Q-`. Aligned seeded data to match code (`F-001`–`F-004`, `Q-001`–`Q-005`).
+- **Date field mismatch:** Seeded entries used `"date"` but code reads `"date_added"`. Renamed in all 9 seeded entries.
+- **Missing `outcome` field:** Added `"outcome": "workaround"` to all 4 filter entries.
+- **Docstring:** Added `update-quality` to usage docstring (command was wired but undocumented).
+
+### Fixed: README.md structure tree
+- Added `validate.py`, `CONTRIBUTING.md`, and `USER-GUIDE.pdf` to the project tree.
+
+### Fixed: validate.py
+- Added check for `tags` at top level of frontmatter (the regression it was created to prevent).
+- Removed unused `SKILL_DIRS` variable.
+
+### Fixed: Minor consistency
+- `higgsfield-recall/SKILL.md`: moved non-standard `compatibility` block inside `metadata`.
+
+### Updated: Version bumped to 2.0.1
+- All 21 SKILL.md files, MODELS-DEEP-REFERENCE.md, and README.md bumped from 2.0.0 to 2.0.1.
+
+---
+
 ## v2.0.0 — 2026-03-26
 
 ### New: Shared Negative Constraints Reference
@@ -89,7 +154,7 @@
 - **Key prompting principle**: "#1 mistake in video prompting" callout added to `higgsfield-prompt`.
 
 ### Updated: Platform model lineup
-- Video: Kling 3.0, Kling O1, Kling 2.6, Kling 2.5 Turbo, Kling 3.0 Motion Control, Sora 2, Google Veo 3.1, WAN 2.5/2.6, Seedance Pro, MiniMax Hailuo 02, Higgsfield DOP.
+- Video: Kling 3.0, Kling O1, Kling 2.6, Kling 2.5 Turbo, Kling 3.0 Motion Control, Sora 2, Google Veo 3.1, WAN 2.5/2.6, Seedance Pro, Minimax Hailuo 02, Higgsfield DoP (Lite/Standard/Turbo).
 - Image: Nano Banana Pro, Nano Banana 2, Soul 2.0, Soul Cinema Preview, Soul Cast, Flux 2, Flux Kontext, GPT Image 1.5, Seedream 4.0.
 - Updated root SKILL.md, dispatcher, model-guide.md, and higgsfield-models sub-skill.
 
@@ -212,9 +277,9 @@
 
 ### New: Cinematic Still Images section in prompt-examples.md
 - Added 3 fully worked cinematic still image examples using the v1.3.9 Image Prompt Formula (`[Shot size] + [Angle] + [Movement keyword] of [character]. [Pose]. [Environment]. [Lighting]. [Style].`).
-- **Example 8 — Sci-Fi Character Tension** (Nano Banana Pro 2, 16:9): MCU + Low Angle + Dolly Zoom. Cyber-enhanced operative in neon rain.
+- **Example 8 — Sci-Fi Character Tension** (Nano Banana Pro, 16:9): MCU + Low Angle + Dolly Zoom. Cyber-enhanced operative in neon rain.
 - **Example 9 — Epic Fantasy Scale** (Seedream 4.5, 16:9): EWS + Overhead + Crane Up. Lone warrior on a shattered bridge over a lava chasm.
-- **Example 10 — Psychological Thriller Detail** (Nano Banana Pro 2, 3:4): ECU + Dutch Angle + Rack Focus. Lipstick-smeared mirror reflection in a dim bathroom.
+- **Example 10 — Psychological Thriller Detail** (Nano Banana Pro, 3:4): ECU + Dutch Angle + Rack Focus. Lipstick-smeared mirror reflection in a dim bathroom.
 - Covers a mix of models, aspect ratios, and genres.
 
 ### Fixed: higgsfield_memory.py — Directory fallback bug
@@ -289,7 +354,7 @@
 
 ### New: Fast Path for simple requests
 - Dispatcher now distinguishes between **fast path** (clear creative intent, no constraints → generate immediately with sensible defaults) and **full path** (production-grade → confirm parameters first).
-- Defaults: 16:9, 8s, Cinematic, Kling 3.0 (character) or Sora 2 (action), Soul 2.0 (portrait) or Nano Banana Pro 2 (other images).
+- Defaults: 16:9, 8s, Cinematic, Kling 3.0 (character) or Sora 2 (action), Soul 2.0 (portrait) or Nano Banana Pro (other images).
 
 ### Fixed: Recall system paths
 - `higgsfield_memory.py` path changed from `SCRIPT_DIR.parent / "db"` to `SCRIPT_DIR / "db"` with fallback to same-directory. Matches actual directory layout.

@@ -3,11 +3,11 @@ name: higgsfield-models
 description: >
   Use when the user asks which model to use, wants to compare models,
   or needs guidance on selecting between Kling, Sora 2, Wan, Seedance,
-  Veo 3, MiniMax Hailuo, Soul, Nano Banana, or other Higgsfield engines.
+  Veo 3, Minimax Hailuo, Soul, Nano Banana, or other Higgsfield engines.
 user-invocable: true
-tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, v2.0.0]
 metadata:
-  version: 2.0.0
+  tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, v2.0.2]
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -196,11 +196,12 @@ natural lighting, emotional authenticity needed.
 
 ---
 
-### Kling 2.1 / Kling 2.1 Master
+### Kling 2.1 / Kling 2.1 Master (deprecated)
 **Duration:** 5s–10s · **Resolution:** 1080p
 **Best for:** Legacy workflows · lower cost when 2.5/2.6 quality isn't required
 **2.1 Master:** Higher quality tier of the 2.1 generation — better motion fidelity than standard 2.1
 **Note:** Older generation. Use 2.6 or 3.0 for current work unless cost is the constraint.
+**⚠ Deprecated:** Removed from the platform as of March 2026. Use Kling 2.6 (legacy) or Kling 3.0 for current work.
 
 ---
 
@@ -258,7 +259,7 @@ Example use case: A watercolor-style fantasy warrior emerging from mist.
 
 ---
 
-### Seedance 2.0 — Most Advanced Seedance Tier
+### Seedance 2.0 — Most Advanced Seedance Tier (upcoming — not yet on Higgsfield)
 **Duration:** 4–15s · **Resolution:** 720p / 1080p / 2K · **Audio:** Native
 **Best for:** Maximum multimodal reference control · complex motion · character consistency across scenes · professional production assets · content requiring audio-visual synchronization
 **Architecture:** Unified multimodal audio-video joint generation — text, image, audio, and video all processed simultaneously in one pass (not layered)
@@ -809,7 +810,7 @@ thunder rolling in, rain beginning to fall on the dark water surface.
 
 ## Grok Imagine (xAI / Aurora)
 
-Two models under one family: `grok-imagine-image` for images, `grok-imagine-video` for video. Both powered by Aurora — xAI's autoregressive mixture-of-experts architecture that predicts the next token from interleaved text and image data. This is architecturally distinct from diffusion models (Flux, SDXL, etc.) — Aurora generates tokens sequentially, giving it tighter compositional control and stronger multi-element scene understanding.
+Grok Imagine on Higgsfield consists of `grok-imagine-video` for video generation and editing. The `grok-imagine-image` model is available via the xAI API directly but is not currently in the Higgsfield platform UI. Both are powered by Aurora — xAI's autoregressive mixture-of-experts architecture that predicts the next token from interleaved text and image data. This is architecturally distinct from diffusion models (Flux, SDXL, etc.) — Aurora generates tokens sequentially, giving it tighter compositional control and stronger multi-element scene understanding.
 
 **Aurora architecture key strengths:**
 - Photorealistic rendering with detailed textures, convincing lighting, sharp compositions
@@ -820,7 +821,9 @@ Two models under one family: `grok-imagine-image` for images, `grok-imagine-vide
 
 ---
 
-### Grok Imagine Image (`grok-imagine-image`)
+### Grok Imagine Image (`grok-imagine-image`) — NOT available on Higgsfield
+
+> **⚠ Platform notice:** Grok Imagine Image is available via the xAI API directly but is NOT currently available as an image model in the Higgsfield platform UI. The documentation below covers the xAI API capabilities for reference. For image generation on Higgsfield, use Soul 2.0, Nano Banana Pro, Seedream, or other listed image models.
 **Type:** Image generation + image editing · **Resolution:** 1k / 2k · **Output:** URL or base64
 **Best for:** Photorealistic images · precise text/logo rendering · multi-person scenes · iterative image editing chains · style transfer · batch generation for A/B testing
 
@@ -1016,7 +1019,7 @@ Best use cases:
 
 ---
 
-### MiniMax Hailuo 02
+### Minimax Hailuo 02
 **Best for:** Fluid motion · dynamic action · sports · dance
 **Strengths:** Exceptional motion smoothness, great for physical performance
 **Weaknesses:** Less strong on subtle facial acting
@@ -1074,19 +1077,19 @@ Best use cases:
 | Artistic / stylized / fantasy | Wan 2.5/2.6 |
 | Fast iteration / social content (no audio needed) | Seedance Pro |
 | Native audio + dialogue / lip-sync in video | Seedance 1.5 Pro |
-| 12-asset multimodal / reference video → new scene | Seedance 2.0 (R2V) |
-| Edit/replace elements in existing video | Seedance 2.0 (V2V) |
-| Complex fight / synchronized motion at 2K | Seedance 2.0 |
+| 12-asset multimodal / reference video → new scene | Seedance 2.0 (upcoming) (R2V) |
+| Edit/replace elements in existing video | Seedance 2.0 (upcoming) (V2V) |
+| Complex fight / synchronized motion at 2K | Seedance 2.0 (upcoming) |
 | Nature / environment / documentary (stable) | Veo 3 |
 | Subject/character consistency across scene (ref images) | Veo 3.1 |
 | Define exact start + end frame | Veo 3.1 |
 | Extend existing Veo video (up to 148s) | Veo 3.1 |
 | Fast Veo iteration / volume generation | Veo 3.1 Fast |
-| Fluid physical motion / dance/sports | MiniMax Hailuo |
-| Photorealistic image with precise text/logo rendering | Grok Imagine Image |
-| Multi-image composite (up to 3 source images) | Grok Imagine Image |
-| Iterative multi-turn image refinement | Grok Imagine Image |
-| Style transfer on existing image | Grok Imagine Image |
+| Fluid physical motion / dance/sports | Minimax Hailuo |
+| Photorealistic image with precise text/logo rendering | GPT Image 1.5 |
+| Multi-image composite (up to 3 source images) | Multi Reference |
+| Iterative multi-turn image refinement | Flux Kontext |
+| Style transfer on existing image | Flux Kontext |
 | 10s video with native audio (text or image-to-video) | Grok Imagine Video |
 | Edit/restyle existing video footage | Grok Imagine Video |
 | Best portrait / fashion image | Soul 2.0 |

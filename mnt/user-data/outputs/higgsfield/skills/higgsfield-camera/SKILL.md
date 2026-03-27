@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -170,7 +170,7 @@ Layering two compatible movements creates richer shots:
 
 > **Negative constraints:** For temporal/consistency artifacts related to camera (contradictory
 > movements, camera not working, static I2V) and their prevention phrases, see
-> `shared/negative-constraints.md` — Temporal/Consistency Artifacts section.
+> `../shared/negative-constraints.md` — Temporal/Consistency Artifacts section.
 
 ---
 

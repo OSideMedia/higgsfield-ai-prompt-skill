@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, mixed-media, presets, artistic, noir, sketch, particles, style]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -194,7 +194,7 @@ Result: Diverse content, unified by a consistent artistic treatment.
 ---
 
 > **Negative constraints:** For texture/lighting artifacts when using Mixed Media overlays,
-> see `shared/negative-constraints.md` — Texture/Lighting Artifacts section.
+> see `../shared/negative-constraints.md` — Texture/Lighting Artifacts section.
 
 ---
 

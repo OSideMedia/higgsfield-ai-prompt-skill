@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -162,7 +162,7 @@ in your prompts for precise control over how light shapes the scene.
 
 > **Negative constraints:** For texture/lighting artifacts (flickering textures, style ignored,
 > over-lit output, color grade inconsistency) and their prevention phrases, see
-> `shared/negative-constraints.md` — Texture/Lighting Artifacts section.
+> `../shared/negative-constraints.md` — Texture/Lighting Artifacts section.
 
 ---
 

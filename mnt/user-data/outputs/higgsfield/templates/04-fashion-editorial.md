@@ -7,7 +7,7 @@ Fashion lookbook content, editorial-style portraits, outfit showcases, runway ae
 User asks for fashion content, editorial, lookbook, outfit showcase, model portrait, style campaign, or any prompt where clothing/aesthetic is the hero.
 
 ## Recommended model
-**Soul 2.0** for portrait-first fashion (best with Moodboard + Color Transfer). **Nano Banana Pro 2** for maximum sharpness and detail. **Kling 3.0** for video with slow, deliberate camera movement.
+**Soul 2.0** for portrait-first fashion (best with Moodboard + Color Transfer). **Nano Banana Pro** for maximum sharpness and detail. **Kling 3.0** for video with slow, deliberate camera movement.
 
 ## Example prompt
 

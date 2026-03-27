@@ -12,11 +12,11 @@
 | Kling 3.0 Motion Control | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★☆☆ | 3–30s | Optional | Motion transfer from reference video |
 | Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Character drama, realism |
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration |
-| Kling 2.1 Master (legacy) | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 5–10s | ❌ | Legacy, lower cost |
+| Kling 2.1 Master (deprecated) | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 5–10s | ❌ | Deprecated — removed from platform. Use Kling 2.6 or 3.0 |
 | Sora 2 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | ❌ | Epic scale, physics, action |
 | Wan 2.5 | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Artistic, stylized, fantasy |
 | Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Improved Wan 2.5 |
-| Seedance 2.0 | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 10s | ✅ | 12-asset multimodal, complex motion |
+| Seedance 2.0 (upcoming) | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 10s | ✅ | 12-asset multimodal, complex motion |
 | Seedance 1.5 Pro | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 10s | ✅ | Multilingual audio, lip-sync, drama |
 | Seedance Pro | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | 10s | ❌ | Fast iteration, no audio needed |
 | Veo 3.1 | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Ref images, first/last frame, extension, 4K |
@@ -24,7 +24,8 @@
 | Veo 3 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 4–8s | ✅ | Nature, environment, stable model |
 | Veo 3 Fast | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | 8s | ✅ | Fast, stable, volume content |
 | Grok Imagine Video | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★☆ | 1–15s | ✅ | Video editing, animate images, social clips |
-| MiniMax Hailuo | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | — | ❌ | Dance, sports, fluid motion |
+| Minimax Hailuo | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | — | ❌ | Dance, sports, fluid motion |
+| Higgsfield DoP (Lite/Standard/Turbo) | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 3–5s | ❌ | I2V specialist, 50+ camera presets, optical physics |
 
 ## Image Models — Head to Head
 
@@ -74,6 +75,9 @@ Is this image or video?
     ├── Need motion transfer from reference video?
     │   └── → Kling 3.0 Motion Control
     │
+    ├── Animate a still image with cinematic camera?
+    │   └── → Higgsfield DoP (Lite/Standard/Turbo)
+    │
     ├── Need very long camera motion (up to 30s)?
     │   └── → Kling 3.0 Motion Control
     │
@@ -84,7 +88,7 @@ Is this image or video?
     │   └── Fantasy, stylized, painterly, surreal? → Wan 2.5 / 2.6
     │
     ├── Is fluid motion / physical performance the focus?
-    │   └── Dance, sports, martial arts, gymnastics? → MiniMax Hailuo
+    │   └── Dance, sports, martial arts, gymnastics? → Minimax Hailuo
     │   └── Video editing / restyle existing footage? → Grok Imagine Video
     │   └── Animate a still image (10s, audio)? → Grok Imagine Video
     │
@@ -97,7 +101,7 @@ Is this image or video?
     │
     └── Need fast iteration / social content?
         ├── Audio required? → Seedance 1.5 Pro
-        ├── 12-asset multimodal reference? → Seedance 2.0
+        ├── 12-asset multimodal reference? → Seedance 2.0 (upcoming — use Seedance 1.5 Pro until launch)
         └── No audio, speed first? → Seedance Pro
 ```
 
@@ -108,7 +112,7 @@ Is this image or video?
 The Kling lineup has two distinct interfaces in Higgsfield:
 
 **Create Video tab** — Generate new video from text, image, or references
-- Kling 3.0, 3.0 Omni, O1 Video, Motion Control, 2.6, 2.5 Turbo, 2.1, 2.1 Master
+- Kling 3.0, 3.0 Omni, O1 Video, Motion Control, 2.6, 2.5 Turbo
 
 **Edit Video tab** — Transform existing footage (video-to-video)
 - Kling O1 Video Edit: natural language edits, no masking, 720p output
@@ -139,7 +143,7 @@ Some camera controls perform better on certain models:
 | Timelapse Landscape | Veo 3 |
 | Hyperlapse | Veo 3, Sora 2 |
 | Handheld (documentary feel) | Kling 2.6, Veo 3 |
-| Action Run (physical chase) | MiniMax Hailuo, Kling 2.6 |
+| Action Run (physical chase) | Minimax Hailuo, Kling 2.6 |
 | Super Dolly Out (scale reveal) | Sora 2 |
 | Dutch Angle (horror/tension) | Wan 2.5, Kling 2.6 |
 | Long camera motion path | Kling 3.0 Motion Control |
@@ -156,7 +160,7 @@ Some camera controls perform better on certain models:
 | Explosion / Destruction | Sora 2 |
 | Surreal / Glitch / Multiverse | Wan 2.5 |
 | Horror presets | Kling 2.6, Wan 2.5 |
-| Dance / Motion glow | MiniMax Hailuo |
+| Dance / Motion glow | Minimax Hailuo |
 | Nature effects (Sakura, Bloom, Northern Lights) | Veo 3, Wan 2.5 |
 | Bullet Time / Slow motion | Kling 2.6, Sora 2 |
 | Stylized (Anime, Pixar, Claymation) | Kling 3.0, Wan 2.5 |
@@ -170,7 +174,7 @@ Some camera controls perform better on certain models:
 | Seedance Pro | Low |
 | Kling 2.5 Turbo | Low–Medium |
 | Wan 2.5 | Low–Medium |
-| MiniMax Hailuo | Medium |
+| Minimax Hailuo | Medium |
 | Kling 2.6 | Medium |
 | Sora 2 | Medium–High |
 | Kling O1 Video Edit | ~9 credits |
@@ -179,3 +183,21 @@ Some camera controls perform better on certain models:
 | Veo 3 | High |
 
 Plans: Free (25 credits/mo) · Basic $6/mo (150) · Pro $27/mo (700) · Ultimate $55/mo (1500)
+
+---
+
+## Higgsfield DoP — Image-to-Video Specialist
+
+Higgsfield DoP is Higgsfield's native Image-to-Video (I2V) system with three quality tiers:
+- **Higgsfield Lite** — 720p, 3–5s, fastest
+- **Higgsfield Standard** — 720p, 3–5s, balanced
+- **Higgsfield Turbo** — 720p, 3–5s, highest quality
+
+**What makes DoP unique:**
+- Specialized I2V generative model — designed for animating static images
+- 50+ cinematic camera presets (Bullet Time, Crash Zoom, 360 Orbit, Robo Arm, FPV Drone, etc.)
+- Simulates real-world optical physics: bokeh, parallax, natural lighting shifts as camera moves through 3D-mapped environment
+- Multi-Frame Guidance: starting image + "last frame" reference for seamless transitions
+- Preset categories: All, New, Trending, Effects, Basic Camera Control, Epic Camera Control, Catch the Pulse, Mix
+
+**Best for:** Social media ads, product showcases, film pre-visualization, animating hero images with cinematic camera movement

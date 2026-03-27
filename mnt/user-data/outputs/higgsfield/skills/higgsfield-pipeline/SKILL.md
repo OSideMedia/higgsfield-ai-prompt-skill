@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -377,7 +377,7 @@ need 8 stages. Run it through standard generation → upscale → post.
 > only the Motion Block changes per shot. See `higgsfield-prompt` and `higgsfield-soul`.
 
 > **Negative constraints:** For artifacts specific to multi-shot workflows (identity drift,
-> scene continuity breaking, camera contradictions), see `shared/negative-constraints.md` —
+> scene continuity breaking, camera contradictions), see `../shared/negative-constraints.md` —
 > Temporal/Consistency and Face/Identity sections.
 
 ---

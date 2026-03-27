@@ -42,6 +42,8 @@ Style: Cinematic. Cold blue shadows, warm amber market light, high contrast. 16:
 - **Temporal/Consistency**: Use one camera movement per shot. Don't combine Action Run + Bullet Time in a single generation — chain them as separate clips.
 - **Face/Identity**: If using Soul ID, separate identity description from motion description.
 
+> **Identity/Motion separation:** If a person appears in this shot and you're using Soul ID, split the prompt into Identity Block and Motion Block per the rule in `higgsfield-soul`. See template 06 (Portrait/Character Intro) for the full pattern.
+
 ## Common mistakes
 1. **Too many camera switches in one prompt** — "Action Run then Whip Pan then Bullet Time" creates visual soup. One camera per clip, chain in post.
 2. **Generic camera language** — "camera follows dramatically" does nothing. Name the exact preset.

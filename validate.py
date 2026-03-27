@@ -20,10 +20,6 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-SKILL_DIRS = [
-    ROOT / "mnt/user-data/outputs/higgsfield",
-    ROOT / "mnt/user-data/outputs/higgsfield/skills",
-]
 DB_FILES = {
     "filter": ROOT / "db/filter-memory.json",
     "quality": ROOT / "db/quality-memory.json",
@@ -70,6 +66,9 @@ def check_frontmatter(skill_file: Path):
         present = re.search(rf"^{field}:", fm, re.MULTILINE) is not None
         if not present:
             check(False, f"{skill_file.relative_to(ROOT)}: missing frontmatter field '{field}'")
+    # tags should be nested inside metadata, not at the top level
+    if re.search(r"^tags:", fm, re.MULTILINE):
+        check(False, f"{skill_file.relative_to(ROOT)}: tags should be inside metadata, not at top level")
 
 
 def check_relative_paths(skill_file: Path):

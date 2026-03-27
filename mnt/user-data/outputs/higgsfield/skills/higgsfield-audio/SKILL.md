@@ -4,12 +4,12 @@ description: >
   Use when the user asks about audio in Higgsfield videos, needs to add dialogue
   or lip-sync, wants sound effects or ambient sound in generated video, asks about
   music or BGM in output, or is using any audio-capable model (Kling 3.0, Seedance
-  1.5 Pro, Seedance 2.0, Veo 3/3.1, Grok Imagine Video). Also use when the user's
+  1.5 Pro, Seedance 2.0 (upcoming), Veo 3/3.1, Grok Imagine Video). Also use when the user's
   prompt would benefit from audio direction but they haven't mentioned it.
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -21,7 +21,7 @@ metadata:
 | Model | Audio type | Dialogue | SFX | Ambient | BGM | Lip-sync |
 |-------|-----------|----------|-----|---------|-----|----------|
 | Kling 3.0 / Omni | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Multi-language |
-| Seedance 2.0 | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Multi-language |
+| Seedance 2.0 (upcoming) | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Multi-language |
 | Seedance 1.5 Pro | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Best lip-sync |
 | Veo 3 / 3.1 | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ English best |
 | Grok Imagine Video | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -146,7 +146,7 @@ Lip-sync is the most failure-prone audio feature. Follow these rules strictly:
 - Don't use 15s clips for lip-sync — technical max but accuracy degrades past 8s
 - Don't include ambient or music tokens if lip-sync is the priority — they invite
   the generative audio engine to override your dialogue
-- Don't use non-MP3 audio for Seedance 2.0 — WAV/AAC/OGG fail silently
+- Don't use non-MP3 audio for Seedance 2.0 (when available) — WAV/AAC/OGG fail silently
 
 ### Multi-character dialogue workaround:
 Multi-person lip-sync matching is an unresolved limitation across all models.
@@ -182,7 +182,7 @@ Background ambient: [environment description].
 - Most stable emotional tone control
 - Use for: professional dialogue scenes, multilingual content
 
-### Seedance 2.0
+### Seedance 2.0 (upcoming)
 - Upload MP3 audio as @Audio reference (part of Rule of 12)
 - **MP3 only** — WAV/AAC/OGG/FLAC fail silently with no error
 - Max 15s per clip, 3 audio files, 10MB each
@@ -208,7 +208,7 @@ Background ambient: [environment description].
 |---------|-------|-----|
 | Lip-sync completely off | Audio > 8s, or head motion tokens present | Trim to 5s, remove nodding/turning tokens |
 | Model replaces uploaded audio | Ambient/music tokens in prompt invite generative override | Add timestamp anchoring phrase, remove all ambient/music tokens |
-| Dialogue missing entirely | Non-MP3 format used (Seedance 2.0) | Convert to MP3 128-320kbps |
+| Dialogue missing entirely | Non-MP3 format used (Seedance 2.0, upcoming) | Convert to MP3 128-320kbps |
 | SFX drowns out dialogue | Too many SFX cues competing | Reduce to 1-2 SFX per shot, prioritize dialogue |
 | Audio sounds robotic | Flat emotional cues | Add emotional direction: "says warmly", "whispers with urgency" |
 | Background music too loud | BGM description too prominent in prompt | Move BGM to end of prompt, reduce detail, or say "subtle BGM" |
@@ -218,7 +218,7 @@ Background ambient: [environment description].
 ## When to Skip Audio
 
 Not every prompt needs audio direction. Skip audio cues when:
-- Using a model without native audio (Kling 2.6, Wan, Seedance Pro, MiniMax Hailuo)
+- Using a model without native audio (Kling 2.6, Wan, Seedance Pro, Minimax Hailuo)
 - The content is purely visual (product beauty shots, abstract motion, landscape)
 - Audio will be added entirely in post-production
 - The prompt is already at the 200-word limit and visual direction is more important
@@ -227,7 +227,7 @@ Not every prompt needs audio direction. Skip audio cues when:
 
 > **Negative constraints:** For audio-specific artifacts (lip-sync desync, background music
 > overriding dialogue, SFX drowning dialogue) and their prevention phrases, see
-> `shared/negative-constraints.md` — Temporal/Consistency Artifacts section.
+> `../shared/negative-constraints.md` — Temporal/Consistency Artifacts section.
 
 ---
 

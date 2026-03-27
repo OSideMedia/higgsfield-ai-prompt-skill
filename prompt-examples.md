@@ -10,9 +10,9 @@ structure, and specificity. All are original, no IP or real names.
 New in v1.3.9 — examples using the exact image prompt formula:
 `[Shot size] + [Angle] + [Movement keyword] of [character/subject]. [Pose]. [Environment]. [Lighting]. [Style].`
 
-### Sci-Fi Character Tension — Nano Banana Pro 2
+### Sci-Fi Character Tension — Nano Banana Pro
 ```
-Model: Nano Banana Pro 2
+Model: Nano Banana Pro
 Aspect: 16:9 | Style: Cinematic
 
 Medium Close-Up (MCU) Low Angle Dolly Zoom of a weathered space pilot in a cracked visor.
@@ -34,9 +34,9 @@ Cold blue hour, soft diffused moonlight piercing through heavy clouds.
 Dark fantasy concept art, high contrast, 4K resolution.
 ```
 
-### Psychological Thriller Detail — Nano Banana Pro 2
+### Psychological Thriller Detail — Nano Banana Pro
 ```
-Model: Nano Banana Pro 2
+Model: Nano Banana Pro
 Aspect: 3:4 | Style: 1970s Thriller
 
 Extreme Close-Up (ECU) Dutch Angle Rack Focus of a trembling hand clutching an ornate silver key.
@@ -329,7 +329,7 @@ Style: Super 8MM. Warm grain, soft afternoon light. 16:9.
 
 ### Coffee Mug — Morning Ritual
 ```
-Model: Kling 2.6 (video) / Nano Banana Pro 2 (image)
+Model: Kling 2.6 (video) / Nano Banana Pro (image)
 Aspect: 16:9 | Duration: 5s | Style: Cinematic commercial
 
 A matte black insulated mug, minimal design, no branding.
@@ -343,7 +343,7 @@ Sound: quiet liquid pour, subtle ceramic texture.
 
 ### Sneaker Drop
 ```
-Model: Nano Banana Pro 2 (image) → Kling 2.6 (video)
+Model: Nano Banana Pro (image) → Kling 2.6 (video)
 Aspect: 1:1 | Style: Cinematic
 
 A single sneaker — white with minimal branding — suspended mid-air against a black void.
@@ -386,7 +386,7 @@ Style: Cinematic, natural light, cool blue-grey dawn. 16:9.
 
 ### Contemporary Solo
 ```
-Model: MiniMax Hailuo
+Model: Minimax Hailuo
 Aspect: 16:9 | Duration: 10s | Style: Cinematic
 
 A dancer in a white flowing dress performs alone in a vast black studio.
@@ -400,7 +400,7 @@ Apply Glow Trace preset — her movement leaves a trail of white light.
 
 ### Hip-Hop Cypher
 ```
-Model: MiniMax Hailuo
+Model: Minimax Hailuo
 Aspect: 9:16 | Duration: 8s | Style: Cinematic
 
 Four dancers in a circle under a single streetlight at night.

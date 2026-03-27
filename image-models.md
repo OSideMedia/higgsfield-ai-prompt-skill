@@ -370,4 +370,3 @@ These are upload-based transformation tools, not text-to-image generators.
 | FLUX.2 Flex | 5 | 2K | ⚠ External |
 | FLUX.2 Max | 6 | 2K | ⚠ Most expensive |
 | Face Swap | Free | — | 2 free then paid |
-| Grok Imagine Image | — | 1K / 2K | Photorealistic, text/logo, multi-image editing |

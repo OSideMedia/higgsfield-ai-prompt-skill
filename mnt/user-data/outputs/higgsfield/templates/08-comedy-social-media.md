@@ -7,7 +7,7 @@ Comedic skits, social media content, reaction videos, meme-style clips, TikTok/R
 User asks for funny content, social video, TikTok, Reel, skit, meme, reaction, or anything designed primarily for social platforms with a comedic or entertaining tone.
 
 ## Recommended model
-**Kling 3.0** for dialogue-driven comedy (native audio, lip-sync). **MiniMax Hailuo** for exaggerated physical comedy (best fluid motion). **Seedance Pro** for fast iteration on multiple comedic concepts.
+**Kling 3.0** for dialogue-driven comedy (native audio, lip-sync). **Minimax Hailuo** for exaggerated physical comedy (best fluid motion). **Seedance Pro** for fast iteration on multiple comedic concepts.
 
 ## Example prompt
 
@@ -48,7 +48,7 @@ Style: Cinematic, bright office lighting, high-key, neutral tones. 9:16.
 
 ## Variations
 - **Reaction video style**: Close-up on face, Kling 3.0 with audio, exaggerated micro-expression (Frozen Shock or Suppressed Smile)
-- **Physical comedy**: MiniMax Hailuo, wider shot, exaggerated movement, Apply Clone Explosion or Objects Around preset
+- **Physical comedy**: Minimax Hailuo, wider shot, exaggerated movement, Apply Clone Explosion or Objects Around preset
 - **Talking head/monologue**: 9:16, medium close-up, static camera, dialogue-driven, "direct to camera"
 - **Meme format**: 1:1 square, static, bold simple setup, use Vibe Motion for text overlay
 

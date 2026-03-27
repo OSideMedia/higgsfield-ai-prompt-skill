@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 ---
@@ -316,7 +316,7 @@ Camera: slight Dolly In. Style: Lifestyle, warm tones, 9:16 vertical.
 
 > **Negative constraints:** For face/identity artifacts (face morphing, identity drift,
 > character swap, plastic skin) and their prevention phrases, see
-> `shared/negative-constraints.md` — Face/Identity Artifacts section.
+> `../shared/negative-constraints.md` — Face/Identity Artifacts section.
 
 ---
 

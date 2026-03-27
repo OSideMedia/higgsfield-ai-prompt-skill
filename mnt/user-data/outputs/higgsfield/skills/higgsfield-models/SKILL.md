@@ -3,13 +3,13 @@ name: higgsfield-models
 description: >
   Use when the user asks which model to use, wants to compare models,
   or needs guidance on selecting between Kling, Sora 2, Wan, Seedance,
-  Veo 3, MiniMax Hailuo, Soul, Nano Banana, or other Higgsfield engines.
+  Veo 3, Minimax Hailuo, Soul, Nano Banana, or other Higgsfield engines.
 user-invocable: true
 metadata:
   references:
     - MODELS-DEEP-REFERENCE.md
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana]
-  version: 2.0.0
+  version: 2.0.2
   updated: 2026-03-26
   parent: higgsfield
 
@@ -37,13 +37,14 @@ specifics, parameters, edge cases, API details) → read `MODELS-DEEP-REFERENCE.
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration |
 | Sora 2 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | ❌ | Epic scale, physics, action |
 | Wan 2.5/2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Artistic, stylized, fantasy |
-| Seedance 2.0 | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 10s | ✅ | 12-asset multimodal, complex motion |
+| Seedance 2.0 (upcoming) | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 10s | ✅ | 12-asset multimodal, complex motion |
 | Seedance 1.5 Pro | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 10s | ✅ | Best lip-sync, multilingual audio |
 | Seedance Pro | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | 10s | ❌ | Fast iteration, no audio needed |
 | Veo 3.1 | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Ref images, first/last frame, 4K |
 | Veo 3 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 4–8s | ✅ | Nature, environment, stable model |
 | Grok Imagine Video | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★☆ | 1–15s | ✅ | Video editing, animate images |
-| MiniMax Hailuo | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | — | ❌ | Dance, sports, fluid motion |
+| Minimax Hailuo | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | — | ❌ | Dance, sports, fluid motion |
+| Higgsfield DoP (Lite/Standard/Turbo) | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 3–5s | ❌ | I2V specialist, 50+ presets, optical physics |
 
 ---
 
@@ -59,7 +60,7 @@ Is this image or video?
 │   ├── Fast pro-quality / text rendering? → Nano Banana 2
 │   ├── Reference consistency or dense text? → Seedream 4.5
 │   ├── Complex layout / multi-panel? → Seedream 5.0 Lite
-│   ├── Text/logo in image? → GPT Image 1.5 or Grok Imagine Image
+│   ├── Text/logo in image? → GPT Image 1.5
 │   └── Edit an existing image? → Flux Kontext
 │
 └── VIDEO
@@ -77,6 +78,9 @@ Is this image or video?
     ├── Need motion transfer from reference video?
     │   └── → Kling 3.0 Motion Control
     │
+    ├── Animate a still image with cinematic camera?
+    │   └── → Higgsfield DoP (Lite/Standard/Turbo)
+    │
     ├── Is the environment/phenomenon the hero?
     │   ├── Nature, documentary, stable → Veo 3
     │   ├── Need ref image consistency → Veo 3.1
@@ -84,10 +88,10 @@ Is this image or video?
     │
     ├── Is it action/spectacle?
     │   ├── Epic scale, crowds, physics → Sora 2
-    │   └── Dance, sports, fluid motion → MiniMax Hailuo
+    │   └── Dance, sports, fluid motion → Minimax Hailuo
     │
     ├── Need maximum reference control?
-    │   ├── Up to 12 assets (images+video+audio) → Seedance 2.0
+    │   ├── Up to 12 assets (images+video+audio) → Seedance 2.0 (upcoming — use Seedance 1.5 Pro until launch)
     │   ├── Up to 7 image refs → Kling O1 Video
     │   └── Up to 3 asset refs → Veo 3.1
     │
@@ -118,7 +122,6 @@ Is this image or video?
 | Fast pro-quality + text rendering | Nano Banana 2 | 1.5 |
 | Complex prompts / text in image | GPT Image 1.5 | 2 |
 | Max fidelity / Thinking mode / 14 refs | Nano Banana Pro | 2 |
-| Photorealistic + text/logo | Grok Imagine Image | — |
 | Image editing / inpainting | Flux Kontext | varies |
 
 Full image model specs + UI controls → `../../../../../../image-models.md`

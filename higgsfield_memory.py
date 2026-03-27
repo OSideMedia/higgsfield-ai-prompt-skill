@@ -11,6 +11,7 @@ Usage:
   python higgsfield_memory.py query-filter <search_terms>
   python higgsfield_memory.py query-quality <search_terms>
   python higgsfield_memory.py update-filter <entry_id> <outcome>
+  python higgsfield_memory.py update-quality <entry_id> <outcome> [improved_prompt] [notes]
   python higgsfield_memory.py stats
   python higgsfield_memory.py export-summary
   python higgsfield_memory.py health

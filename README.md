@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-2.0.2-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -12,7 +12,7 @@ A comprehensive Claude skill library for generating high-quality prompts on
 Transforms natural language requests into production-ready Higgsfield prompts using:
 - The **MCSLA formula** (Model · Camera · Subject · Look · Action)
 - Named camera controls and motion presets the platform recognizes
-- Model selection guidance across Kling 3.0, Sora 2, Veo 3.1, WAN, Seedance, MiniMax Hailuo, Higgsfield DOP, and more
+- Model selection guidance across Kling 3.0, Sora 2, Veo 3.1, WAN, Seedance, Minimax Hailuo, Higgsfield DoP, and more
 - Genre recipe templates for action, horror, romance, sci-fi, product ads, and more
 - Soul ID character consistency guidance + Character Sheet creation
 - Troubleshooting for failed or poor generations
@@ -47,12 +47,15 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 ├── SKILL.md                          ← Model selection guide (routes model questions)
 ├── README.md                         ← This file
 ├── CHANGELOG.md                      ← Version history
+├── CONTRIBUTING.md                   ← Contribution guidelines
+├── USER-GUIDE.pdf                    ← Exported user guide
 ├── model-guide.md                    ← Model comparison tables + decision flowchart
 ├── image-models.md                   ← Image model reference + pricing tiers
 ├── vocab.md                          ← Full platform vocabulary reference
 ├── prompt-examples.md                ← High-quality example prompts + Before/After pairs
 ├── photodump-presets.md              ← Photodump mode presets
 ├── higgsfield_memory.py              ← Memory system script
+├── validate.py                       ← Pre-release validation script
 ├── db/
 │   ├── filter-memory.json            ← Content filter memory (seeded)
 │   └── quality-memory.json           ← Quality failure memory (seeded)
@@ -123,4 +126,4 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 
 ---
 
-Built February 2026 · v2.0.0 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v2.0.2 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)
