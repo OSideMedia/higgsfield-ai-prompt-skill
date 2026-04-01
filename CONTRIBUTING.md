@@ -15,6 +15,9 @@ Contributions are welcome! This project is a Claude skill library for Higgsfield
 - Keep sub-skill files focused on a single concern.
 - Follow the existing MCSLA formula structure for prompt-related changes.
 - Update `CHANGELOG.md` if your change is user-facing.
+- Model information must stay accurate to current Higgsfield platform capabilities.
+- Prompt examples should be production-quality and follow MCSLA structure.
+- Cross-references between skill files must resolve to real paths (`python3 validate.py` catches these).
 
 ## License
 
