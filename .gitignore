@@ -28,6 +28,10 @@ Desktop.ini
 .Spotlight-V100
 .Trashes
 
+# Claude Code
+CLAUDE.local.md
+.claude/settings.local.json
+
 # Logs / temp
 *.log
 *.bak
