@@ -1,5 +1,67 @@
 # Changelog
 
+## v3.0.0 — 2026-04-06
+
+### Added
+- Cinema Studio 3.0 support (Business/Team plan only) across all sub-skills
+  - Full specs: 15s max duration, 720p video, 2K image, 48 credits, 7 genres, 7 aspect ratios (+ 21:9 ultrawide)
+  - Smart shot control (auto camera planning) + Custom multi-shot (up to 6 scenes, 12s)
+  - Native dual-channel stereo audio (unified multimodal architecture)
+  - Soul Cast 3.0: General/Character/Location modes, 2K, 0.125 credits
+  - @ reference patterns: up to 9 images, 3 video clips, 3 audio clips (≤12 total)
+  - Resolution Comparison Table (Cinema Studio 2.5 vs 3.0) in higgsfield-cinema and higgsfield-models
+  - "When to Use 3.0 vs 2.5" decision table
+- Seedance 2.0 prompting best practices integrated into MCSLA framework
+  - Intent over Precision (30–100 word sweet spot)
+  - Director's Formula → MCSLA mapping with early-token priority
+  - Genre Router with 7 genre-specific prompt length and lead-with targets
+  - I2V Gate rule for image-to-video workflows
+  - Anti-Slop vocabulary check (kill: beautiful, stunning, epic, amazing, dynamic, energetic)
+  - Physics Language — concrete consequences instead of mood words
+  - Degree Adverbs for intensity guidance
+  - Narrative Structure Options (fluid vs timestamp storyboard)
+  - Three-Act Rhythm for action prompts (Charge-up → Burst → Aftermath)
+  - No Negative Prompts guidance (positive constraints only)
+- One-Move Rule for camera control (one primary camera move per shot)
+- Genre-Based Camera Presets table (8 genres with primary/secondary/avoid)
+- Reliable Camera Phrasing Library (7 tested phrases)
+- Camera Transfer via @Video reference + Dual Video Reference patterns
+- Smart Mode documentation for Cinema Studio 3.0 auto-camera
+- Intent-First choreography for motion (describe intent, not timestamps)
+- @Video Reference as primary method for action/fight scenes
+- Beat Density Diagnostic (1–2 beats per 5 seconds)
+- One Style Anchor Rule + "Cinematic Does Nothing" guidance
+- CGI Material Contract (4 properties per surface)
+- Period Control (materials + lighting, not decade labels)
+- Style Transfer via @Reference
+- Audio elevated to first-class prompt element (SCELA integration)
+  - Native audio-video joint generation documentation
+  - Input constraints (MP3/WAV, 3 clips, ≤15s, <15MB)
+  - Lip-sync (experimental, single face)
+  - Tone/Voice cloning via @Reference
+  - Dialect support and timestamp anchoring
+  - Sound design specificity guidance
+- Character consistency best practices for Soul Cast 3.0
+- 6-symptom diagnostic tree for Cinema Studio 3.0 troubleshooting
+- Cinema Studio 3.0 genre mappings + prompt length targets in all 10 genre templates
+- @reference workflow examples in all 10 genre templates
+- Cinema Studio 3.0 Notes in shared negative constraints (positive alternatives table)
+- Cinema Studio 3.0 comparison section in higgsfield-models
+
+### Changed
+- Seedance 2.0 status: removed all "(upcoming)" labels — now documented as active
+- Negative constraints updated: Cinema Studio 3.0 does not support negative prompt syntax — positive alternatives provided
+- Genre templates updated with Cinema Studio 3.0 genre mappings and Speed Ramp recommendations
+- Dispatcher routing table updated with Cinema Studio 3.0 entries
+- Unique Feature Matrix expanded with Cinema Studio 3.0 capabilities
+
+### Preserved
+- All Cinema Studio 2.5 documentation remains intact and fully supported
+- MCSLA formula retained as primary framework throughout
+- All v2.0.2 content preserved — this update is purely additive
+
+---
+
 ## v2.0.2 — 2026-03-26
 
 ### Fixed: Higgsfield DoP documented as model family

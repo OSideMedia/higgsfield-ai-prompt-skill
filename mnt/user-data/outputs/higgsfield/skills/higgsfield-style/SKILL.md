@@ -6,8 +6,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 ---
 
@@ -163,6 +163,63 @@ in your prompts for precise control over how light shapes the scene.
 > **Negative constraints:** For texture/lighting artifacts (flickering textures, style ignored,
 > over-lit output, color grade inconsistency) and their prevention phrases, see
 > `../shared/negative-constraints.md` — Texture/Lighting Artifacts section.
+
+---
+
+## Style Best Practices (Cinema Studio 3.0 / Seedance 2.0)
+
+These principles apply to Cinema Studio 3.0's generation engine (Business/Team plan only) and complement the style vocabulary above.
+
+### One Style Anchor Rule
+
+ONE primary style anchor beats five adjectives. Beyond 2–3 style tokens, model attention dilutes and the output becomes generic.
+
+**Wrong:** `Style: cinematic, anamorphic, moody, atmospheric, dramatic lighting, film grain, desaturated, noir-inspired, high contrast, vintage feel`
+
+**Right:** `Style: anamorphic, subtle grain, muted palette`
+
+Pick your anchor (the single most important style element), add 1–2 supporting tokens, stop.
+
+### "Cinematic" Does Nothing
+
+Every generated video is "cinematic" by default. The word adds zero information. Replace it with a specific lens or contrast description:
+
+- ~~"cinematic"~~ → `shallow depth of field, warm highlights, cool shadows`
+- ~~"cinematic look"~~ → `anamorphic, 2.35:1, horizontal lens flares`
+- ~~"cinematic quality"~~ → `35mm film stock, natural grain, Kodak Portra palette`
+
+### Style Transfer via @Reference
+
+Visual style references beat descriptive text. One reference image/video carries more style information than 10 descriptor words:
+
+```
+Match the visual style, color grading, and film texture of @Video1.
+A woman walks through autumn leaves in a park.
+Camera: slow tracking alongside her.
+```
+
+Use style references for: color grading, film stock emulation, lighting mood, texture quality, era-specific looks.
+
+### CGI Material Contract
+
+When prompting CGI or product renders, specify 2–4 material properties per surface to avoid the default "plastic sheen":
+
+| Property | Options | Example |
+|----------|---------|---------|
+| Base | metal, glass, fabric, ceramic, wood, leather | `brushed stainless steel` |
+| Roughness | matte, satin, glossy, mirror | `satin finish` |
+| Imperfection | scratches, dust, wear, fingerprints, patina | `fine scratches from use` |
+| Edge | beveled, sharp, rounded, chamfered | `soft rounded edges` |
+
+**Example:** `A matte ceramic vase with hairline cracks and a subtle patina, soft rounded rim, resting on rough-hewn oak.`
+
+### Period Control
+
+Don't just name the decade — specify the **materials and lighting** of the era:
+
+- ~~"1970s style"~~ → `Kodachrome warm tones, wood paneling, orange shag carpet, tungsten bulbs casting amber light`
+- ~~"1940s noir"~~ → `high-contrast black and white, Venetian blind shadows, fedora silhouettes, wet asphalt reflecting streetlamps`
+- ~~"1990s home video"~~ → `Hi8 camcorder grain, autofocus hunting, timestamp overlay, oversaturated greens`
 
 ---
 

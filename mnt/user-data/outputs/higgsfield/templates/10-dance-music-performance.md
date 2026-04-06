@@ -67,3 +67,18 @@ Camera: 360 Orbit tightening toward her.
 Overhead shot as she collapses to the floor.
 Apply Glow Trace preset.
 ```
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+**Genre mapping:** Action (for high-energy) or Drama (for emotional performance)
+**Prompt length target:** 50–80 words (Music Video — lead with Style)
+**Speed Ramp:** Bullet Time for freeze moments, Ramp Up for drops
+
+**@reference workflow:**
+```
+Reference @Video1 for dance choreography.
+@Image1 as the dancer. She performs on a rooftop at sunset,
+city skyline behind her. Wind catches her dress on each spin.
+Camera: 360 orbit. Style: anamorphic flares, crushed blacks.
+Audio: heavy bass drop, rhythmic percussion, wind through fabric.
+```

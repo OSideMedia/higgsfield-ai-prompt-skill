@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, v2.0.2]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 ---
 
@@ -259,7 +259,7 @@ Example use case: A watercolor-style fantasy warrior emerging from mist.
 
 ---
 
-### Seedance 2.0 — Most Advanced Seedance Tier (upcoming — not yet on Higgsfield)
+### Seedance 2.0 — Most Advanced Seedance Tier
 **Duration:** 4–15s · **Resolution:** 720p / 1080p / 2K · **Audio:** Native
 **Best for:** Maximum multimodal reference control · complex motion · character consistency across scenes · professional production assets · content requiring audio-visual synchronization
 **Architecture:** Unified multimodal audio-video joint generation — text, image, audio, and video all processed simultaneously in one pass (not layered)
@@ -1077,9 +1077,9 @@ Best use cases:
 | Artistic / stylized / fantasy | Wan 2.5/2.6 |
 | Fast iteration / social content (no audio needed) | Seedance Pro |
 | Native audio + dialogue / lip-sync in video | Seedance 1.5 Pro |
-| 12-asset multimodal / reference video → new scene | Seedance 2.0 (upcoming) (R2V) |
-| Edit/replace elements in existing video | Seedance 2.0 (upcoming) (V2V) |
-| Complex fight / synchronized motion at 2K | Seedance 2.0 (upcoming) |
+| 12-asset multimodal / reference video → new scene | Seedance 2.0 (R2V) |
+| Edit/replace elements in existing video | Seedance 2.0 (V2V) |
+| Complex fight / synchronized motion at 2K | Seedance 2.0 |
 | Nature / environment / documentary (stable) | Veo 3 |
 | Subject/character consistency across scene (ref images) | Veo 3.1 |
 | Define exact start + end frame | Veo 3.1 |

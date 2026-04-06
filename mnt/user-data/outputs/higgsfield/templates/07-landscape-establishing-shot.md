@@ -51,3 +51,17 @@ Style: Cinematic, natural grade, no artificial treatment. 16:9.
 - **Aerial/drone**: FPV Drone or Crane Up, sweeping terrain reveal
 - **Fantasy landscape**: Wan 2.5, add "jewel tones, volumetric light rays through ancient forest canopy"
 - **Post-apocalyptic**: Desaturated orange and brown, dust haze, "ruined skyline, no movement except wind"
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+**Genre mapping:** Epic (for sweeping vistas) or General
+**Prompt length target:** 30–60 words (Landscape/Travel — lead with Scene)
+**Speed Ramp:** Auto (let the scene breathe)
+
+**@reference workflow:**
+```
+@Image1 as the landscape reference. Dawn breaks over the volcanic ridge,
+mist pouring through the caldera. Birds scatter from the tree line.
+Camera: crane up revealing the full valley. Style: natural color, deep depth of field.
+Audio: wind across open terrain, distant bird calls, rushing water below.
+```

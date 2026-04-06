@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, recipes, templates, genre, action, horror, romance, ad, sci-fi]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 ---
 
@@ -184,7 +184,7 @@ Apply Horror Face preset in the mirror reflection.
 **Template:**
 ```
 [Two characters — brief appearance note each].
-[Setting — intimate, beautiful, specific].
+[Setting — intimate, warmly lit, specific].
 [The moment — what are they doing, what is the tension].
 Camera: [Arc / Dolly In / Kiss control].
 [The beat — a look, a touch, a word].
@@ -216,7 +216,7 @@ Style: Cinematic. Golden hour warm tones, shallow depth of field. 16:9.
 [Subject — animal, person, phenomenon].
 [What is happening — natural behavior, unposed].
 Camera: [observational movement — slow pan, timelapse, crane].
-[Detail moment — close-up of something specific and beautiful].
+[Detail moment — close-up of something specific and visually striking].
 Style: Cinematic, natural grade, [time of day], [weather]. [Ratio].
 No artificial effects — pure observational documentary feel.
 ```

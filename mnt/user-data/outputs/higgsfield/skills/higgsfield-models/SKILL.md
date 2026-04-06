@@ -9,8 +9,8 @@ metadata:
   references:
     - MODELS-DEEP-REFERENCE.md
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 
 ---
@@ -37,7 +37,7 @@ specifics, parameters, edge cases, API details) → read `MODELS-DEEP-REFERENCE.
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration |
 | Sora 2 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | ❌ | Epic scale, physics, action |
 | Wan 2.5/2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Artistic, stylized, fantasy |
-| Seedance 2.0 (upcoming) | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 10s | ✅ | 12-asset multimodal, complex motion |
+| Seedance 2.0 | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 10s | ✅ | 12-asset multimodal, complex motion |
 | Seedance 1.5 Pro | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 10s | ✅ | Best lip-sync, multilingual audio |
 | Seedance Pro | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | 10s | ❌ | Fast iteration, no audio needed |
 | Veo 3.1 | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Ref images, first/last frame, 4K |
@@ -91,7 +91,7 @@ Is this image or video?
     │   └── Dance, sports, fluid motion → Minimax Hailuo
     │
     ├── Need maximum reference control?
-    │   ├── Up to 12 assets (images+video+audio) → Seedance 2.0 (upcoming — use Seedance 1.5 Pro until launch)
+    │   ├── Up to 12 assets (images+video+audio) → Seedance 2.0
     │   ├── Up to 7 image refs → Kling O1 Video
     │   └── Up to 3 asset refs → Veo 3.1
     │
@@ -152,12 +152,15 @@ Full image model specs + UI controls → `../../../../../../image-models.md`
 | Performance cloning from video | Kling 3.0 Omni |
 | Up to 30s camera/motion transfer | Kling 3.0 Motion Control |
 | Soul Cast AI actors | Cinema Studio 2.5 |
+| Soul Cast AI actors (2K, General/Character/Location) | Cinema Studio 3.0 (Business/Team) |
 | Built-in color grading | Cinema Studio 2.5 |
+| Native dual-channel stereo audio | Cinema Studio 3.0 (Business/Team) · Kling 3.0/Omni · Seedance 2.0/1.5 Pro · Veo 3/3.1 |
 | Soul HEX color matching | Soul 2.0 · Soul Cinema Preview · Cinema Studio 2.5 |
 | Native 4K image series | Kling Image 3.0 |
 | Style presets + Color Transfer | Soul 2.0 |
 | Google Search grounding | Nano Banana Pro |
 | Negative prompts supported | Veo 3/3.1 only |
+| Smart auto-camera planning | Cinema Studio 3.0 (Business/Team) |
 
 ---
 
@@ -175,8 +178,8 @@ O3's reference-based consistency is its defining advantage.
 hand gestures, facial expressions. Image Orientation for camera/talking head; Video
 Orientation for complex motions (dancing, action, full-body movement).
 
-**Seedance 2.0:** Coming to Higgsfield — document ready. Rule of 12 (up to 12 assets per
-generation). Real person face uploads blocked — use synthetic character references.
+**Seedance 2.0:** Rule of 12 (up to 12 assets per
+generation). Real person face uploads blocked — use synthetic character references. Best practices for Seedance 2.0 prompting are integrated into the sub-skills (see higgsfield-prompt, higgsfield-camera, higgsfield-motion).
 
 **Veo 3.1 vs 3:** 3.1 adds reference images (up to 3), first/last frame, video extension, 4K.
 3 is stable and proven. Use 3.1 for subject consistency, 3 for pure environment/nature.
@@ -185,6 +188,24 @@ generation). Real person face uploads blocked — use synthetic character refere
 rendering and multi-image compositing. Image editing supports multi-turn iterative chains.
 
 For deep documentation on any specific model → read `MODELS-DEEP-REFERENCE.md`
+
+---
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+Cinema Studio 3.0 is a separate generation engine available on Business and Team plans. Version toggle in the upper-right corner of the Cinema Studio UI switches between 2.5 and 3.0.
+
+| Feature | Cinema Studio 2.5 | Cinema Studio 3.0 (Business/Team) |
+|---------|-------------------|-----------------------------------|
+| Video Resolution | Up to 1080p | Up to 720p (may increase) |
+| Image Resolution | Up to 4K | Up to 2K |
+| Max Duration | 12s | 15s |
+| Aspect Ratios | 6 options | 7 options (+ 21:9 ultrawide) |
+| Audio | On/Off | On/Off (native dual-channel stereo) |
+| Shot Control | Manual multi-shot | Smart (auto) + Custom multi-shot |
+| Generation Cost | Varies | 48 credits |
+
+> For full Cinema Studio 3.0 documentation → see `higgsfield-cinema`
 
 ---
 

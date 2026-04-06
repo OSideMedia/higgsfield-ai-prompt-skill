@@ -68,3 +68,17 @@ Dutch Angle as she freezes.
 - **Psychological (no supernatural)**: Remove Horror Face preset, rely on Dutch Angle + slow Dolly In + "wrong detail"
 - **Body horror**: Use Monstrosity or Gas Transformation preset instead of Horror Face
 - **Jump scare setup**: Slow Dolly In for 6s, then Crash Zoom In on the reveal for the final 2s
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+**Genre mapping:** Horror
+**Prompt length target:** 60–100 words (Drama/Narrative range — lead with Scene)
+**Speed Ramp:** Flash In for jump scares, Slow-mo for dread
+
+**@reference workflow:**
+```
+@Image1 as the corridor environment. A figure appears at the far end, barely visible.
+Floorboards creak. The lights flicker once, twice. Camera: slow dolly push.
+Style: desaturated, single practical light source, deep shadows.
+Audio: distant dripping, wood creaking, a breath that isn't the viewer's.
+```

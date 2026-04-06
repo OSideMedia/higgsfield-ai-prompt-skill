@@ -53,3 +53,17 @@ Style: Cinematic. Cold blue shadows, warm amber market light, high contrast. 16:
 - **Vehicle chase**: Use Sora 2 + Car Chasing camera preset, describe the vehicles specifically
 - **Vertical/social format**: Change to 9:16, keep Action Run but note "close framing, face visible"
 - **Sci-fi chase**: Add zero gravity or corridor environment, swap to FPV Drone camera
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+**Genre mapping:** Action
+**Prompt length target:** 60–100 words (Drama/Narrative range — lead with Scene)
+**Speed Ramp:** Bullet Time for impact moments, Ramp Up for acceleration
+
+**@reference workflow:**
+```
+Reference @Video1 for chase choreography and pacing.
+A woman sprints through a rain-soaked night market, sliding under a metal gate.
+Gravel sprays, steam scatters from food carts. Camera: tracking, low angle.
+Style: cold blue shadows, warm amber market light.
+```

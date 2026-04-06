@@ -11,8 +11,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, recall, memory, pre-check, filter, quality, prompt, generate]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
   compatibility:
     tools: [bash]

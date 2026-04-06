@@ -65,3 +65,17 @@ Style: Cinematic. High contrast, desaturated cool tones, single overhead strip l
 - **High-fashion surreal**: Abstract style, Creative Tilt Lens in Cinema Studio, unusual environment
 - **Lookbook grid**: Cinema Studio Grid Generation (2×2 or 4×4) with different outfit variations
 - **Social/vertical**: 9:16, Arc camera slowly around subject, warm golden light
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+**Genre mapping:** Drama (for editorial narrative) or General (for lookbook)
+**Prompt length target:** 40–60 words (Lifestyle/Social — lead with Action)
+**Speed Ramp:** Slow-mo for fabric movement, Auto for walk sequences
+
+**@reference workflow:**
+```
+@Image1 as the model's character reference. She turns slowly on a rooftop at golden hour,
+silk jacket catching the wind. Camera: smooth 180-degree orbit.
+Style: warm tones, shallow depth of field, anamorphic.
+Audio: fabric rustling, distant city ambience.
+```

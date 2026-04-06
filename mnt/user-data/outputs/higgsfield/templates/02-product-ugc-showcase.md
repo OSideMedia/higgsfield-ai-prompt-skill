@@ -54,3 +54,17 @@ Sound: gentle liquid pour, soft ceramic texture.
 - **Social/UGC style**: 9:16 vertical, Handheld camera, "person holding product casually, natural daylight"
 - **360 product spin**: Use 3D Rotation preset, pure black background, "sharp product detail, 4K, 1:1"
 - **Food/beverage**: Use Extreme Macro lens in Cinema Studio, add steam/pour/drip as hero moment
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+**Genre mapping:** General
+**Prompt length target:** 30–50 words (Product/E-commerce — lead with Subject)
+**Speed Ramp:** Slow-mo for hero reveal, Auto for unboxing
+
+**@reference workflow:**
+```
+@Image1 as the product. Smooth 360-degree orbit on a marble pedestal.
+Soft studio lighting catches the matte-black finish. Subtle reflection on surface.
+Camera: orbit. Style: clean white studio, shallow depth of field.
+Audio: soft surface contact, gentle mechanical click.
+```

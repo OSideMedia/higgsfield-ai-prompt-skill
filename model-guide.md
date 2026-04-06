@@ -16,7 +16,7 @@
 | Sora 2 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | ❌ | Epic scale, physics, action |
 | Wan 2.5 | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Artistic, stylized, fantasy |
 | Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Improved Wan 2.5 |
-| Seedance 2.0 (upcoming) | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 10s | ✅ | 12-asset multimodal, complex motion |
+| Seedance 2.0 | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 10s | ✅ | 12-asset multimodal, complex motion |
 | Seedance 1.5 Pro | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 10s | ✅ | Multilingual audio, lip-sync, drama |
 | Seedance Pro | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | 10s | ❌ | Fast iteration, no audio needed |
 | Veo 3.1 | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Ref images, first/last frame, extension, 4K |
@@ -101,7 +101,7 @@ Is this image or video?
     │
     └── Need fast iteration / social content?
         ├── Audio required? → Seedance 1.5 Pro
-        ├── 12-asset multimodal reference? → Seedance 2.0 (upcoming — use Seedance 1.5 Pro until launch)
+        ├── 12-asset multimodal reference? → Seedance 2.0
         └── No audio, speed first? → Seedance Pro
 ```
 

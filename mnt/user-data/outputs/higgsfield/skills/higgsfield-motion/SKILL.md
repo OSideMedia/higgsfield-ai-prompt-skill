@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, motion, presets, VFX, transformation, transitions, effects]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 ---
 
@@ -196,6 +196,61 @@ Apply the Flame Transition preset to cut to the next scene.
 > **Negative constraints:** For motion/VFX artifacts (preset not visible, VFX looks cartoonish,
 > jittery motion) and their prevention phrases, see `../shared/negative-constraints.md` —
 > Body/Motion Artifacts and Temporal/Consistency Artifacts sections.
+
+---
+
+## Intent-First Choreography (Cinema Studio 3.0 / Seedance 2.0 Best Practices)
+
+These principles apply to Cinema Studio 3.0's generation engine (Business/Team plan only) and complement the motion preset library above.
+
+### Intent over Timestamps
+
+Describe the **INTENT and CONSEQUENCE** of action, not precise frame-by-frame choreography. Let the AI director handle interpolation between key moments.
+
+**Wrong:** `At 0s: character raises right arm. At 1s: arm reaches 45 degrees. At 2s: arm fully extended. At 3s: energy ball forms.`
+
+**Right:** `The character raises her arm slowly, energy gathering in her palm until it erupts in a blinding flash. Sparks scatter across the floor.`
+
+### @Video Reference as Primary Method
+
+For all action and fight scenes, @Video reference is the most reliable approach:
+
+1. Upload a reference clip showing the movement you want
+2. Describe the high-level action in 1–3 sentences
+3. Add degree adverbs (`violently`, `gracefully`, `explosively`) and physics consequences (`dust erupts`, `sparks fly`)
+4. Tell the model to reference the clip
+
+```
+Reference @Video1 for movement choreography.
+A swordsman draws his blade explosively, cutting through three bamboo stalks in rapid succession.
+Stalks topple, leaves scatter, blade gleams in the sunlight.
+```
+
+### One Action Per Shot Rule
+
+For text-only action (no video reference), do not chain multiple distinct actions into one sentence. Break them down per shot:
+
+**Wrong:** `She jumps over the wall, rolls on landing, draws her weapon, and fires three shots while running.`
+
+**Right (as separate Cinema Studio 3.0 shots):**
+- Shot 1: `She leaps over the wall, coat flaring. Landing hard, she rolls forward.`
+- Shot 2: `Rising from the roll, she draws her weapon in one fluid motion.`
+- Shot 3: `Running at full sprint, she fires three shots. Muzzle flash lights up the alley.`
+
+### Beat Density Diagnostic
+
+If output is blurry, jittery, or morphing: **too many actions packed into too short a duration.**
+
+The model handles **1–2 distinct action beats every 5 seconds**. If your prompt has 4+ actions in a 5-second window, the model can't resolve them all and produces artifacts.
+
+| Duration | Max Beats | Example |
+|----------|-----------|---------|
+| 3–5s | 1–2 | Jump + land |
+| 5–8s | 2–3 | Jump + land + draw weapon |
+| 8–12s | 3–5 | Jump + land + draw + fire + take cover |
+| 12–15s | 4–6 | Full action sequence (use multi-shot) |
+
+**Fix:** Split dense action across multiple shots, or extend the duration to give each beat more time.
 
 ---
 

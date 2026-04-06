@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 ---
 
@@ -171,6 +171,84 @@ Layering two compatible movements creates richer shots:
 > **Negative constraints:** For temporal/consistency artifacts related to camera (contradictory
 > movements, camera not working, static I2V) and their prevention phrases, see
 > `../shared/negative-constraints.md` — Temporal/Consistency Artifacts section.
+
+---
+
+## Cinema Studio 3.0 Camera Best Practices (Business/Team Plan)
+
+> These best practices apply to Cinema Studio 3.0's generation engine, available exclusively on **Business and Team plans**.
+
+### The One-Move Rule
+
+For any single shot, specify only **ONE primary camera move**. Do NOT stack multiple moves (e.g., dolly push + pan left + tilt up). This is the #1 cause of jitter, unwanted rotation, and failed generations.
+
+**Wrong:** `Camera: dolly push forward while panning left and tilting up to reveal the skyline`
+**Right:** `Camera: slow dolly push from medium shot to tight close-up over 8 seconds`
+
+If you need multiple camera moves, break them into separate shots using Cinema Studio 3.0's Custom multi-shot mode.
+
+### Genre-Based Camera Presets
+
+| Genre | Primary Camera | Secondary | Avoid |
+|-------|---------------|-----------|-------|
+| Product / E-commerce | Orbit, slow push-in, static | Crane down reveal | Handheld, whip pan |
+| Lifestyle / Social | Handheld, static, slow pan | Dolly alongside | Dutch angle, crash zoom |
+| Drama / Narrative | Slow push-in, dolly pull-out, tracking | Crane up | Fast moves, snap zoom |
+| Music Video | Whip pan, snap zoom, fast tracking | 360 orbit | Static (too boring) |
+| Horror | Slow creep (dolly in), static hold, Dutch angle | Crane down | Fast tracking (breaks tension) |
+| Action / Chase | FPV drone, tracking, handheld run | Crash zoom | Static, slow orbit |
+| Landscape / Travel | Crane up, slow pan, drone flyover | Dolly out reveal | Handheld, tight shots |
+| Comedy / Social | Static (deadpan), snap zoom | Whip pan | Slow dramatic moves |
+
+### Reliable Phrasing Library
+
+These phrases produce consistent, predictable results:
+
+| Intent | Reliable Phrase |
+|--------|----------------|
+| No camera motion | `locked-off static camera, no movement` |
+| Slow approach | `slow dolly push from medium shot to tight close-up over 8 seconds` |
+| Follow subject | `handheld tracking following the subject, subtle shake, not chaotic` |
+| Reveal scale | `crane shot rising from ground level to overhead` |
+| Circle subject | `smooth 180-degree orbit at eye level, constant distance` |
+| Dramatic zoom | `crash zoom from wide to extreme close-up on impact` |
+| POV movement | `FPV camera weaving through the environment at walking pace` |
+
+### Camera Transfer via @Video Reference
+
+The safest way to achieve complex camera motion is to clone it from a reference:
+
+```
+Match the camera movement from @Video1. A dancer performs on a rooftop at sunset.
+```
+
+This bypasses the One-Move Rule because the model extracts camera data directly from the reference rather than interpreting text instructions.
+
+### Dual Video Reference
+
+Action reference and camera reference can come from DIFFERENT videos. Separate them clearly:
+
+```
+Reference @Video1 for the character's movement and choreography.
+Reference @Video2 for camera movement only.
+A martial artist performs a spinning kick in a dojo.
+```
+
+### Smart Mode (Cinema Studio 3.0)
+
+Cinema Studio 3.0's "Smart" shot control delegates camera planning to the model. When you select Smart mode:
+
+- The model auto-plans camera language based on the genre and scene description
+- Trust it for genre-appropriate camera work — describe the **feeling** or **genre** rather than specific camera moves
+- Best for: users who want professional-looking camera work without manual specification
+- Override by switching to Custom multi-shot for per-scene camera control
+
+**Smart mode prompt example:**
+```
+Genre: Drama. A woman sits alone at a café table, stirring her coffee absently.
+She notices someone through the window and her expression shifts from sadness to surprise.
+```
+(No camera instruction needed — Smart mode will select genre-appropriate drama camera work.)
 
 ---
 

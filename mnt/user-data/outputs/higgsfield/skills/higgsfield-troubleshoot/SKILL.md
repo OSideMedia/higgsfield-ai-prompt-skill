@@ -6,8 +6,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 ---
 
@@ -147,6 +147,48 @@ Before generating, verify:
 > generation artifacts and the prompt phrasing to prevent them, see
 > `../shared/negative-constraints.md`. This troubleshooting guide covers diagnosis and fixes;
 > the shared constraints file covers prevention.
+
+---
+
+## Cinema Studio 3.0 / Seedance 2.0 Diagnostic Tree
+
+> These diagnostics apply to Cinema Studio 3.0's generation engine (Business/Team plan only). For Cinema Studio 2.5 issues, see the general troubleshooting section above.
+
+### Quick Diagnostic
+
+| Symptom | Likely Cause | Fix |
+|---------|-------------|-----|
+| Output blurry, jittery, or morphing | Overspecification — prompt too long or too detailed | Cut prompt to 30–100 words. Use @reference images/videos instead of 50+ words of description |
+| Camera chaotic, spinning, or jittering | Violated the One-Move Rule — multiple camera moves in one shot | Rewrite to ONE primary camera move per shot. Use Cinema Studio 3.0's Smart mode, or split into multi-shot |
+| Character doesn't match reference | Prompt is re-describing the character's appearance | Delete ALL physical descriptions. Describe ONLY action and emotion. The @reference carries identity |
+| Action stiff or lacking impact | Missing intent/physics language | Add degree adverbs (`violently`, `gently`, `explosively`) and physics consequences (`dust erupts`, `sparks fly`, `fabric tears`) |
+| Output "not what I wanted" (vague) | Ambiguous prompt with subjective language | Run Anti-Slop Check: replace `beautiful`, `stunning`, `epic`, `amazing`, `dynamic` with observable, measurable details |
+| Audio not matching video | Audio description conflicting with visual description, or uploaded audio being overridden | Use timestamp anchoring for uploaded audio. Remove ambient/SFX tokens when using @Audio references |
+
+### Diagnostic Flowchart
+
+```
+Output bad?
+├── Blurry/morphing → Is prompt > 100 words?
+│   ├── Yes → Cut to 30–100 words, use @reference
+│   └── No → Too many action beats? (>2 per 5s) → Split into multi-shot
+├── Camera wrong → How many camera moves specified?
+│   ├── Multiple → Reduce to ONE move (One-Move Rule)
+│   └── One → Try Smart mode instead, or use @Video camera transfer
+├── Character wrong → Does prompt describe character appearance?
+│   ├── Yes → Delete appearance, keep only action/emotion
+│   └── No → Use better reference (frontal + 3/4 + profile shots)
+├── Action weak → Does prompt have physics language?
+│   ├── No → Add degree adverbs + physical consequences
+│   └── Yes → Reduce beat density (1–2 beats per 5s)
+└── Just bad → Run Anti-Slop Check
+    ├── Found slop words → Replace with specific observables
+    └── Clean → Try different genre setting, or use @reference
+```
+
+### Success Rate Note
+
+Cinema Studio 3.0's generation engine produces ~90% usable output. If outputs are **consistently** bad across multiple attempts, the prompt is almost certainly the problem — not the model. Apply the diagnostic tree systematically before regenerating.
 
 ---
 

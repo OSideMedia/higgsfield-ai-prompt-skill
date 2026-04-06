@@ -4,13 +4,13 @@ description: >
   Use when the user asks about audio in Higgsfield videos, needs to add dialogue
   or lip-sync, wants sound effects or ambient sound in generated video, asks about
   music or BGM in output, or is using any audio-capable model (Kling 3.0, Seedance
-  1.5 Pro, Seedance 2.0 (upcoming), Veo 3/3.1, Grok Imagine Video). Also use when the user's
+  1.5 Pro, Seedance 2.0, Veo 3/3.1, Grok Imagine Video). Also use when the user's
   prompt would benefit from audio direction but they haven't mentioned it.
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 ---
 
@@ -21,7 +21,7 @@ metadata:
 | Model | Audio type | Dialogue | SFX | Ambient | BGM | Lip-sync |
 |-------|-----------|----------|-----|---------|-----|----------|
 | Kling 3.0 / Omni | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Multi-language |
-| Seedance 2.0 (upcoming) | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Multi-language |
+| Seedance 2.0 | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Multi-language |
 | Seedance 1.5 Pro | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Best lip-sync |
 | Veo 3 / 3.1 | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ English best |
 | Grok Imagine Video | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -182,7 +182,7 @@ Background ambient: [environment description].
 - Most stable emotional tone control
 - Use for: professional dialogue scenes, multilingual content
 
-### Seedance 2.0 (upcoming)
+### Seedance 2.0
 - Upload MP3 audio as @Audio reference (part of Rule of 12)
 - **MP3 only** — WAV/AAC/OGG/FLAC fail silently with no error
 - Max 15s per clip, 3 audio files, 10MB each
@@ -208,7 +208,7 @@ Background ambient: [environment description].
 |---------|-------|-----|
 | Lip-sync completely off | Audio > 8s, or head motion tokens present | Trim to 5s, remove nodding/turning tokens |
 | Model replaces uploaded audio | Ambient/music tokens in prompt invite generative override | Add timestamp anchoring phrase, remove all ambient/music tokens |
-| Dialogue missing entirely | Non-MP3 format used (Seedance 2.0, upcoming) | Convert to MP3 128-320kbps |
+| Dialogue missing entirely | Non-MP3 format used (Seedance 2.0) | Convert to MP3 128-320kbps |
 | SFX drowns out dialogue | Too many SFX cues competing | Reduce to 1-2 SFX per shot, prioritize dialogue |
 | Audio sounds robotic | Flat emotional cues | Add emotional direction: "says warmly", "whispers with urgency" |
 | Background music too loud | BGM description too prominent in prompt | Move BGM to end of prompt, reduce detail, or say "subtle BGM" |
@@ -228,6 +228,91 @@ Not every prompt needs audio direction. Skip audio cues when:
 > **Negative constraints:** For audio-specific artifacts (lip-sync desync, background music
 > overriding dialogue, SFX drowning dialogue) and their prevention phrases, see
 > `../shared/negative-constraints.md` — Temporal/Consistency Artifacts section.
+
+---
+
+## Cinema Studio 3.0 Audio (Business/Team Plan)
+
+Cinema Studio 3.0 introduces native audio-video joint generation — a fundamental shift from models that treat audio as a post-processing step.
+
+### Native Audio-Video Joint Generation
+
+Audio is generated **simultaneously** with video via a unified multimodal architecture. This means:
+- Audio and video are temporally aligned by default — no manual sync needed
+- Dual-channel stereo output
+- Sound design prompts directly influence both audio AND visual generation
+- Audio is not "added on" — it's part of the same generation pass
+
+### Audio as Prompt Element (SCELA)
+
+Always describe audio as a **separate section** in your prompts. The generation engine handles three parallel audio tracks:
+
+1. **BGM** — background music, score
+2. **Ambient SFX** — environmental sounds, foley
+3. **Dialogue** — character speech, voiceover
+
+```
+A chef slices vegetables rapidly on a wooden cutting board.
+Camera: tight close-up tracking the knife.
+Style: warm kitchen lighting, shallow depth of field.
+
+Audio: rhythmic chopping on wood, oil sizzling in a nearby pan,
+soft clinking of ceramic bowls. Light acoustic guitar BGM.
+```
+
+### Input Constraints
+
+| Parameter | Limit |
+|-----------|-------|
+| Accepted formats | MP3, WAV |
+| Max audio clips | 3 per generation |
+| Combined duration | ≤15s total |
+| Single file size | <15MB |
+| MP3 bitrate | 128–320 kbps |
+
+### Lip-Sync
+
+Available but experimental in Cinema Studio 3.0:
+- Focus on **emotion and general mouth movement**, not perfect phoneme sync
+- **Single face per generation only** — multi-face lip-sync is not supported
+- For best results, keep dialogue segments under 8 seconds
+- Pair with clear frontal or 3/4 face angle reference images
+
+### Tone / Voice Cloning via @Reference
+
+Control speaking style, accent, and language by referencing a video with the desired voice:
+
+```
+Voiceover tone references @Video1. The narrator describes the product
+in a warm, conversational tone. "This changes everything."
+Audio @Audio1 plays exactly as uploaded from 0s to end.
+Do not modify or replace the audio content.
+```
+
+### Dialect Support
+
+Dialects written directly in the prompt work — the model understands regional speech patterns. Write dialogue in the target dialect for authentic delivery.
+
+### Timestamp Anchoring
+
+When uploading reference audio that must play unmodified:
+
+```
+Audio @Audio1 plays exactly as uploaded from 0s to end.
+Do not modify or replace the audio content.
+```
+
+Then **remove all ambient/SFX/music tokens** from the prompt to prevent the generation engine from overriding the uploaded audio with generated sound.
+
+### Sound Design Specificity
+
+Describe **specific foley**, not generic moods:
+
+**Wrong:** `nice ambient sounds, pleasant background noise`
+
+**Right:** `the scratch of frosted glass, rustling of plush fabric, gentle tapping on acrylic, popping of bubble wrap, wooden floor creaking under bare feet`
+
+Specific sound descriptions directly influence the generated audio output. The more precise the foley description, the more accurate the result.
 
 ---
 

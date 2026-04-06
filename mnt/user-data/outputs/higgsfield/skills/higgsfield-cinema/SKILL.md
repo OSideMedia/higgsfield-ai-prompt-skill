@@ -1,16 +1,16 @@
 ---
 name: higgsfield-cinema
 description: >
-  Use when the user mentions Cinema Studio, Cinema Studio 2.5, Soul Cast, color grading,
-  multi-shot video, shot sequences, storyboard workflow, Hero Frame, optical stack,
+  Use when the user mentions Cinema Studio, Cinema Studio 2.5, Cinema Studio 3.0, Soul Cast,
+  color grading, multi-shot video, shot sequences, storyboard workflow, Hero Frame, optical stack,
   keyframe interpolation, Elements system (@Characters/@Locations/@Props), Speed Ramp,
   Director Panel, Higgsfield Popcorn, Single Shot / Multi-Shot Auto / Multi-Shot Manual
-  modes, Reference Anchor, or any professional filmmaking workflow inside Higgsfield.
+  modes, Reference Anchor, Smart shot control, or any professional filmmaking workflow inside Higgsfield.
 user-invocable: true
 metadata:
   tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 ---
 
@@ -24,20 +24,26 @@ different from single-clip generation: you're building sequences, not individual
 
 ## Cinema Studio vs Standard Generation
 
-| | Standard Generation | Cinema Studio 2.5 |
-|--|--------------------|--------------------|
-| Output | Single clip | Multi-shot sequence |
-| Character consistency | Manual / Soul ID only | Reference Anchor system |
-| AI actor generation | Not available | Soul Cast — generate actors from parameters (no photos) |
-| Camera control | Named presets | Director Panel (18 movements) |
-| Optical physics | Not available | Full camera body + lens stack |
-| Color grading | Not available | Built-in suite (temp, contrast, grain, bloom, etc.) |
-| Shot structure | One prompt = one clip | Up to 6 scenes, 12s total max, per-scene config |
-| 3D exploration | Not available | Gaussian splatting — move inside any generated image |
-| Batch generation | Not available | Grid generation — up to 16 variations per credit |
-| Storyboard | Not available | Higgsfield Popcorn integration |
-| Speed control | Not available | Speed Ramp (6 modes) |
-| Genre | Style descriptions | 8 named genres |
+| | Standard Generation | Cinema Studio 2.5 | Cinema Studio 3.0 (Business/Team Plan) |
+|--|--------------------|--------------------|----------------------------------------|
+| Output | Single clip | Multi-shot sequence | Multi-shot sequence |
+| Character consistency | Manual / Soul ID only | Reference Anchor system | @ reference system (up to 9 images) |
+| AI actor generation | Not available | Soul Cast — generate actors from parameters (no photos) | Soul Cast — General/Character/Location modes, 2K, 0.125 credits |
+| Camera control | Named presets | Director Panel (18 movements) | Director Panel + Smart (auto camera planning) |
+| Optical physics | Not available | Full camera body + lens stack | Not available |
+| Color grading | Not available | Built-in suite (temp, contrast, grain, bloom, etc.) | Not available |
+| Shot structure | One prompt = one clip | Up to 6 scenes, 12s total max, per-scene config | Smart (auto) + Custom multi-shot (up to 6 scenes, 12s) |
+| 3D exploration | Not available | Gaussian splatting — move inside any generated image | Not available |
+| Batch generation | Not available | Grid generation — up to 16 variations per credit | Not available |
+| Storyboard | Not available | Higgsfield Popcorn integration | Not available |
+| Speed control | Not available | Speed Ramp (6 modes) | Speed Ramp (7 modes + Bullet Time, Hero Moment) |
+| Genre | Style descriptions | 8 named genres | 7 genres (General, Action, Horror, Comedy, Noir, Drama, Epic) |
+| Audio | Model-dependent | On/Off | On/Off (native dual-channel stereo) |
+| Video resolution | Model-dependent | Up to 1080p | Up to 720p (may increase) |
+| Image resolution | Model-dependent | Up to 4K | Up to 2K |
+| Max video duration | Model-dependent | 12s | 15s |
+| Aspect ratios | Model-dependent | 6 options | 7 options (+ 21:9 ultrawide) |
+| Plan requirement | All plans | All plans | **Business/Team plan only** |
 
 **Use Cinema Studio when:**
 - You need 2+ shots that must feel like the same film
@@ -1042,6 +1048,120 @@ Different models perform differently inside Cinema Studio's environment:
 > `../shared/negative-constraints.md`.
 
 ---
+
+---
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+> **Plan requirement:** Cinema Studio 3.0 is available exclusively on **Business and Team plans**. Free and individual plan users should use Cinema Studio 2.5, which remains fully supported.
+
+> **Version toggle:** Cinema Studio 2.5 and 3.0 coexist on the platform. Switch between them using the version selector in the upper-right corner of the Cinema Studio UI.
+
+### What's Different in 3.0
+
+Cinema Studio 3.0 is a separate generation engine from 2.5. Key differences:
+
+- **Higher max duration:** 15s (vs 2.5's 12s)
+- **Lower resolution (for now):** Video capped at 720p (vs 2.5's 1080p); Image capped at 2K (vs 2.5's 4K)
+- **Native audio:** Audio generated simultaneously with video via unified multimodal architecture — dual-channel stereo, not post-processed
+- **Smart shot control:** Model auto-plans camera language based on genre and scene description
+- **Ultrawide aspect ratio:** 21:9 added (not available in 2.5)
+- **No optical physics engine:** 2.5's camera body + lens stack is not available in 3.0
+- **No color grading suite:** 2.5's built-in grading is not available in 3.0
+- **No 3D Mode / Grid Generation:** These 2.5 features are not available in 3.0
+
+> **Resolution note:** Resolution limits for Cinema Studio 3.0 are subject to change. If you need higher resolution output now, use Cinema Studio 2.5.
+
+### Resolution Comparison Table
+
+| Feature | Cinema Studio 2.5 | Cinema Studio 3.0 (Business/Team) |
+|---------|-------------------|-----------------------------------|
+| Video Resolution | Up to 1080p | Up to 720p (may increase) |
+| Image Resolution | Up to 4K | Up to 2K |
+| Max Duration | 12s | 15s |
+| Aspect Ratios | 6 options | 7 options (+ 21:9 ultrawide) |
+| Audio | On/Off | On/Off (native dual-channel stereo) |
+| Generation Cost | Varies | 48 credits per generation |
+
+### Cinema Studio 3.0 Specifications
+
+**Video specs:**
+- Duration: up to 15s
+- Resolution: 720p (480p also available)
+- Generation cost: 48 credits
+
+**Image specs (Soul Cast 3.0):**
+- Resolution: up to 2K
+- Batch: 1 or 10
+- Generation cost: 0.125 credits
+
+**Genres (7):** General, Action, Horror, Comedy, Noir, Drama, Epic
+
+**Camera Movement:** Same Director Panel options as 2.5
+
+**Speed Ramp presets (7):** Auto, Slow-mo, Ramp Up, Flash In, Flash Out, Bullet Time, Hero Moment
+
+**Aspect Ratios (7):** Auto, 1:1, 3:4, 9:16, 4:3, 16:9, 21:9
+
+**Audio:** On/Off toggle. Audio is natively generated alongside video (unified multimodal architecture), not post-processed. Dual-channel stereo output.
+
+**Shot Control:**
+- **Smart** — automatic mode. The model auto-plans camera language based on the genre and scene description. Trust it for genre-appropriate camera work.
+- **Custom multi-shot** — up to 6 scenes, 12s total. Manual per-scene control.
+
+**Scene prompt syntax:** "Describe your scene – use @ to add characters & locations"
+
+### Input Limits (@ References)
+
+| Type | Max Count | Formats | Size/Duration Limit |
+|------|-----------|---------|---------------------|
+| Images | 9 | jpeg, png, webp, bmp | — |
+| Video clips | 3 | mp4, mov | Combined ≤15s total |
+| Audio clips | 3 | mp3, wav | Combined ≤15s total |
+| **Total files** | **≤12** | | |
+
+### @ Reference Patterns for Cinema Studio 3.0
+
+**Character identity (first frame):**
+@Image1 as the main character. She walks through the market, picking up fruit and examining it closely.
+
+**Environment / last frame:**
+@Image1 as the starting environment. @Image2 as the destination. Camera tracks through a doorway transitioning from the first space to the second.
+
+**Motion reference / camera cloning:**
+Match the camera movement from @Video1. A dancer performs on a rooftop at sunset, wind catching her dress.
+
+**Audio reference (BGM / dialogue / tone):**
+Audio @Audio1 plays exactly as uploaded from 0s to end. Do not modify or replace the audio content. Voiceover tone references @Video1.
+
+**Multi-image spatial mapping:**
+@Image1 as first frame, @Image2 as top of frame, @Image3 as left side. Camera slowly pans right, revealing the full scene.
+
+**Video extension:**
+Extend @Video1 by 5s. The character continues walking, reaching the edge of the cliff and looking out over the valley.
+
+**Ad recreation:**
+Mimic @Video1's shot design, pacing, and transitions. Replace all products with @Image1. Match the lighting and camera angles.
+
+**Outfit transformation:**
+@Image1 as the character in casual clothes. @Image2 as the same character in formal attire. A quick-cut transformation sequence with fabric particles.
+
+**One-shot continuity:**
+@Image1 first frame, @Image2 midpoint, @Image3 final frame. No cuts throughout, one continuous shot tracking the subject across all three compositions.
+
+### When to Use 3.0 vs 2.5
+
+| Need | Recommendation |
+|------|---------------|
+| Highest resolution (1080p/4K) | Cinema Studio 2.5 |
+| Longer duration (up to 15s) | Cinema Studio 3.0 (Business/Team) |
+| Native audio with video | Cinema Studio 3.0 (Business/Team) |
+| Optical physics (lens, sensor) | Cinema Studio 2.5 |
+| Color grading suite | Cinema Studio 2.5 |
+| 3D Mode / Grid Generation | Cinema Studio 2.5 |
+| Ultrawide 21:9 aspect ratio | Cinema Studio 3.0 (Business/Team) |
+| Smart auto-camera planning | Cinema Studio 3.0 (Business/Team) |
+| Free/Individual plan | Cinema Studio 2.5 |
 
 ## Related skills
 - `higgsfield-prompt` — MCSLA formula, Identity/Motion separation, 512-char awareness

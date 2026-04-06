@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 ---
 
@@ -237,6 +237,135 @@ Style: Cinematic, cold blue shadows, warm neon accents. 16:9.
 > **Negative constraints:** For a comprehensive list of artifacts to avoid (floating limbs,
 > face warping, flickering textures, etc.) and the prompt phrasing to prevent them, see
 > `../shared/negative-constraints.md`. Always check the relevant categories for your prompt type.
+
+---
+
+## Seedance 2.0 Prompting Best Practices
+
+These best practices apply to Cinema Studio 3.0's generation engine (Business/Team plan) and complement the MCSLA formula above. They are not a replacement — use MCSLA as the primary framework, then apply these refinements.
+
+### Intent over Precision
+
+Tell the model WHAT you want and HOW it should FEEL, not every micro-detail. Short prompts (30–100 words) consistently outperform long ones. The model is an AI director you collaborate with, not a render engine you command.
+
+### The Director's Formula → MCSLA Mapping
+
+The Director's Formula maps directly to MCSLA:
+
+| Director's Formula | MCSLA Layer | Priority |
+|-------------------|-------------|----------|
+| Subject | S (Subject) | First 20–30 words (early tokens carry heavy weight) |
+| Action | A (Action) | First 20–30 words |
+| Scene | — (Context) | Supporting detail |
+| Camera | C (Camera) | After subject + action |
+| Style | L (Look) | After camera |
+| Constraints | — (Guardrails) | End of prompt |
+
+**Key insight:** Subject + Action should appear in the first 20–30 words of every prompt. Early tokens carry disproportionate weight in the generation engine.
+
+### Genre Router — Prompt Length & Lead-With Targets
+
+Different genres perform best with different prompt lengths and lead elements:
+
+| Genre | Lead With | Target Length | Example Lead |
+|-------|-----------|---------------|-------------|
+| Product / E-commerce | Subject | 30–50 words | "A matte-black wireless earbud case rotates slowly on a marble pedestal..." |
+| Lifestyle / Social | Action | 40–60 words | "She reaches for the coffee mug, steam curling upward..." |
+| Drama / Narrative | Scene | 60–100 words | "Rain hammers a narrow Tokyo alley at 2 AM, neon signs reflecting in puddles..." |
+| Music Video | Style | 50–80 words | "Anamorphic flares, crushed blacks, 16mm grain..." |
+| Landscape / Travel | Scene | 30–60 words | "Dawn breaks over a volcanic ridge, mist pouring through the caldera..." |
+| Commercial / Brand | Style | 40–70 words | "Clean white studio, soft even lighting, product hero moment..." |
+| Anime / Artistic | Style | 50–90 words | "Cel-shaded lines, saturated palette, Studio Ghibli cloud physics..." |
+
+### I2V Gate Rule
+
+When using image references (@Image), describe **ONLY motion and camera movement**. NEVER re-describe what's already visible in the image. The model can see the image — re-describing creates conflict and degrades output.
+
+**Wrong:** `@Image1 — A woman with red hair in a blue dress standing in a garden. She walks forward.`
+**Right:** `@Image1 — She steps forward slowly, reaching out to touch the nearest flower. Camera: slow dolly in.`
+
+### Anti-Slop Vocabulary
+
+Kill these words — they add zero information and waste tokens:
+
+| Slop Word | Replace With |
+|-----------|-------------|
+| beautiful | (delete — describe the specific visual instead) |
+| stunning | (delete — describe what makes it striking) |
+| epic | large-scale, sweeping, towering |
+| amazing | (delete — show, don't tell) |
+| dynamic | fast-tracking, whip-pan, handheld |
+| energetic | sprinting, jumping, arms pumping |
+| cinematic camera movement | slow dolly push / crane up / tracking shot |
+| cool transition | match-cut / whip pan / smash cut |
+
+### Physics Language
+
+Use concrete physics consequences instead of mood words. The model responds to observable, physical details:
+
+- ~~"powerful punch"~~ → `fist connects, sweat flies off in slow motion, opponent's head snaps back`
+- ~~"dramatic entrance"~~ → `door slams open, dust erupts from the frame, light floods the dark room`
+- ~~"fast car"~~ → `tires spin, gravel sprays backward, chassis drops as acceleration kicks in`
+
+### Degree Adverbs
+
+The model cannot infer intensity from images alone. Use adverbs to guide interpretation:
+
+`slowly`, `dramatically`, `violently`, `gently`, `frantically`, `deliberately`, `cautiously`, `explosively`
+
+**Example:** "She turns **slowly**, eyes narrowing **deliberately**, then **explosively** lunges forward."
+
+### Narrative Structure Options
+
+**Fluid narrative (preferred for most):** Natural language flow without timestamps. Best for chase sequences, transformations, daily life, ads.
+
+```
+A street musician plays violin on a rainy bridge. Pedestrians hurry past with umbrellas.
+One woman stops, closes her umbrella, and listens. Rain soaks her coat. She smiles.
+Camera: slow crane up revealing the city skyline behind them.
+```
+
+**Timestamp storyboard:** Use only for precise dialogue timing or multi-segment scenes. Maps to Cinema Studio 3.0's Custom multi-shot mode.
+
+```
+[00-04s] Shot 1: Close-up of hands tuning a guitar. Warm lamplight.
+[04-08s] Shot 2: Pull back to reveal the musician on a fire escape at dusk.
+[08-12s] Shot 3: Wide shot — the neighborhood below, lights flickering on.
+```
+
+### Three-Act Rhythm for Action
+
+Every action prompt should follow this arc:
+
+1. **Charge-up** — tension builds, energy gathers
+2. **Burst** — the action explodes
+3. **Aftermath** — physics consequences play out
+
+**Example:** "The fighter plants her feet, fists clenching (charge-up). She throws a spinning kick that connects with the sandbag (burst). The bag swings violently, chain rattling, sand dust puffing from the seams (aftermath)."
+
+### No Negative Prompts
+
+Cinema Studio 3.0's generation engine does not support negative prompt syntax. Do not write "no blur" or "avoid shaky camera." Instead, use positive constraints — describe what you WANT:
+
+- ~~"no shaky camera"~~ → `locked-off static camera, no movement`
+- ~~"no blur"~~ → `sharp focus throughout, deep depth of field`
+- ~~"don't make it dark"~~ → `bright, evenly lit, overcast daylight`
+
+### Audio as First-Class Element
+
+Describe audio separately in prompts. BGM, ambient SFX, and dialogue are handled as parallel tracks via dual-channel stereo generation:
+
+```
+A barista grinds coffee beans, pours steaming water over the filter.
+Camera: tight close-up, slow dolly across the counter.
+Style: warm tones, shallow depth of field.
+
+Audio: the whir of the grinder, water bubbling through the filter,
+ceramic mug placed on a wooden counter with a soft clink.
+Soft jazz piano in the background, barely audible.
+```
+
+Sound design descriptions like "the scratch of frosted glass, rustling plush fabric, gentle tapping on acrylic" directly influence the generated audio output.
 
 ---
 

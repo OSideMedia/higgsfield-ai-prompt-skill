@@ -72,3 +72,18 @@ Camera: Arc slowly around both of them.
 He reaches over and tucks a strand of hair behind her ear.
 Ambient: quiet city hum, distant traffic, gentle wind.
 ```
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+**Genre mapping:** Drama
+**Prompt length target:** 60–100 words (Drama/Narrative — lead with Scene)
+**Speed Ramp:** Slow-mo for emotional moments, Auto for natural pacing
+
+**@reference workflow:**
+```
+@Image1 as Character A. @Image2 as Character B.
+They walk along a beach at sunset, waves lapping at their feet.
+She laughs, he reaches for her hand. Camera: slow tracking alongside.
+Style: golden hour, warm tones, shallow depth of field, Super 8MM grain.
+Audio: waves, sand underfoot, distant seagulls, soft laughter.
+```

@@ -64,3 +64,17 @@ He sits at a desk, sips coffee, says "This is fine."
 Camera: static, locked-off, medium shot.
 Background: visible chaos through the window.
 ```
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+**Genre mapping:** Comedy
+**Prompt length target:** 40–60 words (Lifestyle/Social — lead with Action)
+**Speed Ramp:** Flash In / Flash Out for comedic timing
+
+**@reference workflow:**
+```
+@Image1 as the character. He opens a gift box confidently.
+A spring-loaded glitter bomb erupts in his face. He freezes, blinking.
+Camera: static, deadpan framing. Style: bright, evenly lit, social media aesthetic.
+Audio: box opening, explosion of glitter, stunned silence, distant laughter.
+```

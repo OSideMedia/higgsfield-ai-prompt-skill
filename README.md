@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-2.0.2-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.0.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -12,14 +12,16 @@ A comprehensive Claude skill library for generating high-quality prompts on
 Transforms natural language requests into production-ready Higgsfield prompts using:
 - The **MCSLA formula** (Model · Camera · Subject · Look · Action)
 - Named camera controls and motion presets the platform recognizes
-- Model selection guidance across Kling 3.0, Sora 2, Veo 3.1, WAN, Seedance, Minimax Hailuo, Higgsfield DoP, and more
+- Model selection guidance across Kling 3.0, Sora 2, Veo 3.1, WAN, Seedance 2.0, Minimax Hailuo, Higgsfield DoP, and more
 - Genre recipe templates for action, horror, romance, sci-fi, product ads, and more
 - Soul ID character consistency guidance + Character Sheet creation
 - Troubleshooting for failed or poor generations
-- Cinema Studio 2.5 advanced features: Soul Cast AI actors, built-in color grading, 3D Mode (Gaussian Splatting), Grid Generation, Resolution Settings, Frame Extraction Loop, Object & Person Insertion, Per-Character Emotions, Clustering
-- **Shared negative constraints reference** — categorized artifacts + prevention phrases
+- **Cinema Studio 2.5** advanced features: Soul Cast AI actors, built-in color grading, 3D Mode (Gaussian Splatting), Grid Generation, Resolution Settings, Frame Extraction Loop, Object & Person Insertion, Per-Character Emotions, Clustering
+- **Cinema Studio 3.0** (Business/Team plan): native dual-channel stereo audio, Smart shot control, 15s max duration, 7 genres, @ reference patterns, Soul Cast 3.0
+- **Seedance 2.0 prompting best practices** — Intent over Precision, Genre Router, I2V Gate, Anti-Slop, Physics Language, SCELA audio
+- **Shared negative constraints reference** — categorized artifacts + prevention phrases (positive alternatives for 3.0)
 - **Identity vs. Motion separation** — hard rule for character consistency across shots
-- **10 annotated genre templates** — production-quality examples with line-by-line breakdowns
+- **10 annotated genre templates** — production-quality examples with Cinema Studio 3.0 genre mappings
 
 ## Quick Start
 
@@ -61,7 +63,7 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 │   └── quality-memory.json           ← Quality failure memory (seeded)
 └── mnt/user-data/outputs/higgsfield/
     ├── SKILL.md                      ← Main dispatcher (routes to sub-skills — start here)
-    ├── templates/                     ← 10 annotated genre-specific prompt templates (NEW v2.0)
+    ├── templates/                     ← 10 annotated genre-specific prompt templates
     │   ├── 01-cinematic-action-chase.md
     │   ├── 02-product-ugc-showcase.md
     │   ├── 03-horror-atmosphere.md
@@ -73,9 +75,9 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
     │   ├── 09-romantic-intimate.md
     │   └── 10-dance-music-performance.md
     └── skills/
-        ├── higgsfield-image-shots/SKILL.md   ← Cinematic image prompting (shots, angles, composition) NEW
+        ├── higgsfield-image-shots/SKILL.md   ← Cinematic image prompting (shots, angles, composition)
         ├── shared/
-        │   └── negative-constraints.md   ← Shared artifact prevention reference (NEW v2.0)
+        │   └── negative-constraints.md   ← Shared artifact prevention reference
         ├── higgsfield-prompt/SKILL.md      ← Core MCSLA formula + prompt structure + Identity/Motion separation
         ├── higgsfield-models/
         │   ├── SKILL.md                    ← Compact model selection guide
@@ -84,7 +86,7 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
         ├── higgsfield-motion/SKILL.md      ← Named motion presets library
         ├── higgsfield-style/SKILL.md       ← Visual styles + color grades + lighting
         ├── higgsfield-soul/SKILL.md        ← Soul ID character consistency
-        ├── higgsfield-audio/SKILL.md       ← Audio prompting (NEW in v1.3.7)
+        ├── higgsfield-audio/SKILL.md       ← Audio prompting + Cinema Studio 3.0 native audio
         ├── higgsfield-apps/SKILL.md        ← One-click Apps guide
         ├── higgsfield-recipes/SKILL.md     ← Genre scene templates
         ├── higgsfield-troubleshoot/SKILL.md ← Fix failing generations
@@ -93,7 +95,7 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
         ├── higgsfield-moodboard/SKILL.md   ← Moodboard creation workflows
         ├── higgsfield-pipeline/SKILL.md    ← Multi-step generation pipelines
         ├── higgsfield-recall/SKILL.md      ← Recall + regeneration patterns
-        ├── higgsfield-cinema/SKILL.md      ← Cinema Studio 2.5 (Soul Cast, Color Grading, 3D Mode, Grid Gen, Resolution, Frame Extraction, Object Insertion, Emotions, Clustering)
+        ├── higgsfield-cinema/SKILL.md      ← Cinema Studio 2.5 + 3.0 (Business/Team) (Soul Cast, Color Grading, 3D Mode, Smart Mode, @ References, Native Audio)
         └── higgsfield-vibe-motion/SKILL.md ← Vibe-based motion direction
 ```
 
@@ -126,4 +128,4 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 
 ---
 
-Built February 2026 · v2.0.2 (updated March 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.0.0 (updated April 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)

@@ -95,6 +95,23 @@ These only apply when working in Cinema Studio 2.5.
 
 ---
 
+## Cinema Studio 3.0 Notes
+
+> **No negative prompt support:** Cinema Studio 3.0's generation engine does not support negative prompt syntax. Do not write "no blur", "avoid shaky camera", or any negation-based constraints. Instead, use positive alternatives:
+
+| Negative (don't use with 3.0) | Positive alternative |
+|-------------------------------|---------------------|
+| "no shaky camera" | "locked-off static camera, no movement" |
+| "no blur" | "sharp focus throughout, deep depth of field" |
+| "don't make it dark" | "bright, evenly lit, overcast daylight" |
+| "avoid jittery motion" | "smooth, fluid motion, one action per shot" |
+| "no extra limbs" | "anatomically correct, all limbs naturally positioned" |
+| "don't change the character" | "consistent character appearance, same outfit and features throughout" |
+
+> **Prevention phrasing for 3.0:** All the prevention phrases in the tables above still work with Cinema Studio 3.0 — they are written as positive constraints by design. The key difference is that Cinema Studio 3.0 requires ALL constraints to be positive. The constraint blocks in this file are already compatible.
+
+---
+
 ## How to Use This File
 
 When building a prompt, scan the categories above that match the prompt's content:
@@ -105,6 +122,7 @@ When building a prompt, scan the categories above that match the prompt's conten
 4. **Product/commercial prompt** → check Texture/Lighting
 5. **Multi-shot sequence** → check Temporal/Consistency + Face/Identity
 6. **Cinema Studio prompt** → check Cinema Studio–Specific + all relevant categories
+6b. **Cinema Studio 3.0 prompt** → check Cinema Studio 3.0 Notes + all relevant categories (use positive alternatives only)
 7. **Audio/dialogue prompt** → check Temporal/Consistency (lip-sync section)
 
 Append the relevant prevention phrases to your prompt, or use them to catch and fix issues before the user generates.

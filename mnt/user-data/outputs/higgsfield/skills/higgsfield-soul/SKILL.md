@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 2.0.2
-  updated: 2026-03-26
+  version: 3.0.0
+  updated: 2026-04-06
   parent: higgsfield
 ---
 
@@ -317,6 +317,68 @@ Camera: slight Dolly In. Style: Lifestyle, warm tones, 9:16 vertical.
 > **Negative constraints:** For face/identity artifacts (face morphing, identity drift,
 > character swap, plastic skin) and their prevention phrases, see
 > `../shared/negative-constraints.md` — Face/Identity Artifacts section.
+
+---
+
+## Cinema Studio 3.0 Soul Cast (Business/Team Plan)
+
+> **Plan requirement:** Cinema Studio 3.0 Soul Cast is available exclusively on **Business and Team plans**.
+
+Cinema Studio 3.0 carries over Soul Cast's 8 parameter categories from 2.5:
+
+| Category | Options |
+|----------|---------|
+| Genre | General, Action, Horror, Comedy, Noir, Drama, Epic |
+| Budget | $10M – $500M (affects production value aesthetic) |
+| Era | 1900s – 2020s (decade increments) |
+| Archetype | Character role template |
+| Identity | Core character traits |
+| Physical Appearance | Face, build, age, ethnicity |
+| Details | Scars, tattoos, accessories, distinguishing marks |
+| Outfit | Clothing, materials, colors |
+
+### 3.0 Soul Cast Modes
+
+| Mode | Purpose | Output |
+|------|---------|--------|
+| General | Open-ended character generation | Character image |
+| Character | Focused character creation with detailed parameters | Character image |
+| Location | Environment/setting generation | Location image |
+
+### 3.0 Soul Cast Specs
+
+- Image resolution: up to 2K
+- Batch size: 1 or 10
+- Generation cost: 0.125 credits per image
+
+### Character Consistency Best Practices
+
+**Use 2–3 clear, well-lit reference shots:**
+- Frontal view (primary identity anchor)
+- 3/4-angle view (dimensional understanding)
+- Side profile (silhouette + hair/ear/jawline)
+
+**Outfit descriptions must be specific:**
+- ~~"casual clothes"~~ → `fitted olive-green cotton t-shirt, dark indigo slim jeans, white leather sneakers with red accents`
+- Include materials, colors, and distinctive details that the model can anchor to
+
+**In I2V workflows — describe action, not appearance:**
+The reference image already carries the character's visual identity. Re-describing their appearance creates conflict.
+
+- **Wrong:** `@Image1 — A woman with curly brown hair and green eyes wearing a red jacket walks through the park.`
+- **Right:** `@Image1 — She walks through the park, pausing to look up at the falling leaves. Camera: slow tracking alongside.`
+
+**If features drift between shots:**
+Use the character sheet image directly as @Image1 for tighter identity anchoring. A clean, well-lit character sheet outperforms multiple casual photos.
+
+**Multi-character scenes:**
+Reference each character separately with distinct @Image tags:
+
+```
+@Image1 as Character A (the detective). @Image2 as Character B (the witness).
+Character A leans across the table, speaking firmly. Character B looks away, fidgeting.
+Camera: slow push-in on Character B's face.
+```
 
 ---
 

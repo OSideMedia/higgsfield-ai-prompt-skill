@@ -68,3 +68,17 @@ cold blue fill. 2.35:1 anamorphic.
 - **Dramatic reveal**: Start with Overhead or Extreme Wide, Crane Down to close-up
 - **Super 8MM nostalgia**: Swap style to Super 8MM, warm grain, soft vignette, 4:3
 - **Editorial/fashion**: Swap to high-key lighting, Clinical Sharp Prime lens in Cinema Studio
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+**Genre mapping:** Drama
+**Prompt length target:** 60–100 words (Drama/Narrative — lead with Scene)
+**Speed Ramp:** Slow-mo for emotional weight, Auto for natural pace
+
+**@reference workflow:**
+```
+@Image1 as the character. She sits at a café table, stirring coffee absently.
+She notices someone through the window — expression shifts from sadness to surprise.
+Camera: slow push-in. Style: warm interior light, shallow depth of field.
+Audio: ceramic mug on saucer, spoon stirring, muffled street noise through glass.
+```

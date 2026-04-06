@@ -65,3 +65,17 @@ Plants a charge on the blast door. Pushes back.
 Camera: FPV Drone drifting ahead through the corridor.
 Apply Plasma Explosion preset at detonation.
 ```
+
+## Cinema Studio 3.0 (Business/Team Plan)
+
+**Genre mapping:** Epic (for large-scale) or Action (for combat)
+**Prompt length target:** 50–90 words (Anime/Artistic range — lead with Style)
+**Speed Ramp:** Hero Moment for reveals, Bullet Time for zero-gravity
+
+**@reference workflow:**
+```
+@Image1 as the environment concept. A spacecraft descends through storm clouds,
+hull glowing from atmospheric friction. Debris scatters. Lightning illuminates the landing zone.
+Camera: crane down tracking the descent. Style: anamorphic, teal and orange grade.
+Audio: deep engine rumble, crackling electricity, wind shear.
+```
