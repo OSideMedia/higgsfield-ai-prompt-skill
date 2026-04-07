@@ -28,7 +28,7 @@ different from single-clip generation: you're building sequences, not individual
 |--|--------------------|--------------------|----------------------------------------|
 | Output | Single clip | Multi-shot sequence | Multi-shot sequence |
 | Character consistency | Manual / Soul ID only | Reference Anchor system | @ reference system (up to 9 images) |
-| AI actor generation | Not available | Soul Cast — generate actors from parameters (no photos) | Soul Cast — General/Character/Location modes, 2K, 0.125 credits |
+| AI actor generation | Not available | Soul Cast — generate actors from parameters (no photos) | Soul Cast — General (2K) / Character (4K) / Location (4K) modes, 0.125 credits |
 | Camera control | Named presets | Director Panel (18 movements) | Director Panel + Smart (auto camera planning) |
 | Optical physics | Not available | Full camera body + lens stack | Not available |
 | Color grading | Not available | Built-in suite (temp, contrast, grain, bloom, etc.) | Not available |
@@ -1062,7 +1062,7 @@ Different models perform differently inside Cinema Studio's environment:
 Cinema Studio 3.0 is a separate generation engine from 2.5. Key differences:
 
 - **Higher max duration:** 15s (vs 2.5's 12s)
-- **Lower resolution (for now):** Video capped at 720p (vs 2.5's 1080p); Image capped at 2K (vs 2.5's 4K)
+- **Lower video resolution (for now):** Video capped at 720p (vs 2.5's 1080p); Image up to 4K in Character/Location modes (General mode capped at 2K)
 - **Native audio:** Audio generated simultaneously with video via unified multimodal architecture — dual-channel stereo, not post-processed
 - **Smart shot control:** Model auto-plans camera language based on genre and scene description
 - **Ultrawide aspect ratio:** 21:9 added (not available in 2.5)
@@ -1070,14 +1070,14 @@ Cinema Studio 3.0 is a separate generation engine from 2.5. Key differences:
 - **No color grading suite:** 2.5's built-in grading is not available in 3.0
 - **No 3D Mode / Grid Generation:** These 2.5 features are not available in 3.0
 
-> **Resolution note:** Resolution limits for Cinema Studio 3.0 are subject to change. If you need higher resolution output now, use Cinema Studio 2.5.
+> **Resolution note:** Cinema Studio 3.0 video resolution (720p) may increase. For 1080p video, use Cinema Studio 2.5. Image resolution in 3.0 varies by mode: Character/Location support 4K, General is capped at 2K.
 
 ### Resolution Comparison Table
 
 | Feature | Cinema Studio 2.5 | Cinema Studio 3.0 (Business/Team) |
 |---------|-------------------|-----------------------------------|
 | Video Resolution | Up to 1080p | Up to 720p (may increase) |
-| Image Resolution | Up to 4K | Up to 2K |
+| Image Resolution | Up to 4K | Up to 4K (Character/Location) · Up to 2K (General) |
 | Max Duration | 12s | 15s |
 | Aspect Ratios | 6 options | 7 options (+ 21:9 ultrawide) |
 | Audio | On/Off | On/Off (native dual-channel stereo) |
@@ -1091,7 +1091,7 @@ Cinema Studio 3.0 is a separate generation engine from 2.5. Key differences:
 - Generation cost: 48 credits
 
 **Image specs (Soul Cast 3.0):**
-- Resolution: up to 2K
+- Resolution: up to 4K (Character/Location modes) · up to 2K (General mode)
 - Batch: 1 or 10
 - Generation cost: 0.125 credits
 
@@ -1153,7 +1153,8 @@ Mimic @Video1's shot design, pacing, and transitions. Replace all products with 
 
 | Need | Recommendation |
 |------|---------------|
-| Highest resolution (1080p/4K) | Cinema Studio 2.5 |
+| Highest video resolution (1080p) | Cinema Studio 2.5 |
+| 4K images (Character/Location) | Cinema Studio 3.0 (Business/Team) |
 | Longer duration (up to 15s) | Cinema Studio 3.0 (Business/Team) |
 | Native audio with video | Cinema Studio 3.0 (Business/Team) |
 | Optical physics (lens, sensor) | Cinema Studio 2.5 |

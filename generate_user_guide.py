@@ -630,7 +630,7 @@ def build_pdf():
     features = [
         ("Soul Cast -- AI Actor Generation (2.5 + 3.0)",
          "Generate AI actors from 8 parameter categories (Genre, Budget, Era, Archetype, Identity, "
-         "Physical Appearance, Details, Outfit). In Cinema Studio 3.0 (Business/Team): General/Character/Location modes, 2K resolution, 0.125 credits per image."),
+         "Physical Appearance, Details, Outfit). In Cinema Studio 3.0 (Business/Team): General (2K) / Character (4K) / Location (4K) modes, 0.125 credits per image."),
         ("Built-in Color Grading (2.5 only)",
          "Color temperature, contrast, saturation, sharpness, film grain, exposure, bloom -- "
          "applied to keyframes before video generation. Not available in Cinema Studio 3.0."),

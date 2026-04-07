@@ -152,7 +152,7 @@ Full image model specs + UI controls → `../../../../../../image-models.md`
 | Performance cloning from video | Kling 3.0 Omni |
 | Up to 30s camera/motion transfer | Kling 3.0 Motion Control |
 | Soul Cast AI actors | Cinema Studio 2.5 |
-| Soul Cast AI actors (2K, General/Character/Location) | Cinema Studio 3.0 (Business/Team) |
+| Soul Cast AI actors (General 2K / Character 4K / Location 4K) | Cinema Studio 3.0 (Business/Team) |
 | Built-in color grading | Cinema Studio 2.5 |
 | Native dual-channel stereo audio | Cinema Studio 3.0 (Business/Team) · Kling 3.0/Omni · Seedance 2.0/1.5 Pro · Veo 3/3.1 |
 | Soul HEX color matching | Soul 2.0 · Soul Cinema Preview · Cinema Studio 2.5 |
@@ -198,7 +198,7 @@ Cinema Studio 3.0 is a separate generation engine available on Business and Team
 | Feature | Cinema Studio 2.5 | Cinema Studio 3.0 (Business/Team) |
 |---------|-------------------|-----------------------------------|
 | Video Resolution | Up to 1080p | Up to 720p (may increase) |
-| Image Resolution | Up to 4K | Up to 2K |
+| Image Resolution | Up to 4K | Up to 4K (Character/Location) · Up to 2K (General) |
 | Max Duration | 12s | 15s |
 | Aspect Ratios | 6 options | 7 options (+ 21:9 ultrawide) |
 | Audio | On/Off | On/Off (native dual-channel stereo) |

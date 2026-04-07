@@ -331,7 +331,7 @@ Cinema Studio 3.0 carries over Soul Cast's 8 parameter categories from 2.5:
 | Genre | General, Action, Horror, Comedy, Noir, Drama, Epic |
 | Budget | $10M – $500M (affects production value aesthetic) |
 | Era | 1900s – 2020s (decade increments) |
-| Archetype | Character role template |
+| Archetype | Innocent, Everyman, Hero, Caregiver, Explorer, Rebel, Lover, Creator, Jester, Sage, Magician, Ruler (12 options) |
 | Identity | Core character traits |
 | Physical Appearance | Face, build, age, ethnicity |
 | Details | Scars, tattoos, accessories, distinguishing marks |
@@ -347,7 +347,7 @@ Cinema Studio 3.0 carries over Soul Cast's 8 parameter categories from 2.5:
 
 ### 3.0 Soul Cast Specs
 
-- Image resolution: up to 2K
+- Image resolution: up to 4K (Character/Location modes) · up to 2K (General mode)
 - Batch size: 1 or 10
 - Generation cost: 0.125 credits per image
 

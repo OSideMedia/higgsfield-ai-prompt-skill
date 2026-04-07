@@ -7,7 +7,7 @@
   - Full specs: 15s max duration, 720p video, 2K image, 48 credits, 7 genres, 7 aspect ratios (+ 21:9 ultrawide)
   - Smart shot control (auto camera planning) + Custom multi-shot (up to 6 scenes, 12s)
   - Native dual-channel stereo audio (unified multimodal architecture)
-  - Soul Cast 3.0: General/Character/Location modes, 2K, 0.125 credits
+  - Soul Cast 3.0: General (2K) / Character (4K) / Location (4K) modes, 0.125 credits
   - @ reference patterns: up to 9 images, 3 video clips, 3 audio clips (≤12 total)
   - Resolution Comparison Table (Cinema Studio 2.5 vs 3.0) in higgsfield-cinema and higgsfield-models
   - "When to Use 3.0 vs 2.5" decision table
