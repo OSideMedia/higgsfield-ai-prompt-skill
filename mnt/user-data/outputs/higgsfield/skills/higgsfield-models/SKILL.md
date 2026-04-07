@@ -36,14 +36,18 @@ specifics, parameters, edge cases, API details) → read `MODELS-DEEP-REFERENCE.
 | Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Character drama, realism (no audio) |
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration |
 | Sora 2 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | ❌ | Epic scale, physics, action |
-| Wan 2.5/2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Artistic, stylized, fantasy |
+| Wan 2.7 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★★ | 2–15s | ✅ | 60fps, T2V/I2V/R2V/edit, first+last frame |
+| Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–15s | ❌ | Artistic, stylized, improved physics |
+| Wan 2.5 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–10s | ✅ | Native audio, artistic, fantasy |
 | Seedance 2.0 | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 10s | ✅ | 12-asset multimodal, complex motion |
 | Seedance 1.5 Pro | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 10s | ✅ | Best lip-sync, multilingual audio |
 | Seedance Pro | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | 10s | ❌ | Fast iteration, no audio needed |
 | Veo 3.1 | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Ref images, first/last frame, 4K |
+| Veo 3.1 Lite | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Budget 3.1 quality, 1080p, I2V, volume |
 | Veo 3 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 4–8s | ✅ | Nature, environment, stable model |
 | Grok Imagine Video | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★☆ | 1–15s | ✅ | Video editing, animate images |
-| Minimax Hailuo | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | — | ❌ | Dance, sports, fluid motion |
+| Minimax Hailuo 2.3 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★☆ | 6–10s | ❌ | VFX, fluid motion, anime, physics |
+| Minimax Hailuo 02 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | 6–10s | ❌ | Dance, sports, fluid motion |
 | Higgsfield DoP (Lite/Standard/Turbo) | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 3–5s | ❌ | I2V specialist, 50+ presets, optical physics |
 
 ---
@@ -84,11 +88,14 @@ Is this image or video?
     ├── Is the environment/phenomenon the hero?
     │   ├── Nature, documentary, stable → Veo 3
     │   ├── Need ref image consistency → Veo 3.1
+    │   ├── Budget Veo 3.1 quality / volume → Veo 3.1 Lite
+    │   ├── 60fps, first+last frame, ref images → Wan 2.7
     │   └── Artistic, painterly, fantasy → Wan 2.5/2.6
     │
     ├── Is it action/spectacle?
     │   ├── Epic scale, crowds, physics → Sora 2
-    │   └── Dance, sports, fluid motion → Minimax Hailuo
+    │   ├── VFX, anime, fluid motion → Minimax Hailuo 2.3
+    │   └── Dance, sports, budget motion → Minimax Hailuo 02
     │
     ├── Need maximum reference control?
     │   ├── Up to 12 assets (images+video+audio) → Seedance 2.0
@@ -117,7 +124,7 @@ Is this image or video?
 | Fast versatile 2K | Seedream 5.0 Lite | 1 |
 | 4K versatile | Seedream 4.5 | 1 |
 | Sketch-to-image (Draw) | Nano Banana | 1 |
-| Artistic / stylized | WAN 2.2 | 1 |
+| Artistic / stylized | Wan 2.2 | 1 |
 | Blend multiple references | Multi Reference | 1.5 |
 | Fast pro-quality + text rendering | Nano Banana 2 | 1.5 |
 | Complex prompts / text in image | GPT Image 1.5 | 2 |
@@ -131,7 +138,7 @@ Full image model specs + UI controls → `../../../../../../image-models.md`
 ## Budget Tiers
 
 **Free / near-free:** Soul 2.0 (5K gens) · Z-Image (0.15) · Face Swap (2 free)
-**Budget (0.5–1):** Higgsfield Soul · Kling O1 · Seedream family · Nano Banana · WAN 2.2 · Reve
+**Budget (0.5–1):** Higgsfield Soul · Kling O1 · Seedream family · Nano Banana · Wan 2.2 · Reve
 **Mid (1.5–2):** Nano Banana 2 · Multi Reference · FLUX.2 Pro · Flux Kontext Max · GPT Image · NB Pro · Character Swap
 **Premium (5–6):** FLUX.2 Flex · FLUX.2 Max
 
@@ -147,14 +154,14 @@ Full image model specs + UI controls → `../../../../../../image-models.md`
 | Draw (sketch-to-image) | Nano Banana · Nano Banana Pro |
 | Video editing (relight/restyle/swap) | Kling O1 Video Edit · Kling 3.0 Omni Edit · Grok Video |
 | Multi-image reference blend | Multi Reference · Nano Banana Pro (14 refs) · Kling O1 Video (7 refs) |
-| Start/end frame control | Kling O1 Video · Veo 3.1 |
+| Start/end frame control | Kling O1 Video · Veo 3.1 · Wan 2.7 |
 | Video extension (up to 148s) | Veo 3.1 |
 | Performance cloning from video | Kling 3.0 Omni |
 | Up to 30s camera/motion transfer | Kling 3.0 Motion Control |
 | Soul Cast AI actors | Cinema Studio 2.5 |
 | Soul Cast AI actors (General 2K / Character 4K / Location 4K) | Cinema Studio 3.0 (Business/Team) |
 | Built-in color grading | Cinema Studio 2.5 |
-| Native dual-channel stereo audio | Cinema Studio 3.0 (Business/Team) · Kling 3.0/Omni · Seedance 2.0/1.5 Pro · Veo 3/3.1 |
+| Native dual-channel stereo audio | Cinema Studio 3.0 (Business/Team) · Kling 3.0/Omni · Seedance 2.0/1.5 Pro · Veo 3/3.1 · Wan 2.5/2.7 |
 | Soul HEX color matching | Soul 2.0 · Soul Cinema Preview · Cinema Studio 2.5 |
 | Native 4K image series | Kling Image 3.0 |
 | Style presets + Color Transfer | Soul 2.0 |
@@ -181,8 +188,15 @@ Orientation for complex motions (dancing, action, full-body movement).
 **Seedance 2.0:** Rule of 12 (up to 12 assets per
 generation). Real person face uploads blocked — use synthetic character references. Best practices for Seedance 2.0 prompting are integrated into the sub-skills (see higgsfield-prompt, higgsfield-camera, higgsfield-motion).
 
-**Veo 3.1 vs 3:** 3.1 adds reference images (up to 3), first/last frame, video extension, 4K.
-3 is stable and proven. Use 3.1 for subject consistency, 3 for pure environment/nature.
+**Veo 3.1 vs 3.1 Lite vs 3:** 3.1 adds reference images (up to 3), first/last frame, video extension, 4K.
+3.1 Lite is budget-priced 3.1 quality at 1080p — supports T2V and I2V, costs less than half of 3.1 Fast.
+3 is stable and proven. Use 3.1 for subject consistency, 3.1 Lite for volume, 3 for pure environment/nature.
+
+**Wan 2.7:** Major upgrade — native 60fps (vs 24fps in 2.6), up to 15s duration, first+last frame anchoring, up to 5 reference images, 4-model suite (T2V/I2V/R2V/video edit), Flow-Matching architecture. 40% better physics consistency over 2.6.
+
+**Wan 2.5:** First Wan version with native audio — joint text/audio/video generation. Supports audio-driven video (upload audio to drive visuals). 1080p, 5–10s.
+
+**Minimax Hailuo 2.3 vs 02:** 2.3 is a major upgrade — improved physics, anime/illustration styles, facial micro-expressions, better prompt adherence. Fast variant now at 1080p (02 Fast was 512p). 02 remains available for budget motion work.
 
 **Grok Imagine:** Aurora architecture (autoregressive, not diffusion) — excels at text/logo
 rendering and multi-image compositing. Image editing supports multi-turn iterative chains.

@@ -14,17 +14,23 @@
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration |
 | Kling 2.1 Master (deprecated) | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 5–10s | ❌ | Deprecated — removed from platform. Use Kling 2.6 or 3.0 |
 | Sora 2 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | ❌ | Epic scale, physics, action |
-| Wan 2.5 | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Artistic, stylized, fantasy |
-| Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | — | ❌ | Improved Wan 2.5 |
+| Wan 2.7 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★★ | 2–15s | ✅ | 60fps, T2V/I2V/R2V/edit, first+last frame |
+| Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–15s | ❌ | Artistic, stylized, improved physics |
+| Wan 2.5 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–10s | ✅ | Native audio, artistic, fantasy |
+| Wan 2.5 Fast | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–10s | ✅ | Fast Wan iteration with audio |
 | Seedance 2.0 | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 10s | ✅ | 12-asset multimodal, complex motion |
 | Seedance 1.5 Pro | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 10s | ✅ | Multilingual audio, lip-sync, drama |
 | Seedance Pro | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | 10s | ❌ | Fast iteration, no audio needed |
 | Veo 3.1 | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Ref images, first/last frame, extension, 4K |
 | Veo 3.1 Fast | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Fast iteration, same caps as 3.1 |
 | Veo 3 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 4–8s | ✅ | Nature, environment, stable model |
+| Veo 3.1 Lite | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Budget 3.1 quality, 1080p, I2V, volume |
 | Veo 3 Fast | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | 8s | ✅ | Fast, stable, volume content |
 | Grok Imagine Video | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★☆ | 1–15s | ✅ | Video editing, animate images, social clips |
-| Minimax Hailuo | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | — | ❌ | Dance, sports, fluid motion |
+| Minimax Hailuo 2.3 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★☆ | 6–10s | ❌ | VFX, fluid motion, anime, physics |
+| Minimax Hailuo 2.3 Fast | ★★★★☆ | ★★★★☆ | ★★★★★ | ★★★★☆ | 6–10s | ❌ | Fast iteration, batch creation |
+| Minimax Hailuo 02 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | 6–10s | ❌ | Dance, sports, fluid motion |
+| Minimax Hailuo 02 Fast | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 6–10s | ❌ | Budget motion, 512p |
 | Higgsfield DoP (Lite/Standard/Turbo) | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 3–5s | ❌ | I2V specialist, 50+ camera presets, optical physics |
 
 ## Image Models — Head to Head
@@ -85,10 +91,12 @@ Is this image or video?
     │   └── Explosions, crowds, physics, epic landscapes? → Sora 2
     │
     ├── Is artistic style the priority?
+    │   ├── 60fps, first+last frame, reference images? → Wan 2.7
     │   └── Fantasy, stylized, painterly, surreal? → Wan 2.5 / 2.6
     │
     ├── Is fluid motion / physical performance the focus?
-    │   └── Dance, sports, martial arts, gymnastics? → Minimax Hailuo
+    │   └── VFX, anime, fluid motion, physics? → Minimax Hailuo 2.3
+    │   └── Dance, sports, martial arts? → Minimax Hailuo 02
     │   └── Video editing / restyle existing footage? → Grok Imagine Video
     │   └── Animate a still image (10s, audio)? → Grok Imagine Video
     │
@@ -97,6 +105,7 @@ Is this image or video?
     │   ├── Define start + end frame? → Veo 3.1
     │   ├── Extend existing Veo video? → Veo 3.1
     │   ├── Fast iteration (Veo quality)? → Veo 3.1 Fast
+    │   ├── Budget Veo 3.1 quality / volume? → Veo 3.1 Lite
     │   └── Weather, wildlife, landscape (stable)? → Veo 3
     │
     └── Need fast iteration / social content?
@@ -143,7 +152,7 @@ Some camera controls perform better on certain models:
 | Timelapse Landscape | Veo 3 |
 | Hyperlapse | Veo 3, Sora 2 |
 | Handheld (documentary feel) | Kling 2.6, Veo 3 |
-| Action Run (physical chase) | Minimax Hailuo, Kling 2.6 |
+| Action Run (physical chase) | Minimax Hailuo 2.3, Kling 2.6 |
 | Super Dolly Out (scale reveal) | Sora 2 |
 | Dutch Angle (horror/tension) | Wan 2.5, Kling 2.6 |
 | Long camera motion path | Kling 3.0 Motion Control |
@@ -160,7 +169,7 @@ Some camera controls perform better on certain models:
 | Explosion / Destruction | Sora 2 |
 | Surreal / Glitch / Multiverse | Wan 2.5 |
 | Horror presets | Kling 2.6, Wan 2.5 |
-| Dance / Motion glow | Minimax Hailuo |
+| Dance / Motion glow | Minimax Hailuo 2.3 |
 | Nature effects (Sakura, Bloom, Northern Lights) | Veo 3, Wan 2.5 |
 | Bullet Time / Slow motion | Kling 2.6, Sora 2 |
 | Stylized (Anime, Pixar, Claymation) | Kling 3.0, Wan 2.5 |
@@ -174,13 +183,17 @@ Some camera controls perform better on certain models:
 | Seedance Pro | Low |
 | Kling 2.5 Turbo | Low–Medium |
 | Wan 2.5 | Low–Medium |
-| Minimax Hailuo | Medium |
+| Minimax Hailuo 2.3 | Medium |
+| Minimax Hailuo 02 | Medium |
 | Kling 2.6 | Medium |
 | Sora 2 | Medium–High |
 | Kling O1 Video Edit | ~9 credits |
 | Kling 3.0 | ~10 credits |
 | Kling 3.0 Motion Control | Medium–High |
+| Veo 3.1 Lite | Medium |
 | Veo 3 | High |
+| Wan 2.7 | Low–Medium |
+| Wan 2.5 | Low–Medium |
 
 Plans: Free (25 credits/mo) · Basic $6/mo (150) · Pro $27/mo (700) · Ultimate $55/mo (1500)
 

@@ -40,7 +40,7 @@ different from single-clip generation: you're building sequences, not individual
 | Genre | Style descriptions | 8 named genres | 7 genres (General, Action, Horror, Comedy, Noir, Drama, Epic) |
 | Audio | Model-dependent | On/Off | On/Off (native dual-channel stereo) |
 | Video resolution | Model-dependent | Up to 1080p | Up to 720p (may increase) |
-| Image resolution | Model-dependent | Up to 4K | Up to 2K |
+| Image resolution | Model-dependent | Up to 4K | Up to 4K (Character/Location) · Up to 2K (General) |
 | Max video duration | Model-dependent | 12s | 15s |
 | Aspect ratios | Model-dependent | 6 options | 7 options (+ 21:9 ultrawide) |
 | Plan requirement | All plans | All plans | **Business/Team plan only** |

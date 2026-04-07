@@ -386,7 +386,7 @@ Style: Cinematic, natural light, cool blue-grey dawn. 16:9.
 
 ### Contemporary Solo
 ```
-Model: Minimax Hailuo
+Model: Minimax Hailuo 2.3
 Aspect: 16:9 | Duration: 10s | Style: Cinematic
 
 A dancer in a white flowing dress performs alone in a vast black studio.
@@ -400,7 +400,7 @@ Apply Glow Trace preset — her movement leaves a trail of white light.
 
 ### Hip-Hop Cypher
 ```
-Model: Minimax Hailuo
+Model: Minimax Hailuo 2.3
 Aspect: 9:16 | Duration: 8s | Style: Cinematic
 
 Four dancers in a circle under a single streetlight at night.

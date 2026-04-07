@@ -87,11 +87,11 @@ G = Google-powered model
 
 ---
 
-### WAN 2.2
+### Wan 2.2
 **Credits:** 1 per generation
-**UI:** WAN 2.2 · 3:4 · Style On/Off · 1 generation
+**UI:** Wan 2.2 · 3:4 · Style On/Off · 1 generation
 **Best for:** Stylized / artistic image output · non-photorealistic aesthetics
-**vs WAN video:** Same model family as Wan 2.5/2.6 video — painterly, artistic, non-photorealistic strengths carry over to image
+**vs Wan video:** Same model family as Wan 2.5/2.6 video — painterly, artistic, non-photorealistic strengths carry over to image
 **Style toggle:** On enables stylization mode
 
 ---
@@ -353,7 +353,7 @@ These are upload-based transformation tools, not text-to-image generators.
 | Seedream 5.0 Lite | 1 | 2K | Fast |
 | Seedream 4.5 | 1 | 4K | High-res |
 | Nano Banana | 1 | — | Draw, portrait |
-| WAN 2.2 | 1 | — | Artistic |
+| Wan 2.2 | 1 | — | Artistic |
 | Reve | 1 | — | New |
 | Soul 2.0 | Free | 2K | 5K free gens |
 | Soul Cinema Preview | Low | — | Cinematic keyframes |

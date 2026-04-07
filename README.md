@@ -12,7 +12,7 @@ A comprehensive Claude skill library for generating high-quality prompts on
 Transforms natural language requests into production-ready Higgsfield prompts using:
 - The **MCSLA formula** (Model · Camera · Subject · Look · Action)
 - Named camera controls and motion presets the platform recognizes
-- Model selection guidance across Kling 3.0, Sora 2, Veo 3.1, WAN, Seedance 2.0, Minimax Hailuo, Higgsfield DoP, and more
+- Model selection guidance across Kling 3.0, Sora 2, Veo 3.1, Wan, Seedance 2.0, Minimax Hailuo, Higgsfield DoP, and more
 - Genre recipe templates for action, horror, romance, sci-fi, product ads, and more
 - Soul ID character consistency guidance + Character Sheet creation
 - Troubleshooting for failed or poor generations

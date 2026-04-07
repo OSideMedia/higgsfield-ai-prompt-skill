@@ -216,7 +216,7 @@
 - **Key prompting principle**: "#1 mistake in video prompting" callout added to `higgsfield-prompt`.
 
 ### Updated: Platform model lineup
-- Video: Kling 3.0, Kling O1, Kling 2.6, Kling 2.5 Turbo, Kling 3.0 Motion Control, Sora 2, Google Veo 3.1, WAN 2.5/2.6, Seedance Pro, Minimax Hailuo 02, Higgsfield DoP (Lite/Standard/Turbo).
+- Video: Kling 3.0, Kling O1, Kling 2.6, Kling 2.5 Turbo, Kling 3.0 Motion Control, Sora 2, Google Veo 3.1, Wan 2.5/2.6, Seedance Pro, Minimax Hailuo 02, Higgsfield DoP (Lite/Standard/Turbo).
 - Image: Nano Banana Pro, Nano Banana 2, Soul 2.0, Soul Cinema Preview, Soul Cast, Flux 2, Flux Kontext, GPT Image 1.5, Seedream 4.0.
 - Updated root SKILL.md, dispatcher, model-guide.md, and higgsfield-models sub-skill.
 

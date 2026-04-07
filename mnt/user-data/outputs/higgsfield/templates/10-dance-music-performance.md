@@ -7,12 +7,12 @@ Dance sequences, music video scenes, concert performances, choreography showcase
 User asks for dance video, music performance, choreography, concert scene, DJ set, or any prompt where the body in motion is the hero subject.
 
 ## Recommended model
-**Minimax Hailuo** for best fluid body motion and dance. **Kling 3.0** for character-focused performance with audio. **Sora 2** for large-scale concert/crowd scenes.
+**Minimax Hailuo 2.3** for best fluid body motion and dance. **Kling 3.0** for character-focused performance with audio. **Sora 2** for large-scale concert/crowd scenes.
 
 ## Example prompt
 
 ```
-Model: Minimax Hailuo
+Model: Minimax Hailuo 2.3
 Aspect: 16:9 | Duration: 10s | Style: Cinematic
 
 A dancer in a white flowing dress performs alone in a vast black studio.
@@ -45,7 +45,7 @@ Apply Glow Trace preset — her movement leaves a trail of white light.
 
 ## Common mistakes
 1. **Named dance moves** — "pirouette, plié, grand jeté" don't translate reliably. Describe the energy and body positions instead.
-2. **Too many dancers for one generation** — one or two performers max per clip. Crowds → use Minimax Hailuo with a wider shot.
+2. **Too many dancers for one generation** — one or two performers max per clip. Crowds → use Minimax Hailuo 2.3 with a wider shot.
 
 ## Variations
 - **Hip-hop/street**: 9:16 vertical, Rap Flex camera (quick zooms), "sharp isolated movements", neon lighting

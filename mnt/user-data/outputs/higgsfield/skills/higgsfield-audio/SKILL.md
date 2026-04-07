@@ -218,7 +218,7 @@ Background ambient: [environment description].
 ## When to Skip Audio
 
 Not every prompt needs audio direction. Skip audio cues when:
-- Using a model without native audio (Kling 2.6, Wan, Seedance Pro, Minimax Hailuo)
+- Using a model without native audio (Kling 2.6, Wan 2.6, Seedance Pro, Minimax Hailuo 2.3/02)
 - The content is purely visual (product beauty shots, abstract motion, landscape)
 - Audio will be added entirely in post-production
 - The prompt is already at the 200-word limit and visual direction is more important

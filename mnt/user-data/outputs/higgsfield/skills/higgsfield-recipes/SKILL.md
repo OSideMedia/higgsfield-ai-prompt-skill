@@ -235,7 +235,7 @@ Style: Cinematic, natural light, neutral grade. 16:9.
 ## Recipe 8: Dance / Music Video
 
 **Core pattern:** Establish space → Performance builds → Beat sync climax
-**Best models:** Minimax Hailuo, Kling 2.6
+**Best models:** Minimax Hailuo 2.3, Kling 2.6
 **Camera:** 360 Orbit, Dolly In/Out on beat, Overhead, Crash Zoom In
 **Style:** Cinematic or Anamorphic
 **Motion presets:** Glow Trace, Live Concert, Color Rain

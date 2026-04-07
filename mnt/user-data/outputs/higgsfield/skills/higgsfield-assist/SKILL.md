@@ -85,7 +85,7 @@ for final in-platform prompt refinement and quick generation.
 ### Credit Cost Tiers (Approximate)
 
 **Low cost:** Seedance Pro, standard image generation, Nano Banana
-**Medium cost:** Kling 2.6, Wan 2.5/2.6, Minimax Hailuo, standard I2V
+**Medium cost:** Kling 2.6, Wan 2.5/2.6, Minimax Hailuo 2.3, standard I2V
 **High cost:** Sora 2, Kling 3.0 (with audio), Veo 3, Cinema Studio
 **Apps:** Vary widely — one-click apps are generally efficient
 
@@ -143,7 +143,7 @@ The credit math almost always favors this approach.
 - Strategy: Use Apps heavily — they're credit-efficient for their use cases
 
 **Mid budget (Pro plan — 700 credits):**
-- Primary models: Kling 2.6, Wan 2.5, Minimax Hailuo
+- Primary models: Kling 2.6, Wan 2.5, Minimax Hailuo 2.3
 - Reserve Sora 2 / Kling 3.0 for hero shots only
 - Use Cinema Studio for your two or three most important scenes
 - Strategy: Iterate in image first, commit in video second
