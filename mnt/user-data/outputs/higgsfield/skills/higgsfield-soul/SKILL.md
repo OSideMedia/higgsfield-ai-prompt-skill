@@ -332,8 +332,8 @@ Cinema Studio 3.0 carries over Soul Cast's 8 parameter categories from 2.5:
 | Budget | $10M – $500M (affects production value aesthetic) |
 | Era | 1900s – 2020s (decade increments) |
 | Archetype | Innocent, Everyman, Hero, Caregiver, Explorer, Rebel, Lover, Creator, Jester, Sage, Magician, Ruler (12 options) |
-| Identity | Core character traits |
-| Physical Appearance | Face, build, age, ethnicity |
+| Identity | Gender, race, age |
+| Physical Appearance | Build, height, eye color, hair style, hair texture, hair color, facial hair |
 | Details | Scars, tattoos, accessories, distinguishing marks |
 | Outfit | Clothing, materials, colors |
 

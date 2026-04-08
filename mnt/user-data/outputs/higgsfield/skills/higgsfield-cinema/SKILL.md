@@ -48,13 +48,32 @@ different from single-clip generation: you're building sequences, not individual
 **Use Cinema Studio when:**
 - You need 2+ shots that must feel like the same film
 - Character geometry must be locked across cuts
-- You want professional optical physics (lens flare, depth of field, sensor grain)
+- You want professional optical physics (lens flare, depth of field, sensor grain) — 2.5 only
 - You're building a short film, branded content, or any sequence longer than one clip
 
 **Stick with standard generation when:**
 - Single clip is sufficient
 - Speed matters more than consistency
 - Exploring ideas before committing to a full sequence
+
+---
+
+## ⚠ Version Detection — Ask First
+
+**Before generating any Cinema Studio output, always ask the user:**
+
+> Are you working in **Cinema Studio 2.5** or **Cinema Studio 3.0**?
+
+If the user has already stated their version (e.g., "I'm using 3.0" or "Cinema Studio 3.0"), remember it and don't ask again. But never assume — 2.5 and 3.0 have fundamentally different feature sets.
+
+**Why this matters:**
+- 2.5 has optical physics (camera body + lens stack), color grading, 3D Mode, grid generation
+- 3.0 has **none of those** — outputting them wastes the user's time and causes confusion
+- 3.0 has features 2.5 doesn't: native audio, Smart shot control, 21:9 ultrawide, 15s duration
+- Speed Ramp options differ between versions
+- Genre lists differ between versions
+
+**Once the version is known, use ONLY that version's output format and feature set.** Never mix features from one version into output for the other.
 
 ---
 
@@ -350,6 +369,8 @@ names inside the prompt text. They live in the UI, not the prompt field.
 ---
 
 ## Director Panel — 18 Camera Movements
+
+**⚠ Use ONLY these exact movement names in Cinema Studio output.** General cinematic terms like "Crane Down", "Whip Pan", "FPV Drone", "Crash Zoom" etc. (from `vocab.md`) are valid for standard video generation and image prompts **outside** Cinema Studio, but they are NOT Director Panel options. Inside Cinema Studio, map to the closest equivalent (e.g., Crane Down → **Jib Down**, Crane Up → **Jib Up**).
 
 All movements available in Cinema Studio's Director Panel:
 
@@ -687,6 +708,8 @@ then pick winners from each cluster before assembling the final sequence.
 **Core rule:** Everything selectable in the Higgsfield UI stays out of the prompt.
 The prompt field is for scene description only — pure visual storytelling language.
 
+**⚠ Version-specific formats below.** Use the 2.5 formats for 2.5 users and the 3.0 formats for 3.0 users. **Never mix them.**
+
 ### What goes where
 
 | Belongs in UI (dropdowns) | Belongs in Prompt field |
@@ -712,7 +735,7 @@ Anything they don't give you = it doesn't exist, so describe it instead.
 
 ---
 
-### IMAGE MODE Output Format
+### IMAGE MODE Output Format (Cinema Studio 2.5 only)
 
 ```
 ━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
@@ -745,7 +768,7 @@ Harbour lights fracture on the black water below.
 
 ---
 
-### SINGLE SHOT Video Output Format
+### SINGLE SHOT Video Output Format (Cinema Studio 2.5)
 
 ```
 ━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
@@ -776,7 +799,7 @@ He reaches down and slowly closes the briefcase.
 
 ---
 
-### MULTI-SHOT AUTO Video Output Format
+### MULTI-SHOT AUTO Video Output Format (Cinema Studio 2.5)
 
 Same structure as Single Shot — one UI settings block, one prompt. The user describes
 the full scene in the prompt and Cinema Studio breaks it into shots automatically.
@@ -811,7 +834,7 @@ He sets it down without drinking.
 
 ---
 
-### MULTI-SHOT MANUAL Video Output Format
+### MULTI-SHOT MANUAL Video Output Format (Cinema Studio 2.5)
 
 One UI settings block per scene. One prompt per scene. Six scenes = six pairs.
 Each scene is fully self-contained — the user configures and pastes them one at a time.
@@ -878,6 +901,85 @@ PROMPT
 A glass of whiskey sits untouched on the bar in front of him.
 He stares at his own reflection in the mirror behind the bottles.
 His jaw tightens. He picks up the glass, holds it, sets it back down.
+```
+
+---
+
+## Cinema Studio 3.0 Output Formats
+
+**3.0 does NOT have:** Camera body, Lens, Focal length, Aperture, Color grading, 3D Mode, Grid generation. Never include these in 3.0 output.
+
+**3.0 has:** Genre (7: General, Action, Horror, Comedy, Noir, Drama, Epic), Director Panel, Speed Ramp (7: Auto, Slow-mo, Ramp Up, Flash In, Flash Out, Bullet Time, Hero Moment), Duration (up to 15s), Audio (On/Off native stereo), Smart shot control, 21:9 ultrawide.
+
+---
+
+### IMAGE MODE Output Format (Cinema Studio 3.0)
+
+No optical stack in 3.0. Image output uses Soul Cast modes only.
+
+```
+━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
+Soul Cast Mode: [General / Character / Location]
+Genre:          [genre]
+↳ Why: [one sentence — what this combination gives the image and why]
+
+━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
+[Scene description only. No camera/lens/aperture language — these don't exist in 3.0.]
+```
+
+---
+
+### SINGLE SHOT / SMART Video Output Format (Cinema Studio 3.0)
+
+```
+━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
+Genre:      [genre — General, Action, Horror, Comedy, Noir, Drama, or Epic]
+Shot Mode:  [Smart / Custom]
+Movement:   [Director Panel movement — or Smart for auto camera planning]
+Speed Ramp: [Auto / Slow-mo / Ramp Up / Flash In / Flash Out / Bullet Time / Hero Moment]
+Duration:   [up to 15s]
+Audio:      [On / Off]
+
+━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
+[Scene description only. Use @ to reference uploaded images/video/audio.
+No movement, genre, speed ramp, or duration language in here.]
+```
+
+**Single Shot 3.0 example:**
+```
+━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
+Genre:      Action
+Shot Mode:  Smart
+Movement:   Jib Down
+Speed Ramp: Slow-mo
+Duration:   5s
+Audio:      On
+
+━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
+@CypressLookout packed with cars and people at night. @R34GTR parked
+prominently in the center, @240SX and @AE86 visible nearby. Crowd
+gathered between the cars, neon underglow reflecting on wet pavement.
+City skyline glowing across the water in the distance. Engine noise,
+crowd murmur, tension in the air.
+```
+
+---
+
+### MULTI-SHOT MANUAL Video Output Format (Cinema Studio 3.0)
+
+Same per-scene structure as 2.5 but with 3.0 options. Up to 6 scenes, 15s max total.
+
+```
+━━━ SCENE 1 — [short scene title] ━━━━━━━━━━━━━━━━━━━━━━━
+UI SETTINGS
+  Genre:      [genre]
+  Movement:   [movement]
+  Speed Ramp: [Auto / Slow-mo / Ramp Up / Flash In / Flash Out / Bullet Time / Hero Moment]
+  Duration:   [seconds]
+  Audio:      [On / Off]
+
+PROMPT
+[Scene 1 description only. Use @ for references.]
 ```
 
 ---
