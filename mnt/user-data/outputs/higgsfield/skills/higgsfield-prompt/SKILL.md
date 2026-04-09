@@ -130,8 +130,9 @@ Subject → Action → Camera → Style is the most reliable order.
 Focused prompts outperform exhaustive ones. One clear intention > ten vague details.
 
 **Cinema Studio: Keep it under 512 characters:**
-Cinema Studio has a hard 512-character limit on prompts. @ Element chips consume
-~80–100 hidden characters each. With 2 @ tags, keep visible text under ~250 chars.
+Cinema Studio has a hard 512-character limit on prompts (both 2.5 and 3.0).
+- **2.5:** @ Element chips consume ~80–100 hidden characters each. With 2 @ tags, keep visible text under ~250 chars.
+- **3.0:** @ references (images/video/audio) are media attachments, not inline metadata — they consume less hidden space. Keep visible text under ~350–400 chars with references, ~450–500 without.
 See the Cinema Studio skill for full character budget details.
 
 ---

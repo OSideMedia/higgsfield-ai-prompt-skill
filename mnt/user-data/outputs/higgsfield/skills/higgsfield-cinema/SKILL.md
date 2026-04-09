@@ -32,7 +32,7 @@ different from single-clip generation: you're building sequences, not individual
 | Camera control | Named presets | Director Panel (18 movements) | Director Panel + Smart (auto camera planning) |
 | Optical physics | Not available | Full camera body + lens stack | Not available |
 | Color grading | Not available | Built-in suite (temp, contrast, grain, bloom, etc.) | Not available |
-| Shot structure | One prompt = one clip | Up to 6 scenes, 12s total max, per-scene config | Smart (auto) + Custom multi-shot (up to 6 scenes, 12s) |
+| Shot structure | One prompt = one clip | Up to 6 scenes, 12s total max, per-scene config | Smart (auto) + Custom multi-shot (up to 6 scenes, 15s) |
 | 3D exploration | Not available | Gaussian splatting — move inside any generated image | Not available |
 | Batch generation | Not available | Grid generation — up to 16 variations per credit | Not available |
 | Storyboard | Not available | Higgsfield Popcorn integration | Not available |
@@ -1254,7 +1254,7 @@ Cinema Studio 3.0 is a separate generation engine from 2.5. Key differences:
 
 **Shot Control:**
 - **Smart** — automatic mode. The model auto-plans camera language based on the genre and scene description. Trust it for genre-appropriate camera work.
-- **Custom multi-shot** — up to 6 scenes, 12s total. Manual per-scene control.
+- **Custom multi-shot** — up to 6 scenes, 15s total. Manual per-scene control.
 
 **Scene prompt syntax:** "Describe your scene – use @ to add characters & locations"
 
