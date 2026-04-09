@@ -400,7 +400,11 @@ All movements available in Cinema Studio's Director Panel:
 
 ## Speed Ramp
 
-Controls temporal feel of the shot. Set per-scene in Cinema Studio:
+Controls temporal feel of the shot. Set per-scene in Cinema Studio.
+
+> **⚠ Speed Ramp options differ between versions. Use ONLY the table for the version the user specified. Never output a 2.5 ramp name in 3.0 output or vice versa.**
+
+### Cinema Studio 2.5 Speed Ramps (6 modes)
 
 | Mode | Effect | Best for |
 |------|--------|----------|
@@ -414,11 +418,29 @@ Controls temporal feel of the shot. Set per-scene in Cinema Studio:
 **Custom curve:** Blue line with draggable nodes. Pull up = slow down, pull down = speed up.
 Left = beginning of clip, right = end.
 
+**2.5-only values — NEVER use in 3.0 output:** Linear, Slow Mo, Speed Up, Impact, Custom
+
+### Cinema Studio 3.0 Speed Ramps (7 modes)
+
+| Mode | Effect | Best for |
+|------|--------|----------|
+| Auto | Model selects based on content | When unsure |
+| Slow-mo | Reduced playback speed | Impact moments, emotion |
+| Ramp Up | Gradual acceleration | Building energy, montage |
+| Flash In | Fast start → ease to normal | Dramatic entrances, openings |
+| Flash Out | Normal → sudden snap acceleration | Launches, exits, explosive action |
+| Bullet Time | Ultra-slow at key moment, normal around it | Action hits, reveals, hero beats |
+| Hero Moment | Slow build → dramatic pause → release | Character reveals, power moves |
+
+**3.0-only values — NEVER use in 2.5 output:** Ramp Up, Flash In, Flash Out, Bullet Time, Hero Moment
+
 ---
 
 ## Genre Selection
 
-Cinema Studio's 8 genres (these are the exact UI options — earlier versions had wrong names):
+> **⚠ Genre lists differ between versions. Use ONLY the genres for the version the user specified.**
+
+### Cinema Studio 2.5 Genres (8)
 
 `General` · `Action` · `Horror` · `Comedy` · `Western` · `Suspense` · `Intimate` · `Spectacle`
 
@@ -435,6 +457,14 @@ You can always override with explicit prompt language — genre is a starting po
 | Suspense | Low key, motivated | Cold, muted | Slow build |
 | Intimate | Soft, warm | Warm, skin-flattering | Gentle |
 | Spectacle | Dramatic, high contrast | Bold, saturated | Epic, sweeping |
+
+**2.5-only genres — NEVER use in 3.0 output:** Western, Suspense, Intimate, Spectacle
+
+### Cinema Studio 3.0 Genres (7)
+
+`General` · `Action` · `Horror` · `Comedy` · `Noir` · `Drama` · `Epic`
+
+**3.0-only genres — NEVER use in 2.5 output:** Noir, Drama, Epic
 
 ---
 
@@ -911,6 +941,11 @@ His jaw tightens. He picks up the glass, holds it, sets it back down.
 
 **3.0 has:** Genre (7: General, Action, Horror, Comedy, Noir, Drama, Epic), Director Panel, Speed Ramp (7: Auto, Slow-mo, Ramp Up, Flash In, Flash Out, Bullet Time, Hero Moment), Duration (up to 15s), Audio (On/Off native stereo), Smart shot control, 21:9 ultrawide.
 
+**Version guard — values that do NOT exist in 3.0 (never output these):**
+- Speed Ramp: ~~Linear~~, ~~Slow Mo~~, ~~Speed Up~~, ~~Impact~~, ~~Custom~~
+- Genre: ~~Western~~, ~~Suspense~~, ~~Intimate~~, ~~Spectacle~~
+- UI fields: ~~Camera body~~, ~~Lens~~, ~~Focal length~~, ~~Aperture~~, ~~Color grading~~, ~~3D Mode~~, ~~Grid generation~~
+
 ---
 
 ### IMAGE MODE Output Format (Cinema Studio 3.0)
@@ -986,17 +1021,27 @@ PROMPT
 
 ## ⚠ Prompt Character Limit — 512 Characters
 
-Cinema Studio's prompt field has a **hard 512-character limit**. This includes the hidden
-metadata from @ Element chips, which consume significantly more characters than the visible
-text. Each @ Element chip costs roughly 80–100 hidden characters for its internal ID and
-reference data.
+Cinema Studio has a **hard 512-character limit** on the prompt field in **both 2.5 and 3.0**. However, how those characters are consumed differs by version.
 
-**Rules for staying under 512:**
+### Cinema Studio 2.5 Character Budget
+
+2.5 uses **@ Element chips** (Characters, Locations, Props). Each chip consumes roughly **80–100 hidden characters** for its internal ID and reference metadata.
+
 - Max **2 @ Element tags per prompt** — each tag eats ~80–100 hidden chars
 - Keep visible text under **~250 characters** when using 2 @ tags
 - Keep visible text under **~350 characters** when using 1 @ tag
 - Keep visible text under **~450 characters** when using 0 @ tags
 - If a prompt is rejected, remove words — never assume it's a bug
+
+### Cinema Studio 3.0 Character Budget
+
+3.0 uses **@ references** (uploaded images, video clips, audio clips — up to 12 total). The @ reference system is structurally different from 2.5's Element chips. References are attached as media inputs rather than inline metadata, so they may consume **less hidden character space** than 2.5's Element chips.
+
+- The 512-character hard limit still applies
+- With @ references attached, keep visible text under **~350–400 characters** as a safe starting point
+- With no @ references, you can use closer to the full **~450–500 characters**
+- If a prompt is rejected for length, trim visible text first — do not assume it's a bug
+- 3.0 prompts can be **more descriptive** than 2.5 prompts since @ references leave more room for text
 
 ---
 
