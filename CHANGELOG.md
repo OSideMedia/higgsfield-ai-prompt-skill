@@ -1,5 +1,42 @@
 # Changelog
 
+## v3.1.0 — 2026-04-10
+
+### Added
+- **Seedance 2.0 Scene Archetype Router** (`higgsfield-prompt`) — planning layer on top of MCSLA
+  - Action archetypes: Pursuit / Duel / Impact with decision tree
+  - General archetypes: Journey / Atmosphere / Reveal with decision tree
+  - Dialogue archetypes: Confrontation / Interrogation / Negotiation with decision tree
+  - Dialogue word-limit rule (~25–30 spoken words per 15s)
+- **Seedance 2.0 Engine Constraints** (`higgsfield-prompt`) — hard rendering rules
+  - ≤3 characters tracked across cuts
+  - Exit-frame = implicit cut (never choreograph exit + re-entry)
+  - Off-screen = nonexistent (state changes must be shown before referenced)
+  - Avoid reflection shots (breaks scene geography)
+  - Only see-or-hear (no smell/taste/internal thoughts)
+  - Action beats = intent + named technique, not joint mechanics
+  - Double-contrast cut rule (shot size AND camera character both change)
+  - Causally-motivated inserts with named subject
+  - Age-blind character rule (describe by role/clothing/action)
+  - Default in medias res
+- **Pipeline E: Multi-Style Short Film** (`higgsfield-pipeline`) — Soul Cinema + Nano Banana Pro + Seedance 2.0 chain
+  - Style-first keyframe generation with Soul Cinema enhancer ON + minimal prompts
+  - Style keyword locators (swap 1–2 words to change whole aesthetic)
+  - Edit-don't-regenerate workflow via Nano Banana Pro
+  - Prop sheet technique (one-time, multi-angle, material breakdown)
+  - Previous-video-as-continuity-reference feedback loop (the key consistency trick)
+  - 15-second-per-scene cap rationale
+  - 6 pipeline-specific pitfalls
+- **Cut & Continuity Vocabulary** section in `vocab.md`
+  - Double contrast, camera character, re-anchoring, 180° rule
+  - Exit-frame = implicit cut, causally-motivated insert
+  - Match cut, smash cut, hard cut, L-cut / J-cut, whip-pan transition
+- `docs/Seedance 2 Skill.md` — reference file for the full bilingual EN+ZH Seedance director mode (standalone JSON API pattern)
+
+### Changed
+- `higgsfield-prompt` bumped to v3.1.0 (Seedance archetype router + engine constraints added)
+- `higgsfield-pipeline` bumped to v3.1.0 (Pipeline E added, decision guide updated)
+
 ## v3.0.0 — 2026-04-06
 
 ### Added

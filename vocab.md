@@ -57,6 +57,19 @@
 - **Timelapse Human / Landscape** — fixed camera, fast-forward time
 - **Low Shutter** — motion blur from slow shutter speed
 
+### Cut & Continuity Vocabulary
+- **Double contrast** — every cut changes BOTH shot size AND camera character (handheld / static / stabilized tracking / crane / aerial). Never repeat the same mode across a cut.
+- **Camera character** — the mode of motion itself: Handheld | Static/locked-off | Stabilized tracking | Crane/vertical | Aerial/drone
+- **Re-anchoring** — after any cut returning to established space, re-state who is where and which direction they face. If a character moved left-to-right before the cut, same direction after.
+- **180° rule** — keep the camera on one side of the imaginary line between subjects to preserve screen direction; crossing it flips left/right and disorients the viewer
+- **Exit-frame = implicit cut** — once a character leaves frame, they are gone for the remainder of that shot. Never choreograph exit + re-entry in the same continuous shot.
+- **Causally-motivated insert** — sub-second (0.3–0.5s) static detail the viewer understands WHY they see. Always name the subject ("HIS hand gripping metal"), never generic ("a hand").
+- **Match cut** — cut between two shots linked by shape, motion, or composition
+- **Smash cut** — abrupt, jarring cut with no transitional softening
+- **Hard cut / direct cut** — standard straight cut, no effect
+- **L-cut / J-cut** — audio from next shot leads picture (L) or vice versa (J)
+- **Whip-pan transition** — blur pan that bridges two shots as a single motion
+
 ---
 
 ## Shot Size Vocabulary

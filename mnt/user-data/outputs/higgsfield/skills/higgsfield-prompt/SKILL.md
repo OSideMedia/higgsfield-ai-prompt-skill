@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 3.0.0
-  updated: 2026-04-06
+  version: 3.1.0
+  updated: 2026-04-10
   parent: higgsfield
 ---
 
@@ -367,6 +367,96 @@ Soft jazz piano in the background, barely audible.
 ```
 
 Sound design descriptions like "the scratch of frosted glass, rustling plush fabric, gentle tapping on acrylic" directly influence the generated audio output.
+
+---
+
+## Seedance 2.0 Scene Archetype Router
+
+Before writing a Seedance prompt, identify which archetype the scene fits. The archetype dictates camera behavior, spatial logic, and what changes across time. This is a planning layer **on top of** MCSLA — pick the archetype first, then fill in MCSLA.
+
+### Action Archetypes
+
+| Archetype | Camera focus | Space dynamic |
+|-----------|-------------|---------------|
+| **Pursuit** | Distance closing/opening. Pursued ahead in frame, pursuer behind | Path narrows/opens |
+| **Duel** | Camera lower on dominant side; dominance MUST alternate | Fighters trade position |
+| **Impact** | Build-up slow → hit fast → aftermath slow | Point of contact = center |
+
+**Decision tree:** Chase? → Pursuit. Two opponents trading advantage? → Duel. Single decisive contact moment? → Impact. None → default Duel.
+
+**Duel rule:** neither side dominates more than one consecutive beat. If one fighter dominates the whole scene, describe it as a one-sided assault, not a duel.
+
+### General Archetypes
+
+| Archetype | What changes | Camera signature |
+|-----------|-------------|-----------------|
+| **Journey** | Position in space — road, flight, walking | Tracking, aerial, traveling alongside. Landscapes pass. |
+| **Atmosphere** | Nothing — mood IS the content. Rain on glass, empty street. | Minimal movement. Slow push-in or static hold. Micro-changes carry all drama. |
+| **Reveal** | Hidden → visible. Door opens, fog lifts, camera rounds corner. | Pan, crane, dolly reveal. Camera controls WHEN viewer sees the subject. |
+
+**Decision tree:** Subject moves through space? → Journey. Something hidden becomes visible? → Reveal. Nothing changes, mood is the content? → Atmosphere. None → default Atmosphere.
+
+### Dialogue Archetypes
+
+| Archetype | Power dynamic | Camera signature |
+|-----------|--------------|-----------------|
+| **Confrontation** | Shifting — both push. Dominance trades per exchange. | Tight OTS, camera crosses axis on power shift. |
+| **Interrogation** | Asymmetric — one extracts, one resists. | Low-angle on questioner, push-in on silence. |
+| **Negotiation** | Balanced — both need something. | Symmetrical framing, matching shot sizes. |
+
+**Decision tree:** Both pushing, dominance trading? → Confrontation. One extracting, one resisting? → Interrogation. Both need something, balanced? → Negotiation. None → default Confrontation.
+
+**Dialogue word limit:** ~25–30 spoken words fit into 15 seconds. If the user provides more, keep the line where dominance flips (the power-shift exchange), 1 line before (setup), 1 line after (reaction). Convert the rest to physical behavior.
+
+---
+
+## Seedance 2.0 Engine Constraints
+
+These are hard rendering constraints of the Seedance 2.0 engine — violating them causes broken output regardless of prompt quality.
+
+### Character & spatial rules
+- **≤ 3 characters tracked across cuts.** Name the acting pair and interaction vector per shot. More than 3 and Seedance loses track of identities.
+- **Exit-frame = implicit cut.** Once a character leaves frame, they are gone for the remainder of that shot. Never choreograph exit + re-entry in the same continuous shot.
+- **Off-screen = nonexistent.** State changes must be shown on camera before being referenced. Don't reference injuries, prop changes, or position shifts that happened off-screen.
+- **Spatial continuity breaks on cuts.** Re-anchor positions and facing direction after any cut. State movement direction explicitly ("moving left-to-right").
+- **Avoid reflection shots** (blades, puddles, mirrors) — Seedance breaks scene geography when rendering reflections.
+
+### Sensory rules
+- **Only describe what can be seen or heard.** No smell, taste, or internal thoughts.
+  - ❌ "The air smells of pine." ✅ "Pine needles covering the ground, wind moving through branches."
+- **Micro-expressions work as physics.** ✅ "jaw clenches, nostrils flare." ❌ "looks angry."
+
+### Action rules
+- **Intent + named technique, not biomechanics.** ✅ "spinning back kick connects." ❌ "left forearm rotates 45° to deflect the incoming hook at wrist level." If the user names a move, preserve it. If they describe joint mechanics, compress to the move's intent.
+- **Force and direction, not destruction sequence.** ✅ "driven into the car, metal buckling." ❌ "thrown into side door, glass shatters, uses rebound to sweep leg."
+
+### Double-contrast cut rule (mandatory)
+
+Every cut must change **both** shot size AND camera character. The scale runs `extreme wide → wide → medium → MCU → close-up → ECU`. Camera character: `Handheld | Static | Stabilized tracking | Crane | Aerial` — never repeat across a cut.
+
+**Bad (same camera character):** MS handheld → CU handheld
+**Good (both change):** MS handheld → ECU static-locked
+
+### Inserts — causally motivated, named subject
+
+Inserts are sub-second (0.3–0.5s) dramatic punctuation at any shot size. Rules:
+- **No story beats** — inserts are static moments only
+- **Causally motivated** — the viewer must understand WHY they see this detail. Hero slammed onto hood → HIS hand gripping metal. Not: generic boot in a puddle.
+- **Name the subject** — specify WHOSE body part or detail. Without attribution, Seedance renders wrong content.
+- **Obey double contrast** — inserts still follow the cut rule.
+
+### Age-blind character rule
+
+Never describe characters by age in Seedance prompts. Trigger words to avoid: *boy, girl, child, kid, young, teen, little*. Seedance age inference is unreliable and drifts across shots.
+
+- **With image input:** describe by **role** (rider, figure, traveler, speaker), **clothing**, and **action**. Never label who they are — label what they do.
+- **Without image input:** use functional labels: "a figure in a wool cloak," "a silhouette against the horizon."
+
+### Default: in medias res
+
+Scenes start already in progress unless the user explicitly says "starts with…" or "ends with…". Don't waste the first 2 seconds on setup beats.
+
+> Full Seedance director reference including bilingual EN+ZH JSON output format is dropped in the project `docs/` folder as `Seedance 2 Skill.md` — use it when you need the standalone director-mode prompt with scene-archetype routing and age-blind rules baked in.
 
 ---
 
