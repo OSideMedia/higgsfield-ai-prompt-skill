@@ -105,6 +105,7 @@ budget constraints, client work), **confirm before generating:**
 | Animated text, logo animation, Remotion-based output | `higgsfield-vibe-motion` |
 | Pre-generation memory check, apply past failure fixes | `higgsfield-recall` |
 | Audio design, dialogue cues, SFX, ambient sound | `higgsfield-audio` |
+| Seedance 2.0 / Pro prompt, flagged prompt, credit waste on Seedance | `higgsfield-seedance` |
 
 ---
 
@@ -220,6 +221,7 @@ Quick summary — five layers, every prompt:
 | `higgsfield-vibe-motion` | Vibe Motion / motion graphics / kinetic typography / brand animation |
 | `higgsfield-recall` | Pre-generation memory check / apply past failure fixes |
 | `higgsfield-audio` | Audio design, dialogue, SFX, ambient sound for audio-capable models |
+| `higgsfield-seedance` | Seedance 2.0 / Pro prompt director + content-filter preflight linter |
 
 > Full vocabulary in `../../../../vocab.md`
 > Full motion preset library in `skills/higgsfield-motion/SKILL.md`

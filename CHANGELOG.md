@@ -1,5 +1,38 @@
 # Changelog
 
+## v3.2.0 — 2026-04-10
+
+### Added
+- **`higgsfield-seedance` sub-skill** — dedicated Seedance 2.0 / Pro prompt director
+  that enforces the filmmaker-voice discipline required to pass Seedance's LLM-based
+  content filter on the first try. Routes from the parent skill on any Seedance
+  prompt request, flagged-prompt report, or Seedance credit-waste complaint.
+  - Filter model explainer (LLM reads full-scene intent, not a keyword blacklist)
+  - Instant-fail vs. delayed-fail diagnostic heuristic
+  - Six-slot Seedance prompt formula (Camera + Subject + Action + Setting + Style + Lighting)
+  - Rewrite playbook for real names, brands/IP, violence, weapons, horror
+  - "Filmmaker not Friend" voice rewrite pass (6 rules)
+  - Failure-loop recovery protocol with filter-memory logging
+- **`seedance_lint.py` — pre-flight linter** at the project root. Pure stdlib,
+  no dependencies. Scans a drafted prompt for 11 filter-risk patterns before
+  the user burns credits on an instant-fail rejection.
+  - FAIL rules: real-person names, brand/IP, violence verbs, weapon nouns,
+    age markers, overlength (>220 words)
+  - WARN rules: antislop adjectives, long prompts (>180 words), too-short
+    prompts (<15 words), missing Style/Mood clause, missing camera move,
+    missing setting, contradictory instructions
+  - Output: PASS / WARN / FAIL verdict with per-rule fix suggestions
+  - Usage: `python3 seedance_lint.py "<prompt>"` or pipe via stdin or `--file`
+  - Exit code 1 on FAIL for CI / script integration
+  - **Filter-memory loopback:** `--log` appends FAIL verdicts to
+    `db/filter-memory.json` with rule hits as `blocked_terms` + `tags` and
+    fix suggestions as `substitution`. `--confirmed` logs a rewrite that
+    passed Seedance's filter in a real generation (outcome=workaround,
+    substitution_worked=True). Update outcomes later with
+    `python3 higgsfield_memory.py update-filter <id> <outcome>`.
+- Parent skill routing table + sub-skills list updated to surface
+  `higgsfield-seedance` for Seedance / flagged-prompt triggers.
+
 ## v3.1.0 — 2026-04-10
 
 ### Added
