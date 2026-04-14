@@ -1,11 +1,6 @@
 ---
 name: higgsfield-seedance
-description: >
-  Use whenever the user asks for a Seedance 2.0 / Seedance Pro prompt, describes a
-  scene for Seedance generation, mentions Seedance, reports a Seedance generation
-  failure or "flagged prompt", or is burning credits on Seedance regenerations.
-  This skill enforces the filmmaker-voice discipline that gets prompts past
-  Seedance's LLM-based content filter on the first try.
+description: "Rewrites scene descriptions using professional cinematography language, structures prompts with a six-slot formula (camera + subject + action + setting + style + lighting), and diagnoses content filter rejections via a preflight linter. Use whenever the user asks for a Seedance 2.0 / Seedance Pro prompt, describes a scene for Seedance generation, mentions Seedance, reports a Seedance generation failure or flagged prompt, or is burning credits on Seedance regenerations."
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
