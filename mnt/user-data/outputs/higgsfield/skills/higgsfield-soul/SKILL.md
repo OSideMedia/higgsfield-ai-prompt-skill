@@ -1,9 +1,6 @@
 ---
 name: higgsfield-soul
-description: >
-  Use when the user wants to maintain character consistency across multiple
-  generations, asks about Soul ID, creating reusable characters, or generating
-  consistent people across different scenes and shots.
+description: "Creates and manages reusable character profiles (Soul IDs) for consistent facial and stylistic identity across multiple image and video generations. Provides identity-vs-motion prompt separation, character sheet creation workflows, micro-expression direction, and Soul Cast AI actor configuration. Use when the user wants to maintain character consistency across multiple generations, asks about Soul ID, creating reusable characters, or generating consistent people across different scenes and shots."
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
@@ -16,11 +13,9 @@ metadata:
 
 ## What Is Soul ID?
 
-Soul ID is Higgsfield's character consistency system. You create a character reference once,
-then reuse that same character across unlimited generations — different scenes, angles,
-lighting, and actions — while the face and core appearance remain consistent.
-
-This is Higgsfield's equivalent of casting the same actor for an entire film.
+Soul ID is Higgsfield's character consistency system. Create a character reference once,
+then reuse it across unlimited generations — different scenes, angles, lighting, and
+actions — while the face and core appearance remain consistent.
 
 ---
 
@@ -87,15 +82,6 @@ Does NOT contain: any motion, camera, speed, or temporal language.
 Contains: camera movement, action choreography, speed, environmental changes.
 Does NOT contain: any character appearance repetition.
 
-**Why this separation prevents identity drift:**
-
-The AI video model renders character identity frame-by-frame. When identity descriptors
-("sharp cheekbones", "auburn hair") are interleaved with motion tokens ("runs", "camera
-chasing"), the model re-interprets the face while simultaneously processing motion —
-causing the face geometry to shift with each frame. Separating the blocks lets the model
-lock the face first (from the Identity Block or Soul ID reference) and then apply motion
-independently.
-
 ### Before/After Examples
 
 **Example 1 — Action scene:**
@@ -106,8 +92,7 @@ A tall woman with green eyes and freckles in a leather jacket sprints through
 a warehouse while the camera tracks her and her green eyes flash with determination
 and her freckles catch the fluorescent light as she vaults over a railing.
 ```
-The model keeps re-reading face descriptors ("green eyes", "freckles") while processing
-the sprint + vault. Face morphs mid-clip.
+Face morphs mid-clip because the model re-reads face descriptors while processing motion.
 
 ✅ **Separated (good) — identity stays locked:**
 

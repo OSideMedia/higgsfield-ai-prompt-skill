@@ -1,9 +1,6 @@
 ---
 name: higgsfield-prompt
-description: >
-  Use when building, writing, refining, or structuring a Higgsfield AI prompt.
-  Covers the MCSLA formula, prompt structure, narrative vs. timestamped formats,
-  and how to write for both text-to-video and image-to-video workflows.
+description: "Use when building, writing, refining, or structuring a Higgsfield AI prompt. Covers the MCSLA formula, prompt structure, narrative vs. timestamped formats, and how to write for both text-to-video and image-to-video workflows."
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
@@ -76,6 +73,8 @@ Style: Cinematic, warm afternoon light, shallow depth of field.
 
 **Key rule for I2V:** Do NOT re-describe what is already in the image. Only describe
 what should *change* or *animate*. Over-describing the static elements confuses the model.
+This applies equally to @ Image references in Seedance/Cinema Studio 3.0 — describe
+ONLY motion and camera movement, never what's already visible.
 
 ---
 
@@ -93,7 +92,8 @@ skyline. Cinematic style, cold blue tones, 16:9.
 
 ### Timestamped (use only for precise multi-beat sequences)
 Only use when exact timing of separate actions matters — e.g., a transformation,
-a multi-phase action sequence, or a beat-synced music video.
+a multi-phase action sequence, or a beat-synced music video. Maps to Cinema Studio 3.0's
+Custom multi-shot mode.
 
 ```
 0–3s: Wide establishing shot. The fighter stands alone in the ring, chest heaving.
@@ -183,18 +183,12 @@ When a prompt involves Soul ID or any character who must stay consistent across 
 - Environmental motion, atmospheric changes
 - NO character appearance repetition
 
-**Why this matters:** Mixing identity descriptors with motion language causes the model
-to re-interpret the character's face on every frame, creating identity drift — the face
-shifts during camera moves.
-
 **Bad (mixed) — identity drifts:**
 ```
 A woman with sharp cheekbones and auburn hair in a blue trench coat runs through
 a rain-soaked alley, her coat flapping, sharp cheekbones catching the neon light,
 camera chasing her at full speed, her auburn hair streaming behind her.
 ```
-The model re-reads "sharp cheekbones" and "auburn hair" while also processing motion,
-causing the face to morph mid-clip.
 
 **Good (separated) — identity stays locked:**
 
@@ -278,13 +272,6 @@ Different genres perform best with different prompt lengths and lead elements:
 | Commercial / Brand | Style | 40–70 words | "Clean white studio, soft even lighting, product hero moment..." |
 | Anime / Artistic | Style | 50–90 words | "Cel-shaded lines, saturated palette, Studio Ghibli cloud physics..." |
 
-### I2V Gate Rule
-
-When using image references (@Image), describe **ONLY motion and camera movement**. NEVER re-describe what's already visible in the image. The model can see the image — re-describing creates conflict and degrades output.
-
-**Wrong:** `@Image1 — A woman with red hair in a blue dress standing in a garden. She walks forward.`
-**Right:** `@Image1 — She steps forward slowly, reaching out to touch the nearest flower. Camera: slow dolly in.`
-
 ### Anti-Slop Vocabulary
 
 Kill these words — they add zero information and waste tokens:
@@ -315,24 +302,6 @@ The model cannot infer intensity from images alone. Use adverbs to guide interpr
 `slowly`, `dramatically`, `violently`, `gently`, `frantically`, `deliberately`, `cautiously`, `explosively`
 
 **Example:** "She turns **slowly**, eyes narrowing **deliberately**, then **explosively** lunges forward."
-
-### Narrative Structure Options
-
-**Fluid narrative (preferred for most):** Natural language flow without timestamps. Best for chase sequences, transformations, daily life, ads.
-
-```
-A street musician plays violin on a rainy bridge. Pedestrians hurry past with umbrellas.
-One woman stops, closes her umbrella, and listens. Rain soaks her coat. She smiles.
-Camera: slow crane up revealing the city skyline behind them.
-```
-
-**Timestamp storyboard:** Use only for precise dialogue timing or multi-segment scenes. Maps to Cinema Studio 3.0's Custom multi-shot mode.
-
-```
-[00-04s] Shot 1: Close-up of hands tuning a guitar. Warm lamplight.
-[04-08s] Shot 2: Pull back to reveal the musician on a fire escape at dusk.
-[08-12s] Shot 3: Wide shot — the neighborhood below, lights flickering on.
-```
 
 ### Three-Act Rhythm for Action
 

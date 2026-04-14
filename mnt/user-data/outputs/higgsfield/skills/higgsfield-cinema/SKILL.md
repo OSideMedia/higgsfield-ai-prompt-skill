@@ -1,11 +1,6 @@
 ---
 name: higgsfield-cinema
-description: >
-  Use when the user mentions Cinema Studio, Cinema Studio 2.5, Cinema Studio 3.0, Soul Cast,
-  color grading, multi-shot video, shot sequences, storyboard workflow, Hero Frame, optical stack,
-  keyframe interpolation, Elements system (@Characters/@Locations/@Props), Speed Ramp,
-  Director Panel, Higgsfield Popcorn, Single Shot / Multi-Shot Auto / Multi-Shot Manual
-  modes, Reference Anchor, Smart shot control, or any professional filmmaking workflow inside Higgsfield.
+description: "Guides users through professional filmmaking workflows in Higgsfield Cinema Studio, including creating multi-shot sequences, configuring optical stacks, applying color grading, managing Soul Cast AI actors, and structuring per-scene prompts with Director Panel camera movements. Use when the user mentions Cinema Studio, Cinema Studio 2.5, Cinema Studio 3.0, Soul Cast, color grading, multi-shot video, shot sequences, storyboard workflow, Hero Frame, optical stack, keyframe interpolation, Elements system (@Characters/@Locations/@Props), Speed Ramp, Director Panel, Higgsfield Popcorn, Single Shot / Multi-Shot Auto / Multi-Shot Manual modes, Reference Anchor, Smart shot control, or any professional filmmaking workflow inside Higgsfield."
 user-invocable: true
 metadata:
   tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
@@ -738,8 +733,6 @@ then pick winners from each cluster before assembling the final sequence.
 **Core rule:** Everything selectable in the Higgsfield UI stays out of the prompt.
 The prompt field is for scene description only — pure visual storytelling language.
 
-**⚠ Version-specific formats below.** Use the 2.5 formats for 2.5 users and the 3.0 formats for 3.0 users. **Never mix them.**
-
 ### What goes where
 
 | Belongs in UI (dropdowns) | Belongs in Prompt field |
@@ -752,16 +745,6 @@ The prompt field is for scene description only — pure visual storytelling lang
 | Director Panel movement | Everything the eye sees |
 | Speed Ramp | |
 | Duration | |
-
-### @ Elements — use exactly what the user gives you
-
-Only include @ tags that the user has explicitly provided in the conversation.
-If the user gives you `@Marcus` but not a location or prop tag, use `@Marcus` in the
-prompt and write everything else as plain description. If the user gives you nothing,
-write everything as plain description. Never invent @ tags for things the user hasn't named.
-
-The logic is simple: each tag they give you = that Element exists in their project.
-Anything they don't give you = it doesn't exist, so describe it instead.
 
 ---
 
@@ -1062,46 +1045,13 @@ prompts and causes issues like character swaps, broken choreography, and missed 
 
 ---
 
-## Prompting Best Practices (from Higgsfield)
+## Prompting Best Practices
 
-### The Pre-Prompt Checklist
+For the full Pre-Prompt Checklist, one-action-per-scene rule, and fast motion trick, see `higgsfield-prompt`. Cinema Studio–specific additions:
 
-Before writing any Cinema Studio prompt, answer these five questions:
-
-| Question | Example |
-|----------|---------|
-| **Who?** | A man in a leather jacket |
-| **Where?** | In an aircraft galley |
-| **What's happening?** | Punches his opponent |
-| **Camera movement?** | Select from Director Panel presets |
-| **Mood/Genre?** | Select from Cinema Studio genre options |
-
-Vague prompts like "give me something cinematic" or "make a cool shot" tell the AI nothing.
-Be specific about who, where, and what.
-
-### One Action Per Scene Rule
-
-AI models can replicate real-life physics — but only so much at once. Asking for multiple
-complex actions in one clip overwhelms both the model and the viewer.
-
-**Rule:** Focus on **1 primary action** per clip, with 1–2 secondary actions max.
-
-Break complex sequences into separate shots:
-- Wide shot → the explosion
-- Medium shot → the impact
-- Close-up → the reaction
-
-Stitch them together in a video editor, or use Multi-Shot Manual and prompt each scene separately.
-
-### Fast Motion Trick
-
-If you want super-fast motion but the clip keeps morphing or breaking:
-1. Generate the scene in **Slow Mo** (Speed Ramp: Slow Mo)
-2. Export the clip
-3. **Speed it up** in any editing tool (CapCut, Premiere, DaVinci, etc.)
-
-This saves a huge amount of time on complex action scenes. The model renders cleaner
-physics in slow motion, and speeding up in post preserves that quality.
+- Select camera movement from Director Panel presets (not prompt text)
+- Select genre from Cinema Studio genre options (not prompt text)
+- Use @ Elements for character identity; keep prompts to action and scene description only
 
 ---
 
@@ -1196,8 +1146,6 @@ Different models perform differently inside Cinema Studio's environment:
 
 ---
 
----
-
 ## Cinema Studio 3.0 (Business/Team Plan)
 
 > **Plan requirement:** Cinema Studio 3.0 is available exclusively on **Business and Team plans**. Free and individual plan users should use Cinema Studio 2.5, which remains fully supported.
@@ -1219,44 +1167,17 @@ Cinema Studio 3.0 is a separate generation engine from 2.5. Key differences:
 
 > **Resolution note:** Cinema Studio 3.0 video resolution (720p) may increase. For 1080p video, use Cinema Studio 2.5. Image resolution in 3.0 varies by mode: Character/Location support 4K, General is capped at 2K.
 
-### Resolution Comparison Table
+### Cinema Studio 3.0 Quick Specs
 
-| Feature | Cinema Studio 2.5 | Cinema Studio 3.0 (Business/Team) |
-|---------|-------------------|-----------------------------------|
-| Video Resolution | Up to 1080p | Up to 720p (may increase) |
-| Image Resolution | Up to 4K | Up to 4K (Character/Location) · Up to 2K (General) |
-| Max Duration | 12s | 15s |
-| Aspect Ratios | 6 options | 7 options (+ 21:9 ultrawide) |
-| Audio | On/Off | On/Off (native dual-channel stereo) |
-| Generation Cost | Varies | 48 credits per generation |
+See the comparison table at the top for full 2.5 vs 3.0 differences. Key 3.0-specific details:
 
-### Cinema Studio 3.0 Specifications
-
-**Video specs:**
-- Duration: up to 15s
-- Resolution: 720p (480p also available)
-- Generation cost: 48 credits
-
-**Image specs (Soul Cast 3.0):**
-- Resolution: up to 4K (Character/Location modes) · up to 2K (General mode)
-- Batch: 1 or 10
-- Generation cost: 0.125 credits
-
-**Genres (7):** General, Action, Horror, Comedy, Noir, Drama, Epic
-
-**Camera Movement:** Same Director Panel options as 2.5
-
-**Speed Ramp presets (7):** Auto, Slow-mo, Ramp Up, Flash In, Flash Out, Bullet Time, Hero Moment
-
-**Aspect Ratios (7):** Auto, 1:1, 3:4, 9:16, 4:3, 16:9, 21:9
-
-**Audio:** On/Off toggle. Audio is natively generated alongside video (unified multimodal architecture), not post-processed. Dual-channel stereo output.
-
-**Shot Control:**
-- **Smart** — automatic mode. The model auto-plans camera language based on the genre and scene description. Trust it for genre-appropriate camera work.
-- **Custom multi-shot** — up to 6 scenes, 15s total. Manual per-scene control.
-
-**Scene prompt syntax:** "Describe your scene – use @ to add characters & locations"
+- **Video:** up to 15s, 720p (may increase), 48 credits/generation
+- **Image (Soul Cast 3.0):** up to 4K (Character/Location) · 2K (General), 0.125 credits
+- **Genres (7):** General, Action, Horror, Comedy, Noir, Drama, Epic
+- **Speed Ramp (7):** Auto, Slow-mo, Ramp Up, Flash In, Flash Out, Bullet Time, Hero Moment
+- **Aspect Ratios (7):** Auto, 1:1, 3:4, 9:16, 4:3, 16:9, 21:9
+- **Audio:** On/Off — natively generated alongside video (dual-channel stereo)
+- **Shot Control:** Smart (auto camera planning) or Custom multi-shot (up to 6 scenes, 15s total)
 
 ### Input Limits (@ References)
 
