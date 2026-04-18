@@ -1,5 +1,23 @@
 # Changelog
 
+## v3.3.0 — 2026-04-17
+
+### Changed
+- **BREAKING (install paths):** Flattened skill structure. The dispatcher `SKILL.md` now lives at the repo root. Sub-skills moved from `mnt/user-data/outputs/higgsfield/skills/` to `./skills/`. Templates moved from `mnt/user-data/outputs/higgsfield/templates/` to `./templates/`. The `mnt/user-data/outputs/` directory has been removed — it was a Claude runtime artifact path, not a canonical skill install location.
+- The old root `SKILL.md` (scoped to model-guide only) has been merged into `skills/higgsfield-models/SKILL.md`. Users should now point to the new unified dispatcher.
+
+### Added
+- Explicit **MANDATORY WORKFLOW** and **HARD RULES** blocks at the top of the root `SKILL.md`, hardened for Claude Opus 4.7's literal instruction-following behavior. The model will now route requests through sub-skills and apply MCSLA without needing to be told manually.
+- First-response one-line sub-skill confirmation rule so users see the skill engaged.
+
+### Fixed
+- Broadened skill `description` frontmatter so the skill triggers on generic video-prompt requests, not just model-selection queries.
+- Fixed all relative path references after the flatten.
+
+### Migration
+- If you installed via `cp -r` to `~/.claude/skills/`, re-clone from `main` — the install path changed.
+- If you use Claude.ai Projects, re-upload the root `SKILL.md` as your project instruction base.
+
 ## v3.2.0 — 2026-04-10
 
 ### Added
