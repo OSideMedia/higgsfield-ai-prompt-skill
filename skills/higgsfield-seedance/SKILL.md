@@ -75,6 +75,142 @@ words, passes the filter because the scene is fully legible.
 
 ---
 
+## Seedance 2.0 Prompt Modes
+
+Seedance 2.0 exposes four generation modes that each take the six-slot formula
+but apply it to a different starting point. Picking the right mode is upstream of
+prompt writing — the same sentence will produce different results in different
+modes, because each mode reads the prompt as a different kind of instruction.
+
+### Reference-Based
+
+The prompt builds a scene around a source image that carries the visual identity —
+character, wardrobe, palette, sometimes composition. The prompt's job is NOT to
+re-describe what the image already shows; it's to place the subject into a new
+action, setting, or motion context. This is the workhorse mode for any sequence
+that needs a consistent character across varied shots.
+
+```
+[Source image role: "as the main character" / "as the starting frame"].
+[Action the subject performs]. [Environment and atmosphere if not visible in source].
+[Camera movement]. [Lighting cue if different from source].
+```
+
+### Continuation
+
+The prompt extends a prior Seedance generation forward in time, picking up at the
+final frame of the previous clip. Identity, wardrobe, environment, and emotional
+state all carry over. The prompt should describe what happens NEXT — never what
+just happened. For the full five-rule construction pattern, see the Continuation
+Prompt Formula section directly below.
+
+```
+[Continuing from prior clip]. [New action that follows from the last frame].
+[Camera direction for the continuation]. [Any state change — light shift, new beat].
+```
+
+### Expand Shot
+
+The prompt grows the canvas or spatial extent of an existing frame — pulling the
+frame boundaries outward to reveal what's beyond the original edges. This is NOT
+a time extension (that's Continuation) and NOT a zoom-out camera move within the
+original generation. It rewrites the frame itself to include more scene. Useful
+for turning a tight composition into a wider establishing shot without
+regenerating from scratch.
+
+```
+[Source frame reference]. Extend the scene [direction: outward / upward / leftward].
+[What appears in the newly revealed area]. [Preserve the original subject/composition].
+```
+
+### Edit Shot
+
+The prompt modifies specific elements of an existing generation while everything
+else stays exactly as it was. Think of it as a targeted patch: change a jacket
+color, remove a background figure, swap a prop, adjust a facial expression.
+Identity, camera, composition, and lighting stay locked unless you explicitly
+name them in the change list. The Keep Rule matters here: always state what to
+preserve alongside what to change.
+
+```
+Change [specific element] to [new state]. Keep [everything else] unchanged.
+[Preserve identity, composition, lighting, and camera behavior from the original.]
+```
+
+### Mode Selection Rule
+
+Reference-Based for new action with an existing character. Continuation for the
+next beat in time. Expand Shot to widen the frame spatially. Edit Shot to patch
+specific details. If you find yourself writing across multiple modes in one
+prompt — stop, pick one, generate, then use the output as input to the next mode.
+
+---
+
+## Continuation Prompt Formula
+
+When writing a Continuation mode prompt, apply these five rules. Skipping any of
+them is the most common cause of continuation failures: identity drift across the
+boundary, re-played actions, environment shifts, and broken emotional through-lines.
+
+### The Five Rules
+
+1. **Last-frame anchor.** Open the prompt with a short description of what the
+   camera sees in the final frame of the prior clip — the pose, the position in
+   frame, where the character is looking. This tells the model where to start
+   rendering from. One sentence is enough.
+
+2. **Identity anchor.** Paste the character's identity block (the same paragraph
+   you used in the original prompt) verbatim into the continuation prompt. Do
+   not paraphrase it. Do not shorten it. Continuation boundaries are where
+   identity drifts — a verbatim re-paste gives the model no room to reinterpret.
+
+3. **Prior clip as secondary memory.** Name what just happened in one line —
+   "following the door opening," "after the punch lands," "continuing from her
+   turn toward the window." Do not re-describe the action in detail. One
+   referential phrase, then move on.
+
+4. **Immediate continuation.** Start the new action on the frame that follows
+   the prior clip's final frame. No time skip, no fade, no implied cut — unless
+   the user has explicitly asked for one. If they want a skip, describe it as a
+   new shot instead.
+
+5. **No action repeat.** The new prompt must extend, not loop. If the prior clip
+   ended on her drawing her weapon, the continuation does NOT describe her
+   drawing her weapon — it describes what she does with it next. Repeating a
+   described action is what causes the "previous beat replays" symptom.
+
+### What Must Carry Over
+
+Across the continuation boundary, preserve: character identity (face, build,
+distinguishing marks), wardrobe (every garment and accessory), environment
+(architecture, light quality, color treatment, ambient particulates), and
+emotional carryover (the state the character was in at the last frame — tense,
+exhausted, alert — should still read on their body in the opening of the
+continuation).
+
+### Example
+
+Prior clip ended on a detective standing in a doorway, rain behind her, glancing
+over her shoulder. The continuation prompt:
+
+```
+Continuing from the prior clip — the detective framed in the doorway, head
+turned, rain behind her. [Identity block verbatim: weathered woman, mid-40s,
+short dark hair, charcoal trench coat, leather gloves, tired but alert.]
+Following her glance back, she steps fully into the corridor, lets the door
+swing shut behind her, and begins walking toward camera. Slow dolly-back
+matching her pace. Same cool blue-grey palette, same overhead practical light.
+Tense, controlled energy carrying over from the prior clip.
+```
+
+All five rules present: last-frame anchor (framed in the doorway, head turned,
+rain behind her), identity anchor (bracketed block, verbatim), prior clip as
+secondary memory ("following her glance back"), immediate continuation (steps
+fully into the corridor — the next frame action), no action repeat (the glance
+is referenced, not re-performed).
+
+---
+
 ## Pre-flight Linter
 
 Before the user generates, run the prompt through the preflight linter:

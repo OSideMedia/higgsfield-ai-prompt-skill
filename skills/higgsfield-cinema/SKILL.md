@@ -521,6 +521,55 @@ across all shots in a sequence — preventing the character drift that happens i
 
 ---
 
+## Location Reference Sheets
+
+Locations deserve the same asset-first treatment as characters. If a room, alley,
+vehicle interior, or exterior reappears across multiple shots, generate it once as
+a standalone asset and reuse it — don't re-describe it inside each scene prompt.
+Scene-by-scene re-description is the root cause of the "every shot reinterprets
+the environment" failure: walls drift, furniture rearranges, scale shifts, and the
+world stops feeling like a single place.
+
+### The Five-View Location Sheet
+
+A location sheet captures the space from enough angles that the model has a
+complete spatial model to draw from. Generate these five views as one asset set:
+
+| View | What it locks |
+|------|---------------|
+| Straight-on wide | The overall scale, focal point, and horizon line |
+| Left-angle perspective | Side geometry, depth on the left |
+| Right-angle perspective | Side geometry, depth on the right |
+| Reverse / opposite view | What's behind the camera in the wide — finishes the 360° footprint |
+| Close-up environmental details | Texture, wear, signage, small props that anchor identity |
+
+Use Grid Generation (2×2 or 4×4) or 3D Mode on a hero wide to produce the alt
+angles from a single seed — this keeps the light and material identity consistent
+across views, which is the whole point.
+
+### What to Preserve on Reuse
+
+When you bring the location back for a new shot, lock these four properties:
+architecture (walls, openings, scale), light quality (source direction, color
+temperature, hardness), color treatment (palette, grade), and key environmental
+details (signage, damage, specific props that make this place THIS place). Keep
+these out of the scene prompt — they live in the location asset. The scene prompt
+should describe only what changes: character action, camera behavior, atmospheric
+motion, time-of-day shift if any.
+
+### Failure Mode This Prevents
+
+Without a location sheet, a six-scene sequence set in "a rain-soaked alley" will
+render six different alleys. Each scene prompt re-interprets "rain-soaked alley"
+from scratch. With a location sheet tagged as an @ Element or loaded as a
+reference, all six scenes share one alley — the puddles are in the same places,
+the neon sign says the same thing, the brick wall has the same pattern.
+
+For the camera vocabulary that pairs with location reveals (Pan, Crane, Dolly Reveal),
+see `../../vocab.md`.
+
+---
+
 ## Hero Frame
 
 A Hero Frame is a key image you generate before committing to video — it defines the
