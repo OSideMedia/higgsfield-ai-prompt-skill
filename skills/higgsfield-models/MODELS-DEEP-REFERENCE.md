@@ -125,6 +125,8 @@ character in a neon-lit cityscape. Reference video drives all motion; prompt set
 → Kling 3.0 Motion Control
 ```
 
+> For the Higgsfield UI workflow and motion-reference input checklist, see `../higgsfield-motion/SKILL.md` → "Kling 3.0 Motion Control — When and How to Run It" and "Motion Reference Input Checklist".
+
 ---
 
 ### Kling O1 Video (Legacy)

@@ -1,5 +1,22 @@
 # Changelog
 
+## v3.4.0 — 2026-04-18
+
+### Added
+- **Location Reference Sheets** pattern in `higgsfield-cinema` — five-view spec for treating locations as first-class assets parallel to character sheets.
+- **Seedance 2.0 Prompt Modes** section in `higgsfield-seedance` — documents Reference-Based, Continuation, Expand Shot, and Edit Shot as distinct generation modes with prompt-construction patterns.
+- **Continuation Prompt Formula** section in `higgsfield-seedance` — five-rule named pattern for writing continuation prompts (last-frame anchor, identity anchor, prior clip as secondary memory, immediate continuation, no action repeat).
+- **Kling 3.0 Motion Control workflow** in `higgsfield-motion` — 8-step Higgsfield UI walkthrough for invoking Motion Control, plus a motion-reference input quality checklist. Cross-referenced from `MODELS-DEEP-REFERENCE.md`.
+- **New sub-skill `higgsfield-workspaces`** — workspace-first decision layer that routes users to the right Higgsfield workspace (Cinema Studio / Lipsync Studio / Draw-to-Video / Sora 2 Trends / Click to Ad / Higgsfield Audio) based on the production problem, before model selection.
+
+### Sourcing
+Additions informed by review of official Higgsfield documentation (Cinema Studio 3.0 handbook, Seedance 2.0 handbook, Kling Motion Control handbook, Higgsfield Tools Guide) and third-party AI prompting reference material. Source PDFs are not committed to this repo; analysis preserved in `docs/pdf-audit/AUDIT-REPORT.md`.
+
+### Notes
+- No existing content modified. This release is purely additive.
+- Root `SKILL.md` routing tables updated with two new rows only — MANDATORY WORKFLOW and HARD RULES unchanged.
+- MEDIUM and REINFORCE items from the audit deferred to future releases.
+
 ## v3.3.0 — 2026-04-17
 
 ### Changed

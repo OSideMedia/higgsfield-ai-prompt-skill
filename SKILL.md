@@ -12,8 +12,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.3.0
-  updated: 2026-04-17
+  version: 3.4.0
+  updated: 2026-04-18
   author: O-Side Media
   license: MIT
 ---
@@ -104,6 +104,7 @@ budget constraints, client work), **confirm before generating:**
 
 | User wants | Route to |
 |------------|----------|
+| User unsure which workspace/tool fits, or asks "what should I use for X" | `higgsfield-workspaces` |
 | Write or improve a prompt | `higgsfield-prompt` + relevant sub-skills |
 | Cinematic still image prompt (shot framing, angles) | `higgsfield-image-shots` |
 | Choose the right model | `higgsfield-models` |
@@ -230,6 +231,7 @@ Quick summary — five layers, every prompt:
 
 | Skill | Trigger |
 |-------|---------|
+| `higgsfield-workspaces` | User is choosing a workspace / asking "what should I use for X" / hasn't picked a tool yet |
 | `higgsfield-prompt` | Any prompt writing or refinement request |
 | `higgsfield-image-shots` | Cinematic image prompts — shot framing, angles, composition |
 | `higgsfield-models` | "Which model should I use?" / model comparison |

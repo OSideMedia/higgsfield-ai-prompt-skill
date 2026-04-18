@@ -260,3 +260,73 @@ The model handles **1–2 distinct action beats every 5 seconds**. If your promp
 - `higgsfield-mixed-media` — Artistic preset overlays (different from motion presets)
 - `higgsfield-recipes` — Genre templates referencing specific presets
 - `templates/` — Annotated templates showing preset usage in context
+
+---
+
+## Kling 3.0 Motion Control — When and How to Run It
+
+**Important:** This is NOT a named motion preset. Everything above in this
+sub-skill is the VFX preset library — Explosion, Werewolf, Air Bending, and so
+on — where the preset name triggers a pre-built effect. Kling 3.0 Motion Control
+is a different system entirely: a reference-video motion transfer workflow. You
+upload a character image plus a short clip of the motion you want, and the model
+transfers that motion onto the character. The prompt describes the world around
+the motion — not the motion itself.
+
+### When to Choose Motion Control
+
+Reach for Motion Control when the generation needs directed, repeatable motion
+rather than a loose interpretation. Typical cases: dance choreography, sports or
+athletic beats, acting or reaction beats, precise gestures for a talking head,
+and transferring the same motion pattern across different characters (e.g., one
+captured performance applied to multiple hero images). It's also useful as a
+scene prototyping step before a heavier Kling 3.0 assembly — you can lock the
+motion first, then build the surrounding scene around it.
+
+### The 8-Step Higgsfield Workflow
+
+Run Motion Control through the Higgsfield UI in this order:
+
+1. **Open the Video tab** in Higgsfield.
+2. **Choose Kling Motion Control 3.0** from the model selector.
+3. **Upload the motion reference video** — the short clip carrying the
+   performance you want transferred.
+4. **Upload the character image** — face and body should both be readable; this
+   is what the motion gets mapped onto.
+5. **Pick the output resolution** — 720p for faster iteration, 1080p for final
+   delivery.
+6. **Set the Scene source** — decide whether the environment should come from
+   the motion video's background or from the character image's background.
+7. **Open Advanced Settings** — describe the lighting, atmosphere, and
+   background treatment in the prompt field here, and select the orientation
+   mode (Image Orientation for camera-driven shots with a mostly static body;
+   Video Orientation for full-body movement like dance or action).
+8. **Generate** — review the result and iterate on the reference clip first if
+   the motion reads wrong, and on the prompt second if the scene reads wrong.
+
+---
+
+## Motion Reference Input Checklist
+
+Input quality determines output quality. If the reference clip is noisy, the
+transfer will be noisy — no amount of prompt refinement fixes a bad source.
+Before clicking Generate, confirm the reference clip against this pre-flight
+checklist:
+
+- [ ] **One clear subject in frame.** Multi-person clips confuse the motion
+      extraction; crop or trim to a single performer.
+- [ ] **Head and body both visible.** If either is cut off, the motion transfer
+      loses the connection between facial performance and body motion.
+- [ ] **Real human motion.** Stylized animation, rotoscoped footage, and heavily
+      filtered clips transfer unreliably. Natural performance reads best.
+- [ ] **No cuts, dissolves, or hard camera transitions.** The reference must be
+      one continuous shot — any cut inside the clip will show up as a jump or
+      snap in the generated output.
+- [ ] **Avoid very fast actions.** Movement that reads as a blur in the source
+      will fail to transfer cleanly. Slow-moderate speed performs best.
+- [ ] **Clip duration 3–30 seconds.** Below 3s there isn't enough motion data;
+      above 30s is outside Motion Control's supported range.
+
+**Rule of thumb:** if you'd struggle to describe what's happening frame-by-frame
+in the reference clip, the model will too. Trim, re-shoot, or re-select the
+reference before burning credits on a generation that was always going to fail.
