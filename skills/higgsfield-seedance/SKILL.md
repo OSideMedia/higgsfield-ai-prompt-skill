@@ -103,7 +103,7 @@ here is what to harden."
 ## The Rewrite Playbook
 
 When the linter fires, apply the substitutions below. These are drawn from
-`../../../../../../db/filter-memory.json` — every pattern here has been confirmed
+`../../db/filter-memory.json` — every pattern here has been confirmed
 to work on past flagged prompts.
 
 ### Real names → archetype description
@@ -193,7 +193,7 @@ shot-by-shot if multi-cut. This is the main block.]
 ```
 
 For the full bilingual EN+ZH director output format (used in Seedance's
-web UI), see the extended reference at `../../../../docs/Seedance 2 Skill.md`.
+web UI), see the extended reference at `../../docs/Seedance 2 Skill.md`.
 
 ---
 
@@ -221,5 +221,5 @@ is the loop that wastes hours.
 - `higgsfield-recall` — pre-generation memory check against past failures
 - `../shared/negative-constraints.md` — full negative-constraint reference,
   including the Content Filter / Safety section
-- `../../../../docs/Seedance 2 Skill.md` — extended bilingual director reference
+- `../../docs/Seedance 2 Skill.md` — extended bilingual director reference
   (archetypes, cut rules, camera language appendix)

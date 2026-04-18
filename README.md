@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.0.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.3.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -23,30 +23,24 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 - **Identity vs. Motion separation** — hard rule for character consistency across shots
 - **10 annotated genre templates** — production-quality examples with Cinema Studio 3.0 genre mappings
 
-## Quick Start
+## Install
 
-### 1. Claude Cowork (recommended)
-Drop the entire repo folder into your Cowork workspace. The main dispatcher is at:
-```
-mnt/user-data/outputs/higgsfield/SKILL.md
-```
-
-### 2. Claude Code
+### Claude Code
 ```bash
-git clone https://github.com/OSideMedia/higgsfield-ai-prompt-skill
-cp -r higgsfield-ai-prompt-skill ~/.claude/skills/higgsfield
+git clone https://github.com/OSideMedia/higgsfield-ai-prompt-skill ~/.claude/skills/higgsfield
 ```
 
-### 3. Claude.ai Projects
-Upload `SKILL.md` (the root-level one) as your project instruction base, then upload the sub-skill files from `mnt/user-data/outputs/higgsfield/skills/` as project documents.
+### Claude Cowork
+Drop the repo folder into your Cowork workspace. The skill dispatcher is at `SKILL.md` in the repo root.
 
-> **Path note:** The `mnt/user-data/outputs/higgsfield/` directory mirrors the Claude Cowork filesystem layout intentionally. If you're using Claude Code or Claude.ai Projects, adapt the paths to your own environment (e.g. `~/.claude/skills/higgsfield/`).
+### Claude.ai Projects
+Upload `SKILL.md` (root) as your project instruction base. Upload files from `skills/` as project documents.
 
 ## Structure
 
 ```
 .
-├── SKILL.md                          ← Model selection guide (routes model questions)
+├── SKILL.md                          ← Main dispatcher (routes to sub-skills — start here)
 ├── README.md                         ← This file
 ├── CHANGELOG.md                      ← Version history
 ├── CONTRIBUTING.md                   ← Contribution guidelines
@@ -57,46 +51,47 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 ├── prompt-examples.md                ← High-quality example prompts + Before/After pairs
 ├── photodump-presets.md              ← Photodump mode presets
 ├── higgsfield_memory.py              ← Memory system script
+├── seedance_lint.py                  ← Seedance preflight linter
 ├── validate.py                       ← Pre-release validation script
 ├── db/
 │   ├── filter-memory.json            ← Content filter memory (seeded)
 │   └── quality-memory.json           ← Quality failure memory (seeded)
-└── mnt/user-data/outputs/higgsfield/
-    ├── SKILL.md                      ← Main dispatcher (routes to sub-skills — start here)
-    ├── templates/                     ← 10 annotated genre-specific prompt templates
-    │   ├── 01-cinematic-action-chase.md
-    │   ├── 02-product-ugc-showcase.md
-    │   ├── 03-horror-atmosphere.md
-    │   ├── 04-fashion-editorial.md
-    │   ├── 05-sci-fi-vfx.md
-    │   ├── 06-portrait-character-intro.md
-    │   ├── 07-landscape-establishing-shot.md
-    │   ├── 08-comedy-social-media.md
-    │   ├── 09-romantic-intimate.md
-    │   └── 10-dance-music-performance.md
-    └── skills/
-        ├── higgsfield-image-shots/SKILL.md   ← Cinematic image prompting (shots, angles, composition)
-        ├── shared/
-        │   └── negative-constraints.md   ← Shared artifact prevention reference
-        ├── higgsfield-prompt/SKILL.md      ← Core MCSLA formula + prompt structure + Identity/Motion separation
-        ├── higgsfield-models/
-        │   ├── SKILL.md                    ← Compact model selection guide
-        │   └── MODELS-DEEP-REFERENCE.md    ← Full per-model documentation (on-demand)
-        ├── higgsfield-camera/SKILL.md      ← All camera controls + usage
-        ├── higgsfield-motion/SKILL.md      ← Named motion presets library
-        ├── higgsfield-style/SKILL.md       ← Visual styles + color grades + lighting
-        ├── higgsfield-soul/SKILL.md        ← Soul ID character consistency
-        ├── higgsfield-audio/SKILL.md       ← Audio prompting + Cinema Studio 3.0 native audio
-        ├── higgsfield-apps/SKILL.md        ← One-click Apps guide
-        ├── higgsfield-recipes/SKILL.md     ← Genre scene templates
-        ├── higgsfield-troubleshoot/SKILL.md ← Fix failing generations
-        ├── higgsfield-assist/SKILL.md      ← General assistant + platform guidance
-        ├── higgsfield-mixed-media/SKILL.md ← Mixed media + hybrid generation
-        ├── higgsfield-moodboard/SKILL.md   ← Moodboard creation workflows
-        ├── higgsfield-pipeline/SKILL.md    ← Multi-step generation pipelines
-        ├── higgsfield-recall/SKILL.md      ← Recall + regeneration patterns
-        ├── higgsfield-cinema/SKILL.md      ← Cinema Studio 2.5 + 3.0 (Business/Team) (Soul Cast, Color Grading, 3D Mode, Smart Mode, @ References, Native Audio)
-        └── higgsfield-vibe-motion/SKILL.md ← Vibe-based motion direction
+├── docs/                             ← Extended reference documents
+├── templates/                        ← 10 annotated genre-specific prompt templates
+│   ├── 01-cinematic-action-chase.md
+│   ├── 02-product-ugc-showcase.md
+│   ├── 03-horror-atmosphere.md
+│   ├── 04-fashion-editorial.md
+│   ├── 05-sci-fi-vfx.md
+│   ├── 06-portrait-character-intro.md
+│   ├── 07-landscape-establishing-shot.md
+│   ├── 08-comedy-social-media.md
+│   ├── 09-romantic-intimate.md
+│   └── 10-dance-music-performance.md
+└── skills/
+    ├── shared/
+    │   └── negative-constraints.md       ← Shared artifact prevention reference
+    ├── higgsfield-prompt/SKILL.md        ← Core MCSLA formula + prompt structure + Identity/Motion separation
+    ├── higgsfield-image-shots/SKILL.md   ← Cinematic image prompting (shots, angles, composition)
+    ├── higgsfield-models/
+    │   ├── SKILL.md                      ← Compact model selection guide
+    │   └── MODELS-DEEP-REFERENCE.md      ← Full per-model documentation (on-demand)
+    ├── higgsfield-camera/SKILL.md        ← All camera controls + usage
+    ├── higgsfield-motion/SKILL.md        ← Named motion presets library
+    ├── higgsfield-style/SKILL.md         ← Visual styles + color grades + lighting
+    ├── higgsfield-soul/SKILL.md          ← Soul ID character consistency
+    ├── higgsfield-audio/SKILL.md         ← Audio prompting + Cinema Studio 3.0 native audio
+    ├── higgsfield-apps/SKILL.md          ← One-click Apps guide
+    ├── higgsfield-recipes/SKILL.md       ← Genre scene templates
+    ├── higgsfield-troubleshoot/SKILL.md  ← Fix failing generations
+    ├── higgsfield-assist/SKILL.md        ← General assistant + platform guidance
+    ├── higgsfield-mixed-media/SKILL.md   ← Mixed media + hybrid generation
+    ├── higgsfield-moodboard/SKILL.md     ← Moodboard creation workflows
+    ├── higgsfield-pipeline/SKILL.md      ← Multi-step generation pipelines
+    ├── higgsfield-recall/SKILL.md        ← Recall + regeneration patterns
+    ├── higgsfield-cinema/SKILL.md        ← Cinema Studio 2.5 + 3.0 (Business/Team) (Soul Cast, Color Grading, 3D Mode, Smart Mode, @ References, Native Audio)
+    ├── higgsfield-seedance/SKILL.md      ← Seedance prompt director + content-filter preflight
+    └── higgsfield-vibe-motion/SKILL.md   ← Vibe-based motion direction
 ```
 
 ## Example Prompts
@@ -128,4 +123,4 @@ Upload `SKILL.md` (the root-level one) as your project instruction base, then up
 
 ---
 
-Built February 2026 · v3.0.0 (updated April 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.3.0 (updated April 2026) · Platform: [higgsfield.ai](https://higgsfield.ai)

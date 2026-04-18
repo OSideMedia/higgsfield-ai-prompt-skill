@@ -23,6 +23,29 @@ specifics, parameters, edge cases, API details) → read `MODELS-DEEP-REFERENCE.
 
 ---
 
+## Quick Decision Flowchart
+
+Fast lookup — for detailed comparisons see the full tables below.
+
+| Need | Recommended Model | Tier |
+|------|-------------------|------|
+| Top-tier cinematic video + audio | Kling 3.0 | Premium |
+| Epic scale / spectacle | Sora 2 | Premium |
+| Nature / landscapes + ref images | Veo 3.1 | Premium |
+| Artistic / stylized video | Wan 2.6 | Mid |
+| Fast video iteration | Seedance 2.0 Pro | Mid |
+| VFX / fluid motion | Minimax Hailuo 2.3 | Mid |
+| Budget-friendly video | Kling 2.5 Turbo / Higgsfield DoP Lite | Free–Low |
+| Fashion / aesthetic images | Soul 2.0 | Free |
+| Photorealistic sharp images | Nano Banana Pro | Low |
+| AI actor generation | Soul Cast | Low |
+| Native 4K images | Kling Image 3.0 | Mid |
+| Photo style transformation | Photodump (29 presets) | Low |
+
+**Pricing tiers:** Free (Soul 2.0, DoP Lite) · Low (0.1–2 credits) · Mid (2–10 credits) · Premium (10+ credits). See the Credit Cost Reference below for exact per-model costs.
+
+---
+
 ## Video Models — Comparison
 
 | Model | Realism | Character | Motion | Style | Duration | Audio | Best for |
@@ -130,17 +153,28 @@ Is this image or video?
 | Complex prompts / text in image | GPT Image 1.5 | 2 |
 | Max fidelity / Thinking mode / 14 refs | Nano Banana Pro | 2 |
 | Image editing / inpainting | Flux Kontext | varies |
+| Photo style transformation (29 cartoon/illustration presets) | Photodump | Low |
 
-Full image model specs + UI controls → `../../../../../../image-models.md`
+Full image model specs + UI controls → `../../image-models.md`
+Full Photodump preset library (29 named styles) → `../../photodump-presets.md`
 
 ---
 
 ## Budget Tiers
 
-**Free / near-free:** Soul 2.0 (5K gens) · Z-Image (0.15) · Face Swap (2 free)
-**Budget (0.5–1):** Higgsfield Soul · Kling O1 · Seedream family · Nano Banana · Wan 2.2 · Reve
-**Mid (1.5–2):** Nano Banana 2 · Multi Reference · FLUX.2 Pro · Flux Kontext Max · GPT Image · NB Pro · Character Swap
-**Premium (5–6):** FLUX.2 Flex · FLUX.2 Max
+**Image models — by credit cost:**
+- **Free / near-free:** Soul 2.0 (5K gens) · Z-Image (0.15) · Face Swap (2 free)
+- **Budget (0.5–1):** Higgsfield Soul · Kling O1 · Seedream family · Nano Banana · Wan 2.2 · Reve
+- **Mid (1.5–2):** Nano Banana 2 · Multi Reference · FLUX.2 Pro · Flux Kontext Max · GPT Image · NB Pro · Character Swap
+- **Premium (5–6):** FLUX.2 Flex · FLUX.2 Max
+
+**General pricing tiers (video + image, approximate):**
+- **Free:** Soul 2.0 · DoP Lite (limited)
+- **Low:** 0.1–2 credits per generation
+- **Mid:** 2–10 credits per generation
+- **Premium:** 10+ credits per generation
+
+For exact per-model video costs see the Credit Cost Reference in `../../model-guide.md`.
 
 ---
 
