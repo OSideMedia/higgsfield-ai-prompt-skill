@@ -1,5 +1,25 @@
 # Changelog
 
+## v3.5.0 — 2026-04-24
+
+### Added
+- **Sketch-to-Video / Draw-to-Video workspace** expansion in `higgsfield-workspaces` — full coverage of input characteristics, prompt role, two prompt patterns (Realization and Variation), and use cases for ideation-phase work.
+- **Sora 2 Trends workspace** expansion in `higgsfield-workspaces` — distinguishes the templated workspace from raw Sora 2 model use, documents the vertical-first / pacing-optimized characteristics and trade-offs vs. Cinema Studio.
+- **Higgsfield Audio standalone workspace** expansion in `higgsfield-workspaces` — three core capabilities (voiceover, voice swap, translation), distinct from Lipsync Studio (audio-to-video sync) and from in-video audio layering (SCELA in `higgsfield-audio`).
+
+### Changed
+- `higgsfield-workspaces/SKILL.md` minor version bumped from 1.0.0 to 1.1.0 (additive expansions to existing workspace descriptions; no breaking changes).
+- Root `SKILL.md` frontmatter bumped to version 3.5.0.
+
+### Sourcing
+Additions informed by the v3.4.0 PDF audit (Higgsfield Tools Guide items 5, 6, 8) and the broader workspace-first framing established in v3.4.0. Full gap analysis preserved in `docs/pdf-audit/AUDIT-REPORT.md`.
+
+### Notes
+- All three additions live in the `higgsfield-workspaces` sub-skill — single-file scope.
+- No new sub-skills, no routing changes in root `SKILL.md` (only frontmatter version bumped).
+- This release closes out the workspace-related MEDIUM backlog from the v3.4.0 audit.
+- REINFORCE polish items remain deferred indefinitely.
+
 ## v3.4.1 — 2026-04-24
 
 ### Added
