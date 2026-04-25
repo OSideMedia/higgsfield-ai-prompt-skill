@@ -12,8 +12,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.5.0
-  updated: 2026-04-24
+  version: 3.6.0
+  updated: 2026-04-25
   author: O-Side Media
   license: MIT
 ---
@@ -52,7 +52,7 @@ platform — Kling 3.0/3.0 Omni/3.0 Motion Control, Sora 2, Google Veo 3.1/3.1 L
 Seedance 2.0/Pro, Minimax Hailuo 2.3/02, Higgsfield DoP (Lite/Standard/Turbo) for video; Soul 2.0, Soul Cinema Preview,
 Soul Cast, Nano Banana Pro/2, Kling Image 3.0/Omni, Seedream 4.0, GPT Image 1.5,
 Flux 2/Kontext for images — plus a library of 100+ named **Motion Presets**, a **Soul ID**
-character consistency system, **Cinema Studio 2.5** and **Cinema Studio 3.0** (Business/Team plan) with Soul Cast AI actors, native dual-channel stereo audio, and 80+
+character consistency system, **Cinema Studio 2.5**, **Cinema Studio 3.0** (Business/Team plan), and **Cinema Studio 3.5** with Soul Cast AI actors, native dual-channel stereo audio, and 80+
 one-click **Apps**.
 
 ---
@@ -122,11 +122,12 @@ budget constraints, client work), **confirm before generating:**
 | Artistic style transformation, preset stacking | `higgsfield-mixed-media` |
 | Higgsfield Assist (GPT-5 copilot) | `higgsfield-assist` |
 | Credit optimization, plan selection, budget strategy | `higgsfield-assist` |
-| Cinema Studio 2.5 / Cinema Studio 3.0 (Business/Team) / multi-shot sequence workflow / Soul Cast | `higgsfield-cinema` |
+| Cinema Studio 2.5 / Cinema Studio 3.0 / Cinema Studio 3.5 / multi-shot sequence workflow / Soul Cast | `higgsfield-cinema` |
 | Optical physics, camera bodies, lenses, Hero Frame | `higgsfield-cinema` |
 | Elements system (@Characters/@Locations/@Props) | `higgsfield-cinema` |
 | Director Panel, Speed Ramp, shot modes, Popcorn | `higgsfield-cinema` |
 | Cinema Studio 3.0 Smart mode, @ references, native audio | `higgsfield-cinema` |
+| Cinema Studio 3.5 — three-pill UI, Style Settings, Camera Settings, Manual Style, AI director toggle | `higgsfield-cinema` |
 | Multi-shot workflow, chaining tools, full production pipeline | `higgsfield-pipeline` |
 | Short film, branded content, Popcorn → video → assembly | `higgsfield-pipeline` |
 | Vibe Motion, motion graphics, kinetic typography, brand animation | `higgsfield-vibe-motion` |
@@ -245,7 +246,7 @@ Quick summary — five layers, every prompt:
 | `higgsfield-moodboard` | Moodboard / Soul Hex / project-level style consistency |
 | `higgsfield-mixed-media` | Artistic preset overlays (Noir, Sketch, Particles, etc.) |
 | `higgsfield-assist` | Higgsfield Assist copilot / credit optimization / plan selection |
-| `higgsfield-cinema` | Cinema Studio 2.5 + 3.0 (Business/Team) / Soul Cast / color grading / optical physics / multi-shot / Elements / Smart mode / @ references |
+| `higgsfield-cinema` | Cinema Studio 2.5 + 3.0 + 3.5 / Soul Cast / color grading / optical physics / multi-shot / Elements / Smart mode / @ references / Style Settings / Camera Settings / Manual Style |
 | `higgsfield-pipeline` | Multi-shot workflow / tool chaining / full production pipeline |
 | `higgsfield-vibe-motion` | Vibe Motion / motion graphics / kinetic typography / brand animation |
 | `higgsfield-recall` | Pre-generation memory check / apply past failure fixes |

@@ -194,7 +194,7 @@ For exact per-model video costs see the Credit Cost Reference in `../../model-gu
 | Up to 30s camera/motion transfer | Kling 3.0 Motion Control |
 | Soul Cast AI actors | Cinema Studio 2.5 |
 | Soul Cast AI actors (General 2K / Character 4K / Location 4K) | Cinema Studio 3.0 (Business/Team) |
-| Built-in color grading | Cinema Studio 2.5 |
+| Built-in color grading | Cinema Studio 2.5 (full grading suite) · Cinema Studio 3.5 (Color Palette axis in Style Settings — 8 named palettes) |
 | Native dual-channel stereo audio | Cinema Studio 3.0 (Business/Team) · Kling 3.0/Omni · Seedance 2.0/1.5 Pro · Veo 3/3.1 · Wan 2.5/2.7 |
 | Soul HEX color matching | Soul 2.0 · Soul Cinema Preview · Cinema Studio 2.5 |
 | Native 4K image series | Kling Image 3.0 |
@@ -243,17 +243,21 @@ For deep documentation on any specific model → read `MODELS-DEEP-REFERENCE.md`
 
 Cinema Studio 3.0 is a separate generation engine available on Business and Team plans. Version toggle in the upper-right corner of the Cinema Studio UI switches between 2.5 and 3.0.
 
-| Feature | Cinema Studio 2.5 | Cinema Studio 3.0 (Business/Team) |
-|---------|-------------------|-----------------------------------|
-| Video Resolution | Up to 1080p | Up to 720p (may increase) |
-| Image Resolution | Up to 4K | Up to 4K (Character/Location) · Up to 2K (General) |
-| Max Duration | 12s | 15s |
-| Aspect Ratios | 6 options | 7 options (+ 21:9 ultrawide) |
-| Audio | On/Off | On/Off (native dual-channel stereo) |
-| Shot Control | Manual multi-shot | Smart (auto) + Custom multi-shot |
-| Generation Cost | Varies | 48 credits |
+| Feature | Cinema Studio 2.5 | Cinema Studio 3.0 (Business/Team) | Cinema Studio 3.5 |
+|---------|-------------------|-----------------------------------|--------------------|
+| Video Resolution | Up to 1080p | Up to 720p (may increase) | 480p / 720p / 1080p (three-tier) |
+| Image Resolution | Up to 4K | Up to 4K (Character/Location) · Up to 2K (General) | 1.5K / 2K (Soul Cinema, default image model) · 1K / 2K / 4K (Cinematic Cameras image model) |
+| Max Duration | 12s | 15s | 15s |
+| Aspect Ratios | 6 options | 7 options (+ 21:9 ultrawide) | Video: 7 options (Auto, 16:9, 9:16, 4:3, 3:4, 1:1, 21:9) · Image: 8 options (1:1, 3:4, 2:3, 9:16, 3:2, 4:3, 16:9, 21:9) |
+| Audio | On/Off | On/Off (native dual-channel stereo) | On/Off (generated alongside video) |
+| Shot Control | Manual multi-shot | Smart (auto) + Custom multi-shot | Video: 3-pill main UI (Genre / Style / Camera) · Image: Cinematic models picker (Soul Cinema default + Cinematic Characters / Locations / Cameras) — see `higgsfield-cinema` |
+| Generation Cost | Varies | 48 credits | Varies — see Higgsfield plan documentation |
 
 > For full Cinema Studio 3.0 documentation → see `higgsfield-cinema`
+
+Cinema Studio 3.5 sits alongside 2.5 and 3.0 in the model selector — all three coexist on the platform, version is user-selected, and there is no auto-routing between them. 3.5 reframes the surface: the main UI collapses creative control into three pills (Genre / Style / Camera), each defaulting to Auto with manual override available. Optical physics is restored via a four-axis Camera Settings panel (Camera Body / Lens / Focal Length / Aperture, with 75mm added as a new focal length vs 2.5's 8/14/35/50mm set — vocabulary differs from 2.5; do not mix). The Style Settings panel exposes three preset axes (Color Palette / Lighting / Camera Moveset Style) plus a free-form Manual Style mode for natural-language style direction. An AI director toggle is visible in the bottom toolbar; function not yet documented. 3.5 supports both video and image generation; the image-mode picker exposes four Cinematic models (Soul Cinema default, plus Cinematic Characters, Cinematic Locations, and Cinematic Cameras with 2.5 vocabulary) — see `higgsfield-cinema` for the image-mode surface.
+
+> For full Cinema Studio 3.5 documentation → see `higgsfield-cinema`
 
 ---
 

@@ -4,8 +4,8 @@ description: "Guides users through professional filmmaking workflows in Higgsfie
 user-invocable: true
 metadata:
   tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
-  version: 3.0.0
-  updated: 2026-04-06
+  version: 3.1.0
+  updated: 2026-04-25
   parent: higgsfield
 ---
 
@@ -19,26 +19,26 @@ different from single-clip generation: you're building sequences, not individual
 
 ## Cinema Studio vs Standard Generation
 
-| | Standard Generation | Cinema Studio 2.5 | Cinema Studio 3.0 (Business/Team Plan) |
-|--|--------------------|--------------------|----------------------------------------|
-| Output | Single clip | Multi-shot sequence | Multi-shot sequence |
-| Character consistency | Manual / Soul ID only | Reference Anchor system | @ reference system (up to 9 images) |
-| AI actor generation | Not available | Soul Cast — generate actors from parameters (no photos) | Soul Cast — General (2K) / Character (4K) / Location (4K) modes, 0.125 credits |
-| Camera control | Named presets | Director Panel (18 movements) | Director Panel + Smart (auto camera planning) |
-| Optical physics | Not available | Full camera body + lens stack | Not available |
-| Color grading | Not available | Built-in suite (temp, contrast, grain, bloom, etc.) | Not available |
-| Shot structure | One prompt = one clip | Up to 6 scenes, 12s total max, per-scene config | Smart (auto) + Custom multi-shot (up to 6 scenes, 15s) |
-| 3D exploration | Not available | Gaussian splatting — move inside any generated image | Not available |
-| Batch generation | Not available | Grid generation — up to 16 variations per credit | Not available |
-| Storyboard | Not available | Higgsfield Popcorn integration | Not available |
-| Speed control | Not available | Speed Ramp (6 modes) | Speed Ramp (7 modes + Bullet Time, Hero Moment) |
-| Genre | Style descriptions | 8 named genres | 7 genres (General, Action, Horror, Comedy, Noir, Drama, Epic) |
-| Audio | Model-dependent | On/Off | On/Off (native dual-channel stereo) |
-| Video resolution | Model-dependent | Up to 1080p | Up to 720p (may increase) |
-| Image resolution | Model-dependent | Up to 4K | Up to 4K (Character/Location) · Up to 2K (General) |
-| Max video duration | Model-dependent | 12s | 15s |
-| Aspect ratios | Model-dependent | 6 options | 7 options (+ 21:9 ultrawide) |
-| Plan requirement | All plans | All plans | **Business/Team plan only** |
+| | Standard Generation | Cinema Studio 2.5 | Cinema Studio 3.0 (Business/Team Plan) | Cinema Studio 3.5 |
+|--|--------------------|--------------------|----------------------------------------|--------------------|
+| Output | Single clip | Multi-shot sequence | Multi-shot sequence | Multi-shot sequence |
+| Character consistency | Manual / Soul ID only | Reference Anchor system | @ reference system (up to 9 images) | @ reference system (extends 3.0) |
+| AI actor generation | Not available | Soul Cast — generate actors from parameters (no photos) | Soul Cast — General (2K) / Character (4K) / Location (4K) modes, 0.125 credits | Same Soul Cast surface — see 3.0 |
+| Camera control | Named presets | Director Panel (18 movements) | Director Panel + Smart (auto camera planning) | Camera Settings 4-axis panel (Camera Body / Lens / Focal Length / Aperture) — see Cinema Studio 3.5 section |
+| Optical physics | Not available | Full camera body + lens stack | Not available | Available — restored via Camera Settings panel (different vocabulary from 2.5 — see Cinema Studio 3.5 section) |
+| Color grading | Not available | Built-in suite (temp, contrast, grain, bloom, etc.) | Not available | Available — Color Palette axis in Style Settings panel (8 named palettes) |
+| Shot structure | One prompt = one clip | Up to 6 scenes, 12s total max, per-scene config | Smart (auto) + Custom multi-shot (up to 6 scenes, 15s) | Multi-shot supported — Duration 4s–15s |
+| 3D exploration | Not available | Gaussian splatting — move inside any generated image | Not available | Same as 3.0 (not available) |
+| Batch generation | Not available | Grid generation — up to 16 variations per credit | Not available | Configurable Batch Size (exploration multiplier) |
+| Storyboard | Not available | Higgsfield Popcorn integration | Not available | Same as 3.0 |
+| Speed control | Not available | Speed Ramp (6 modes) | Speed Ramp (7 modes + Bullet Time, Hero Moment) | Not separately tested in this release — see UI for 3.5-specific surface |
+| Genre | Style descriptions | 8 named genres | 7 genres (General, Action, Horror, Comedy, Noir, Drama, Epic) | Manual catalog (General, Action, Horror, Comedy, Noir, Drama, Epic + others surfaced in UI) |
+| Audio | Model-dependent | On/Off | On/Off (native dual-channel stereo) | On/Off (generated alongside video) |
+| Video resolution | Model-dependent | Up to 1080p | Up to 720p (may increase) | 480p / 720p / 1080p (three-tier) |
+| Image resolution | Model-dependent | Up to 4K | Up to 4K (Character/Location) · Up to 2K (General) | Not separately tested in this release |
+| Max video duration | Model-dependent | 12s | 15s | 15s |
+| Aspect ratios | Model-dependent | 6 options | 7 options (+ 21:9 ultrawide) | 7 options (Auto, 16:9, 9:16, 4:3, 3:4, 1:1, 21:9) |
+| Plan requirement | All plans | All plans | **Business/Team plan only** | Plan availability not separately verified in this release — see Higgsfield plan documentation |
 
 **Use Cinema Studio when:**
 - You need 2+ shots that must feel like the same film
@@ -151,6 +151,35 @@ She stops under a streetlight, turns to camera.
 
 **Key rule:** Match exactly what the user gives you. No more, no less.
 Tags they give you = Element exists. Anything else = write it as description.
+
+### Element Library Surface — Source Tabs and Categories
+
+The `@` symbol opens a unified asset picker. The picker is organized as a two-dimensional structure: source tabs across the top (where the asset comes from), and element categories within the Elements tab (how project assets are grouped).
+
+**Source tabs (5):**
+
+| Tab | What's in it |
+|-----|--------------|
+| **Uploads** | Assets the user brings in directly — original photos, plates, prop shots |
+| **Image Generations** | Prior generated stills available for reference (useful for self-referencing continuity across shots — pull a specific look or pose that emerged from a previous generation back into a new one) |
+| **Video Generations** | Prior generated clips available for reference (useful for camera-memory or motion reference — feed a previous clip's framing or movement back into a new generation) |
+| **Elements** | Curated/saved assets in the project library — the primary continuity surface |
+| **Liked** | Favorited assets across the picker — fast recall for go-to references |
+
+**Element categories within the Elements tab (6):**
+
+| Category | What it groups |
+|----------|----------------|
+| **All** | Everything in the project |
+| **Pinned** | Surfaced for quick access in this project — the user's working set for the current sequence |
+| **Shared** | Accessible across collaborators or contexts (exact sharing scope is platform-managed) |
+| **Characters** | Identity references — people, faces, performers |
+| **Locations** | Environment references — rooms, exteriors, settings |
+| **Props** | Object references — vehicles, items, set pieces |
+
+Build the element library before generation. For a project with recurring characters, locations, or props — a short film, a series of branded videos, a multi-shot sequence — establish each recurring asset as an Element first, then reference it via `@` in every shot. This is the platform-native implementation of the Reference-Based Prompt Mode discipline already documented elsewhere: references with assigned roles, not references as inspiration. See `../higgsfield-seedance/SKILL.md` for the Reference-Based Prompt Mode discipline, and the existing "@ tag rule — use exactly what the user provides" guidance earlier in this section for how to use `@` tags inside the prompt itself.
+
+**Cross-shot continuity tip.** For continuation work, the **Image Generations** and **Video Generations** source tabs let you reference prior outputs from the same project — useful when a Character Element doesn't capture a specific look or pose that emerged from a particular generation. Pull the exact frame back in via the Generations tab rather than re-prompting from scratch.
 
 ---
 
@@ -1306,6 +1335,7 @@ See the comparison table at the top for full 2.5 vs 3.0 differences. Key 3.0-spe
 - **Aspect Ratios (7):** Auto, 1:1, 3:4, 9:16, 4:3, 16:9, 21:9
 - **Audio:** On/Off — natively generated alongside video (dual-channel stereo)
 - **Shot Control:** Smart (auto camera planning) or Custom multi-shot (up to 6 scenes, 15s total)
+- **Image mode:** Cinema Studio 3.0 image mode uses **Soul Cinema** as the default model — see § Image Mode in the Cinema Studio 3.5 section below for the full image-mode model picker (Cinematic models + Featured models), which is shared between 3.0 and 3.5.
 
 ### Input Limits (@ References)
 
@@ -1359,6 +1389,274 @@ Mimic @Video1's shot design, pacing, and transitions. Replace all products with 
 | Ultrawide 21:9 aspect ratio | Cinema Studio 3.0 (Business/Team) |
 | Smart auto-camera planning | Cinema Studio 3.0 (Business/Team) |
 | Free/Individual plan | Cinema Studio 2.5 |
+
+---
+
+## Cinema Studio 3.5
+
+Cinema Studio 3.5 is the latest Cinema Studio version, sitting alongside 2.5 and 3.0 in the model selector — all three coexist on the platform, version is user-selected, and there is no auto-routing between them. 3.5 is positioned as a **simplified creative surface** over a deep manual layer: by default everything routes to Auto and the engine handles selection, with manual overrides available at any point in the stack.
+
+What's new vs 3.0:
+
+- **Three-pill main UI** — Genre / Style / Camera collapsed into three primary pills on the main surface
+- **Restored optical physics** — camera body / lens / focal length / aperture surface is back, accessible via the Camera Settings panel (different vocabulary from 2.5 — see below)
+- **Style Settings panel** — three preset axes (Color Palette / Lighting / Camera Moveset Style) plus a free-form Manual Style mode
+- **AI director toggle** — visible in the bottom toolbar (function not yet documented; see § AI Director Toggle)
+
+**Operating philosophy:** Auto by default, manual with reason. Each pill defaults to Auto and can be overridden — but only override when there is a specific creative reason to do so.
+
+### The Three-Pill Main Surface
+
+3.5 collapses creative control into three pills on the main UI:
+
+| Pill | What it controls | Surface |
+|------|------------------|---------|
+| **Genre** | Manual genre catalog | Single-select picker |
+| **Style** | Color Palette / Lighting / Camera Moveset Style + Manual Style mode | Three-axis preset stacking, or free-form prompt |
+| **Camera** | Camera Body / Lens / Focal Length / Aperture | Four-axis panel |
+
+Each pill defaults to Auto. Open the pill to override.
+
+### Cinema Studio 3.5 Genres
+
+Confirmed from the UI: **General · Action · Horror · Comedy · Noir · Drama · Epic** (7 genres).
+
+The Genre picker is browsable in the UI and may surface additional genres not enumerated here — direct readers to the live UI for the current full list.
+
+> **⚠ Genre catalog scope:** The seven listed genres are confirmed from a 2026-04-25 UI screenshot, which showed scroll arrows above and below the visible list — additional genres exist in the picker but were not confirmed by name and are not enumerated here. Do not invent genre names. When the user names a genre not in the seven, ask them to confirm by checking the UI rather than assuming.
+
+### Style Settings — Three Operating Modes
+
+The Style pill operates in three modes.
+
+**Mode 1 — Auto** (default). All three sub-axes default to Auto; the engine handles selection. Use when you want speed and don't have a strong style direction.
+
+**Mode 2 — Preset stacking** (Manual Style toggle OFF). User selects from presets in any/all of three sub-axes:
+
+#### Color Palette (8 presets)
+
+| Preset | Use when |
+|--------|----------|
+| Naturalistic Clean | Realistic, neutral palette — character/dialogue, documentary feel, brand work that needs to read as captured |
+| Bleached Warm | Sun-faded warmth — beach, exterior daytime, nostalgic memory work |
+| Hyper Neon | Saturated neon — cyberpunk, club, after-dark city, music video |
+| Teal Orange Epic | Industry-standard blockbuster grade — action, thriller, anything that wants instant cinema credibility |
+| Sodium Decay | Sodium-lamp orange + decay — urban night, post-apocalyptic, gritty crime |
+| Cold Steel | Desaturated cool — corporate, surveillance, procedural, sci-fi clinical |
+| Bleach Bypass | High contrast + reduced saturation — war film, harsh drama, period grit |
+| Classic B&W | Black and white — noir, archival feel, emphasis on form and composition over color |
+
+#### Lighting (6 techniques)
+
+| Preset | Use when |
+|--------|----------|
+| Soft Cross | Soft cross-key + fill — flattering portraiture, conversation, intimate drama |
+| Contre Jour | Strong backlight — silhouette, golden-hour reveal, character entrance |
+| Overhead Fall | Top-down hard light — interrogation, isolation, dramatic stage feel |
+| Window | Motivated window light — interior daylight, single-source naturalism |
+| Practicals | Lights inside the frame — bars, restaurants, lived-in interiors, night exteriors with signage |
+| Silhouette | Subject reduced to shape — emphasis on form, mystery, abstract reveal |
+
+#### Camera Moveset Style (9 styles)
+
+| Preset | Use when |
+|--------|----------|
+| Classic Static | Locked-off, no movement — dialogue, composition, tension |
+| Silent Machine | Smooth motorized motion — corporate, surveillance, controlled cinematic |
+| One Take | Single continuous take — long developing reveal, immersive sequence |
+| Epic Scale | Wide sweeping moves — landscape, spectacle, geographic reveal |
+| Intimate Observer | Quiet, restrained handheld — drama, conversation, character interior |
+| Impossible Camera | Moves the model can do but a real rig couldn't — through walls, around objects, virtual-only paths |
+| Documentary Snap | Reactive handheld — news/doc feel, real-time energy |
+| Raw Chaos | Unsteady, kinetic, motion-heavy — action, riot, sensory overload |
+| Dreamy Flow | Floating, slowed, dreamlike motion — memory, surreal, romance |
+
+When stacked, the main UI's Style pill shows the selection as a comma-separated label (e.g., "Style: One Take, Practicals, Sodium Decay").
+
+**Mode 3 — Manual Style** (Manual Style toggle ON). The 3-axis preset panel is replaced by a free-form Prompt input ("Describe your concept, scene, or idea") and a Save button. User writes natural-language style direction.
+
+**This is prompt territory.** The Manual Style input is treated as a style prompt by the engine, so apply the existing Style/Director-Language Prompt Mode discipline: translate style intent into observable cinematic decisions — camera behavior, spatial logic, lighting and color, performance mode, rhythm, texture. Avoid vague labels ("cinematic", "epic", "moody") and director name-dropping ("Wes Anderson style") — these read as style noise to the engine. See `../higgsfield-seedance/SKILL.md` Style/Director-Language Prompt Mode for the full discipline, and `../higgsfield-prompt/SKILL.md` for general prompt rules.
+
+### Camera Settings — Four-Axis Panel
+
+The Camera pill opens an expanded panel with four sub-axes. Two operating modes:
+
+**Mode 1 — Auto** (default). All four sub-axes default to Auto; engine handles selection.
+
+**Mode 2 — Per-axis adjustment.** User selects from each axis manually.
+
+#### Camera Body (3 bodies)
+
+| Body | Use when |
+|------|----------|
+| Clean Digital | Sharp, neutral, no character — corporate, commercial, sci-fi clinical, anything that should feel captured-not-graded |
+| Fine Film | Cinematic film texture without heavy grain — narrative drama, character work, prestige feel |
+| Raw 16mm | Heavy grain, organic, lo-fi — period grit, indie drama, horror, documentary realism |
+
+#### Lens (5 characters)
+
+| Lens | Use when |
+|------|----------|
+| Vintage Haze | Soft vintage character with subtle glow — nostalgia, period, memory, romance |
+| Warm Halation | Warm highlight glow — golden-hour, dreamy interiors, soft drama |
+| Anamorphic | Oval bokeh + horizontal flare — industry-standard cinematic, action, blockbuster, prestige |
+| Extreme Macro | Hyper close-up rendering — texture detail, food, product, insects, fine surface work |
+| Clinical Sharp | No aberration, maximum resolution — commercial, surveillance, technical, product, documentary |
+
+#### Focal Length (5 lengths)
+
+`8mm · 14mm · 35mm · 50mm · 75mm`
+
+- **8mm** — Ultra-wide, immersive distortion. Action POV, environment, disorientation.
+- **14mm** — Wide, environmental, scale. Establishing shots, landscape, architecture.
+- **35mm** — Natural human field of view. Documentary, street, two-shots, candid.
+- **50mm** — Classic portrait compression. Character close-ups, single subject.
+- **75mm** — Tight portrait compression — new in 3.5 vs the 8/14/35/50mm set documented for Cinema Studio 2.5. Reaction, emotional climax, character isolation.
+
+Default is Auto. Only set manually with a specific reason.
+
+#### Aperture (3 stops)
+
+`f/1.4 · f/4 · f/11`
+
+- **f/1.4** — Shallow depth of field. Subject sharp, background creamy bokeh. Intimacy, focus, emotion.
+- **f/4** — Balanced. Subject sharp, background slightly soft. Most versatile.
+- **f/11** — Deep depth of field. Everything sharp front to back. Product, landscape, architecture.
+
+Default is Auto. Only set manually with a specific reason.
+
+> ⚠ Two camera vocabularies coexist in Cinema Studio 3.5. The Camera Settings panel documented above (Clean Digital / Fine Film / Raw 16mm + 5 lenses + 5 focal lengths + 3 apertures) is the default, simplified surface — it appears in 3.5 video mode and is the primary 3.5 surface for camera control. **Cinema Studio 2.5's vocabulary is also reachable inside the Cinema Studio UI shell.** In image mode, **Cinematic Cameras** is one of four selectable Cinematic models (alongside Cinematic Characters, Cinematic Locations, and Soul Cinema). Selecting Cinematic Cameras as your image model surfaces 2.5's six camera bodies (Premium Large Format Digital, Classic 16mm Film, Modular 8K Digital, Full-Frame Cine Digital, Studio Digital S35, Grand Format 70mm Film), ten lens characters, and the wider focal-length and aperture range — those names appear because Cinematic Cameras uses the 2.5 optical vocabulary by design. See § Image Mode below for the full image-mode model picker, and § Optical Physics Engine earlier in this file for the 2.5 vocabulary itself. **Rule: vocabulary follows the model you have selected.** Use 3.5 vocabulary when the selected model is Cinema Studio 3.5 (Camera Settings panel in video mode). Use 2.5 vocabulary when the selected model is Cinema Studio 2.5 in video mode, or Cinematic Cameras in image mode. Do not write "Clean Digital" when the selected model uses 2.5 vocabulary; do not write "Studio Digital S35" when the selected model uses 3.5 vocabulary.
+
+### Five Recommended Stacks
+
+These are not built-in UI presets — they are recommended manual combinations assembled across the Style Settings and Camera Settings panels. Each stack is a starting point; adjust per shot.
+
+| Stack | Camera Body | Lens | Focal | Aperture | When to use |
+|-------|-------------|------|-------|----------|-------------|
+| Intimate Drama | Fine Film | Warm Halation | 50mm | f/1.4 | Conversation, emotional close beats, character interior moments |
+| Gritty Realism | Raw 16mm | Vintage Haze | 35mm | f/4 | Street, action, documentary-feel work, period grit |
+| Cold Thriller | Clean Digital | Clinical Sharp | 50mm | f/4 | Corporate, surveillance, procedural tension |
+| Epic Landscape | Fine Film | Anamorphic | 14mm | f/11 | Establishing shots, scale, geographic spectacle |
+| Impact Close-up | Fine Film | Anamorphic | 75mm | f/1.4 | Reaction, emotional climax, character isolation |
+
+Pair each stack with a Style Settings selection (Color Palette + Lighting + Camera Moveset Style) appropriate to the same intent — e.g., Intimate Drama pairs naturally with Naturalistic Clean palette + Soft Cross lighting + Intimate Observer moveset.
+
+### Cinema Studio 3.5 Output Controls
+
+Output-side surface in 3.5:
+
+| Control | Options |
+|---------|---------|
+| Aspect Ratio | Auto, 16:9, 9:16, 4:3, 3:4, 1:1, 21:9 (7 options including 21:9 ultrawide) |
+| Quality | 480p / 720p / 1080p (three tiers) |
+| Sound | On / Off (when On, audio is generated alongside video as part of the same output) |
+| Batch Size | Configurable — exploration multiplier for testing multiple variations in a single run |
+| Duration | 4s ↔ 15s (preserved across Cinema Studio versions) |
+
+**Quality tiers — practical guidance:**
+- **480p** — draft / exploration tier. Use for prompt iteration before committing to higher-resolution finals.
+- **720p / 1080p** — final-quality tiers. Choice between them depends on what's physical in the scene; see § Physics Rendering — Resolution Decision Matrix below.
+
+**Sound prompting:** When Sound is On, audio is generated natively alongside video in a single pass. For prompting audio behavior in detail (dialogue, SFX, ambient, music), see `../higgsfield-audio/SKILL.md`.
+
+**Batch Size:** Frame as exploration multiplier — generate multiple variations in one run. Exact cost behavior varies by plan and may change.
+
+> No specific credit cost numbers are listed in this section. Costs vary by plan and change over time — refer to the live Higgsfield plan documentation.
+
+### Image Mode
+
+Cinema Studio 3.5 has a **mode toggle** between Image and Video. The sections above (three-pill main surface, Style Settings, Camera Settings, output controls) describe Video mode — the default surface and the primary use of Cinema Studio 3.5. This subsection covers the differences in Image mode.
+
+#### The image-mode model picker
+
+The image-mode model picker has two groups: **Cinematic models** (studio-native — full image-mode UI applies) and **Featured models** (third-party engines runnable from inside the shell with prompt-only control).
+
+**Cinematic models — four options:**
+
+| Model | Picker description | Use when |
+|-------|--------------------|----------|
+| **Soul Cinema** *(default)* | Cinematic image generation | General-purpose cinematic image work; the default starting point |
+| **Cinematic Characters** | Expressive faces and detailed styling | Character close-ups, performance-driven portraits, expression and styling work |
+| **Cinematic Locations** | Rich environments with cinematic lighting | Establishing shots, environment / location plates, atmosphere-driven imagery |
+| **Cinematic Cameras** | Image generation with camera controls | When you want explicit Camera Body / Lens / Focal Length / Aperture control — uses 2.5 optical vocabulary (see below) |
+
+**Soul Cinema is shared between Cinema Studio 3.0 and 3.5 image modes** — see § Cinema Studio 3.0 (Business/Team Plan) above for the 3.0-side acknowledgment. Per-model deep workflow guidance (when to pick Cinematic Characters vs Soul Cinema, prompting patterns specific to each Cinematic model) is deferred to a future release.
+
+**Featured models — picker overview:** The image-mode picker also surfaces **Featured models** (e.g., Higgsfield Soul 2.0, GPT Image 2, Seedream 5.0 Lite, plus other third-party engines listed in `MODELS-DEEP-REFERENCE.md`). Featured models are selectable from inside the Cinema Studio shell, but selecting one means the **studio-specific UI features (Style Settings, Camera Settings panels) are not available** — the shell remains, but creative control reverts to prompt-only. For Featured-model prompting, route to the model's own documentation in `MODELS-DEEP-REFERENCE.md` rather than treating it as a Cinema Studio configuration problem.
+
+> ⚠ Note: the Featured list also contains a separately-named model called **Higgsfield Soul Cinema**, which is distinct from the Cinematic-list **Soul Cinema** despite the similar names. The two are not interchangeable.
+
+For Soul Cinema identity prompting and reference workflow, see `../higgsfield-soul/SKILL.md`.
+
+#### Aspect ratios — 8 options
+
+`1:1` · `3:4` · `2:3` · `9:16` · `3:2` · `4:3` · `16:9 (Cinematic)` · `21:9 (Cinematic)`. The 16:9 and 21:9 ratios are tagged "Cinematic" in the picker. Image mode's aspect-ratio set differs from Video mode's 7-option set documented in § Cinema Studio 3.5 Output Controls above.
+
+#### Resolution — depends on the selected Cinematic model
+
+| Selected model | Resolution options |
+|----------------|--------------------|
+| Soul Cinema (default) | 1.5K / 2K |
+| Cinematic Cameras | 1K / 2K / 4K |
+| Cinematic Characters / Cinematic Locations | Not separately verified in this release |
+
+#### Cinematic Cameras — the 2.5-vocabulary image model
+
+Selecting **Cinematic Cameras** from the image-mode model picker exposes the **Cinema Studio 2.5 camera vocabulary** as a configurable stack — Camera Body / Lens / Focal Length / Aperture, drawn from the same surface documented in § Optical Physics Engine earlier in this file. Cinematic Cameras is the image-mode entry point into 2.5's six camera bodies and ten lens characters; it is a sibling Cinematic model alongside Soul Cinema, Cinematic Characters, and Cinematic Locations — not a toggle layered on top of another model.
+
+The Cinematic Cameras picker has three tabs:
+
+| Tab | What's in it |
+|-----|--------------|
+| **All** | Full library of 2.5 camera bodies + lenses + focal lengths + apertures |
+| **Recommended** | Surfaced suggestions from Higgsfield |
+| **Saved** | User-saved camera stacks |
+
+The picker also exposes a **+ Save setup** button — a configured Camera Body + Lens + Focal Length + Aperture combination can be saved as a reusable stack and recalled from the Saved tab in subsequent generations.
+
+> **Per-Cinematic-model deep workflow guidance is deferred to a future release.** This includes which Cinematic image model to pick for which intent, prompting patterns specific to each of the four Cinematic models, when Featured models make sense in image mode, the Save Setup workflow for Cinematic Cameras, and full picker coverage of video-mode's parallel Cinematic / Featured structure. The Optical Physics Engine section earlier in this file (§ Optical Stack Recommendations by Intent) documents 2.5-mode stack recommendations and is directly applicable to Cinematic Cameras in 3.5 image mode — the vocabulary is identical, the surface is different.
+
+> **Cross-mode session-state note:** Selecting Cinematic Cameras for image work means selecting a 2.5-era model — the studio shell may follow that selection across mode toggles within the same session. Observation from a 2026-04-25 UI verification pass: image mode → select Cinematic Cameras → switch back to video → video mode now shows Cinema Studio 2.5 selected. This is consistent with the model-selection framing: the picker remembers the most recently selected studio-native model. Full session-state behavior is not yet verified and is deferred to a future release.
+
+#### See also
+
+- **Soul Cinema identity prompting** — `../higgsfield-soul/SKILL.md`
+- **2.5 camera vocabulary** — § Optical Physics Engine earlier in this file (the same vocabulary that Cinematic Cameras uses)
+- **Five-View Location Sheet workflow** — § Location Reference Sheets earlier in this file (image-mode work pairs naturally with location-sheet generation)
+- **Featured-model documentation** — `MODELS-DEEP-REFERENCE.md` (per-engine specs for the third-party models surfaced in the picker)
+
+### AI Director Toggle
+
+Cinema Studio 3.5 exposes an **AI director toggle** in the bottom toolbar of the UI, alongside Sound, @ reference, Start Frame, and End Frame controls. Visually confirmed as a toggle that can be On or Off.
+
+**Function and behavior of the AI director toggle are not yet documented in this skill.** Function has not been verified in hands-on testing. Use the Higgsfield UI to experiment with the toggle, and treat outputs accordingly. This documentation will be added in a future release once behavior is confirmed.
+
+### See also
+
+- **Style/Director-Language Prompt Mode** — `../higgsfield-seedance/SKILL.md` (for Manual Style mode)
+- **Optical Physics Engine** — § Optical Physics Engine in this same file (for the Cinema Studio 2.5 equivalent surface, with different vocabulary)
+- **Elements System** — § Elements System in this same file (for @ asset references usable inside Cinema Studio 3.5)
+- **Physics Rendering — Resolution Decision Matrix** — § below in this same file (added in v3.6.0)
+- **Audio prompting** — `../higgsfield-audio/SKILL.md`
+
+---
+
+## Physics Rendering — Resolution Decision Matrix
+
+This rule applies to **Seedance 2.0** and **Cinema Studio 3.x** outputs (3.0 and 3.5). Higher resolution is not always better — the right choice depends on what is physical in the scene. Rendering more pixels per frame on rapid motion produces shimmer and artifacting; rendering fewer pixels per frame on fine-detail physics produces muddy or melted small elements. Match the resolution tier to the physics of the shot.
+
+| Scene type | Recommended resolution | Reason |
+|------------|------------------------|--------|
+| Fast / chaotic motion (explosions, water flow, crowds, rapid camera moves) | **720p** | Fewer pixels per frame = smoother flow, less shimmer / artifacting on rapid change |
+| Fine-detail physics (hair, sand, small particles, glass shards, fabric weave) | **1080p** | Pixel density needed to keep small elements sharp instead of muddy or melted |
+| Grounded weight (heavy vehicles, suspension travel, mass impact) | **1080p** | Pixel density needed for material weight to read as real |
+| Draft / exploration / iteration | **480p** | Fastest tier for prompt iteration before committing to a final-quality generation |
+
+**See also:** `../higgsfield-seedance/SKILL.md` for Seedance 2.0 prompt mode guidance.
+
+> No credit cost numbers are listed in this section. 480p is framed qualitatively as the iteration tier — exact cost ratios vary by plan and may change.
+
+---
 
 ## Related skills
 - `higgsfield-prompt` — MCSLA formula, Identity/Motion separation, 512-char awareness
