@@ -26,7 +26,7 @@ The Kling lineup in Higgsfield spans two generations (2.x and 3.0) plus the O1 r
 ---
 
 ### Kling 3.0 ⭐ EXCLUSIVE — Current Top Model
-**Duration:** 3s–15s · **Resolution:** 1080p + 4K HDR · **FPS:** 30fps (60fps in some configurations) · **Audio:** Native
+**Duration:** 3s–15s · **Resolution:** 720p / 1080p / 4K HDR · **FPS:** 30fps (60fps in some configurations) · **Audio:** Native
 **Best for:** Cinematic realism · character drama · long sequences · multi-shot storytelling · native audio dialogue
 **Strengths:** Longest clip duration on the platform (up to 15s) · native multilingual audio (English, Chinese, Japanese, Korean, Spanish + accents) · superior subject consistency · precise text rendering in video · physics-aware motion (object interactions, hugging, fighting, complex machinery) · AI Director mode understands shot-reverse-shot, cross-cutting, camera blocking from a prompt alone · stylized output engine for anime, Pixar/claymation, felt/fabric textures
 **Use when:** You need a long cinematic clip with audio, multi-shot narrative, or high-consistency character performance

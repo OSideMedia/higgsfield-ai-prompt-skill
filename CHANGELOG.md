@@ -1,5 +1,42 @@
 # Changelog
 
+## v3.6.0 — 2026-04-25
+
+### Added
+- **Cinema Studio 3.5 section** in `higgsfield-cinema` — three-pill main UI surface (Genre / Style / Camera), Style Settings panel three-axis preset stacking (8 Color Palette / 6 Lighting / 9 Camera Moveset Style), Manual Style free-form mode, Camera Settings four-axis panel (3 Camera Body / 5 Lens / 5 Focal Length including new 75mm / 3 Aperture), five recommended stacks, output controls (480p draft tier added, 21:9 ultrawide preserved), AI director toggle acknowledged with function deferred.
+- **Image Mode subsection** in `higgsfield-cinema` — Cinema Studio 3.5 image mode coverage including the four Cinematic models picker (Soul Cinema default, Cinematic Characters, Cinematic Locations, Cinematic Cameras), Featured models acknowledgment, image-mode aspect ratios (8 options), resolution table by selected model, and disambiguation between Soul Cinema (Cinematic model) and Higgsfield Soul Cinema (Featured model).
+- **Elements System extension** in `higgsfield-cinema` — five source tabs (Uploads / Image Generations / Video Generations / Elements / Liked) and six element categories (All / Pinned / Shared / Characters / Locations / Props), library-first workflow guidance, cross-shot continuity tip via Image/Video Generations tabs.
+- **Physics Rendering — Resolution Decision Matrix** (cross-model section) in `higgsfield-cinema` — applies to Seedance 2.0 and Cinema Studio 3.x; routing rule for fast/chaotic motion (720p), fine-detail physics (1080p), grounded weight (1080p), and draft/exploration (480p).
+- **Cinema Studio 3.5 row** added to the comparison table in `higgsfield-models/SKILL.md` (Cinema Studio version comparison) plus framing paragraph and cross-link blockquote — routing-level coverage that defers full surface documentation to `higgsfield-cinema`.
+- **Built-in color grading row** in `higgsfield-models/SKILL.md` Unique Feature Matrix — Cinema Studio 3.5 added alongside Cinema Studio 2.5 with Color Palette axis (8 named palettes) callout.
+- **PDF integration audit** at `docs/pdf-audit/AUDIT-REPORT-v3.6.0.md` covering eight community/creator PDFs reviewed externally on 2026-04-24/25 plus hands-on UI verification of Cinema Studio 3.5 conducted on 2026-04-25.
+
+### Changed
+- **Cinema Studio version comparison table** in `higgsfield-cinema/SKILL.md` — fourth column added for Cinema Studio 3.5 (existing 2.5 and 3.0 columns unchanged).
+- **Cinema Studio version comparison table** in `higgsfield-models/SKILL.md` — fourth column added for Cinema Studio 3.5 (existing 2.5 and 3.0 columns unchanged).
+- **Kling 3.0 resolution line** in `MODELS-DEEP-REFERENCE.md` — refined from `1080p + 4K HDR` to `720p / 1080p / 4K HDR` reflecting the current quality dropdown (4K was already documented; 720p added).
+- **Cinema Studio 3.0 section** in `higgsfield-cinema/SKILL.md` — one-bullet Soul Cinema acknowledgment appended to the Quick Specs subsection (forward-link to the new 3.5 Image Mode subsection, since Soul Cinema is the shared default image model across 3.0 and 3.5).
+- **Routing entries and sub-skill triggers** in root `SKILL.md` updated to surface Cinema Studio 3.5 (routing table first row expanded, new dedicated 3.5 routing row added, sub-skills triggers row expanded with Style Settings / Camera Settings / Manual Style keywords).
+- **Root `SKILL.md` "What Is Higgsfield?" paragraph** — `Cinema Studio 2.5 and Cinema Studio 3.0` expanded to `Cinema Studio 2.5, Cinema Studio 3.0 (Business/Team plan), and Cinema Studio 3.5`.
+- **Root `SKILL.md` frontmatter** version bumped to 3.6.0 / 2026-04-25.
+- **`higgsfield-cinema/SKILL.md` frontmatter** version bumped from 3.0.0 to 3.1.0 / 2026-04-25 (mirrors the v3.5.0 sub-skill bump pattern).
+
+### Sourcing
+Additions informed by hands-on UI verification of Cinema Studio 3.5 conducted on 2026-04-25 plus eight community/creator PDFs reviewed externally. Full gap analysis preserved in `docs/pdf-audit/AUDIT-REPORT-v3.6.0.md`. The v3.4.0 audit report at `docs/pdf-audit/AUDIT-REPORT.md` remains the methodology template. Cinema Studio 3.5 image-mode and Cinematic models picker findings sourced from a 2026-04-25 hands-on UI verification pass that surfaced beyond the CinemaStudioRecap PDF coverage. The vocabulary-routing rule ("vocabulary follows the model you have selected") replaces an earlier draft framing that incorrectly described Cinematic Cameras as a toggle.
+
+### Notes
+- ADDITIVE-ONLY discipline preserved with **four explicit LIMITED MODIFICATIONs**:
+  1. Cinema Studio version comparison table in `higgsfield-cinema/SKILL.md` extended with a 3.5 column (existing 2.5/3.0 columns untouched).
+  2. Cinema Studio version comparison table in `higgsfield-models/SKILL.md` extended with a 3.5 column (existing 2.5/3.0 columns untouched).
+  3. Kling 3.0 resolution line in `MODELS-DEEP-REFERENCE.md` refined from `1080p + 4K HDR` to `720p / 1080p / 4K HDR`.
+  4. Cinema Studio 3.0 section in `higgsfield-cinema/SKILL.md` — one-bullet Soul Cinema acknowledgment appended to the Quick Specs subsection.
+- Root `SKILL.md` frontmatter, dispatcher entries, and "What Is Higgsfield?" line updated to surface 3.5 (in-scope routine bookkeeping for a new sub-skill version, not counted as a LIMITED MODIFICATION).
+- AI director toggle acknowledged but function deferred to a future release.
+- Backlog items deferred to v3.6.1+: Mr. Core methodology integration (piano test, Morph Cut breathing room, action choreography, studio-vs-cinematic re-pass); 6-Pass Testing Protocol gap-check against the existing Iteration Rule; Transformation prompt mode addition; Seedance 2.0 worked-example library expansion; per-Cinematic-model deep workflow guidance (image and video) — when to pick each Cinematic model for which intent, prompting patterns specific to each, video-mode picker structure; strip product-marketing language from skill content (file-wide pass on `MODELS-DEEP-REFERENCE.md`).
+- MANDATORY WORKFLOW and HARD RULES blocks in root `SKILL.md` (lines 27–43) verified byte-for-byte unchanged.
+- No new sub-skills created in this release — Elements System extension and Cinema Studio 3.5 documentation both live in the existing `higgsfield-cinema` sub-skill per the established dispatcher routing.
+- `higgsfield-cinema/SKILL.md` frontmatter bumped 3.0.0 → 3.1.0 / 2026-04-25 to reflect the additive content scope (mirrors the v3.5.0 sub-skill bump pattern for `higgsfield-workspaces`).
+
 ## v3.5.0 — 2026-04-24
 
 ### Added
