@@ -295,7 +295,7 @@ The Seedance 2 Serious Examples Supplement is a worked-examples companion to `MO
 
 ---
 
-## Backlog — v3.6.1+ planning
+## Backlog — v3.6.3+ planning
 
 | Item | Source | Target location | Priority |
 |------|--------|-----------------|----------|
@@ -307,8 +307,10 @@ The Seedance 2 Serious Examples Supplement is a worked-examples companion to `MO
 | Transformation prompt mode | Seedance 2 Serious Examples Supplement item 9 | `higgsfield-seedance` Prompt Modes section | LOW |
 | Seedance 2.0 worked-example library expansion | Seedance 2 Serious Examples Supplement | `higgsfield-seedance` example library (new) | LOW |
 | AI director toggle behavioral documentation | CinemaStudioRecap PDF item 12 + future UI verification | `higgsfield-cinema` Cinema Studio 3.5 section | BLOCKED (function unverified) |
-| Per-Cinematic-model deep workflow guidance (image and video) — when to pick each Cinematic model for which intent, prompting patterns specific to each, video-mode picker structure | 2026-04-25 UI verification (additional screenshots) | `higgsfield-cinema` — extend Cinema Studio 3.5 Image Mode subsection + add video-mode picker subsection | MEDIUM |
+| Per-Cinematic-model deep workflow guidance (image and video) — when to pick each Cinematic model for which intent, prompting patterns specific to each, video-mode picker structure | 2026-04-25 UI verification (additional screenshots) | `higgsfield-cinema` — extend Cinema Studio 3.5 Image Mode subsection + add video-mode picker subsection | HIGH |
 | Strip product-marketing language from skill content — file-wide pass on `MODELS-DEEP-REFERENCE.md` (e.g., ⭐ EXCLUSIVE, Current Top Model, similar superlatives) | 2026-04-25 review during v3.6.0 integration | `skills/higgsfield-models/MODELS-DEEP-REFERENCE.md` — file-wide style normalization pass | LOW |
+| Path B — Refactor `generate_user_guide.py` to parse `SKILL.md` files dynamically. Eliminates manual sync burden — by v3.6.1 the PDF was 6 releases stale. Substantial release on its own (~3–4 hours of refactor + validation), should not mix with content writing. | 2026-04-25 USER-GUIDE staleness scoping during v3.6.2 planning | `generate_user_guide.py` — full refactor to read `SKILL.md` + `skills/*/SKILL.md` + `CHANGELOG.md` and generate sections dynamically | MEDIUM (v3.7.x+) |
+| USER-GUIDE.pdf comprehensive expansion — full Cinema Studio 3.5 / Image Mode / Elements / Physics Matrix / Motion Control / workspace-first / Reference Sheet Types sections. Bundle with Path B refactor since hardcoded sections written now would be discarded in the refactor. | 2026-04-25 USER-GUIDE staleness scoping during v3.6.2 planning | `generate_user_guide.py` after Path B refactor — auto-pull from `SKILL.md` files | LOW (v3.7.x+) |
 
 ---
 
