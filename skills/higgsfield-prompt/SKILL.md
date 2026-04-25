@@ -235,6 +235,40 @@ Style: Cinematic, cold blue shadows, warm neon accents. 16:9.
 
 ---
 
+## The Iteration Rule — Change One Variable at a Time
+
+When a prompt is close-but-not-right and you're about to regenerate, change
+**exactly one variable** per attempt. Subject detail, composition, motion
+behavior, lighting, or style — pick the one that's wrong, change only that,
+regenerate.
+
+**Why it matters:** if you change two variables and the result improves, you
+don't know which change drove the improvement. If the result regresses, you
+don't know which change broke it. Either way you've spent a generation and
+learned nothing about the prompt. Single-variable iteration gives every
+regeneration a clean cause-and-effect signal — you keep what works, drop what
+doesn't, and converge on the right prompt fast.
+
+**The exception:** once the prompt is locked and you're varying purely for
+stylistic exploration (e.g., five lighting variants of an already-approved
+scene), batching changes is fine. The rule applies during *refinement*, not
+during fan-out.
+
+**Workflow:**
+
+1. Generate the baseline.
+2. Identify what's wrong — pick **one** specific thing.
+3. Change only that variable in the prompt; leave everything else untouched.
+4. Regenerate.
+5. Compare against the baseline — did the targeted change move the result the
+   way you expected?
+6. Lock that change. Identify the next problem. Repeat.
+
+If you find yourself wanting to "fix everything at once," stop and ask which
+fix matters most. That one goes in this regeneration; the rest wait their turn.
+
+---
+
 ## Seedance 2.0 Prompting Best Practices
 
 These best practices apply to Cinema Studio 3.0's generation engine (Business/Team plan) and complement the MCSLA formula above. They are not a replacement — use MCSLA as the primary framework, then apply these refinements.

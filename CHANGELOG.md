@@ -1,5 +1,20 @@
 # Changelog
 
+## v3.4.1 — 2026-04-24
+
+### Added
+- **Motion Control failure diagnostic** in `higgsfield-troubleshoot` — symptom → root cause → fix mapping for common Kling 3.0 Motion Control failures, cross-referenced to the workflow added in v3.4.0.
+- **Reference Sheet Types** section in `higgsfield-cinema` — extends the Location Reference Sheets pattern from v3.4.0 with three additional reference-sheet categories: Motion/Camera, Outfit/Material, and Palette/Mood.
+- **The Iteration Rule** in `higgsfield-prompt` — named methodology for single-variable iteration when refining prompts.
+
+### Sourcing
+Additions informed by the PDF audit captured in v3.4.0. Specifically: Kling Motion Control handbook (failure diagnostic), Seedance 2.0 handbook (reference-sheet types), AI Prompting Handbook + Higgsfield Tools Guide (iterate-one-variable rule). Full gap analysis preserved in `docs/pdf-audit/AUDIT-REPORT.md`.
+
+### Notes
+- No existing content modified. This release is purely additive.
+- Root `SKILL.md` not modified — no new sub-skill, no routing changes.
+- Three MEDIUM-priority items shipped from the audit backlog. Remaining workspace-expansion MEDIUMs (Sketch-to-Video, Sora 2 Trends, Higgsfield Audio standalone) deferred to v3.5.0.
+
 ## v3.4.0 — 2026-04-18
 
 ### Added

@@ -103,6 +103,25 @@ metadata:
 
 ---
 
+## Motion Control Failures (Kling 3.0)
+
+When a Kling 3.0 Motion Control generation comes back wrong, the cause is almost
+always upstream of the prompt — the motion reference clip, the character image,
+or the orientation/scene-source settings. Walk this list before you regenerate.
+
+| Symptom | Root cause | Fix |
+|---------|-----------|-----|
+| Output suddenly jumps or snaps mid-clip | The motion reference contains a hidden cut, dissolve, or hard transition | Re-trim the reference to a single continuous shot. If the source clip can't be cleaned up, reshoot or pick a different reference |
+| Output is shorter than the reference clip | The source motion is too fast or too dense for clean transfer | Slow the source (50–75% playback baked in), reshoot at a calmer pace, or pick a reference with simpler motion |
+| Character face drifts or warps across the clip | The character image doesn't have a clearly readable face — bad framing, low light, or the face is too small in frame | Re-shoot or re-generate the character image with closer framing, even lighting, and a neutral or slight expression |
+| Body motion looks correct but the face is dead or frozen | Wrong orientation mode for the shot — Image Orientation when you needed Video Orientation, or vice versa | Switch modes: Video Orientation for full-body movement (dance, action); Image Orientation for camera-driven shots with a mostly static body. Regenerate |
+| Generated character feels detached from the environment | Scene source is set incorrectly — pulling the wrong background | Decide whether the environment should come from the motion video or the character image, then set Scene source accordingly |
+| Motion transfers but identity drifts across the clip | The character image isn't full enough — head or body is cut off, or framing is too tight to anchor identity | Re-upload a character image that shows both head AND body fully; this is what Element Binding needs to keep the face stable through movement |
+
+> For the full Motion Control workflow and pre-flight input checklist, see `../higgsfield-motion/SKILL.md` → "Kling 3.0 Motion Control — When and How to Run It" and "Motion Reference Input Checklist".
+
+---
+
 ### Problem: Audio/lip-sync not working or out of sync
 **Cause:** Head motion tokens competing with lip engine, non-MP3 format, clip too long
 **Fix:**
