@@ -4,8 +4,8 @@ description: "Use when the user is unsure which Higgsfield workspace fits their 
 user-invocable: true
 metadata:
   tags: [higgsfield, workspaces, routing, decision, cinema-studio, lipsync, draw-to-video, sora-trends, click-to-ad, higgsfield-audio]
-  version: 1.0.0
-  updated: 2026-04-18
+  version: 1.1.0
+  updated: 2026-04-24
   parent: higgsfield
 ---
 
@@ -63,24 +63,99 @@ generation that commonly sits upstream, see `higgsfield-soul`.
 
 ### Draw to Video / Sketch to Video
 
-The workspace for turning a rough drawing — a napkin sketch, blocking diagram,
-storyboard panel — into a generated video. It's the fastest path from "here's
-the idea on paper" to a moving test. Use it for early ideation, shot-blocking
-experiments, and pre-production tests before committing credits to a full Cinema
-Studio build. This workspace is thinly documented in the current skill; for
-available one-click workflows related to sketch-based generation, see
-`higgsfield-apps` (Sketch-to-Real and related app listings).
+The workspace for taking a rough sketch, blocking diagram, or storyboard panel
+and turning it into a generated video. It exists to bridge the gap between
+paper-stage ideation and motion testing — the place to validate a shot idea
+before it earns the credits and time of a full Cinema Studio build.
+
+**When to use:**
+- Early ideation, when you're still deciding what the shot wants to be.
+- Shot blocking experiments — testing how a composition reads in motion.
+- Pre-production validation before committing to Cinema Studio scene work.
+- Fast iteration on framing, staging, and silhouette before the prompt or
+  reference set is locked.
+
+**Input characteristics:** the workspace is forgiving. Hand-drawn storyboards,
+blocking diagrams with stick figures or geometric placeholders, even a crude
+napkin sketch all work as input. Quality of line is not the point — clarity of
+compositional intent is. A messy sketch with a clear staging idea outperforms
+a polished sketch whose staging is muddled.
+
+**The prompt's role:** the sketch carries composition and blocking; the prompt
+carries everything else. Subject details, environment, lighting, mood, and
+material qualities all live in the prompt. Think of the prompt as describing
+the realized scene the sketch was hinting at — the sketch told the engine
+*where* things sit and *how* they move; the prompt tells it *what* they are.
+
+**Output expectations:** test-quality, short. The output is a tool for shot
+validation, not usually the final delivery. Treat the result as a draft, then
+either refine the prompt (if blocking is right but the realized scene is off)
+or re-block with a new sketch (if the staging itself needs to change).
+
+**Two prompt patterns:**
+
+- **Realization pattern** — describe the scene the sketch was pointing toward,
+  including lighting and mood, and end with a camera direction that matches
+  what the sketch implies. Use this when you want a faithful interpretation
+  of the rough drawing.
+- **Variation pattern** — keep the blocking implicit (the sketch handles it)
+  and use the prompt to swap style, lighting, genre, or time-of-day across
+  multiple generations. Same composition, different treatments. Useful for
+  picking a visual direction before committing.
+
+**Cross-reference:** when the test reads well and you want a longer, multi-shot
+realization, move into Cinema Studio with the validated blocking in mind. If
+you need higher fidelity earlier in the process — a pre-rendered hero frame
+that subsequent shots can reference — the Hero Frame workflow inside Cinema
+Studio is the alternative path. See `higgsfield-cinema` for that handoff.
 
 ### Sora 2 Trends
 
-A templated workspace built on top of the Sora 2 model, tuned for fast,
-trend-led short-form content. Distinct from picking Sora 2 as a raw model —
-Trends wraps the model in a workflow optimized for viral pacing, vertical
-framing, and quick iteration. Use it when the deliverable is TikTok/Reels/Shorts
-style content and you want the templating rather than full Cinema Studio
-control. This workspace is thinly documented in the current skill; for
-Sora 2 model capabilities and for app-level workflow entry points, see
-`higgsfield-apps`.
+A templated workspace built on top of the Sora 2 model, tuned for trend-led
+short-form content. The distinction worth holding onto: this is *not* the same
+as selecting Sora 2 as a raw model elsewhere on the platform. Trends wraps the
+model in pre-tuned templates optimized for viral pacing, vertical framing,
+and quick iteration cycles. The templating is the point — it does work that
+would otherwise have to be re-invented every shot.
+
+**When to use:**
+- TikTok, Reels, and Shorts deliverables — anywhere the format itself is more
+  important than full cinematic control.
+- Trend-jacking, where speed of iteration and platform fluency beat per-shot
+  polish.
+- Content where the audience expects a specific format-native rhythm rather
+  than a deliberate director's hand.
+
+**Distinguishing features:**
+- **Vertical-first composition.** 9:16 is the default, with 1:1 and 4:5 also
+  common. Compositions are framed for phones, not for film.
+- **Pacing optimized for short-attention spans.** Fast cuts, hook-driven
+  openings, and a "payoff by second three" structure are baked into the
+  templates rather than something the prompt has to enforce.
+- **Templated patterns for common trend formats.** POV reveals,
+  before-and-after flips, "tell me without telling me" setups, day-in-the-life
+  loops, and similar recurring structures each have a starting template.
+  Picking the template is most of the structural work.
+
+**Input characteristics:** usually a hook idea or a trend reference. Characters
+and locations can be specified, but the templating handles a lot of structure
+that you'd otherwise have to direct manually. The lift on input is light.
+
+**The prompt's role:** provide the specific subject and beat for the chosen
+trend template. The template handles pacing and format; the prompt handles
+*what* the shot is about within that format. Think of the prompt as content
+slotted into a structure that's already running.
+
+**Trade-offs vs. Cinema Studio:** Trends sacrifices fine-grained control in
+exchange for speed and platform-native output. If the deliverable needs
+deliberate camera direction, character continuity across shots, or genre
+framing that the trend templates don't carry, Cinema Studio is the right
+workspace and the wrong question to ask in Trends.
+
+**Cross-reference:** for one-click trend-flavored workflows that overlap with
+this workspace (Vibe Motion, the various style apps), see `higgsfield-apps`.
+When full cinematic control is needed instead of templated trend pacing,
+escalate to `higgsfield-cinema`.
 
 ### Click to Ad
 
@@ -94,12 +169,69 @@ family), see `higgsfield-apps`.
 
 ### Higgsfield Audio
 
-The standalone voice workspace — distinct from Lipsync Studio and from in-video
-audio generation. It handles voiceovers, voice swaps across existing tracks, and
-translation workflows where audio is the primary deliverable rather than a
-layer inside a video. Use it when the output is audio, or when you need a voice
-asset to feed into a downstream workspace. For audio layer design principles
-that apply to both standalone and in-video audio work, see `higgsfield-audio`.
+The standalone voice workspace — and the most commonly misplaced one on the
+platform, because Higgsfield has three distinct audio surfaces that all sound
+similar by name. This workspace is the one where audio is the deliverable
+itself, not a layer baked into a video and not a sync target for a generated
+face.
+
+**When to use:**
+- Voiceover work where the final output is an audio file (narration, podcast
+  inserts, ad reads, e-learning tracks).
+- Voice swap on an existing audio track — change who says it without changing
+  the timing or the emotional shape of the performance.
+- Translation of an existing audio track into another language, ideally
+  preserving as much of the original speaker's character as the engine
+  supports.
+- Any time you need a voice *asset* that will be fed into a downstream
+  workspace (a finished track to feed into Lipsync Studio, an ad read to drop
+  under a Click to Ad video, narration to underlay a Cinema Studio sequence).
+
+**Three core capabilities:**
+
+- **Voiceover generation.** Text in, spoken audio out. Voice characteristics
+  — gender, age range, tone, pacing, energy level — are directable. Use this
+  for greenfield voice work where there is no source audio.
+- **Voice swap.** Source audio in, same audio in a different voice out. The
+  timing, prosody, and emotional inflection of the original performance carry
+  over; only the speaker identity changes. This is the right tool when an
+  existing performance is structurally good but the voice is wrong (a bad
+  scratch track, a placeholder read, an unlicensable original).
+- **Translation.** Source audio in, the same content rendered in another
+  language out. Where the engine supports it, the original speaker's voice
+  characteristics are preserved across the translation, so the localized
+  version still sounds like the same person.
+
+**Input characteristics:**
+- For voiceover: clean text or a script. Stage directions and tone notes
+  belong in the prompt, not in the script body.
+- For voice swap: source audio plus a target voice reference. The cleaner the
+  source, the cleaner the swap.
+- For translation: source audio plus the target language. Optionally a voice
+  match preference if the engine offers it.
+
+**The prompt's role:** voice descriptors and direction notes. Tone
+(calm/urgent/conversational/authoritative), age range, accent, energy, and
+pacing are all directable through the prompt. The synthesis itself is handled
+by the audio engine — the prompt steers performance, not synthesis.
+
+**Distinction from Lipsync Studio:** Lipsync Studio puts a voice (often
+generated here) onto a video character. The sync direction there is
+audio-to-video — the face follows the audio. Higgsfield Audio standalone
+produces voice as a deliverable in its own right, with no video involvement
+required. If the user wants a talking character on screen, route to Lipsync
+Studio; if they want a voice file, this is the workspace.
+
+**Distinction from in-video audio:** the SCELA layer of a Cinema Studio
+generation (dialogue, SFX, ambient, BGM) is *baked into* the video at
+generation time. That work lives in `higgsfield-audio`. Standalone Higgsfield
+Audio is voice-as-asset — a separate deliverable, not a layer.
+
+**Cross-reference:** for the in-video audio layer design (SCELA, dialogue
+blocking, ambient sound design, BGM direction), see `higgsfield-audio`. For
+AI actor voices that pair with avatars and Soul Cast characters, see
+`higgsfield-soul`. For when the voice asset produced here gets dropped onto a
+generated face, see Lipsync Studio above.
 
 ---
 
