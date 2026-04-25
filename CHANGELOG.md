@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.6.1 — 2026-04-25
+
+### Added
+- `.markdownlint.json` at repo root — config to silence intentional CHANGELOG conventions. MD022 (blanks around headings) and MD032 (blanks around lists) disabled file-wide. MD024 (no duplicate headings) refined to `siblings_only`, which allows repeated `### Added` / `### Changed` / `### Sourcing` / `### Notes` subheadings under different `## vX.Y.Z` parents — the Keep-A-Changelog pattern. MD013 (line length) also disabled for long-form bullets.
+
+### Changed
+- Root `SKILL.md` frontmatter version bumped to 3.6.1 / 2026-04-25.
+
+### Notes
+- Pure infrastructure change — no skill content, no model documentation, no behavioral change to any sub-skill. Resolves 241 pre-existing markdownlint warnings on `CHANGELOG.md` that flagged intentional repo conventions across v3.2.0 through v3.6.0.
+- No new sub-skills, no routing changes, no LIMITED MODIFICATIONs.
+
 ## v3.6.0 — 2026-04-25
 
 ### Added
