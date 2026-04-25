@@ -570,6 +570,85 @@ see `../../vocab.md`.
 
 ---
 
+## Reference Sheet Types — Beyond Characters and Locations
+
+Reference sheets aren't only for faces and rooms. The underlying principle is
+narrower than "character or location" — a reference sheet is any asset built
+once to **lock a specific property** of the production. Each sheet type fixes a
+different axis of the work: identity, architecture, motion behavior, wardrobe,
+or palette. If a property has to read consistently across multiple shots, give
+it its own sheet. If it only matters for one shot, write it inline and move on.
+
+**When a sheet pays for itself:** if a property will appear in three or more
+shots, the sheet is cheaper than re-describing it every time and dramatically
+more consistent than relying on prompt text alone. Single-shot details — a
+one-time prop, a background extra, a one-off lighting cue — don't earn a sheet.
+
+The character sheet (see `../higgsfield-soul/SKILL.md` → Character Sheet
+Creation) and the Location Reference Sheet above already cover identity and
+architecture. The three sheet types below extend the same pattern to the rest
+of the production:
+
+### Motion / Camera Sheet
+
+A short reference clip — 3–10 seconds is plenty — that captures a camera path
+or motion rhythm you want repeated across multiple shots. The sheet locks the
+movement signature, not the content of any single shot. Treat it as a
+project-wide style anchor pulled into a generation as an @Video reference, the
+way a DP would carry a "look" across an entire film.
+
+Use cases: a music video where the same dolly-in arc punctuates every chorus;
+a fight sequence where a signature whip-pan recurs at every climax beat; a
+brand piece where every product shot starts on the same slow orbit. Distinct
+from a Kling 3.0 Motion Control reference clip — that drives a single
+generation's motion transfer. The Motion / Camera Sheet is reusable across the
+whole project.
+
+### Outfit / Material Sheet
+
+Dedicated wardrobe reference. Locks fabric texture, color values, garment fit,
+fastenings, and how the material moves and folds. Generate it once with even
+lighting and multiple angles, then reuse it any time the costume needs to read
+identically across cuts.
+
+Use cases: a hero costume that appears across 12 scenes; a specific jacket that
+must look the same in close-up and wide shot; a uniform that recurs across an
+ensemble cast. The outfit sheet is **not** the same as a character sheet — the
+character sheet locks identity (face, build, hair, distinguishing marks), while
+the outfit sheet locks what the character is wearing AND how that wardrobe
+behaves in motion. Build both when you have a hero costume on a hero character.
+
+### Palette / Mood Sheet
+
+A color and tonal anchor for the project. Lock the visual mood across an entire
+sequence: shadow density, key/fill ratio, saturation level, signature accent
+colors, grade direction. Use a single curated still or a small grid of grade
+references — the goal is to give every subsequent generation a consistent
+palette to reach for.
+
+Use cases: a noir piece where every scene shares the same shadow density and
+warm-amber-on-cool-blue grade; a cyberpunk sequence where neon-to-base-light
+ratio stays fixed across 15 cuts; a brand campaign where a signature accent
+color appears in every shot regardless of subject. Pairs naturally with the
+Soul Hex color system and curated moodboards in
+`../higgsfield-moodboard/SKILL.md`.
+
+### The Reference Sheet Family
+
+| Sheet | Locks | Lives in |
+|-------|-------|----------|
+| Character | Identity, face, build, distinguishing marks | `../higgsfield-soul/SKILL.md` (Soul ID, character sheet creation) |
+| Location | Architecture, light, color treatment, key environmental details | Location Reference Sheets, above |
+| Motion / Camera | Camera path or motion rhythm reused across shots | This section |
+| Outfit / Material | Wardrobe — fabric, color, fit, motion behavior | This section |
+| Palette / Mood | Color and tonal mood across the whole project | This section + `../higgsfield-moodboard/SKILL.md` |
+
+Build the sheets the project actually needs. A short ad with one character in
+one outfit doesn't need an Outfit Sheet. A 15-shot music video with three
+recurring camera moves and a tight color palette absolutely does.
+
+---
+
 ## Hero Frame
 
 A Hero Frame is a key image you generate before committing to video — it defines the
