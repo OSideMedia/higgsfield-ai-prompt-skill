@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate USER-GUIDE.pdf for Higgsfield AI Prompt Skill v3.0.0"""
+"""Generate USER-GUIDE.pdf for Higgsfield AI Prompt Skill v3.6.2"""
 
 from fpdf import FPDF
 
@@ -13,7 +13,7 @@ class UserGuidePDF(FPDF):
         if self.page_no() > 1:
             self.set_font("Helvetica", "I", 8)
             self.set_text_color(128, 128, 128)
-            self.cell(0, 10, "Higgsfield AI Prompt Skill - User Guide v3.0.0", align="L")
+            self.cell(0, 10, "Higgsfield AI Prompt Skill - User Guide v3.6.2", align="L")
             self.ln(5)
 
     def footer(self):
@@ -136,7 +136,7 @@ def build_pdf():
         align="C")
     pdf.ln(15)
     pdf.set_font("Helvetica", "I", 11)
-    pdf.cell(0, 8, "v3.0.0 | April 2026 | Built by O-Side Media", align="C")
+    pdf.cell(0, 8, "v3.6.2 | 2026-04-25 | Built by O-Side Media", align="C")
 
     # --- TABLE OF CONTENTS ---
     pdf.add_page()
@@ -259,6 +259,9 @@ def build_pdf():
         ("Lip-sync, multilingual dialogue", "Seedance 1.5 Pro"),
         ("Complex choreography, reference-based", "Seedance 2.0"),
         ("Long takes, camera control", "Kling Motion Control"),
+        ("Motion transfer from reference video", "Kling 3.0 Motion Control"),
+        ("60fps, first+last frame, reference images", "Wan 2.7"),
+        ("Budget Veo 3.1 quality at volume", "Veo 3.1 Lite"),
         ("Quick iteration, drafts", "Kling 2.5 Turbo"),
         ("Nature, documentary", "Veo 3 / Veo 3.1"),
         ("Dance, fluid body motion", "Minimax Hailuo 02"),
@@ -372,6 +375,25 @@ def build_pdf():
     pdf.table_row(["Ultrawide 21:9", "Cinema Studio 3.0"], w5)
     pdf.table_row(["Smart auto-camera", "Cinema Studio 3.0"], w5)
     pdf.table_row(["Free/Individual plan", "Cinema Studio 2.5"], w5)
+
+    pdf.ln(5)
+    pdf.subsection_title("Cinema Studio 3.5 -- Briefly")
+    pdf.body_text(
+        "Cinema Studio 3.5 sits alongside 2.5 and 3.0 in the model selector -- all three coexist, "
+        "version is user-selected, no auto-routing. 3.5 collapses creative control into a three-pill "
+        "main UI (Genre / Style / Camera), each defaulting to Auto with manual override. "
+        "Camera Settings restores optical physics via a four-axis panel (Camera Body / Lens / "
+        "Focal Length / Aperture, with 75mm added). Style Settings exposes three preset axes "
+        "(Color Palette / Lighting / Camera Moveset Style) plus a free-form Manual Style mode. "
+        "Image mode adds a Cinematic models picker with four options: Soul Cinema (default), "
+        "Cinematic Characters, Cinematic Locations, and Cinematic Cameras (the latter surfaces "
+        "the 2.5 optical vocabulary)."
+    )
+    pdf.callout(
+        "For full Cinema Studio 3.5 documentation -- three-pill UI, Style Settings, Camera Settings, "
+        "Manual Style mode, Image Mode, four Cinematic models picker, Physics Rendering Decision Matrix -- "
+        "see the higgsfield-cinema sub-skill."
+    )
 
     # --- 10. PROMPTING BEST PRACTICES --- NEW SECTION
     pdf.add_page()
@@ -677,7 +699,7 @@ def build_pdf():
         pdf.table_row(list(f), w13)
 
     pdf.ln(3)
-    pdf.subsection_title("Sub-Skills (18 total)")
+    pdf.subsection_title("Sub-Skills (20 total)")
     w14 = [55, 115]
     pdf.table_row(["Sub-Skill", "What it covers"], w14, bold=True, fill=True)
     skills = [
@@ -687,7 +709,7 @@ def build_pdf():
         ("higgsfield-camera", "Camera controls + One-Move Rule + Smart Mode"),
         ("higgsfield-motion", "Motion presets + intent-first choreography"),
         ("higgsfield-style", "Visual styles + One Style Anchor Rule"),
-        ("higgsfield-soul", "Soul ID + Soul Cast 3.0 character consistency"),
+        ("higgsfield-soul", "Soul ID + Soul Cast 3.0 + Soul Cinema (CS 3.0/3.5 default image model)"),
         ("higgsfield-audio", "Audio prompting + CS 3.0 native audio (SCELA)"),
         ("higgsfield-apps", "One-click Apps guide (80+)"),
         ("higgsfield-recipes", "Genre templates"),
@@ -696,9 +718,11 @@ def build_pdf():
         ("higgsfield-mixed-media", "Artistic preset overlays"),
         ("higgsfield-moodboard", "Moodboard + style consistency"),
         ("higgsfield-pipeline", "Multi-step production pipeline"),
-        ("higgsfield-cinema", "Cinema Studio 2.5 + 3.0 (Business/Team)"),
+        ("higgsfield-cinema", "Cinema Studio 2.5 + 3.0 + 3.5 (Soul Cast, Image Mode, Cinematic models)"),
         ("higgsfield-recall", "Pre-generation memory check"),
         ("higgsfield-vibe-motion", "Vibe Motion / motion graphics"),
+        ("higgsfield-seedance", "Seedance 2.0 prompt director + content-filter preflight"),
+        ("higgsfield-workspaces", "Workspace-first decision layer"),
     ]
     for s in skills:
         pdf.table_row(list(s), w14)
@@ -719,11 +743,13 @@ def build_pdf():
          "The skill is versioned (currently v3.0.0). Check the repository for updates."),
         ("Can I contribute?",
          "Yes! Fork the repo, add your improvements, and submit a pull request."),
-        ("What changed in v3.0.0?",
-         "Three major additions: (1) Cinema Studio 3.0 documentation (Business/Team plan) with full specs, @ reference patterns, "
-         "and native audio; (2) Seedance 2.0 prompting best practices integrated into MCSLA -- Intent over Precision, "
-         "Genre Router, I2V Gate, Anti-Slop, Physics Language, One-Move Rule, SCELA audio; (3) All 10 genre templates "
-         "updated with Cinema Studio 3.0 genre mappings and prompt length targets. All Cinema Studio 2.5 content preserved."),
+        ("What changed since v3.0.0?",
+         "Seven platform releases shipped between v3.0.0 (April 2026) and this guide (v3.6.2). The major themes: "
+         "install-path simplification (v3.3.0), workspace-first decision layer + Seedance 2.0 prompt modes + Kling 3.0 "
+         "Motion Control + Location Reference Sheets (v3.4.0), Reference Sheet Types + Iteration Rule (v3.4.1), workspace "
+         "expansion (v3.5.0), Cinema Studio 3.5 with Image Mode + Elements System library surface + Physics Rendering "
+         "Decision Matrix (v3.6.0), markdownlint config (v3.6.1), and this documentation refresh (v3.6.2). "
+         "See CHANGELOG.md and the higgsfield-cinema sub-skill for full per-release detail."),
     ]
     for q, a in faqs:
         pdf.bold_text(f"Q: {q}")
@@ -734,7 +760,7 @@ def build_pdf():
     pdf.ln(10)
     pdf.set_font("Helvetica", "I", 11)
     pdf.set_text_color(100, 100, 100)
-    pdf.cell(0, 8, "Built by O-Side Media | v3.0.0 | April 2026 | Platform: higgsfield.ai", align="C")
+    pdf.cell(0, 8, "Built by O-Side Media | v3.6.2 | 2026-04-25 | Platform: higgsfield.ai", align="C")
 
     pdf.output("USER-GUIDE.pdf")
     print(f"Generated USER-GUIDE.pdf ({pdf.page_no()} pages)")

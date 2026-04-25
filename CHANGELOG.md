@@ -1,5 +1,32 @@
 # Changelog
 
+## v3.6.2 — 2026-04-25
+
+### Changed
+- **README.md** updated for v3.4–v3.6 platform additions:
+  - Cinema Studio 3.5 line added alongside 2.5 and 3.0
+  - Cinema Studio 2.5 features list extended (Five-View Location Reference Sheet, Reference Sheet Types, Elements System library surface)
+  - Seedance 2.0 best practices list extended (prompt modes, Continuation Prompt Formula, Iteration Rule)
+  - Shared negative constraints line extended (Motion Control failure diagnostic, Physics Rendering Decision Matrix)
+  - Model list updated with Kling 3.0 Motion Control
+  - File tree updated: `higgsfield-workspaces` added (sub-skill count 19 → 20), plus `.markdownlint.json` and `docs/pdf-audit/`
+  - `higgsfield-cinema` row updated with 3.5
+  - Version badge bumped 3.3.0 → 3.6.2; footer date refreshed
+- **USER-GUIDE.pdf** regenerated with light refresh:
+  - Version metadata refreshed (`v3.0.0` → `v3.6.2`) across cover page, header, footer, and module docstring
+  - Section 6 model table extended with Kling 3.0 Motion Control / Wan 2.7 / Veo 3.1 Lite
+  - Section 9 Cinema Studio 3.0 closed with a brief Cinema Studio 3.5 acknowledgment paragraph + callout pointing to `higgsfield-cinema` for full coverage
+  - Section 22 sub-skill table corrected from 18 → 20 (added `higgsfield-seedance` from v3.2.0 + `higgsfield-workspaces` from v3.4.0; refreshed `higgsfield-soul` and `higgsfield-cinema` row descriptions)
+  - FAQ "what changed?" answer updated to summarize v3.3.0 → v3.6.2 themes and delegate full detail to CHANGELOG
+- **`docs/pdf-audit/AUDIT-REPORT-v3.6.0.md`** backlog table re-labeled and re-prioritized: section header now reads v3.6.3+; "Per-Cinematic-model deep workflow guidance" priority bumped MEDIUM → HIGH (natural follow-on to v3.6.0 Image Mode subsection); two new entries added for v3.7.x+ planning (Path B generator refactor; comprehensive USER-GUIDE expansion bundled with that refactor).
+- **Root `SKILL.md`** frontmatter version bumped 3.6.1 → 3.6.2 / 2026-04-25.
+
+### Notes
+- **Light refresh, not full refresh.** Deep feature documentation lives in `SKILL.md` files; the USER-GUIDE PDF is an overview artifact. Comprehensive new PDF sections for Cinema Studio 3.5 / Image Mode / Elements / Physics Matrix / Motion Control / workspace-first / Reference Sheet Types are deferred to v3.7.x+ as part of the Path B generator refactor.
+- **Path B generator refactor deferred to v3.7.x+** — `generate_user_guide.py` currently hardcodes all content as Python string literals (no `SKILL.md` parsing). By v3.6.1 the PDF was 6 releases stale precisely because every release requires manual script edits. Refactoring the generator to parse `SKILL.md` files dynamically would eliminate the manual sync burden but is a substantial standalone release (~3–4 hours of refactor + validation) and should not mix with content writing.
+- Pure documentation refresh. No skill content changes. No new sub-skills. No routing changes. No LIMITED MODIFICATIONs.
+- Third Conventional Commits prefix in repo history (`docs:`) following `feat:` (v3.4.0–v3.6.0) and `chore:` (v3.6.1).
+
 ## v3.6.1 — 2026-04-25
 
 ### Added
