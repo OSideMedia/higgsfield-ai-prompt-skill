@@ -1580,7 +1580,7 @@ The image-mode model picker has two groups: **Cinematic models** (studio-native 
 | **Cinematic Locations** | Rich environments with cinematic lighting | Establishing shots, environment / location plates, atmosphere-driven imagery |
 | **Cinematic Cameras** | Image generation with camera controls | When you want explicit Camera Body / Lens / Focal Length / Aperture control — uses 2.5 optical vocabulary (see below) |
 
-**Soul Cinema is shared between Cinema Studio 3.0 and 3.5 image modes** — see § Cinema Studio 3.0 (Business/Team Plan) above for the 3.0-side acknowledgment. Per-model deep workflow guidance (when to pick Cinematic Characters vs Soul Cinema, prompting patterns specific to each Cinematic model) is deferred to a future release.
+**Soul Cinema is shared between Cinema Studio 3.0 and 3.5 image modes** — see § Cinema Studio 3.0 (Business/Team Plan) above for the 3.0-side acknowledgment. Per-model selection guidance (when to pick which Cinematic model) is documented below in § Per-Cinematic-model selection guide. Sample prompts specific to each Cinematic model are deferred to a future release.
 
 **Featured models — picker overview:** The image-mode picker also surfaces **Featured models** (e.g., Higgsfield Soul 2.0, GPT Image 2, Seedream 5.0 Lite, plus other third-party engines listed in `MODELS-DEEP-REFERENCE.md`). Featured models are selectable from inside the Cinema Studio shell, but selecting one means the **studio-specific UI features (Style Settings, Camera Settings panels) are not available** — the shell remains, but creative control reverts to prompt-only. For Featured-model prompting, route to the model's own documentation in `MODELS-DEEP-REFERENCE.md` rather than treating it as a Cinema Studio configuration problem.
 
@@ -1600,6 +1600,32 @@ For Soul Cinema identity prompting and reference workflow, see `../higgsfield-so
 | Cinematic Cameras | 1K / 2K / 4K |
 | Cinematic Characters / Cinematic Locations | Not separately verified in this release |
 
+#### Per-Cinematic-model selection guide
+
+The four Cinematic models share the same Cinema Studio shell but specialize in different image intents. The picker description each model carries is a one-line hint; this subsection unpacks each into a practical selection guide. Vocabulary discipline applies: Soul Cinema, Cinematic Characters, and Cinematic Locations are 3.5-native and use 3.5 vocabulary if you reach for the Camera Settings panel; only Cinematic Cameras inherits 2.5 optical vocabulary (see the dedicated h4 below).
+
+##### Soul Cinema — the default
+
+Soul Cinema is the default Cinematic model and the right starting point when you do not have a specific reason to pick one of the others. It is general-purpose cinematic image generation: scene-setting, hero frames for a Soul ID character in a defined environment, mood-driven keyframes, single-image generations where intent is "make this look cinematic" rather than "make this character expressive" or "make this location atmospheric." Soul Cinema is also the model that pairs with the Soul Cinema enhancer toggle and short-prompt style exploration documented in `../higgsfield-pipeline/SKILL.md` Pipeline E (the enhancer-driven multi-style short-film workflow).
+
+Pick Soul Cinema when: you want a balanced cinematic frame, you are exploring style with the enhancer ON and short prompts, you are generating I2V keyframes that will be animated downstream, or you are working with a Soul ID identity reference and want the platform's general cinematic look. Avoid Soul Cinema when you specifically need maximum facial expression fidelity (use Cinematic Characters) or maximum environmental atmosphere (use Cinematic Locations). For Soul Cinema-specific identity prompting and reference workflow, see `../higgsfield-soul/SKILL.md` § Soul Cinema as the CS 3.0/3.5 default image model.
+
+##### Cinematic Characters — expressive faces and styling
+
+Cinematic Characters specializes in performance-driven portraiture: micro-expression fidelity, wardrobe and styling detail, character close-ups where the face is doing the dramatic work. The picker description ("expressive faces and detailed styling") is the operating intent — this model weights the generation toward facial structure, eye direction, mouth tension, hair geometry, and clothing texture more than toward environmental atmosphere or wide-establishing-shot composition.
+
+Pick Cinematic Characters when: the face carries the shot (reaction beats, emotional climax, character intro close-ups), you are pulling micro-expression direction from `../higgsfield-soul/SKILL.md` (Deadpan Neutral, Quiet Devastation, Predator Glare, etc.), or wardrobe and styling specifics are part of the prompt and you need them rendered with fidelity. Avoid Cinematic Characters when the shot is wide and the character is small in frame (use Soul Cinema or Cinematic Locations), or when explicit camera-body / lens / focal-length control matters more than facial expression (use Cinematic Cameras). Pair naturally with the micro-expression library in `../higgsfield-soul/SKILL.md` and the Identity vs Motion separation rule when a Soul ID is active.
+
+##### Cinematic Locations — environments and atmosphere
+
+Cinematic Locations specializes in establishing shots, environment plates, and atmosphere-driven imagery — the model weights toward spatial depth, lighting volume, weather and time-of-day rendering, and architectural or natural-world detail. The picker description ("rich environments with cinematic lighting") is the operating intent: this is the right model when the environment is the subject and any people in frame are scale references, not performance subjects.
+
+Pick Cinematic Locations when: you are generating an establishing shot for a multi-shot sequence, building a Five-View Location Sheet (see § Location Reference Sheets earlier in this file), generating environment plates for downstream compositing, or working a mood-and-atmosphere shot where lighting and weather carry the frame. Avoid Cinematic Locations when characters are foregrounded and faces matter (use Cinematic Characters), or when the shot needs explicit optical control via 2.5 vocabulary (use Cinematic Cameras). Pair naturally with the Five-View Location Sheet workflow and with Soul HEX color palette extraction when location consistency across multiple shots matters.
+
+##### Cinematic Cameras — see h4 below
+
+Cinematic Cameras is the fourth Cinematic model and is documented in detail in the next subsection (`#### Cinematic Cameras — the 2.5-vocabulary image model`). Unlike the three above, it inherits Cinema Studio 2.5 optical vocabulary as a configurable Camera Body / Lens / Focal Length / Aperture stack. Pick it when explicit optical control matters more than the specialization axes of the other three models.
+
 #### Cinematic Cameras — the 2.5-vocabulary image model
 
 Selecting **Cinematic Cameras** from the image-mode model picker exposes the **Cinema Studio 2.5 camera vocabulary** as a configurable stack — Camera Body / Lens / Focal Length / Aperture, drawn from the same surface documented in § Optical Physics Engine earlier in this file. Cinematic Cameras is the image-mode entry point into 2.5's six camera bodies and ten lens characters; it is a sibling Cinematic model alongside Soul Cinema, Cinematic Characters, and Cinematic Locations — not a toggle layered on top of another model.
@@ -1614,7 +1640,7 @@ The Cinematic Cameras picker has three tabs:
 
 The picker also exposes a **+ Save setup** button — a configured Camera Body + Lens + Focal Length + Aperture combination can be saved as a reusable stack and recalled from the Saved tab in subsequent generations.
 
-> **Per-Cinematic-model deep workflow guidance is deferred to a future release.** This includes which Cinematic image model to pick for which intent, prompting patterns specific to each of the four Cinematic models, when Featured models make sense in image mode, the Save Setup workflow for Cinematic Cameras, and full picker coverage of video-mode's parallel Cinematic / Featured structure. The Optical Physics Engine section earlier in this file (§ Optical Stack Recommendations by Intent) documents 2.5-mode stack recommendations and is directly applicable to Cinematic Cameras in 3.5 image mode — the vocabulary is identical, the surface is different.
+> **Per-Cinematic-model selection guidance** (which model to pick for which intent) is documented above in § Per-Cinematic-model selection guide. **Still deferred to a future release:** sample prompts specific to each Cinematic model, when Featured models make sense in image mode, the Save Setup workflow for Cinematic Cameras, and full picker coverage of video-mode's parallel Cinematic / Featured structure. The Optical Physics Engine section earlier in this file (§ Optical Stack Recommendations by Intent) documents 2.5-mode stack recommendations and is directly applicable to Cinematic Cameras in 3.5 image mode — the vocabulary is identical, the surface is different.
 
 > **Cross-mode session-state note:** Selecting Cinematic Cameras for image work means selecting a 2.5-era model — the studio shell may follow that selection across mode toggles within the same session. Observation from a 2026-04-25 UI verification pass: image mode → select Cinematic Cameras → switch back to video → video mode now shows Cinema Studio 2.5 selected. This is consistent with the model-selection framing: the picker remembers the most recently selected studio-native model. Full session-state behavior is not yet verified and is deferred to a future release.
 
