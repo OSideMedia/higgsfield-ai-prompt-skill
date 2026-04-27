@@ -1,5 +1,32 @@
 # Changelog
 
+## v3.6.3 — 2026-04-25
+
+### Added
+
+- **Per-Cinematic-model selection guide subsection** in `higgsfield-cinema/SKILL.md` — new `#### Per-Cinematic-model selection guide` h4 inserted between the resolution table and the existing Cinematic Cameras h4. Covers Soul Cinema (the default), Cinematic Characters (expressive faces and styling), and Cinematic Locations (environments and atmosphere) with 1–2 paragraphs each on when to pick the model, what intent it serves, and what to use it for vs avoid. The existing Cinematic Cameras h4 remains in place as the fourth per-model dive.
+- **Soul Cinema subsection in `higgsfield-soul/SKILL.md`** — new `## Soul Cinema as the CS 3.0/3.5 Default Image Model` subsection with Soul ID identity-anchor prompting pattern adapted for image mode (Identity Block + Scene/Style Block, since image generation has no temporal axis). Closes the v3.6.2 USER-GUIDE row description promise that previously cross-referenced Soul Cinema content the sub-skill did not have, and pays off the existing route-out from `higgsfield-cinema` line 1589.
+
+### Changed
+
+- **Cleanup of "deferred to a future release" hooks in `higgsfield-cinema/SKILL.md`** — picker-table h4 hook and Cinematic Cameras h4 blockquote updated to reflect that selection guidance now ships in this release. Sample prompts, Featured-models-in-image-mode framing, the Save Setup workflow, and video-mode's parallel Cinematic/Featured picker remain explicitly deferred.
+- **Frontmatter version bumps** — root `SKILL.md` 3.6.2 → 3.6.3; `skills/higgsfield-soul/SKILL.md` 3.0.0 → 3.1.0 with `updated` field set to 2026-04-25; `skills/higgsfield-cinema/SKILL.md` `updated` field unchanged at 2026-04-25.
+
+### Sourcing
+
+No new UI verification this release. Per-Cinematic-model selection-guide content is derived from the v3.6.0 UI-verification pass (2026-04-25) that produced the original four-row picker table, plus the v3.6.2 USER-GUIDE refresh contract that promised Soul Cinema coverage in `higgsfield-soul`. The `docs/pdf-audit/AUDIT-REPORT-v3.6.0.md` gap analysis remains the source of record for the picker structure. Pipeline E references to "Soul Cinema" in `higgsfield-pipeline/SKILL.md` were verified as picker-context (post-v3.6.0 default Cinematic model), not Preview-context — the Part 1 cross-link from the Soul Cinema selection-guide entry into Pipeline E is correct.
+
+### Notes
+
+Selection-guide-only depth: each model gets 1–2 paragraphs covering pick / intent / use / avoid. Sample prompts specific to each Cinematic model are deferred to v3.6.4+ if the gap stays felt — `templates/` and `prompt-examples.md` already cover prompting at the genre level, and per-Cinematic-model sample prompts would partially overlap with both. Closes the v3.6.2 USER-GUIDE row description promise. Vocabulary discipline preserved: Soul Cinema / Cinematic Characters / Cinematic Locations are described without 2.5 optical vocabulary; only Cinematic Cameras inherits 2.5's Camera Body / Lens / Focal Length / Aperture stack. `model-guide.md`, `image-models.md`, `vocab.md`, and `higgsfield-pipeline/SKILL.md` left untouched — their "Soul Cinema Preview" mentions refer to the older standalone model, not the picker-context Soul Cinema. `MODELS-DEEP-REFERENCE.md` verified as exclusively Featured-model documentation in its Image Models section (Soul 2.0, Nano Banana Pro, Seedream 4.5, Flux Kontext) — left untouched.
+
+Two LIMITED MODIFICATIONs to pre-existing skill content:
+
+1. The deferred-hook in the picker-table h4 of `higgsfield-cinema/SKILL.md` (previously: "Per-model deep workflow guidance ... is deferred to a future release") updated to point at the new `§ Per-Cinematic-model selection guide`, with the deferral language narrowed to "sample prompts specific to each Cinematic model."
+2. The deferred-hook blockquote in the Cinematic Cameras h4 of `higgsfield-cinema/SKILL.md` (previously: "Per-Cinematic-model deep workflow guidance is deferred to a future release") updated to reflect that selection guidance now ships, with the still-deferred items explicitly enumerated (sample prompts, Featured-models-in-image-mode framing, Save Setup workflow, video-mode picker coverage).
+
+Commit prefix: `feat: v3.6.3 — per-Cinematic-model selection guide + Soul Cinema in higgsfield-soul`
+
 ## v3.6.2 — 2026-04-25
 
 ### Changed

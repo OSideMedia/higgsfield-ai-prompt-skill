@@ -4,8 +4,8 @@ description: "Creates and manages reusable character profiles (Soul IDs) for con
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 3.0.0
-  updated: 2026-04-06
+  version: 3.1.0
+  updated: 2026-04-25
   parent: higgsfield
 ---
 
@@ -364,6 +364,29 @@ Reference each character separately with distinct @Image tags:
 Character A leans across the table, speaking firmly. Character B looks away, fidgeting.
 Camera: slow push-in on Character B's face.
 ```
+
+---
+
+## Soul Cinema as the CS 3.0/3.5 Default Image Model
+
+**Soul Cinema** is the default Cinematic model in the Cinema Studio 3.0 and 3.5 image-mode picker — the model that runs when you toggle Cinema Studio into image mode and do not change the model selection. It is shared across both Cinema Studio versions and is distinct from the older standalone "Soul Cinema Preview" model and from the separately-named Featured-list "Higgsfield Soul Cinema" (see `../higgsfield-cinema/SKILL.md` § Image Mode for the disambiguation).
+
+### Soul ID identity prompting in Soul Cinema
+
+When a Soul ID is active and Soul Cinema is the selected image model, the same **Identity vs. Motion separation** rule documented above applies — but Soul Cinema's general-purpose cinematic weighting means the Identity Block does most of the work and the "Motion Block" is replaced by a **Scene/Style Block** (since image generation has no temporal dimension).
+
+**Identity Block** — Soul ID reference + static descriptors only:
+```
+The Soul ID character — [face/body/wardrobe descriptors only, no camera or motion language].
+```
+
+**Scene/Style Block** — environment + lighting + style direction:
+```
+[Setting], [time of day], [lighting quality], [color palette].
+Style: Cinematic, [grade], [aspect ratio].
+```
+
+Keep the two blocks textually separate in the prompt. Do not re-describe identity inside the Scene/Style block — Soul Cinema is sensitive to identity drift if face/wardrobe descriptors leak into environmental phrasing. For broader picker context (when to pick Soul Cinema vs Cinematic Characters vs Cinematic Locations vs Cinematic Cameras), see `../higgsfield-cinema/SKILL.md` § Per-Cinematic-model selection guide.
 
 ---
 
