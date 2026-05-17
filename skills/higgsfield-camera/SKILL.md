@@ -168,6 +168,10 @@ Layering two compatible movements creates richer shots:
 
 **Avoid conflicting moves:** Don't combine Dolly In with Dolly Out, or Crane Up with Crane Down in the same shot — it creates visual contradiction.
 
+**Sequenced vs simultaneous combinations.** The table above lists *simultaneous* combinations (two motions happening at once). Production practice also uses *sequenced* combinations: pan to follow the character through phase one, then push-in on the face when the character stops. State the sequence with timing in the prompt — `Camera pans left from 0-3s tracking the character, holds, then pushes in on the face from 4-8s` — so the model renders the motions as discrete phases rather than collapsing them into a single ambiguous move.
+
+**Static pan vs glide.** A camera that *pans* rotates from a fixed position; a camera that *glides* translates through space. Production practice prefers static-pan over glide for most coverage — the static-pan reads as a chosen viewpoint with directed attention, the glide reads as untethered. State which you mean: `the camera stays in position and pans to follow him` is distinct from `the camera glides alongside him as he walks`.
+
 > **Negative constraints:** For temporal/consistency artifacts related to camera (contradictory
 > movements, camera not working, static I2V) and their prevention phrases, see
 > `../shared/negative-constraints.md` — Temporal/Consistency Artifacts section.
@@ -195,6 +199,7 @@ Six emotional registers cover most scenes:
 | Shock / revelation | Static + very slow push-in or pull-out — sharp freeze at the moment of revelation, then minimal movement for the next 0.5-2s. |
 | Action | 60fps, 180° shutter — clean motion with shutter-bound motion blur; avoid pulled motion blur from longer shutters. |
 | Final beat / verdict | Top-shot freeze, 0.3-0.5s — directly from above, time stops, all positions locked. |
+| Emotional breakdown / character needs space | Slow pull-back from medium/close to wide — "leave the character alone." Production-team named technique for emotional moments (a character sobs, curls up, or otherwise needs to be witnessed-but-not-pressured); pulling the camera back gives the audience visual distance that registers as emotional space rather than abandonment. |
 
 ### Emotional arcs within a single shot
 

@@ -67,8 +67,27 @@
 - **Match cut** — cut between two shots linked by shape, motion, or composition
 - **Smash cut** — abrupt, jarring cut with no transitional softening
 - **Hard cut / direct cut** — standard straight cut, no effect
-- **L-cut / J-cut** — audio from next shot leads picture (L) or vice versa (J)
+- **L-cut / J-cut** — audio from next shot leads picture (L) or vice versa (J). The L-cut **audio bridge** is the production-team's working name: hold the audio of the outgoing shot across the cut so the incoming visual lands inside an already-established soundscape.
 - **Whip-pan transition** — blur pan that bridges two shots as a single motion
+- **Camera-relative-to-previous-shot continuity** — when planning the next shot, name the camera position **relative to the previous shot's camera** (`camera now behind him, facing the same direction he was facing`) rather than absolutely. Keeps the cut from disorienting the viewer.
+
+### Editing Syntax
+
+Notation conventions for time-based and editorial structure inside prompts.
+
+- **`[0-Ns]` bracket notation** — time-range prefix for shot phases inside a single continuous shot. Example: `[0-3s] subject enters frame, [3-7s] camera pushes in`. Used for per-second beats inside single-shot continuous motion (see `skills/higgsfield-seedance/SKILL.md` § Single-vs-multi-shot decision).
+- **`Establishing → phrase → reaction` arrow notation** — editorial-flow notation for multi-cut dialogue or beat sequences. Reads as "establishing shot, then phrase/dialogue, then reaction shot." Compact prompt-side shorthand for a three-beat cut structure.
+
+### Motion Hierarchy
+
+The **4-layer motion hierarchy** separates simultaneous motions a shot can carry so the prompt names each layer explicitly:
+
+1. **Subject motion** — what the character/object does (walks, turns, lifts hand)
+2. **Internal motion** — micro-motion within the subject (breath, hair drift, fabric, eye motion, micro-expression)
+3. **Camera motion** — what the camera does (pan, dolly, push-in, hold)
+4. **Environmental motion** — what the world does (rain, leaves, traffic in background, light shifting)
+
+Specifying each layer separately prevents the multi-motion overload failure mode (see `skills/higgsfield-seedance/FAILURE-MODES.md` § Multi-motion camera overload).
 
 ---
 
@@ -116,6 +135,10 @@
 | Noir | High contrast black and white |
 | Post-apocalyptic | Desaturated orange-brown, dust haze |
 
+### Color rules
+
+- **60/30/10 color rule** — production-direction color-palette discipline. A frame's color reads cleanest when 60% is one dominant color, 30% is a secondary, and 10% is an accent. Prompts that name a single dominant tone + supporting palette land more cohesively than prompts that list five competing colors.
+
 ### Film Stock Emulation
 - Kodak Portra 400 — warm, rich skin tones, slight grain
 - Fuji Velvia — vivid saturated colors, fine grain
@@ -147,6 +170,17 @@
 | High-key | Bright, minimal shadows (comedy, commercial) |
 | Low-key | Deep shadows, moody (noir, horror) |
 | Harsh midday sun | Hard overhead, strong defined shadows |
+
+### Scene-physics lighting
+
+Lighting described as a physical event in the scene rather than as a stylistic adjective. State the source position, the surfaces it reflects off, and the resulting shadow geometry — the model uses each named piece to reconstruct illumination consistently across shots.
+
+- **Source position** — `key light from screen-left, ~30° above eye line`
+- **Reflection / bounce** — `warm bounce off the wooden floor lifting under-jaw shadow`
+- **Shadow geometry** — `hard shadow on screen-right wall reading the silhouette of the desk lamp`
+- **Ambient density** — `dense ambient haze in the foreground softening contrast 6m+ out from camera`
+
+The scene-physics framing replaces stylistic adjectives (`moody`, `dramatic`, `cinematic`) with named physical mechanisms that compose. The model can render the named mechanisms; it can only approximate the adjectives.
 
 ---
 
@@ -282,6 +316,27 @@ is contextual to which surface is being addressed.
   director. Lowercase `image`, underscore, triple angle bracket. Recognized by the
   Seedance Skill when typed in a user request, then mapped to the appropriate scene
   element (per `docs/Seedance 2 Skill.md:178` § Image reference system).
+
+**Per-slot role convention** — production practice locks a stable role assignment per `@Image` slot, kept identical across every prompt in a shot list: `@Image1 = character identity`, `@Image2 = costume`, `@Image3 = environment + lighting`, `@Image4 = composition`, `@Video1 = motion`, `@Video2 = camera movement`, `@Audio1 = rhythm + atmosphere`. The convention is team-side discipline, not model-enforced; the payoff is reference-stability across long shot lists (see `skills/higgsfield-seedance/SKILL.md` § Per-Image Role Convention).
+
+---
+
+## Composition Vocabulary
+
+Vocabulary for what's IN the frame and where it sits — distinct from camera-side language (which describes how the camera moves) and lighting (which describes illumination).
+
+- **Negative space** — the deliberately-empty area of the frame that isolates or weighs the subject. Production-direction language: `negative space sits center-left of frame, narrowing as the character advances`. Naming negative space as a compositional element prevents the model from filling it with incidental detail.
+- **Crossing rule** — film-grammar clause for whether characters may cross positions on-screen within a shot or across a cut. Distinct from the camera-side 180° rule (which is about the imaginary line between subjects): the crossing rule names what subjects may do, the 180° rule names what the camera may do. Example: `Character A stays on the left, Character B stays on the right, neither crosses the central vertical axis`.
+- **Coordinate notation** — paired qualitative + percentage spatial anchors for in-frame placement. `Character A stands in the right third, x-position 70%, y-position 50%, frame occupancy 25%`. The qualitative term gives the film-language hook; the percentage gives the precision target. See `skills/higgsfield-seedance/SKILL.md` § Frame Coordinate System for the full coordinate system + caveats.
+
+---
+
+## Production Vocabulary
+
+Terminology imported from traditional film production into AI-cinema practice — names for disciplines that recur in production workflow.
+
+- **Script supervising** — the traditional-film-production discipline of tracking every character's state (injuries, clothing, props, hair) across shots so continuity holds across cuts. Imported into AI-cinema via per-state character anchor sheets: a character with five stages (e.g., initial / fight-injuries / partially-transformed / almost-fully / completely-transformed) gets five distinct Soul ID sheets, one per stage. See `skills/higgsfield-soul/SKILL.md` § Multi-Form State Tracking.
+- **State lock** — the per-shot directive that names the character's current emotional or physical state (calm, exhausted, injured, soaked, in motion) inside the Character Anchor Block. Distinct from `pose` (physical configuration) and `facial expression` (emotional register): state lock names the persistent condition that should hold across the shot's duration. See `skills/higgsfield-soul/SKILL.md` § Character Anchor Block.
 
 ---
 
