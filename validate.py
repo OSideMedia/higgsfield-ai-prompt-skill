@@ -135,6 +135,7 @@ def main():
         "SKILL.md", "README.md", "CHANGELOG.md", "DISCIPLINE.md",
         "model-guide.md", "image-models.md", "vocab.md",
         "prompt-examples.md", "photodump-presets.md",
+        "production-benchmarks.md",
         "higgsfield_memory.py",
         "db/filter-memory.json", "db/quality-memory.json",
     ]
