@@ -210,6 +210,11 @@ comprehensive geometry to work from and dramatically improves consistency.
 - **3/4 angle** — shows depth of facial features
 - **Side profile** — nose, jaw, ear structure
 - **Full body** (optional) — posture, costume, proportions
+- **Embedded prop sheets** (optional) — bake recurring character
+  props directly into a character-sheet panel. Higgsfield image
+  generation handles multi-element character images well, so prop
+  continuity often holds without a separate prop sheet. For props
+  that don't hold this way, see § Tricky-Prop Sheets below.
 
 **Prompt pattern to generate character sheet content:**
 ```
@@ -258,6 +263,136 @@ from multiple independent generations — identity can drift
 panel-to-panel even with a strong reference. The single-prompt
 3×2 grid keeps identity locked because all six panels render
 together in one pass.
+
+---
+
+## Character Anchor Block
+
+Where § Character Sheet Creation builds the multi-angle identity
+reference that goes into Soul ID, the **Character Anchor Block**
+is the per-shot prompt structure that locks how that character
+appears IN a specific shot. The character sheet is build-time; the
+anchor block is shot-time.
+
+A complete anchor block names, per character in frame, ten
+attributes:
+
+1. **Identity** — which character this is (matches a Soul ID
+   handle when references are present)
+2. **Screen position** — qualitative anchor + percentage notation
+   paired per `../higgsfield-seedance/SKILL.md` § Frame Coordinate
+   System
+3. **Depth layer** — foreground / midground / background
+4. **Frame occupancy** — % of frame area the character fills
+5. **Body orientation** — direction the character faces (toward
+   camera, away, profile-left, profile-right, three-quarter)
+6. **Pose** — current physical configuration (standing, seated,
+   leaning, mid-stride)
+7. **Gaze direction** — where the character is looking, named
+   either by frame-position or by another subject (`looking at
+   Character B`)
+8. **Contact points** — what physical surface or object the
+   character is grounded against
+9. **State lock** — current emotional or physical state (calm,
+   exhausted, injured, soaked, in motion) — see § Multi-Form State
+   Tracking for state-across-scenes discipline
+10. **Facial expression** — specific emotional register (composed,
+    fearful, smiling small, gritted teeth)
+
+The block sits before the Dynamic Description in the Seedance
+output format and feeds a Spatial Layout Block when multiple
+characters share frame (see `../higgsfield-seedance/SKILL.md`
+§ Spatial Layout Block for the multi-character extension).
+
+### Multi-Form State Tracking
+
+When a character changes state across the project — wounds from a
+fight scene that persist into the next scene, a costume change
+midway through, a transformation across multiple stages — generate
+a **separate anchor sheet per state**. Don't rely on the base
+character sheet plus prompt-text descriptions to track the
+difference; the model loses the state under iteration pressure.
+
+The discipline is what film production calls **script supervising**:
+every shot tracks which version of the character it should match. A
+character with five stages (initial → fight-injuries → partially-
+transformed → almost-fully → completely-transformed) gets five
+distinct Soul ID sheets, one per stage. The shot list references
+the matching sheet by name; the prompt names the stage in the
+identity block.
+
+The cost is one character-sheet generation pass per state; the
+payoff is that no shot opens a continuity bug that has to be caught
+at frame-review time (see `../higgsfield-seedance/FAILURE-MODES.md`
+§ Frame-level review is mandatory).
+
+### Face-from-Wide-Shot Workaround
+
+In wide shots the face on a character-sheet panel often reads as
+plasticky — the model deprioritizes facial detail when most of the
+frame is body or environment. The workaround: render the wide shot,
+then crop the **face** from a **closer shot** (medium-up, shoulders-
+up, head-and-shoulders) and replace the wide-shot face with the
+cropped one in post.
+
+This is a character-sheet construction technique, not a generation
+technique. Keep one closer-shot panel in the character sheet
+specifically for this purpose — the face you'd cut and paste back
+into wide shots that need it.
+
+### Tricky-Prop Sheets
+
+Some props don't generate consistently from a single reference panel
+— a monster claw the model keeps rendering as a sword, a hand-prop
+that defaults to a generic shape, an accessory that can't stay
+continuous across shots. For these, build a **separate prop sheet**
+alongside the character sheet:
+
+- **Inside view** — interior structure or assembly detail
+- **Outside view** — silhouette and surface
+- **State variations** — open / closed / extended / grasped /
+  combat-engaged, as the prop's narrative requires
+
+The inverse pattern to the **Embedded prop sheets** bullet in
+§ Character Sheet Creation above — embedded works for props that
+generate cleanly; separate prop sheets are the fallback for props
+that don't.
+
+---
+
+## Two-Tool Refinement Pipeline
+
+For high-investment characters — leads who carry many shots in a
+project — initial generation in **Soul Cinema** plus refinement
+editing in **GPT Image 2** produces stronger anchor sheets than
+either tool alone. Soul Cinema is the Higgsfield first-pass image
+surface (high-volume batch generation against the character
+description); GPT Image 2 is a third-party (OpenAI) edit surface
+that preserves existing image details — particularly facial
+geometry — when modifying outfits, accessories, lighting, or
+background elements.
+
+The split is by task:
+
+- **Soul Cinema** — generate the initial character look across pose,
+  expression, and lighting variations. Higher-volume; the model
+  batches well.
+- **GPT Image 2** — edit selected Soul Cinema outputs to refine
+  costume, swap accessories, adjust lighting, or extend the sheet
+  with state variations. Better preservation of the face under edit
+  pressure.
+
+When to reach for both tools: the character will appear in tens of
+shots and is worth front-loading iteration cost into. A planning
+anchor from a Higgsfield-team production — the lead character of
+the 90-minute Cannes feature absorbed ~600 Soul Cinema generations
+plus ~200 GPT Image 2 generations before any narrative shot
+generation began (see `../../production-benchmarks.md` § Per-
+character iteration anchor for the full breakdown).
+
+When to stick with one tool: characters appearing in only a handful
+of shots don't justify the two-tool overhead; a single Soul Cinema
+pass suffices.
 
 ---
 
