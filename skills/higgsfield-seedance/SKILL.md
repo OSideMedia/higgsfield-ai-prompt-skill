@@ -395,6 +395,136 @@ conflict; the Seedance-side rule names the LANES each side covers.
 
 ---
 
+## Frame Coordinate System
+
+**Frame Coordinate System** locks where subjects, props, and
+compositional elements sit inside the frame.
+
+### Qualitative anchors
+
+Standard film-language position language, machine-readable because
+it is widely-attested in the training data:
+
+- **Horizontal:** `left third`, `center`, `right third`
+- **Vertical:** `upper third`, `lower third` (centered vertically is
+  the default and rarely needs naming)
+- **Depth:** `foreground`, `midground`, `background`
+
+### Percentage notation
+
+Numeric coordinates for cases where the qualitative anchors are
+not specific enough:
+
+- **x-position:** `0%` (far left frame edge) to `100%` (far right
+  frame edge)
+- **y-position:** `0%` (top of frame) to `100%` (bottom of frame)
+- **frame occupancy:** the percentage of the frame area the subject
+  fills, useful for shot-size pinning (a tight close-up sits near
+  `60-80%` occupancy; a wide establishing has the subject below
+  `15%`)
+
+Use percentages when qualitative anchors are under-specified —
+e.g., two characters in the same half of frame.
+
+### Pair the two notations
+
+Ship the qualitative anchor and the percentage notation **together
+in the same prompt**, not as alternatives. The qualitative term
+gives the model the film-language hook; the percentage gives it the
+precision target. Example:
+
+```
+Character A stands in the right third, x-position 70%, y-position
+50%, frame occupancy 25%. Character B stands in the left third,
+x-position 25%, y-position 55%, frame occupancy 22%.
+```
+
+### Not a mathematical guarantee
+
+Frame coordinates are **a strong compositional anchor, not a
+geometric guarantee**. The model treats them as directorial
+intent — the same way a DP reads "right third" on a storyboard —
+not as pixel-exact targets. Use them alongside the rest of the
+standard composition vocabulary (`over-the-shoulder`, `eye line`,
+`ground contact`, `headroom`, `nose room`, `crossing rule`) rather
+than as a substitute for it.
+
+When a coordinate drifts in the output, that is the expected behavior
+class — the coordinate set the intent; the model rendered to its
+best-fit interpretation. Adjust the prompt by tightening the
+qualitative anchor or by adding a contact-point clause (`feet on
+the marked floor mark`, `right hand resting on the table edge`)
+that physically grounds the position rather than re-specifying the
+percentage harder.
+
+---
+
+## Spatial Layout Block
+
+A **Spatial Layout Block** is a named structural unit inside a
+Seedance prompt that consolidates the spatial-vocabulary fields
+from § Frame Coordinate System into a single block the model can
+read as one coherent spatial brief. Where Frame Coordinate System
+provides the *vocabulary*, the Spatial Layout Block provides the
+*structure* for using it.
+
+Scattered spatial directives force the model to reassemble scene
+geometry from fragments — and it often picks the wrong reassembly.
+
+### What goes in the block
+
+A complete Spatial Layout Block names, per subject in frame:
+
+- **Identity** — which character/prop/element this is (matches a
+  Reference Role handle when references are present)
+- **Screen position** — qualitative anchor + percentage notation
+  paired per § Frame Coordinate System above
+- **Depth layer** — foreground / midground / background
+- **Frame occupancy** — % of frame area the subject fills
+- **Body orientation** — direction the subject faces (toward
+  camera, away, profile-left, profile-right, three-quarter to
+  camera)
+- **Contact points** — what physical surface or object the subject
+  is grounded against (`feet on wet asphalt`, `back pressed against
+  the wall`)
+
+Multi-character blocks add the cross-subject relationships:
+relative distance, eyeline direction between subjects, screen-left
+vs screen-right consistency, whether subjects cross the central
+vertical axis, what occludes what.
+
+### When to use a Spatial Layout Block
+
+Three triggers:
+
+1. **More than one subject in frame.** Two-character work is where
+   the model most often swaps screen positions or crosses the
+   central axis without instruction. A block prevents that.
+2. **A specific compositional intent that needs to read across
+   shots.** When the same blocking must hold for several beats — a
+   character anchored left, another anchored right — the block
+   makes the anchor explicit and re-usable.
+3. **A failure-mode-prone shot.** Door-entry shots, hallway-direction
+   shots, and any shot where the model has been picking the wrong
+   spatial reassembly historically all benefit from a block up
+   front rather than inline spatial fragments.
+
+Shots with a single subject in a clear position rarely need a full
+block; a single qualitative-plus-percentage anchor inside the
+Dynamic Description suffices.
+
+### Block-and-prompt fit
+
+The Spatial Layout Block sits **before** the Dynamic Description in
+the output format (see § Output Format for Seedance Prompts below).
+It primes the model with full geometry; the Dynamic Description
+then describes the action that happens inside that geometry.
+
+The block does not replace the six-slot formula — camera, lens,
+lighting, and shot timing stay in their respective slots.
+
+---
+
 ## Working Modes
 
 Working modes is a user-intent layer above the platform mechanism. It
