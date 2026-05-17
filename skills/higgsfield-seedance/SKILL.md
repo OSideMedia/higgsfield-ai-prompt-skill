@@ -378,6 +378,36 @@ behavior.] [How the prop appears in the new shot — same geometry and
 material as the reference.]
 ```
 
+### Per-Image Role Convention
+
+Reference handles (`@Image1`, `@Image2`, `@Video1`, `@Audio1`) are
+assigned by upload order — the first image attached becomes
+`@Image1`, the second becomes `@Image2`, and so on. Production
+practice locks a stable role assignment per slot, kept identical
+across every prompt in a shot list, so the team and the model both
+know which reference carries which property without re-reading the
+prompt body.
+
+| Slot       | Role                          |
+|------------|-------------------------------|
+| `@Image1`  | Character identity            |
+| `@Image2`  | Costume                       |
+| `@Image3`  | Environment + lighting        |
+| `@Image4`  | Composition                   |
+| `@Video1`  | Motion only                   |
+| `@Video2`  | Camera movement only          |
+| `@Audio1`  | Rhythm + atmosphere           |
+
+The slot order is not model-enforced — it is team-side discipline.
+The payoff is reference-stability across long shot lists: once
+`@Image1 = character` for the project, that holds for every prompt,
+and nobody has to re-check which face the model expects at shot 47.
+
+When a reference conflicts with the prompt text — costume reference
+shows red, text says blue — resolve it explicitly in the prompt
+body: `@Image2 as costume reference, but recoloured to blue for this
+shot`. Don't let an unresolved conflict reach the model.
+
 ### Load-Bearing Rule
 
 **References support memory, but text defines action.** The references
@@ -392,6 +422,15 @@ action, reference wins on texture and world feel" — see
 What It Can't, § Load-Bearing Rule). Same underlying principle from
 different surfaces. The camera-side rule names the WIN order in case of
 conflict; the Seedance-side rule names the LANES each side covers.
+
+The same distinction applies one level up — at the prompt-construction
+workflow, not just inside the prompt. When a Seedance clip lands and
+you want the next prompt to match its look, screenshot the working
+frame and upload it **to Claude, not to Seedance**. Claude needs the
+visual to write a prompt that matches the look; Seedance receives the
+resulting text prompt and renders the next clip without the screenshot
+attached. The screenshot is reference (for the prompt-building model);
+the text prompt is action (for the generation model).
 
 ---
 
@@ -1070,6 +1109,29 @@ as you learn how Seedance handles your particular scene-type
 density — dense action sequences may want 1 prompt per 2-3 shot
 rows; quiet emotional scenes may collapse to 1 prompt per 8+ rows.
 
+### Single-vs-multi-shot decision
+
+Default is single-shot. Reach for multi-shot when the content is
+action, dynamic dialogue, or anywhere a cut is itself doing work a
+single shot cannot deliver. Everything else holds tighter as a single
+continuous shot.
+
+For single-shot continuous motion, per-second beats give fine-grained
+control without provoking cuts — `[0-3s] subject enters frame,
+[3-7s] camera pushes in`. The bracket-notation reference lives in
+`../../vocab.md` § Editing Syntax (shipping in v3.7.7 sub-phase 2f).
+
+For multi-shot, use the Runtime arithmetic above — each cut labeled
+with its time range, sum equals total duration. Action scenes earn an
+extra layer: per cut, name the participants, location, implements,
+and beat-by-beat choreography.
+
+Anti-pattern: per-3-second time labels written inside what was meant
+as a single continuous shot. Seedance reads any per-segment timing
+block as cut instructions and inserts cuts. Pick a side — if you
+want continuity, drop the time markers; if you want cuts, label them
+with `Shot 1 / Shot 2 / Shot 3` and the multi-shot arithmetic above.
+
 ---
 
 ## Post-Clip Decisions
@@ -1127,6 +1189,28 @@ If the user tells you Seedance has flagged them multiple times in a row:
 
 Do not let the user regenerate the same prompt with one word changed. That
 is the loop that wastes hours.
+
+---
+
+## Multi-Language Prompt Workarounds
+
+Seedance prompts default to English. This section documents historical
+language-level workarounds for specific Seedance platform states.
+
+### Chinese (as of 2026-05-17)
+
+At Seedance 2.0's launch the model performed better against Chinese
+prompts and enforced a hard 3,000-character cap per prompt. English
+runs roughly 5-10 characters per word; Chinese runs 1-2. Production
+teams used Chinese prompts to compress ~5× more directive content
+into the same character budget — the decisive workaround on long
+multi-shot prompts that otherwise hit the cap.
+
+The workaround was a launch-window optimization, not a permanent
+convention. If a long Seedance prompt keeps hitting the cap and
+English compression has been exhausted, the Chinese-density path has
+shipped before — verify the cap state in the current Seedance UI
+before reaching for it.
 
 ---
 
