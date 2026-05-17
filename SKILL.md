@@ -161,6 +161,25 @@ Use the template as a starting point — adapt the example prompt to the user's 
 request. The annotations explain WHY each element works, helping you make informed
 substitutions.
 
+**Technique templates** (`templates/seedance/`) — structure templates for Seedance
+prompts where the user request is technique-shaped rather than genre-shaped:
+
+| Technique need | Template |
+|---|---|
+| Pre-visualize multi-character spatial geometry before prompting | `templates/seedance/top-down-map.md` |
+| Multi-character shot with cross-character relationships | `templates/seedance/multi-character-anchor.md` |
+| Single-character shot with position + pose + contact-point locks | `templates/seedance/single-character-position.md` |
+| Worked example: two-character anchoring end-to-end | `templates/seedance/worked-example-two-character.md` |
+
+**Text-overlay templates** (`templates/text-overlays/`) — paste-ready text-rendering
+prompts for slogan / subtitle / speech-bubble overlays:
+
+| Text overlay type | Template |
+|---|---|
+| Slogan / brand callout / opening title | `templates/text-overlays/slogan.md` |
+| Subtitle (dialogue-synchronized) | `templates/text-overlays/subtitle.md` |
+| Speech bubble (character-attributed) | `templates/text-overlays/speech-bubble.md` |
+
 ---
 
 ### Build the Prompt Using the MCSLA Formula
@@ -225,6 +244,8 @@ Quick summary — five layers, every prompt:
 |----------|-----------------|-------------|
 | `skills/shared/negative-constraints.md` | All generation artifacts + prevention phrases, by category | Check before every prompt — append relevant constraints |
 | `templates/` | 10 annotated genre templates with examples, models, annotations, variations | When user request matches a common genre — use as starting point |
+| `templates/seedance/` | 4 Seedance technique templates: top-down-map, multi-character-anchor, single-character-position, worked-example-two-character | When Seedance request is technique-shaped (spatial blocking, multi-character anchoring) |
+| `templates/text-overlays/` | 3 text-rendering templates: slogan, subtitle, speech-bubble | When user request includes on-screen text rendering |
 
 ---
 
