@@ -13,7 +13,7 @@ this template is used instead of inline spatial fragments.
 
 ## Prompt template
 
-```
+```text
 [At/from N seconds] N characters in frame.
 
 Character A — [identity, Soul ID handle].

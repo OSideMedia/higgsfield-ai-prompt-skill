@@ -1049,6 +1049,7 @@ Best use cases:
 **Strengths:** Strongest image quality on the platform, exceptional detail, Thinking mode reasoning, up to 14 reference images
 **Use when:** Image quality is the top priority and speed is secondary
 **Prompt note:** Works for any subject — not limited to portraits
+**Failure modes + production-team workarounds:** see `../../image-models.md` § Nano Banana Pro — "Production-team observations" and "Location-handling discipline" sub-sections (plasticky-texture / spatial-awareness limit / multi-image drift / location-anchor / never-front-on / split-views).
 
 ---
 
@@ -1133,7 +1134,7 @@ Best use cases:
 | Extend existing Veo video (up to 148s) | Veo 3.1 |
 | Fast Veo iteration / volume generation | Veo 3.1 Fast |
 | Fluid physical motion / dance/sports | Minimax Hailuo |
-| Photorealistic image with precise text/logo rendering | GPT Image 1.5 |
+| Photorealistic image with precise text/logo rendering | GPT Image 2 |
 | Multi-image composite (up to 3 source images) | Multi Reference |
 | Iterative multi-turn image refinement | Flux Kontext |
 | Style transfer on existing image | Flux Kontext |
@@ -1141,6 +1142,7 @@ Best use cases:
 | Edit/restyle existing video footage | Grok Imagine Video |
 | Best portrait / fashion image | Soul 2.0 |
 | Sharpest 4K image | Nano Banana Pro |
+| Production-grade character anchoring (many shots, long project) | Soul Cinema → GPT Image 2 (Two-Tool Refinement Pipeline) |
 | Edit / modify an existing image | Flux Kontext |
 | Reference-consistent editing / 4K assets | Seedream 4.5 |
 | Complex layout / multi-panel / real-time data image | Seedream 5.0 Lite |

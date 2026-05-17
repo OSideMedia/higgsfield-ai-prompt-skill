@@ -12,7 +12,7 @@ link fence. Tension; no contact yet. Cinematic neo-noir register.
 
 ## The filled prompt
 
-```
+```text
 At 0 seconds, two characters in frame.
 
 Character A — Roco (Soul ID @Image1).

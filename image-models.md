@@ -211,6 +211,27 @@ Tip: Name each reference's role — "Use Image A for pose, Image B for style, Im
 - Complex edits and blending can produce artifacts
 - Character consistency may drift across long multi-turn sessions
 
+**Production-team observations (Higgsfield team disclosed):**
+
+The following failure modes and counters come from the Hell Grind 90-min Cannes production team's documented in-pipeline use of Nano Banana Pro. They sit alongside the official limitations above — recurring patterns the team hit and the prompt-side fixes they shipped.
+
+- **Plasticky-texture failure mode.** Surfaces are smooth and over-rendered; faces read as plastic in wide shots. Counter: append a trailing line `light atmospheric haze, film grain, crush blacks, shadow depth` at the end of the prompt. The single trailing line measurably shifts texture toward photographic without destabilizing the rest of the composition.
+- **Spatial-awareness limit (location references).** Uploading a city or environment image as a reference results in indoor subjects placed outdoors, or interiors that fail to spatially align with the reference geometry. Counter: keep the location in the *prompt text* (described verbally), not as an *image reference*. NBP handles described locations better than image-referenced ones.
+- **4-view default vs single composition.** NBP defaults to producing a 4-view reference sheet when asked for a character. Counter: explicitly request `one view image` (or `single composition`) when you want a single hero frame rather than a sheet.
+- **Multi-image embedded prompt drift.** A single prompt requiring many embedded reference elements (e.g., a 12-Polaroid photo wall built from individual character sheets) produces severe drift — faces from the source sheets fail to read correctly in the composite. Counter: generate each element individually, then composite in Photoshop. The production-team workflow accepted this trade-off (longer post-production for higher per-element fidelity).
+
+**Location-handling discipline (Group H):**
+
+When NBP is generating location-anchored shots, three patterns recur in production-team practice:
+
+- **Every location needs an anchor** — a named visual landmark (a tree, a specific architectural feature, a recurring prop) gives the prompt a fixed point for relative spatial placement (`Roco stands to the left of the tree`). Anchorless locations drift.
+- **Never generate locations from the front.** Front-facing location renders confuse NBP's depth perception. Use a 3/4 angle or a ceiling-corner (CCTV) angle for location-establishing shots.
+- **Split locations into views, don't combine.** When a location appears across multiple cuts at different angles, generate separate location images per angle and attach them as separate references (`for cut one use this view, for cut two use this view`). Production-team learning evolved this away from earlier combined-into-single-reference practice — separate references hold better.
+
+**Workflow positioning:**
+
+NBP is the strongest single image model on the platform for sharpness, multi-element composition, and text rendering. For **high-investment characters** that will appear across many shots, the two-tool pipeline outperforms NBP alone: Soul Cinema for initial character generation + GPT Image 2 for refinement editing. See `skills/higgsfield-soul/SKILL.md` § Two-Tool Refinement Pipeline for the split-by-task discipline and the ~600 + ~200 = ~800 generations anchor from the Hell Grind production.
+
 ---
 
 ### Nano Banana 2
