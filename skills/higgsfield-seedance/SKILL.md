@@ -1177,6 +1177,13 @@ The next shot is chosen by function, not by excitement.
 
 ## When the User Is Already in a Failure Loop
 
+This section handles **filter rejections** — prompts the Seedance
+filter blocks before generation. For **render failures** (FPS drift,
+NSFW false-positive, keyframe-invention, physics-state drift, spatial-
+awareness failures, multi-motion overload), see `FAILURE-MODES.md` in
+this directory — sibling catalog with symptom + mechanism + counter
+per named failure.
+
 If the user tells you Seedance has flagged them multiple times in a row:
 
 1. **Ask for the exact prompt text that got flagged.** Don't guess.
