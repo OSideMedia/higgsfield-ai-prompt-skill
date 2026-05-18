@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.6.2-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.7.7-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -19,10 +19,15 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 - **Cinema Studio 2.5** advanced features: Soul Cast AI actors, built-in color grading, 3D Mode (Gaussian Splatting), Grid Generation, Resolution Settings, Frame Extraction Loop, Object & Person Insertion, Per-Character Emotions, Clustering, Five-View Location Reference Sheet, Reference Sheet Types (Motion / Outfit / Palette), Elements System with library surface (5 source tabs × 6 element categories)
 - **Cinema Studio 3.0** (Business/Team plan): native dual-channel stereo audio, Smart shot control, 15s max duration, 7 genres, @ reference patterns, Soul Cast 3.0
 - **Cinema Studio 3.5**: three-pill main UI (Genre / Style / Camera), Style Settings panel (8 Color Palette / 6 Lighting / 9 Camera Moveset Style + Manual Style mode), Camera Settings four-axis panel (3 Camera Body / 5 Lens / 5 Focal Length including new 75mm / 3 Aperture), Image Mode with four Cinematic models picker (Soul Cinema default, Cinematic Characters, Cinematic Locations, Cinematic Cameras with 2.5 vocabulary)
-- **Seedance 2.0 prompting best practices** — Intent over Precision, Genre Router, I2V Gate, Anti-Slop, Physics Language, SCELA audio, Reference-Based / Continuation / Expand Shot / Edit Shot prompt modes, Continuation Prompt Formula, the Iteration Rule
+- **Seedance 2.0 prompting best practices** — Intent over Precision, Genre Router, I2V Gate, Anti-Slop, Physics Language, SCELA audio, Reference-Based / Continuation / Expand Shot / Edit Shot / Transformation prompt modes, Continuation Prompt Formula, the Iteration Rule
 - **Shared negative constraints reference** — categorized artifacts + prevention phrases (positive alternatives for 3.0); Kling 3.0 Motion Control failure diagnostic; Physics Rendering — Resolution Decision Matrix (cross-model 480p / 720p / 1080p routing rule for Seedance 2.0 + Cinema Studio 3.x)
 - **Identity vs. Motion separation** — hard rule for character consistency across shots
-- **10 annotated genre templates** — production-quality examples with Cinema Studio 3.0 genre mappings
+- **Annotated templates library** — 10 genre templates with Cinema Studio 3.0 genre mappings, plus Seedance multi-character coordination + text-overlay sub-libraries (17 files across 3 categories)
+- **DISCIPLINE.md cross-cutting framework** — 9 named discipline patterns in 3-3-3 tier symmetry (prompt-construction, model-selection, iteration-discipline) governing decisions across all sub-skills
+- **production-benchmarks.md** — Hell Grind 90-min Cannes feature reference, per-character iteration anchors, acceptance-rate calibration; what "production quality" means in practice
+- **FAILURE-MODES.md (Seedance)** — 8 named render failures documented with symptom + mechanism + counter for diagnosis-first iteration
+- **C-arc Building Complete AI Projects — 10-Step Methodology** — end-to-end pipeline from idea to delivered project; complements the genre/scene templates
+- **Expanded Seedance methodology + Soul refinement** — Iteration Rule + 6-Pass Diagnostic Sequence + Four Questions + Next-Shot Decision Tree + Bridging / Continuation / Repair working modes; Character Anchor Block + Two-Tool Refinement Pipeline for character consistency at production scale
 
 ## Install
 
@@ -45,22 +50,31 @@ Upload `SKILL.md` (root) as your project instruction base. Upload files from `sk
 ├── README.md                         ← This file
 ├── CHANGELOG.md                      ← Version history
 ├── CONTRIBUTING.md                   ← Contribution guidelines
+├── LICENSE                           ← MIT license
+├── CLAUDE.md                         ← Project instructions for Claude Code
 ├── .markdownlint.json                ← Linter config (CHANGELOG convention silencing — v3.6.1)
 ├── model-guide.md                    ← Model comparison tables + decision flowchart
 ├── image-models.md                   ← Image model reference + pricing tiers
 ├── vocab.md                          ← Full platform vocabulary reference
 ├── prompt-examples.md                ← High-quality example prompts + Before/After pairs
 ├── photodump-presets.md              ← Photodump mode presets
+├── DISCIPLINE.md                     ← Cross-cutting discipline framework (9 patterns, 3-3-3 tier symmetry)
+├── production-benchmarks.md          ← Production-quality anchors + acceptance-rate calibration
 ├── higgsfield_memory.py              ← Memory system script
 ├── seedance_lint.py                  ← Seedance preflight linter
 ├── validate.py                       ← Pre-release validation script
+├── generate_user_guide.py            ← USER-GUIDE.pdf generator (Path B refactor — v3.7.0)
+├── validate_user_guide.py            ← USER-GUIDE.pdf drift validator (text-extract + binary diff)
 ├── db/
 │   ├── filter-memory.json            ← Content filter memory (seeded)
 │   └── quality-memory.json           ← Quality failure memory (seeded)
 ├── docs/                             ← Extended reference documents
-│   ├── user-guide/                   ← Exported USER-GUIDE.pdf + version baselines
-│   └── pdf-audit/                    ← PDF integration audit reports (v3.4.0, v3.6.0)
-├── templates/                        ← 10 annotated genre-specific prompt templates
+│   ├── Seedance 2 Skill.md           ← Bilingual EN+ZH Seedance director reference
+│   ├── archive/                      ← Historical artifacts
+│   │   └── v3.0.0/                   ← v3.0.0 audit + inventory snapshot
+│   ├── pdf-audit/                    ← PDF integration audit reports (v3.4.0, v3.6.0)
+│   └── user-guide/                   ← Exported USER-GUIDE.pdf + version baselines
+├── templates/                        ← Genre templates + Seedance coordination + text-overlays
 │   ├── 01-cinematic-action-chase.md
 │   ├── 02-product-ugc-showcase.md
 │   ├── 03-horror-atmosphere.md
@@ -70,7 +84,16 @@ Upload `SKILL.md` (root) as your project instruction base. Upload files from `sk
 │   ├── 07-landscape-establishing-shot.md
 │   ├── 08-comedy-social-media.md
 │   ├── 09-romantic-intimate.md
-│   └── 10-dance-music-performance.md
+│   ├── 10-dance-music-performance.md
+│   ├── seedance/                     ← Multi-character coordination templates
+│   │   ├── multi-character-anchor.md
+│   │   ├── single-character-position.md
+│   │   ├── top-down-map.md
+│   │   └── worked-example-two-character.md
+│   └── text-overlays/                ← Text overlay templates
+│       ├── slogan.md
+│       ├── speech-bubble.md
+│       └── subtitle.md
 └── skills/
     ├── shared/
     │   └── negative-constraints.md       ← Shared artifact prevention reference
@@ -93,7 +116,9 @@ Upload `SKILL.md` (root) as your project instruction base. Upload files from `sk
     ├── higgsfield-pipeline/SKILL.md      ← Multi-step generation pipelines
     ├── higgsfield-recall/SKILL.md        ← Recall + regeneration patterns
     ├── higgsfield-cinema/SKILL.md        ← Cinema Studio 2.5 + 3.0 + 3.5 (Soul Cast, Color Grading, 3D Mode, Smart Mode, @ References, Native Audio, three-pill UI, Image Mode, Cinematic models picker)
-    ├── higgsfield-seedance/SKILL.md      ← Seedance prompt director + content-filter preflight
+    ├── higgsfield-seedance/
+    │   ├── SKILL.md                      ← Seedance prompt director + content-filter preflight
+    │   └── FAILURE-MODES.md              ← 8 named Seedance render failures (symptom · mechanism · counter)
     ├── higgsfield-vibe-motion/SKILL.md   ← Vibe-based motion direction
     └── higgsfield-workspaces/SKILL.md    ← Workspace-first decision layer (Cinema Studio / Lipsync / Draw-to-Video / Sora 2 Trends / Click to Ad / Higgsfield Audio)
 ```
@@ -127,4 +152,4 @@ Upload `SKILL.md` (root) as your project instruction base. Upload files from `sk
 
 ---
 
-Built February 2026 · v3.6.2 (updated 2026-04-25) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.7.7 (updated 2026-05-18) · Platform: [higgsfield.ai](https://higgsfield.ai)
