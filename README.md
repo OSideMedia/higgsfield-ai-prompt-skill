@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.7.7-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.7.8-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -41,6 +41,40 @@ Drop the repo folder into your Cowork workspace. The skill dispatcher is at `SKI
 
 ### Claude.ai Projects
 Upload `SKILL.md` (root) as your project instruction base. Upload files from `skills/` as project documents.
+
+## Higgsfield Stack Integration
+
+This skill is the prompt-construction layer. Higgsfield ships official execution tooling — a CLI, an MCP custom connector, and a bundled skills package. They complement each other: this skill produces the prompt, their tooling executes it. None of their tooling is required for this skill to work — you can always paste prompts directly into higgsfield.ai. But if you want an end-to-end loop, you'll want one of the three.
+
+**A Higgsfield account is required** for any of the tooling below. Sign up at [higgsfield.ai](https://higgsfield.ai).
+
+### Higgsfield CLI
+
+Command-line tool for terminal-native agents (Claude Code, Codex, Cursor). Per Higgsfield's own guidance, prefer the CLI over the MCP if you're working in a terminal.
+
+- Repo: [github.com/higgsfield-ai/cli](https://github.com/higgsfield-ai/cli)
+- Install: `curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh | sh` or `brew install higgsfield-ai/tap/higgsfield`
+- Auth: `higgsfield auth login`
+
+### Higgsfield MCP
+
+Custom connector for claude.ai web and the Claude desktop app. Separate product from the CLI.
+
+- Connector URL: `https://mcp.higgsfield.ai/mcp`
+- Install: claude.ai → Settings → Connectors → Add custom connector → paste the URL above → sign in
+
+### Higgsfield Bundled Skills
+
+Markdown skill bundle for agents that consume Cowork-style skills. All three skills drive the CLI under the hood.
+
+- Repo: [github.com/higgsfield-ai/skills](https://github.com/higgsfield-ai/skills)
+- Install: `npx skills add higgsfield-ai/skills`
+- Skills included: `higgsfield-generate`, `higgsfield-soul`, `higgsfield-product-photoshoot`
+- Invoke: `/higgsfield:generate`, `/higgsfield:soul`, `/higgsfield:product-photoshoot`
+
+### Coexistence rules
+
+For the full coexistence rules, detection signals, naming-collision callouts, and handoff templates, see [`skills/higgsfield-stack/SKILL.md`](skills/higgsfield-stack/SKILL.md).
 
 ## Structure
 
@@ -152,4 +186,4 @@ Upload `SKILL.md` (root) as your project instruction base. Upload files from `sk
 
 ---
 
-Built February 2026 · v3.7.7 (updated 2026-05-18) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.7.8 (updated 2026-05-18) · Platform: [higgsfield.ai](https://higgsfield.ai)

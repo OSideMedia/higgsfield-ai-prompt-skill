@@ -1,5 +1,36 @@
 # Changelog
 
+## v3.7.8 — 2026-05-18
+
+Single-arc release: adds the `higgsfield-stack` sub-skill, which documents how this prompt-construction skill coexists with Higgsfield's own official tooling (their CLI, MCP custom connector, and bundled `higgsfield-ai/skills`). The two surfaces complement each other cleanly — our skill stays in its lane as the prompt-construction + production-discipline layer, theirs handles auth, upload, job submission, polling, and result delivery. No merge, no absorption, no dependency on their stack being present.
+
+Returns to single-arc scope per the v3.7.7 closeout commitment, after the v3.7.5 / v3.7.6 / v3.7.7 mega-release sequence.
+
+### Added
+
+- **`skills/higgsfield-stack/SKILL.md`** (NEW sub-skill, 154 lines, v1.0.0). Documents the three official execution surfaces (CLI binary `higgsfield` / `higgs` / `hf`, MCP custom connector at `mcp.higgsfield.ai/mcp`, bundled skills repo at `higgsfield-ai/skills` v0.3.0 with `higgsfield-generate` / `higgsfield-soul` / `higgsfield-product-photoshoot`). Includes a layer-split principle, detection signals per surface, five coexistence rules, the `higgsfield-soul` naming collision callout (theirs trains the Soul Character; ours constructs the prompts that use the trained identity), handoff templates for each surface, Seedance preflight recommendation when CLI is present, and explicit non-goals.
+
+- **README.md Higgsfield Stack Integration section.** New section between "Install" and "Structure" linking users to the three official Higgsfield surfaces (CLI, MCP, bundled skills) with the account requirement noted up front. Points to `skills/higgsfield-stack/SKILL.md` for the full coexistence rules.
+
+### Changed
+
+- **Root `SKILL.md` routing table** — three new rows added in the env/meta zone after the seedance row, routing CLI/MCP/bundled-skills triggers and handoff questions to `higgsfield-stack`.
+- **Root `SKILL.md` sub-skills table** — one new row for `higgsfield-stack` after the seedance row.
+- **Root `SKILL.md` frontmatter** — `version: 3.7.7 → 3.7.8`, `updated: 2026-05-18` (unchanged date — same-day release).
+- **`README.md` version badge** — `version-3.7.7-blue → version-3.7.8-blue`.
+- **`README.md` footer** — `v3.7.7 (updated 2026-05-18) → v3.7.8 (updated 2026-05-18)`.
+- **`CLAUDE.md`** — sub-skill directory count corrected from `19` to `21`. The original `19` count was already stale on `main` before this release (current `main` had 20 sub-skills); this release adds the 21st, and the count is brought current in the same edit.
+
+### Deferred to v3.7.9+
+
+- **USER-GUIDE.pdf Section 22 "Root Files" update.** PR #36 (post-v3.7.7 housekeeping) deferred a Section 22 row update to the first content release. v3.7.8 is that release, but the PDF generator (`generate_user_guide.py`) has hardcoded content sections, so registering `higgsfield-stack` in the PDF is its own dedicated arc. The deferred Section 22 update from PR #36 plus `higgsfield-stack` registration now both ride into the PDF modernization arc. USER-GUIDE.pdf for v3.7.8 was not regenerated.
+
+- **No new framework-innovation candidates.** v3.7.8 is intentionally small-scope; no FI logging.
+
+### Scope acknowledgment
+
+v3.7.5, v3.7.6, and v3.7.7 were mega-releases. v3.7.7's release notes committed to "single-arc scope unless audit-corpus continuity creates a comparable case." v3.7.8 is the first release under that commitment — one sub-skill, two file edits, no co-headline.
+
 ## v3.7.7 — 2026-05-18
 
 Mega-release. Co-headlined: CH-1 production-benchmarks.md (Hell Grind 90-min Cannes feature anchors) + CH-2 Seedance depth (Frame Coordinate System + Spatial Layout Block + FAILURE-MODES.md new file + Character Anchor Block + Group F/P/G13b/Group H consolidation) + CH-3 templates library bootstrap (7 NEW template files in 2 new sub-directories) + CH-4 image-models expansion (G18 Nano Banana Pro production-team observations + Group H location-handling) + CH-5 DISCIPLINE.md SC1 reframe + SC2 anti-bombast paradox + 7 new patterns. **Third one-time exception to the harder-single-arc commitment**, after v3.7.5 backlog closeout and v3.7.6 — co-headlined by explicit Peter decision at Phase 0 → Phase 1 handoff. Largest release in repo history by sub-phase count (9 content sub-phases + 1 release ceremony sub-phase).

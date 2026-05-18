@@ -23,7 +23,7 @@ photodump-presets.md      ← 29 Photodump style presets
 validate.py               ← Pre-release health checks
 higgsfield_memory.py      ← DB operations for learning memory
 seedance_lint.py          ← Seedance preflight linter
-skills/                   ← 19 sub-skill directories + shared/
+skills/                   ← 21 sub-skill directories + shared/
 templates/                ← 10 genre templates
 db/                       ← Filter + quality memory JSON databases
 docs/                     ← Extended reference documents

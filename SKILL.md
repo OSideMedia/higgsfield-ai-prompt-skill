@@ -12,7 +12,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.7.7
+  version: 3.7.8
   updated: 2026-05-18
   author: O-Side Media
   license: MIT
@@ -135,6 +135,9 @@ budget constraints, client work), **confirm before generating:**
 | Pre-generation memory check, apply past failure fixes | `higgsfield-recall` |
 | Audio design, dialogue cues, SFX, ambient sound | `higgsfield-audio` |
 | Seedance 2.0 / Pro prompt, flagged prompt, credit waste on Seedance | `higgsfield-seedance` |
+| User has Higgsfield CLI / MCP / bundled skills installed and asks how this skill works alongside them | `higgsfield-stack` |
+| User mentions `higgsfield auth login`, `higgsfield generate create`, `mcp.higgsfield.ai/mcp`, `/higgsfield:generate`, or asks "do I need both" | `higgsfield-stack` |
+| User asks where the prompt construction ends and the CLI/MCP execution begins (handoff questions) | `higgsfield-stack` |
 
 ---
 
@@ -273,6 +276,7 @@ Quick summary — five layers, every prompt:
 | `higgsfield-recall` | Pre-generation memory check / apply past failure fixes |
 | `higgsfield-audio` | Audio design, dialogue, SFX, ambient sound for audio-capable models |
 | `higgsfield-seedance` | Seedance 2.0 / Pro prompt director + content-filter preflight linter |
+| `higgsfield-stack` | User mentions the Higgsfield CLI / MCP connector / bundled skills, or asks how this skill coexists with those execution surfaces |
 
 > Full vocabulary in `vocab.md`
 > Full motion preset library in `skills/higgsfield-motion/SKILL.md`

@@ -1,0 +1,154 @@
+---
+name: higgsfield-stack
+description: "Use when the user mentions the Higgsfield CLI (binaries `higgsfield` / `higgs` / `hf`, `higgsfield auth login`, `higgsfield generate create`, the `@higgsfield/cli` npm package), the Higgsfield MCP custom connector (`mcp.higgsfield.ai/mcp`), Higgsfield's bundled skills (`higgsfield-generate` / `higgsfield-soul` / `higgsfield-product-photoshoot` invoked as `/higgsfield:generate` etc.), or asks how this skill coexists with those tools (`do I need both`, `how does this work with the CLI/MCP/skills`)."
+user-invocable: true
+metadata:
+  tags: [higgsfield, stack, cli, mcp, official-skills, coexistence, handoff, environment]
+  version: 1.0.0
+  updated: 2026-05-18
+  parent: higgsfield
+---
+
+# Higgsfield Stack — Coexistence With Official Tooling
+
+## What this sub-skill is for
+
+"The Higgsfield stack" means Higgsfield's own official execution tooling: their command-line interface (CLI), their custom MCP connector for claude.ai and the Claude desktop app, and their three bundled skills (`higgsfield-generate`, `higgsfield-soul`, `higgsfield-product-photoshoot`). Any one of those tools — or any combination — may be present in the user's environment alongside this prompt skill. This sub-skill documents how the two surfaces coexist, what each one owns, and how a clean handoff looks.
+
+The core principle is a layer split. This skill is the prompt-construction + production-discipline layer: MCSLA structure, named platform vocabulary, model selection criteria, Seedance preflight, Cinema Studio depth, Soul Character Anchor Block, Two-Tool Refinement Pipeline guidance, anti-bombast register, shared negative constraints. Their stack is the execution layer: authentication, file uploads, job submission, polling, retries, returning a result URL. Different jobs, no overlap. Our skill never invokes their CLI; their stack never invents prompt logic. The user gets one prompt from us and one execution path from them.
+
+---
+
+## The three official surfaces
+
+| Surface | What it is | Detection signals | Best fit |
+|---|---|---|---|
+| **Higgsfield CLI** | Binary distributed at https://github.com/higgsfield-ai/cli. Binary names: `higgsfield`, `higgs`, `hf`. Install via `curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh \| sh` or `brew install higgsfield-ai/tap/higgsfield`. Auth via `higgsfield auth login` (device flow). | User types `higgsfield`, `higgs`, or `hf` in conversation; user says "I have the CLI installed"; user pastes output from `higgsfield ... --json` | Claude Code, Codex, Cursor, or any terminal-native agent. Per Higgsfield's own guidance: if the user is in Claude Code or Codex, prefer the CLI over the MCP. |
+| **Higgsfield MCP** | Custom connector at https://mcp.higgsfield.ai/mcp. Separate product from the CLI. Installed in claude.ai or the Claude desktop app via Settings → Connectors → Add custom connector. | User is in claude.ai web or the Claude desktop app (not a terminal); user mentions "the connector" or "MCP" or `mcp.higgsfield.ai`; the current Claude session has tools whose names mention Higgsfield generation. | claude.ai web, Claude desktop app, environments without a terminal. |
+| **Higgsfield bundled skills** | Skill repo at https://github.com/higgsfield-ai/skills (v0.3.0). Three skills: `higgsfield-generate`, `higgsfield-soul`, `higgsfield-product-photoshoot`. Install via `npx skills add higgsfield-ai/skills`. Invoke as `/higgsfield:generate`, `/higgsfield:soul`, `/higgsfield:product-photoshoot`. | Skill files matching those names visible in the agent's skill directory; user invokes one of those slash commands; user mentions installing `higgsfield-ai/skills`. | Agents that consume Cowork-style skill bundles. All three skills drive the CLI under the hood — they are workflow/transport guidance, not prompt engineering. |
+
+---
+
+## How our skill fits in
+
+```
+USER REQUEST
+   ↓
+[ our skill — higgsfield-ai-prompt-skill ]
+   • routes to the right sub-skill (prompt / camera / soul / cinema /
+     seedance / etc.)
+   • applies MCSLA (Model · Camera · Subject · Look · Action)
+   • uses named platform vocabulary from `../../vocab.md`
+   • appends shared negative constraints
+   • runs `../../seedance_lint.py` preflight (Seedance prompts only)
+   • produces a production-grade prompt
+   ↓
+[ hand-off to whatever execution surface the user has ]
+   ↓
+EXECUTION SURFACE (one of):
+   • Higgsfield CLI — `higgsfield generate create <model_id> --prompt "..." --wait`
+   • Higgsfield MCP — Claude calls the connector's generation tool
+   • Higgsfield's bundled skills — `higgsfield-generate` takes the prompt
+     and formats the underlying call
+   • None — user copies the prompt into higgsfield.ai directly
+   ↓
+RESULT
+```
+
+The prompt always comes from us. The execution always comes from one of the four surfaces above. Nothing crosses the boundary in either direction.
+
+---
+
+## Coexistence rules
+
+1. **Our skill always produces the prompt.** Regardless of which execution surface the user has installed, prompt construction is this skill's job. MCSLA structure, named-vocabulary discipline, anti-bombast register, and the negative-constraints appendage all stay in our lane. If their bundled skill or their MCP tool wants a `--prompt` string, that string is our output, not theirs.
+
+2. **Their skills, CLI, and MCP never produce the prompt logic.** Do not let `higgsfield-generate` or any MCP tool invent prompts on its own. If it offers to generate prompt text from a brief, route the brief through our skill first, then pass the resulting prompt down.
+
+3. **Do not duplicate their model-list call.** Their CLI exposes `higgsfield model list --json`. This skill maintains its own curated model-selection criteria in `../../model-guide.md` and `../../image-models.md`. Do not shell out to `model list` from this skill — the curation is the value. If the user needs ground-truth current model IDs (e.g., a new model just shipped), point them to their CLI; do not try to keep our files in sync at runtime.
+
+4. **Do not bypass their CLI by calling `api.higgsfield.ai` directly.** This is a hard rule. Auth, uploads, retries, polling, and rate-limit handling are non-trivial and live inside their CLI. This skill never shell-curls the API or writes code that calls the API directly. If the user has the CLI, route through it; if not, the user pastes into higgsfield.ai by hand.
+
+5. **Defer to their skill on execution flags.** If the user has `higgsfield-generate` loaded and asks for, say, a Marketing Studio ad, construct the prompt body here, then hand the prompt text off. Do not try to remember their `--avatars`, `--product_ids`, `--hook_id`, `--mode`, or `--format-id` syntax — that is their domain and their version-to-version churn. We do the prompt; they do the invocation.
+
+---
+
+## Naming collision — `higgsfield-soul` (theirs) vs `higgsfield-soul` (ours)
+
+Higgsfield's bundled-skills repo includes a skill named `higgsfield-soul` (renamed from `higgsfield-soul-id` in their v0.3.0). This sub-skill library also has a sub-skill named `higgsfield-soul` at `../higgsfield-soul/SKILL.md`. Same name, different jobs. The collision is real and worth disambiguating up front because both will trigger on user phrases like "Soul" or "Soul ID".
+
+| | Theirs (`higgsfield-soul`) | Ours (`../higgsfield-soul/SKILL.md`) |
+|---|---|---|
+| Job | Train a Soul Character (face-faithful identity model) | Prompt-side character consistency discipline |
+| Input | 5–20 face photos plus a name | Free-form user request |
+| Output | A `reference_id` consumable by Soul-aware generation models | Production-grade prompt with Character Anchor Block, Identity/Motion separation, Two-Tool Refinement Pipeline guidance |
+| Invocation | `/higgsfield:soul` slash command, or `higgsfield soul-id create ...` from the CLI | Auto-loaded by our root dispatcher when character consistency is the topic |
+| Owns | Training run, polling, returning the `reference_id` | MCSLA structure for Soul prompts, Character Sheet creation, the 10-attribute pre-shot lock, multi-form state tracking |
+
+The rule is sequential, not overlapping. Theirs trains the identity. Ours constructs the prompt that uses the trained identity.
+
+- When the user says "create my Soul" or "train a Soul ID from these photos" — that is **their** `higgsfield-soul`'s job. Hand off; do not try to do it here.
+- When the user says "write me three Soul prompts for scenes A / B / C using my `reference_id`" — that is **our** `../higgsfield-soul/SKILL.md`'s job. Construct the prompts; do not try to run training.
+
+If the user is ambiguous ("help me with Soul"), ask which step they're on: training the identity, or prompting with an already-trained identity. One short question; do not split across multiple rounds.
+
+---
+
+## Detection guidance
+
+Before deciding whether to attach a handoff line, look for these signals that the Higgsfield stack is present in the current environment:
+
+- **Direct user statement** — "I have the CLI installed", "I'm using their MCP", "I ran `npx skills add higgsfield-ai/skills`".
+- **Available MCP tools** — the current Claude session exposes tools whose names mention Higgsfield generation. Suggests the MCP connector is attached.
+- **Skill files on disk** — a `SKILL.md` for `higgsfield-generate`, `higgsfield-soul` (theirs, not ours), or `higgsfield-product-photoshoot` visible in the agent's skill directory. Suggests their bundled skills are installed.
+- **Command output or slash invocations** — user pastes output from `higgsfield ...` or uses `/higgsfield:generate`, `/higgsfield:soul`, `/higgsfield:product-photoshoot`.
+- **In Claude Code specifically** — `which higgsfield` returning a path, or `higgsfield --version` returning a version string.
+
+If none of these signals are present, the user is on the paste-into-higgsfield.ai path. That is the default behavior of this skill — deliver the prompt, no handoff line needed.
+
+---
+
+## Handoff templates
+
+When one or more surfaces are detected, append one short line after the prompt. Keep the register plain — these are pointers, not promotions.
+
+- **CLI present:**
+  `If you want, you can run this directly with: higgsfield generate create <model_id> --prompt "<prompt above>" --wait`
+- **MCP present:**
+  `You can invoke this via the Higgsfield connector — pass the prompt above as the prompt argument.`
+- **Bundled skills present:**
+  `If you want to run this, their higgsfield-generate skill can take this prompt as its --prompt argument.`
+
+If multiple surfaces are present, pick the one that fits the user's stated workflow. Do not list all three. If none are present, do not append a handoff line at all.
+
+---
+
+## Seedance preflight integration
+
+The one place where this skill's tooling earns its keep inside the integrated flow is `../../seedance_lint.py`. Seedance 2.0's content filter rejects instant-fail prompts before they reach the GPU, and the user gets charged credits regardless of whether the rewrite was the issue. The linter catches the predictable rejection patterns at prompt-construction time, before submission.
+
+When the CLI is present AND the prompt being constructed is for Seedance 2.0 or Seedance Pro, append a recommendation:
+
+> `Run python3 seedance_lint.py "<prompt>" before submitting to catch content-filter rejections. The filter is voice-based, not a keyword blacklist — see ../higgsfield-seedance/SKILL.md for the full diagnostic.`
+
+This is a recommendation to the user. This skill does not run the linter on the user's behalf and does not require the linter to have run before delivering the prompt.
+
+---
+
+## What this sub-skill does NOT do
+
+- Does not install, configure, or troubleshoot the Higgsfield CLI, MCP connector, or bundled skills. Point users to the upstream repos linked above for any of that.
+- Does not replicate their model catalog — no equivalent of `higgsfield model list` runs from this skill.
+- Does not run their CLI commands on the user's behalf. No `Bash` calls into `higgsfield generate create`, `higgsfield soul-id create`, or any other binary invocation.
+- Does not absorb their skills' logic. `higgsfield-generate` knows how to format Marketing Studio invocations; this skill does not.
+- Does not create a dependency on their stack being present. The full prompt-skill library remains functional standalone — the four execution surfaces (CLI, MCP, bundled skills, paste-into-website) are all valid, including the last one.
+
+---
+
+## Related sub-skills
+
+- `../higgsfield-prompt/SKILL.md` — produces the prompt text that gets handed off to any execution surface.
+- `../higgsfield-workspaces/SKILL.md` — handles the upstream "which Higgsfield workspace fits my task" question, which is settled before any execution surface comes into play.
+- `../higgsfield-seedance/SKILL.md` — pairs with the `../../seedance_lint.py` preflight recommendation above; covers the full filter diagnostic and prompt-mode router.
+- `../higgsfield-assist/SKILL.md` — credit-optimization questions apply regardless of execution surface; route credit/plan questions there.
+- `../higgsfield-soul/SKILL.md` — our Soul prompt-construction sub-skill. Read the Naming collision section above before routing — theirs trains, ours prompts.
