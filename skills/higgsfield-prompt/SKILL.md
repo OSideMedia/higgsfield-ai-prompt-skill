@@ -4,8 +4,8 @@ description: "Use when building, writing, refining, or structuring a Higgsfield 
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 3.3.0
-  updated: 2026-05-17
+  version: 3.4.0
+  updated: 2026-05-18
   parent: higgsfield
 ---
 

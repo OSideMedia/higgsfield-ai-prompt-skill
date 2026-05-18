@@ -4,8 +4,8 @@ description: "Creates and manages reusable character profiles (Soul IDs) for con
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 3.3.0
-  updated: 2026-05-17
+  version: 3.4.0
+  updated: 2026-05-18
   parent: higgsfield
 ---
 

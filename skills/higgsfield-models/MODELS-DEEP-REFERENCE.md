@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, v2.0.2]
-  version: 3.0.0
-  updated: 2026-04-06
+  version: 3.1.0
+  updated: 2026-05-18
   parent: higgsfield
 ---
 

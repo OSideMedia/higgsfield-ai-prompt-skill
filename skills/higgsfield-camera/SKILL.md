@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
-  version: 3.2.0
-  updated: 2026-05-17
+  version: 3.3.0
+  updated: 2026-05-18
   parent: higgsfield
 ---
 

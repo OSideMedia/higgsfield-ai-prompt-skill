@@ -4,8 +4,8 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.5.0
-  updated: 2026-05-17
+  version: 1.6.0
+  updated: 2026-05-18
   parent: higgsfield
 ---
 

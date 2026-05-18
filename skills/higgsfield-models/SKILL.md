@@ -9,8 +9,8 @@ metadata:
   references:
     - MODELS-DEEP-REFERENCE.md
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana]
-  version: 3.1.0
-  updated: 2026-05-17
+  version: 3.1.1
+  updated: 2026-05-18
   parent: higgsfield
 
 ---

@@ -11,7 +11,7 @@ user-invocable: false
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, failure-modes, recovery, prompt]
   version: 1.0.0
-  updated: 2026-05-17
+  updated: 2026-05-18
   parent: higgsfield
 ---
 
