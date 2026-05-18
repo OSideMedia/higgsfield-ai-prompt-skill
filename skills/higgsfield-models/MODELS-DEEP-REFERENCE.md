@@ -57,7 +57,7 @@ The Kling lineup in Higgsfield spans two generations (2.x and 3.0) plus the O1 r
 
 **Motion endpoint pattern:** Append "returns to starting position" or "then settles" to prevent stuck-at-99% generation hang.
 
-```
+```text
 Example use case: A 12-second scene — a detective enters a rain-soaked alley, hears a
 noise, turns to camera. Two cuts. Footsteps, rain ambiance, tense score.
 → Kling 3.0
@@ -83,7 +83,7 @@ noise, turns to camera. Two cuts. Footsteps, rain ambiance, tense score.
 
 **Use when:** You need to clone a character's appearance and voice from reference footage, or you want per-shot storyboard control rather than AI auto-direction
 
-```
+```text
 Example use case: Upload a 5s selfie video of yourself speaking → clone your likeness
 and voice → generate a 15s branded ad campaign with your AI double in a studio setting.
 → Kling 3.0 Omni
@@ -119,7 +119,7 @@ and voice → generate a 15s branded ad campaign with your AI double in a studio
 
 **Use when:** You need camera motion control over a longer duration than standard models allow, or you need to transfer specific human motion from a reference performance
 
-```
+```text
 Example use case: Upload a 15s dance clip → transfer the choreography to an anime
 character in a neon-lit cityscape. Reference video drives all motion; prompt sets the scene.
 → Kling 3.0 Motion Control
@@ -137,7 +137,7 @@ character in a neon-lit cityscape. Reference video drives all motion; prompt set
 **Motion transfer:** Upload a reference video → model extracts the exact motion path and applies it to a new character or scene
 **Use when:** You need complex multi-reference generation, or you want deterministic control over how a clip starts and ends
 
-```
+```text
 Example use case: 5 reference images (2 characters, 1 outfit, 1 location, 1 prop) →
 a single coherent scene where all elements appear correctly.
 → Kling O1 Video
@@ -182,7 +182,7 @@ a single coherent scene where all elements appear correctly.
 **Use when:** You need a real-feeling scene with a person as the focal point and don't need the longer duration or audio of 3.0
 **Prompt note:** Works beautifully with Dolly In, Arc, and Head Tracking controls
 
-```
+```text
 Example use case: A woman receives unexpected news at a café — close-up reaction shot,
 natural lighting, emotional authenticity needed.
 → Kling 2.6
@@ -211,7 +211,7 @@ natural lighting, emotional authenticity needed.
 
 Use this format when prompting dialogue scenes with multiple speakers, sound effects, and ambient audio:
 
-```
+```text
 [Speaker: Character Name] "dialogue" in a [warm/confident/excited] [male/female] voice with [accent].
 Add [sound: footsteps / rain / door closing] when [action].
 Background ambient: [environment description].
@@ -223,7 +223,7 @@ Background ambient: [environment description].
 
 Use this format for multi-shot sequences with per-shot control:
 
-```
+```text
 Shot 1 ([Xs]): [Wide establishing shot]. Camera: static.
 Shot 2 ([Xs]): [Medium shot, action begins]. Camera: slow push in.
 Shot 3 ([Xs]): [Close-up, reaction or detail]. Camera: static.
@@ -239,7 +239,7 @@ Shot 4 ([Xs]): [Resolution]. Camera: tracking / pull back.
 **Use when:** The scene is about spectacle, scale, or physics-heavy action
 **Prompt note:** Pairs perfectly with Crane Up, 360 Orbit, and Super Dolly Out
 
-```
+```text
 Example use case: A skyscraper collapse scene from street level — massive scale, chaos,
 debris, crowd fleeing.
 → Sora 2
@@ -254,7 +254,7 @@ debris, crowd fleeing.
 **Use when:** The visual style matters more than strict realism
 **Prompt note:** Pair with Abstract or Anamorphic visual style for best results
 
-```
+```text
 Example use case: A watercolor-style fantasy warrior emerging from mist.
 → Wan 2.5
 ```
@@ -290,7 +290,7 @@ The defining feature of Seedance 2.0 is its multimodal input system. Every gener
 
 The model reads each asset's role from your prompt. A bare `@Image1` with no instruction is weak — always assign a job:
 
-```
+```text
 @Image1's character as the subject
 @Image2 as the background/environment lock
 @Image3 as the last frame

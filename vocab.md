@@ -122,6 +122,7 @@ Specifying each layer separately prevents the multi-motion overload failure mode
 - **Abstract** — surreal, non-representational, artistic
 
 ### Color Grade Language
+
 | Mood | Description |
 |------|-------------|
 | Blockbuster | Teal shadows, orange highlights, high contrast |
