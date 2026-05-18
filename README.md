@@ -45,7 +45,6 @@ Upload `SKILL.md` (root) as your project instruction base. Upload files from `sk
 ├── README.md                         ← This file
 ├── CHANGELOG.md                      ← Version history
 ├── CONTRIBUTING.md                   ← Contribution guidelines
-├── USER-GUIDE.pdf                    ← Exported user guide
 ├── .markdownlint.json                ← Linter config (CHANGELOG convention silencing — v3.6.1)
 ├── model-guide.md                    ← Model comparison tables + decision flowchart
 ├── image-models.md                   ← Image model reference + pricing tiers
@@ -59,6 +58,7 @@ Upload `SKILL.md` (root) as your project instruction base. Upload files from `sk
 │   ├── filter-memory.json            ← Content filter memory (seeded)
 │   └── quality-memory.json           ← Quality failure memory (seeded)
 ├── docs/                             ← Extended reference documents
+│   ├── user-guide/                   ← Exported USER-GUIDE.pdf + version baselines
 │   └── pdf-audit/                    ← PDF integration audit reports (v3.4.0, v3.6.0)
 ├── templates/                        ← 10 annotated genre-specific prompt templates
 │   ├── 01-cinematic-action-chase.md

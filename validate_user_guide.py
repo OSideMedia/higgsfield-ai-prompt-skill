@@ -14,8 +14,8 @@ that the refactor itself parameterized.
 This script enforces that expectation. Run it whenever you regenerate
 USER-GUIDE.pdf to catch unintended drift. Compares two PDFs:
 
-  - The frozen baseline:   USER-GUIDE.pdf.baseline-v<X.Y.Z>
-  - The new candidate:     USER-GUIDE.pdf  (just regenerated)
+  - The frozen baseline:   docs/user-guide/USER-GUIDE.pdf.baseline-v<X.Y.Z>
+  - The new candidate:     docs/user-guide/USER-GUIDE.pdf  (just regenerated)
 
 WHAT COUNTS AS AN ALLOWED CHANGE
 --------------------------------
@@ -59,8 +59,8 @@ through deliberate hand edits to generate_user_guide.py, then this
 script gets re-baselined to match the new shipped PDF.
 
 Baseline files are committed to git alongside the release that produced
-them, matching the existing tracking pattern for USER-GUIDE.pdf. The
-"PDF tracks version" invariant has a corresponding "baseline is tracked"
+them, matching the existing tracking pattern for docs/user-guide/USER-GUIDE.pdf.
+The "PDF tracks version" invariant has a corresponding "baseline is tracked"
 invariant.
 
 VALIDATION LAYERS
@@ -82,8 +82,8 @@ USAGE
   python3 validate_user_guide.py [baseline_path] [candidate_path]
 
 Defaults:
-  baseline_path  = USER-GUIDE.pdf.baseline-v3.6.5
-  candidate_path = USER-GUIDE.pdf
+  baseline_path  = docs/user-guide/USER-GUIDE.pdf.baseline-v3.7.7
+  candidate_path = docs/user-guide/USER-GUIDE.pdf
 
 Exit code 0 = validation passed (no substantive regressions).
 Exit code 1 = substantive content diff detected; review required.
@@ -95,8 +95,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent
-DEFAULT_BASELINE = REPO / "USER-GUIDE.pdf.baseline-v3.7.7"
-DEFAULT_CANDIDATE = REPO / "USER-GUIDE.pdf"
+DEFAULT_BASELINE = REPO / "docs" / "user-guide" / "USER-GUIDE.pdf.baseline-v3.7.7"
+DEFAULT_CANDIDATE = REPO / "docs" / "user-guide" / "USER-GUIDE.pdf"
 
 
 def extract_text(pdf_path):

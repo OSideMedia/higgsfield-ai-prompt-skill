@@ -843,8 +843,8 @@ def build_pdf():
     pdf.set_text_color(100, 100, 100)
     pdf.cell(0, 8, f"Built by {META['author']} | v{META['version']} | {META['updated']} | Platform: higgsfield.ai", align="C")
 
-    pdf.output("USER-GUIDE.pdf")
-    print(f"Generated USER-GUIDE.pdf ({pdf.page_no()} pages)")
+    pdf.output("docs/user-guide/USER-GUIDE.pdf")
+    print(f"Generated docs/user-guide/USER-GUIDE.pdf ({pdf.page_no()} pages)")
 
 
 if __name__ == "__main__":
