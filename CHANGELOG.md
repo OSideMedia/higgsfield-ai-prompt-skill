@@ -1,5 +1,85 @@
 # Changelog
 
+## v3.7.12 — 2026-05-18
+
+Single-arc release closing the v3.7.7-deferred USER-GUIDE.pdf modernization arc. Brings the user-facing PDF current with five releases of skill content (v3.7.7 production-benchmarks + Seedance depth + Soul depth + new template subdirectories; v3.7.8 higgsfield-stack sub-skill; v3.7.9 worked end-to-end example; v3.7.10 preflight discipline; v3.7.11 plausibility-over-verification + two-step preflight + aspect-ratio enum/style separation + dispatcher pre-delivery checklist). Net change: two NEW PDF sections (Section 4 execution-surface choice + preflight; Section 9 production-quality iteration anchors), six EXTEND sections (3 forward-ref, 12 +3 subsections, 14 +2 subsections, 17 +2 subsections, 20 +1 subsection, 24 row deltas, 25 FAQ rewrite + new Q&A), 20-section renumbering (4→5 through 23→25), full SUB_SKILL_DESCRIPTIONS dict refresh, RuntimeError blocker resolved, two inherited v3.7.11 content errors corrected.
+
+Returns to single-arc cadence per v3.7.11 closeout commitment.
+
+### Pre-existing RuntimeError resolved
+
+`generate_user_guide.py` would have failed at line 798 (out-of-sync dict-vs-filesystem check) since v3.7.8 shipped — `discover_sub_skills()` returns 21 entries (includes higgsfield-stack added v3.7.8), `SUB_SKILL_DESCRIPTIONS` declared only 20. Not noticed across v3.7.8 / v3.7.9 / v3.7.10 / v3.7.11 because none of those releases regenerated the PDF. The Phase 1 inventory caught the latent bug; v3.7.12 fixes it as sub-phase 2A.
+
+### Added
+
+- **NEW Section 4 — "Running the Prompt — CLI / MCP / Bundled Skills / Paste"** (~58 PDF lines). Opens with the layer split ("This skill writes prompts. Higgsfield runs them."). Subsection "The four execution surfaces" names each surface verbatim — Higgsfield CLI (with `higgsfield auth login` and the long-lived-API-tokens-vs-OAuth mechanism that earns the Claude Code / Codex recommendation), Higgsfield MCP custom connector (`mcp.higgsfield.ai/mcp`), Higgsfield bundled skills (`npx skills add higgsfield-ai/skills`, `/higgsfield:generate`), paste-into-higgsfield.ai (always-works fallback). Coexistence callout names the shared-credit-pool + plan-tier-not-surface framing for all four surfaces. Subsection "Pre-Flight: check cost before you generate" presents the two-step pattern (schema verify then cost estimate) with the editorial framing of plausibility-over-verification ("Claude knows enough about Higgsfield to sound right without actually being right") and a 3-column table showing the verbatim MCP and CLI commands for each step. Adjustments-block note + Marketing Studio caveat callout close the section.
+
+- **NEW Section 9 — "What 'Production Quality' Costs — Iteration Anchors"** (~95 PDF lines, two pages of body). Opens with "Production-grade AI cinema runs on iteration." Subsections: headline numbers (108,859 generations / 14 days / 15-person team / ~$400K generation cost / ~$500K total / ~$50M traditional-VFX equivalent ≈ 1% of baseline); acceptance-rate anchors table (5 rows, quadruple-confirmed at 1.0% image / 1.5% video) + callout summarizing the planning rule; per-character iteration anchor (~600 Soul Cinema + ~200 GPT Image 2 = ~800 generations for the Hell Grind lead); per-shot iteration anchor (Prompt 21C: 72 generations for one 10-second establishing shot); iteration-budget projection (a single Kling 3.0 8s 16:9 std generation costs 16 credits; at 1.5% acceptance, 67 attempts × 16 credits ≈ 1,000 credits per finished shot); AI-vs-traditional anchors table (Chuck Russell / Patrick Kalin / Jamafe, 3 rows); 5-criterion falsifiable success rubric; closing callout (preflight by credit-per-keeper, not credit-per-attempt).
+
+- **Section 3 (How to Install) forward-reference** — closing paragraph pointing readers at Section 4 for the four execution paths.
+
+- **Section 12 (Prompting Best Practices) three new subsections** — "Aspect Ratio Is an Enum (Anamorphic is NOT Output Ratio)" (paragraph + 2-row Concern/Where it belongs/Bound by table); "Frame Coordinate System (Seedance)" (qualitative + percentage notation paragraphs, code_block example, directorial-intent-not-guarantee closing); "Spatial Layout Block (multi-character)" (block-structure paragraph + 6-bullet field list + when-to-use closing).
+
+- **Section 14 (Character Sheet Creation) two new subsections + sub-bullet** — "Character Anchor Block (per-shot, 10 attributes)" (build-time-vs-shot-time framing + 10-attribute bullet list verbatim from skills/higgsfield-soul/SKILL.md, closing paragraph naming Spatial Layout Block in Section 12); "Two-Tool Refinement — Soul Cinema + GPT Image 2" (two paragraphs cross-referencing Section 9's per-character iteration anchor); Multi-Form State Tracking sub-bullet pointing at the higgsfield-soul sub-skill.
+
+- **Section 17 (Genre Templates) two new subsections** — "Technique templates (Seedance multi-character coordination)" (4-row table for `top-down-map.md` / `multi-character-anchor.md` / `single-character-position.md` / `worked-example-two-character.md`); "Text-overlay templates" (3-row table for `slogan.md` / `subtitle.md` / `speech-bubble.md`).
+
+- **Section 20 (Troubleshooting) new subsection** — "Seedance Failure Modes — Named Catalog" (8-row Failure mode / What you see / Counter table covering FPS drift, frame-level review, failed-generation salvage, NSFW false-positive, keyframe-forces-invention, physics-state-anchor, multi-motion overload, spatial-awareness failure; counter for spatial-awareness references Section 12's Spatial Layout Block). Closing callout points at sub-skill file for full worked-example deep dives.
+
+- **Section 24 (Repository Contents) four Root Files row deltas** — SKILL.md description CORRECTED from "Model selection guide (routes model questions)" to "Main dispatcher -- routes requests to the right sub-skill" (the prior text was a content error, mistaking root SKILL.md for skills/higgsfield-models/SKILL.md). Three new rows added: DISCIPLINE.md ("Cross-cutting discipline patterns (workflow / output / architectural)"), production-benchmarks.md ("Iteration anchors + Hollywood-validator cost comparisons"), photodump-presets.md ("29 Photodump style presets"). CLAUDE.md and CONTRIBUTING.md deliberately not added (engineering-facing, not end-user content).
+
+- **Section 25 (FAQ) rewrite + new Q&A** — "What changed since v3.0.0?" answer rewritten to span v3.0.0 → v3.7.12 with named themes per era (install-path simplification → metadata refactor → audit-corpus mega-releases → stack-integration arc → this USER-GUIDE refresh). New Q&A inserted: "Do I need the Higgsfield CLI installed?" — answers No, names the four execution paths, cross-references Section 4. Existing FAQ entries unchanged.
+
+- **`docs/user-guide/USER-GUIDE.pdf.baseline-v3.7.12`** (52,711 bytes, 28 pages) added alongside the retained `USER-GUIDE.pdf.baseline-v3.7.7` (19 pages) — baselines accumulate per repo convention.
+
+### Corrections — inherited v3.7.11 content errors
+
+The dogfooding-discipline-as-method that justified the v3.7.11 mega-release applies recursively. Composing v3.7.12's Section 9 (iteration-budget projection) surfaced two inherited content errors in v3.7.11's `skills/higgsfield-stack/SKILL.md`, both fixed in v3.7.12 by the same plausibility-over-verification discipline v3.7.11 introduced. Same release that named the discipline is the one whose author tripped it; v3.7.12 catches both by following the discipline.
+
+- **Math error in § Iteration-budget projection.** v3.7.11 wrote "roughly 67 credits of preflighted spend on average to land one keeper." The math is wrong — 1/0.015 ≈ 67 is the number of attempts, not credits. At 16 credits per attempt on Kling 3.0 8s 16:9 std, per-keeper cost is roughly 1,000 credits. v3.7.12 corrects to "roughly 67 attempts on average to land one keeper — at 16 credits per attempt, that's about 1,000 credits per finished shot." Plausibility-over-verification surface: "67" was the right number in the calculation chain, just attached to the wrong unit. The arithmetic chain was never run end-to-end.
+
+- **Surface-count inconsistency in § Plan tier, not surface.** v3.7.11 wrote "All three surfaces share one credit pool and one job queue" — a holdover from when paste-into-higgsfield.ai wasn't treated as a peer of CLI / MCP / bundled-skills. All four surfaces share the credit pool and queue in fact; v3.7.12 corrects to "All four surfaces share one credit pool and one job queue" and lists all four explicitly.
+
+`skills/higgsfield-stack/SKILL.md` frontmatter version bumped 1.2.0 → 1.2.1 (patch — content corrections, no API change).
+
+### Changed
+
+- **`generate_user_guide.py`** — 20-section renumbering 4→5 through 23→25 across the TOC list, section_title() calls, comment markers, and one body cross-reference ("See I2V Gate rule in Section 10" → "Section 12"). Module docstring "Section 22" reference → "Section 24"; module docstring "v3.6.5" provenance reference refreshed to acknowledge the v3.7.12 dict refresh. TOC rendering switched from `pdf.v3_tag()` to `pdf.new_tag()` — corrects v3.7.12 NEW markers from rendering as " v3.0 " green badges (a v3.0-era artifact) to generic blue " NEW " badges. Body-level `pdf.v3_tag()` calls inside Sections 11 (CS 3.0), 12 (Seedance Best Practices), 13 (Soul ID), 20 (CS 3.0 Diagnostic Tree) retained — those correctly tag v3.0-era platform features being described.
+
+- **`SUB_SKILL_DESCRIPTIONS` dict** — three entries: ADD `higgsfield-stack` ("CLI / MCP / bundled-skills coexistence + two-step preflight", 57 chars, inserted between `higgsfield-soul` and `higgsfield-audio` to preserve existing dict order); REFRESH `higgsfield-soul` ("Soul ID + Character Anchor Block + Two-Tool Refinement Pipeline", 63 chars — gains v3.7.7 Anchor Block + Two-Tool Pipeline, loses Soul Cast 3.0 + Soul Cinema CS-default phrasing); REFRESH `higgsfield-seedance` ("Seedance 2.0 + frame coords + spatial layout + named failure modes", 66 chars — gains v3.7.7 Frame Coordinate System + Spatial Layout + FAILURE-MODES, loses "working modes" + "content-filter preflight" phrasing). All 18 other entries unchanged. All 21 entries verified at or under the 71-char column ceiling.
+
+- **`skills/higgsfield-stack/SKILL.md`** — frontmatter version 1.2.0 → 1.2.1; § Iteration-budget projection math corrected; § Plan tier, not surface surface count corrected (see Corrections above).
+
+- **`validate_user_guide.py`** — `DEFAULT_BASELINE` retargeted from `USER-GUIDE.pdf.baseline-v3.7.7` to `USER-GUIDE.pdf.baseline-v3.7.12`; docstring Defaults example updated to match. v3.7.7 baseline file retained per accumulation convention.
+
+- **Root `SKILL.md` frontmatter** — version 3.7.11 → 3.7.12. `updated:` 2026-05-18 (same-day cascade).
+
+- **`README.md`** — version badge 3.7.11 → 3.7.12, footer 3.7.11 → 3.7.12.
+
+- **`docs/user-guide/USER-GUIDE.pdf`** — regenerated. 19 pages → 28 pages (+9 pages). 33,679 bytes → 52,711 bytes (+56% file size).
+
+### Verification
+
+- `python3 generate_user_guide.py` — exit clean, prints `Generated docs/user-guide/USER-GUIDE.pdf (28 pages)`. No RuntimeError, no warnings.
+- `python3 validate_user_guide.py` against new v3.7.12 baseline — Layer 0 (`SUB_SKILL_DESCRIPTIONS` ceiling check) PASS: all 21 entries ≤ 71 chars (longest: 71). Layer 1 (text-extract diff) PASS: no substantive differences after version/date/count normalization. Layer 2 (binary diff) PASS: byte-for-byte match (candidate = baseline copy).
+- `python3 validate.py` — ALL CHECKS PASSED. No broken refs introduced by the dict edit, the Section 24 row updates, or the v3.7.12 frontmatter cascade.
+- TOC text-extract from regenerated PDF — 25 items, NEW markers exactly on Section 4 and Section 9, prior NEW markers on Sections 11 (CS 3.0) and 12 (Seedance Best Practices) stripped as expected.
+- `SUB_SKILL_DESCRIPTIONS` dict-vs-filesystem parity check — both sides 21 entries, no missing or extra.
+- Page count delta vs baseline v3.7.7: 19 → 28 (+9 pages), consistent with two NEW sections + six EXTEND deltas. Came in under the inventory's optimistic 32–36-page estimate because FPDF packs content denser than the estimate assumed; net content gain matches scope.
+- All CLI commands, MCP tool shapes, model IDs, and platform vocabulary in Section 4 cross-referenced against v3.7.10 / v3.7.11 live-verified syntax logs (no invented strings).
+
+### Scope acknowledgment
+
+Arc A scope (hand-edit hardcoded content to bring current; preserve editorial voice; no generator architectural change). Arc B (extract content from skill files into markdown-rendered PDF) and Arc C (extract structural data into config) considered and deliberately not pursued — the PDF's editorial voice is intentionally distinct from the skill files' technical voice, and an automated content-extraction pipeline would lose that distinction. v3.7.12 closes the "PDF modernization is the deferred dedicated arc" framing that v3.7.7 / v3.7.8 / v3.7.9 / v3.7.10 / v3.7.11 all cited. Future content drift addressed per release cadence (touch the PDF only when content-affecting changes ship in the same release).
+
+In-release skill-file edits beyond root SKILL.md frontmatter (Phase 2 DO-NOT list override): the math-error and surface-count corrections in `skills/higgsfield-stack/SKILL.md` were discovered while composing Section 9, and fixing only the PDF would have left Claude producing wrong math at runtime while the human reads right math in the guide. Path 3 (fix both) chosen over Path 1 (PDF only) — keeping the agent and the documentation consistent. Both corrections cited in Corrections subsection above.
+
+### Backlog — updated
+
+- G1 Soul Cinema two-step compositing — UI testing remains pending (carried from v3.7.5)
+- G13 Seedance `【镜头N】` syntax — Seedance product-team confirmation pending (carried from v3.7.5)
+- USER-GUIDE.pdf modernization — CLOSED in v3.7.12
+
 ## v3.7.11 — 2026-05-18
 
 Mega-release. Fourth one-time exception to the v3.7.7 closeout single-arc commitment, justified by dogfood-corpus continuity from same-day v3.7.10 release-night testing. Five co-headlined sub-phases (CH-1 README correction / CH-2 higgsfield-stack two-step preflight expansion / CH-3 higgsfield-prompt conflict-resolution / CH-4 aspect-ratio reality vs style vocab / CH-5 dispatcher pre-delivery checklist restructure) plus CH-6 DISCIPLINE.md framework-innovation pattern. Single named failure mode unifies the corpus: **plausibility-over-verification**.

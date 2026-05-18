@@ -82,7 +82,7 @@ USAGE
   python3 validate_user_guide.py [baseline_path] [candidate_path]
 
 Defaults:
-  baseline_path  = docs/user-guide/USER-GUIDE.pdf.baseline-v3.7.7
+  baseline_path  = docs/user-guide/USER-GUIDE.pdf.baseline-v3.7.12
   candidate_path = docs/user-guide/USER-GUIDE.pdf
 
 Exit code 0 = validation passed (no substantive regressions).
@@ -95,7 +95,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent
-DEFAULT_BASELINE = REPO / "docs" / "user-guide" / "USER-GUIDE.pdf.baseline-v3.7.7"
+DEFAULT_BASELINE = REPO / "docs" / "user-guide" / "USER-GUIDE.pdf.baseline-v3.7.12"
 DEFAULT_CANDIDATE = REPO / "docs" / "user-guide" / "USER-GUIDE.pdf"
 
 

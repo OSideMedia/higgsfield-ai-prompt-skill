@@ -4,7 +4,7 @@ description: "Use when the user mentions the Higgsfield CLI (binaries `higgsfiel
 user-invocable: true
 metadata:
   tags: [higgsfield, stack, cli, mcp, official-skills, coexistence, handoff, environment]
-  version: 1.2.0
+  version: 1.2.1
   updated: 2026-05-18
   parent: higgsfield
 ---
@@ -71,7 +71,7 @@ Preflight is two steps, not one. The v3.7.10 release named only the second step 
 
 ### Plan tier, not surface, controls queue priority
 
-All three surfaces share one credit pool and one job queue. Queue priority is a function of the user's paid Higgsfield plan tier (Plus / Ultra / Business / Team), not the choice of MCP vs CLI vs bundled skills. Surface choice affects ergonomics and authentication shape, not queue position:
+All four surfaces share one credit pool and one job queue. Queue priority is a function of the user's paid Higgsfield plan tier (Plus / Ultra / Business / Team), not the choice of MCP vs CLI vs bundled skills vs paste-into-website. Surface choice affects ergonomics and authentication shape, not queue position:
 
 - **CLI** is preferred for headless / CI / long-running batches because it uses long-lived API tokens rather than interactive OAuth round-trips. Per Higgsfield's own guidance on `higgsfield.ai/mcp`: "If you are using Claude Code or Codex, it's better to use the CLI."
 - **MCP** is preferred for conversational generation inside claude.ai web, the Claude desktop app, or Claude Code in interactive mode — single OAuth, no token management.
@@ -92,7 +92,7 @@ Skip preflight surfacing for one-off image generation on a cheap model, or when 
 
 ### Iteration-budget projection (production-benchmarks tie-in)
 
-When surfacing preflight cost, contextualize it against the acceptance-rate anchors in `production-benchmarks.md`. A single Kling 3.0 8s generation at 16:9 std mode costs 16 credits; the 1.5% video-acceptance anchor implies roughly 67 credits of preflighted spend on average to land one keeper. Multiply by shot count for multi-shot sequences. The discipline isn't to surface the multiplied number every time — it's to make sure the user is reading single-shot cost in the context of iteration cost, not as an absolute. This is the same anchor that justifies the preflight pattern in the first place: iteration burn is the work, not the failure, and preflight is how you keep the burn visible.
+When surfacing preflight cost, contextualize it against the acceptance-rate anchors in `production-benchmarks.md`. A single Kling 3.0 8s generation at 16:9 std mode costs 16 credits; the 1.5% video-acceptance anchor implies roughly 67 attempts on average to land one keeper — at 16 credits per attempt, that's about 1,000 credits per finished shot. Multiply by shot count for multi-shot sequences. The discipline isn't to surface the multiplied number every time — it's to make sure the user is reading single-shot cost in the context of iteration cost, not as an absolute. This is the same anchor that justifies the preflight pattern in the first place: iteration burn is the work, not the failure, and preflight is how you keep the burn visible.
 
 ---
 

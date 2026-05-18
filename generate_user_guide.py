@@ -2,9 +2,10 @@
 """Generate USER-GUIDE.pdf for Higgsfield AI Prompt Skill.
 
 Version metadata is read from the root SKILL.md frontmatter at build time.
-Sub-skill list at Section 22 is discovered by filesystem walk of skills/.
+Sub-skill list at Section 24 is discovered by filesystem walk of skills/.
 Per-sub-skill description text remains hardcoded in SUB_SKILL_DESCRIPTIONS
-below to preserve the v3.6.5 PDF's editorial summaries.
+below to preserve the PDF's editorial voice (entries refreshed at v3.7.12
+to add higgsfield-stack and update higgsfield-soul + higgsfield-seedance).
 """
 
 import re
@@ -70,7 +71,8 @@ SUB_SKILL_DESCRIPTIONS = {
     "higgsfield-camera":      "Camera controls + One-Move Rule + Smart Mode + @Video reference",
     "higgsfield-motion":      "Motion presets + intent-first choreography",
     "higgsfield-style":       "Visual styles + One Style Anchor Rule",
-    "higgsfield-soul":        "Soul ID + Soul Cast 3.0 + Soul Cinema (CS 3.0/3.5 default image model)",
+    "higgsfield-soul":        "Soul ID + Character Anchor Block + Two-Tool Refinement Pipeline",
+    "higgsfield-stack":       "CLI / MCP / bundled-skills coexistence + two-step preflight",
     "higgsfield-audio":       "Audio prompting + CS 3.0 native audio (SCELA)",
     "higgsfield-apps":        "One-click Apps guide (80+)",
     "higgsfield-recipes":     "Genre templates",
@@ -82,7 +84,7 @@ SUB_SKILL_DESCRIPTIONS = {
     "higgsfield-cinema":      "Cinema Studio 2.5 + 3.0 + 3.5 (Soul Cast, Image Mode, Cinematic models)",
     "higgsfield-recall":      "Pre-generation memory check",
     "higgsfield-vibe-motion": "Vibe Motion / motion graphics",
-    "higgsfield-seedance":    "Seedance 2.0 prompt director + working modes + content-filter preflight",
+    "higgsfield-seedance":    "Seedance 2.0 + frame coords + spatial layout + named failure modes",
     "higgsfield-workspaces":  "Workspace-first decision layer",
 }
 
@@ -236,32 +238,34 @@ def build_pdf():
         "1. What Is This?",
         "2. What Can It Do?",
         "3. How to Install",
-        "4. Quick Start -- Your First Prompt",
-        "5. The MCSLA Formula",
-        "6. Choosing a Model",
-        "7. Generation Types",
-        "8. Cinema Studio 2.5",
-        "9. Cinema Studio 3.0 (Business/Team Plan)  NEW",
-        "10. Prompting Best Practices (Seedance 2.0)  NEW",
-        "11. Soul ID -- Character Consistency",
-        "12. Character Sheet Creation",
-        "13. Identity vs. Motion Separation",
-        "14. Genre Recipes",
-        "15. Genre Templates",
-        "16. Cinematic Image Prompts",
-        "17. Negative Constraints Reference",
-        "18. Troubleshooting",
-        "19. Top Tips",
-        "20. Memory System (Advanced)",
-        "21. Cinema Studio Advanced Features",
-        "22. Repository Contents",
-        "23. FAQ",
+        "4. Running the Prompt -- CLI / MCP / Bundled Skills / Paste  NEW",
+        "5. Quick Start -- Your First Prompt",
+        "6. The MCSLA Formula",
+        "7. Choosing a Model",
+        "8. Generation Types",
+        "9. What 'Production Quality' Costs -- Iteration Anchors  NEW",
+        "10. Cinema Studio 2.5",
+        "11. Cinema Studio 3.0 (Business/Team Plan)",
+        "12. Prompting Best Practices (Seedance 2.0)",
+        "13. Soul ID -- Character Consistency",
+        "14. Character Sheet Creation",
+        "15. Identity vs. Motion Separation",
+        "16. Genre Recipes",
+        "17. Genre Templates",
+        "18. Cinematic Image Prompts",
+        "19. Negative Constraints Reference",
+        "20. Troubleshooting",
+        "21. Top Tips",
+        "22. Memory System (Advanced)",
+        "23. Cinema Studio Advanced Features",
+        "24. Repository Contents",
+        "25. FAQ",
     ]
     for item in toc:
         if "NEW" in item:
             pdf.set_font("Helvetica", "", 11)
             pdf.cell(150, 7, item.replace("  NEW", ""))
-            pdf.v3_tag()
+            pdf.new_tag()
             pdf.ln(7)
         else:
             pdf.set_font("Helvetica", "", 11)
@@ -316,8 +320,101 @@ def build_pdf():
     pdf.bullet("Upload the main SKILL.md file as your project instruction base")
     pdf.bullet("Upload individual sub-skill files from the skills/ directory as project documents")
 
-    # --- 4. QUICK START ---
-    pdf.section_title("4. Quick Start -- Your First Prompt")
+    pdf.ln(3)
+    pdf.body_text(
+        "Once the skill is installed, you'll need to know where to run the prompts it produces. "
+        "See Section 4 for the four execution paths.")
+
+    # --- 4. RUNNING THE PROMPT --- NEW SECTION (v3.7.12) ---
+    pdf.add_page()
+    pdf.section_title("4. Running the Prompt -- CLI / MCP / Bundled Skills / Paste")
+    pdf.new_tag()
+    pdf.ln(5)
+    pdf.body_text(
+        "This skill writes prompts. Higgsfield runs them. The two halves are separate by "
+        "design -- Claude does prompt construction and production discipline; Higgsfield "
+        "handles auth, file upload, job submission, and result delivery. Once Claude has "
+        "produced a prompt for you, you have four ways to actually run it.")
+
+    pdf.subsection_title("The four execution surfaces")
+
+    pdf.bold_text("Higgsfield CLI (terminal-native)")
+    pdf.body_text(
+        "Command-line tool for terminal-native agents -- Claude Code, Codex, Cursor. "
+        "Authenticate with `higgsfield auth login` (device flow). If you're working in Claude "
+        "Code or Codex, prefer the CLI over the MCP -- it uses long-lived API tokens rather "
+        "than the MCP's interactive OAuth, which holds up better in headless and scripted "
+        "contexts. Install via Homebrew (`brew install higgsfield-ai/tap/higgsfield`) or the "
+        "install script at the `higgsfield-ai/cli` GitHub repo.")
+
+    pdf.bold_text("Higgsfield MCP custom connector")
+    pdf.body_text(
+        "MCP connector for claude.ai web and the Claude desktop app. Separate product from "
+        "the CLI. Connector URL: `https://mcp.higgsfield.ai/mcp`. Install via claude.ai "
+        "Settings -> Connectors -> Add custom connector. Single OAuth sign-in, no token "
+        "management. Best fit for conversational generation inside the Claude desktop app "
+        "or claude.ai web.")
+
+    pdf.bold_text("Higgsfield bundled skills")
+    pdf.body_text(
+        "Markdown skill bundle for agents that consume Cowork-style skills. Three skills: "
+        "`higgsfield-generate`, `higgsfield-soul`, `higgsfield-product-photoshoot`. Install "
+        "via `npx skills add higgsfield-ai/skills`. Invoke with `/higgsfield:generate`. All "
+        "three drive the CLI under the hood, so they inherit the CLI's auth model and "
+        "behavior.")
+
+    pdf.bold_text("Paste into higgsfield.ai (no install required)")
+    pdf.body_text(
+        "The always-works fallback. Copy the prompt Claude produced, paste into "
+        "higgsfield.ai, and generate. No CLI, no MCP, no skill package -- works on any plan, "
+        "any device. Slower for iteration than the other three, but the path with zero "
+        "install overhead.")
+
+    pdf.callout(
+        "All four surfaces share one credit pool and one job queue. Queue priority is your "
+        "plan tier (Plus / Ultra / Business / Team), NOT the choice of surface. Pick the "
+        "surface that matches your environment, not the queue you imagine.")
+
+    pdf.subsection_title("Pre-Flight: check cost before you generate")
+    pdf.body_text(
+        "Preflight is two steps -- verify the model's parameter schema first, then estimate "
+        "the cost. Why it matters: production-grade work runs at roughly 1% image and 1.5% "
+        "video acceptance (see Section 9), so iteration burn is real and preflight catches "
+        "the easy mistakes (wrong aspect-ratio value, invalid model param) before credit "
+        "burn.")
+
+    pdf.body_text(
+        "Claude knows enough about Higgsfield to sound right without actually being right. "
+        "Verification surfaces are sitting right there -- the CLI's `model get` command, the "
+        "MCP's `models_explore` tool -- and they're cheap. Use them before the cost call, "
+        "not after a failed submission.")
+
+    w_pf = [25, 75, 70]
+    pdf.table_row(["Step", "MCP", "CLI"], w_pf, bold=True, fill=True)
+    pdf.table_row(
+        ["1. Schema verify",
+         'models_explore(action="get", model_id="<model>")',
+         "higgsfield model get <model>"],
+        w_pf)
+    pdf.table_row(
+        ["2. Cost estimate",
+         "generate_image / generate_video with get_cost: true",
+         "higgsfield generate cost <model> [--param value]..."],
+        w_pf)
+    pdf.ln(3)
+
+    pdf.body_text(
+        "The MCP response to `get_cost: true` includes an `adjustments` block listing any "
+        "optional parameters the server defaulted on your behalf (e.g. `mode=std`, "
+        "`sound=on`). Surface those alongside the credit number when you preflight -- "
+        "they're part of the preflight contract.")
+
+    pdf.callout(
+        "Marketing Studio models don't support `get_cost` cost preflight. For those, check "
+        "your `balance` before and after the run instead.")
+
+    # --- 5. QUICK START ---
+    pdf.section_title("5. Quick Start -- Your First Prompt")
     pdf.body_text("Just tell Claude what you want. Be as casual or specific as you like.")
     pdf.bold_text("Casual request:")
     pdf.code_block('"Write me a Higgsfield prompt for a woman walking through a foggy forest at dawn"')
@@ -325,9 +422,9 @@ def build_pdf():
     pdf.bold_text("More specific request:")
     pdf.code_block('"I need a Kling 3.0 prompt for a close-up dialogue scene between two characters\nin a coffee shop. Warm lighting, shallow depth of field, handheld camera."')
 
-    # --- 5. MCSLA FORMULA ---
+    # --- 6. MCSLA FORMULA ---
     pdf.add_page()
-    pdf.section_title("5. The MCSLA Formula")
+    pdf.section_title("6. The MCSLA Formula")
     pdf.body_text("Every prompt is built on five layers -- the cinematographer's checklist:")
     w = [15, 25, 130]
     pdf.table_row(["Letter", "Layer", "Example"], w, bold=True, fill=True)
@@ -339,8 +436,8 @@ def build_pdf():
     pdf.ln(3)
     pdf.callout("You don't need to specify all five layers every time. Claude fills in sensible defaults for anything you leave out.")
 
-    # --- 6. CHOOSING A MODEL ---
-    pdf.section_title("6. Choosing a Model")
+    # --- 7. CHOOSING A MODEL ---
+    pdf.section_title("7. Choosing a Model")
     pdf.subsection_title("Video Models")
     w = [85, 85]
     pdf.table_row(["What you're making", "Best model"], w, bold=True, fill=True)
@@ -375,17 +472,132 @@ def build_pdf():
     for r in irows:
         pdf.table_row(list(r), w)
 
-    # --- 7. GENERATION TYPES ---
+    # --- 8. GENERATION TYPES ---
     pdf.add_page()
-    pdf.section_title("7. Generation Types")
+    pdf.section_title("8. Generation Types")
     pdf.subsection_title("Text-to-Video (T2V)")
     pdf.body_text("Describe the scene from scratch. No input image needed. Best for establishing shots, environments, abstract concepts.")
     pdf.subsection_title("Image-to-Video (I2V)")
     pdf.body_text("Upload a still image and describe what should move or change. Best for character consistency, product shots, bringing storyboards to life.")
-    pdf.callout("Key rule for I2V: Do NOT re-describe what's already in the image. Only describe what should change or animate. (See I2V Gate rule in Section 10.)")
+    pdf.callout("Key rule for I2V: Do NOT re-describe what's already in the image. Only describe what should change or animate. (See I2V Gate rule in Section 12.)")
 
-    # --- 8. CINEMA STUDIO 2.5 ---
-    pdf.section_title("8. Cinema Studio 2.5")
+    # --- 9. WHAT 'PRODUCTION QUALITY' COSTS --- NEW SECTION (v3.7.12) ---
+    pdf.add_page()
+    pdf.section_title("9. What 'Production Quality' Costs -- Iteration Anchors")
+    pdf.new_tag()
+    pdf.ln(5)
+    pdf.body_text(
+        "Production-grade AI cinema runs on iteration. This section gives one production team's "
+        "actual numbers -- credits spent, generations rejected, dollars deployed -- as planning "
+        "anchors for your own work. Most public framing of AI-cinema cost either understates "
+        "iteration burn (highlight reels only) or overstates it (worst-case anchoring without "
+        "context); the numbers below are the source-of-truth alternative for budget planning. "
+        "Source: Higgsfield's 'Road to Cannes' three-episode documentary on the Hell Grind "
+        "90-minute Cannes feature.")
+
+    pdf.subsection_title("The headline numbers")
+    pdf.bullet("108,859 generations across 14 days")
+    pdf.bullet("9,540,047 credits consumed (against a 10M-credit budget set on Day 1)")
+    pdf.bullet("~$400,000 generation cost; ~$500,000 total project cost (generation + 15-person team + audio + post)")
+    pdf.bullet("Traditional-VFX-equivalent estimate for the same scope: ~$50M -- placing the AI production at roughly 1% of traditional baseline")
+    pdf.bullet("15-person team -- fourteen directors/DPs/editors plus one supervising lead")
+
+    pdf.subsection_title("Acceptance-rate anchors (quadruple-confirmed)")
+    pdf.body_text(
+        "Across the production, the image acceptance rate sits at roughly 1.0% and the video "
+        "acceptance rate at roughly 1.5%. Four independently-sourced data points across the "
+        "three-episode documentary confirm this range:")
+    w_ar = [60, 65, 45]
+    pdf.table_row(["Source", "Sample", "Rate"], w_ar, bold=True, fill=True)
+    pdf.table_row(["Ep. 1 funnel (prior project)", "107 images used / 10,710 generated", "1.00% image"], w_ar)
+    pdf.table_row(["Ep. 1 funnel (prior project)", "253 videos used / 16,181 generated", "1.56% video"], w_ar)
+    pdf.table_row(["Ep. 2 audience anchor", "'1 in 64 video, 1 in 100 image'", "~1.5% / ~1.0%"], w_ar)
+    pdf.table_row(["Day-4 session actuals", "800 generated / 8 made final", "1.0% (image-dominant)"], w_ar)
+    pdf.table_row(["Full project (Ep. 3 wrap)", "108,859 generations / 90 min finished", "comparable funnel"], w_ar)
+    pdf.ln(3)
+    pdf.callout(
+        "Treat 1.0% image and 1.5% video as the conservative planning anchor for "
+        "production-grade AI-cinema work. Budget for the iteration burn -- it IS the work, "
+        "not the failure.")
+
+    pdf.subsection_title("Per-character iteration anchor")
+    pdf.body_text(
+        "Single-character anchor work absorbs disproportionate iteration cost up front, because "
+        "the character is then reused across every subsequent shot -- investment compounds "
+        "forward. For Hell Grind's lead character ('Jack'):")
+    pdf.bullet("~600 generations on Higgsfield Soul Cinema (initial pose / costume / expression variations)")
+    pdf.bullet("~200 generations on GPT Image 2 (refinement editing of selected anchors)")
+    pdf.bullet("~800 total iterations to lock the character anchor sheet BEFORE any narrative shot generation began")
+    pdf.ln(2)
+    pdf.body_text(
+        "Plan character-anchor budgets accordingly. A character appearing in tens of shots can "
+        "justify the front-loaded ~800-iteration investment; a character appearing in one or two "
+        "shots cannot.")
+
+    pdf.subsection_title("Per-shot iteration anchor")
+    pdf.body_text(
+        "Single-shot iteration cost varies widely with shot complexity, scene physics, and how "
+        "clean the reference assets are. One worked example from the production:")
+    pdf.bullet("Prompt 21C, a 10-second establishing shot -- 72 generations before the shot was accepted as final.")
+    pdf.ln(2)
+    pdf.body_text(
+        "Conceptually-simple shots (this one was a single pan plus push-in) can be the most "
+        "iteration-heavy in practice. Budget for the surprise. Use 72-generations-per-10-seconds "
+        "as an upper-bound planning point for a single iteration-heavy establishing shot, not "
+        "as a per-shot average.")
+
+    pdf.subsection_title("Iteration-budget projection")
+    pdf.body_text(
+        "Worked example for sizing a credit budget against a shot: a single Kling 3.0 8s "
+        "generation at 16:9 std mode costs 16 credits. The 1.5% video-acceptance anchor implies "
+        "roughly 67 attempts on average to land one keeper. At 16 credits per attempt, that's "
+        "about 1,000 credits per finished shot. Multiply by shot count for multi-shot sequences.")
+    pdf.body_text(
+        "The discipline isn't to surface the multiplied number every time -- it's to read "
+        "single-shot cost in the context of iteration cost, not as an absolute. Preflight a shot "
+        "by its credit-per-keeper, not by its credit-per-attempt.")
+
+    pdf.subsection_title("AI vs. traditional cost anchors")
+    pdf.body_text(
+        "Three Hollywood validators in the documentary anchor the AI-vs-traditional cost "
+        "comparison for Hell Grind-equivalent scope:")
+    w_val = [38, 55, 55, 22]
+    pdf.table_row(["Validator", "Credentials", "Anchor", "Source"], w_val, bold=True, fill=True)
+    pdf.table_row(["Chuck Russell", "Director (The Mask, Scorpion King)", "~$5M, 25-min live-action equiv", "Ep. 1"], w_val)
+    pdf.table_row(["Patrick Kalin", "Emmy VFX (Avatar, Dune)", "~$15-20M, 25-min VFX-heavy equiv", "Ep. 2"], w_val)
+    pdf.table_row(["Jamafe", "Concept artist (Mandalorian, Avengers)", "Qualitative -- 'watching a movie'", "Ep. 3"], w_val)
+    pdf.ln(3)
+    pdf.body_text(
+        "Russell and Kalin bracket the traditional-equivalent cost at $5-20M for a 25-min "
+        "equivalent, scaling to roughly $50M for the 90-min scope at the VFX-heavy end. The "
+        "Higgsfield team's actual ~$500K total cost sits at roughly 1% of the $50M traditional "
+        "baseline. The bracket matters more than any single number -- the 1% AI-vs-traditional "
+        "ratio is an order-of-magnitude framing, not a precision claim.")
+
+    pdf.subsection_title("Falsifiable success criteria")
+    pdf.body_text(
+        "The production was held to a five-criterion success rubric stated up front, before any "
+        "generation began. Either the finished feature hits the criteria and the AI-cinema "
+        "thesis is proved, or it misses and the result is a catalog of remaining gaps:")
+    pdf.bullet("Viewer stops perceiving AI generation across the full runtime -- the production reads as cinema, not as 'AI work'")
+    pdf.bullet("Narrative coherence -- structured opening, middle, resolution; setups have payoffs")
+    pdf.bullet("Characters register as inhabited people -- not as model-produced figures with the characteristic AI tells")
+    pdf.bullet("Intended emotional beats produce the intended audience response")
+    pdf.bullet("Audience experiences unanticipated emotional impact -- the scenes that surprise beyond the script")
+    pdf.ln(2)
+    pdf.body_text(
+        "When framing your own AI-cinema work, write down the success criteria first. Then ship "
+        "and check them. The binary structure (proved / gaps cataloged) prevents the failure "
+        "mode of post-hoc rationalization -- claiming success regardless of outcome because no "
+        "specific test was committed to up front.")
+
+    pdf.callout(
+        "Plan iteration budget against these anchors, not against highlight reels. Iteration "
+        "burn is the work, not the failure -- preflight your shots by credit-per-keeper, not "
+        "by credit-per-attempt.")
+
+    # --- 10. CINEMA STUDIO 2.5 ---
+    pdf.section_title("10. Cinema Studio 2.5")
     pdf.body_text(
         "Cinema Studio is Higgsfield's professional filmmaking environment. It gives you control over "
         "optical physics, multi-shot sequences, character elements, Soul Cast AI actors, and built-in color grading.")
@@ -413,9 +625,9 @@ def build_pdf():
         "Speed Ramp: Linear, Slow Mo, Speed Up, Impact, Auto, Custom (with editable curve).\n\n"
         "Shot structure: Up to 6 scenes, 12s total max, per-scene config.")
 
-    # --- 9. CINEMA STUDIO 3.0 --- NEW SECTION
+    # --- 11. CINEMA STUDIO 3.0 ---
     pdf.add_page()
-    pdf.section_title("9. Cinema Studio 3.0 (Business/Team Plan)")
+    pdf.section_title("11. Cinema Studio 3.0 (Business/Team Plan)")
     pdf.v3_tag()
     pdf.ln(5)
     pdf.callout("Cinema Studio 3.0 is available exclusively on Business and Team plans. Free and individual plan users should use Cinema Studio 2.5, which remains fully supported.")
@@ -486,9 +698,9 @@ def build_pdf():
         "see the higgsfield-cinema sub-skill."
     )
 
-    # --- 10. PROMPTING BEST PRACTICES --- NEW SECTION
+    # --- 12. PROMPTING BEST PRACTICES ---
     pdf.add_page()
-    pdf.section_title("10. Prompting Best Practices (Seedance 2.0)")
+    pdf.section_title("12. Prompting Best Practices (Seedance 2.0)")
     pdf.v3_tag()
     pdf.ln(5)
     pdf.body_text(
@@ -555,9 +767,73 @@ def build_pdf():
         "'locked-off static camera' instead of 'no shaky camera.' "
         "'sharp focus throughout' instead of 'no blur.'")
 
-    # --- 11. SOUL ID ---
+    pdf.subsection_title("Aspect Ratio Is an Enum (Anamorphic is NOT Output Ratio)")
+    pdf.body_text(
+        "Output aspect ratio is a hard, enumerated platform spec -- Kling 3.0 emits 16:9, 9:16, "
+        "or 1:1 and nothing else. 'Anamorphic' is a cinematography register (anamorphic lens "
+        "flares, letterboxed composition, >2:1 framing aesthetic) that the model can render "
+        "WITHIN any output ratio. Writing '16:9 anamorphic' as a single phrase in the prompt "
+        "body is incoherent -- pick one. Output ratio belongs in the header (and must be one of "
+        "the enum values for the chosen model -- check `higgsfield model get <model>` or the "
+        "MCP `models_explore` equivalent before assuming). Anamorphic style cues belong in the "
+        "Look line, as a style request, not as an output dimension.")
+    w_ar2 = [55, 75, 40]
+    pdf.table_row(["Concern", "Where it belongs", "Bound by"], w_ar2, bold=True, fill=True)
+    pdf.table_row(
+        ["Output ratio (16:9 / 9:16 / 1:1)",
+         "Header (e.g. 'Aspect ratio: 16:9')",
+         "Per-model enum"],
+        w_ar2)
+    pdf.table_row(
+        ["Anamorphic / 2.35:1 / Scope",
+         "Look line, as style ('anamorphic-style flares')",
+         "Stylistic"],
+        w_ar2)
+
+    pdf.subsection_title("Frame Coordinate System (Seedance)")
+    pdf.body_text(
+        "Frame Coordinate System locks where subjects, props, and compositional elements sit "
+        "inside the frame. Two notations, paired:")
+    pdf.bullet("Qualitative anchors -- 'left third', 'center', 'right third'; 'upper third', 'lower third'; 'foreground', 'midground', 'background'")
+    pdf.bullet("Percentage notation -- x-position 0% (left edge) to 100% (right edge); y-position 0% (top) to 100% (bottom); frame occupancy as a % of frame area")
+    pdf.body_text(
+        "Ship both notations in the same prompt, not as alternatives. The qualitative term "
+        "gives the model the film-language hook; the percentage gives it the precision target. "
+        "Example:")
+    pdf.code_block(
+        "Character A stands in the right third, x-position 70%, y-position 50%,\n"
+        "frame occupancy 25%. Character B stands in the left third,\n"
+        "x-position 25%, y-position 55%, frame occupancy 22%.")
+    pdf.body_text(
+        "Frame coordinates are a strong compositional anchor, NOT a geometric guarantee. The "
+        "model treats them as directorial intent -- the same way a DP reads 'right third' on a "
+        "storyboard -- not as pixel-exact targets. When a coordinate drifts in the output, "
+        "tighten the qualitative anchor or add a contact-point clause ('feet on the marked "
+        "floor mark') rather than re-specifying the percentage harder.")
+
+    pdf.subsection_title("Spatial Layout Block (multi-character)")
+    pdf.body_text(
+        "A Spatial Layout Block is a named structural unit inside a Seedance prompt that "
+        "consolidates the spatial-vocabulary fields into a single block the model can read as "
+        "one coherent spatial brief. Scattered spatial directives force the model to reassemble "
+        "scene geometry from fragments -- and it often picks the wrong reassembly.")
+    pdf.body_text("A complete Spatial Layout Block names, per subject in frame:")
+    pdf.bullet("Identity -- which character/prop/element this is (matches a Reference Role handle when references are present)")
+    pdf.bullet("Screen position -- qualitative anchor + percentage notation paired per the Frame Coordinate System above")
+    pdf.bullet("Depth layer -- foreground / midground / background")
+    pdf.bullet("Frame occupancy -- % of frame area the subject fills")
+    pdf.bullet("Body orientation -- direction the subject faces (toward camera, away, profile-left, three-quarter)")
+    pdf.bullet("Contact points -- what physical surface or object the subject is grounded against")
+    pdf.body_text(
+        "Use a block when: more than one subject is in frame, a specific compositional intent "
+        "needs to read across multiple shots, or the shot is in a failure-mode-prone category "
+        "(door-entry, hallway-direction, around-furniture). Single-subject shots with a clear "
+        "position don't need the full block -- a single qualitative-plus-percentage anchor "
+        "inside the description suffices.")
+
+    # --- 13. SOUL ID ---
     pdf.add_page()
-    pdf.section_title("11. Soul ID -- Character Consistency")
+    pdf.section_title("13. Soul ID -- Character Consistency")
     pdf.body_text(
         "Soul ID keeps a character looking the same across multiple generations. Upload a clear "
         "reference photo, create a Soul ID, and every future prompt can reference that same character.")
@@ -577,8 +853,8 @@ def build_pdf():
     pdf.bullet("If features drift: use character sheet directly as @Image1 for tighter anchoring")
     pdf.bullet("Multi-character scenes: reference each character separately with distinct @Image tags")
 
-    # --- 12. CHARACTER SHEET ---
-    pdf.section_title("12. Character Sheet Creation")
+    # --- 14. CHARACTER SHEET ---
+    pdf.section_title("14. Character Sheet Creation")
     pdf.body_text(
         "A character sheet is a multi-angle reference image showing the same character from several "
         "viewpoints -- front, 3/4, side profile, and back. It gives Soul ID far more geometry data "
@@ -589,9 +865,48 @@ def build_pdf():
     pdf.bullet("Arrange the best angles into a single composite reference image")
     pdf.bullet("Upload as your Soul ID reference")
 
-    # --- 13. IDENTITY VS MOTION ---
+    pdf.subsection_title("Character Anchor Block (per-shot, 10 attributes)")
+    pdf.body_text(
+        "Character Sheet Creation above is build-time -- the multi-angle identity reference "
+        "that goes into Soul ID. The Character Anchor Block is shot-time -- the per-shot "
+        "prompt structure that locks how that character appears IN a specific shot. The two "
+        "work together: the sheet defines the identity, the block places that identity inside "
+        "the frame for each shot.")
+    pdf.body_text("A complete anchor block names, per character in frame, ten attributes:")
+    pdf.bullet("Identity -- which character (matches a Soul ID handle when references are present)")
+    pdf.bullet("Screen position -- qualitative anchor + percentage notation paired (see Section 12 Frame Coordinate System)")
+    pdf.bullet("Depth layer -- foreground / midground / background")
+    pdf.bullet("Frame occupancy -- % of frame area the character fills")
+    pdf.bullet("Body orientation -- direction the character faces (toward camera, away, profile-left, three-quarter)")
+    pdf.bullet("Pose -- current physical configuration (standing, seated, leaning, mid-stride)")
+    pdf.bullet("Gaze direction -- where the character is looking, named by frame-position or by another subject ('looking at Character B')")
+    pdf.bullet("Contact points -- what physical surface or object the character is grounded against")
+    pdf.bullet("State lock -- current emotional or physical state (calm, exhausted, injured, soaked, in motion)")
+    pdf.bullet("Facial expression -- specific emotional register (composed, fearful, smiling small, gritted teeth)")
+    pdf.body_text(
+        "The block sits before the Dynamic Description in a Seedance prompt and feeds a "
+        "Spatial Layout Block (Section 12) when multiple characters share frame.")
+
+    pdf.subsection_title("Two-Tool Refinement -- Soul Cinema + GPT Image 2")
+    pdf.body_text(
+        "For high-investment characters -- leads who carry many shots in a project -- initial "
+        "generation in Soul Cinema plus refinement editing in GPT Image 2 produces stronger "
+        "anchor sheets than either tool alone. Soul Cinema is Higgsfield's first-pass image "
+        "surface (batches well against the character description); GPT Image 2 is OpenAI's "
+        "edit surface that preserves existing image details -- particularly facial geometry -- "
+        "when modifying outfits, accessories, lighting, or background elements.")
+    pdf.body_text(
+        "When to reach for both tools: the character will appear in tens of shots and is worth "
+        "front-loading iteration cost into. The 90-minute Cannes feature's lead character "
+        "absorbed ~600 Soul Cinema generations plus ~200 GPT Image 2 generations before any "
+        "narrative shot generation began (see Section 9 for the full per-character iteration "
+        "anchor). When to stick with one tool: characters appearing in only a handful of shots "
+        "don't justify the two-tool overhead -- a single Soul Cinema pass suffices.")
+    pdf.bullet("Multi-Form State Tracking -- when a character changes state across the project (wounds, costume changes, transformations), generate a separate anchor sheet per state. Full discipline in the higgsfield-soul sub-skill.")
+
+    # --- 15. IDENTITY VS MOTION ---
     pdf.add_page()
-    pdf.section_title("13. Identity vs. Motion Separation")
+    pdf.section_title("15. Identity vs. Motion Separation")
     pdf.body_text(
         "When Soul ID or character consistency is involved, every prompt must be split into two "
         "clearly labeled blocks:")
@@ -616,8 +931,8 @@ def build_pdf():
         "Neon reflections streak across wet concrete.\n"
         "Style: Cinematic, cold blue shadows, warm neon accents. 16:9.")
 
-    # --- 14. GENRE RECIPES ---
-    pdf.section_title("14. Genre Recipes")
+    # --- 16. GENRE RECIPES ---
+    pdf.section_title("16. Genre Recipes")
     w8 = [55, 115]
     pdf.table_row(["Genre", "Story Pattern"], w8, bold=True, fill=True)
     pdf.table_row(["Action / Chase", "Establish -> Pursuit -> Obstacle -> Climax"], w8)
@@ -630,9 +945,9 @@ def build_pdf():
     pdf.table_row(["Dance / Music", "Establish Space -> Performance Builds -> Beat Sync"], w8)
     pdf.table_row(["Transformation", "Before State -> Trigger -> Transform -> After State"], w8)
 
-    # --- 15. GENRE TEMPLATES ---
+    # --- 17. GENRE TEMPLATES ---
     pdf.add_page()
-    pdf.section_title("15. Genre Templates")
+    pdf.section_title("17. Genre Templates")
     pdf.body_text("10 deeply annotated prompt templates in the templates/ folder. Each includes: "
         "when to use, recommended model, full example prompt, line-by-line annotation, "
         "negative constraints, common mistakes, variations, Identity/Motion blocks, "
@@ -654,17 +969,40 @@ def build_pdf():
     for t in tmpl:
         pdf.table_row(list(t), w9)
 
-    # --- 16. CINEMATIC IMAGE PROMPTS ---
+    pdf.ln(3)
+    pdf.subsection_title("Technique templates (Seedance multi-character coordination)")
+    pdf.body_text(
+        "When the request is technique-shaped rather than genre-shaped, four templates in "
+        "`templates/seedance/` provide the structural scaffolding. Use these alongside (not "
+        "instead of) the genre templates above.")
+    w_tech = [70, 100]
+    pdf.table_row(["Template", "What it is"], w_tech, bold=True, fill=True)
+    pdf.table_row(["top-down-map.md", "Claude meta-prompt template for top-down spatial map pre-visualization"], w_tech)
+    pdf.table_row(["multi-character-anchor.md", "Paste-ready Seedance multi-character anchor block template"], w_tech)
+    pdf.table_row(["single-character-position.md", "Single-character shot with position + pose + contact-point locks"], w_tech)
+    pdf.table_row(["worked-example-two-character.md", "End-to-end fill of the multi-character anchor (Roco + Lulu neo-noir alley)"], w_tech)
+
+    pdf.ln(3)
+    pdf.subsection_title("Text-overlay templates")
+    pdf.body_text(
+        "Paste-ready prompts for on-screen text rendering, in `templates/text-overlays/`.")
+    w_text = [55, 115]
+    pdf.table_row(["Type", "When to use"], w_text, bold=True, fill=True)
+    pdf.table_row(["slogan.md", "Display text + entrance animation (brand callout, opening title)"], w_text)
+    pdf.table_row(["subtitle.md", "Dialogue-synchronized subtitles"], w_text)
+    pdf.table_row(["speech-bubble.md", "Character-attributed in-frame dialogue"], w_text)
+
+    # --- 18. CINEMATIC IMAGE PROMPTS ---
     pdf.ln(5)
-    pdf.section_title("16. Cinematic Image Prompts")
+    pdf.section_title("18. Cinematic Image Prompts")
     pdf.body_text("The skill includes a complete cinematic shot reference for still images -- "
         "10 distance/size shots, 10 camera angles, and 17 camera movement keywords.")
     pdf.bold_text("Image Prompt Formula:")
     pdf.code_block("[Shot size] + [Angle] + [Movement keyword] of [character].\n[Pose]. [Environment]. [Lighting]. [Style].")
 
-    # --- 17. NEGATIVE CONSTRAINTS ---
+    # --- 19. NEGATIVE CONSTRAINTS ---
     pdf.add_page()
-    pdf.section_title("17. Negative Constraints Reference")
+    pdf.section_title("19. Negative Constraints Reference")
     pdf.body_text("A shared constraints file consolidates all known AI generation artifacts "
         "and the prompt phrasing to prevent them.")
     w10 = [45, 70, 55]
@@ -679,8 +1017,8 @@ def build_pdf():
     pdf.ln(3)
     pdf.callout("Cinema Studio 3.0 does not support negative prompt syntax. All constraints must be phrased as positive statements. The shared constraints file includes a positive alternatives table.")
 
-    # --- 18. TROUBLESHOOTING ---
-    pdf.section_title("18. Troubleshooting")
+    # --- 20. TROUBLESHOOTING ---
+    pdf.section_title("20. Troubleshooting")
     w11 = [55, 115]
     pdf.table_row(["Problem", "Quick Fix"], w11, bold=True, fill=True)
     pdf.table_row(["Character face keeps changing", "Soul ID + character sheet + Identity/Motion separation"], w11)
@@ -704,9 +1042,62 @@ def build_pdf():
     pdf.table_row(["Just not right", "Ambiguous prompt", "Run Anti-Slop Check"], w12)
     pdf.table_row(["Audio mismatch", "Conflicting audio desc", "Timestamp anchor, remove SFX"], w12)
 
-    # --- 19. TOP TIPS ---
+    pdf.ln(3)
+    pdf.subsection_title("Seedance Failure Modes -- Named Catalog")
+    pdf.body_text(
+        "When a Seedance generation lands in a recognizable failure pattern, the named catalog "
+        "in `skills/higgsfield-seedance/FAILURE-MODES.md` is faster than guessing. Eight named "
+        "modes, each with a symptom, a mechanism, a prompt-side counter, and a worked example.")
+    w_fm = [55, 60, 55]
+    pdf.table_row(["Failure mode", "What you see", "Counter"], w_fm, bold=True, fill=True)
+    pdf.table_row(
+        ["FPS drift / dupe frames",
+         "Choppy playback, duplicate frames",
+         "State frame rate in body: '24 fps, no frame repeated'"],
+        w_fm)
+    pdf.table_row(
+        ["Frame-level review mandatory",
+         "Clip fine at speed; one bad frame in scrub",
+         "Scrub frame-by-frame before approving any take"],
+        w_fm)
+    pdf.table_row(
+        ["Failed-generation salvage",
+         "Take rejected; instinct: discard",
+         "Mark and bank the 1-3 usable seconds first"],
+        w_fm)
+    pdf.table_row(
+        ["NSFW false-positive",
+         "Clean prompt rejected by NSFW classifier",
+         "Rephrase body-anatomy + sensual-register tokens"],
+        w_fm)
+    pdf.table_row(
+        ["Keyframe forces invention",
+         "Required element placed wrong (not in source frame)",
+         "State the absence explicitly in prompt"],
+        w_fm)
+    pdf.table_row(
+        ["Physics-state-anchor",
+         "Adjacent object moves with target",
+         "Name the invariant: 'X stays attached'"],
+        w_fm)
+    pdf.table_row(
+        ["Multi-motion overload",
+         "Stacked moves render as instability",
+         "ONE dominant motion per shot; split compounds"],
+        w_fm)
+    pdf.table_row(
+        ["Spatial-awareness failure",
+         "Door-entry / hallway-direction shots fail",
+         "Lock geometry with Spatial Layout Block (Section 12) first"],
+        w_fm)
+    pdf.ln(3)
+    pdf.callout(
+        "All eight failure modes include worked before/after examples in the sub-skill file -- "
+        "consult that for the deep dive, this catalog for fast pattern-matching.")
+
+    # --- 21. TOP TIPS ---
     pdf.add_page()
-    pdf.section_title("19. Top Tips")
+    pdf.section_title("21. Top Tips")
     tips = [
         "Be specific. Name camera presets, describe VFX concretely. 'Dolly In' beats 'the camera moves forward.'",
         "One action per shot. AI renders clean physics for one action. Chain multiple shots for complex sequences.",
@@ -728,17 +1119,17 @@ def build_pdf():
         pdf.bold_text(f"{i}.")
         pdf.body_text(tip)
 
-    # --- 20. MEMORY SYSTEM ---
-    pdf.section_title("20. Memory System (Advanced)")
+    # --- 22. MEMORY SYSTEM ---
+    pdf.section_title("22. Memory System (Advanced)")
     pdf.body_text(
         "The skill includes a memory system that stores what works and what doesn't. Content "
         "filter workarounds and quality failure fixes are stored in JSON databases and consulted "
         "automatically before generation.")
     pdf.callout("You don't need to manage this yourself -- Claude checks the memory automatically when the recall skill is loaded.")
 
-    # --- 21. CINEMA STUDIO ADVANCED ---
+    # --- 23. CINEMA STUDIO ADVANCED ---
     pdf.add_page()
-    pdf.section_title("21. Cinema Studio Advanced Features")
+    pdf.section_title("23. Cinema Studio Advanced Features")
 
     features = [
         ("Soul Cast -- AI Actor Generation (2.5 + 3.0)",
@@ -770,21 +1161,24 @@ def build_pdf():
         pdf.bold_text(title)
         pdf.body_text(desc)
 
-    # --- 22. REPOSITORY CONTENTS ---
+    # --- 24. REPOSITORY CONTENTS ---
     pdf.add_page()
-    pdf.section_title("22. Repository Contents")
+    pdf.section_title("24. Repository Contents")
     pdf.subsection_title("Root Files")
     w13 = [60, 110]
     pdf.table_row(["File", "What it is"], w13, bold=True, fill=True)
     root_files = [
-        ("SKILL.md", "Model selection guide (routes model questions)"),
+        ("SKILL.md", "Main dispatcher -- routes requests to the right sub-skill"),
         ("README.md", "Installation and usage guide"),
         ("CHANGELOG.md", "Version history"),
         ("USER-GUIDE.pdf", "This document"),
+        ("DISCIPLINE.md", "Cross-cutting discipline patterns (workflow / output / architectural)"),
         ("model-guide.md", "Model comparison tables + decision flowchart"),
         ("image-models.md", "Image model reference + pricing tiers"),
         ("vocab.md", "Full platform vocabulary reference"),
         ("prompt-examples.md", "High-quality example prompts"),
+        ("photodump-presets.md", "29 Photodump style presets"),
+        ("production-benchmarks.md", "Iteration anchors + Hollywood-validator cost comparisons"),
     ]
     for f in root_files:
         pdf.table_row(list(f), w13)
@@ -808,12 +1202,18 @@ def build_pdf():
     for name, desc in SUB_SKILL_DESCRIPTIONS.items():
         pdf.table_row([name, desc], w14)
 
-    # --- 23. FAQ ---
+    # --- 25. FAQ ---
     pdf.add_page()
-    pdf.section_title("23. FAQ")
+    pdf.section_title("25. FAQ")
     faqs = [
         ("Do I need a Higgsfield account?",
          "Yes -- this skill writes prompts for you, but you paste and run them on higgsfield.ai."),
+        ("Do I need the Higgsfield CLI installed?",
+         "No -- the skill works regardless of execution surface. The CLI is one of four ways to "
+         "run the prompts Claude writes for you. Most casual users paste directly into "
+         "higgsfield.ai. Heavy users on Claude Code or Codex benefit from the CLI's long-lived "
+         "API tokens (better in headless and scripted contexts than the MCP's interactive OAuth). "
+         "See Section 4 for the full picture."),
         ("Which Claude plan do I need?",
          "Any plan works -- Free, Pro, or Team. The skill loads as project instructions."),
         ("Do I need a Business/Team plan for Cinema Studio 3.0?",
@@ -825,12 +1225,18 @@ def build_pdf():
         ("Can I contribute?",
          "Yes! Fork the repo, add your improvements, and submit a pull request."),
         ("What changed since v3.0.0?",
-         "Seven platform releases shipped between v3.0.0 (April 2026) and this guide (v3.6.2). The major themes: "
-         "install-path simplification (v3.3.0), workspace-first decision layer + Seedance 2.0 prompt modes + Kling 3.0 "
-         "Motion Control + Location Reference Sheets (v3.4.0), Reference Sheet Types + Iteration Rule (v3.4.1), workspace "
-         "expansion (v3.5.0), Cinema Studio 3.5 with Image Mode + Elements System library surface + Physics Rendering "
-         "Decision Matrix (v3.6.0), markdownlint config (v3.6.1), and this documentation refresh (v3.6.2). "
-         "See CHANGELOG.md and the higgsfield-cinema sub-skill for full per-release detail."),
+         "Seventeen platform releases shipped between v3.0.0 (April 2026) and this guide (v3.7.12). "
+         "Major themes by era: install-path simplification, Seedance 2.0 prompt modes, Kling 3.0 Motion "
+         "Control, and Cinema Studio 3.5 with Image Mode + Physics Rendering Decision Matrix "
+         "(v3.3.0 through v3.6.x); a v3.7.0 metadata refactor making version and sub-skill discovery "
+         "automatic; a v3.7.4 - v3.7.7 audit-corpus mega-release sequence that added production-"
+         "benchmarks (Hell Grind Cannes-feature iteration anchors), Seedance Frame Coordinate System "
+         "+ Spatial Layout Block + FAILURE-MODES catalog, and Soul Character Anchor Block + Two-Tool "
+         "Refinement Pipeline; a v3.7.8 - v3.7.11 stack-integration arc that added the higgsfield-"
+         "stack sub-skill (CLI / MCP / bundled-skills coexistence), two-step preflight discipline "
+         "(schema verify before cost estimate), aspect-ratio-as-enum vs. anamorphic-as-style-register "
+         "separation, and the dispatcher pre-delivery checklist; and this v3.7.12 USER-GUIDE refresh "
+         "closing the deferred PDF modernization arc. See CHANGELOG.md for full per-release detail."),
     ]
     for q, a in faqs:
         pdf.bold_text(f"Q: {q}")
