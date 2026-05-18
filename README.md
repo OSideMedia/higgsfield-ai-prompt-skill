@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.7.8-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.7.9-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -71,6 +71,44 @@ Markdown skill bundle for agents that consume Cowork-style skills. All three ski
 - Install: `npx skills add higgsfield-ai/skills`
 - Skills included: `higgsfield-generate`, `higgsfield-soul`, `higgsfield-product-photoshoot`
 - Invoke: `/higgsfield:generate`, `/higgsfield:soul`, `/higgsfield:product-photoshoot`
+
+### End-to-end example
+
+How the layers fit together for a real request:
+
+```
+USER:    "Make me a cinematic chase scene through a night market.
+          Use my trained Soul character — reference_id abc123."
+   ↓
+THIS SKILL — higgsfield-ai-prompt-skill
+   • routes to higgsfield-prompt + higgsfield-camera + higgsfield-soul
+   • picks Kling 3.0 (character-focused, supports --soul-id)
+   • applies MCSLA: model, camera preset, subject, look, action
+   • appends shared negative constraints
+   • outputs a production-grade Higgsfield prompt
+   ↓
+HIGGSFIELD STACK — one of three execution surfaces:
+
+   CLI path:
+     higgsfield generate create kling3_0 \
+       --prompt "<prompt from this skill>" \
+       --soul-id abc123 \
+       --duration 8 \
+       --aspect_ratio 16:9 \
+       --wait
+
+   Bundled skills path:
+     /higgsfield:generate — takes the prompt as its --prompt argument,
+     formats the CLI call above under the hood
+
+   MCP path (claude.ai web/desktop):
+     Claude invokes the Higgsfield connector with the prompt as input
+   ↓
+USER:    Result URL returned. Iterate if needed (this skill's
+         iteration discipline applies regardless of execution surface).
+```
+
+The layer split holds in every case: this skill always produces the prompt, the Higgsfield stack always handles the generation call. None of the three execution paths reach back into prompt construction; this skill never shells out to their CLI or API.
 
 ### Coexistence rules
 
@@ -186,4 +224,4 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 
 ---
 
-Built February 2026 · v3.7.8 (updated 2026-05-18) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.7.9 (updated 2026-05-18) · Platform: [higgsfield.ai](https://higgsfield.ai)

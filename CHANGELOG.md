@@ -1,5 +1,24 @@
 # Changelog
 
+## v3.7.9 — 2026-05-18
+
+Patch release: adds a worked end-to-end example to the README's "Higgsfield Stack Integration" section, showing how this skill's prompt output flows into all three Higgsfield execution surfaces (CLI, bundled skills, MCP) for a real request. Same-day follow-up to v3.7.8 — the v3.7.8 prose was abstract; v3.7.9 anchors the abstraction with a copy-pasteable concrete example.
+
+Single-arc, README-only.
+
+### Added
+
+- **README.md "End-to-end example" subsection.** New H3 inside the Higgsfield Stack Integration section, positioned between the bundled-skills subsection and the coexistence-rules pointer. Worked example uses a "cinematic chase scene with Soul character" request, routed through `kling3_0` with a `--soul-id` flag, showing all three execution paths (CLI, bundled skills, MCP) and the layer-split principle reinforced in the closing paragraph.
+
+### Changed
+
+- **README.md** — version badge 3.7.8 → 3.7.9, footer 3.7.8 → 3.7.9.
+- **Root `SKILL.md` frontmatter** — version 3.7.8 → 3.7.9, same-day `updated:` date.
+
+### Scope acknowledgment
+
+v3.7.9 is intentionally narrow: one file changed (README.md), plus the version-bump cascade. No sub-skills modified, no new framework-innovation candidates, no PDF regenerated (USER-GUIDE.pdf modernization remains the deferred dedicated arc, same as v3.7.8).
+
 ## v3.7.8 — 2026-05-18
 
 Single-arc release: adds the `higgsfield-stack` sub-skill, which documents how this prompt-construction skill coexists with Higgsfield's own official tooling (their CLI, MCP custom connector, and bundled `higgsfield-ai/skills`). The two surfaces complement each other cleanly — our skill stays in its lane as the prompt-construction + production-discipline layer, theirs handles auth, upload, job submission, polling, and result delivery. No merge, no absorption, no dependency on their stack being present.
