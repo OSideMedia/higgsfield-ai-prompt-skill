@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.7.9-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.7.10-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -87,6 +87,24 @@ THIS SKILL — higgsfield-ai-prompt-skill
    • appends shared negative constraints
    • outputs a production-grade Higgsfield prompt
    ↓
+PRE-FLIGHT (optional, recommended for Veo / Kling / Sora / Seedance video):
+   MCP path:        generate_video(..., get_cost: true)
+                    → returns credit cost, submits no job
+
+   CLI path:        higgsfield generate cost kling3_0 \
+                      --prompt "<prompt from this skill>" \
+                      --soul-id abc123 \
+                      --duration 8 \
+                      --aspect_ratio 16:9
+
+   Bundled skills:  drop to CLI for the cost check (same auth, same workspace),
+                    then invoke /higgsfield:generate
+
+   Optional account checks (same data across surfaces):
+   MCP path:        balance / transactions tools
+   CLI path:        higgsfield account status
+                    higgsfield account transactions --size 50
+   ↓
 HIGGSFIELD STACK — one of three execution surfaces:
 
    CLI path:
@@ -109,6 +127,8 @@ USER:    Result URL returned. Iterate if needed (this skill's
 ```
 
 The layer split holds in every case: this skill always produces the prompt, the Higgsfield stack always handles the generation call. None of the three execution paths reach back into prompt construction; this skill never shells out to their CLI or API.
+
+> Full preflight discipline — when to surface it, marketing-studio caveat, CLI naming gotchas (`account status`, not `balance`), and the plan-tier-vs-surface framing — lives in [`skills/higgsfield-stack/SKILL.md`](skills/higgsfield-stack/SKILL.md) § Preflight discipline.
 
 ### Coexistence rules
 
@@ -224,4 +244,4 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 
 ---
 
-Built February 2026 · v3.7.9 (updated 2026-05-18) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.7.10 (updated 2026-05-18) · Platform: [higgsfield.ai](https://higgsfield.ai)

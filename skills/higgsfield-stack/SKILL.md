@@ -4,7 +4,7 @@ description: "Use when the user mentions the Higgsfield CLI (binaries `higgsfiel
 user-invocable: true
 metadata:
   tags: [higgsfield, stack, cli, mcp, official-skills, coexistence, handoff, environment]
-  version: 1.0.0
+  version: 1.1.0
   updated: 2026-05-18
   parent: higgsfield
 ---
@@ -26,6 +26,51 @@ The core principle is a layer split. This skill is the prompt-construction + pro
 | **Higgsfield CLI** | Binary distributed at https://github.com/higgsfield-ai/cli. Binary names: `higgsfield`, `higgs`, `hf`. Install via `curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh \| sh` or `brew install higgsfield-ai/tap/higgsfield`. Auth via `higgsfield auth login` (device flow). | User types `higgsfield`, `higgs`, or `hf` in conversation; user says "I have the CLI installed"; user pastes output from `higgsfield ... --json` | Claude Code, Codex, Cursor, or any terminal-native agent. Per Higgsfield's own guidance: if the user is in Claude Code or Codex, prefer the CLI over the MCP. |
 | **Higgsfield MCP** | Custom connector at https://mcp.higgsfield.ai/mcp. Separate product from the CLI. Installed in claude.ai or the Claude desktop app via Settings → Connectors → Add custom connector. | User is in claude.ai web or the Claude desktop app (not a terminal); user mentions "the connector" or "MCP" or `mcp.higgsfield.ai`; the current Claude session has tools whose names mention Higgsfield generation. | claude.ai web, Claude desktop app, environments without a terminal. |
 | **Higgsfield bundled skills** | Skill repo at https://github.com/higgsfield-ai/skills (v0.3.0). Three skills: `higgsfield-generate`, `higgsfield-soul`, `higgsfield-product-photoshoot`. Install via `npx skills add higgsfield-ai/skills`. Invoke as `/higgsfield:generate`, `/higgsfield:soul`, `/higgsfield:product-photoshoot`. | Skill files matching those names visible in the agent's skill directory; user invokes one of those slash commands; user mentions installing `higgsfield-ai/skills`. | Agents that consume Cowork-style skill bundles. All three skills drive the CLI under the hood — they are workflow/transport guidance, not prompt engineering. |
+
+---
+
+## Preflight discipline — check cost and balance before generating
+
+Every Higgsfield generation costs credits, and production-grade AI cinema runs at roughly 1.0% image and 1.5% video acceptance rates (`production-benchmarks.md`). On Veo, Kling, Sora-2, and Seedance-class video, a single un-checked job can swallow hours of budget. The preflight pattern is part of the Tier 1 *Lock-before-generate* discipline (`DISCIPLINE.md`) — lock the cost estimate alongside the prompt, before submission, on whichever surface the user is on.
+
+This skill never invokes the preflight itself; it names the pattern. The execution layer owns the calls. Both MCP and CLI expose dedicated preflight surfaces — same underlying API, different invocation shapes.
+
+### Verified preflight surfaces
+
+| Concern | MCP | CLI | Bundled skills |
+|---|---|---|---|
+| Cost estimate (no job submitted) | `generate_image` / `generate_video` with `get_cost: true` | `higgsfield generate cost <model> [--param value]...` | Drop to CLI for the check, then run the slash command |
+| Credit balance + plan + email | `balance` tool | `higgsfield account status` | Drop to CLI |
+| Recent transactions (newest first) | `transactions` tool | `higgsfield account transactions --size N` | Drop to CLI |
+
+**CLI naming gotcha.** The canonical subcommand for balance is `account status` (alias `acc status`). `account balance` and `account credits` both fall through to parent help — they are not valid subcommands. Tell the user `status` if they go looking for `balance`.
+
+**CLI scripting note.** Append `--json` to any of the above for machine-readable output. Useful when Claude Code is parsing the response inside a longer workflow.
+
+**Bundled skills note.** The bundled skills (`higgsfield-generate`, `higgsfield-soul`, `higgsfield-product-photoshoot`) wrap `generate create` under the hood; they don't expose a parallel preflight slash command. Same auth, same workspace, so a one-line CLI cost check before the slash invocation is the cleanest pattern: `higgsfield generate cost <model> --prompt "..." [...flags]`, then `/higgsfield:generate`.
+
+**Marketing Studio caveat.** Per Higgsfield MCP tool descriptions, `get_cost` is not supported for marketing studio models. For those, run the job and read cost from the result, or check `balance` before and after.
+
+### Plan tier, not surface, controls queue priority
+
+All three surfaces share one credit pool and one job queue. Queue priority is a function of the user's paid Higgsfield plan tier (Plus / Ultra / Business / Team), not the choice of MCP vs CLI vs bundled skills. Surface choice affects ergonomics and authentication shape, not queue position:
+
+- **CLI** is preferred for headless / CI / long-running batches because it uses long-lived API tokens rather than interactive OAuth round-trips. Per Higgsfield's own guidance on `higgsfield.ai/mcp`: "If you are using Claude Code or Codex, it's better to use the CLI."
+- **MCP** is preferred for conversational generation inside claude.ai web, the Claude desktop app, or Claude Code in interactive mode — single OAuth, no token management.
+- **Bundled skills** sit on top of the CLI; they inherit its auth model and tier behavior.
+
+When a free-tier user reports MCP timeouts or queue stalls, the answer is plan tier, not "switch surfaces." Recommend upgrading the plan if iteration volume justifies it; recommend the CLI only if the workload is headless or non-conversational.
+
+### When to surface preflight in this skill's output
+
+Add a preflight line to the output block whenever:
+
+- The user has signaled they are about to execute (CLI / MCP / bundled skills mentioned).
+- The model is video-class (Veo, Kling, Sora-2, Seedance, Hailuo, DoP) OR a high-cost image model (Nano Banana Pro at higher resolutions, GPT Image 2 at 4K).
+- The user has named a budget constraint or credit-optimization concern.
+- The work is iteration-heavy by structure (Cinema Studio multi-shot, Two-Tool Refinement Pipeline, multi-character anchor template).
+
+Skip preflight surfacing for one-off image generation on a cheap model, or when the user is clearly just exploring vocabulary without intent to execute.
 
 ---
 

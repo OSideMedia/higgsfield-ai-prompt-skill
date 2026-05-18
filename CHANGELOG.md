@@ -1,5 +1,31 @@
 # Changelog
 
+## v3.7.10 — 2026-05-18
+
+Patch release: surfaces the pre-flight cost-check pattern that already exists on both the MCP (`get_cost: true` parameter on `generate_image`/`generate_video`, plus `balance` and `transactions` tools) and the CLI (`higgsfield generate cost`, `higgsfield account status`, `higgsfield account transactions`). Names preflight as part of Tier 1 *Lock-before-generate* discipline tied to production-benchmarks.md 1% / 1.5% acceptance rates. Replaces vague "MCP priority queue" mental model with verified "one credit pool, one job queue, queue priority is plan-tier-dependent" framing. Same-day follow-up to v3.7.9, completing the v3.7.8/v3.7.9/v3.7.10 stack-integration arc.
+
+Single-arc, two files changed (plus version cascade).
+
+### Added
+
+- **`skills/higgsfield-stack/SKILL.md` § Preflight discipline** (NEW H2 section, ~60 lines). Three-column verified preflight-surface table (MCP / CLI / bundled skills) covering cost estimate, credit balance + plan, and recent transactions. Documents CLI naming gotcha (`account status` is canonical; `account balance` / `account credits` are NOT valid subcommands and fall through to parent help). Includes `--json` scripting note for CI/Claude Code parsing, marketing-studio `get_cost` exclusion caveat per official MCP tool description, bundled-skills "drop to CLI for the check" pattern (same auth, same workspace). New H3 § Plan tier, not surface, controls queue priority replaces any priority-queue surface-routing mental model with verified shared-queue + plan-tier framing. New H3 § When to surface preflight in this skill's output gives the trigger criteria (executing intent + video-class model OR named budget constraint OR iteration-heavy structure) for adding preflight lines to skill output.
+
+- **README.md PRE-FLIGHT block in end-to-end example.** New block inserted between this skill's prompt output and the three-surface fan-out, showing all three preflight invocations side-by-side with the same Kling 3.0 + Soul ID worked example. Optional account-check sub-block (MCP balance/transactions vs CLI `account status` / `account transactions`) appended for completeness. Plus a one-line forward reference from the README to the new `higgsfield-stack` § Preflight discipline section.
+
+### Changed
+
+- **Root `SKILL.md` frontmatter** — version 3.7.9 → 3.7.10, `updated:` 2026-05-18 (same-day cascade).
+- **`skills/higgsfield-stack/SKILL.md` frontmatter** — version 1.0.0 → 1.1.0 (minor bump, new H2 section added), `updated:` 2026-05-18.
+- **`README.md`** — version badge 3.7.9 → 3.7.10, footer 3.7.9 → 3.7.10.
+
+### Verification
+
+All CLI syntax in this release was verified live against `higgsfield 0.1.40 (built 2026-05-12)` via `higgsfield generate cost --help`, `higgsfield account --help`, `higgsfield account status --help`, plus failed-falls-through-to-parent test of `higgsfield account balance --help` and `higgsfield account credits --help` (both confirmed as NOT valid subcommands — canonical name is `status`). MCP tool shapes (`get_cost: true`, `balance`, `transactions`) verified against current Higgsfield MCP tool descriptions at `mcp.higgsfield.ai/mcp`. No invented flag names, subcommand names, or parameter names in this release.
+
+### Scope acknowledgment
+
+v3.7.10 is intentionally narrow: one new section in one sub-skill + one block in README + version cascade. No sub-skills beyond higgsfield-stack modified, no new framework-innovation candidates, no PDF regenerated (USER-GUIDE.pdf modernization remains the deferred dedicated arc, same as v3.7.8 and v3.7.9). Closes the v3.7.8 → v3.7.9 → v3.7.10 stack-integration micro-arc: 3.7.8 introduced higgsfield-stack, 3.7.9 anchored it with a worked example, 3.7.10 adds preflight discipline. Returns to single-arc cadence per the v3.7.7 closeout commitment.
+
 ## v3.7.9 — 2026-05-18
 
 Patch release: adds a worked end-to-end example to the README's "Higgsfield Stack Integration" section, showing how this skill's prompt output flows into all three Higgsfield execution surfaces (CLI, bundled skills, MCP) for a real request. Same-day follow-up to v3.7.8 — the v3.7.8 prose was abstract; v3.7.9 anchors the abstraction with a copy-pasteable concrete example.
