@@ -1,5 +1,87 @@
 # Changelog
 
+## v3.7.11 — 2026-05-18
+
+Mega-release. Fourth one-time exception to the v3.7.7 closeout single-arc commitment, justified by dogfood-corpus continuity from same-day v3.7.10 release-night testing. Five co-headlined sub-phases (CH-1 README correction / CH-2 higgsfield-stack two-step preflight expansion / CH-3 higgsfield-prompt conflict-resolution / CH-4 aspect-ratio reality vs style vocab / CH-5 dispatcher pre-delivery checklist restructure) plus CH-6 DISCIPLINE.md framework-innovation pattern. Single named failure mode unifies the corpus: **plausibility-over-verification**.
+
+### Fourth one-time exception mega-release
+
+The v3.7.5 / v3.7.6 / v3.7.7 sequence framed itself as three one-time exceptions. v3.7.8 introduced single-arc cadence "unless audit-corpus continuity creates a comparable case." v3.7.11 is that comparable case — but the audit input is dogfood corpus, not discovery corpus. Same-day v3.7.10 release-night testing across two surfaces (CLI on Mac terminal, MCP via Cowork) produced six distinct findings whose remediation benefits from being shipped coherently rather than fragmented across five patch releases.
+
+### Dogfood corpus — what was actually observed
+
+CLI pass (2026-05-18, higgsfield 0.1.40 built 2026-05-12, Claude Code in real time):
+
+- Attempt 1: dispatcher discipline skipped (no routing line, never read root SKILL.md or higgsfield-prompt before answering, never appended shared negative constraints). Output was plausible cinematography from training pattern-matching off vocab.md / model-guide.md grep snippets.
+- Attempt 2 (after diagnostic): dispatcher discipline followed correctly, but produced `2.35:1` aspect ratio in the header and `--aspect-ratio` (hyphen) flag form in the preflight call — both invented from training plausibility. CLI rejected on first cost call: `Error: Invalid values: aspect_ratio=2.35:1 (allowed: 16:9,9:16,1:1)`. Underscore form `--aspect_ratio` verified working; returned 16 credits for the corrected 16:9 invocation.
+
+MCP pass (2026-05-18, Cowork workspace with higgsfield-ai-prompt-skill repo mounted, Higgsfield MCP at mcp.higgsfield.ai/mcp, paid plan):
+
+- Routing line present and well-specified (named four sub-skills with rationale).
+- Schema verification fired without being asked: `models_explore(action="get", model_id="kling3_0")` called before any cost call.
+- Preflight invocation correct: `generate_video(..., get_cost: true)` with no job submission; respected user-stated guardrail.
+- Adjustments block surfaced from the MCP response (`mode=std`, `sound=on` defaults) — net-new intel for v3.7.11.
+- Iteration-budget tie-in to production-benchmarks.md 1.5% acceptance rate produced unprompted ("~67 credits of preflighted spend on average to land one keeper").
+- But: "16:9 anamorphic" written into the prompt body — incoherent (anamorphic is a >2:1 ratio register, not a 16:9 modifier). Negation-form constraints used instead of the canonical positive phrasing in negative-constraints.md. Prompt exceeded 200-word soft cap.
+
+The contrast is informative: CLI failed at the workflow level (skipped the dispatcher), MCP succeeded at workflow but failed at vocabulary fidelity (paraphrased style register from training instead of from vocab.md). Both failures share the same mechanism — plausibility-over-verification — and v3.7.11 ships the structural fixes for both modes.
+
+### CH-1 — README v3.7.10 correction (Bundle A)
+
+The PRE-FLIGHT block in the README end-to-end example, added in v3.7.10, did not surface the schema-verification step and included an unverified `--soul-id abc123` flag whose hyphen-vs-underscore form was never confirmed against the live CLI. Both gaps surfaced during CLI dogfood. Correction: NEW first sub-step "SCHEMA VERIFY" added above the existing CLI cost call (`higgsfield model get kling3_0` / MCP `models_explore`); `--aspect_ratio` underscore form re-confirmed against the live CLI and left in place; the unverified `--soul-id abc123` line dropped from BOTH the PRE-FLIGHT block AND the post-PRE-FLIGHT `generate create` block, replaced with a placeholder comment pointing at `higgsfield model get <model>` for supported media roles (cleaner than silently picking a flag form that may be wrong). A closing note added separating output-ratio enum (16:9 / 9:16 / 1:1 for Kling 3.0) from anamorphic style vocabulary. Honest correction to a prior release — and a same-release application of the CH-6 plausibility-over-verification discipline: the v3.7.10 author typed `--soul-id abc123` because it looked right, not because it had been verified, which is exactly the failure mode v3.7.11 names.
+
+### CH-2 — higgsfield-stack two-step preflight (Bundle B)
+
+`skills/higgsfield-stack/SKILL.md` frontmatter version 1.1.0 → 1.2.0. New H3 § Two-step preflight inserted before § Verified preflight surfaces — names step 1 (schema verify) and step 2 (cost estimate) as the canonical pattern, with the failure mode this prevents (plausibility-over-verification) called out by name and cross-referenced to DISCIPLINE.md Tier 1. The three-column verified preflight surfaces table extended with a new top row for schema verification (`models_explore` / `higgsfield model get`). New paragraph on the MCP `adjustments` block — net-new intel from MCP dogfood, documents the asymmetry with CLI `--json` output. New H3 § Iteration-budget projection ties single-shot cost to production-benchmarks.md acceptance rates, formalizing the unprompted MCP-pass behavior as a discipline rule.
+
+### CH-3 — higgsfield-prompt conflict resolution (Bundle C part 1)
+
+`skills/higgsfield-prompt/SKILL.md` frontmatter version 3.4.0 → 3.5.0 (minor — additive H2 + § Common Prompt Mistakes update). New § Conflict resolution between sub-skills inserted after § Identity vs. Motion Separation Rule (cross-cutting discipline zone, not Seedance-scoped). Three-step hierarchy: explicit user direction > scene archetype > emotion-sync register. Closing rule: surface the resolution when non-obvious — transparent picking is the discipline, silent picking is the failure mode. MCP-pass dogfood demonstrated this discipline already; v3.7.11 promotes it from emergent behavior to documented rule.
+
+### CH-4 — Aspect-ratio reality vs. style vocabulary (Bundle C part 2)
+
+Two-file edit. (A) `skills/higgsfield-prompt/SKILL.md` § Common Prompt Mistakes — existing "Aspect ratio inside the prompt body" table row Fix column updated with per-model enum reference (Kling 3.0: 16:9 / 9:16 / 1:1 only — check `higgsfield model get <model>` / MCP `models_explore`); new disambiguation callout blockquote added immediately below the table (before the existing negative-constraints blockquote), naming the "16:9 anamorphic" incoherence and separating output ratio (header, enum-bounded) from anamorphic style cues (Look line, stylistic). (B) `vocab.md` — new H3 § Aspect Ratio: output spec vs. style register added inside the existing § Visual Style Vocabulary, immediately after § Named Platform Styles (placed next to the source of the confusion — the existing Anamorphic entry in Named Platform Styles). Two-row table distinguishes output spec from style register. Triggered by MCP-pass dogfood — even with full skill discipline, "16:9 anamorphic" bled across the boundary because the skill itself had not drawn the boundary explicitly.
+
+### CH-5 — Dispatcher pre-delivery checklist (Bundle D)
+
+Root `SKILL.md` — the prior `## MANDATORY WORKFLOW` and `## HARD RULES` sections folded into a single `## HARD RULES — pre-delivery checklist`. Previous structure stated rules as prohibitions at the top of the file ("NEVER write a prompt without reading X") — depends on the agent choosing to obey before it writes, and v3.7.10 dogfood proved that mechanism skippable when output looks plausible. New structure expresses the rules as a pre-delivery checklist: 8 items the agent confirms BEFORE sending the response, with explicit framing that any unconfirmed item means the response is incomplete. Items cover routing line presence, routed sub-skills opened and READ (grepped snippets do not satisfy), named vocabulary verified not invented, MCSLA structure, shared negative constraints with positive phrasing, preflight surfacing when applicable, aspect-ratio-as-enum-not-free-form, and the 200-word soft cap. The plausibility-over-verification failure mode is named explicitly in the section opener and tied to items 2, 3, 7. Verified during edit that no prior MANDATORY WORKFLOW or HARD RULES item was silently dropped in the merge — all 10 prior items mapped to a new home or absorbed into the opening framing.
+
+### CH-6 — DISCIPLINE.md plausibility-over-verification pattern (framework innovation)
+
+`DISCIPLINE.md` Tier 1 — Workflow Discipline gains a new pattern: § Plausibility-over-verification, inserted between § Lock-before-generate and § Falsifiable Success Criteria. Pattern body names the recurring trap (training-data plausibility producing output that looks correct without verifying against platform ground truth), names the demonstrated dogfood corpus (CLI invented flag forms + invalid aspect ratio; MCP paraphrased style register across boundary), and points to the CH-5 pre-delivery checklist as the operationalization. This is the unifying mechanism across both dogfood passes — same failure mode, different surfaces, same counter.
+
+### Framework innovation candidate
+
+| FI | Source | Insight |
+|---|---|---|
+| **FI10 (NEW)** | v3.7.10 dogfood corpus (CLI + MCP, same day) | Plausibility-over-verification is a cross-platform recurring trap; pre-delivery checklists catch what top-of-file prohibitions miss; dogfooding a release the same day surfaces failure modes that discovery corpus cannot |
+
+### Changed
+
+- **Root `SKILL.md` frontmatter** — version 3.7.10 → 3.7.11. `updated:` 2026-05-18.
+- **Root `SKILL.md` body** — prior `## MANDATORY WORKFLOW` and `## HARD RULES` sections folded into a single `## HARD RULES — pre-delivery checklist` per CH-5.
+- **`skills/higgsfield-stack/SKILL.md` frontmatter** — version 1.1.0 → 1.2.0. `updated:` 2026-05-18.
+- **`skills/higgsfield-stack/SKILL.md` body** — § Preflight discipline expanded per CH-2 (new H3 Two-step preflight, new schema-verification row in surfaces table, new Adjustments-block paragraph, new H3 Iteration-budget projection).
+- **`skills/higgsfield-prompt/SKILL.md` frontmatter** — version 3.4.0 → 3.5.0. `updated:` 2026-05-18.
+- **`skills/higgsfield-prompt/SKILL.md` body** — new H2 § Conflict resolution between sub-skills (CH-3) + § Common Prompt Mistakes table row updated + new disambiguation callout blockquote below table (CH-4 A).
+- **`vocab.md`** — new H3 § Aspect Ratio: output spec vs. style register added inside § Visual Style Vocabulary per CH-4(B).
+- **`DISCIPLINE.md`** — new Tier 1 § Plausibility-over-verification per CH-6, inserted between § Lock-before-generate and § Falsifiable Success Criteria.
+- **`README.md`** — version badge 3.7.10 → 3.7.11, footer 3.7.10 → 3.7.11, PRE-FLIGHT block in end-to-end example corrected per CH-1 (SCHEMA VERIFY sub-step added, unverified `--soul-id abc123` dropped from both PRE-FLIGHT and post-PRE-FLIGHT `generate create` blocks with placeholder comments, anamorphic-vs-output-ratio closing note added).
+
+### Verification
+
+All CLI syntax and behavior in this release was verified live on 2026-05-18 against `higgsfield 0.1.40 (built 2026-05-12)`. CLI calls run: `higgsfield model get kling3_0`, `higgsfield generate cost kling3_0 --prompt "test" --aspect_ratio 16:9 --duration 8 --json` (returned 16 credits), `higgsfield generate cost kling3_0 --prompt "test" --aspect_ratio 2.35:1 --duration 8` (returned `Error: Invalid values: aspect_ratio=2.35:1 (allowed: 16:9,9:16,1:1)`). MCP behavior verified via Cowork workspace using mcp.higgsfield.ai/mcp connector — `models_explore` returned same schema as CLI, `generate_video` with `get_cost: true` returned cost + adjustments block. No invented flag names, no invented param values, no invented preset names in this release. The previously-shipped `--soul-id abc123` in v3.7.10's README PRE-FLIGHT block was an exception — never verified against the CLI — and is dropped in CH-1 rather than silently kept.
+
+### Scope acknowledgment
+
+v3.7.11 is the largest release since v3.7.7 by content surface (5 sub-phases + framework-innovation pattern across 7 files). Justified as the fourth one-time exception per v3.7.8 commitment language. v3.7.12+ returns to single-arc cadence unless audit-corpus continuity creates another comparable case. Same-day release per Peter decision at v3.7.11 planning handoff. USER-GUIDE.pdf modernization remains the deferred dedicated arc (same as v3.7.8, v3.7.9, v3.7.10) — PDF not regenerated for v3.7.11.
+
+### Backlog — unchanged
+
+- G1 Soul Cinema two-step compositing — UI testing remains pending (carried from v3.7.5)
+- G13 Seedance `【镜头N】` syntax — Seedance product-team confirmation pending (carried from v3.7.5)
+- USER-GUIDE.pdf modernization — deferred dedicated arc
+
 ## v3.7.10 — 2026-05-18
 
 Patch release: surfaces the pre-flight cost-check pattern that already exists on both the MCP (`get_cost: true` parameter on `generate_image`/`generate_video`, plus `balance` and `transactions` tools) and the CLI (`higgsfield generate cost`, `higgsfield account status`, `higgsfield account transactions`). Names preflight as part of Tier 1 *Lock-before-generate* discipline tied to production-benchmarks.md 1% / 1.5% acceptance rates. Replaces vague "MCP priority queue" mental model with verified "one credit pool, one job queue, queue priority is plan-tier-dependent" framing. Same-day follow-up to v3.7.9, completing the v3.7.8/v3.7.9/v3.7.10 stack-integration arc.

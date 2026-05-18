@@ -12,7 +12,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.7.10
+  version: 3.7.11
   updated: 2026-05-18
   author: O-Side Media
   license: MIT
@@ -24,23 +24,29 @@ metadata:
 
 ---
 
-## MANDATORY WORKFLOW — do these in order, every time
+## HARD RULES — pre-delivery checklist
 
-For ANY Higgsfield-related request, follow this contract:
+These rules apply to every Higgsfield response. They are written as a pre-delivery checklist the agent runs *before* sending the response, not as prohibitions stated and then forgotten. The failure mode they prevent is **plausibility-over-verification** — producing a response that looks correct because the agent's training data knows the rough shape of Higgsfield work, rather than because the agent actually read the skill files and verified the platform's ground truth.
 
-1. **Route the request.** Match the user's ask to the routing table in the "Route to the Right Skill" section below, and open the matching sub-skill file(s) with the read tool BEFORE writing any prompt or advice. Do not rely on prior knowledge — platform vocabulary, preset names, and model parameters must be read fresh from the skill files, because this platform's lineup changes between releases.
-2. **Apply MCSLA** (Model · Camera · Subject · Look · Action) to every video prompt unless the user explicitly opts out. Full definition lives in `skills/higgsfield-prompt/SKILL.md`.
-3. **Use named platform vocabulary only.** Camera names, motion presets, and style tokens must come from `vocab.md` or the relevant sub-skill. Do not invent terms the platform doesn't recognize — invented names silently degrade generations without warning.
-4. **Append shared negative constraints** from `skills/shared/negative-constraints.md` before delivering any prompt.
-5. **On the first Higgsfield response in a conversation**, state ONE short line naming which sub-skill you're routing to. Example: "Routing to higgsfield-prompt + higgsfield-camera for a cinematic chase." One line only, then proceed with the work.
+**Before delivering any Higgsfield response, confirm in this order:**
 
-## HARD RULES (do not skip under any circumstances)
+1. **Routing line present.** First line of response names which sub-skills you routed to (e.g. "Routing to higgsfield-prompt + higgsfield-camera for an Atmosphere push-in"). One line, then the work. Missing routing line = response is incomplete; add it.
 
-- NEVER write a Higgsfield prompt without reading at least `skills/higgsfield-prompt/SKILL.md` first in the current conversation.
-- NEVER substitute generic video-prompt vocabulary for named Higgsfield presets.
-- NEVER skip MCSLA structure on video prompts.
-- NEVER invent model versions, camera presets, or motion preset names. If the user names one you don't see in the skill files, say so and ask for clarification.
-- If you find yourself thinking "I already know how to do this from training" — stop. Read the file. Your training data for this platform is stale.
+2. **Routed sub-skills opened and read in this conversation.** Match the user's ask to the routing table below, open the matching sub-skill files with the read tool, and READ them. Root `SKILL.md` and `skills/higgsfield-prompt/SKILL.md` are mandatory at minimum on any prompt request. Grepped snippets do not satisfy this rule. Full reads do. If your only access to root `SKILL.md` or `skills/higgsfield-prompt/SKILL.md` in this conversation came from grep results, you have not satisfied this rule — open the file. Platform vocabulary, preset names, and model parameters must come from the files because this platform's lineup changes between releases.
+
+3. **Named vocabulary verified, not invented.** Camera preset names, motion preset names, model names, CLI flag forms, and MCP tool parameter names all come from the skill files or from live verification (`higgsfield model get <model>` for CLI param schemas; `models_explore` for MCP). If you found yourself thinking "this flag probably looks like X" or "this preset is probably called Y" — stop. Read the file or run the verification command. Plausibility is not validity. Do not substitute generic video-prompt vocabulary for named Higgsfield presets; do not invent model versions, camera presets, or motion-preset names. If the user names one you don't see in the skill files, say so and ask for clarification.
+
+4. **MCSLA structure intact on video prompts.** Model · Camera · Subject · Look · Action. Five layers, every video prompt, unless the user explicitly opted out.
+
+5. **Shared negative constraints appended.** Pull positive-phrasing prevention phrases from `skills/shared/negative-constraints.md`. Do not paraphrase from training; use the exact phrasing from the file. (Kling 3.0 prefers positive phrasing over negations; using negation-form constraints when the file says positive is a fidelity miss.)
+
+6. **Preflight surfaced when applicable.** If execution intent is signaled (CLI / MCP / bundled-skills mentioned) AND a video-class or high-cost model is named OR a budget concern is named, surface the two-step preflight (`model get` / `models_explore` for schema, then cost estimate). See `skills/higgsfield-stack/SKILL.md` § Preflight discipline.
+
+7. **Aspect ratio is an enum, not a free-form value.** Check the model's allowed ratios via schema verify before writing them into the header. Anamorphic / 2.35:1 / 2.39:1 are *style register* vocabulary for the Look line, not output ratios. See `vocab.md` § Aspect Ratio: output spec vs. style register.
+
+8. **Prompt under 200 words.** Soft cap from MCSLA section. Going over is a signal you're padding rather than locking — tighten.
+
+**If any of items 1–8 are missing or unverified, the response is incomplete. Complete them before sending, not after.**
 
 ---
 

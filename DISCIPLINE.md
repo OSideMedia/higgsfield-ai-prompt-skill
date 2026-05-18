@@ -73,6 +73,14 @@ Anchor Block (10-attribute pre-shot lock) + `skills/higgsfield-
 seedance/SKILL.md` § Frame Coordinate System + § Per-Image Role
 Convention.
 
+### Plausibility-over-verification
+
+When the agent has training-data knowledge of *how a platform usually works* (typical CLI flag shapes, common aspect ratios, generic prompt structure), it can produce output that *looks* correct without actually checking against ground truth. The plausible answer is not the verified answer; the discipline is to run the verification command that is sitting right there.
+
+**When to apply:** Any sub-skill where the agent could pattern-match from training instead of reading the skill files or calling a verification surface. CLI param schemas, MCP tool params, platform-specific vocabulary, model enum values.
+
+**Demonstrated in:** v3.7.10 dogfood corpus (2026-05-18). CLI pass invented `--aspect-ratio 2.35:1` (wrong flag form, invalid value for Kling 3.0) — should have run `higgsfield model get kling3_0` first. MCP pass correctly called `models_explore` first but still produced "16:9 anamorphic" in the prompt body — style vocabulary bled across the output-spec boundary because the agent paraphrased from cinematography training rather than from `vocab.md` § Aspect Ratio. Both failures share the same shape: defaulting to plausibility instead of running the verification command that was sitting right there. Counter: the pre-delivery checklist in root `SKILL.md` § HARD RULES (items 2, 3, 7) is the operationalization of this discipline.
+
 ### Falsifiable Success Criteria
 
 Define what "good output" looks like in falsifiable terms BEFORE

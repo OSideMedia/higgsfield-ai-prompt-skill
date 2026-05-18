@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.7.10-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.7.11-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -88,14 +88,25 @@ THIS SKILL — higgsfield-ai-prompt-skill
    • outputs a production-grade Higgsfield prompt
    ↓
 PRE-FLIGHT (optional, recommended for Veo / Kling / Sora / Seedance video):
+
+   SCHEMA VERIFY (recommended for any model you haven't called recently):
+   CLI path:        higgsfield model get kling3_0
+                    → returns schema: aspect_ratio enum, duration range,
+                      mode/sound options, media roles
+   MCP path:        models_explore(action="get", model_id="kling3_0")
+                    → returns same schema as CLI
+
+   COST ESTIMATE (no job submitted):
    MCP path:        generate_video(..., get_cost: true)
-                    → returns credit cost, submits no job
+                    → returns credit cost + adjustments block
 
    CLI path:        higgsfield generate cost kling3_0 \
                       --prompt "<prompt from this skill>" \
-                      --soul-id abc123 \
-                      --duration 8 \
-                      --aspect_ratio 16:9
+                      --aspect_ratio 16:9 \
+                      --duration 8
+                    # (add reference flags as needed: --soul-id, --start-image,
+                    #  --end-image — consult `higgsfield model get kling3_0`
+                    #  for supported media roles)
 
    Bundled skills:  drop to CLI for the cost check (same auth, same workspace),
                     then invoke /higgsfield:generate
@@ -104,16 +115,20 @@ PRE-FLIGHT (optional, recommended for Veo / Kling / Sora / Seedance video):
    MCP path:        balance / transactions tools
    CLI path:        higgsfield account status
                     higgsfield account transactions --size 50
+
+   Note: 2.35:1 is anamorphic STYLE vocabulary, not a valid Kling 3.0 output
+         ratio. Output ratios are platform-bounded: 16:9 / 9:16 / 1:1 only.
    ↓
 HIGGSFIELD STACK — one of three execution surfaces:
 
    CLI path:
      higgsfield generate create kling3_0 \
        --prompt "<prompt from this skill>" \
-       --soul-id abc123 \
-       --duration 8 \
        --aspect_ratio 16:9 \
+       --duration 8 \
        --wait
+     # (add reference flags as needed: --soul-id, --start-image, --end-image —
+     #  consult `higgsfield model get kling3_0` for supported media roles)
 
    Bundled skills path:
      /higgsfield:generate — takes the prompt as its --prompt argument,
@@ -244,4 +259,4 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 
 ---
 
-Built February 2026 · v3.7.10 (updated 2026-05-18) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.7.11 (updated 2026-05-18) · Platform: [higgsfield.ai](https://higgsfield.ai)

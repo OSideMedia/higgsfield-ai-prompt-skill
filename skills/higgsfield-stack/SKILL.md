@@ -4,7 +4,7 @@ description: "Use when the user mentions the Higgsfield CLI (binaries `higgsfiel
 user-invocable: true
 metadata:
   tags: [higgsfield, stack, cli, mcp, official-skills, coexistence, handoff, environment]
-  version: 1.1.0
+  version: 1.2.0
   updated: 2026-05-18
   parent: higgsfield
 ---
@@ -35,10 +35,26 @@ Every Higgsfield generation costs credits, and production-grade AI cinema runs a
 
 This skill never invokes the preflight itself; it names the pattern. The execution layer owns the calls. Both MCP and CLI expose dedicated preflight surfaces — same underlying API, different invocation shapes.
 
+### Two-step preflight
+
+Preflight is two steps, not one. The v3.7.10 release named only the second step (cost estimate); dogfooding immediately surfaced why the first step matters.
+
+**Step 1 — Verify the model's param schema.** Models have bounded, enumerated params: aspect ratios are not free-form, durations have ranges, mode tags are model-specific. The schema is the ground truth; training-data knowledge of "what CLI flags usually look like" is not. Skip this step and you can produce a syntactically-valid preflight command that targets an invalid parameter value — the kind of mistake that hard-fails on submission and burns iteration time you thought you were saving.
+
+**Step 2 — Estimate cost** against the now-verified schema.
+
+| Step | MCP | CLI |
+|---|---|---|
+| 1. Schema verify | `models_explore(action="get", model_id="<model>")` | `higgsfield model get <model>` |
+| 2. Cost estimate | `generate_image` / `generate_video` with `get_cost: true` | `higgsfield generate cost <model> [--param value]...` |
+
+**Failure mode this prevents — plausibility-over-verification.** The model knows enough about Higgsfield (and about CLIs generally, and about MCP schemas generally) to produce a *plausible* preflight call. Plausibility is not validity. Plausibility says `--aspect-ratio 2.35:1` because hyphenated flags and cinematic anamorphic ratios are both prevalent in training data. Verification says `--aspect_ratio 16:9` because that is what `higgsfield model get kling3_0` returns. The discipline is to run the verification command that is sitting right there, not to trust the plausible answer. This pattern recurs across surfaces — see `DISCIPLINE.md` Tier 1 § Plausibility-over-verification for the cross-cutting framing.
+
 ### Verified preflight surfaces
 
 | Concern | MCP | CLI | Bundled skills |
 |---|---|---|---|
+| Schema verification (param enum, ranges, defaults) | `models_explore(action="get", model_id="<model>")` | `higgsfield model get <model>` | Drop to CLI for the verify |
 | Cost estimate (no job submitted) | `generate_image` / `generate_video` with `get_cost: true` | `higgsfield generate cost <model> [--param value]...` | Drop to CLI for the check, then run the slash command |
 | Credit balance + plan + email | `balance` tool | `higgsfield account status` | Drop to CLI |
 | Recent transactions (newest first) | `transactions` tool | `higgsfield account transactions --size N` | Drop to CLI |
@@ -50,6 +66,8 @@ This skill never invokes the preflight itself; it names the pattern. The executi
 **Bundled skills note.** The bundled skills (`higgsfield-generate`, `higgsfield-soul`, `higgsfield-product-photoshoot`) wrap `generate create` under the hood; they don't expose a parallel preflight slash command. Same auth, same workspace, so a one-line CLI cost check before the slash invocation is the cleanest pattern: `higgsfield generate cost <model> --prompt "..." [...flags]`, then `/higgsfield:generate`.
 
 **Marketing Studio caveat.** Per Higgsfield MCP tool descriptions, `get_cost` is not supported for marketing studio models. For those, run the job and read cost from the result, or check `balance` before and after.
+
+**Adjustments block (MCP).** When `get_cost: true` is set on `generate_image` / `generate_video`, the response includes an `adjustments` object that surfaces which unset optional params the server defaulted (e.g. `mode=std`, `sound=on`). Surface these to the user alongside the credit cost — they are part of the preflight contract. The CLI's `generate cost --json` response does not currently include adjustments; if symmetry matters to the user, recommend the MCP path or pass each optional param explicitly on the CLI.
 
 ### Plan tier, not surface, controls queue priority
 
@@ -71,6 +89,10 @@ Add a preflight line to the output block whenever:
 - The work is iteration-heavy by structure (Cinema Studio multi-shot, Two-Tool Refinement Pipeline, multi-character anchor template).
 
 Skip preflight surfacing for one-off image generation on a cheap model, or when the user is clearly just exploring vocabulary without intent to execute.
+
+### Iteration-budget projection (production-benchmarks tie-in)
+
+When surfacing preflight cost, contextualize it against the acceptance-rate anchors in `production-benchmarks.md`. A single Kling 3.0 8s generation at 16:9 std mode costs 16 credits; the 1.5% video-acceptance anchor implies roughly 67 credits of preflighted spend on average to land one keeper. Multiply by shot count for multi-shot sequences. The discipline isn't to surface the multiplied number every time — it's to make sure the user is reading single-shot cost in the context of iteration cost, not as an absolute. This is the same anchor that justifies the preflight pattern in the first place: iteration burn is the work, not the failure, and preflight is how you keep the burn visible.
 
 ---
 

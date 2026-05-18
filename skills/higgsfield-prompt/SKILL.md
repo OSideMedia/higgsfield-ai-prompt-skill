@@ -4,7 +4,7 @@ description: "Use when building, writing, refining, or structuring a Higgsfield 
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 3.4.0
+  version: 3.5.0
   updated: 2026-05-18
   parent: higgsfield
 ---
@@ -295,6 +295,18 @@ Style: Cinematic, cold blue shadows, warm neon accents. 16:9.
 
 ---
 
+## Conflict resolution between sub-skills
+
+Sub-skills can legitimately nominate different things for the same shot. `higgsfield-camera § Camera-Emotion Sync` nominates handheld-slow-low for sadness; `higgsfield-prompt § Scene Archetype Router` permits locked dolly-in for the Atmosphere archetype where mood-is-the-content. When two sub-skills nominate different camera moves (or motion presets, or style registers) for the same scene, resolve in this order:
+
+1. **Explicit user direction wins.** If the user said "slow push-in," that's the camera move. The agent's job is to make that direction work with the rest of the structure, not to override it.
+2. **Scene archetype next.** If the user did not specify, pick the archetype-recommended move (Atmosphere → static / slow push-in / locked-off; Action → handheld / whip-pan / FPV; Dialogue → shoulder-coverage / push-in on emotion).
+3. **Emotion-sync register last.** Camera-Emotion Sync nominations are the default tiebreaker when archetype is unclear.
+
+When the resolution is non-obvious, surface it. Tell the user which sub-skill nominated what and why you picked one over the other — this is meta-correct behavior and lets the user override. Silent picking is the failure mode; transparent picking is the discipline.
+
+---
+
 ## Common Prompt Mistakes
 
 | Mistake | Fix |
@@ -309,7 +321,9 @@ Style: Cinematic, cold blue shadows, warm neon accents. 16:9.
 | Specific martial arts moves | Use general fighting energy instead of named moves |
 | Multiple @ Elements in action scenes | Use @ for static scenes, plain text for action |
 | Mixing identity + motion in one block | Separate into Identity Block + Motion Block (see above) |
-| Aspect ratio inside the prompt body | Set aspect in the Higgsfield UI / output-format header. Describe framing in plain language ("full body" / "chest-up" / "wide establishing") not numerical ratios. |
+| Aspect ratio inside the prompt body | Set aspect in the Higgsfield UI / output-format header (per-model enum: e.g. Kling 3.0 accepts 16:9 / 9:16 / 1:1 only — check `higgsfield model get <model>` or MCP `models_explore`). Describe framing in plain language ("full body" / "chest-up" / "wide establishing") not numerical ratios. |
+
+> **Output ratio is an enum, not a free-form value — and anamorphic is a style register, not an output dimension.** Output aspect ratio is a hard, enumerated platform spec — Kling 3.0 emits `16:9 / 9:16 / 1:1` and nothing else. "Anamorphic" is a *cinematography register* (anamorphic lens flares, letterboxed compositional read, >2:1 framing aesthetic) that the model can render *within* a 16:9 output. "16:9 anamorphic" written as a single phrase in the prompt body is incoherent — pick one. Output ratio belongs in the header (and must be one of the enum values for the chosen model — check `higgsfield model get <model>` or the MCP `models_explore` equivalent before assuming). Anamorphic style cues belong in the Look line ("anamorphic-style flares, letterboxed composition") *as a style request*, not as an output dimension.
 
 > **Negative constraints:** For a comprehensive list of artifacts to avoid (floating limbs,
 > face warping, flickering textures, etc.) and the prompt phrasing to prevent them, see

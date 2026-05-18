@@ -121,6 +121,15 @@ Specifying each layer separately prevents the multi-motion overload failure mode
 - **Anamorphic** — ultra-wide, lens flares, epic scale
 - **Abstract** — surreal, non-representational, artistic
 
+### Aspect Ratio: output spec vs. style register
+
+| Concern | What it is | Where it belongs in a prompt | Bound by |
+|---|---|---|---|
+| Output ratio | Hard platform spec — what the model actually emits | Header (e.g. "Aspect ratio: 16:9") | Per-model enum (Kling 3.0: 16:9 / 9:16 / 1:1; check `higgsfield model get <model>`) |
+| Anamorphic / 2.35:1 / 2.39:1 / Scope / Cinemascope | Cinematography register — anamorphic flares, letterboxed framing aesthetic | Look line, as a style request ("anamorphic-style flares, letterboxed composition") | Stylistic — the model renders the look within the chosen output ratio |
+
+Conflating these produces incoherent prompts. "16:9 anamorphic" requests two contradictory things at once. The model will either ignore one or produce uneven results. Separate them.
+
 ### Color Grade Language
 
 | Mood | Description |
