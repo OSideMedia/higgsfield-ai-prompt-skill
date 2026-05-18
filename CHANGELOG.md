@@ -1,5 +1,173 @@
 # Changelog
 
+## v3.7.7 — 2026-05-18
+
+Mega-release. Co-headlined: CH-1 production-benchmarks.md (Hell Grind 90-min Cannes feature anchors) + CH-2 Seedance depth (Frame Coordinate System + Spatial Layout Block + FAILURE-MODES.md new file + Character Anchor Block + Group F/P/G13b/Group H consolidation) + CH-3 templates library bootstrap (7 NEW template files in 2 new sub-directories) + CH-4 image-models expansion (G18 Nano Banana Pro production-team observations + Group H location-handling) + CH-5 DISCIPLINE.md SC1 reframe + SC2 anti-bombast paradox + 7 new patterns. **Third one-time exception to the harder-single-arc commitment**, after v3.7.5 backlog closeout and v3.7.6 — co-headlined by explicit Peter decision at Phase 0 → Phase 1 handoff. Largest release in repo history by sub-phase count (9 content sub-phases + 1 release ceremony sub-phase).
+
+### Third one-time exception mega-release
+
+Explicit framing acknowledgment. The v3.7.5 / v3.7.6 / v3.7.7 sequence is three mega-releases in succession. The harder-single-arc commitment from v3.7.5's closeout was the intent; mega-release scope kept making sense because v3.7.5+v3.7.7 audit corpus yielded cross-corpus continuity findings that benefited from being shipped as a coherent set rather than fragmented across multiple single-arc releases. The exception sequence does not establish a new pattern: v3.7.8+ returns to single-arc scope unless audit-corpus continuity creates a comparable case.
+
+### CH-1 — Production-benchmarks.md (NEW file)
+
+New `production-benchmarks.md` at repo root (~159 lines). Hell Grind 90-min Cannes feature anchors documented from the Higgsfield team's "Road to Cannes" three-episode documentary: 108,859 generations across 14 days; 9,540,047 credits; ~$400K generation cost / ~$500K total; 15-person team. Quadruple-confirmed 1.0% image acceptance + 1.5% video acceptance rates. ~600 + ~200 = ~800 generations per-character iteration anchor (Jack lead character). 72 generations for one 10-second establishing shot (per-shot iteration anchor). Three Hollywood-validator cost anchors (Chuck Russell $5M / Patrick Kalin $15-20M / Jamafe qualitative). Falsifiable AI-cinema success-criteria 5-rubric (committed before generation began). Plus § Source methodology documenting **Catch #15 instance #1** (credit-rate-per-dollar divergence finding — Ep. 1 $0.060/credit vs Ep. 3 $0.042/credit; resolved per LOCK 19 protocol with ship-both-anchors + caveat decision).
+
+`validate.py` single-line addition registers production-benchmarks.md in `expected_root_files` (LOCK 20).
+
++159 lines new file + 1 line validate.py update in PR #26 (sub-phase 2a).
+
+### CH-2 — Seedance depth across sub-phases 2b-i / 2b-ii / 2c-i / 2c-ii
+
+Largest CH cluster by sub-phase count. Four sub-phases compose the Seedance-cluster expansion.
+
+- **2b-i — G21 Frame Coordinate System + G19 Spatial Layout Block** in `skills/higgsfield-seedance/SKILL.md`. New H2 § Frame Coordinate System with 4 H3 sub-sections (Qualitative anchors / Percentage notation / Pair the two notations / Not a mathematical guarantee). New H2 § Spatial Layout Block with 3 H3 sub-sections (What goes in the block / When to use / Block-and-prompt fit). Tightened per Decision B self-review (159 → 130 lines after honest load-bearing-vs-padding classification). **Catch #14 instance #1** documented (vocabulary-introducing orientation budget overrun). +130 lines in PR #27.
+
+- **2b-ii — Group F single-vs-multi-shot decision + Group P reference-handling + G13b multi-language workaround** in same file. NEW H3 § Per-Image Role Convention under § Reference Roles (per-slot @Image1/@Image2/@Image3/@Image4 + @Video1/@Video2 + @Audio1 role table). § Load-Bearing Rule extended with modality-routing paragraph (P142 upload-to-Claude-not-Seedance discipline). NEW H3 § Single-vs-multi-shot decision under § Output Format (consolidates P54+P59+P111+P112+P126). NEW H2 § Multi-Language Prompt Workarounds + H3 § Chinese (as of 2026-05-17) per LOCK 16 (historical-context framing per Rx-3 mitigation). Pre-commit Decision B tightening applied. +84 lines in PR #28.
+
+- **2c-i — FAILURE-MODES.md (NEW file)** in `skills/higgsfield-seedance/`. New sibling reference (293 lines post-tightening) cataloging 8 Seedance render-failure modes with 4-field structure (Symptom / Mechanism / Counter / Worked example): FPS drift + frame-by-frame de-duplication / Frame-level review is mandatory / Failed-generation salvage / NSFW false-positive (provider-side) / Keyframe-consistency forces invention / Physics-state-anchor / Multi-motion camera overload / Spatial-awareness failures. Plus § Self-repair before delivery (7-item pre-delivery prevention checklist — anchors 2g Pre-delivery discipline cross-ref per content-map line 417) + § Cross-references (8 back-links to SKILL.md sections + sibling skills). Frontmatter matches MODELS-DEEP-REFERENCE.md sibling-file precedent. **Catch #14 instance #2** documented (catalog-format structural floor overrun, 312 → 293 lines after Decision B tightening per Decision A-tightened approval). **FI6 framework innovation candidate** logged (catalog-format sub-phases have higher structural floor). +293 lines new file + 7 lines SKILL.md forward-link in PR #29.
+
+- **2c-ii — Group I Character Anchor Block + G17 Two-Tool Refinement Pipeline** in `skills/higgsfield-soul/SKILL.md`. Six insertions per LOCK 5 + LOCK 18: NEW H2 § Character Anchor Block (P157 10-attribute per-shot prompt structure) + 3 NEW H3 sub-sections (Multi-Form State Tracking via P17+P129 / Face-from-Wide-Shot Workaround via P127 / Tricky-Prop Sheets via P128) + P19 embedded prop sheets sub-bullet in existing § Character Sheet Creation; NEW H2 § Two-Tool Refinement Pipeline (G17 Soul Cinema → GPT Image 2 pipeline; ~600 + ~200 = ~800 generations Jack-character anchor citation). **First v3.7.7 sub-phase to hold LOCK 1 estimate without tightening** (135 lines actual, 96% of LOCK 1 upper bound 140). **FI7 framework innovation candidate** logged (content-map per-item baselines beat abstract sub-phase estimates). +135 lines in PR #30.
+
+### CH-3 — Templates library bootstrap (7 NEW files, sub-phase 2d)
+
+Two new sub-directories with seven new template files. Heaviest sub-phase by file count.
+
+- `templates/seedance/top-down-map.md` (NF3, G23 Hack 17) — Claude meta-prompt template for top-down spatial map pre-visualization. With LOCK 15 BAD/GOOD/GREAT inline examples.
+- `templates/seedance/multi-character-anchor.md` (NF4, G24) — Paste-ready Seedance multi-character anchor block template. With LOCK 15 BAD/GOOD/GREAT inline examples.
+- `templates/seedance/single-character-position.md` (NF5, G25) — Simpler companion for single-character shots.
+- `templates/seedance/worked-example-two-character.md` (NF6, G26) — Concrete end-to-end NF4 fill with Roco + Lulu neo-noir alley scene.
+- `templates/text-overlays/slogan.md` (NF7, P153a) — Display text + entrance animation template.
+- `templates/text-overlays/subtitle.md` (NF8, P153b) — Dialogue-synchronized subtitles.
+- `templates/text-overlays/speech-bubble.md` (NF9, P153c) — Character-attributed in-frame dialogue.
+
+Root SKILL.md cross-link infrastructure updated with 3 new tables (technique templates + text-overlay templates + new sub-directory rows in § Shared Resources).
+
+**Catch #14 instance #3** documented (per-file usable-template floor overrun: 465 → 457 lines after Decision B tightening per Path B approval; FI7-adjusted projection 335-340 vs LOCK 1 estimate 255-275). **FI7-A framework innovation candidate** logged (Gate 1 structural-assumption verification required — verified existing templates have no frontmatter; LOCK 9 cascade count reduced from 12-19 range to fixed 12). **FI7-B framework innovation candidate** logged (per-file usable-template structural floor ~40-50 lines minimum independent of template body size).
+
++457 lines (444 template files + 21 root SKILL.md updates − 8 padding cuts) in PR #31.
+
+### CH-4 — image-models + MODELS-DEEP-REFERENCE expansion (sub-phase 2e)
+
+Rule-extending into existing image-models.md + MODELS-DEEP-REFERENCE.md files. G18 Nano Banana Pro production-team observations sub-section appended to existing § Nano Banana Pro "Known limitations (official)": Plasticky-texture failure mode + counter (atmospheric haze closing line) — P35; Spatial-awareness limit + counter (text-only location, not image reference) — P33; 4-view default + counter (explicit "one view image") — P34; Multi-image embedded prompt drift + counter (generate individually + Photoshop composite) — P43. Group H location-handling sub-section: every-location-needs-anchor (P122) / never-front-on (P123) / split-into-views not combine (P124). Workflow positioning paragraph cross-refs to 2c-ii § Two-Tool Refinement Pipeline. MODELS-DEEP-REFERENCE.md NBP entry gets 1-line failure-modes cross-ref. Quick Decision Table updated (GPT Image 1.5 → GPT Image 2 v3.7.6 carry-over per content-map line 46; new row for Soul Cinema → GPT Image 2 Two-Tool Refinement Pipeline routing).
+
+Also bundled `chore:` markdownlint MD040 fix for two 2d template body code blocks (Path i precedent from 2d→2e cleanup).
+
+**First v3.7.7 sub-phase to land significantly under LOCK 1 lower bound** (24 lines actual vs 50-70 LOCK 1 — 34%; FI5/FI7-adjusted 70-100, 24% of upper). **FI5-C framework innovation candidate** logged (anchor-reuse percentage inversely correlates with scope overrun — slotting into existing section anchors needs less orientation budget than new section creation).
+
++24 net lines (21 image-models + 3 MODELS-DEEP-REFERENCE + 2 chore lint fix) in PR #32.
+
+### CH-2 cross-cutting + CH-5 prep — vocab.md consolidation + camera + prompt extensions (sub-phase 2f)
+
+13 vocab.md entries shipped (Path C-tightened resolving **Catch #14 instance #4** — planning-doc drift between LOCK 14 list and 2f kickoff list, silent substitution mechanism documented per FI8 discipline). 5 entries slot into existing sections (P107 scene-physics lighting in § Lighting Vocabulary / P119 60/30/10 color rule in § Color Grade Language new sub-header / P55 L-cut audio bridge extends existing § Cut & Continuity entry / P57 camera-relative-to-previous-shot in § Cut & Continuity / Reference roles @Image1/@Image2 convention in § Image Reference Notations). 8 entries across 4 NEW H2/H3 sections (§ Editing Syntax under § Camera Movement: P140 bracket notation + P141 arrow notation; § Composition Vocabulary new H2: P161 negative space + P162 crossing rule + Coordinate notation; § Motion Hierarchy under § Camera Movement: P160 4-layer motion hierarchy; § Production Vocabulary new H2: P129 script supervising + State lock). All 6 forward-declared cross-refs from 2d templates RESOLVE at this PR (bracket / arrow / crossing rule / coordinate / reference roles / state lock).
+
+Camera SKILL.md extensions: P64 sequenced camera moves + P65 static-pan-vs-glide distinction in § Combining Camera Controls; P98/P99 pull-back-from-emotional-moment row in § Camera-Emotion Sync table.
+
+Prompt SKILL.md extensions: Group A layered emotion states sub-section in § Generic-Emotion Decomposition (P67 + P96 consolidated as "anxious determination" / "tired tenderness" / "bitter amusement" + tiny-detail layering); Group E prompt-window hygiene sub-section in § Iteration Rule (P46 delete-obsolete + P70 editor-adds-atop-existing + P91 stale-reference-image + P117 prompt-overload-sanitize-pass).
+
+**FI8 framework innovation candidate** logged (Phase 2 directives that supersede Phase 1c locks must explicitly acknowledge the supersession; silent substitution constitutes Catch #14 surface). Deferred to v3.7.8+: modality routing vocab entry + compound camera moves vocab entry (both already routed via image-models.md + skills/higgsfield-camera/SKILL.md respectively; vocab.md reinforcement optional).
+
++123 lines (56 vocab.md + 5 camera + 62 prompt) in PR #33.
+
+### CH-5 — DISCIPLINE.md cross-cutting expansion (sub-phase 2g)
+
+Most procedure-locked sub-phase: LOCK 4 verbatim paste + LOCK 10 no-redraft + LOCK 12 7-pattern specification all held character-by-character. DISCIPLINE.md expanded 126 → 246 lines (+120 net).
+
+LOCK 4 Replacement #1 (intro replace) pasted verbatim from discovery ledger Section 11 — two paragraphs naming the author-bundle systematization framing + 5-skills-15-people-14-days-Cannes production anchor.
+
+LOCK 4 Replacement #2 added as NEW H2 § Author-bundle systematization finding between patterns and § Source attribution. **Minor interpretive note** logged for documentation: LOCK 4 spec said "Replaces current Convergent-evolution finding section" but current DISCIPLINE.md has no such section (Phase 1c-era version likely had it); applied LOCK 10 spirit by adding the locked language as additive H2 in functionally-equivalent location. Not Catch #14 #5 — interpretive resolution within LOCK 10 spirit.
+
+7 new patterns per LOCK 12 distributed across existing 3 tiers (3 Tier 1 + 3 Tier 2 + 1 Tier 3):
+
+- Tier 1 (+3): Iteration-is-craft / Lock-before-generate / Falsifiable Success Criteria
+- Tier 2 (+3): BAD/GOOD/GREAT (per LOCK 15 — cites 2d NF3+NF4 templates) / Skill-with-baked-context / Anti-Bombast + SC2 Anti-Bombast Paradox H4 sub-section
+- Tier 3 (+1): Pre-Delivery Discipline (cites 2c-i FAILURE-MODES.md § Self-repair before delivery)
+
+All 8 cross-ref targets RESOLVE: 2a / 2b-i / 2b-ii / 2c-i / 2c-ii / 2d (NF3+NF4) / 2e / 2f. **R6 risk (aspirational content / cross-ref resolution) fully mitigated across v3.7.7 Phase 2.**
+
+**FI7-B-revised framework innovation candidate** logged (per-file structural floor varies by file convention, not just file type — FAILURE-MODES.md catalog convention 4-field ~24 lines/entry vs DISCIPLINE.md pattern convention 3-field ~11 lines/entry; Gate 1 must read target file's existing patterns before applying FI7-B forward-estimation).
+
++120 net lines in PR #34.
+
+### Framework innovations (FI5 → FI9, 9 total — FI5-C as unifying mechanism)
+
+v3.7.7 execution surfaced nine framework innovations across the FI5-FI9 family. Per the 8-sub-phase data pattern, FI5-C (anchor-reuse correlation) is the underlying mechanism that FI5 / FI6 / FI7-B / FI7-B-revised express as surface manifestations within specific content-type contexts. FI7 + FI7-A are methodological. FI8 is content-planning. FI9 (NEW at 2h) is cumulative-scope discipline.
+
+| FI | Source | Insight |
+|---|---|---|
+| **FI5-C** (primary) | 2e (24% LOCK) — confirmed across 8 sub-phases | Anchor-reuse percentage inversely correlates with scope overrun |
+| FI7 (methodological) | 2c-ii (96% LOCK) | Content-map per-item baselines beat abstract sub-phase estimates |
+| FI7-A (methodological) | 2d Gate 1 | Gate 1 must verify structural assumptions before per-item math is trusted |
+| FI8 (content-planning) | 2f Gate 1 | Phase 2 directives that supersede Phase 1c locks must explicitly acknowledge supersession |
+| **FI9 (NEW)** | 2h kickoff acknowledgment | Cumulative scope discipline requires periodic check against project-level locks during Phase 2 execution, not just per-sub-phase locks at Gate 4 |
+| FI5 (case study) | 2b-i + 2b-ii | Vocabulary-introducing sub-phases need more orientation budget than rule-extending |
+| FI6 (case study) | 2c-i | Catalog-format sub-phases have higher structural floor than rule-extension or vocabulary-intro |
+| FI7-B (case study) | 2d | Per-file usable-template structural floor |
+| FI7-B-revised (refinement) | 2g | Per-file structural floor varies by file convention, not just file type |
+
+Anchor-reuse correlation across 8 sub-phases:
+
+| Sub-phase | LOCK actual | Anchor reuse |
+|---|---|---|
+| 2b-i | 200% | New sections |
+| 2d | 166% | All new files (7) |
+| 2c-i | 133% | New file (FAILURE-MODES.md) |
+| 2b-ii | 129% | Existing taxonomy extension |
+| 2c-ii | 96% | Mostly existing + 1 NEW H2 |
+| 2f | 95% | Mixed: 5 existing + 8 new across 4 sections |
+| 2g | 67% | All 7 patterns under existing Tier H2s |
+| 2e | 34% | All existing anchors |
+
+### Catch #14 instances (6 distinct mechanisms — framework operating as designed)
+
+Six Catch #14 instances surfaced across v3.7.7 Phase 2. Same catch class (planning-doc drift), six distinct mechanisms. Each instance surfaced at the appropriate Gate, handled per Decision A/B/C protocol where applicable, documented forward. Framework operating correctly produces catches; catches are forward learning, not retroactive failures.
+
+| # | Sub-phase | Mechanism | Resolution |
+|---|---|---|---|
+| #1 | 2b-i | Vocabulary-introducing orientation budget overrun | Decision B retroactive tightening (159 → 130) |
+| #2 | 2c-i | Catalog-format structural floor overrun | Decision A-tightened (312 → 293 with Path B approval) |
+| #3 | 2d | Per-file usable-template floor overrun | Path B + Decision B preemptive tightening (465 → 457) |
+| #4 | 2f Gate 1 | Silent substitution (Phase 2 directive vs Phase 1c lock) | Path C-tightened (13 entries union of both lists) |
+| #5 | (cumulative 2a-2g) | LOCK 3 cumulative scope drift | Acknowledged at 2h kickoff; FI9 logged |
+| #6 | 2h Gate 1 | Cascade-scope misalignment (LOCK 9 vs verified 8-file list) | Reconciled per Decision 2 (surface + document) |
+
+### Backlog deferred to v3.7.8+
+
+- **G1 Soul Cinema two-step compositing** — UI testing remains pending (carried over from v3.7.5; narrowed at v3.7.7 per discovery findings)
+- **G13 Seedance `【镜头N】` syntax** — Seedance product-team confirmation pending (carried over from v3.7.5)
+- **Modality routing vocab entry** — already routed via image-models.md + MODELS-DEEP-REFERENCE.md; vocab.md reinforcement optional
+- **Compound camera moves vocab entry** — already covered in `skills/higgsfield-camera/SKILL.md` § Combining Camera Controls (P64 paragraph); vocab.md reinforcement optional
+- **LOCK 4 Replacement #2 interpretive note** — Convergent-evolution section absent on current main; resolved per LOCK 10 spirit at 2g (additive placement); planning-doc currency observation only
+- **LOCK 9 DISCIPLINE.md frontmatter item** — reconciled at 2h Gate 1 per Option (b) — DISCIPLINE.md retains existing root-level no-frontmatter convention
+- **Table-style harmonization decision** (MD060 across ~50+ repo tables) — repo-wide style decision deferred; apply uniform markdownlint style OR add config disable OR leave as known stylistic preference
+
+### Changed
+
+- **Frontmatter version bumps (8 files, mixed minor + patch)** — root `SKILL.md` 3.7.6 → 3.7.7; `skills/higgsfield-seedance/SKILL.md` 1.5.0 → 1.6.0; `skills/higgsfield-seedance/FAILURE-MODES.md` 1.0.0 (new file, no bump); `skills/higgsfield-prompt/SKILL.md` 3.3.0 → 3.4.0; `skills/higgsfield-soul/SKILL.md` 3.3.0 → 3.4.0; `skills/higgsfield-camera/SKILL.md` 3.2.0 → 3.3.0; `skills/higgsfield-models/MODELS-DEEP-REFERENCE.md` 3.0.0 → 3.1.0; `skills/higgsfield-models/SKILL.md` 3.1.0 → 3.1.1 (patch — cross-link only). All `updated:` dates → 2026-05-18. `DISCIPLINE.md` / `vocab.md` / `production-benchmarks.md` / `image-models.md` retain root-level no-frontmatter convention. **R1 cascade mitigation per Phase 1c: single-file Edit + `python3 validate.py` per file** (not bulk Write per v3.7.5 catch #11 lesson). 8 ops vs LOCK 9's estimated 12 — see Catch #14 #6 above.
+
+- **`USER-GUIDE.pdf` regenerated** — content-equivalent to v3.7.6 baseline (Layer 1 text-extract diff PASS with version/date pattern normalization) but byte-divergent at 29030 byte positions (parameterized version + /CreationDate metadata cascade through deflate compression). None of v3.7.7's net-new surfaces propagate into USER-GUIDE.pdf because `generate_user_guide.py` content sections are hardcoded — same constraint as v3.7.6. USER-GUIDE.pdf modernization remains the deferred dedicated arc.
+
+- **`validate_user_guide.py` DEFAULT_BASELINE re-pointed** — `USER-GUIDE.pdf.baseline-v3.7.6` → `USER-GUIDE.pdf.baseline-v3.7.7`. New baseline `USER-GUIDE.pdf.baseline-v3.7.7` committed alongside this release (baselines accumulate, not rotate — v3.7.0 through v3.7.7 all retained for historical comparison).
+
+- **Markdownlint repo hygiene (Path i-bundle-2h queue partial)** — 10 MD040 fenced-code-language fixes in `MODELS-DEEP-REFERENCE.md` (added `text` language hint to bare opening fences containing template/example prose); 1 MD058 blanks-around-tables fix in `vocab.md` (added blank line between `### Color Grade Language` H3 and immediately-following table). MD060 table-column-style warnings (~9 across vocab.md + MODELS-DEEP-REFERENCE.md + image-models.md) deferred per table-style harmonization decision — out of 2h scope (would require repo-wide reformatting of ~50+ tables).
+
+- **`feedback_release_workflow.md` updated** — appended v3.7.7 execution facts: 9 framework innovations (FI5-FI9 family) + 6 Catch #14 instances with mechanisms + Decision B precedent (5 applied + 4 NOT-NEEDED) + forward operating rules for v3.7.8+ (FI5-C + FI7-A + FI8 + FI9 applied preemptively at Gate 1).
+
+- **`backlog_audit_findings.md` updated** — v3.7.7 ship status recorded across all 9 sub-phases; v3.7.8+ deferred items expanded with full rationale per Path C-tightened + Decision 1 (Option b) decisions; framework-innovations + Catch #14-instances queue appended for forward reference.
+
+### Sourcing
+
+- **v3.7.7+ audit corpus** — Higgsfield-team-adjacent author bundle (banana-pro-director, cinema-worldbuilder, screenwriter-skill, shotlist-builder, seedance-2-pro-director) used inside Higgsfield production team's actual pipeline. Patterns proved out during the 2026 Cannes production cycle — five skills, fifteen people, fourteen days, one 90-minute AI feature shipped for Cannes. Source corpus: 3h 47m SRT (3 episodes of "Road to Cannes") + 16 Hack screenshot slides + 604-line seedance-2-pro-director skill body. Total: 358 items extracted across 40 topics; 22 discoveries surfaced; 11 G-candidates; ~150 P-candidates; 5 SC items.
+
+- **IP discipline:** Pattern *form* + *discipline names* + cross-references = audit contribution (IP-safe per pattern-not-text classification). Specific authored content (template bodies, P153 text overlays, prompt formulas) stays at source; what higgsfield ships is re-documented in higgsfield voice with paraphrase per threshold rule (short fragments under 3-9 words quoted verbatim if load-bearing factual; everything else paraphrased). Verified across 9 sub-phases — zero verbatim-quote failures.
+
+- **DISCIPLINE.md SC1 reframe** — LOCK 4 Replacement #1 + Replacement #2 verbatim language pre-locked from `/tmp/higgsfield-audit-v3.7.7-discovery/07-discovery-triage-ledger.md` Section 11 per Phase 1c Rx-4 (HIGH-severity risk) mitigation. Character-by-character paste verified at 2g Gate 4; LOCK 10 no-redraft discipline held.
+
+- **Cross-corpus continuity** — Adil explicitly names screenwriter-skill at Ep. 1 SRT 623-627 and shotlist-builder at Ep. 2 SRT 391-395 (both are v3.7.5 audit subjects, confirming Higgsfield team uses v3.7.5 audit corpus skills inside their pipeline). Seedance-2-pro-director skill frontmatter explicitly defers multi-scene work to shotlist-builder. Stage 3 skill body verbatim-matches Adil's Ep. 3 Hack 3 description of the system-prompt-skill, confirming same author bundle. Cross-episode bidirectional callbacks (Ep. 2 → Ep. 1 P15 iteration-is-craft; Ep. 3 Hack 26 → Ep. 2 P80+P81 FPS-drift). Single-author-bundle systematization framing supersedes v3.7.5's "independent authors converging" framing.
+
+### Cumulative scope acknowledgment
+
+LOCK 3 ceiling was 1005-1335 lines (v3.7.7 scope estimate at Phase 1c). Actual cumulative content shipped: **1534 lines net** across 9 content sub-phases (15% above LOCK 3 upper bound). Each sub-phase honored its individual LOCK 1 estimate with Decision B tightening where needed and Path A/B/C surfacing where the 1.25× threshold was crossed — no defensive shipping at any sub-phase. The Catch #14 #5 (cumulative drift) is the absence of a cumulative scope check across sub-phases, not a failure of per-sub-phase discipline. **FI9 logged** for v3.7.8+ forward operational application: cumulative scope check at each 25% sub-phase milestone (not just per-sub-phase Gate 4 check).
+
 ## v3.7.6 — 2026-05-17
 
 Mega-release. Co-headlined: C-arc (Building Complete AI Projects 10-Step Methodology) + G2 (GPT Image 2 flagship integration) + DISCIPLINE.md (cross-cutting discipline patterns meta-arc) + v3.7.5-audit-gap closeout (9 gaps shipped; 2 dropped; 2 deferred). Largest release in repo history by line count and surface count. Second exception to harder-single-arc commitment after v3.7.5 backlog closeout — co-headlined by explicit Peter decision at Phase 1 planning stage, not single-arc by accident.
