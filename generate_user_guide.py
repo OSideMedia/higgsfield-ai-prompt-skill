@@ -82,6 +82,7 @@ SUB_SKILL_DESCRIPTIONS = {
     "higgsfield-moodboard":   "Moodboard + style consistency",
     "higgsfield-pipeline":    "Multi-step production pipeline",
     "higgsfield-cinema":      "Cinema Studio 2.5 + 3.0 + 3.5 (Soul Cast, Image Mode, Cinematic models)",
+    "higgsfield-marketing-studio": "Marketing Studio - 9 ad presets + 4-15s video + cross-surface",
     "higgsfield-recall":      "Pre-generation memory check",
     "higgsfield-vibe-motion": "Vibe Motion / motion graphics",
     "higgsfield-seedance":    "Seedance 2.0 + frame coords + spatial layout + named failure modes",

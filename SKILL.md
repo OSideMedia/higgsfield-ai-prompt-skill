@@ -12,7 +12,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.7.12
+  version: 3.7.13
   updated: 2026-05-18
   author: O-Side Media
   license: MIT
@@ -134,6 +134,9 @@ budget constraints, client work), **confirm before generating:**
 | Director Panel, Speed Ramp, shot modes, Popcorn | `higgsfield-cinema` |
 | Cinema Studio 3.0 Smart mode, @ references, native audio | `higgsfield-cinema` |
 | Cinema Studio 3.5 — three-pill UI, Style Settings, Camera Settings, Manual Style, AI director toggle | `higgsfield-cinema` |
+| User mentions Marketing Studio, DTC Ads, `ms_image`, or `marketing_studio_video` model | `higgsfield-marketing-studio` |
+| User wants UGC / Tutorial / Unboxing / Hyper Motion / Product Review / TV Spot / Wild Card / UGC Virtual Try On / Pro Virtual Try On ad video | `higgsfield-marketing-studio` |
+| User mentions hook+setting picklists, preset / custom / text-generated avatars in MS context, or 4–15s ad video constraints | `higgsfield-marketing-studio` |
 | Multi-shot workflow, chaining tools, full production pipeline | `higgsfield-pipeline` |
 | Short film, branded content, Popcorn → video → assembly | `higgsfield-pipeline` |
 | Vibe Motion, motion graphics, kinetic typography, brand animation | `higgsfield-vibe-motion` |
@@ -277,6 +280,7 @@ Quick summary — five layers, every prompt:
 | `higgsfield-mixed-media` | Artistic preset overlays (Noir, Sketch, Particles, etc.) |
 | `higgsfield-assist` | Higgsfield Assist copilot / credit optimization / plan selection |
 | `higgsfield-cinema` | Cinema Studio 2.5 + 3.0 + 3.5 / Soul Cast / color grading / optical physics / multi-shot / Elements / Smart mode / @ references / Style Settings / Camera Settings / Manual Style |
+| `higgsfield-marketing-studio` | Marketing Studio / DTC Ads / ad video / UGC video / Hyper Motion / TV Spot / Wild Card / Pro Virtual Try On / hook + setting picklists / 4–15s ad video / `marketing_studio_video` MCP / cross-surface workflow |
 | `higgsfield-pipeline` | Multi-shot workflow / tool chaining / full production pipeline |
 | `higgsfield-vibe-motion` | Vibe Motion / motion graphics / kinetic typography / brand animation |
 | `higgsfield-recall` | Pre-generation memory check / apply past failure fixes |
