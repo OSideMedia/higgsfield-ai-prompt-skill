@@ -1,6 +1,6 @@
-# Bundled fonts — DejaVu Sans Condensed
+# Bundled fonts — DejaVu Sans Condensed + DejaVu Sans Mono
 
-Three TTFs ship with this repository to support Unicode rendering in
+Four TTFs ship with this repository to support Unicode rendering in
 `generate_user_guide.py`:
 
 | File                                | Style   | Size  |
@@ -8,8 +8,9 @@ Three TTFs ship with this repository to support Unicode rendering in
 | `DejaVuSansCondensed.ttf`           | regular | 665 KB |
 | `DejaVuSansCondensed-Bold.ttf`      | bold    | 650 KB |
 | `DejaVuSansCondensed-Oblique.ttf`   | italic  | 586 KB |
+| `DejaVuSansMono.ttf`                | mono    | 333 KB |
 
-Total: ~1.9 MB.
+Total: ~2.2 MB.
 
 ## Why bundled
 
@@ -42,6 +43,18 @@ overflow; the 71-char ceiling in `validate_user_guide.py` stays valid.
 Same Unicode coverage as DV regular; close-to-Helvetica metrics.
 
 Full measurement trail: `../../.planning/v3.7.14/PHASE-0-VERIFICATION.md`.
+
+## Why DejaVu Sans Mono (v3.7.16)
+
+`generate_user_guide.py:code_block` previously used `Courier` (latin-1 core
+font) for inline code snippets. v3.7.16 swaps to `DejaVuSansMono.ttf` under
+a new `Mono` font alias for Unicode-safety symmetry with `Body` (DVC).
+Phase 0 measurement: 0.33% max glyph-width drift vs. Courier on real
+code-block samples (well under the 5% threshold inherited from v3.7.14).
+Only the regular weight is bundled — `code_block` invokes a single
+`set_font("Mono", "", 9)` call site; no bold/oblique weight is reached.
+Full measurement trail: `../../.planning/v3.7.16/PHASE-0-VERIFICATION.md`
+§VERIFY 0.4.
 
 ## Why bundled in-repo, not system-installed
 
@@ -77,11 +90,15 @@ Re-bundle when:
 - `generate_user_guide.py` adds a font weight or style not currently
   bundled (e.g., a `BI` bold-italic combination — none used today)
 
-The current convention uses three styles (regular, bold, oblique).
-`set_font("Body", "BI", ...)` would require an additional
-`DejaVuSansCondensed-BoldOblique.ttf` bundled here.
+The current convention uses three styles for Body (DejaVu Sans Condensed:
+regular, bold, oblique) and one style for Mono (DejaVu Sans Mono: regular
+only — `code_block` invocation is single-style). `set_font("Body", "BI", ...)`
+would require an additional `DejaVuSansCondensed-BoldOblique.ttf` bundled
+here; `set_font("Mono", "B", ...)` or `set_font("Mono", "I", ...)` would
+require adding the corresponding `DejaVuSansMono-Bold.ttf` /
+`DejaVuSansMono-Oblique.ttf` weights.
 
-When updating: download new tarball, replace the three TTFs, update
+When updating: download new tarball, replace the four TTFs, update
 the version reference in this README, and regenerate USER-GUIDE.pdf
 to confirm glyph metrics haven't shifted (validator Layer 1 will
 catch material drift).

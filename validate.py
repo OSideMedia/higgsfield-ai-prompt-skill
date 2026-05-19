@@ -143,6 +143,30 @@ def main():
         path = ROOT / name
         check(path.exists(), name)
 
+    # ── 4. PDF dry-run smoke check ──────────────────────────────────────────
+    print("\n[ PDF DRY-RUN SMOKE ]")
+    import subprocess
+    try:
+        result = subprocess.run(
+            ["python3", str(ROOT / "generate_user_guide.py"), "--dry-run"],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except subprocess.TimeoutExpired:
+        check(False, "generate_user_guide.py --dry-run", "timeout after 60s")
+    else:
+        if result.returncode == 0:
+            check(True, "generate_user_guide.py --dry-run", "exit 0")
+        else:
+            stderr_lines = result.stderr.strip().splitlines() if result.stderr else []
+            stderr_excerpt = stderr_lines[0] if stderr_lines else "(no stderr output)"
+            check(
+                False,
+                "generate_user_guide.py --dry-run",
+                f"exit {result.returncode}; stderr: {stderr_excerpt[:150]}",
+            )
+
     # ── Summary ─────────────────────────────────────────────────────────────
     print(f"\n{'='*50}")
     if issues:

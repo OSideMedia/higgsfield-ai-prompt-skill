@@ -77,8 +77,10 @@ shots.
 
 **GREAT:** Use the template, fill every field including percentage
 notation paired with qualitative anchors, specify cross-character
-relationships (distance + eyeline + crossing rule + negative space).
-Pre-visualize the scene with `top-down-map.md` first and paste the
+relationships (distance + eyeline + crossing rule + negative space —
+see [vocab.md](../../vocab.md) § Composition Vocabulary → Crossing rule
++ § Negative space). Pre-visualize the scene with `top-down-map.md` first
+and paste the
 blocking note Claude generates into the Character A / Character B
 fields. Block is reusable across cuts with the same characters —
 copy and adjust per cut rather than re-specifying.

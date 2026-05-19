@@ -67,6 +67,8 @@ Final frame: Roco one step closer, Lulu's back touching the fence,
 - Every `multi-character-anchor.md` field filled — including cross-
   character relationships (distance + eyeline + crossing rule +
   negative space) per § Spatial Layout Block in the seedance SKILL.md
+  + [vocab.md](../../vocab.md) § Composition Vocabulary → Crossing
+  rule + § Negative space
 - One dominant camera motion (slow dolly-in) — no compound moves per
   § Multi-motion camera overload in FAILURE-MODES.md
 - Continuity locks explicit + Soul ID handles (`@Image1`, `@Image2`)

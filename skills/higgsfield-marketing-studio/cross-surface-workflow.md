@@ -48,15 +48,76 @@ The four-surface recipe is Adil's choice, not a Higgsfield requirement. The plat
 
 Stage 1 of the recipe — brand-identity assets — has two valid paths through Higgsfield.
 
-**Path A (Adil's actual recipe):** GPT Image 2.0, Soul Cinema, and Nano Banana Pro used in combination. GPT Image 2.0 for logos and posters; Soul Cinema for clothing mockups; Nano Banana Pro for multi-view item sheets and logo refinements. Demonstrated end-to-end in SRT-2.
+### 3.a — Path A (Adil's actual recipe)
 
-**Path B (Higgsfield-native alternative):** `ms_image` (display name "DTC Ads") — a dedicated Higgsfield surface for marketing image generation, surfaced by [Phase 0: Probe 0.3-a] as one of three Marketing Studio models. Brand-kit-aware (accepts `brand_kit_id`), ad-format curated (accepts `style_id`), batch generation up to 20 images per call, max 14 reference media per generation. Adil's source corpus (director.md, content-factory.md, the three SRTs) doesn't document `ms_image` at all — **source-corpus reconciliation #12.**
+GPT Image 2.0, Soul Cinema, and Nano Banana Pro used in combination. GPT Image 2.0 for logos and posters; Soul Cinema for clothing mockups; Nano Banana Pro for multi-view item sheets and logo refinements. Demonstrated end-to-end in SRT-2. See §§ 3.1–3.5 below for the verbatim production prompts Adil used.
 
-> **When to recommend which path:** If brand-kit awareness matters (consistent typography, color palette, logo placement across many generated images), `ms_image` is the more integrated option — that's its differentiator over GPT Image 2.0. Adil's GPT-Image-2-first recipe predates `ms_image`'s prominence or reflects a personal preference; both produce campaign-quality output.
+In v3.7.16, the GPT Image 2.0 layer of Path A acquires its own sub-skill at [skills/higgsfield-gpt-image-2/](../higgsfield-gpt-image-2/SKILL.md) — three-format prompt taxonomy (Format A JSON / Format B prose / Format C meta-prompt) covering UI mockups, single-subject scenes, and theme-only auto-derive prompts. For ad-format recreation specifically (a specialization of GPT Image 2.0 use), see the companion [static-ads-workflow.md satellite](../higgsfield-gpt-image-2/static-ads-workflow.md). Soul Cinema (for items specifically) and Nano Banana Pro remain deferred to future arcs.
 
-> **Naming reminder:** when discussing `ms_image` with the user, refer to it as "DTC Ads." The model ID `ms_image` is internal nomenclature; the user-facing brand name is DTC Ads [from `show_marketing_studio` MCP tool description].
+### 3.b — Path B (`ms_image` / "DTC Ads")
 
-> **Out of scope for v3.7.13:** Neither GPT Image 2.0, Soul Cinema (for items specifically), Nano Banana Pro, nor `ms_image` get a dedicated sub-skill in this release. See §8 for the deferred-arc breakdown.
+A dedicated Higgsfield-native image-generation surface for marketing image work, surfaced by [Phase 0: Probe 0.3-a] in v3.7.13 as the third Marketing Studio model alongside `marketing_studio_image` (basic) and `marketing_studio_video` (this sub-skill's primary surface). Adil's source corpus does not document `ms_image` — see § 3.b.v for the source-corpus reconciliation tally.
+
+#### 3.b.i — Capability summary
+
+`ms_image` distinguishes itself from GPT Image 2.0 through four capabilities not present in the general-purpose image model:
+
+- **Brand-kit awareness:** accepts a `brand_kit_id` parameter that ties generation to a per-user brand kit (typography, colour palette, logo placement)
+- **Ad-format style routing:** requires a `style_id` parameter selecting from a platform-curated library of ad-format styles
+- **Batch generation:** generates up to 20 images per call via `batch_size`, vs. GPT Image 2.0's single-image-per-call default
+- **Reference-media capacity:** accepts up to 14 image-role reference media per generation, vs. GPT Image 2.0's smaller reference budget
+
+These capabilities position `ms_image` for the campaign-scale ad image generation use case where brand consistency across many images is the load-bearing constraint.
+
+#### 3.b.ii — Parameter schema
+
+Per [Phase 0: Probe 0.3-a] in v3.7.13 (`models_explore(action='search', query='marketing studio')` introspection):
+
+| Parameter | Required | Type | Default | Options |
+|---|---|---|---|---|
+| `style_id` | required | string | — | platform-managed style enumeration |
+| `brand_kit_id` | optional | string | — | user-specific brand kit |
+| `resolution` | optional | string | `1k` | `1k`, `2k`, `4k` |
+| `quality` | optional | string | `low` | `low`, `medium`, `high` |
+| `batch_size` | optional | number | `1` | `1`–`20` |
+| `folder_id` | optional | string | — | organizational metadata |
+
+**Aspect ratios supported (15):** `1:1`, `3:2`, `2:3`, `16:9`, `9:16`, `4:3`, `3:4`, `21:9`, `27:16`, `16:27`, `9:8`, `8:9`, `4:9`, `9:4`, `auto`.
+
+**Reference media:** up to 14 image-role items per generation.
+
+**Pricing:** not separately documented for `ms_image` in Phase 0 evidence. For cost verification, use `transactions(limit=200)` post-hoc as documented in SKILL.md § 12.
+
+#### 3.b.iii — When to recommend `ms_image` over GPT Image 2.0
+
+`ms_image` is not part of Adil's demonstrated canonical recipe — his source corpus doesn't document it (see § 3.b.v). Treat GPT Image 2.0 as the default for image-side work, and reach for `ms_image` when its specific differentiators apply:
+
+- **Brand-kit consistency across many images** — when the user is generating multiple ad creatives that all need consistent typography, colour palette, and logo placement. `ms_image`'s `brand_kit_id` parameter ties the generation to a stable brand kit; GPT Image 2.0 requires re-specifying brand identity in every prompt body.
+- **Batch generation of 5–20 ads per call** — `batch_size: 5` through `batch_size: 20` is `ms_image`'s natural surface; GPT Image 2.0's single-image-per-call model doesn't batch.
+- **Ad-format style selection from a curated library** — when the user wants to pick from Higgsfield's platform-managed ad-format library rather than describe the format in prose / JSON. `style_id` is the entry point; no GPT Image 2.0 equivalent.
+
+For everything else — UI mockups, infographics, single-image cinematic scenes, theme-only meta-prompts, ad-format recreation from a reference image — GPT Image 2.0 (see [skills/higgsfield-gpt-image-2/](../higgsfield-gpt-image-2/SKILL.md)) is the better fit.
+
+#### 3.b.iv — Naming reminder + live-enumeration discipline
+
+**Naming:** when discussing `ms_image` with the user, refer to it as "DTC Ads." The model ID `ms_image` is internal nomenclature; the user-facing brand name is DTC Ads [from `show_marketing_studio` MCP tool description].
+
+**Live-enumeration discipline:** `style_id` values are platform-managed (the curated ad-format library drifts as Higgsfield adds styles); `brand_kit_id` values are user-specific (each user's brand kits). Hardcoded UUIDs from this doc would mislead — the parameter schema is what's stable; the IDs are not. For canonical current values, call:
+
+```
+show_marketing_studio(action='list', type='brand_kit')
+# and the equivalent for style enumeration
+```
+
+This reuses the v3.7.13 live-enumeration discipline pattern established in [SKILL.md](SKILL.md) § 4 for hooks + settings — same discipline applied wherever IDs drift over time and are not appropriate to hardcode in static documentation.
+
+#### 3.b.v — Source-corpus reconciliation #12
+
+Adil's source corpus — `marketing-studio-director.md` (262 lines, 9 video presets + prompt grammar), `higgsfield-content-factory.md` (997 lines, 5-stage MCP-orchestration pipeline), and the three SRT video demonstrations — does not document `ms_image` at all. Phase 0 search across both source SKILL.md files returned **zero hits** for `ms_image`, `dtc ads`, `dtc_ads`, or `marketing_studio_image`.
+
+The `ms_image` coverage in §§ 3.b.i–3.b.iv is sourced entirely from [Phase 0: Probe 0.3-a] (v3.7.13 live-MCP introspection of the `models_explore` endpoint) plus this doc's prior brief at L51–59. Per v3.7.16 § 1C source-evidence discipline: content stays within the parameter schema + naming rule + capability summary derived from the schema; no worked examples (we have none — no source corpus, no demo evidence), no sample UUIDs (no observed instances), no pricing claims for `ms_image` specifically (no separate pricing signal), no specific ad-format style names (no style enumeration in Probe 0.3-a evidence — `style_id` is required but the enumeration is platform-managed; see § 3.b.iv live-enumeration discipline).
+
+Verification trail: [.planning/v3.7.16/PHASE-0-VERIFICATION.md](../../.planning/v3.7.16/PHASE-0-VERIFICATION.md) § VERIFY 0.3 (ms_image source-corpus survey + architectural option β rationale) and [.planning/v3.7.16/PHASE-1-INVENTORY.md](../../.planning/v3.7.16/PHASE-1-INVENTORY.md) § 1C (source-evidence boundary + DO-NOT-WRITE list).
 
 ### Worked examples from PDF items 1–5 (Adil's recipe — Path A)
 
@@ -404,16 +465,16 @@ For those preset registers, the source corpus's prose-craft layer (`marketing-st
 
 Honest table of what's covered today vs. what's deferred:
 
-| Surface | Coverage in our skill (as of v3.7.13) |
+| Surface | Coverage in our skill (as of v3.7.16) |
 |---|---|
 | Marketing Studio video (`marketing_studio_video`) | **In-scope** — covered in this directory's `SKILL.md` |
 | Cross-surface workflow (this doc) | **In-scope** — connection layer between MS and image-side surfaces |
 | Soul Cinema (image gen + locations) | **In-scope** — depth in `../higgsfield-soul/SKILL.md` (Soul ID + Character Anchor Block + Two-Tool Refinement Pipeline) |
-| GPT Image 2.0 (image gen) | **Referenced, not covered** — `gpt-image-2-director` sibling director-pattern adoption deferred to future arc per Phase 3.3 Option B |
+| GPT Image 2.0 (image gen) | **Shipped in v3.7.16** — translated to `../higgsfield-gpt-image-2/SKILL.md` (three-format prompt taxonomy: Format A JSON / Format B prose / Format C meta-prompt). Translates `gpt-image-2-director` source corpus per the v3.7.13 marketing-studio precedent. |
 | Nano Banana Pro (image gen) | **Referenced, not covered** — Nano Banana Pro sibling-director hunt deferred indefinitely |
-| `ms_image` ("DTC Ads") | **Named here (§3), not covered** — full sub-skill deferred to future arc; brand-kit-aware DTC ad image generation, distinct from GPT Image 2.0 |
+| `ms_image` ("DTC Ads") | **Expanded in §3.b (v3.7.16)** — Phase 0 architectural option β rescope: full sub-skill deferred (Adil source corpus has zero coverage of `ms_image` — see § 3.b.v source-corpus reconciliation #12), §3 expanded into §3.a / §3.b.i–v structure with capability summary + parameter schema + recommendation heuristic + naming reminder + source-corpus reconciliation. |
 | `marketing_studio_image` (basic MS image) | **Referenced (`SKILL.md` §2), not covered** — out of scope; lower-capability than `ms_image` |
-| Static-image cross-surface (e.g., reference-swap ad recreation) | **Deferred** — `static-ads.md` source material adjacent but separate from MS workflow |
+| Static-image cross-surface (e.g., reference-swap ad recreation) | **Shipped in v3.7.16** — translated to `../higgsfield-gpt-image-2/static-ads-workflow.md` satellite (fractional-coordinate zones, brand-neutral wireframe intermediation, safe-zone top/bottom-10% rule, brand-vs-structure separation, three template patterns: iMessage / Scarcity Countdown / Ingredient Spotlight). |
 | Cinematic prompt-pattern vocabulary (Camera Contract, Motion Physics Anchor, etc.) | **Shipped in v3.7.15** — translated to `vocab.md` § Camera Movement Terminology (Camera Contract, Motion Physics Anchor, Lens Behavior Sequence) + § Composition Vocabulary (Negative-prompt reinforcement, Spatial Zoning, Negative space expansion). 4 of 5 pillars added as new subsections; Negative Space extended from existing L338 coverage with negative-prompt reinforcement pattern + Spatial Zoning binding. |
 
 The full deferral list with reasoning is in the v3.7.13 CHANGELOG's Scope acknowledgment subsection.

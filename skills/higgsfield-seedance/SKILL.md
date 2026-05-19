@@ -485,8 +485,9 @@ geometric guarantee**. The model treats them as directorial
 intent — the same way a DP reads "right third" on a storyboard —
 not as pixel-exact targets. Use them alongside the rest of the
 standard composition vocabulary (`over-the-shoulder`, `eye line`,
-`ground contact`, `headroom`, `nose room`, `crossing rule`) rather
-than as a substitute for it.
+`ground contact`, `headroom`, `nose room`, `crossing rule` — the last
+formalized at [vocab.md](../../vocab.md) § Composition Vocabulary →
+Crossing rule) rather than as a substitute for it.
 
 When a coordinate drifts in the output, that is the expected behavior
 class — the coordinate set the intent; the model rendered to its
