@@ -414,7 +414,7 @@ Honest table of what's covered today vs. what's deferred:
 | `ms_image` ("DTC Ads") | **Named here (§3), not covered** — full sub-skill deferred to future arc; brand-kit-aware DTC ad image generation, distinct from GPT Image 2.0 |
 | `marketing_studio_image` (basic MS image) | **Referenced (`SKILL.md` §2), not covered** — out of scope; lower-capability than `ms_image` |
 | Static-image cross-surface (e.g., reference-swap ad recreation) | **Deferred** — `static-ads.md` source material adjacent but separate from MS workflow |
-| Cinematic prompt-pattern vocabulary (Camera Contract, Motion Physics Anchor, etc.) | **Deferred** — `cinematic-motion-language.md` translation to `vocab.md` is a follow-up release; 4 of 5 pillars are partial-or-no-coverage gaps |
+| Cinematic prompt-pattern vocabulary (Camera Contract, Motion Physics Anchor, etc.) | **Shipped in v3.7.15** — translated to `vocab.md` § Camera Movement Terminology (Camera Contract, Motion Physics Anchor, Lens Behavior Sequence) + § Composition Vocabulary (Negative-prompt reinforcement, Spatial Zoning, Negative space expansion). 4 of 5 pillars added as new subsections; Negative Space extended from existing L338 coverage with negative-prompt reinforcement pattern + Spatial Zoning binding. |
 
 The full deferral list with reasoning is in the v3.7.13 CHANGELOG's Scope acknowledgment subsection.
 

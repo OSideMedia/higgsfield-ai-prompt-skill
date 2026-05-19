@@ -89,6 +89,65 @@ The **4-layer motion hierarchy** separates simultaneous motions a shot can carry
 
 Specifying each layer separately prevents the multi-motion overload failure mode (see `skills/higgsfield-seedance/FAILURE-MODES.md` § Multi-motion camera overload).
 
+### Camera Contract
+
+A **camera contract** is the prompt-side discipline of stating camera behavior as an explicit rule before describing subject or action. When camera behavior is left implicit, the model defaults to its training-prior interpretation, which may not match the intended shot — stating the contract anchors the model's output.
+
+Three example contracts, drawn from common shot shapes:
+
+- `Static locked-off camera. Zero movement. No pan, no zoom, no dolly, no shake.` — atmospheric / observational shots, product reveals, sacred-register imagery
+- `Slow push-in only — 10% scale change over the full duration.` — quiet emotional intensification, realization beats, single-subject scenes
+- `Single handheld drift, slight organic sway, no cuts.` — naturalistic / documentary register, intimate scenes, low-fi visual identity
+
+Pair every camera contract with **negative-prompt reinforcement** (see § Composition Vocabulary → Negative-prompt reinforcement below) — name the excluded camera moves in the negative prompt so the model is constrained from both sides.
+
+> Part of the 5-pillar cinematic-motion-language framework, see also § Motion Physics Anchor (below), § Lens Behavior Sequence (below), § Composition Vocabulary → Spatial Zoning and Negative space. Translated from Adil Aliyev's `cinematic-motion-language.md` source corpus.
+
+### Motion Physics Anchor
+
+A **motion physics anchor** specifies *how fast* a moving element moves through the frame by anchoring the speed to a physical analogy or a time measurement.
+
+Distinct from § Subject & Character → Movement Quality (further below), which describes the *character* of motion — fluid, jerky, hesitant, confident — performance direction rather than speed specification. The two vocabularies compose: a character can move with `stumbling` quality (Movement Quality) at `the pace of a clock's hour hand` (Motion Physics Anchor). Different axes of motion description.
+
+**Physical-analogy speed references** anchor abstract pace to observable real-world motion:
+
+- `like dust suspended in honey` — extremely slow, viscous, deliberate
+- `like embers floating in still air` — slow, weightless, drifting
+- `like smoke through a cathedral at dawn` — slow, layered, atmospheric
+- `like the surface of a lake disturbed by a single drop` — slow ripple-outward expansion
+- `like a flag in a steady cross-breeze` — moderate, periodic, directional
+- `like a slammed door rebounding` — fast, decaying oscillation
+
+**Time-anchored measurements** specify pace as a quantity:
+
+- `one full revolution across the entire 10-second clip`
+- `roughly 6 degrees per second`
+- `the pace of a clock's hour hand — imperceptibly slow`
+- `travels the full arc in 8 seconds with no pause`
+
+When motion-speed precision matters, anchor to physics analogies or time measurements rather than adjectives. Adjectives like `slow` or `fast` work as quick-spec for casual prompts but are less reliably interpreted than physical analogies or time anchors. The directional pattern: more specific anchor → more controlled output.
+
+> Part of the 5-pillar cinematic-motion-language framework, see also § Camera Contract (above), § Lens Behavior Sequence (below), § Composition Vocabulary → Spatial Zoning and Negative space. Same translation discipline as `vocab.md` § Scene-physics lighting (replace adjectival descriptors with named physical mechanisms). Translated from Adil Aliyev's `cinematic-motion-language.md` source corpus.
+
+### Lens Behavior Sequence
+
+A **lens behavior sequence** describes a focus or depth-of-field event as a narrative with structure: trigger → shift → state → return → repeat. Models tend to produce cleaner / more reliable focus events when the sequence is described as cause and effect rather than as a single static depth-of-field state.
+
+Example sequence:
+
+> `Focus opens on the subject. As the foreground element crosses the lens plane, focus shifts onto it — the subject softens into warm bokeh. The element drifts past. Focus breathes back to the subject. This cycle repeats organically 2-3 times.`
+
+Key vocabulary:
+
+- **shallow depth of field** — narrow plane of sharpness, foreground/background fall off
+- **focus-breathing** — organic in/out focus shift between two subjects without a hard rack
+- **rack focus** — deliberate, directional focus shift between two named subjects (see § Camera Movement Terminology → Zoom → Rack Focus above for the bare-bones entry)
+- **bokeh silhouette** — out-of-focus subject reduced to a soft warm shape against background light
+- **lens plane crossing** — the moment a foreground element passes between camera and subject, triggering a focus event
+- **anamorphic lens rendering** — oval bokeh, horizontal flare character, widescreen feel (see also § Visual Style Vocabulary → Named Platform Styles → Anamorphic for the style register, and § Aspect Ratio: output spec vs. style register for the output-vs-style boundary)
+
+> Part of the 5-pillar cinematic-motion-language framework, see also § Camera Contract (above), § Motion Physics Anchor (above), § Composition Vocabulary → Spatial Zoning and Negative space. Translated from Adil Aliyev's `cinematic-motion-language.md` source corpus.
+
 ---
 
 ## Shot Size Vocabulary
@@ -335,9 +394,60 @@ is contextual to which surface is being addressed.
 
 Vocabulary for what's IN the frame and where it sits — distinct from camera-side language (which describes how the camera moves) and lighting (which describes illumination).
 
-- **Negative space** — the deliberately-empty area of the frame that isolates or weighs the subject. Production-direction language: `negative space sits center-left of frame, narrowing as the character advances`. Naming negative space as a compositional element prevents the model from filling it with incidental detail.
-- **Crossing rule** — film-grammar clause for whether characters may cross positions on-screen within a shot or across a cut. Distinct from the camera-side 180° rule (which is about the imaginary line between subjects): the crossing rule names what subjects may do, the 180° rule names what the camera may do. Example: `Character A stays on the left, Character B stays on the right, neither crosses the central vertical axis`.
-- **Coordinate notation** — paired qualitative + percentage spatial anchors for in-frame placement. `Character A stands in the right third, x-position 70%, y-position 50%, frame occupancy 25%`. The qualitative term gives the film-language hook; the percentage gives the precision target. See `skills/higgsfield-seedance/SKILL.md` § Frame Coordinate System for the full coordinate system + caveats.
+### Negative-prompt reinforcement
+
+A cross-cutting compositional discipline: when the prompt declares a positive constraint on the frame — a locked camera, a black zone, a deliberately-empty region — mirror the exclusion in the negative prompt so the model is constrained from both sides.
+
+Example pairs:
+
+- Positive: `Static locked-off camera. Zero movement.`
+  Negative: `camera movement, pan, zoom, dolly, shake`
+- Positive: `Left third: pure black, no motion, no light.`
+  Negative: `particles on the left side, light on the left side, movement on the left side`
+- Positive: `Foreground plane: particle layer only — no subject.`
+  Negative: `subject in foreground, character in foreground`
+
+The positive-side declaration names the intent; the negative-side reinforcement prevents the model from filling against the named intent. Pillars that use this technique: § Camera Movement Terminology → Camera Contract (camera-rule reinforcement); § Spatial Zoning below (zone-rule reinforcement); § Negative space below (excluded-region reinforcement).
+
+### Spatial Zoning
+
+A **spatial zoning** prompt divides the frame into named regions and assigns explicit rules to each region. This prevents the model from filling empty space with invented content — a falsifiable production claim, well-aligned with how transformer-based video models respond to explicit constraints.
+
+**Region naming conventions** (combine as needed):
+
+- Thirds: `left third`, `center third`, `right third`
+- Depth planes: `foreground plane`, `midground`, `background`
+- Halves: `upper half`, `lower half`
+- Asymmetric splits: `right two-thirds / left void`, `left two-thirds / right void`
+
+**Zone-rule examples** (each region declares its content and behavior):
+
+- `Left third: pure black, no light, no particles, no movement.`
+- `Right two-thirds: all action contained here.`
+- `Foreground plane: particle layer only — no subject.`
+- `Background: unlit void, no detail.`
+
+Always reinforce zone rules in the negative prompt — see § Negative-prompt reinforcement above. § Negative space (below) is one common zone type within a spatial-zoning system.
+
+> Part of the 5-pillar cinematic-motion-language framework, see also § Camera Movement Terminology → Camera Contract, § Motion Physics Anchor, § Lens Behavior Sequence, § Negative space (below). Translated from Adil Aliyev's `cinematic-motion-language.md` source corpus.
+
+### Negative space
+
+The deliberately-empty area of the frame that isolates or weighs the subject. Production-direction language: `negative space sits center-left of frame, narrowing as the character advances`. Naming negative space as a compositional element prevents the model from filling it with incidental detail.
+
+When the prompt names a negative-space zone, mirror the exclusion in the negative prompt — see § Negative-prompt reinforcement above. Negative space is one named zone type within a § Spatial Zoning system: Spatial Zoning declares the region rules; negative space names which regions are deliberately empty. The two compose.
+
+Source register sometimes names negative space evocatively: `sacred emptiness`, `active darkness, not background`, `deliberate compositional weight`. Production-direction register tolerates evocative naming when the evocation is grounded in a compositional rule — e.g., naming a zone `sacred emptiness` *after* the zone has been declared as no-light, no-motion, no-particles. Without the underlying rule, evocative naming reads as adjective-stacking; the rule is what makes the evocation operative. (Evocative naming examples sourced from Adil Aliyev's `cinematic-motion-language.md`.)
+
+> Part of the 5-pillar cinematic-motion-language framework, see also § Camera Movement Terminology → Camera Contract, § Motion Physics Anchor, § Lens Behavior Sequence, § Spatial Zoning (above).
+
+### Crossing rule
+
+Film-grammar clause for whether characters may cross positions on-screen within a shot or across a cut. Distinct from the camera-side 180° rule (which is about the imaginary line between subjects): the crossing rule names what subjects may do, the 180° rule names what the camera may do. Example: `Character A stays on the left, Character B stays on the right, neither crosses the central vertical axis`.
+
+### Coordinate notation
+
+Paired qualitative + percentage spatial anchors for in-frame placement. `Character A stands in the right third, x-position 70%, y-position 50%, frame occupancy 25%`. The qualitative term gives the film-language hook; the percentage gives the precision target. See `skills/higgsfield-seedance/SKILL.md` § Frame Coordinate System for the full coordinate system + caveats.
 
 ---
 

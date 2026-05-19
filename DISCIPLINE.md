@@ -177,7 +177,13 @@ the model or the user reads.
 stylistic adjectives with named physical mechanisms) + the
 seedance-2-pro-director skill's anti-empty-words discipline
 (`Avoid: epic, beautiful, cinematic masterpiece, ultra realistic,
-dramatic`).
+dramatic`). When source material presents craft opinion at HARD
+RULE volume — as cinematic-motion-language.md does throughout —
+apply per-claim register downgrade (see `vocab.md` § Motion
+Physics Anchor as the canonical example, where Adil's "models
+understand physics, not adjectives" universalizing claim is
+translated to "a complementary precision technique for
+motion-rate description").
 
 #### Anti-Bombast Paradox
 

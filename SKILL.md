@@ -12,7 +12,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.7.14
+  version: 3.7.15
   updated: 2026-05-18
   author: O-Side Media
   license: MIT
