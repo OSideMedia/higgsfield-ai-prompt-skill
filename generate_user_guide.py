@@ -18,6 +18,7 @@ from fpdf import FPDF
 REPO_ROOT = Path(__file__).resolve().parent
 ROOT_SKILL_PATH = REPO_ROOT / "SKILL.md"
 SKILLS_DIR = REPO_ROOT / "skills"
+FONT_DIR = REPO_ROOT / "assets" / "fonts"
 
 
 def read_root_metadata():
@@ -94,22 +95,28 @@ class UserGuidePDF(FPDF):
     def __init__(self):
         super().__init__()
         self.set_auto_page_break(auto=True, margin=25)
+        # Register DejaVu Sans Condensed under the family alias "Body" so all
+        # set_font("Body", ...) calls below pick up the bundled Unicode font.
+        # Bundled in assets/fonts/ — see assets/fonts/README.md for rationale.
+        self.add_font("Body", "",  str(FONT_DIR / "DejaVuSansCondensed.ttf"))
+        self.add_font("Body", "B", str(FONT_DIR / "DejaVuSansCondensed-Bold.ttf"))
+        self.add_font("Body", "I", str(FONT_DIR / "DejaVuSansCondensed-Oblique.ttf"))
 
     def header(self):
         if self.page_no() > 1:
-            self.set_font("Helvetica", "I", 8)
+            self.set_font("Body", "I", 8)
             self.set_text_color(128, 128, 128)
             self.cell(0, 10, f"Higgsfield AI Prompt Skill - User Guide v{META['version']}", align="L")
             self.ln(5)
 
     def footer(self):
         self.set_y(-15)
-        self.set_font("Helvetica", "I", 8)
+        self.set_font("Body", "I", 8)
         self.set_text_color(128, 128, 128)
         self.cell(0, 10, f"Page {self.page_no()}/{{nb}}", align="C")
 
     def section_title(self, title):
-        self.set_font("Helvetica", "B", 16)
+        self.set_font("Body", "B", 16)
         self.set_text_color(30, 30, 30)
         self.ln(4)
         self.cell(0, 10, title, new_x="LMARGIN", new_y="NEXT")
@@ -119,30 +126,30 @@ class UserGuidePDF(FPDF):
         self.ln(4)
 
     def subsection_title(self, title):
-        self.set_font("Helvetica", "B", 13)
+        self.set_font("Body", "B", 13)
         self.set_text_color(50, 50, 50)
         self.ln(2)
         self.cell(0, 8, title, new_x="LMARGIN", new_y="NEXT")
         self.ln(2)
 
     def body_text(self, text):
-        self.set_font("Helvetica", "", 10)
+        self.set_font("Body", "", 10)
         self.set_text_color(40, 40, 40)
-        self.multi_cell(0, 5.5, text)
+        self.multi_cell(0, 5.5, text, align="L")
         self.ln(2)
 
     def bold_text(self, text):
-        self.set_font("Helvetica", "B", 10)
+        self.set_font("Body", "B", 10)
         self.set_text_color(40, 40, 40)
-        self.multi_cell(0, 5.5, text)
+        self.multi_cell(0, 5.5, text, align="L")
         self.ln(1)
 
     def bullet(self, text):
-        self.set_font("Helvetica", "", 10)
+        self.set_font("Body", "", 10)
         self.set_text_color(40, 40, 40)
         x = self.get_x()
         self.cell(8, 5.5, "-")
-        self.multi_cell(0, 5.5, text)
+        self.multi_cell(0, 5.5, text, align="L")
         self.ln(1)
 
     def code_block(self, text):
@@ -160,17 +167,17 @@ class UserGuidePDF(FPDF):
         self.set_draw_color(70, 130, 180)
         x = self.get_x()
         y = self.get_y()
-        self.set_font("Helvetica", "I", 10)
+        self.set_font("Body", "I", 10)
         self.set_text_color(50, 80, 120)
         self.set_line_width(0.3)
         # Draw left border
         self.line(x, y, x, y + 12)
         self.set_x(x + 5)
-        self.multi_cell(self.w - self.l_margin - self.r_margin - 5, 5.5, text, fill=True)
+        self.multi_cell(self.w - self.l_margin - self.r_margin - 5, 5.5, text, fill=True, align="L")
         self.ln(3)
 
     def table_row(self, cols, widths, bold=False, fill=False):
-        self.set_font("Helvetica", "B" if bold else "", 9)
+        self.set_font("Body", "B" if bold else "", 9)
         self.set_text_color(40, 40, 40)
         if fill:
             self.set_fill_color(235, 240, 250)
@@ -180,27 +187,27 @@ class UserGuidePDF(FPDF):
         self.ln(h)
 
     def new_tag(self):
-        self.set_font("Helvetica", "B", 8)
+        self.set_font("Body", "B", 8)
         self.set_text_color(255, 255, 255)
         self.set_fill_color(70, 130, 180)
         self.cell(18, 5, " NEW ", fill=True)
         self.set_text_color(40, 40, 40)
-        self.set_font("Helvetica", "", 10)
+        self.set_font("Body", "", 10)
 
     def v3_tag(self):
-        self.set_font("Helvetica", "B", 8)
+        self.set_font("Body", "B", 8)
         self.set_text_color(255, 255, 255)
         self.set_fill_color(46, 139, 87)
         self.cell(22, 5, " v3.0 ", fill=True)
         self.set_text_color(40, 40, 40)
-        self.set_font("Helvetica", "", 10)
+        self.set_font("Body", "", 10)
 
 
 # Read version/date/author from root SKILL.md frontmatter (single source of truth).
 META = read_root_metadata()
 
 
-def build_pdf():
+def build_pdf(dry_run: bool = False):
     pdf = UserGuidePDF()
     pdf.alias_nb_pages()
     # Pin creation date to the metadata 'updated' field for reproducible builds.
@@ -211,16 +218,16 @@ def build_pdf():
     # --- COVER PAGE ---
     pdf.add_page()
     pdf.ln(50)
-    pdf.set_font("Helvetica", "B", 32)
+    pdf.set_font("Body", "B", 32)
     pdf.set_text_color(30, 30, 30)
     pdf.cell(0, 15, "Higgsfield AI", align="C", new_x="LMARGIN", new_y="NEXT")
     pdf.cell(0, 15, "Prompt Skill", align="C", new_x="LMARGIN", new_y="NEXT")
-    pdf.set_font("Helvetica", "", 18)
+    pdf.set_font("Body", "", 18)
     pdf.set_text_color(80, 80, 80)
     pdf.ln(5)
     pdf.cell(0, 10, "User Guide", align="C", new_x="LMARGIN", new_y="NEXT")
     pdf.ln(10)
-    pdf.set_font("Helvetica", "", 12)
+    pdf.set_font("Body", "", 12)
     pdf.set_text_color(100, 100, 100)
     pdf.multi_cell(0, 7,
         "A plain-English guide for getting the most out of this skill.\n"
@@ -229,7 +236,7 @@ def build_pdf():
         "Higgsfield AI -- the cinematic video and image generation platform.",
         align="C")
     pdf.ln(15)
-    pdf.set_font("Helvetica", "I", 11)
+    pdf.set_font("Body", "I", 11)
     pdf.cell(0, 8, f"v{META['version']} | {META['updated']} | Built by {META['author']}", align="C")
 
     # --- TABLE OF CONTENTS ---
@@ -264,12 +271,12 @@ def build_pdf():
     ]
     for item in toc:
         if "NEW" in item:
-            pdf.set_font("Helvetica", "", 11)
+            pdf.set_font("Body", "", 11)
             pdf.cell(150, 7, item.replace("  NEW", ""))
             pdf.new_tag()
             pdf.ln(7)
         else:
-            pdf.set_font("Helvetica", "", 11)
+            pdf.set_font("Body", "", 11)
             pdf.set_text_color(40, 40, 40)
             pdf.cell(0, 7, item, new_x="LMARGIN", new_y="NEXT")
 
@@ -1172,7 +1179,7 @@ def build_pdf():
         ("SKILL.md", "Main dispatcher -- routes requests to the right sub-skill"),
         ("README.md", "Installation and usage guide"),
         ("CHANGELOG.md", "Version history"),
-        ("USER-GUIDE.pdf", "This document"),
+        ("docs/user-guide/USER-GUIDE.pdf", "This document"),
         ("DISCIPLINE.md", "Cross-cutting discipline patterns (workflow / output / architectural)"),
         ("model-guide.md", "Model comparison tables + decision flowchart"),
         ("image-models.md", "Image model reference + pricing tiers"),
@@ -1246,13 +1253,25 @@ def build_pdf():
 
     # --- FOOTER ---
     pdf.ln(10)
-    pdf.set_font("Helvetica", "I", 11)
+    pdf.set_font("Body", "I", 11)
     pdf.set_text_color(100, 100, 100)
     pdf.cell(0, 8, f"Built by {META['author']} | v{META['version']} | {META['updated']} | Platform: higgsfield.ai", align="C")
 
+    if dry_run:
+        print(f"DRY-RUN: pipeline OK ({pdf.page_no()} pages). Output NOT written.")
+        return
     pdf.output("docs/user-guide/USER-GUIDE.pdf")
     print(f"Generated docs/user-guide/USER-GUIDE.pdf ({pdf.page_no()} pages)")
 
 
 if __name__ == "__main__":
-    build_pdf()
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Regenerate USER-GUIDE.pdf.")
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Run the dict-parity check and full build_pdf() rendering pipeline in-memory without writing the output file.",
+    )
+    args = parser.parse_args()
+    build_pdf(dry_run=args.dry_run)

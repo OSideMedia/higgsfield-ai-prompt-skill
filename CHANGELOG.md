@@ -1,5 +1,83 @@
 # Changelog
 
+## v3.7.14 — 2026-05-18
+
+Infrastructure-hardening patch release. Option B scope per `.planning/v3.7.14/PHASE-0-VERIFICATION.md` and locked Phase 1 inventory: three coupled items plus natural fallout. (1) `--dry-run` flag on `generate_user_guide.py` that runs the dict-parity check and full `build_pdf()` rendering pipeline in-memory without writing the output file. (2) FPDF Unicode font swap from helvetica (latin-1 core) to DejaVu Sans Condensed (DVC, bundled in `assets/fonts/`). (3) Section 24 sub-skill row for `higgsfield-marketing-studio` — deferred from v3.7.13 per its Phase 1 scope, surfaces in v3.7.14's regeneration via the existing auto-generated table. Natural fallout: USER-GUIDE.pdf regenerated under DVC + new `docs/user-guide/USER-GUIDE.pdf.baseline-v3.7.14` replacing v3.7.12 as `validate_user_guide.py`'s diff target. Phase 0 verification surfaced one substitution — DejaVu Sans **regular** measured 11–18% glyph-width drift versus helvetica and would overflow one existing `SUB_SKILL_DESCRIPTIONS` entry (`higgsfield-cinema` at the 71-char column ceiling); DejaVu Sans **Condensed** holds drift at 0.6–2.8% on real text with zero overflows. The substitution is Phase 0's evidence overriding the original assumption, not scope change — same family, same Unicode coverage, same goal.
+
+### Closing the verification gap
+
+Two prior releases ran latent rendering bugs into PDF generation that `validate.py` had no way to catch:
+
+- **v3.7.12** — frontmatter parser raised `RuntimeError` at PDF render time when a required field was missing, AFTER `validate.py` passed clean. `validate.py` was checking structural integrity of inputs; the renderer was the only thing exercising the cross-input contract.
+- **v3.7.13** — `SUB_SKILL_DESCRIPTIONS` accepted a Unicode em-dash that `build_pdf()` then crashed on at L1204 (`FPDFUnicodeEncodingException` from helvetica latin-1). `validate.py` passed clean; `validate_user_guide.py` passed clean; the rendering pipeline crashed only when actually run.
+
+Both bugs surfaced post-merge during the ship-time regeneration cascade, forcing same-day fix commits inside the same release that named the bug. The two-step `validate.py` + `generate_user_guide.py` sequence was doing real verification work, but the rendering pipeline invocation was outside `validate.py`'s scope.
+
+v3.7.14's `--dry-run` flag formalizes the rendering pipeline as a verification surface. Invocable as `python3 generate_user_guide.py --dry-run`, it runs the full pipeline — frontmatter parse, dict-parity check, `build_pdf()` rendering, font subsetting, layout pass — without writing the output file. The em-dash class of bug now crashes at the dry-run step, not at ship time. Eligible for `validate.py` subprocess integration in a future release (split off from v3.7.14 scope per Phase 1 §1A item 5 to keep this release tight).
+
+v3.7.14 is the first release shipped under the hardened pipeline. Every release after this one inherits the protection — Unicode characters in dict entries are safe to use, and the `--dry-run` flag catches the next class of latent rendering bugs before they reach validation time.
+
+### Added
+
+- **NEW `assets/fonts/`** directory bundling DejaVu Sans Condensed (regular, Bold, Oblique TTFs). Total ~1.9 MB. Source: DejaVu Fonts v2.37 official GitHub release. License: Bitstream Vera + DejaVu Free (redistributable). Bundled in-repo for deterministic PDF regeneration across environments without a system-install dependency.
+- **NEW `assets/fonts/README.md`** documenting source, license, the DVC-over-DV-regular rationale, and update procedure. Points at `../../.planning/v3.7.14/PHASE-0-VERIFICATION.md` for the measurement trail.
+- **NEW `--dry-run` flag** on `generate_user_guide.py`. Invocation: `python3 generate_user_guide.py --dry-run`. Exit 0 on clean pipeline; non-zero on any pipeline-level failure (frontmatter parse, dict-parity, font registration, rendering).
+- **NEW `docs/user-guide/USER-GUIDE.pdf.baseline-v3.7.14`** baseline file. Byte-for-byte copy of the regenerated PDF; new validator target replacing v3.7.12.
+- **Section 24 marketing-studio row** in regenerated USER-GUIDE.pdf — closes the v3.7.13 deferral. Surfaces via the existing auto-generated Sub-Skills table from the dict entry added at v3.7.13 (`generate_user_guide.py:85`). No code edit required for the row itself.
+- **NEW `.planning/v3.7.14/`** verification + inventory artifacts following the v3.7.13-established convention. `PHASE-0-VERIFICATION.md` (five-check probe report — font availability, FPDF API, glyph drift, validator normalization, dry-run scope) and `PHASE-1-INVENTORY.md` (file-by-file change inventory, sub-phase ordering with STOPs, decisions register).
+
+### Changed
+
+- **`generate_user_guide.py`** — DejaVu Sans Condensed registered in `UserGuidePDF.__init__` under the family alias `"Body"` so the 20 existing `set_font("Helvetica", ...)` call sites swap via a single family-name change to `set_font("Body", ...)`. `Courier` retained at `L149` for code blocks (ASCII-only content; no Unicode pressure observed in practice). `multi_cell(..., align="L")` applied to `body_text` / `bold_text` / `bullet` / `callout` methods (4 sites) to eliminate justified-text rivers in borderline-wrapping paragraphs that surfaced during 2D visual spot-check — DVC's slight extra width causes some helvetica-fit paragraphs to wrap to two lines under DVC, and fpdf2's `multi_cell` default `align="J"` produced loose word spacing on the first wrapped line. Refinement 3 landed alongside the DVC swap in the same edit cluster; PDF rendered ~4.7% smaller as a side effect (less stream commands per wrapped paragraph). `build_pdf()` gains optional `dry_run: bool = False` parameter; the single `pdf.output(...)` call site is gated behind the flag without further refactor. `__main__` block gains argparse. Net diff: +46 / -27 lines.
+- **`generate_user_guide.py:1182`** — Root Files table entry for `USER-GUIDE.pdf` updated to `docs/user-guide/USER-GUIDE.pdf` to reflect the PR #36 (`docs/user-guide/` directory move from v3.7.7) location. One-line fix; closes the path staleness flagged in `.planning/v3.7.14/PHASE-1-INVENTORY.md` §1B D11.
+- **`validate_user_guide.py`** — `DEFAULT_BASELINE` retargeted from `USER-GUIDE.pdf.baseline-v3.7.12` to `USER-GUIDE.pdf.baseline-v3.7.14`. Docstring `Defaults:` block updated to match. Layer 0 (`SUB_SKILL_DESCRIPTION_CEILING = 71`) unchanged — DVC drift on real content stays inside the ceiling per Phase 0 §VERIFY 0.3. Layer 1 normalization patterns unchanged — re-baseline is the natural transition (font rendering changes binary structure, not extracted text content).
+- **`docs/user-guide/USER-GUIDE.pdf`** — regenerated with DVC + the marketing-studio Sub-Skills row + v3.7.14 metadata cascade. Page count unchanged from v3.7.13 baseline (28 pages) — DVC swap did not cascade to layout reflow.
+- **Root `SKILL.md`** — frontmatter `version: 3.7.13` → `3.7.14`; `updated: 2026-05-18` (same-day cascade per the v3.7.10/11/12/13 pattern).
+- **`README.md`** — version badge (L1) and footer (L262) cascade `3.7.13` → `3.7.14`.
+
+### Verification
+
+- `python3 validate.py` — ALL CHECKS PASSED. 23 SKILL.md files discovered (1 root + 22 sub-skills). All cross-skill references resolve (including the `../../.planning/v3.7.13/PHASE-0-PROBES.md` refs introduced in v3.7.13's marketing-studio sub-skill). All JSON databases pass schema (filter-memory: 4 entries; quality-memory: 5 entries). All 13 declared root files present. The new `assets/fonts/` and `.planning/v3.7.14/` directories are correctly outside `validate.py`'s iteration scope (it walks `skills/*/SKILL.md` and the explicit root-file list).
+- `python3 generate_user_guide.py --dry-run` — exit 0, `DRY-RUN: pipeline OK (28 pages). Output NOT written.` Validates the new infrastructure flag end-to-end: frontmatter parse → dict-parity check → font registration → full `build_pdf()` rendering → output gate. The em-dash class of bug that crashed v3.7.13's render would now surface here, before ship time.
+- `python3 generate_user_guide.py` — exit clean. Generated `docs/user-guide/USER-GUIDE.pdf` (28 pages, 90,417 bytes). Page count unchanged from v3.7.13 baseline.
+- `python3 validate_user_guide.py` against new v3.7.14 baseline — VALIDATION PASSED. Layer 0 (`SUB_SKILL_DESCRIPTIONS` ceiling check) PASS: all 22 entries ≤ 71 chars (longest: 71, `higgsfield-cinema`; ceiling preserved under DVC per Phase 0 §VERIFY 0.3). Layer 1 (text-extract diff) PASS: no substantive differences after version/date/count normalization. Layer 2 (binary diff) PASS: byte-for-byte identical (candidate = baseline copy).
+
+### Scope acknowledgment
+
+Option B scope (rendering pipeline hardening + PDF refresh, coupled release). The descope path preserved in Phase 0 (Option A — `--dry-run` alone with font + Section 24 row deferred to v3.7.15) was not triggered: Phase 0 §VERIFY 0.3 surfaced that DV regular would overflow the 115mm column, but DVC's measured drift on real `SUB_SKILL_DESCRIPTIONS` content sits inside the 5% threshold the descope criterion gates on. The mixed-font fallback (DVC for tables + DV regular for body text) was considered in Phase 0 §VERIFY 0.3 and is not pursued — visual spot-check during 2D confirmed DVC reads acceptably across body prose.
+
+Out of v3.7.14 scope (deferred to future arcs):
+
+- `cinematic-motion-language.md` translation to `vocab.md` — carried from v3.7.13 backlog
+- `gpt-image-2-director` sub-skill — carried from v3.7.13 backlog (sibling director-pattern adoption opportunity)
+- `ms_image` ("DTC Ads") full sub-skill — carried from v3.7.13 backlog
+- `static-ads.md` translation — carried from v3.7.13 backlog
+- Soul Cinema / Nano Banana Pro sibling director skills — carried from v3.7.13 backlog (deferred indefinitely)
+- `validate.py` subprocess integration of `--dry-run` — split off from v3.7.14 to keep release tight (this release adds the flag; a future release wires it into the standard pre-release check)
+- Courier → DejaVu Sans Mono swap — code blocks remain ASCII-only by existing convention (Phase 1 D8)
+
+### Source corpus + attribution
+
+DejaVu Fonts v2.37 from <https://github.com/dejavu-fonts/dejavu-fonts/releases/tag/version_2_37>. License: Bitstream Vera + DejaVu Free (redistribution permitted including embedding in PDFs and shipping inside Git repositories). Full bundling rationale, license citation, and update procedure at `assets/fonts/README.md`.
+
+### Backlog — updated
+
+- **CLOSED: USER-GUIDE.pdf Unicode font upgrade** (carried from v3.7.13) — DVC swap replaces helvetica latin-1. Em-dashes, en-dashes, curly quotes, ellipsis, and arbitrary Unicode body content render natively. The "dict descriptions and PDF body content must be ASCII-only" workaround constraint lifts.
+- **CLOSED: `validate.py` → `generate_user_guide.py` pre-ship sequence formalization** (carried from v3.7.13) — `--dry-run` flag delivers the runnable rendering-pipeline smoke test. `validate.py` subprocess integration deferred to a future release where it earns its own scope (see above).
+- **CLOSED: USER-GUIDE.pdf Section 24 row for `skills/higgsfield-marketing-studio/`** (carried from v3.7.13) — surfaces in regenerated PDF as the natural byproduct of the v3.7.13 dict entry meeting v3.7.14's regeneration cascade.
+- **CLOSED: USER-GUIDE.pdf Section 24 Root Files row staleness** (Phase 1 D11, pulled in via Refinement 1) — `USER-GUIDE.pdf` Root Files entry updated to `docs/user-guide/USER-GUIDE.pdf` reflecting PR #36's directory move.
+- G1 Soul Cinema two-step compositing — UI testing remains pending (carried from v3.7.5)
+- G13 Seedance `【镜头N】` syntax — Seedance product-team confirmation pending (carried from v3.7.5)
+- `gpt-image-2-director` sub-skill — carried from v3.7.13
+- `ms_image` ("DTC Ads") full sub-skill — carried from v3.7.13
+- `cinematic-motion-language.md` vocab.md gap-fill — carried from v3.7.13 (4 of 5 pillars need translation; Negative Space already covered)
+- `static-ads.md` translation — carried from v3.7.13
+- Soul Cinema / Nano Banana Pro sibling director skills — carried from v3.7.13 (deferred indefinitely)
+- Phase 0 Probe 0.3-spend + Probe 0.4 — carried from v3.7.13 (schema-level evidence already resolved target claims)
+- **NEW: `validate.py` subprocess integration of `generate_user_guide.py --dry-run`** — split-off from v3.7.14's `--dry-run` scope. ~10 LoC addition: a `check_user_guide_renders()` function that subprocesses the dry-run invocation and asserts return code 0; folds into `validate.py`'s standard pre-release health check. Deferred to a release where it earns its own scope rather than ride coattails.
+- **NEW: Courier → DejaVu Sans Mono swap** — `generate_user_guide.py:149` still uses Courier (latin-1 core) for code blocks. Same Unicode constraint applies in principle; not exercised in practice (code blocks are CLI commands, paths, dict keys — all ASCII by convention). Defer until a code block ever needs a non-ASCII glyph.
+- **NEW: `--dry-run` exit-code matrix documentation** — `--dry-run` is binary (exit 0 / non-zero) in v3.7.14. A future release could distinguish frontmatter errors (exit 2), dict-parity errors (exit 3), rendering errors (exit 4) for finer-grained CI integration. Current binary contract is sufficient for the `validate.py` integration target.
+
 ## v3.7.13 — 2026-05-18
 
 Multi-arc patch release adding Marketing Studio coverage. New `skills/higgsfield-marketing-studio/` sub-skill plus a companion `cross-surface-workflow.md` satellite doc, translating Adil's documented director-pattern source corpus (`marketing-studio-director.md` + `higgsfield-content-factory.md`) and SRT/PDF demonstration evidence into our skill's conventions. Phase 3.3 Option B scope: foundational Marketing Studio reference now, cross-surface workflow as a shallow connection layer, gpt-image-2-director / `ms_image` ("DTC Ads") full sub-skill / static-ads / cinematic-motion-language vocab gap-fill all deferred. Live MCP probes preceded all sub-skill prose per Phase 0 discipline — 12 source-corpus reconciliations applied during translation; 0 credits of authorized 2,500-credit budget spent because schema-level evidence retired the spend probes legitimately.
