@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
-  version: 3.2.0
+  version: 3.2.1
   updated: 2026-06-27
   parent: higgsfield
 ---
@@ -141,6 +141,12 @@ Audio:
 ## Lip-Sync Rules
 
 Lip-sync is the most failure-prone audio feature. Follow these rules strictly:
+
+> **Expressive facial acting *around* the words** — forced smiles, leaking fear,
+> mixed emotions during a spoken line — is driven separately by FACS Action Unit
+> codes per beat. Let lip-sync shape the phonemes; schedule the brow/eye/cheek
+> AUs for the performance. See `../higgsfield-facs/SKILL.md` § Dialogue &
+> Monologue Facial Acting.
 
 ### Do:
 - Keep dialogue clips 3–8 seconds (sweet spot for accuracy)

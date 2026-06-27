@@ -39,5 +39,6 @@ SUB_SKILL_DESCRIPTIONS = {
     "higgsfield-character-design": "Pre-production story bible: world, 9-Q character, visual DNA",
     "higgsfield-seedance":    "Seedance 2.0 + frame coords + spatial layout + named failure modes",
     "higgsfield-shotlist-director": "Brief -> connected Seedance shotlist HTML (prefix + @-glossary)",
+    "higgsfield-facs":        "FACS Action Unit codes for precise facial expressions",
     "higgsfield-workspaces":  "Workspace-first decision layer",
 }

@@ -4,7 +4,7 @@ description: "Creates and manages reusable character profiles (Soul IDs) for con
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 3.6.0
+  version: 3.6.1
   updated: 2026-06-27
   parent: higgsfield
 ---
@@ -445,6 +445,12 @@ Photoshop composite" note in `../../image-models.md`. Cross-linked from
 
 Use these facial performance directions to add emotional depth to Soul ID characters.
 Combine with Soul Cast or character prompting for precise actor-level control.
+
+> **For muscle-level control** — when a named expression below is too coarse and
+> you need the specific facial muscles (a forced vs. genuine smile, a mixed or
+> uncanny expression, AU-per-beat dialogue acting) — see
+> `../higgsfield-facs/SKILL.md` (FACS Action Unit codes). Each named expression
+> here decomposes to an AU combination; FACS is the precise-control layer beneath.
 
 ### Core Set
 

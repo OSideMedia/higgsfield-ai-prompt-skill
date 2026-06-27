@@ -1,5 +1,30 @@
 # Changelog
 
+## v3.17.0 — 2026-06-27
+
+FACS (Facial Action Coding System) facial-expression control for Seedance 2.0 — directing a face by **muscle** (Action Unit codes like `AU12` lip-corner puller, `AU6` cheek raiser) instead of emotion labels. New **29th sub-skill** `higgsfield-facs`. Sourced from a practitioner brain-dump (AU-grid generation prompt + codes-in-prompt technique + worked examples); model-checked against the live `seedance_2_0` spec, which exposes **no FACS/expression field** — so the technique is flagged **[EMPIRICAL]** end to end (same provenance class as v3.16.0's Prompt-Craft Laws). One goal-driven release.
+
+### New sub-skill — `higgsfield-facs` (1.0.0)
+A consolidated facial-control layer on top of `higgsfield-seedance`. Sections:
+- **What FACS is** + the provenance split (the AU vocabulary is standard science; Seedance's *interpretation* of codes is empirical, high-success-rate but **not a guarantee**) — and where it sits among the repo's three facial tools (named expression → behavior channel → Action Unit).
+- **The plan-first workflow** — plan 3–4 expressions → generate a FACS sheet for *only those* → write the codes; explicitly counters the "generate the full 49-AU sheet then cherry-pick" anti-pattern.
+- **Step 1 — generate the FACS reference sheet** — the parameterized image prompt (GPT Image 2 / Nano Banana Pro), the iterate-on-unreadable-captions note, and the **LLM-mislabels-AUs** caveat (the circulating sheet's `AU82` vs standard `AU38` nostril dilator; cross-check melindaozel.com/facs-cheat-sheet).
+- **Step 2 — codes in the Seedance prompt** — codes-only vs codes+anatomical-description (test both), **3–4 expressions max** per generation, character photo optional (identity consistency only), beat-synced structure.
+- **AU Code Reference** — the full grouped table (Forehead&Brow / Eye&Eyelid / Nose&Cheek / Lip&Mouth / Head Movement / Eye Direction / Special) with the non-standard-numbering caveat.
+- **Emotion → AU recipes** — standard EMFACS prototypes (Duchenne AU6+AU12, sadness AU1+AU4+AU15, fear, anger, surprise, disgust, contempt) so the agent can answer "which code for anger?".
+- **Dialogue & monologue facial acting** — the payoff: AU-per-beat schedule combined with the `[AUDIO: Xs]` lip-sync block; the performed-safety-over-visible-terror mixed-emotion pattern.
+- Three worked examples (14-beat sweep, emotion arc, fear-masked-as-reassurance dialogue) + QUICK FACTS.
+
+### Wiring + template
+- Routed from root `SKILL.md` (routing table + Sub-Skills table), `sub_skill_descriptions.py`, and `INDEX.md`. Roster **28 → 29**. Root version 3.16.0 → **3.17.0**.
+- New `templates/seedance/facs-expression-beats.md` — beat-synced AU schedule skeleton.
+
+### Cross-links (patch bumps)
+- `higgsfield-soul` § Micro-Expressions → FACS as the muscle-level layer beneath the 19 named expressions. (soul 3.6.0→3.6.1)
+- `higgsfield-seedance` § Voice Rewrite §3 ("physics not emotion") → FACS as its muscle-level extreme. (seedance 1.8.0→1.8.1)
+- `higgsfield-audio` § Lip-Sync Rules → FACS drives the expressive muscles around the phonemes. (audio 3.2.0→3.2.1)
+- `vocab.md` § Emotion as Visible Behavior — Channels → AUs named as the anatomical sibling of the behavioral channels.
+
 ## v3.16.0 — 2026-06-27
 
 Prompter updates from the Higgsfield "cinematic headphones ad" tutorial breakdown + a batch of Seedance 2.0 prompt/audio practitioner tips, model-checked against the live `seedance_2_0` spec. Four goals.
