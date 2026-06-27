@@ -12,7 +12,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.16.0
+  version: 3.17.0
   updated: 2026-06-27
   author: O-Side Media
   license: MIT
@@ -167,6 +167,7 @@ budget constraints, client work), **confirm before generating:**
 | Takes-per-kept ratios, credit budgeting from logged data | `higgsfield-assist` |
 | Audio design, dialogue cues, SFX, ambient sound | `higgsfield-audio` |
 | Seedance 2.0 / Pro prompt, flagged prompt, credit waste on Seedance | `higgsfield-seedance` |
+| Precise facial expression / FACS / Action Unit codes (AU12, AU6…), forced or uncanny or mixed expression, close-up micro-performance, monologue/dialogue facial acting, "which AU code for anger/fear", FACS reference sheet | `higgsfield-facs` |
 | "Make a shotlist", break a script/brief/treatment into many connected Seedance prompts, director's shotlist, global style prefix + `@`-glossary + named per-scene prompts as one editable HTML | `higgsfield-shotlist-director` |
 | User has Higgsfield CLI / MCP / bundled skills installed and asks how this skill works alongside them | `higgsfield-stack` |
 | User mentions `higgsfield auth login`, `higgsfield generate create`, `mcp.higgsfield.ai/mcp`, `/higgsfield:generate`, or asks "do I need both" | `higgsfield-stack` |
@@ -207,6 +208,7 @@ prompts where the user request is technique-shaped rather than genre-shaped:
 | Single-character shot with position + pose + contact-point locks | `templates/seedance/single-character-position.md` |
 | Worked example: two-character anchoring end-to-end | `templates/seedance/worked-example-two-character.md` |
 | Anime / stylized-2D animation — layered formula + style block + character turnaround | `templates/seedance/anime-animation.md` |
+| Close-up facial acting via FACS Action Unit codes — beat-synced expression schedule | `templates/seedance/facs-expression-beats.md` |
 
 **Text-overlay templates** (`templates/text-overlays/`) — paste-ready text-rendering
 prompts for slogan / subtitle / speech-bubble overlays:
@@ -333,6 +335,7 @@ Result. Ratios and budgeting: `skills/higgsfield-assist/SKILL.md`.
 | `higgsfield-audio` | Audio design, dialogue, SFX, ambient sound for audio-capable models |
 | `higgsfield-seedance` | Seedance 2.0 / Pro prompt director + content-filter preflight linter |
 | `higgsfield-shotlist-director` | Brief/script → one connected Seedance shotlist (style prefix + `@`-glossary + named per-scene prompts) as editable HTML |
+| `higgsfield-facs` | FACS Action Unit codes for precise facial expressions in Seedance 2.0 — forced/uncanny/mixed expressions, close-up dialogue facial acting, emotion→AU recipes, FACS reference sheets |
 | `higgsfield-stack` | User mentions the Higgsfield CLI / MCP connector / bundled skills, or asks how this skill coexists with those execution surfaces |
 
 > Full vocabulary in `vocab.md`

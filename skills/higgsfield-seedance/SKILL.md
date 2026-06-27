@@ -4,7 +4,7 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.8.0
+  version: 1.8.1
   updated: 2026-06-27
   parent: higgsfield
 ---
@@ -1218,7 +1218,9 @@ wrong. Do this pass on every Seedance prompt:
    medium." Not "the camera moves forward."
 3. **Describe physics, not emotion.** "Jaw clenches, nostrils flare" not
    "looks angry." The filter reads physics as cinematic; emotion language as
-   ambiguous intent.
+   ambiguous intent. For the muscle-level extreme of this rule — facial
+   expressions as FACS Action Unit codes (AU4+AU5+AU7 for anger) in close-up and
+   dialogue — see `../higgsfield-facs/SKILL.md`.
 4. **Describe force and direction, not destruction sequence.** "Driven into
    the car, metal buckling" not "thrown into side door, glass shatters, uses
    rebound to sweep leg."

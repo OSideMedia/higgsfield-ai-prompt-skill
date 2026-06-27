@@ -298,6 +298,12 @@ expressions (Suppressed Smile, Cold Calculation, etc.) — those are
 combinations of these channels. The channels above are the substrate;
 the named expressions are what the substrate produces.
 
+These eight channels are the **behavioral** decomposition of emotion. The
+**anatomical** decomposition — named facial muscles as FACS Action Unit codes
+(AU6 cheek raiser, AU12 lip-corner puller) for muscle-level Seedance control —
+is its sibling, in `skills/higgsfield-facs/SKILL.md`. Channels say what the body
+*does*; AUs say which *muscles* move.
+
 ---
 
 ## Environment & Atmosphere Vocabulary
