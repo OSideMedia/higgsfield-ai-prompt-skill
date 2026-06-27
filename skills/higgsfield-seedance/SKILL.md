@@ -4,8 +4,8 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.7.0
-  updated: 2026-06-03
+  version: 1.8.0
+  updated: 2026-06-27
   parent: higgsfield
 ---
 
@@ -16,6 +16,7 @@ metadata:
 - The filter is an LLM reading full-scene intent, not a keyword blacklist — describe a SCENE, not a subject; fix the voice first [→](#the-filter-model-read-this-first)
 - Instant fail (<10s) = filter rejection; delayed fail (>30s) = infra/complexity — never regenerate an instant fail unchanged [→](#instant-fail-vs-delayed-fail-the-diagnostic)
 - Six slots, in order: Camera + Subject + Action + Setting + Style + Lighting; missing 3+ slots is where flags come from [→](#the-seedance-prompt-formula)
+- Empirical prompt-craft laws: 50–80-word attention sweet spot (front-load the load-bearing element), name a director/lens not "cinematic", "fast" degrades motion, no negative prompts in the body [→](#prompt-craft-laws)
 - Five prompt modes: Reference-Based / Continuation / Expand Shot / Edit Shot / Transformation — pick the mode before writing [→](#seedance-20-prompt-modes)
 - Hard engine rules (age-blind, exit-frame = cut, off-screen = nonexistent, no reflections, ≤3 tracked characters, double-contrast cuts) + high-risk shot table: `ENGINE-RULES.md` in this directory
 - Reference roles: Character / Last-Frame / Environment / Prop — role determines what the prompt may re-describe [→](#reference-roles)
@@ -101,6 +102,109 @@ word. A prompt missing 3+ slots is where flags come from.
 
 Camera ✓ Subject ✓ Action ✓ Setting ✓ Style ✓ Lighting ✓ — all six slots, ~30
 words, passes the filter because the scene is fully legible.
+
+---
+
+## Prompt-Craft Laws
+
+A set of Seedance-2.0-specific prompt rules. These are **empirical** —
+practitioner A/B findings that are plausible given the architecture but are
+**not** in the official model spec. Treat them as strong heuristics and let the
+repo's iteration discipline (`../higgsfield-prompt/SKILL.md` § The Iteration
+Rule) confirm them on your own material, rather than as guaranteed model
+behavior.
+
+### Length and order — the attention model
+
+Seedance reads the prompt **left-to-right with diminishing attention weight**.
+The first sentence carries the most influence; by the third sentence you are in
+"detail territory," where the model stops treating elements as primary
+instructions and starts sampling them diffusely.
+
+- **Sweet spot: 50–80 words.** A 70-word prompt reliably outperforms a
+  structurally identical 200-word version of the same scene — more words past
+  ~3 sentences buys diffusion, not control.
+- **Structure in three sentences:** ① subject + action, ② camera + style,
+  ③ constraints / positive locks.
+- **Lead with the single most load-bearing element.** When a shot lives on its
+  subject, the subject opens the prompt; when it lives on a camera move, the
+  move opens it.
+
+**Relationship to the two length numbers.** This 50–80-word figure is the
+*coherence optimum*. The >180-word figure in § Pre-flight Linter is a *different
+axis* — the filter/encoder risk ceiling (>220 often hard-fails the text
+encoder). 50–80 is where to sit; ~180 is where it starts to break. They don't
+conflict.
+
+**Relationship to the six-slot formula.** The six slots guarantee the filter
+sees a *complete* scene (presence). The attention model governs *weight* (order
++ length). Keep all six slots present, but the slot list's camera-first ordering
+is a completeness checklist, not a mandate to open with the camera word when the
+shot's identity is the subject.
+
+### Name the thing — kill empty adjectives
+
+`cinematic`, `epic`, `beautiful`, `high quality`, `amazing` are high-frequency
+labels attached to an enormous range of training footage — dark thrillers,
+bright rom-coms, nature docs all read as "cinematic" — so the model samples a
+broad, diffuse distribution and they move the output toward nothing in
+particular. Don't just delete the slop word (Voice Rewrite §6) — **substitute a
+named, narrowly-trained referent**:
+
+| Empty adjective | Named substitute (samples a narrow distribution) |
+|---|---|
+| "cinematic" / "epic look" | a **director**: "Wes Anderson symmetry" (centered framing, pastel) · "Kubrick one-point perspective" (geometric corridors) |
+| "cinematic lighting" | a **lighting setup**: "golden-hour backlight, long shadows stretching forward" |
+| "beautiful" / "high quality" | a **lens spec**: "anamorphic 2.39:1, lens flare from a practical light source" |
+
+Positive form of `../higgsfield-prompt/SKILL.md` § Anti-Slop Vocabulary.
+
+### "fast" is the highest-degradation keyword
+
+Combined with complex action or camera movement, `fast` is the single
+worst-degrading keyword. The temporal branch already runs multiple high-velocity
+calculations when motion is layered; `fast` asks all of them to run at maximum
+velocity at once. Two competing fast elements jitter; three compound into error
+that's hard to salvage.
+
+**Fix: describe the physics, not the speed.** `feet striking hard, each stride
+at full extension, arms pumping at 90 degrees` produces the perception of speed
+with no degradation. One element can carry speed — just not all of them
+simultaneously. (Same family as Voice Rewrite §3 — describe physics, not
+emotion.)
+
+### No negative prompts in the prompt body
+
+Seedance has **no negative-embedding architecture** for the prompt text — every
+token is read as a *positive* instruction. `negative: jitter, bent limbs` gets
+parsed as scene description the model tries to render (noise), not as a
+constraint, and makes the output worse.
+
+Use **positive constraint statements** — direct declarations of what must be
+true:
+
+```
+Face stable. Limbs anatomically natural. Consistent lighting, no flicker.
+Body proportions consistent throughout.
+```
+
+**Scope:** this is about the Seedance prompt **body**. It does **not** override
+the Higgsfield UI's dedicated negative-prompt field (which some image models
+expose and `../../vocab.md` § Composition Vocabulary uses). The same
+positive-only requirement is already documented for Cinema Studio 3.0 in
+`../shared/negative-constraints.md`.
+
+### Already-covered siblings (cross-links, not new rules)
+
+- **Compound camera move** (`dolly in while panning left`) → jitter at the
+  transition because the model executes the two vectors in sequence. Use one
+  primary move + one texture modifier (`slow dolly in, slightly handheld`). Full
+  treatment: `FAILURE-MODES.md` § Multi-motion camera overload.
+- **Image-to-video subject drift** → re-describing what's already in the source
+  image gives the model two competing inputs for one subject; reconciliation
+  introduces drift. Keep an I2V prompt to **motion + camera only**. See
+  § Seedance 2.0 Prompt Modes / Reference-Based and
+  `../higgsfield-prompt/SKILL.md` (I2V key rule).
 
 ---
 
@@ -426,6 +530,15 @@ prompt body.
 | `@Video1`  | Motion only                   |
 | `@Video2`  | Camera movement only          |
 | `@Audio1`  | Rhythm + atmosphere           |
+
+`@Audio1` is **load-bearing on timing**, not just atmosphere: an uploaded
+audio file is a conditioning input that drives cut timing, camera
+acceleration, and action pace (beat sync), and a `[AUDIO: Xs]` script block
+in the prompt body generates dialogue + SFX + lip-sync. Both, plus the
+first-15s extraction trap, are documented in
+`../higgsfield-audio/SKILL.md` § Audio as a Conditioning Input. The
+temporal-compatibility constraint below (a `@Video1` camera style must not
+fight the `@Audio1` rhythm) is the audio case of the Load-Bearing Rule.
 
 The slot order is not model-enforced — it is team-side discipline.
 The payoff is reference-stability across long shot lists: once

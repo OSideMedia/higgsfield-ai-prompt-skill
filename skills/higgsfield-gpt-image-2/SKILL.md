@@ -4,8 +4,8 @@ description: "Use when the user mentions GPT Image 2.0, gpt-image-2, GPT-Image-2
 user-invocable: true
 metadata:
   tags: [higgsfield, gpt-image-2, prompt-director, image, json, prose, meta-prompt, layout, mockup, infographic, character-sheet, ui-mockup, landing-page, static-ads, cross-surface]
-  version: 1.1.0
-  updated: 2026-06-03
+  version: 1.2.0
+  updated: 2026-06-27
   parent: higgsfield
 ---
 

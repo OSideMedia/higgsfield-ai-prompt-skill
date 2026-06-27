@@ -1,5 +1,27 @@
 # Changelog
 
+## v3.16.0 — 2026-06-27
+
+Prompter updates from the Higgsfield "cinematic headphones ad" tutorial breakdown + a batch of Seedance 2.0 prompt/audio practitioner tips, model-checked against the live `seedance_2_0` spec. Four goals.
+
+### Goal 1 — Audio as a conditioning input (model-verified)
+The live spec confirms `seedance_2_0` accepts an `audio` reference media role and that `generate_audio` (native output) is *independent of audio reference medias* — i.e. uploaded audio conditions the generation, separate from generated sound. New `higgsfield-audio` § **Audio as a Conditioning Input** documents the two jobs of `@Audio1` (output track vs visual driver), **beat sync** (the 3-sentence audio→visual mapping + reference stacking + the temporal-compatibility constraint), the **`[AUDIO: Xs]` script block** (dialogue lip-sync + SFX from text alone, multilingual), and the **first-15s extraction trap** (pick a build→drop window, ≥256kbps). Cross-linked from `higgsfield-seedance` § Reference Roles. (audio 3.1.0→3.2.0, seedance 1.7.0→1.8.0)
+
+### Goal 2 — Seedance prompt-craft laws (empirical)
+New `higgsfield-seedance` § **Prompt-Craft Laws**: the left-to-right **attention model** (50–80-word sweet spot, front-load the load-bearing element, reconciled with the six-slot order and the >180-word filter ceiling), **"name the thing"** (replace "cinematic"/generic adjectives with a director/lighting/lens — the positive form of anti-slop), the **"fast" degradation keyword**, and **no negative prompts in the body** (scoped to Seedance, cross-linked to `shared/negative-constraints.md`). All flagged empirical, not model-documented. Anti-slop table in `higgsfield-prompt` extended with the named-referent substitute. (prompt 3.5.0→3.6.0)
+
+### Goal 3 — Connected shotlist gap (P0)
+New sub-skill **`higgsfield-shotlist-director`** — turns a brief/script into one editable HTML shotlist (global Style Prefix → `@`-glossary → named per-scene prompts in `Style → Characters → Scene → CUT 1..N`), with edit-once-propagates + per-scene-override semantics. Built to outclass the tutorial's downloadable skill by wiring in the preflight linter, reference-role lanes, Elements `@`-auto-attach, failure-mode awareness, and acceptance-rate logging. New `templates/seedance/global-style-prefix.md` (fill-in-the-blanks prefix + per-scene override example). Routed from root SKILL.md + `sub_skill_descriptions.py`.
+
+### Goal 4 — Ad-asset prep + scene-craft patterns (P1–P3)
+- New `templates/ad-asset-prep.md` — product sheet, grey-bg character sheet, **erase-duplicate-face**, **outfit 10-ideas→mix/recolor**, **multi-state variants**, prop sheets, and the **"design for win rate"** framing cross-linked to the acceptance-rate discipline.
+- `higgsfield-soul` § Two-Tool Refinement Pipeline gains the **anti-"slop" layer-mask composite** worked example. (soul 3.5.0→3.6.0)
+- `higgsfield-gpt-image-2/static-ads-workflow.md` gains **Mode C — Edit an existing still** (location editing, "keep everything else the same"). (gpt-image-2 1.1.0→1.2.0)
+- `templates/10-dance-music-performance.md` gains **beat-by-beat choreography** + the **`@music_track`-drives-motion** pattern.
+- `vocab.md` § Cut & Continuity gains **anchor-gesture cut ("cut on action")** + **multi-take micro-slice assembly**.
+- `templates/seedance/top-down-map.md` gains **prop-scale-relative-to-a-landmark**.
+- `CUT 1..N` labeling is demonstrated throughout the new shotlist-director skill.
+
 ## v3.15.2 — 2026-06-22
 
 Privacy hygiene: **untracked `.planning/`** from the public repo. The nine `.planning/v3.7.x–v3.8.0/` build-execution notes were internal per-version planning artifacts that don't belong in a public skill library and were the source of the home-path PII scrubbed in v3.15.1. They are now git-ignored — kept on the maintainer's disk, removed from tracking.

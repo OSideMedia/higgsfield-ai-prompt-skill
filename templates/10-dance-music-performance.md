@@ -68,6 +68,44 @@ Overhead shot as she collapses to the floor.
 Apply Glow Trace preset.
 ```
 
+## Beat-by-beat choreography (Seedance 2.0)
+
+The "describe energy, not named moves" rule above (no `pirouette`, no `grand
+jeté` — the model can't execute jargon) has a **Seedance-specific upgrade**:
+between vague energy ("he dances") and untranslatable jargon sits the sweet
+spot — **spell the move out beat by beat in plain, observable physical terms**.
+"He dances" means nothing to Seedance; a named ballet step means nothing either;
+but a concrete sequence of body actions renders:
+
+```
+first two crisp head nods, chin dipping on each beat; then his shoulders roll
+back one at a time — right, then left; he steps off on his right foot with a
+soft knee-dip and drags the left foot in to meet it with a small heel-bounce,
+hips swaying side to side; halfway across he throws a loose finger-snap;
+finishes with a light quarter-spin on the ball of his foot.
+```
+
+This is the dance case of `../skills/higgsfield-seedance/SKILL.md` § Voice
+Rewrite (describe physics, not labels). Keep each move observable (which foot,
+which direction, what the hands do) — not interpretive ("grooves", "vibes").
+
+## `@music_track` drives the motion
+
+When the choreography must lock to a specific track, upload it as `@music_track`
+(an audio reference) and write the movement so it **responds to the beat** — the
+audio is a conditioning input that the model maps to visual rhythm, not just a
+soundtrack:
+
+```
+@music_track as the rhythmic foundation — the dancer's movement locks to its
+beat throughout. Steps land on the downbeats, the spin releases on the drop.
+```
+
+Full beat-sync mechanics (the 3-sentence mapping, the first-15s extraction trap,
+combining with `@Image`/`@Video` references): `../skills/higgsfield-audio/SKILL.md`
+§ Audio as a Conditioning Input. Keep the prompt body diegetic-only and layer the
+final music in post.
+
 ## Cinema Studio 3.0 (Business/Team Plan)
 
 **Genre mapping:** Action (for high-energy) or Drama (for emotional performance)

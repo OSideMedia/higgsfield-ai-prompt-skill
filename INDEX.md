@@ -59,6 +59,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
 ## skills/higgsfield-audio/SKILL.md
 
 - [Higgsfield Audio Prompting Guide](skills/higgsfield-audio/SKILL.md#higgsfield-audio-prompting-guide)
+  - [QUICK FACTS](skills/higgsfield-audio/SKILL.md#quick-facts)
   - [Which Models Support Audio?](skills/higgsfield-audio/SKILL.md#which-models-support-audio)
   - [The Four Audio Layers](skills/higgsfield-audio/SKILL.md#the-four-audio-layers)
     - [1. Dialogue — What characters say](skills/higgsfield-audio/SKILL.md#1-dialogue-what-characters-say)
@@ -72,6 +73,10 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Do:](skills/higgsfield-audio/SKILL.md#do)
     - [Don't:](skills/higgsfield-audio/SKILL.md#dont)
     - [Multi-character dialogue workaround:](skills/higgsfield-audio/SKILL.md#multi-character-dialogue-workaround)
+  - [Audio as a Conditioning Input — Seedance 2.0 (`@Audio1`)](skills/higgsfield-audio/SKILL.md#audio-as-a-conditioning-input-seedance-20-audio1)
+    - [Beat sync — the audio choreographs the visuals](skills/higgsfield-audio/SKILL.md#beat-sync-the-audio-choreographs-the-visuals)
+    - [The `[AUDIO: Xs]` script block — dialogue + SFX + lip-sync from text alone](skills/higgsfield-audio/SKILL.md#the-audio-xs-script-block-dialogue-sfx-lip-sync-from-text-alone)
+    - [The 15-second extraction problem — pick the window, don't upload the track](skills/higgsfield-audio/SKILL.md#the-15-second-extraction-problem-pick-the-window-dont-upload-the-track)
   - [Audio by Model — What Works Best Where](skills/higgsfield-audio/SKILL.md#audio-by-model-what-works-best-where)
     - [Kling 3.0 (V3) / 3.0 Omni (O3)](skills/higgsfield-audio/SKILL.md#kling-30-v3-30-omni-o3)
     - [Seedance 1.5 Pro](skills/higgsfield-audio/SKILL.md#seedance-15-pro)
@@ -601,6 +606,12 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [Instant Fail vs. Delayed Fail — the Diagnostic](skills/higgsfield-seedance/SKILL.md#instant-fail-vs-delayed-fail-the-diagnostic)
   - [The Seedance Prompt Formula](skills/higgsfield-seedance/SKILL.md#the-seedance-prompt-formula)
     - [Minimum viable Seedance prompt](skills/higgsfield-seedance/SKILL.md#minimum-viable-seedance-prompt)
+  - [Prompt-Craft Laws](skills/higgsfield-seedance/SKILL.md#prompt-craft-laws)
+    - [Length and order — the attention model](skills/higgsfield-seedance/SKILL.md#length-and-order-the-attention-model)
+    - [Name the thing — kill empty adjectives](skills/higgsfield-seedance/SKILL.md#name-the-thing-kill-empty-adjectives)
+    - ["fast" is the highest-degradation keyword](skills/higgsfield-seedance/SKILL.md#fast-is-the-highest-degradation-keyword)
+    - [No negative prompts in the prompt body](skills/higgsfield-seedance/SKILL.md#no-negative-prompts-in-the-prompt-body)
+    - [Already-covered siblings (cross-links, not new rules)](skills/higgsfield-seedance/SKILL.md#already-covered-siblings-cross-links-not-new-rules)
   - [Seedance 2.0 Prompt Modes](skills/higgsfield-seedance/SKILL.md#seedance-20-prompt-modes)
     - [Reference-Based](skills/higgsfield-seedance/SKILL.md#reference-based)
     - [Continuation](skills/higgsfield-seedance/SKILL.md#continuation)
@@ -667,6 +678,22 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Chinese (as of 2026-05-17)](skills/higgsfield-seedance/SKILL.md#chinese-as-of-2026-05-17)
   - [Related Skills](skills/higgsfield-seedance/SKILL.md#related-skills)
 
+## skills/higgsfield-shotlist-director/SKILL.md
+
+- [Higgsfield Shotlist Director](skills/higgsfield-shotlist-director/SKILL.md#higgsfield-shotlist-director)
+  - [QUICK FACTS](skills/higgsfield-shotlist-director/SKILL.md#quick-facts)
+  - [What you produce](skills/higgsfield-shotlist-director/SKILL.md#what-you-produce)
+  - [The three layers](skills/higgsfield-shotlist-director/SKILL.md#the-three-layers)
+    - [1. Global Style Prefix](skills/higgsfield-shotlist-director/SKILL.md#1-global-style-prefix)
+    - [2. `@`-asset glossary](skills/higgsfield-shotlist-director/SKILL.md#2--asset-glossary)
+    - [3. Named per-scene prompts](skills/higgsfield-shotlist-director/SKILL.md#3-named-per-scene-prompts)
+  - [Per-scene prompt law](skills/higgsfield-shotlist-director/SKILL.md#per-scene-prompt-law)
+  - [Edit-once and per-scene override](skills/higgsfield-shotlist-director/SKILL.md#edit-once-and-per-scene-override)
+  - [What makes this outclass a bare generator](skills/higgsfield-shotlist-director/SKILL.md#what-makes-this-outclass-a-bare-generator)
+  - [Workflow](skills/higgsfield-shotlist-director/SKILL.md#workflow)
+  - [HTML skeleton](skills/higgsfield-shotlist-director/SKILL.md#html-skeleton)
+  - [Related skills](skills/higgsfield-shotlist-director/SKILL.md#related-skills)
+
 ## skills/higgsfield-soul/SKILL.md
 
 - [Higgsfield Soul ID — Character Consistency](skills/higgsfield-soul/SKILL.md#higgsfield-soul-id-character-consistency)
@@ -688,6 +715,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Face-from-Wide-Shot Workaround](skills/higgsfield-soul/SKILL.md#face-from-wide-shot-workaround)
     - [Tricky-Prop Sheets](skills/higgsfield-soul/SKILL.md#tricky-prop-sheets)
   - [Two-Tool Refinement Pipeline](skills/higgsfield-soul/SKILL.md#two-tool-refinement-pipeline)
+    - [Anti-"slop" realism composite (the fast manual variant)](skills/higgsfield-soul/SKILL.md#anti-slop-realism-composite-the-fast-manual-variant)
   - [Micro-Expressions — Nuanced Performance Direction](skills/higgsfield-soul/SKILL.md#micro-expressions-nuanced-performance-direction)
     - [Core Set](skills/higgsfield-soul/SKILL.md#core-set)
     - [Extended Set](skills/higgsfield-soul/SKILL.md#extended-set)
