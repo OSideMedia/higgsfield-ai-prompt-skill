@@ -4,8 +4,8 @@ description: "Use when building, writing, refining, or structuring a Higgsfield 
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 3.5.0
-  updated: 2026-05-18
+  version: 3.6.0
+  updated: 2026-06-27
   parent: higgsfield
 ---
 
@@ -566,6 +566,15 @@ Kill these words — they add zero information and waste tokens:
 | energetic | sprinting, jumping, arms pumping |
 | cinematic camera movement | slow dolly push / crane up / tracking shot |
 | cool transition | match-cut / whip pan / smash cut |
+| cinematic / cinematic lighting | a **named referent** — a director ("Wes Anderson symmetry"), a lighting setup ("golden-hour backlight, long shadows"), or a lens spec ("anamorphic 2.39:1, lens flare from a practical light") |
+| high quality / high-res / 4K look | (delete — resolution is a render setting, not a prompt word) |
+
+> **Why the substitute matters, not just the deletion:** generic adjectives are
+> high-frequency labels spread across a huge, diffuse slice of training data, so
+> they pull the output toward nothing in particular. A director name, a lighting
+> setup, or a lens spec samples a *narrow, well-trained* distribution and
+> actually moves the result. For the Seedance-specific treatment of this, see
+> `../higgsfield-seedance/SKILL.md` § Prompt-Craft Laws → Name the thing.
 
 ### Physics Language
 

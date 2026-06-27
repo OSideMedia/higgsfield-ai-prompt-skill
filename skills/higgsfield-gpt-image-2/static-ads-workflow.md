@@ -192,6 +192,28 @@ Safe zones apply to every prompt in every mode — no exceptions, per § 3.
 
 For the general-purpose JSON layout discipline underlying both modes, see [parent SKILL.md](SKILL.md) § 3 Format A craft patterns. The ad-recreation specialization here is the brand-vs-structure separation, which Adil's general-purpose director doesn't apply at this level of explicit rule.
 
+### Mode C — Edit an existing still (location / scene editing)
+
+Beyond ad recreation, GPT Image 2 edits a **locked still in plain language** —
+the workhorse for prepping environment/location assets for a video commercial
+(clear a surface, add a prop, swap a fixture). The instruction pattern is:
+**list the additive and subtractive edits explicitly, then end with a
+preserve-everything-else clause** so the model holds the rest of the frame
+identical.
+
+```
+Image 1 is the locked location. Make these edits and keep everything else exactly
+the same: clear the kitchen island so the top is empty; add a gas stove on the
+left counter; remove the TV on the right wall and put a door there. Keep the
+lighting, camera angle, wall colour, flooring, and all other props unchanged.
+```
+
+The closing **"keep everything else the same"** clause is load-bearing — without
+it GPT Image 2 tends to re-render surrounding details and the location drifts
+between sheets. This is the location-asset case of the ad-asset prep checklist
+(`../../templates/ad-asset-prep.md`); for prepping characters/products the same
+way, see that template.
+
 ---
 
 ## 5. Template patterns

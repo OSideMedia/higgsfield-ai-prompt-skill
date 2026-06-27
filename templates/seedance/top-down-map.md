@@ -61,6 +61,23 @@ geometry Seedance receives are identical. Iterate the floor plan in
 the Claude chat before locking — adjust positions, gaze lines, contact
 points until the map matches intent, then copy the blocking note over.
 
+## Locking prop scale to a landmark
+
+The map also locks a prop's **size and position relative to a fixed landmark**,
+so a large set-piece stays the same scale take after take. Pin the prop to a
+named landmark with an explicit size multiple and a shared sight-line:
+
+```
+Mark the fire hydrant. Lock the skydancer to its right — two times a person's
+height, standing on the same line as the hydrant.
+```
+
+The landmark (hydrant) is something Seedance renders consistently; tying the prop
+to it — *2× a person's height, same line* — gives the model a relative anchor
+instead of an absolute size it would otherwise re-guess each generation. Use this
+for any oversized or position-critical prop (inflatable figures, vehicles,
+signage) that must hold scale across cuts.
+
 ## See also
 
 - `../../skills/higgsfield-seedance/SKILL.md` § Frame Coordinate System

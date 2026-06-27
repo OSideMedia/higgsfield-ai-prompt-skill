@@ -9,12 +9,21 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
-  version: 3.1.0
-  updated: 2026-05-17
+  version: 3.2.0
+  updated: 2026-06-27
   parent: higgsfield
 ---
 
 # Higgsfield Audio Prompting Guide
+
+## QUICK FACTS
+*Routing aids — read the linked sections for the full rules.*
+- Native-joint audio models: Kling 3.0, Seedance 2.0 / 1.5 Pro, Veo 3/3.1, Grok — all others add audio in post [→](#which-models-support-audio)
+- Four layers to consider per prompt: Dialogue / SFX / Ambient / BGM [→](#the-four-audio-layers)
+- Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens [→](#lip-sync-rules)
+- **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input-seedance-20-audio1)
+- Cinema Studio 3.0 native joint audio (SCELA): describe audio as a separate section; specific foley beats generic moods [→](#cinema-studio-30-audio-businessteam-plan)
+- Standalone Audio tab = TTS/voice tools (Eleven v3, MiniMax Speech, Seed Speech, VibeVoice), distinct from in-video joint audio [→](#standalone-audio-tab-voice-models-tts-voice-tools)
 
 ## Which Models Support Audio?
 
@@ -157,6 +166,131 @@ The production workaround:
 
 ---
 
+## Audio as a Conditioning Input — Seedance 2.0 (`@Audio1`)
+
+The most under-used Seedance 2.0 capability: an uploaded audio file is a
+**conditioning input**, not just an output track. The model spec lists `audio`
+as a reference media role alongside `image` / `video`, and `generate_audio`
+(native sound output) is documented as *independent of the audio reference
+medias* — i.e. the uploaded file conditions the **generation**, and whether the
+clip also gets generated sound is a separate switch.
+
+This means `@Audio1` has **two distinct jobs**, and you pick one per shot:
+
+| Use | What `@Audio1` does | Prompt discipline |
+|-----|---------------------|-------------------|
+| **Audio-as-output** | Plays the uploaded track unmodified as the clip's soundtrack | Timestamp-anchor it (`plays exactly as uploaded from 0s to end`) and **remove** all ambient/SFX/music tokens so the engine doesn't override it (see § Seedance 2.0 below) |
+| **Audio-as-driver (beat sync)** | Drives the **visuals** — cut timing, camera acceleration, action pace, energy peaks | Write the audio→visual mapping explicitly (below). The clip can still get generated sound, or set `generate_audio` false for visuals-only. |
+
+> **Why it works (author's model — empirical, not in the official spec):** the
+> temporal branch that reasons about motion and pacing reads the sound's
+> structure — beat positions, dynamic contour, timbral texture, song-structure
+> sections — and maps it to visual rhythm. Treat the mechanism as a working
+> model; treat the capability (audio reference role) as confirmed.
+
+### Beat sync — the audio choreographs the visuals
+
+Upload an MP3 as `@Audio1`, then map audio characteristics to visual elements.
+The minimum is three sentences, each handling one thing — **rhythm source /
+which visual responds / how energy maps to the arc**:
+
+```
+Use @Audio1 as the rhythmic foundation. Sync camera transitions to the beat
+positions. Visual energy builds with the audio crescendo and peaks at the drop.
+```
+
+You can assign **different visual elements to different audio characteristics** —
+mixing audio-to-visual the way you'd mix a track:
+
+```
+@Audio1 drives the visual rhythm. Camera cuts land on the downbeats. Subject
+movement accelerates into the build, holds at the peak, releases on the drop.
+Colour temperature shifts warmer with the crescendo.
+```
+
+Camera ← beat position. Movement ← dynamic contour. Colour ← overall energy arc.
+
+It **stacks with other references** — character from `@Image1`, camera style from
+`@Video1`, rhythm from `@Audio1`, processed together:
+
+```
+@Image1 as character reference. Follow @Video1 camera-movement style. @Audio1 as
+rhythmic foundation — sync all camera transitions to the beat positions.
+Character movement should pulse with the music.
+```
+
+**The one constraint:** `@Video1` camera style and `@Audio1` rhythm have to be
+**temporally compatible**. A slow continuous dolly pulled from a video reference
+fighting an EDM track sends the temporal branch conflicting instructions — same
+failure class as mixing reference *images* of clashing styles. Pick references
+that can coexist. (Sibling of `../higgsfield-seedance/SKILL.md` § Reference Roles
+→ Load-Bearing Rule: references stay in their lanes.)
+
+### The `[AUDIO: Xs]` script block — dialogue + SFX + lip-sync from text alone
+
+No microphone, no recording. A timestamped script **inside the prompt text**
+generates voices, SFX, and lip-sync. Quoted text → speech with automatic
+lip-sync; physical descriptions → sound effects. Each marker is a timestamp in
+the clip:
+
+```
+[AUDIO: 0s] heavy footsteps on concrete, echoing in a corridor
+[AUDIO: 2s] door bursting open, impact bang
+[AUDIO: 3s] character says "Nobody move"
+[AUDIO: 5s] tense silence, distant traffic
+[AUDIO: 7s] character says "Put it down. Slowly."
+[AUDIO: 9s] object placed on table, soft thud
+```
+
+The model generates the **voice first**, then maps facial movement to the
+waveform — so lip-sync quality is mostly set by how precisely you wrote the
+dialogue. **Exact quoted text outperforms paraphrase.** It works across
+languages (write the line in Spanish/Japanese/French → speech with
+phoneme-level lip-sync in that language).
+
+This obeys the same physical rules as § Lip-Sync Rules above: a strong `@Image1`
+character reference gives a consistent mouth structure to animate, and **close-up
+framing beats wide** (a small face has too few pixels to sync). Keep individual
+dialogue beats inside the 3–8s accuracy window.
+
+It **combines with beat sync** in one generation — uploaded music as the
+rhythmic foundation, the script block as foreground dialogue/SFX, cuts synced to
+the beat:
+
+```
+@Audio1 as background music. Sync camera transitions to the beats.
+[AUDIO: 0s] music from @Audio1 begins
+[AUDIO: 3s] character says "This changes everything"
+[AUDIO: 5s] sharp breath — beat drop hits simultaneously
+[AUDIO: 8s] character says "Let's go"
+```
+
+### The 15-second extraction problem — pick the window, don't upload the track
+
+The audio reference limit is **15s, and the model takes the first 15s** of
+whatever you upload. Drop in a full 3-minute track and you almost always feed it
+the **intro** — low energy, often ambient, no rhythmic drive. Nothing for the
+temporal branch to map.
+
+The right 15s follow a **build → drop** arc: rising tension into a peak. That
+dynamic gradient is what becomes visual energy structure. A segment with uniform
+energy gives the model beats to detect but **no arc** — output is rhythmically
+synced but dramatically flat.
+
+Where the window lives:
+
+- Pre-chorus into chorus
+- Instrumental build into the drop (EDM, electronic, hip-hop)
+- Verse climax into a bridge
+- The last 15s of an intro that breaks into the first hook
+
+**Extract exactly that segment before uploading.** MP3 at **≥256kbps** — lower
+bitrate degrades beat detection. Don't upload the full track and hope; pick the
+window, cut it, upload that. (Flipping the workflow — audio in first, visuals
+built around it — changes the output at a structural level, not subtly.)
+
+---
+
 ## Audio by Model — What Works Best Where
 
 ### Kling 3.0 (V3) / 3.0 Omni (O3)
@@ -185,9 +319,11 @@ Background ambient: [environment description].
 ### Seedance 2.0
 - Upload MP3 audio as @Audio reference (part of Rule of 12)
 - **MP3 only** — WAV/AAC/OGG/FLAC fail silently with no error
-- Max 15s per clip, 3 audio files, 10MB each
-- Timestamp anchoring: `"Audio @Audio1 plays exactly as uploaded from 0s to end. Do not modify."`
+- Max 15s per clip, 3 audio files, 10MB each; **≥256kbps** for beat-sync (beat detection)
+- Timestamp anchoring (audio-as-output): `"Audio @Audio1 plays exactly as uploaded from 0s to end. Do not modify."`
   Then remove all ambient/SFX/music tokens to prevent the generative engine from overriding.
+- **`@Audio1` is also a visual driver** — beat sync, the `[AUDIO: Xs]` script block,
+  and the first-15s extraction trap are all in § Audio as a Conditioning Input above.
 
 > **Diegetic-only convention for the prompt body** — a
 > prompt-authoring discipline that sits on top of Seedance 2.0's

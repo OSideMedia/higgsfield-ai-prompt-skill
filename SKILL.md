@@ -12,8 +12,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.15.2
-  updated: 2026-06-22
+  version: 3.16.0
+  updated: 2026-06-27
   author: O-Side Media
   license: MIT
 ---
@@ -167,6 +167,7 @@ budget constraints, client work), **confirm before generating:**
 | Takes-per-kept ratios, credit budgeting from logged data | `higgsfield-assist` |
 | Audio design, dialogue cues, SFX, ambient sound | `higgsfield-audio` |
 | Seedance 2.0 / Pro prompt, flagged prompt, credit waste on Seedance | `higgsfield-seedance` |
+| "Make a shotlist", break a script/brief/treatment into many connected Seedance prompts, director's shotlist, global style prefix + `@`-glossary + named per-scene prompts as one editable HTML | `higgsfield-shotlist-director` |
 | User has Higgsfield CLI / MCP / bundled skills installed and asks how this skill works alongside them | `higgsfield-stack` |
 | User mentions `higgsfield auth login`, `higgsfield generate create`, `mcp.higgsfield.ai/mcp`, `/higgsfield:generate`, or asks "do I need both" | `higgsfield-stack` |
 | User asks where the prompt construction ends and the CLI/MCP execution begins (handoff questions) | `higgsfield-stack` |
@@ -331,6 +332,7 @@ Result. Ratios and budgeting: `skills/higgsfield-assist/SKILL.md`.
 | `higgsfield-recall` | Pre-generation memory check / apply past failure fixes |
 | `higgsfield-audio` | Audio design, dialogue, SFX, ambient sound for audio-capable models |
 | `higgsfield-seedance` | Seedance 2.0 / Pro prompt director + content-filter preflight linter |
+| `higgsfield-shotlist-director` | Brief/script → one connected Seedance shotlist (style prefix + `@`-glossary + named per-scene prompts) as editable HTML |
 | `higgsfield-stack` | User mentions the Higgsfield CLI / MCP connector / bundled skills, or asks how this skill coexists with those execution surfaces |
 
 > Full vocabulary in `vocab.md`

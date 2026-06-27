@@ -38,5 +38,6 @@ SUB_SKILL_DESCRIPTIONS = {
     "higgsfield-motion-design": "Animated-ad flow: brief -> storyboard -> Seedance video",
     "higgsfield-character-design": "Pre-production story bible: world, 9-Q character, visual DNA",
     "higgsfield-seedance":    "Seedance 2.0 + frame coords + spatial layout + named failure modes",
+    "higgsfield-shotlist-director": "Brief -> connected Seedance shotlist HTML (prefix + @-glossary)",
     "higgsfield-workspaces":  "Workspace-first decision layer",
 }

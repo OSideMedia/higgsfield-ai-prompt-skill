@@ -29,7 +29,7 @@ specs/                    ← Machine-readable model specs (generated — never 
 build_index.py            ← Regenerates INDEX.md + checks QUICK FACTS anchors
 INDEX.md                  ← Generated heading index of every SKILL.md
 tests/                    ← pytest suite for the Python tooling (CI-run)
-skills/                   ← 27 sub-skill directories + shared/
+skills/                   ← 28 sub-skill directories + shared/
 templates/                ← 10 genre templates
 db/                       ← Filter + quality memory JSON databases
 db/ledger/                ← Generation ledger (one append-only file per project;

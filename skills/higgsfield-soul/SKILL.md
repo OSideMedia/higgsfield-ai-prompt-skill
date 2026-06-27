@@ -4,8 +4,8 @@ description: "Creates and manages reusable character profiles (Soul IDs) for con
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 3.5.0
-  updated: 2026-06-03
+  version: 3.6.0
+  updated: 2026-06-27
   parent: higgsfield
 ---
 
@@ -414,6 +414,30 @@ character iteration anchor for the full breakdown).
 When to stick with one tool: characters appearing in only a handful
 of shots don't justify the two-tool overhead; a single Soul Cinema
 pass suffices.
+
+### Anti-"slop" realism composite (the fast manual variant)
+
+Every GPT Image 2 edit softens Soul Cinema's skin texture toward flat,
+plastic "AI slop" — the face loses the pore-level realism that made the
+Soul pass worth doing. A Soul Cinema **Re-Pass** (re-generate the edited
+result back through Soul Cinema) is one fix; a **layer-mask composite** in
+any photo editor is the faster manual variant, and keeps the original
+face untouched:
+
+1. Generate the outfit/accessory edit in **GPT Image 2** (this is what
+   softens the skin).
+2. Stack two layers: the **original high-detail Soul Cinema shot on top**,
+   the **GPT-edited version underneath**.
+3. **Mask out only the changed region** (the old outfit) on the top layer,
+   so the new outfit shows through from below.
+4. Result: face, skin, and background stay Soul-grade; only the outfit
+   comes from the edit.
+
+Use the Re-Pass when you want one clean re-generated sheet; use the
+layer-mask composite when you must preserve the exact original face and
+only graft in the edited region. Complements the "generate individually +
+Photoshop composite" note in `../../image-models.md`. Cross-linked from
+`../../templates/ad-asset-prep.md` § Preserve realism after an edit.
 
 ---
 
