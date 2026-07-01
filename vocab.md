@@ -253,6 +253,8 @@ Lighting described as a physical event in the scene rather than as a stylistic a
 
 The scene-physics framing replaces stylistic adjectives (`moody`, `dramatic`, `cinematic`) with named physical mechanisms that compose. The model can render the named mechanisms; it can only approximate the adjectives.
 
+> When *integrating* a preserved real subject or an added creature into a new plate (video-to-video), color matching alone reads as "pasted in." Match key direction, environmental bounce, optics/atmospheric haze, and edge grounding together — the full recipe is in `skills/higgsfield-seedance-vfx/SKILL.md` § Lighting integration.
+
 ---
 
 ## Subject & Character Vocabulary

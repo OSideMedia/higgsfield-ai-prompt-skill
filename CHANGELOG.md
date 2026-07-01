@@ -1,5 +1,30 @@
 # Changelog
 
+## v3.18.0 — 2026-06-30
+
+Video-to-video **footage transformation** for Seedance 2.0 — take a clip the user already shot, **preserve** the real subject + camera move, and **change one thing** (add a VFX element, swap the world, drop in a photoreal creature, relight to match, sync a timed zoom to a line). New **30th sub-skill** `higgsfield-seedance-vfx`. Sourced from a hand-authored practitioner skill + the Higgsfield "Seedance 2.0 in 4K" VFX tutorial (`higgsfield.ai/blog/vfx_4k`, `youtube.com/watch?v=Yte-UGhYkPQ`), which demonstrates this exact skill; model-checked against the live `seedance_2_0` spec — `media_roles` include `video` (v2v input is real), `4k` is a legal resolution, plus `audio`/`start_image`/`end_image`, duration 4–15s. One goal-driven release.
+
+### New sub-skill — `higgsfield-seedance-vfx` (1.0.0)
+A video-to-video layer on top of `higgsfield-seedance` (reuses its grammar + preflight linter; only the starting point changes — a real source clip whose subject and camera move must survive). Distinct from the parent's in-clip **Transformation prompt mode** (a morph generated from scratch). Sections:
+- **Preserve, then change one thing** — lock identity/face/wardrobe/performance/framing/lens/camera, change only the named element, repeat the fragile guardrail at the end.
+- **Run it in 4K** — Seedance 2.0 `mode=std` 4K (faces/lip-sync hold at 4K, warp at 1080p); harmonized with the repo's existing caps (fast → 720p; Cinema Studio → 1080p). The `4k` enum is model-verified; "detail holds at 4K" is flagged as a practitioner claim.
+- **Prompt anatomy** — `@source` declaration, optional `@creature`/texture reference, specs line (NON-IP guardrail, match-source-runtime, `SFX` vs `SFX and source dialogue only`), continuous-shot action, behavioral SFX.
+- **Three levels** — L1 swap the world · L2 change an element in-frame · L3 full handheld cinematic (difficulty scales with camera motion).
+- **Two modes** (add an element · replace the environment) + the **lighting-integration recipe** (color matching alone reads as pasted-in: match key direction, bounce, optics/haze, edges/grounding).
+- **Photoreal creature integration** — biological-accuracy vocabulary (wrinkled/cracked/asymmetric/matte, never smooth/glossy/inflated), telephoto-scale illusion, real contact shadow, reference-image-beats-description.
+- **Timed camera moves synced to dialogue** — dual semantic + numeric anchoring, reveal pull-back with 100%-match landing, lip-sync preservation. **Prepended-intro budget** arithmetic (`total − intro = surviving window`).
+- Two reference files — `references/dialogue-timing.md` (measure `T`, convert timecodes, phrase both anchors) and `references/first-frame.md` (generate the transformed start still, hand back as `start_image`).
+
+### Wiring + template
+- Routed from root `SKILL.md` (routing table + Sub-Skills table), `sub_skill_descriptions.py`, and `INDEX.md`. Roster **29 → 30**. Root version 3.17.0 → **3.18.0**.
+- New `templates/seedance/footage-vfx-transform.md` — fill-in skeleton + four worked patterns (environment swap, head-on-fire, creature-with-reveal-pull-back, full handheld cinematic).
+
+### Cross-links (patch bumps)
+- `higgsfield-seedance` § Seedance 2.0 Prompt Modes / Transformation → distinguishes the in-clip morph from v2v footage transform; also added to Related Skills. (seedance 1.8.1→1.8.2)
+- `higgsfield-audio` § Related skills → the timed-zoom-to-dialogue + source-dialogue-preservation cases. (audio 3.2.1→3.2.2)
+- `higgsfield-camera` § Related skills → preserve a real handheld/driving move frame-for-frame + add a camera move you never filmed. (camera 3.3.0→3.3.1)
+- `vocab.md` § Lighting Vocabulary / Scene-physics → the integration recipe for compositing a preserved subject or creature into a new plate.
+
 ## v3.17.0 — 2026-06-27
 
 FACS (Facial Action Coding System) facial-expression control for Seedance 2.0 — directing a face by **muscle** (Action Unit codes like `AU12` lip-corner puller, `AU6` cheek raiser) instead of emotion labels. New **29th sub-skill** `higgsfield-facs`. Sourced from a practitioner brain-dump (AU-grid generation prompt + codes-in-prompt technique + worked examples); model-checked against the live `seedance_2_0` spec, which exposes **no FACS/expression field** — so the technique is flagged **[EMPIRICAL]** end to end (same provenance class as v3.16.0's Prompt-Craft Laws). One goal-driven release.

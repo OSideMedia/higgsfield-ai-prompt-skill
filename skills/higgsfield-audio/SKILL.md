@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
-  version: 3.2.1
+  version: 3.2.2
   updated: 2026-06-27
   parent: higgsfield
 ---
@@ -496,6 +496,7 @@ Use **Seed Speech** when the deliverable is multilingual voiceover/narration; El
 ---
 
 ## Related skills
+- `higgsfield-seedance-vfx` — Footage transforms whose payoff is a camera move synced to a spoken line (crash-zoom / push-in), or preserving the source talk track through a transform (`SFX and source dialogue only`); see `../higgsfield-seedance-vfx/references/dialogue-timing.md`
 - `higgsfield-models` — Which models support native audio
 - `higgsfield-troubleshoot` — Audio failure diagnosis
 - `higgsfield-cinema` — Cinema Studio audio workflow with Kling 3.0
