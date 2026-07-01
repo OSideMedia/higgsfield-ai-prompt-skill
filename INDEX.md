@@ -711,6 +711,36 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Chinese (as of 2026-05-17)](skills/higgsfield-seedance/SKILL.md#chinese-as-of-2026-05-17)
   - [Related Skills](skills/higgsfield-seedance/SKILL.md#related-skills)
 
+## skills/higgsfield-seedance-vfx/SKILL.md
+
+- [Higgsfield Seedance VFX — Footage Transformation](skills/higgsfield-seedance-vfx/SKILL.md#higgsfield-seedance-vfx-footage-transformation)
+  - [QUICK FACTS](skills/higgsfield-seedance-vfx/SKILL.md#quick-facts)
+  - [The core idea: preserve, then change one thing](skills/higgsfield-seedance-vfx/SKILL.md#the-core-idea-preserve-then-change-one-thing)
+  - [Resolution: run it in 4K](skills/higgsfield-seedance-vfx/SKILL.md#resolution-run-it-in-4k)
+  - [Prompt anatomy (transform variant)](skills/higgsfield-seedance-vfx/SKILL.md#prompt-anatomy-transform-variant)
+    - [1. The `@source` declaration](skills/higgsfield-seedance-vfx/SKILL.md#1-the-source-declaration)
+    - [2. Specs line](skills/higgsfield-seedance-vfx/SKILL.md#2-specs-line)
+    - [3. Scene action — one continuous shot](skills/higgsfield-seedance-vfx/SKILL.md#3-scene-action-one-continuous-shot)
+    - [4. SFX line](skills/higgsfield-seedance-vfx/SKILL.md#4-sfx-line)
+  - [Three levels](skills/higgsfield-seedance-vfx/SKILL.md#three-levels)
+  - [Two transformation modes](skills/higgsfield-seedance-vfx/SKILL.md#two-transformation-modes)
+    - [A. Add an element to the footage](skills/higgsfield-seedance-vfx/SKILL.md#a-add-an-element-to-the-footage)
+    - [B. Replace the environment around a preserved subject](skills/higgsfield-seedance-vfx/SKILL.md#b-replace-the-environment-around-a-preserved-subject)
+  - [Lighting integration (the part that makes or breaks it)](skills/higgsfield-seedance-vfx/SKILL.md#lighting-integration-the-part-that-makes-or-breaks-it)
+  - [Photoreal creature / element integration](skills/higgsfield-seedance-vfx/SKILL.md#photoreal-creature-element-integration)
+  - [Timed camera moves synced to dialogue](skills/higgsfield-seedance-vfx/SKILL.md#timed-camera-moves-synced-to-dialogue)
+    - [Reveal pull-back (the outward move)](skills/higgsfield-seedance-vfx/SKILL.md#reveal-pull-back-the-outward-move)
+    - [Preserving lip-sync to a known line](skills/higgsfield-seedance-vfx/SKILL.md#preserving-lip-sync-to-a-known-line)
+  - [Duration discipline](skills/higgsfield-seedance-vfx/SKILL.md#duration-discipline)
+    - [Prepended-intro budget: intro + remaining = total](skills/higgsfield-seedance-vfx/SKILL.md#prepended-intro-budget-intro-remaining-total)
+  - [First / start-frame workflow](skills/higgsfield-seedance-vfx/SKILL.md#first-start-frame-workflow)
+  - [Iterating](skills/higgsfield-seedance-vfx/SKILL.md#iterating)
+  - [Output format](skills/higgsfield-seedance-vfx/SKILL.md#output-format)
+  - [Voice (match the user)](skills/higgsfield-seedance-vfx/SKILL.md#voice-match-the-user)
+  - [Seedance 2.0 input limits (reference)](skills/higgsfield-seedance-vfx/SKILL.md#seedance-20-input-limits-reference)
+  - [Structure patterns to internalize (style reference only — do not reproduce)](skills/higgsfield-seedance-vfx/SKILL.md#structure-patterns-to-internalize-style-reference-only-do-not-reproduce)
+  - [Related Skills](skills/higgsfield-seedance-vfx/SKILL.md#related-skills)
+
 ## skills/higgsfield-shotlist-director/SKILL.md
 
 - [Higgsfield Shotlist Director](skills/higgsfield-shotlist-director/SKILL.md#higgsfield-shotlist-director)

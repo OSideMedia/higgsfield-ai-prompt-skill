@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.17.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.18.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--06--22-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
@@ -329,4 +329,4 @@ acting on the tail. A small sample is not evidence a skill is dead.
 
 ---
 
-Built February 2026 · v3.17.0 (updated 2026-06-27) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.18.0 (updated 2026-06-30) · Platform: [higgsfield.ai](https://higgsfield.ai)

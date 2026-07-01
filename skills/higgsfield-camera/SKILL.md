@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
-  version: 3.3.0
-  updated: 2026-05-18
+  version: 3.3.1
+  updated: 2026-06-30
   parent: higgsfield
 ---
 
@@ -382,6 +382,7 @@ when character identity must hold.
 ---
 
 ## Related skills
+- `higgsfield-seedance-vfx` — Video-to-video footage transforms: preserve a real handheld/driving camera move frame-for-frame while swapping the world or adding an effect, and add a timed camera move (crash-zoom, push-in, reveal pull-back) you never actually filmed
 - `higgsfield-motion` — Named motion presets (VFX overlays applied with camera moves)
 - `higgsfield-cinema` — Director Panel (18 Cinema Studio camera movements)
 - `higgsfield-image-shots` — Camera angles and implied movement for still images

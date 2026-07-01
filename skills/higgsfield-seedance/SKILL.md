@@ -4,8 +4,8 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.8.1
-  updated: 2026-06-27
+  version: 1.8.2
+  updated: 2026-06-30
   parent: higgsfield
 ---
 
@@ -276,7 +276,15 @@ The prompt describes an explicit state change inside a single clip — the subje
 object, or environment visibly becomes something else within the shot's
 duration. Distinct from Continuation (which extends time across two clips) and
 from Edit Shot (which modifies a generated clip after the fact). Transformation
-happens *during* the generation, in one continuous take. Use it when the shot's
+happens *during* the generation, in one continuous take.
+
+> **Not to be confused with footage transformation (video-to-video).** This
+> Transformation *prompt mode* is an in-clip morph generated from scratch. When
+> the user starts from a **real clip they already shot** and wants to preserve
+> the subject + camera move while adding a VFX element, swapping the world, or
+> dropping in a creature, that is the video-to-video workflow in
+> `../higgsfield-seedance-vfx/SKILL.md` (`@source` grammar, lock-down clauses,
+> lighting integration, std-4K). Use it when the shot's
 core idea is the change itself: a character morphing, an object decaying, a
 landscape shifting from one season to another. The skeleton below is written
 for character → character; the same pattern applies to object → object and
@@ -1427,6 +1435,9 @@ before reaching for it.
 
 ## Related Skills
 
+- `higgsfield-seedance-vfx` — the video-to-video sibling: transform footage the
+  user already shot (preserve subject + camera, add a VFX element / swap the
+  world / drop a creature / relight to match / sync a timed zoom), std-4K
 - `higgsfield-prompt` — MCSLA formula, archetype router, general prompt structure;
   the Iteration Rule and 6-Pass Diagnostic Sequence for when generations are
   off-target and you can't name why
