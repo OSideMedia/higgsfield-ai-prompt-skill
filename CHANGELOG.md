@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.20.1 — 2026-07-06
+
+### Changed
+- **Sora 2 UI presence confirmed** (user screenshot of the live model picker, 2026-07-06): the v3.20.0 "verify in the live UI" caveat is upgraded to fact. It is a **4-variant family** — Sora 2 (720p) / Sora 2 Pro (1080p) / Sora 2 Max / Sora 2 Pro Max (both 1080p, "BY HIGGSFIELD" enhanced tiers), all 4–12s, multi-shot with sound generation — present in the UI but still absent from the API/MCP catalog (UI generations only). model-guide.md row now carries the variant lineup and real duration/resolution; root SKILL.md and `higgsfield-assist` (3.1.1) caveats updated to the confirmed wording.
+
+
 ## v3.20.0 — 2026-07-06
 
 **Audio specs pipeline + catalog-reality refresh.** The specs layer now covers all three output types end-to-end, the dispatcher gained a Load Map, and the two stalest model surfaces (higgsfield-assist, the Sora 2 / "Seedance Pro" mentions) were reconciled with the live catalog.

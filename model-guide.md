@@ -14,7 +14,7 @@
 | Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | 16:9, 9:16, 1:1 | — | ✅ | Character drama, realism; native audio via `sound` toggle (default on) |
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | — | — | ❌ | Fast Kling iteration |
 | Kling 2.1 Master (deprecated) | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 5–10s | — | — | ❌ | Deprecated — removed from platform. Use Kling 2.6 or 3.0 |
-| Sora 2 (UI-only) | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | — | — | ❌ | Epic scale, physics, action — **UI-only: not in the API catalog as of 2026-07-05; verify in the live UI before recommending** |
+| Sora 2 (UI-only) | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | 4–12s | — | 720p (base), 1080p (Pro/Max tiers) | ✅ | Epic scale, physics, action, multi-shot + sound — **UI-only, confirmed present in the UI 2026-07-06** as a 4-variant family: Sora 2 (720p) / Sora 2 Pro (1080p) / Sora 2 Max / Sora 2 Pro Max (both 1080p, "BY HIGGSFIELD" enhanced tiers), all 4–12s. Not in the API/MCP catalog — UI generations only |
 | Wan 2.7 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★★ | 2–15s | 16:9, 9:16, 1:1, 4:3, 3:4 | 720p, 1080p | ✅ | 60fps, T2V/I2V/R2V/edit, first+last frame |
 | Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–15s | 16:9, 9:16, 1:1 | — | ❌ | Artistic, stylized, improved physics |
 | Wan 2.5 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–10s | — | — | ✅ | Native audio, artistic, fantasy |
