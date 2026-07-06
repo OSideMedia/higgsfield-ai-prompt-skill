@@ -1,5 +1,5 @@
 {
-  "_generated": "by higgsfield_memory.py — DO NOT HAND-EDIT; underscore-prefixed ledgers are excluded by design",
+  "_generated": "by scripts/higgsfield_memory.py — DO NOT HAND-EDIT; underscore-prefixed ledgers are excluded by design",
   "generated_from": [],
   "_total_rows": 0,
   "rows": []

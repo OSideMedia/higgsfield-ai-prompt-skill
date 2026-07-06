@@ -146,7 +146,7 @@
       "description": "Delivered prompts come with the preflight command",
       "model": "seedance_2_0",
       "request": "Final check before I spend credits?",
-      "response": "Routing to higgsfield-seedance (pre-flight linter).\n\nRun the full preflight before generating:\n\npython3 seedance_lint.py --preflight --model seedance_2_0 \"<your prompt>\"\n\nIt chains the filter lint, the structural lint (shot counts, beat sums, enum legality from specs/model-specs.json), and a learning-memory recall into one PASS/WARN/FAIL report. Treat FAIL as do-not-generate.",
+      "response": "Routing to higgsfield-seedance (pre-flight linter).\n\nRun the full preflight before generating:\n\npython3 scripts/seedance_lint.py --preflight --model seedance_2_0 \"<your prompt>\"\n\nIt chains the filter lint, the structural lint (shot counts, beat sums, enum legality from specs/model-specs.json), and a learning-memory recall into one PASS/WARN/FAIL report. Treat FAIL as do-not-generate.",
       "assertions": [
         {
           "type": "regex_present",

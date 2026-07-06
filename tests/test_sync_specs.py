@@ -73,6 +73,6 @@ def test_repo_specs_in_sync():
     import subprocess
     import sys
     result = subprocess.run(
-        [sys.executable, str(REPO / "sync_specs.py"), "--check"],
+        [sys.executable, str(REPO / "scripts" / "sync_specs.py"), "--check"],
         capture_output=True, text=True)
     assert result.returncode == 0, result.stderr

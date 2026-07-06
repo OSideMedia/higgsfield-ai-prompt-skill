@@ -38,7 +38,7 @@
 | Minimax Hailuo 02 Fast | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 6–10s | — | 512, 768, 1080 | ❌ | Budget motion, 512p |
 | Higgsfield DoP (Lite/Standard/Turbo) | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 3–5s | — | — | ❌ | I2V specialist, 50+ camera presets, optical physics |
 
-\* **Aspect ratios / Resolutions columns are sourced from the specs layer** (`specs/MODEL-SPECS.md`, `models_explore` snapshot 2026-07-05) — do not hand-edit them. A `—` means the model is legacy/unsnapshotted or the snapshot does not expose that field; verify live before promising values for those rows. Duration cells for snapshot-covered models are cross-checked against the specs by `validate.py`.
+\* **Aspect ratios / Resolutions columns are sourced from the specs layer** (`specs/MODEL-SPECS.md`, `models_explore` snapshot 2026-07-05) — do not hand-edit them. A `—` means the model is legacy/unsnapshotted or the snapshot does not expose that field; verify live before promising values for those rows. Duration cells for snapshot-covered models are cross-checked against the specs by `scripts/validate.py`.
 
 > The catalog also lists utility/system entries — AutoSprite (game sprite-sheet animation), MS Image (Marketing Studio ad images), Explainer Video, LLM text, upscalers, background removers, outpaint. These are pipeline tools, not prompt-crafted generation models, and are intentionally out of scope for these tables.
 

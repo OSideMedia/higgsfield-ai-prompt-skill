@@ -12,7 +12,7 @@ metadata:
 # Higgsfield Prompt Engineering
 
 ## QUICK FACTS
-*Generated-checked block (build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
+*Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
 - MCSLA = Model, Camera, Subject, Look, Action — the five layers of every prompt [→](#the-mcsla-formula)
 - I2V: describe ONLY what moves or changes, never what's already in the image [→](#image-to-video-i2v)
 - Keep prompts under 200 words; Cinema Studio has a hard 512-character cap [→](#high-performing-prompt-patterns)

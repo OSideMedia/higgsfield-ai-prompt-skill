@@ -10,7 +10,7 @@ dialects couldn't see them.
 | Profile | Format | Where |
 |---------|--------|-------|
 | `EN-director` | English prose prompt, six-slot formula, MCSLA-compatible | `SKILL.md` (this skill) |
-| `ZH-house` | Chinese house format (镜头-block shotlists, ≤1,800 chars) | team `shotlist-builder` (external corpus); ZH rules enforced by `../../seedance_lint.py` |
+| `ZH-house` | Chinese house format (镜头-block shotlists, ≤1,800 chars) | team `shotlist-builder` (external corpus); ZH rules enforced by `../../scripts/seedance_lint.py` |
 | `bilingual-JSON` | JSON API persona emitting paired `{"lang":"en"}` + `{"lang":"zh"}` prompts | `../../docs/Seedance 2 Skill.md` |
 
 Pick the profile by delivery target; the rules below apply to **all of them**.
@@ -76,7 +76,7 @@ rules; they are not platform-documented features.
 
 ## Enforcement
 
-- `../../seedance_lint.py --preflight --model seedance_2_0` checks the
+- `../../scripts/seedance_lint.py --preflight --model seedance_2_0` checks the
   mechanical subset (age markers, shot-count declarations, ZH caps, enum
   legality per `../../specs/model-specs.json`).
 - The judgment subset (reflections, instance handling, crowd phrasing,

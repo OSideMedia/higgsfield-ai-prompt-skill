@@ -3,7 +3,7 @@
 > **Specs snapshot: 2026-07-05** — machine-readable image-model facts (resolution
 > enums, model_type/quality options, aspect ratios) are generated from a
 > `type=image` `models_explore` snapshot into `specs/image-model-specs.yaml` /
-> `.json` and `specs/IMAGE-MODEL-SPECS.md` (regenerate via `python3 sync_specs.py
+> `.json` and `specs/IMAGE-MODEL-SPECS.md` (regenerate via `python3 scripts/sync_specs.py
 > --type image`). Verify model **parameters/enums** against that specs layer
 > first (HARD RULE #3); credits/pricing below remain hand-maintained UI claims —
 > verify live before quoting exact prices.

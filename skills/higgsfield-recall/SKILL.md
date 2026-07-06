@@ -16,7 +16,7 @@ metadata:
   parent: higgsfield
   compatibility:
     tools: [bash]
-    scripts: [higgsfield_memory.py]
+    scripts: [scripts/higgsfield_memory.py]
     databases: [db/filter-memory.json, db/quality-memory.json]
 ---
 
@@ -72,10 +72,10 @@ Extract:
 
 ```bash
 # Check for relevant filter blocks:
-python3 higgsfield_memory.py query-filter "<key terms from prompt>" 5
+python3 scripts/higgsfield_memory.py query-filter "<key terms from prompt>" 5
 
 # Check for relevant quality failures:
-python3 higgsfield_memory.py query-quality "<key terms from prompt>" 5
+python3 scripts/higgsfield_memory.py query-quality "<key terms from prompt>" 5
 ```
 
 **Query strategy:**
@@ -187,7 +187,7 @@ worked", "trash", "the face drifted again"):
 3. Write the row yourself:
 
 ```bash
-python3 ../../higgsfield_memory.py log-gen <project> \
+python3 ../../scripts/higgsfield_memory.py log-gen <project> \
   --model seedance_2_0 --tags dialogue-cu,two-char \
   --outcome rejected --reason extra-cuts --credits 160
 ```
@@ -196,7 +196,7 @@ python3 ../../higgsfield_memory.py log-gen <project> \
   `../../db/ledger/README.md` — map the user's words to the nearest vocab
   value (`"face drifted"` → `identity-drift`); never invent new values.
 - Add `--draft` for 480p exploration rolls (excluded from headline ratios).
-- Wrong verdict logged? `python3 ../../higgsfield_memory.py amend-gen
+- Wrong verdict logged? `python3 ../../scripts/higgsfield_memory.py amend-gen
   <id> outcome=kept` — corrections are superseding rows, history stays.
 - Project name: the user's production name if one is established in the
   conversation, else `default`.
@@ -211,17 +211,17 @@ line of every response. When a production is tracking which skills actually earn
 their keep, persist that declaration:
 
 ```bash
-python3 ../../higgsfield_memory.py log-route --skills higgsfield-prompt,higgsfield-camera
+python3 ../../scripts/higgsfield_memory.py log-route --skills higgsfield-prompt,higgsfield-camera
 ```
 
-`python3 ../../higgsfield_memory.py routing` then ranks sub-skills by opens and
+`python3 ../../scripts/higgsfield_memory.py routing` then ranks sub-skills by opens and
 lists the never-opened long tail. This is **instrumentation, not a verdict** —
 it makes "which skills are load-bearing, which to prune" answerable from data
 once enough requests accumulate; a small sample is not evidence a skill is dead.
 
 ### Read the verdict before re-rolling
 
-After a few logged rows, `python3 ../../higgsfield_memory.py ratio <project>`
+After a few logged rows, `python3 ../../scripts/higgsfield_memory.py ratio <project>`
 prints a per-shot-tag **verdict** that decides iterate-vs-batch:
 
 - `iterate` (structural-dominant) → the prompt is wrong; hand off to
@@ -245,7 +245,7 @@ advisory until the `agreement` command proves it).
 
 To see current knowledge base size:
 ```bash
-python3 higgsfield_memory.py stats
+python3 scripts/higgsfield_memory.py stats
 ```
 
 Empty databases = no recall benefit yet. Start logging failures with `higgsfield-troubleshoot`

@@ -95,8 +95,8 @@ for final in-platform prompt refinement and quick generation.
 ledger and cite the numbers:**
 
 ```bash
-python3 ../../higgsfield_memory.py ratio <project> --credits
-python3 ../../higgsfield_memory.py budget <project> --shots <manifest.json>
+python3 ../../scripts/higgsfield_memory.py ratio <project> --credits
+python3 ../../scripts/higgsfield_memory.py budget <project> --shots <manifest.json>
 ```
 
 - `ratio` gives empirical takes-per-kept per shot type, with the

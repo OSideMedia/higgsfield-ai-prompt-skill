@@ -12,7 +12,7 @@ metadata:
 # Higgsfield Seedance Director
 
 ## QUICK FACTS
-*Generated-checked block (build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
+*Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
 - The filter is an LLM reading full-scene intent, not a keyword blacklist — describe a SCENE, not a subject; fix the voice first [→](#the-filter-model-read-this-first)
 - Instant fail (<10s) = filter rejection; delayed fail (>30s) = infra/complexity — never regenerate an instant fail unchanged [→](#instant-fail-vs-delayed-fail-the-diagnostic)
 - Six slots, in order: Camera + Subject + Action + Setting + Style + Lighting; missing 3+ slots is where flags come from [→](#the-seedance-prompt-formula)
@@ -26,7 +26,7 @@ metadata:
 - Working modes: Exploration / Continuation / Bridging / Repair (distinct from prompt modes) [→](#working-modes-vs-prompt-modes-two-taxonomies)
 - Layer 1 briefing vs Layer 2 production prompt — never paste Layer 1 into the prompt box [→](#two-layer-prompt-authoring)
 - Native **4K** is available in `mode=std` only; `mode=fast` (Seedance 2.0 Fast) caps at 480p/720p — in Cinema Studio the model is still capped at 1080p [→](#pre-flight-linter)
-- Always preflight: `python3 seedance_lint.py --preflight --model seedance_2_0 "<prompt>"` — enums come from `../../specs/model-specs.json` (fast+1080p/4K and Kling 21:9 are auto-caught) [→](#pre-flight-linter)
+- Always preflight: `python3 scripts/seedance_lint.py --preflight --model seedance_2_0 "<prompt>"` — enums come from `../../specs/model-specs.json` (fast+1080p/4K and Kling 21:9 are auto-caught) [→](#pre-flight-linter)
 - 480p drafts validate the prompt, NOT the take — no seed param; pin Hero Frame + start/end frames to carry a look [→](#drafts-validate-the-prompt-not-the-take)
 - ZH prompts: hard 1,800-char cap; ZH antislop list enforced by the linter [→](#multi-language-prompt-workarounds)
 - Flagged prompt → rewrite playbook per linter rule, then voice pass [→](#the-rewrite-playbook)
@@ -1355,10 +1355,10 @@ primitives express at the interface level.
 Before the user generates, run the prompt through the full preflight:
 
 ```
-python3 seedance_lint.py --preflight --model seedance_2_0 "<prompt text>"
+python3 scripts/seedance_lint.py --preflight --model seedance_2_0 "<prompt text>"
 ```
 
-The linter is at the project root (`seedance_lint.py`). `--preflight` chains
+The linter is in the repo's scripts/ directory (`../../scripts/seedance_lint.py`). `--preflight` chains
 three passes into one PASS/WARN/FAIL report:
 
 **1. Filter lint** (always on):
@@ -1657,11 +1657,11 @@ If the user tells you Seedance has flagged them multiple times in a row:
    outcomes actually get written:
    - After a rewrite **passes Seedance's filter in a real generation**, log it
      as a confirmed workaround:
-     `python3 seedance_lint.py --confirmed "<the prompt that passed>"`
+     `python3 scripts/seedance_lint.py --confirmed "<the prompt that passed>"`
    - If you logged a predicted rejection earlier (`--log`) and later learn the
-     outcome: `python3 higgsfield_memory.py update-filter <id> <fixed|workaround|still-blocked>`
+     outcome: `python3 scripts/higgsfield_memory.py update-filter <id> <fixed|workaround|still-blocked>`
    - After a **quality fix** is confirmed (motion, identity, blocking — not a
-     filter issue): `python3 higgsfield_memory.py add-quality '<json entry>'`
+     filter issue): `python3 scripts/higgsfield_memory.py add-quality '<json entry>'`
      with the original prompt, the failure description, and the improved prompt.
    - For production-specific lessons that shouldn't pollute global memory, add
      `--project <name>` (entries land in `../../db/projects/`).

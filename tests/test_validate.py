@@ -74,7 +74,7 @@ def test_dash_cell_skipped():
 # ── Whole-script exit codes ─────────────────────────────────────────────────
 
 def test_repo_validates_clean():
-    result = subprocess.run([sys.executable, str(REPO / "validate.py")],
+    result = subprocess.run([sys.executable, str(REPO / "scripts" / "validate.py")],
                             capture_output=True, text=True)
     assert result.returncode == 0, result.stdout[-2000:]
 
@@ -82,7 +82,7 @@ def test_repo_validates_clean():
 @pytest.mark.skipif(importlib.util.find_spec("fpdf") is not None,
                     reason="fpdf2 installed — strict-mode SKIP path not reachable")
 def test_strict_fails_without_fpdf2():
-    result = subprocess.run([sys.executable, str(REPO / "validate.py"), "--strict"],
+    result = subprocess.run([sys.executable, str(REPO / "scripts" / "validate.py"), "--strict"],
                             capture_output=True, text=True)
     assert result.returncode == 1
     assert "skipped check" in result.stdout

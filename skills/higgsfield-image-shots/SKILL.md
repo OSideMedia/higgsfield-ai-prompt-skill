@@ -18,7 +18,7 @@ metadata:
 # Higgsfield Cinematic Image Prompting
 
 ## QUICK FACTS
-*Generated-checked block (build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
+*Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
 - Scope: still-image composition only; `[img 1]` is the Soul ID / uploaded reference token — replace with a character description or @ Element when no reference is used [→](#how-to-use-this-reference)
 - Base pattern: [Shot keyword] of [img 1 or character description] + [pose/action] + [environment detail] + [lighting/atmosphere] [→](#how-to-use-this-reference)
 - 10 framing sizes, EWS → Macro: EWS tiny-in-landscape, Wide full body, Full head-to-toe, MLS knees up, Cowboy mid-thigh up, Medium waist up, MCU chest up, CU face, ECU single detail, Macro texture [→](#distance-size-quick-reference)

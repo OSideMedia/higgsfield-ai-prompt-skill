@@ -5,7 +5,7 @@ rejected, or filter-flagged. Unlike `../quality-memory.json` (a failure
 ledger), this records the denominator, so after ~30–40 logged generations a
 production has real takes-per-kept ratios per shot type and can price credit
 risk before generating (`ratio` / `budget` commands in
-`../../higgsfield_memory.py`).
+`../../scripts/higgsfield_memory.py`).
 
 **The 5-second rule:** logging one generation costs at most one short command
 or one agent question ("keep or reject — what failed?"). The agent writes the
@@ -59,9 +59,9 @@ Underscore-prefixed names are **reserved**.
   latest amendment.
 - Models are stored as **canonical specs ids** only. Optional fields
   (resolution/aspect/duration) are not cross-validated against per-model
-  enums in v1 — model-id membership only (use `seedance_lint.py --preflight`
+  enums in v1 — model-id membership only (use `scripts/seedance_lint.py --preflight`
   for enum legality before generating).
-- `validate.py` schema-checks every ledger file and regenerates `_global.json`.
+- `scripts/validate.py` schema-checks every ledger file and regenerates `_global.json`.
 
 ## Controlled vocabularies (extend via PR, never ad hoc)
 

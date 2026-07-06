@@ -24,13 +24,13 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        # fpdf2 is needed by generate_user_guide.py, which validate.py invokes
+        # fpdf2 is needed by scripts/generate_user_guide.py, which scripts/validate.py invokes
         # for its PDF dry-run smoke check. CI runs --strict, so the smoke
         # check must actually run here, not SKIP.
         run: pip install -r requirements.txt
 
-      - name: Run validate.py (strict — SKIPs are failures in CI)
-        run: python3 validate.py --strict
+      - name: Run scripts/validate.py (strict — SKIPs are failures in CI)
+        run: python3 scripts/validate.py --strict
 
       - name: Seedance lint self-check
         # The linter is the repo's safety net; assert both directions of its
@@ -38,17 +38,17 @@ jobs:
         run: |
           set -e
           # Known-FAIL: fast mode cannot output 1080p (specs constraint)
-          if python3 seedance_lint.py --model seedance_2_0 --mode fast --resolution 1080p \
+          if python3 scripts/seedance_lint.py --model seedance_2_0 --mode fast --resolution 1080p \
               "Style: noir. Slow dolly-in on a figure in a wool coat. Interior warehouse at dusk." >/dev/null; then
             echo "expected FAIL (fast+1080p) but linter passed"; exit 1
           fi
           # Known-FAIL: Kling 3.0 has no native 21:9 (specs enum)
-          if python3 seedance_lint.py --model kling3_0 --ar 21:9 \
+          if python3 scripts/seedance_lint.py --model kling3_0 --ar 21:9 \
               "Style: noir. Slow dolly-in on a figure in a wool coat. Interior warehouse at dusk." >/dev/null; then
             echo "expected FAIL (kling 21:9) but linter passed"; exit 1
           fi
           # Known-PASS: clean six-slot prompt with legal settings
-          python3 seedance_lint.py --model seedance_2_0 --mode std --resolution 1080p \
+          python3 scripts/seedance_lint.py --model seedance_2_0 --mode std --resolution 1080p \
             "Style: noir. Slow dolly-in on a figure in a wool coat. Interior warehouse at dusk." >/dev/null
           echo "lint self-check OK"
 
@@ -66,7 +66,7 @@ jobs:
         # Conditional until evals/ lands (Brief #1 item 9).
         run: |
           if [ -d evals ]; then
-            python3 validate.py --evals
+            python3 scripts/validate.py --evals
           else
             echo "no evals/ directory yet — skipping"
           fi

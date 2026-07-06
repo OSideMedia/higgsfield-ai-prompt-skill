@@ -36,11 +36,11 @@ DEFAULT MODE — CLI-baseline self-diff (the trustworthy tripwire)
   "is my snapshot behind the live CLI?"), which is source-disagreement-prone.
 
 Usage:
-  python3 refresh_specs.py --update-baseline   # bootstrap / accept current CLI
-  python3 refresh_specs.py                      # self-diff vs baseline (default)
-  python3 refresh_specs.py --type video         # one type
-  python3 refresh_specs.py --vs-snapshot        # legacy snapshot-diff
-  python3 refresh_specs.py --json               # machine-readable diff
+  python3 scripts/refresh_specs.py --update-baseline   # bootstrap / accept current CLI
+  python3 scripts/refresh_specs.py                      # self-diff vs baseline (default)
+  python3 scripts/refresh_specs.py --type video         # one type
+  python3 scripts/refresh_specs.py --vs-snapshot        # legacy snapshot-diff
+  python3 scripts/refresh_specs.py --json               # machine-readable diff
 
 Exit codes (the three states must stay distinguishable — a silent failure would
 falsely read as "fresh", which is worse than the reactive WARN we already have):
@@ -386,7 +386,7 @@ def check_type_vs_baseline(output_type: str, baseline: dict) -> tuple:
     if output_type not in baseline:
         raise FileNotFoundError(
             f"no '{output_type}' baseline in {BASELINE_PATH.name} — "
-            f"bootstrap it: python3 refresh_specs.py --update-baseline")
+            f"bootstrap it: python3 scripts/refresh_specs.py --update-baseline")
     old_views = baseline[output_type]
     new_views, _ = pull_cli_views(output_type, ids=None)
     diff = diff_catalog(old_views, new_views)
@@ -395,7 +395,7 @@ def check_type_vs_baseline(output_type: str, baseline: dict) -> tuple:
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(
-        prog="refresh_specs.py", description=__doc__.splitlines()[0])
+        prog="scripts/refresh_specs.py", description=__doc__.splitlines()[0])
     p.add_argument("--type", choices=("video", "image", "both"), default="both")
     p.add_argument("--json", action="store_true", help="machine-readable diff")
     p.add_argument("--verbose", action="store_true", help="list every param-level notice")
@@ -426,7 +426,7 @@ def main(argv=None) -> int:
 
     baseline = {} if args.vs_snapshot else load_baseline()
     if not args.vs_snapshot and not baseline:
-        print(f"no baseline yet — bootstrap it: python3 refresh_specs.py "
+        print(f"no baseline yet — bootstrap it: python3 scripts/refresh_specs.py "
               f"--update-baseline", file=sys.stderr)
         return 1
 
@@ -461,7 +461,7 @@ def main(argv=None) -> int:
         print("\n".join(reports))
         if changed:
             print("\nCHANGE DETECTED → refresh the snapshot (Tier 2): dump "
-                  "`models_explore`, run `python3 sync_specs.py`, audit "
+                  "`models_explore`, run `python3 scripts/sync_specs.py`, audit "
                   "`evals/cases/` in the same PR (v3.11.2/v3.11.3), then accept "
                   "the new live surface with `--update-baseline`.")
         else:

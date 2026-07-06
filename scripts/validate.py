@@ -11,9 +11,9 @@ Checks:
   - Entry counts match _total_entries declarations
   - Root SKILL.md version/updated agree with the README badge + footer
 
-Usage:
-  python validate.py            # standard run — optional-dep checks may SKIP
-  python validate.py --strict   # release mode — SKIPs become failures
+Usage (from the repo root):
+  python3 scripts/validate.py            # standard run — optional-dep checks may SKIP
+  python3 scripts/validate.py --strict   # release mode — SKIPs become failures
 """
 
 import argparse
@@ -24,7 +24,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-ROOT = Path(__file__).parent
+ROOT = Path(__file__).resolve().parent.parent  # scripts/ → repo root
 SPECS_DIR = ROOT / "specs"
 SPECS_JSON = SPECS_DIR / "model-specs.json"
 SNAPSHOT_MAX_AGE_DAYS = 30
@@ -500,7 +500,7 @@ def check_guide_against_specs(guide_text: str, spec: dict) -> list:
 def check_model_specs():
     """The specs layer: present, fresh, regenerable, and not contradicted."""
     if not check(SPECS_JSON.exists(), "specs/model-specs.json exists",
-                 "" if SPECS_JSON.exists() else "run: python3 sync_specs.py"):
+                 "" if SPECS_JSON.exists() else "run: python3 scripts/sync_specs.py"):
         return
     try:
         spec = json.loads(SPECS_JSON.read_text(encoding="utf-8"))
@@ -535,7 +535,7 @@ def check_model_specs():
         stale = [p.name for p, content in regen.items()
                  if not p.exists() or p.read_text(encoding="utf-8") != content]
         check(not stale, "specs files match regeneration from snapshot",
-              "" if not stale else f"stale: {', '.join(stale)} — rerun python3 sync_specs.py")
+              "" if not stale else f"stale: {', '.join(stale)} — rerun python3 scripts/sync_specs.py")
     except Exception as e:  # noqa: BLE001 — report, don't crash the validator
         check(False, "specs regeneration check", f"{type(e).__name__}: {e}")
         return
@@ -555,7 +555,7 @@ def check_model_specs():
     if image_specs.exists() or image_snapshots:
         check(image_specs.exists() and bool(image_snapshots),
               "image specs generated from an image snapshot",
-              "run: python3 sync_specs.py --type image")
+              "run: python3 scripts/sync_specs.py --type image")
     else:
         warn("image-model specs are TODO (no type=image snapshot yet)",
              "image-models.md / photodump-presets.md stay hand-maintained; "
@@ -615,7 +615,7 @@ def check_index_and_quick_facts():
     problems = build_index.run_checks()
     index_path = ROOT / "INDEX.md"
     if not index_path.exists() or index_path.read_text(encoding="utf-8") != build_index.build_index_text():
-        problems.append("INDEX.md stale — rerun: python3 build_index.py")
+        problems.append("INDEX.md stale — rerun: python3 scripts/build_index.py")
     check(not problems, "INDEX.md current + QUICK FACTS anchors resolve",
           "" if not problems else "; ".join(problems[:3])
           + (f" (+{len(problems) - 3} more)" if len(problems) > 3 else ""))
@@ -828,7 +828,8 @@ def main():
         "model-guide.md", "image-models.md", "vocab.md",
         "prompt-examples.md", "photodump-presets.md",
         "production-benchmarks.md",
-        "higgsfield_memory.py", "sync_specs.py", "build_index.py", "INDEX.md",
+        "scripts/higgsfield_memory.py", "scripts/sync_specs.py",
+        "scripts/build_index.py", "INDEX.md",
         "specs/model-specs.yaml", "specs/model-specs.json", "specs/MODEL-SPECS.md",
         "db/filter-memory.json", "db/quality-memory.json",
     ]
@@ -876,7 +877,7 @@ def main():
             # sys.executable, not "python3": the smoke must run in the SAME
             # environment as this validator, or a bare venv would silently
             # borrow the system interpreter's fpdf2 and mask the skip path.
-            [sys.executable, str(ROOT / "generate_user_guide.py"), "--dry-run"],
+            [sys.executable, str(ROOT / "scripts" / "generate_user_guide.py"), "--dry-run"],
             capture_output=True,
             text=True,
             timeout=60,

@@ -12,8 +12,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.19.0
-  updated: 2026-07-05
+  version: 3.19.1
+  updated: 2026-07-06
   author: O-Side Media
   license: MIT
 ---
@@ -283,7 +283,7 @@ and credit budgets.
 
 **The 5-second rule:** when the user reports a result, ask at most ONE
 question ("keep or reject — what failed?") and write the row yourself with
-one `higgsfield_memory.py log-gen` command. Never ask twice; never present a
+one `scripts/higgsfield_memory.py log-gen` command. Never ask twice; never present a
 form. Full workflow: `skills/higgsfield-recall/SKILL.md` § Log the Generation
 Result. Ratios and budgeting: `skills/higgsfield-assist/SKILL.md`.
 
