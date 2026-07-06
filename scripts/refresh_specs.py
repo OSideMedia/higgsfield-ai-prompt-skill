@@ -396,7 +396,10 @@ def check_type_vs_baseline(output_type: str, baseline: dict) -> tuple:
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(
         prog="scripts/refresh_specs.py", description=__doc__.splitlines()[0])
-    p.add_argument("--type", choices=("video", "image", "both"), default="both")
+    p.add_argument("--type", choices=("video", "image", "audio", "both", "all"),
+                   default="all",
+                   help="'all' = video+image+audio (default); "
+                        "'both' = video+image (pre-audio alias)")
     p.add_argument("--json", action="store_true", help="machine-readable diff")
     p.add_argument("--verbose", action="store_true", help="list every param-level notice")
     p.add_argument("--update-baseline", action="store_true",
@@ -405,7 +408,8 @@ def main(argv=None) -> int:
                    help="legacy mode: diff CLI vs the models_explore snapshot "
                         "(source-disagreement-prone)")
     args = p.parse_args(argv)
-    types = ("video", "image") if args.type == "both" else (args.type,)
+    types = {"all": ("video", "image", "audio"),
+             "both": ("video", "image")}.get(args.type, (args.type,))
 
     # --update-baseline: bootstrap / accept the current live surface.
     if args.update_baseline:

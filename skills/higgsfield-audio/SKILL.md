@@ -11,8 +11,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS]
-  version: 3.3.0
-  updated: 2026-07-05
+  version: 3.3.1
+  updated: 2026-07-06
   parent: higgsfield
 ---
 
@@ -575,7 +575,9 @@ Music: a lonely muted trumpet fades in under the rain, wistful but hopeful.
 ## Standalone Audio tab — tool catalog (2026-07-05 snapshot)
 
 The live standalone-audio catalog, reconciled against the models_explore
-snapshot of **2026-07-05** (`../../specs/models_explore_snapshot_audio_2026-07-05.json`).
+snapshot of **2026-07-05** (`../../specs/models_explore_snapshot_audio_2026-07-05.json`;
+generated table: `../../specs/AUDIO-MODEL-SPECS.md`, machine twin
+`../../specs/audio-model-specs.json` — regenerate with `python3 scripts/sync_specs.py --type audio`).
 The Audio tab's UI tools — **Voiceover** (text → speech), **Change Voice** (swap a
 voice in any video), **Translation** (translate speech in any video) — sit on top
 of these models:

@@ -2345,5 +2345,272 @@
       },
       "rules": []
     }
+  },
+  "audio": {
+    "inworld_text_to_speech": {
+      "id": "inworld_text_to_speech",
+      "output_type": "audio",
+      "aspect_ratios": [],
+      "params": {
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "voice": {
+          "options": [
+            "Abby (en)",
+            "Alain (fr)",
+            "Alex (en)",
+            "Amina (en)",
+            "Anjali (en)",
+            "Arjun (en)",
+            "Ashley (en)",
+            "Asuka (ja)",
+            "Blake (en)",
+            "Brian (en)",
+            "Callum (en)",
+            "Carter (en)",
+            "Celeste (en)",
+            "Chloe (en)",
+            "Claire (en)",
+            "Clive (en)",
+            "Craig (en)",
+            "Darlene (en)",
+            "Deborah (en)",
+            "Dennis (en)",
+            "Derek (en)",
+            "Diego (es)",
+            "Dmitry (ru)",
+            "Dominus (en)",
+            "Edward (en)",
+            "Elena (ru)",
+            "Elizabeth (en)",
+            "Elliot (en)",
+            "Erik (nl)",
+            "Ethan (en)",
+            "Evan (en)",
+            "Evelyn (en)",
+            "Gareth (en)",
+            "Gianni (it)",
+            "Graham (en)",
+            "Grant (en)",
+            "Hades (en)",
+            "Hamish (en)",
+            "Hana (en)",
+            "Hank (en)",
+            "Heitor (pt)",
+            "Hyunwoo (ko)",
+            "Hélène (fr)",
+            "Jake (en)",
+            "James (en)",
+            "Jason (en)",
+            "Jessica (en)",
+            "Jing (zh)",
+            "Johanna (de)",
+            "Josef (de)",
+            "Julia (en)",
+            "Katrien (nl)",
+            "Kayla (en)",
+            "Kelsey (en)",
+            "Lauren (en)",
+            "Lennart (nl)",
+            "Liam (en)",
+            "Lore (nl)",
+            "Loretta (en)",
+            "Luna (en)",
+            "Lupita (es)",
+            "Maitê (pt)",
+            "Malcolm (en)",
+            "Manoj (hi)",
+            "Mark (en)",
+            "Marlene (en)",
+            "Mathieu (fr)",
+            "Miguel (es)",
+            "Minji (ko)",
+            "Miranda (en)",
+            "Mortimer (en)",
+            "Nate (en)",
+            "Nikolai (ru)",
+            "Nour (ar)",
+            "Oliver (en)",
+            "Olivia (en)",
+            "Omar (ar)",
+            "Oren (he)",
+            "Orietta (it)",
+            "Pippa (en)",
+            "Pixie (en)",
+            "Priya (en)",
+            "Rafael (es)",
+            "Riya (hi)",
+            "Ronald (en)",
+            "Rupert (en)",
+            "Saanvi (en)",
+            "Sarah (en)",
+            "Satoshi (ja)",
+            "Sebastian (en)",
+            "Seojun (ko)",
+            "Serena (en)",
+            "Shaun (en)",
+            "Simon (en)",
+            "Snik (en)",
+            "Svetlana (ru)",
+            "Szymon (pl)",
+            "Tessa (en)",
+            "Theodore (en)",
+            "Timothy (en)",
+            "Tyler (en)",
+            "Veronica (en)",
+            "Victor (en)",
+            "Victoria (en)",
+            "Vinny (en)",
+            "Wendy (en)",
+            "Wojciech (pl)",
+            "Xiaoyin (zh)",
+            "Xinyi (zh)",
+            "Yael (he)",
+            "Yichen (zh)",
+            "Yoona (ko)",
+            "Étienne (fr)"
+          ],
+          "default": null
+        }
+      },
+      "rules": []
+    },
+    "mirelo_text_to_audio": {
+      "id": "mirelo_text_to_audio",
+      "output_type": "audio",
+      "aspect_ratios": [],
+      "params": {
+        "duration": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": []
+    },
+    "seed_audio": {
+      "id": "seed_audio",
+      "output_type": "audio",
+      "aspect_ratios": [],
+      "params": {
+        "audio_references": {
+          "options": [],
+          "default": null
+        },
+        "format": {
+          "options": [
+            "mp3",
+            "ogg_opus",
+            "pcm",
+            "wav"
+          ],
+          "default": "wav"
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "loudness_rate": {
+          "options": [],
+          "default": 0
+        },
+        "pitch_rate": {
+          "options": [],
+          "default": 0
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "sample_rate": {
+          "options": [
+            "16000",
+            "24000",
+            "32000",
+            "44100",
+            "48000",
+            "8000"
+          ],
+          "default": 24000
+        },
+        "speech_rate": {
+          "options": [],
+          "default": 0
+        },
+        "voice_id": {
+          "options": [],
+          "default": null
+        },
+        "voice_type": {
+          "options": [
+            "element",
+            "preset"
+          ],
+          "default": null
+        }
+      },
+      "rules": [
+        "!(size(params.image_references) > 0 && size(params.audio_references) > 0)",
+        "(params.voice_type == null) == (params.voice_id == null)",
+        "params.voice_id == null || size(params.audio_references) <= 2",
+        "params.voice_id == null || size(params.image_references) == 0"
+      ]
+    },
+    "sonilo_music": {
+      "id": "sonilo_music",
+      "output_type": "audio",
+      "aspect_ratios": [],
+      "params": {
+        "duration": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": []
+    },
+    "text2speech_v2": {
+      "id": "text2speech_v2",
+      "output_type": "audio",
+      "aspect_ratios": [],
+      "params": {
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "variant": {
+          "options": [
+            "cozy_voice",
+            "elevenlabs",
+            "minimax",
+            "seed_speech",
+            "vibe_voice"
+          ],
+          "default": null
+        },
+        "voice_id": {
+          "options": [],
+          "default": null
+        },
+        "voice_type": {
+          "options": [
+            "element",
+            "preset"
+          ],
+          "default": null
+        }
+      },
+      "rules": [
+        "size(params.prompt) <= {\"elevenlabs\": 5000, \"minimax\": 10000, \"seed_speech\": 15000, \"vibe_voice\": 5000, \"cozy_voice\": 5000}[params.variant]"
+      ]
+    }
   }
 }

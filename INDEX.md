@@ -15,6 +15,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Fast Path — Simple Creative Requests](SKILL.md#fast-path-simple-creative-requests)
     - [Full Path — Production Requests](SKILL.md#full-path-production-requests)
     - [Route to the Right Skill](SKILL.md#route-to-the-right-skill)
+    - [Load Map — how much to read](SKILL.md#load-map-how-much-to-read)
     - [Check Templates for Genre Match](SKILL.md#check-templates-for-genre-match)
     - [Build the Prompt Using the MCSLA Formula](SKILL.md#build-the-prompt-using-the-mcsla-formula)
     - [Output Format](SKILL.md#output-format)
