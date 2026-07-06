@@ -1,5 +1,21 @@
 # Changelog
 
+## v3.20.0 — 2026-07-06
+
+**Audio specs pipeline + catalog-reality refresh.** The specs layer now covers all three output types end-to-end, the dispatcher gained a Load Map, and the two stalest model surfaces (higgsfield-assist, the Sora 2 / "Seedance Pro" mentions) were reconciled with the live catalog.
+
+### Added
+- **Audio specs pipeline**: `scripts/sync_specs.py --type audio` generates `specs/audio-model-specs.{yaml,json}` + `specs/AUDIO-MODEL-SPECS.md` from the dated audio snapshot (5 models incl. `seed_audio`); `scripts/refresh_specs.py` default is now `all` (video+image+audio — `both` kept as the pre-audio alias), audio captured into `specs/cli_baseline.json`, tripwire green across all three types. Typed-spec markdown footers now point at their own machine twins (was: everything pointed at the video files). `higgsfield-audio` 3.3.1 cites the generated audio specs.
+- **Load Map** (root SKILL.md § Load Map — how much to read): a situation → cumulative-load table so multi-skill loads are deterministic instead of vibes — Fast Path loads two files, everything else adds only what its routing row names.
+
+### Changed
+- **Sora 2 is UI-only** — absent from the API catalog and a live `models_explore` search (verified 2026-07-05). Kept everywhere but annotated: root SKILL.md "What Is Higgsfield?", model-guide.md (video-table row, decision flowchart demoted to parenthetical, camera-control + motion-preset † footnotes, credit table), higgsfield-assist. Root Fast Path default swapped Sora 2 → Seedance 2.0 (action/scale/references).
+- **"Seedance Pro" is a legacy UI label** — not in the catalog; annotated in model-guide + assist as superseded by Seedance 1.5 Pro (`seedance1_5`) and Seedance 2.0 Fast/Mini (annotate-don't-delete, per the GPT Image precedent).
+- **`higgsfield-assist` 3.0.0 → 3.1.0** (first refresh since 2026-04-06): credit-cost tier roster rebuilt against the 2026-07-05 catalog; "Kling 3.0 for anything needing audio" corrected — audio is native across Seedance 2.0/Mini/1.5 Pro (`generate_audio`), Kling 3.0/2.6 (`sound`), Veo 3.1 Lite: pick by scene fit, then toggle; plans table now carries a dated verify-live caveat; audio-toggle credit-saving tip added. Kling 2.6 audio cell in model-guide fixed to match the live spec (`sound` param, default on).
+- **CS3.5 shot-counter TODO closed** (`higgsfield-cinema`): API checked 2026-07-05 — `multi_prompt` exposes no maximum and no constraint rule, so the observed cap of 4 is UI behavior the API doesn't document; treat 4 as the working limit, verify live before promising more.
+- CLAUDE.md: specs/ line + sync command now cover all three types.
+
+
 ## v3.19.1 — 2026-07-06
 
 Housekeeping wave: activate the weekly spec-drift schedule, absorb the CLI 1.1.5 release, de-clutter the repo root, and archive the changelog backlog. No prompting-content changes.

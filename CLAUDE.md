@@ -32,8 +32,8 @@ scripts/                  ← Python tooling (run from the repo root)
   │                         sub_skill_descriptions.py)
   └── build_index.py      ← Regenerates INDEX.md + checks QUICK FACTS anchors
 specs/                    ← Machine-readable model specs (generated — never hand-edit;
-                            video + image generated from dated models_explore
-                            snapshots; audio snapshot captured, pipeline TODO)
+                            video + image + audio, each generated from a dated
+                            models_explore snapshot)
 INDEX.md                  ← Generated heading index of every SKILL.md
 tests/                    ← pytest suite for the Python tooling (CI-run)
 evals/                    ← Behavioral eval cases + run_evals.py (CI-run)
@@ -58,7 +58,7 @@ workspace/                ← Git-ignored working area (input/ → processed/, o
 - `python3 -m pytest tests/ -q` — Python tooling test suite (CI-run)
 - `python3 scripts/validate.py --evals` — behavioral eval cases (evals/cases/)
 - `python3 scripts/build_index.py` — regenerate INDEX.md after any heading change
-- `python3 scripts/sync_specs.py --type video|image` — regenerate specs/ from the newest dated snapshot
+- `python3 scripts/sync_specs.py --type video|image|audio` — regenerate specs/ from the newest dated snapshot
 - `python3 scripts/refresh_specs.py` — spec-drift tripwire (exit 0 fresh / 3 changed / 1 pull-failed / 4 CLI-shape-changed); `--update-baseline` to accept a reviewed change
 - `python3 scripts/higgsfield_memory.py stats` — memory database statistics
 - `/validate` — run validation via slash command

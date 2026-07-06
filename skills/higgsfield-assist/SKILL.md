@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, assist, GPT-5, copilot, credits, pricing, optimization, efficiency]
-  version: 3.0.0
-  updated: 2026-04-06
+  version: 3.1.0
+  updated: 2026-07-06
   parent: higgsfield
 ---
 
@@ -82,12 +82,22 @@ for final in-platform prompt refinement and quick generation.
 **Watermarks:** Free tier only.  
 **Priority processing:** Pro and above.
 
+> Plan names, prices, and credit allowances above are hand-maintained and not
+> verifiable from the API catalog (last reviewed 2026-07-06, not re-verified
+> against the live UI) — check higgsfield.ai/pricing before quoting them.
+
 ### Credit Cost Tiers (Approximate)
 
-**Low cost:** Seedance Pro, standard image generation, Nano Banana
-**Medium cost:** Kling 2.6, Wan 2.5/2.6, Minimax Hailuo 2.3, standard I2V
-**High cost:** Sora 2, Kling 3.0 (with audio), Veo 3, Cinema Studio
+*Model roster reviewed against the 2026-07-05 catalog snapshot; tier placements are hand-maintained — verify live before quoting.*
+
+**Low cost:** Seedance 2.0 Fast / Mini, standard image generation, Nano Banana 2 Lite
+**Medium cost:** Kling 2.6 (legacy), Kling 3.0 Turbo, Wan 2.5/2.6/2.7, Minimax Hailuo 2.3, standard I2V
+**High cost:** Kling 3.0 (pro/4K modes), Seedance 2.0 at 1080p/4K, Veo 3 / 3.1, Cinema Studio
 **Apps:** Vary widely — one-click apps are generally efficient
+
+> "Seedance Pro" is a legacy UI label — not in the API catalog (2026-07-05);
+> its budget slot is now Seedance 2.0 Fast / Mini. Sora 2 is UI-only — not in
+> the API catalog as of 2026-07-05; verify in the live UI before recommending.
 
 ### Quote From the Ledger, Not From Vibes
 
@@ -128,10 +138,12 @@ Over-specified prompts create conflicting instructions, forcing multiple regener
 If you change the prompt, the model, AND the camera in one go, you can't learn what fixed what.
 **Fix:** Change one thing at a time. Systematic iteration is faster than random retries.
 
-**4. Using Sora 2 / Kling 3.0 for simple shots**
+**4. Using premium tiers (Kling 3.0 pro/4K, Seedance 2.0 4K, Veo 3.1) for simple shots**
 Premium models for simple single-character, single-camera shots.
 **Fix:** Reserve premium models for scenes that genuinely need their capabilities.
-Kling 2.6 handles most character drama at lower cost.
+Kling 3.0 Turbo or Kling 2.6 (legacy) handles most character drama at lower cost —
+and on Kling 3.0, `sound: off` gives a silent video at lower credits (per the
+live spec). Seedance has the same switch (`generate_audio: false`).
 
 **5. Not using Apps for tasks Apps are built for**
 Face swap, product placement, style transfer — doing these manually via prompt
@@ -161,21 +173,27 @@ The credit math almost always favors this approach.
 ### Model Selection by Budget Scenario
 
 **Tight budget (Basic plan — 150 credits):**
-- Primary model: Seedance Pro (fast, low cost)
-- Character shots: Kling 2.6 only when quality requires it
-- Avoid: Sora 2, Kling 3.0, Veo 3
+- Primary model: Seedance 2.0 Fast / Mini (fast, low cost; the old "Seedance
+  Pro" is a legacy UI label — not in the API catalog)
+- Character shots: Kling 3.0 Turbo (or legacy Kling 2.6) only when quality requires it
+- Avoid: Kling 3.0 pro/4K modes, Seedance 2.0 at 1080p/4K, Veo 3 / 3.1
 - Strategy: Use Apps heavily — they're credit-efficient for their use cases
 
 **Mid budget (Pro plan — 700 credits):**
-- Primary models: Kling 2.6, Wan 2.5, Minimax Hailuo 2.3
-- Reserve Sora 2 / Kling 3.0 for hero shots only
+- Primary models: Kling 3.0 Turbo, Kling 2.6 (legacy), Wan 2.5/2.7, Minimax Hailuo 2.3
+- Reserve Kling 3.0 (pro/4K) / Seedance 2.0 4K for hero shots only
+  (Sora 2 is UI-only — not in the API catalog as of 2026-07-05; verify in the
+  live UI before recommending it)
 - Use Cinema Studio for your two or three most important scenes
 - Strategy: Iterate in image first, commit in video second
 
 **High volume (Ultimate — 1,500 credits):**
 - Full access to all models
 - Cinema Studio as primary workflow for quality content
-- Kling 3.0 for anything needing audio
+- Audio is no longer a one-model feature — Seedance 2.0 / 2.0 Mini / 1.5 Pro
+  generate native audio (`generate_audio`, default on for 2.0), Kling 3.0 and
+  2.6 have a `sound` switch, Veo 3.1 Lite has `generate_audio`. Pick by scene
+  fit, then toggle audio — don't pick the model for the audio.
 - Strategy: Invest in Moodboard + Soul ID upfront to avoid style drift
 
 ---
@@ -192,8 +210,8 @@ Before burning credits on a new style or effect you haven't tried, find a commun
 example that uses it. See what actually works before committing.
 
 **Use Assist for quick decisions**
-"Should I use Kling 2.6 or Sora 2 for this?" → ask Assist in 5 seconds rather than
-generating two test clips.
+"Should I use Kling 3.0 or Seedance 2.0 for this?" → ask Assist in 5 seconds rather
+than generating two test clips.
 
 **Save successful prompts**
 When a generation works well, save the complete prompt immediately. Higgsfield

@@ -12,7 +12,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.19.1
+  version: 3.20.0
   updated: 2026-07-06
   author: O-Side Media
   license: MIT
@@ -54,7 +54,7 @@ These rules apply to every Higgsfield response. They are written as a pre-delive
 
 Higgsfield is a cinematic AI video and image generation platform built for filmmakers and
 creators. Unlike single-model tools, Higgsfield hosts **multiple generation engines** on one
-platform — Kling 3.0/3.0 Omni/3.0 Motion Control, Sora 2, Google Veo 3.1/3.1 Lite, Wan 2.7/2.6/2.5,
+platform — Kling 3.0/3.0 Omni/3.0 Motion Control, Sora 2 (UI-only — absent from the API catalog as of 2026-07-05; verify live before recommending), Google Veo 3.1/3.1 Lite, Wan 2.7/2.6/2.5,
 Seedance 2.0/Pro, Minimax Hailuo 2.3/02, Higgsfield DoP (Lite/Standard/Turbo) for video; Soul 2.0, Soul Cinema Preview,
 Soul Cast, Nano Banana Pro/2, Kling Image 3.0/Omni, Seedream 4.0, GPT Image 2.0,
 Flux 2/Kontext for images — plus a library of 100+ named **Motion Presets**, a **Soul ID**
@@ -92,7 +92,7 @@ with no specific constraints, **generate immediately** using these sensible defa
 | Aspect ratio | 16:9 |
 | Duration | 8s |
 | Style | Cinematic |
-| Video model | Kling 3.0 (character-focused) or Sora 2 (action/scale) |
+| Video model | Kling 3.0 (character-focused) or Seedance 2.0 (action/scale/references) |
 | Image model | Soul 2.0 (portrait) or Nano Banana 2 (everything else) |
 
 Do not ask clarifying questions. Deliver a ready-to-paste prompt. Mention the defaults
@@ -180,6 +180,20 @@ budget constraints, client work), **confirm before generating:**
 | User asks where the prompt construction ends and the CLI/MCP execution begins (handoff questions) | `higgsfield-stack` |
 
 ---
+
+### Load Map — how much to read
+
+The routing table says *where*; this says *how much*. Loads are cumulative — every path starts from HARD RULE 2's mandatory reads.
+
+| Situation | Load |
+|-----------|------|
+| Simple creative prompt (Fast Path) | root `SKILL.md` + `skills/higgsfield-prompt/SKILL.md` — nothing else |
+| Any Seedance prompt | + `skills/higgsfield-seedance/SKILL.md` (+ the matching `templates/seedance/` file when the request is technique-shaped) |
+| Multi-scene / sequence / script breakdown | + `higgsfield-shotlist-director` + `higgsfield-pipeline` |
+| Model choice unclear or contested | + `higgsfield-models` + `specs/` (the generated spec for the output type) |
+| User reports a generation result | + `higgsfield-recall` (ledger write) |
+| Budget / credits / plan question | + `higgsfield-assist` |
+| Anything else | one routing-table row → that sub-skill; resist loading more than the row names |
 
 ### Check Templates for Genre Match
 

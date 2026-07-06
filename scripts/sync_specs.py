@@ -49,6 +49,10 @@ IMAGE_YAML_OUT = SPECS_DIR / "image-model-specs.yaml"
 IMAGE_JSON_OUT = SPECS_DIR / "image-model-specs.json"
 IMAGE_MD_OUT = SPECS_DIR / "IMAGE-MODEL-SPECS.md"
 
+AUDIO_YAML_OUT = SPECS_DIR / "audio-model-specs.yaml"
+AUDIO_JSON_OUT = SPECS_DIR / "audio-model-specs.json"
+AUDIO_MD_OUT = SPECS_DIR / "AUDIO-MODEL-SPECS.md"
+
 GENERATOR_VERSION = 1
 
 # Snapshot entries that are alternate routes to the SAME model. The duplicate
@@ -394,10 +398,13 @@ def emit_markdown(spec: dict) -> str:
             f"| {m['name']} | {ident} | {_fmt_duration(m['duration'])} "
             f"| {', '.join(m['resolutions']) or '—'} | {', '.join(m['modes']) or '—'} "
             f"| {', '.join(m['aspect_ratios']) or '—'} | {roles} | {cons} |")
+    otype = spec["models"][0]["output_type"] if spec["models"] else "video"
+    stem = {"video": "model-specs", "image": "image-model-specs",
+            "audio": "audio-model-specs"}.get(otype, "model-specs")
     lines += [
         "",
-        "Full per-model parameter schemas live in `specs/model-specs.yaml` / "
-        "`specs/model-specs.json`.",
+        f"Full per-model parameter schemas live in `specs/{stem}.yaml` / "
+        f"`specs/{stem}.json`.",
         "",
     ]
     return "\n".join(lines)
@@ -409,42 +416,38 @@ def main() -> int:
                         help="verify generated files match the snapshot; write nothing")
     parser.add_argument("--snapshot", type=Path, default=None,
                         help="explicit snapshot path (default: newest in specs/)")
-    parser.add_argument("--type", choices=("video", "image"), default="video",
+    parser.add_argument("--type", choices=("video", "image", "audio"), default="video",
                         help="which models_explore snapshot type to sync "
-                             "(image requires a models_explore_snapshot_image_"
-                             "<date>.json dump — nothing is fabricated without one)")
+                             "(image/audio require a models_explore_snapshot_"
+                             "<type>_<date>.json dump — nothing is fabricated "
+                             "without one)")
     args = parser.parse_args()
 
     try:
         snapshot_path = args.snapshot or find_snapshot(output_type=args.type)
         spec = build_spec(snapshot_path, output_type=args.type)
     except FileNotFoundError as e:
-        if args.type == "image":
-            print(f"ERROR: {e}", file=sys.stderr)
-            print("The image side is TODO by design: dump `models_explore` "
-                  "(action=list, type=image) verbatim into specs/"
-                  "models_explore_snapshot_image_<YYYY-MM-DD>.json, then rerun. "
-                  "image-models.md / photodump-presets.md stay hand-maintained "
-                  "until then.", file=sys.stderr)
-        else:
-            print(f"ERROR: {e}", file=sys.stderr)
+        print(f"ERROR: {e}", file=sys.stderr)
+        if args.type in ("image", "audio"):
+            print(f"Typed snapshots are dumped, never fabricated: dump "
+                  f"`models_explore` (action=list, type={args.type}) verbatim "
+                  f"into specs/models_explore_snapshot_{args.type}_"
+                  f"<YYYY-MM-DD>.json, then rerun.", file=sys.stderr)
         return 1
     except (ValueError, json.JSONDecodeError) as e:
         print(f"ERROR: {e}", file=sys.stderr)
         return 1
 
-    if args.type == "image":
-        outputs = {
-            IMAGE_YAML_OUT: emit_yaml(spec),
-            IMAGE_JSON_OUT: emit_json(spec),
-            IMAGE_MD_OUT: emit_markdown(spec),
-        }
-    else:
-        outputs = {
-            YAML_OUT: emit_yaml(spec),
-            JSON_OUT: emit_json(spec),
-            MD_OUT: emit_markdown(spec),
-        }
+    out_paths = {
+        "video": (YAML_OUT, JSON_OUT, MD_OUT),
+        "image": (IMAGE_YAML_OUT, IMAGE_JSON_OUT, IMAGE_MD_OUT),
+        "audio": (AUDIO_YAML_OUT, AUDIO_JSON_OUT, AUDIO_MD_OUT),
+    }[args.type]
+    outputs = {
+        out_paths[0]: emit_yaml(spec),
+        out_paths[1]: emit_json(spec),
+        out_paths[2]: emit_markdown(spec),
+    }
 
     if args.check:
         stale = [p for p, content in outputs.items()

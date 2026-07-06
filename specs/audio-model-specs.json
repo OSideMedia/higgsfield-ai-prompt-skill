@@ -1,0 +1,321 @@
+{
+  "generator_version": 1,
+  "models": [
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "inworld_text_to_speech",
+      "media_roles": {},
+      "modes": [],
+      "name": "Inworld Text to Speech",
+      "output_type": "audio",
+      "params": [
+        {
+          "description": "Voice to use for text-to-speech synthesis (language tag in parentheses).",
+          "name": "voice",
+          "options": [
+            "Loretta (en)",
+            "Darlene (en)",
+            "Marlene (en)",
+            "Hank (en)",
+            "Evelyn (en)",
+            "Celeste (en)",
+            "Pippa (en)",
+            "Tessa (en)",
+            "Liam (en)",
+            "Callum (en)",
+            "Hamish (en)",
+            "Abby (en)",
+            "Graham (en)",
+            "Rupert (en)",
+            "Mortimer (en)",
+            "Snik (en)",
+            "Anjali (en)",
+            "Saanvi (en)",
+            "Arjun (en)",
+            "Claire (en)",
+            "Oliver (en)",
+            "Simon (en)",
+            "Elliot (en)",
+            "James (en)",
+            "Serena (en)",
+            "Gareth (en)",
+            "Vinny (en)",
+            "Lauren (en)",
+            "Jessica (en)",
+            "Ethan (en)",
+            "Tyler (en)",
+            "Jason (en)",
+            "Chloe (en)",
+            "Veronica (en)",
+            "Victoria (en)",
+            "Miranda (en)",
+            "Sebastian (en)",
+            "Victor (en)",
+            "Malcolm (en)",
+            "Kayla (en)",
+            "Nate (en)",
+            "Jake (en)",
+            "Brian (en)",
+            "Amina (en)",
+            "Kelsey (en)",
+            "Derek (en)",
+            "Grant (en)",
+            "Evan (en)",
+            "Alex (en)",
+            "Ashley (en)",
+            "Craig (en)",
+            "Deborah (en)",
+            "Dennis (en)",
+            "Edward (en)",
+            "Elizabeth (en)",
+            "Hades (en)",
+            "Julia (en)",
+            "Pixie (en)",
+            "Mark (en)",
+            "Olivia (en)",
+            "Priya (en)",
+            "Ronald (en)",
+            "Sarah (en)",
+            "Shaun (en)",
+            "Theodore (en)",
+            "Timothy (en)",
+            "Wendy (en)",
+            "Dominus (en)",
+            "Hana (en)",
+            "Clive (en)",
+            "Carter (en)",
+            "Blake (en)",
+            "Luna (en)",
+            "Yichen (zh)",
+            "Xiaoyin (zh)",
+            "Xinyi (zh)",
+            "Jing (zh)",
+            "Erik (nl)",
+            "Katrien (nl)",
+            "Lennart (nl)",
+            "Lore (nl)",
+            "Alain (fr)",
+            "Hélène (fr)",
+            "Mathieu (fr)",
+            "Étienne (fr)",
+            "Johanna (de)",
+            "Josef (de)",
+            "Gianni (it)",
+            "Orietta (it)",
+            "Asuka (ja)",
+            "Satoshi (ja)",
+            "Hyunwoo (ko)",
+            "Minji (ko)",
+            "Seojun (ko)",
+            "Yoona (ko)",
+            "Szymon (pl)",
+            "Wojciech (pl)",
+            "Heitor (pt)",
+            "Maitê (pt)",
+            "Diego (es)",
+            "Lupita (es)",
+            "Miguel (es)",
+            "Rafael (es)",
+            "Svetlana (ru)",
+            "Elena (ru)",
+            "Dmitry (ru)",
+            "Nikolai (ru)",
+            "Riya (hi)",
+            "Manoj (hi)",
+            "Yael (he)",
+            "Oren (he)",
+            "Nour (ar)",
+            "Omar (ar)"
+          ],
+          "required": "required",
+          "type": "string"
+        }
+      ],
+      "provider": "FAL",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "mirelo_text_to_audio",
+      "media_roles": {},
+      "modes": [],
+      "name": "Mirelo Text to Audio",
+      "output_type": "audio",
+      "params": [
+        {
+          "description": "Duration in seconds (e.g. 2).",
+          "name": "duration",
+          "required": "required",
+          "type": "number"
+        }
+      ],
+      "provider": "FAL",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "seed_audio",
+      "media_roles": {
+        "medias": [
+          "image_references",
+          "audio_references"
+        ]
+      },
+      "modes": [],
+      "name": "Seed Audio 1.0",
+      "output_type": "audio",
+      "params": [
+        {
+          "default": "wav",
+          "description": "Output audio container format.",
+          "name": "format",
+          "options": [
+            "wav",
+            "mp3",
+            "pcm",
+            "ogg_opus"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": 24000,
+          "description": "Output sample rate in Hz.",
+          "name": "sample_rate",
+          "options": [
+            8000,
+            16000,
+            24000,
+            32000,
+            44100,
+            48000
+          ],
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 0,
+          "description": "Speech speed adjustment. 0 keeps the default speed; positive values are faster.",
+          "max": 100,
+          "min": -50,
+          "name": "speech_rate",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 0,
+          "description": "Loudness adjustment. 0 keeps the default loudness.",
+          "max": 100,
+          "min": -50,
+          "name": "loudness_rate",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 0,
+          "description": "Pitch adjustment in provider units. 0 keeps the default pitch.",
+          "max": 12,
+          "min": -12,
+          "name": "pitch_rate",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Optional voice source: 'preset' for a built-in voice id, or 'element' for a workspace voice reference element. Must be sent together with voice_id.",
+          "name": "voice_type",
+          "options": [
+            "preset",
+            "element"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Voice id: a preset voice id when voice_type='preset', or a voice reference element id when voice_type='element'. Must be sent together with voice_type.",
+          "name": "voice_id",
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "ByteDance",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "sonilo_music",
+      "media_roles": {},
+      "modes": [],
+      "name": "Sonilo Music",
+      "output_type": "audio",
+      "params": [
+        {
+          "description": "Duration in seconds (e.g. 8).",
+          "name": "duration",
+          "required": "required",
+          "type": "number"
+        }
+      ],
+      "provider": "FAL",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "text2speech_v2",
+      "media_roles": {},
+      "modes": [],
+      "name": "Text to Speech V2",
+      "output_type": "audio",
+      "params": [
+        {
+          "description": "Text-to-speech engine.",
+          "name": "variant",
+          "options": [
+            "elevenlabs",
+            "minimax",
+            "seed_speech",
+            "vibe_voice",
+            "cozy_voice"
+          ],
+          "required": "required",
+          "type": "string"
+        },
+        {
+          "description": "Whether voice_id is a built-in preset voice ('preset') or a workspace reference element ('element').",
+          "name": "voice_type",
+          "options": [
+            "preset",
+            "element"
+          ],
+          "required": "required",
+          "type": "string"
+        },
+        {
+          "description": "Voice id: a preset voice id when voice_type='preset', or a reference element id when voice_type='element'.",
+          "name": "voice_id",
+          "required": "required",
+          "type": "string"
+        }
+      ],
+      "provider": "Higgsfield",
+      "resolutions": []
+    }
+  ],
+  "snapshot_date": "2026-07-05",
+  "snapshot_file": "models_explore_snapshot_audio_2026-07-05.json",
+  "snapshot_sha256": "bc4bd3a146b277720c3fb4c2a7811c6d7048ffef1f2dd8784e21cc128c6677fb"
+}

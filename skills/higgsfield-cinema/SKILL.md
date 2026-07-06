@@ -22,7 +22,7 @@ metadata:
 - Camera axes: 3 bodies · 5 lenses · focal 8/14/35/50/75mm · aperture f/1.4–f/4–f/11; two camera vocabularies coexist — vocabulary follows the selected model [→](#camera-settings-four-axis-panel)
 - Output enums: 7 aspect ratios incl. 21:9 · 480p/720p/1080p · duration 4–15s · Sound On/Off [→](#cinema-studio-35-output-controls)
 - Lead every delivered shot with the one-line settings strip (UI presets ≠ prompt text; never restate strip values in the body) [→](#per-shot-settings-strip)
-- The UI shot counter caps internal cuts — "strictly N shots" must keep N within it (observed cap 4, TODO confirm) [→](#per-shot-settings-strip)
+- The UI shot counter caps internal cuts — "strictly N shots" must keep N within it (observed cap 4; API exposes no max — UI behavior, verify live) [→](#per-shot-settings-strip)
 - Manual Style = saved ≤2,000-char block of project LAWS (grade, lighting law, texture, performance register); it replaces the preset axes [→](#manual-style-authoring-guide)
 - 480p drafts validate the prompt, NOT the take — no seed param; transfer a look via Hero Frame + start/end-frame pinning [→](#drafts-validate-the-prompt-not-the-take)
 - Resolution matrix has two axes: shot physics × delivery context; 4K-finish pipelines master at model max res in std mode [→](#physics-rendering-resolution-decision-matrix)
@@ -1841,7 +1841,7 @@ Rules for the strip:
 - **Everything in the strip is a UI control, not prompt text.** Do not restate strip values inside the prompt body — the engine already has them from the panels, and restating them wastes prompt budget and can conflict.
 - Camera axes follow the 3.5 vocabulary (Camera Settings panel above). `Auto` is a legal value for any position — write it explicitly rather than omitting the position, so the user knows nothing was forgotten.
 - `Style:` is either `Auto`, a comma-separated preset stack (Color Palette, Lighting, Camera Moveset Style — the same label format the Style pill itself shows), or `Manual` (meaning: a saved Manual Style block applies — see the authoring guide below).
-- **The UI shot counter caps internal cuts.** A prompt declaring "strictly N shots" must keep N within the counter's value — if the prompt demands more cuts than the counter allows, the engine improvises which ones to drop. The production-observed cap is **4 shots per generation** (2026-06-11 session; TODO — not yet confirmed in platform docs, verify in the live UI before promising more).
+- **The UI shot counter caps internal cuts.** A prompt declaring "strictly N shots" must keep N within the counter's value — if the prompt demands more cuts than the counter allows, the engine improvises which ones to drop. The production-observed cap is **4 shots per generation** (2026-06-11 session). API check 2026-07-05: the `cinematic_studio_video_v2` catalog surface exposes `multi_prompt` with **no maximum** and no constraint rule — the cap is a UI behavior the API does not document, so treat 4 as the working limit and verify in the live UI before promising more.
 
 ### Manual Style — Authoring Guide
 

@@ -11,10 +11,10 @@
 | Kling O1 Video (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | — | — | ❌ | Multi-ref (7), start/end frame |
 | Kling O1 Video Edit (legacy) | ★★★★☆ | ★★★★★ | — | ★★★★★ | 3–10s in | — | — | ❌ | Relight, restyle, swap, remove |
 | Kling 3.0 Motion Control | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★☆☆ | 3–30s | — | — | Optional | Motion transfer from reference video |
-| Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | 16:9, 9:16, 1:1 | — | ❌ | Character drama, realism |
+| Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | 16:9, 9:16, 1:1 | — | ✅ | Character drama, realism; native audio via `sound` toggle (default on) |
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | — | — | ❌ | Fast Kling iteration |
 | Kling 2.1 Master (deprecated) | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 5–10s | — | — | ❌ | Deprecated — removed from platform. Use Kling 2.6 or 3.0 |
-| Sora 2 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | — | — | ❌ | Epic scale, physics, action |
+| Sora 2 (UI-only) | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | — | — | — | ❌ | Epic scale, physics, action — **UI-only: not in the API catalog as of 2026-07-05; verify in the live UI before recommending** |
 | Wan 2.7 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★★ | 2–15s | 16:9, 9:16, 1:1, 4:3, 3:4 | 720p, 1080p | ✅ | 60fps, T2V/I2V/R2V/edit, first+last frame |
 | Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–15s | 16:9, 9:16, 1:1 | — | ❌ | Artistic, stylized, improved physics |
 | Wan 2.5 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–10s | — | — | ✅ | Native audio, artistic, fantasy |
@@ -23,7 +23,7 @@
 | Seedance 2.0 Fast | ★★★★☆ | ★★★★☆ | ★★★★★ | ★★★★☆ | 4–15s | auto, 21:9, 16:9, 4:3, 1:1, 3:4, 9:16 | 480p, 720p | ✅ | `mode=fast` of Seedance 2.0 — cheaper/faster, **no 1080p/4K**, lower plan tier |
 | Seedance 2.0 Mini | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–15s | auto, 16:9, 9:16, 4:3, 3:4, 1:1, 21:9 | 480p, 720p | ✅ | Distinct API id (`seedance_2_0_mini`, added ~2026-06): budget tier with the full reference-input surface (image/video/audio refs) + native audio; no 1080p/4K |
 | Seedance 1.5 Pro | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4/8/12s | auto, 16:9, 9:16, 4:3, 3:4, 1:1, 21:9 | 480p, 720p, 1080p | ✅ | Multilingual audio, lip-sync, drama |
-| Seedance Pro | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | 10s | — | — | ❌ | Fast iteration, no audio needed |
+| Seedance Pro (legacy UI label) | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | ★★★☆☆ | 10s | — | — | ❌ | Legacy label — not in the API catalog (2026-07-05 snapshot); superseded by Seedance 1.5 Pro (`seedance1_5`) and Seedance 2.0 Fast/Mini |
 | Veo 3.1 | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | 16:9, 9:16 | — | ✅ | Ref images, first/last frame, extension, 4K |
 | Veo 3.1 Fast | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | — | — | ✅ | Fast iteration, same caps as 3.1 |
 | Veo 3 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 4–8s | 16:9, 9:16 | — | ✅ | Nature, environment, stable model |
@@ -93,7 +93,7 @@ Is this image or video?
     │   ├── Need per-shot storyboard control? → Kling 3.0 Omni
     │   ├── Need multi-reference inputs (up to 7) or start/end frame? → Kling O1 Video
     │   ├── Fast iteration on Kling quality? → Kling 2.5 Turbo
-    │   └── No audio, standard length? → Kling 2.6
+    │   └── Standard length, audio optional (`sound` toggle)? → Kling 2.6
     │
     ├── Need motion transfer from reference video?
     │   └── → Kling 3.0 Motion Control
@@ -105,7 +105,9 @@ Is this image or video?
     │   └── → Kling 3.0 Motion Control
     │
     ├── Is scale / spectacle the focus?
-    │   └── Explosions, crowds, physics, epic landscapes? → Sora 2
+    │   └── Explosions, crowds, physics, epic landscapes? → Seedance 2.0 or
+    │       Minimax Hailuo 2.3 (Sora 2 is UI-only — not in the API catalog
+    │       as of 2026-07-05; verify in the live UI before using it)
     │
     ├── Is artistic style the priority?
     │   ├── 60fps, first+last frame, reference images? → Wan 2.7
@@ -129,7 +131,9 @@ Is this image or video?
         ├── Audio required? → Seedance 1.5 Pro
         ├── 12-asset multimodal reference? → Seedance 2.0
         ├── Image + video refs with native audio (720p)? → Gemini Omni Flash
-        └── No audio, speed first? → Seedance Pro
+        └── No audio, speed first? → Seedance 2.0 Fast / Mini with
+            generate_audio off ("Seedance Pro" is a legacy UI label —
+            not in the API catalog)
 ```
 
 ---
@@ -164,17 +168,19 @@ Some camera controls perform better on certain models:
 | Camera Control | Best model |
 |----------------|-----------|
 | Dolly In (emotional close-up) | Kling 2.6 / 3.0 |
-| FPV Drone (kinetic chase) | Kling 2.6, Sora 2 |
+| FPV Drone (kinetic chase) | Kling 2.6, Sora 2† |
 | 360 Orbit (character isolation) | Kling 2.6 / 3.0 |
-| Crane Up (epic reveal) | Sora 2 |
+| Crane Up (epic reveal) | Sora 2† |
 | Timelapse Landscape | Veo 3 |
-| Hyperlapse | Veo 3, Sora 2 |
+| Hyperlapse | Veo 3, Sora 2† |
 | Handheld (documentary feel) | Kling 2.6, Veo 3 |
 | Action Run (physical chase) | Minimax Hailuo 2.3, Kling 2.6 |
-| Super Dolly Out (scale reveal) | Sora 2 |
+| Super Dolly Out (scale reveal) | Sora 2† |
 | Dutch Angle (horror/tension) | Wan 2.5, Kling 2.6 |
 | Long camera motion path | Kling 3.0 Motion Control |
 | Motion transfer from reference | Kling 3.0 Motion Control |
+
+† Sora 2 is UI-only — not in the API catalog as of 2026-07-05; verify in the live UI before recommending. Catalog-verified fallbacks for scale/physics shots: Seedance 2.0, Minimax Hailuo 2.3.
 
 ---
 
@@ -183,14 +189,16 @@ Some camera controls perform better on certain models:
 | Preset type | Best model |
 |-------------|-----------|
 | Transformation (Werewolf, Cyborg, Animalization) | Wan 2.5, Kling 2.6 |
-| Elemental (Fire, Water, Earth, Air) | Wan 2.5, Sora 2 |
-| Explosion / Destruction | Sora 2 |
+| Elemental (Fire, Water, Earth, Air) | Wan 2.5, Sora 2† |
+| Explosion / Destruction | Sora 2†, Seedance 2.0 |
 | Surreal / Glitch / Multiverse | Wan 2.5 |
 | Horror presets | Kling 2.6, Wan 2.5 |
 | Dance / Motion glow | Minimax Hailuo 2.3 |
 | Nature effects (Sakura, Bloom, Northern Lights) | Veo 3, Wan 2.5 |
-| Bullet Time / Slow motion | Kling 2.6, Sora 2 |
+| Bullet Time / Slow motion | Kling 2.6, Sora 2† |
 | Stylized (Anime, Pixar, Claymation) | Kling 3.0, Wan 2.5 |
+
+† Sora 2 is UI-only — not in the API catalog as of 2026-07-05; verify in the live UI before recommending (see the Camera Control note above).
 
 ---
 
@@ -198,13 +206,13 @@ Some camera controls perform better on certain models:
 
 | Model | Credit cost per generation |
 |-------|-----------------------------|
-| Seedance Pro | Low |
+| Seedance Pro (legacy UI label — see video table) | Low |
 | Kling 2.5 Turbo | Low–Medium |
 | Wan 2.5 | Low–Medium |
 | Minimax Hailuo 2.3 | Medium |
 | Minimax Hailuo 02 | Medium |
 | Kling 2.6 | Medium |
-| Sora 2 | Medium–High |
+| Sora 2 (UI-only — verify live) | Medium–High |
 | Kling O1 Video Edit | ~9 credits |
 | Kling 3.0 | ~10 credits |
 | Kling 3.0 Motion Control | Medium–High |
