@@ -12,7 +12,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.20.0
+  version: 3.20.1
   updated: 2026-07-06
   author: O-Side Media
   license: MIT
@@ -54,7 +54,7 @@ These rules apply to every Higgsfield response. They are written as a pre-delive
 
 Higgsfield is a cinematic AI video and image generation platform built for filmmakers and
 creators. Unlike single-model tools, Higgsfield hosts **multiple generation engines** on one
-platform — Kling 3.0/3.0 Omni/3.0 Motion Control, Sora 2 (UI-only — absent from the API catalog as of 2026-07-05; verify live before recommending), Google Veo 3.1/3.1 Lite, Wan 2.7/2.6/2.5,
+platform — Kling 3.0/3.0 Omni/3.0 Motion Control, Sora 2 incl. Pro/Max/Pro Max tiers (UI-only — confirmed in the UI 2026-07-06, absent from the API/MCP catalog), Google Veo 3.1/3.1 Lite, Wan 2.7/2.6/2.5,
 Seedance 2.0/Pro, Minimax Hailuo 2.3/02, Higgsfield DoP (Lite/Standard/Turbo) for video; Soul 2.0, Soul Cinema Preview,
 Soul Cast, Nano Banana Pro/2, Kling Image 3.0/Omni, Seedream 4.0, GPT Image 2.0,
 Flux 2/Kontext for images — plus a library of 100+ named **Motion Presets**, a **Soul ID**
