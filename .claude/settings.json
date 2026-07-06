@@ -7,7 +7,6 @@
       "Edit(*.py)",
       "Edit(*.md)",
       "Edit(db/**)",
-      "Edit(mnt/**)",
       "Edit(.claude/**)"
     ]
   }

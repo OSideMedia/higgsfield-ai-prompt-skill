@@ -12,8 +12,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.18.0
-  updated: 2026-06-30
+  version: 3.18.1
+  updated: 2026-07-05
   author: O-Side Media
   license: MIT
 ---
@@ -135,6 +135,7 @@ budget constraints, client work), **confirm before generating:**
 | Named motion preset (Explosion, Werewolf, etc.) | `higgsfield-motion` |
 | Visual style selection | `higgsfield-style` |
 | Character consistency across shots | `higgsfield-soul` |
+| **Consistency tie-break:** character consistency via a live Soul ID / reference images inside Higgsfield → `higgsfield-soul`; developing WHO the character is first (sheet, story bible, visual DNA) → `higgsfield-character-design`. Both may apply in sequence: design first, then lock with Soul. | — |
 | VFX presets (Air Bending, Plasma, etc.) | `higgsfield-motion` |
 | One-click App workflow | `higgsfield-apps` |
 | Genre recipe (action, horror, ad, etc.) | `higgsfield-recipes` |
@@ -300,7 +301,9 @@ Result. Ratios and budgeting: `skills/higgsfield-assist/SKILL.md`.
 |----------|-----------------|-------------|
 | `skills/shared/negative-constraints.md` | All generation artifacts + prevention phrases, by category | Check before every prompt — append relevant constraints |
 | `templates/` | 10 annotated genre templates with examples, models, annotations, variations | When user request matches a common genre — use as starting point |
-| `templates/seedance/` | 5 Seedance technique templates: top-down-map, multi-character-anchor, single-character-position, worked-example-two-character, anime-animation | When Seedance request is technique-shaped (spatial blocking, multi-character anchoring, anime/stylized-2D) |
+| `templates/ad-asset-prep.md` | Ad asset preparation: product sheets, hero-character sheets, location plates — generate-many → test-in-motion → lock-the-winner | When an ad/product request needs reference assets built before video |
+| `templates/character-design/` | 6 character-design worksheets (9-question sheet, story bible, visual DNA) | With `higgsfield-character-design` when developing characters before prompting |
+| `templates/seedance/` | 8 Seedance technique templates: top-down-map, multi-character-anchor, single-character-position, worked-example-two-character, anime-animation, facs-expression-beats, footage-vfx-transform, global-style-prefix | When Seedance request is technique-shaped (spatial blocking, multi-character anchoring, anime/stylized-2D, FACS acting, footage VFX, style prefix) |
 | `templates/text-overlays/` | 3 text-rendering templates: slogan, subtitle, speech-bubble | When user request includes on-screen text rendering |
 
 ---

@@ -58,6 +58,16 @@ ALIAS_MAP = {
     "video_standard": "seedance_2_0",
 }
 
+# Historical catalog ids that upstream RENAMED (old id no longer in the
+# snapshot, so ALIAS_MAP's same-snapshot folding can't see it). Folded into
+# each model's `aliases` so ledger rows and user inputs written under the old
+# id keep resolving (higgsfield_memory + seedance_lint resolve via aliases).
+HISTORICAL_IDS = {
+    "seedance1_5": ["seedance_1_5"],       # renamed in the 2026-07-05 catalog
+    "recraft_v4_1": ["recraft-v4-1"],      # renamed in the 2026-07-05 catalog
+    "seedance_2_0": ["video_standard"],    # dup id dropped from the 2026-07-05 catalog
+}
+
 # Mode/param constraints are extracted ONLY when a parameter description
 # explicitly states them AND the named value is a legal enum value elsewhere
 # in the same model — prose that can't be anchored to real enum values is
@@ -218,10 +228,20 @@ def normalize_models(snapshot: dict, output_type: str = "video") -> list[dict]:
         elif m.get("durations"):
             duration = {"values": sorted(m["durations"])}
         else:
-            duration = None
+            # 2026-07 snapshots moved the envelope into a `duration` PARAMETER
+            # (min/max or options) — derive it so downstream duration-legality
+            # checks (seedance_lint duration-out-of-range) keep working.
+            dp = next((p for p in m.get("parameters", [])
+                       if p.get("name") == "duration"), None)
+            if dp and dp.get("min") is not None and dp.get("max") is not None:
+                duration = {"min": dp["min"], "max": dp["max"]}
+            elif dp and dp.get("options"):
+                duration = {"values": sorted(dp["options"])}
+            else:
+                duration = None
         models.append({
             "id": mid,
-            "aliases": sorted(aliases.get(mid, [])),
+            "aliases": sorted(set(aliases.get(mid, [])) | set(HISTORICAL_IDS.get(mid, []))),
             "name": m.get("name", mid),
             "provider": m.get("provider_name", ""),
             "output_type": output_type,
@@ -233,7 +253,8 @@ def normalize_models(snapshot: dict, output_type: str = "video") -> list[dict]:
                             for e in m.get("medias", [])},
             "params": [
                 {k: p[k] for k in
-                 ("name", "required", "type", "description", "default", "options")
+                 ("name", "required", "type", "description", "default", "options",
+                  "min", "max")
                  if k in p}
                 for p in m.get("parameters", [])
             ],

@@ -2,7 +2,7 @@
 
 Paste-ready scaffolding for transforming a clip the user **already shot** — preserve the
 real subject + camera move, change only the named element. Pairs with
-`skills/higgsfield-seedance-vfx/SKILL.md`; that skill carries the rules, this file carries
+`../../skills/higgsfield-seedance-vfx/SKILL.md`; that skill carries the rules, this file carries
 the fill-in skeleton and four worked patterns.
 
 Derived from the Higgsfield "Seedance 2.0 in 4K" VFX walkthrough
@@ -14,7 +14,7 @@ Derived from the Higgsfield "Seedance 2.0 in 4K" VFX walkthrough
 The user attaches a real clip (or describes one) and wants a Seedance prompt that keeps
 *them* and their camera move while swapping the world, adding a VFX element, dropping in a
 creature, or syncing a timed camera move to a line. For a scene built from scratch, use
-`skills/higgsfield-seedance/SKILL.md` instead.
+`../../skills/higgsfield-seedance/SKILL.md` instead.
 
 Always run these in **Seedance 2.0, `mode=std`, 4K** (native 4K needs std; fast caps at
 720p; Cinema Studio caps at 1080p).
@@ -150,9 +150,9 @@ SFX only: rain on leaves, deep low sauropod calls, heavy footfalls landing on th
 
 - **Match the source runtime** by default; recompute any numeric zoom mark if you change it.
 - **Prepended intro?** `total − intro = surviving window` for the source performance — flag
-  what falls off before promising lip-sync (`skills/higgsfield-seedance-vfx/SKILL.md`
+  what falls off before promising lip-sync (`../../skills/higgsfield-seedance-vfx/SKILL.md`
   § Duration discipline).
 - **Creature still reads CG?** Add a real reference photo as `@creature` (texture only), or
-  generate the transformed start frame first (`references/first-frame.md`).
+  generate the transformed start frame first (`../../skills/higgsfield-seedance-vfx/references/first-frame.md`).
 - **Preflight** the finished prompt through the parent linter:
   `python3 seedance_lint.py --preflight --model seedance_2_0 "<prompt>"`.

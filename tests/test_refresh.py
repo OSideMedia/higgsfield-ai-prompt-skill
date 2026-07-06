@@ -6,7 +6,14 @@ than the snapshot (enum:null, missing params/models) is NOTICE, not drift —
 because the two sources diverge in detail and a removal-shaped signal is usually
 the CLI under-reporting, not a real withdrawal.
 """
+import json
+from pathlib import Path
+
+import pytest
+
 import refresh_specs as r
+
+FIXTURES = Path(__file__).parent / "fixtures"
 
 
 # ── Normalization: both sources collapse to one comparable shape ─────────────
@@ -32,6 +39,85 @@ def test_cli_view_maps_enum_and_aspect_param():
     assert v["id"] == "seedance_2_0"
     assert v["aspect_ratios"] == ["16:9", "21:9"]          # from aspect_ratio param
     assert v["params"]["resolution"]["options"] == ["1080p", "4k", "720p"]
+
+
+# ── CLI 1.0.1 shape: `job_type` rename, enum-less params, CEL rules ───────────
+# Recorded fixtures from `higgsfield 1.0.1 (2dae25b)` — the release whose
+# `job_set_type` → `job_type` rename crashed the tripwire (KeyError masquerading
+# as auth expiry). Any future output-shape change should fail HERE, not in CI.
+
+def test_cli_view_accepts_1_0_1_job_type_fixture():
+    get = json.loads((FIXTURES / "cli_1_0_1_model_get_seedance_2_0.json").read_text())
+    v = r.cli_view(get)
+    assert v["id"] == "seedance_2_0"
+    assert v["output_type"] == "video"
+    assert "generate_audio" in v["params"]
+    # 1.0.1 dropped per-param enums; the view must degrade, not crash
+    assert v["params"]["resolution"]["options"] == []
+    # ...and the new CEL rules channel must be captured
+    assert any("4k" in rule or "1080p" in rule for rule in v["rules"])
+
+
+def test_model_id_accepts_both_key_generations():
+    assert r._model_id({"job_type": "a"}, "t") == "a"
+    assert r._model_id({"job_set_type": "b"}, "t") == "b"
+    assert r._model_id({"job_type": "a", "job_set_type": "b"}, "t") == "a"  # newest wins
+
+
+def test_model_id_raises_shape_error_not_key_error():
+    with pytest.raises(r.ShapeError, match="shape changed"):
+        r._model_id({"model_identifier": "x"}, "model list --video")
+
+
+def test_cli_view_legacy_job_set_type_still_works():
+    v = r.cli_view({"job_set_type": "m", "type": "video", "params": []})
+    assert v["id"] == "m" and v["rules"] == []
+
+
+# ── CEL rules channel: both-sides-present only, added=drift, removed=notice ──
+
+def test_rules_added_is_drift_when_both_sides_carry_rules():
+    old = dict(_view([], {}), rules=["size(params.video_references) <= 3"])
+    new = dict(_view([], {}), rules=["size(params.video_references) <= 3",
+                                     "size(params.video_references) <= 5"])
+    d = r.diff_model(old, new)
+    assert d["drift"] == [{"kind": "rules_added",
+                           "added": ["size(params.video_references) <= 5"]}]
+
+
+def test_rules_removed_is_notice():
+    old = dict(_view([], {}), rules=["a", "b"])
+    new = dict(_view([], {}), rules=["a"])
+    d = r.diff_model(old, new)
+    assert d["drift"] == []
+    assert d["notice"] == [{"kind": "rules_removed", "removed": ["b"]}]
+
+
+def test_missing_rules_channel_never_alarms():
+    # snapshot views and pre-1.0.1 baselines have no `rules` key — silence
+    old = _view([], {})                      # no rules key
+    new = dict(_view([], {}), rules=["a"])   # CLI now reports rules
+    assert r.diff_model(old, new) == {"drift": [], "notice": []}
+
+
+def test_pull_cli_views_end_to_end_on_1_0_1_fixtures(monkeypatch):
+    catalog = json.loads((FIXTURES / "cli_1_0_1_model_list_video.json").read_text())
+    get = json.loads((FIXTURES / "cli_1_0_1_model_get_seedance_2_0.json").read_text())
+
+    def fake_cli_json(args):
+        return catalog if args[:2] == ["model", "list"] else get
+
+    monkeypatch.setattr(r, "_cli_json", fake_cli_json)
+    views, catalog_ids = r.pull_cli_views("video", ids={"seedance_2_0"})
+    assert "seedance_2_0" in catalog_ids          # job_type rows parsed
+    assert views["seedance_2_0"]["id"] == "seedance_2_0"
+    assert views["seedance_2_0"]["rules"]         # CEL rules captured
+
+
+def test_pull_cli_views_non_list_catalog_is_shape_error(monkeypatch):
+    monkeypatch.setattr(r, "_cli_json", lambda args: {"error": "new envelope"})
+    with pytest.raises(r.ShapeError, match="expected a JSON array"):
+        r.pull_cli_views("video", ids=None)
 
 
 def _view(aspect, params):
