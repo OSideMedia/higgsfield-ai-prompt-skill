@@ -1,0 +1,122 @@
+[
+  {
+    "display_name": "Bytedance Video Upscale",
+    "job_type": "bytedance_video_upscale",
+    "type": "video"
+  },
+  {
+    "display_name": "Clipify",
+    "job_type": "clipify",
+    "type": "video"
+  },
+  {
+    "display_name": "Explainer Video",
+    "job_type": "explainer_video",
+    "type": "video"
+  },
+  {
+    "display_name": "Gemini Omni Flash",
+    "job_type": "gemini_omni",
+    "type": "video"
+  },
+  {
+    "display_name": "Google Veo 3",
+    "job_type": "veo3",
+    "type": "video"
+  },
+  {
+    "display_name": "Google Veo 3.1",
+    "job_type": "veo3_1",
+    "type": "video"
+  },
+  {
+    "display_name": "Google Veo 3.1 Lite",
+    "job_type": "veo3_1_lite",
+    "type": "video"
+  },
+  {
+    "display_name": "Grok Video",
+    "job_type": "grok_video",
+    "type": "video"
+  },
+  {
+    "display_name": "Grok Video 1.5",
+    "job_type": "grok_video_v15",
+    "type": "video"
+  },
+  {
+    "display_name": "Kling 2.6 Video",
+    "job_type": "kling2_6",
+    "type": "video"
+  },
+  {
+    "display_name": "Kling 3.0 Turbo",
+    "job_type": "kling3_0_turbo",
+    "type": "video"
+  },
+  {
+    "display_name": "Kling v3.0",
+    "job_type": "kling3_0",
+    "type": "video"
+  },
+  {
+    "display_name": "LLM Generation",
+    "job_type": "llm_text",
+    "type": "video"
+  },
+  {
+    "display_name": "Minimax Hailuo",
+    "job_type": "minimax_hailuo",
+    "type": "video"
+  },
+  {
+    "display_name": "Remove Background",
+    "job_type": "sam_3_video",
+    "type": "video"
+  },
+  {
+    "display_name": "Seedance 1.5 Pro",
+    "job_type": "seedance1_5",
+    "type": "video"
+  },
+  {
+    "display_name": "Seedance 2.0",
+    "job_type": "seedance_2_0",
+    "type": "video"
+  },
+  {
+    "display_name": "Seedance 2.0 Mini",
+    "job_type": "seedance_2_0_mini",
+    "type": "video"
+  },
+  {
+    "display_name": "Topaz",
+    "job_type": "topaz_video",
+    "type": "video"
+  },
+  {
+    "display_name": "Video Background Remover",
+    "job_type": "video_background_remover",
+    "type": "video"
+  },
+  {
+    "display_name": "Video Deflicker",
+    "job_type": "video_deflicker",
+    "type": "video"
+  },
+  {
+    "display_name": "Video Upscale",
+    "job_type": "video_upscale",
+    "type": "video"
+  },
+  {
+    "display_name": "Wan 2.6 Video",
+    "job_type": "wan2_6",
+    "type": "video"
+  },
+  {
+    "display_name": "Wan 2.7",
+    "job_type": "wan2_7",
+    "type": "video"
+  }
+]

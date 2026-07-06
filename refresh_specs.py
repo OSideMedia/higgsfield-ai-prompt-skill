@@ -48,6 +48,9 @@ falsely read as "fresh", which is worse than the reactive WARN we already have):
   3  change detected — Tier 2 refresh + audit evals/cases/, then --update-baseline
   1  pull failed — CLI/auth error (e.g. session expired; run `higgsfield auth login`)
   2  usage error
+  4  CLI output shape changed — the CLI's JSON no longer matches what this script
+     parses (e.g. the 1.0.1 `job_set_type`→`job_type` rename); fix the parser,
+     do NOT re-auth
 """
 import argparse
 import json
@@ -69,6 +72,28 @@ BASELINE_PATH = SPECS_DIR / "cli_baseline.json"
 class PullError(RuntimeError):
     """The live pull failed (CLI missing, not authenticated, bad JSON). Kept
     distinct from "drift" so the exit code can stay loud."""
+
+
+class ShapeError(RuntimeError):
+    """The CLI answered, but its JSON shape is not what this script parses —
+    a parser-compatibility problem, not an auth problem. Kept distinct from
+    PullError so CI can say "fix the parser" instead of "re-auth" (exit 4).
+    CLI 1.0.1 renaming `job_set_type` → `job_type` is the canonical case."""
+
+
+# The model-id key was renamed in CLI 1.0.1; accept both, newest first.
+_ID_KEYS = ("job_type", "job_set_type")
+
+
+def _model_id(obj: dict, context: str) -> str:
+    """The model id from a `model list` row or `model get` payload, tolerating
+    the 1.0.1 key rename. Any future rename lands here as a loud ShapeError."""
+    for key in _ID_KEYS:
+        if obj.get(key):
+            return obj[key]
+    raise ShapeError(
+        f"{context}: no model-id key found (tried {'/'.join(_ID_KEYS)}) in "
+        f"keys={sorted(obj)[:12]} — CLI output shape changed; update refresh_specs.py")
 
 
 # ── Normalization: snapshot item ↔ CLI `model get`, into one comparable view ──
@@ -95,16 +120,25 @@ def cli_view(get_json: dict) -> dict:
     """Comparable view of one `higgsfield model get` payload. The CLI calls the
     enum list `enum` (snapshot says `options`) and carries aspect ratios as an
     `aspect_ratio` param rather than a top-level field — normalize both away."""
-    params = {p["name"]: p for p in get_json.get("params", [])}
+    try:
+        params = {p["name"]: p for p in get_json.get("params", [])}
+    except (KeyError, TypeError) as e:
+        raise ShapeError(f"model get params shape changed ({e!r}) — "
+                         f"update refresh_specs.py")
     aspect = params.get(_ASPECT_PARAM, {})
     return {
-        "id": get_json.get("job_set_type"),
+        "id": _model_id(get_json, "model get"),
         "output_type": get_json.get("type"),
         "aspect_ratios": _opts(aspect.get("enum")),
         "params": {
             name: {"options": _opts(p.get("enum")), "default": p.get("default")}
             for name, p in params.items()
         },
+        # CLI 1.0.1 dropped per-param `enum` lists but added machine-readable
+        # CEL constraint rules — the cross-constraint prose this tool was
+        # historically blind to. Track them as their own comparison channel.
+        "rules": sorted(r.get("cel") or r.get("message") or ""
+                        for r in get_json.get("rules", [])),
     }
 
 
@@ -151,6 +185,16 @@ def diff_model(old: dict, new: dict) -> dict:
                 and op["default"] != np["default"]:
             drift.append({"kind": "default", "param": pname,
                           "from": op["default"], "to": np["default"]})
+
+    # CEL rules: only comparable when BOTH sides carry the channel (snapshot
+    # views and pre-1.0.1 baselines don't — never alarm on a missing channel).
+    if old.get("rules") is not None and new.get("rules") is not None:
+        rules_added = [x for x in new["rules"] if x not in old["rules"]]
+        rules_gone = [x for x in old["rules"] if x not in new["rules"]]
+        if rules_added:
+            drift.append({"kind": "rules_added", "added": rules_added})
+        if rules_gone:
+            notice.append({"kind": "rules_removed", "removed": rules_gone})
     return {"drift": drift, "notice": notice}
 
 
@@ -203,8 +247,12 @@ def pull_cli_views(output_type: str, ids: set = None) -> tuple:
     an id set restricts to those present (the snapshot-diff only needs tracked
     models). N+1 calls: one `model list`, one `model get` per target."""
     catalog = _cli_json(["model", "list", f"--{output_type}"])
-    catalog_ids = {m["job_set_type"]: m.get("display_name", m["job_set_type"])
-                   for m in catalog}
+    if not isinstance(catalog, list):
+        raise ShapeError(f"model list --{output_type}: expected a JSON array, "
+                         f"got {type(catalog).__name__} — update refresh_specs.py")
+    catalog_ids = {mid: m.get("display_name", mid)
+                   for m in catalog
+                   for mid in (_model_id(m, f"model list --{output_type}"),)}
     targets = set(catalog_ids) if ids is None else (ids & set(catalog_ids))
     views = {mid: cli_view(_cli_json(["model", "get", mid]))
              for mid in sorted(targets)}
@@ -225,6 +273,9 @@ def render(output_type: str, snap_date: str, diff: dict, catalog_ids: dict,
             elif c["kind"] == "default":
                 lines.append(f"  ⚠ DRIFT — {mid}.{c['param']} default "
                              f"{c['from']!r} → {c['to']!r}")
+            elif c["kind"] == "rules_added":
+                for rule in c["added"]:
+                    lines.append(f"  ⚠ DRIFT — {mid} new constraint rule: {rule}")
     if not has_drift(diff):
         lines.append("  ✓ no tracked drift (no new live capability the snapshot lacks)")
 
@@ -317,6 +368,12 @@ def render_self_diff(output_type: str, baseline: dict, diff: dict) -> str:
                 lines.append(f"  ⚠ CHANGED — {mid}.{c['param']} param gone")
             elif c["kind"] == "options_undetailed":
                 lines.append(f"  ⚠ CHANGED — {mid}.{c['param']} options now undetailed")
+            elif c["kind"] == "rules_added":
+                for rule in c["added"]:
+                    lines.append(f"  ⚠ CHANGED — {mid} new constraint rule: {rule}")
+            elif c["kind"] == "rules_removed":
+                for rule in c["removed"]:
+                    lines.append(f"  ⚠ CHANGED — {mid} constraint rule gone: {rule}")
     if not any_change(diff):
         lines.append("  ✓ no change since baseline")
     return "\n".join(lines)
@@ -354,6 +411,9 @@ def main(argv=None) -> int:
     if args.update_baseline:
         try:
             fresh = capture_baseline(types)
+        except ShapeError as e:
+            print(f"CLI SHAPE CHANGED: {e}", file=sys.stderr)
+            return 4
         except PullError as e:
             print(f"PULL FAILED: {e}\n  → run: higgsfield auth login", file=sys.stderr)
             return 1
@@ -379,6 +439,11 @@ def main(argv=None) -> int:
             else:
                 text, diff = check_type_vs_baseline(t, baseline)
                 changed = changed or any_change(diff)
+        except ShapeError as e:
+            print(f"CLI SHAPE CHANGED [{t}]: {e}", file=sys.stderr)
+            print("  → not fresh, not changed — the parser is blind until "
+                  "refresh_specs.py is updated for the new CLI output.", file=sys.stderr)
+            return 4
         except PullError as e:
             print(f"PULL FAILED [{t}]: {e}", file=sys.stderr)
             print("  → not fresh, not changed — the live state is unknown. "

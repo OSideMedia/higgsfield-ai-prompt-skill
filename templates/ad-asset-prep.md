@@ -12,7 +12,7 @@ A quiet multiplier behind the whole workflow: shape each asset so a **higher
 fraction of generations come back usable** (the "win rate"). It is the
 asset-design face of the acceptance-rate discipline in
 [`../DISCIPLINE.md`](../DISCIPLINE.md) and
-[`../docs/production-benchmarks.md`](../docs/production-benchmarks.md) — same
+[`../production-benchmarks.md`](../production-benchmarks.md) — same
 idea, applied upstream at sheet-creation time instead of downstream at take-
 selection time.
 

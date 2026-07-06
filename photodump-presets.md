@@ -1,8 +1,10 @@
 # Photodump — Style Presets Reference
 
-> **Specs snapshot: TODO (2026-06-11)** — pending a `type=image` `models_explore`
-> snapshot; the preset catalog below is hand-maintained until then. Verify a
-> preset exists in the live UI before promising it.
+> **Specs snapshot:** image model params are machine-checked against
+> `specs/IMAGE-MODEL-SPECS.md` (generated from the dated `models_explore`
+> image snapshot in `specs/`). The preset CATALOG below stays hand-maintained —
+> presets are UI content, not model params — so verify a preset exists in the
+> live UI before promising it.
 
 Photodump is a Character tab feature that transforms a photo into a named artistic style.
 Access: Character tab → Photodump (marked NEW)

@@ -1,13 +1,86 @@
 {
   "generator_version": 1,
-  "image_models": "see specs/IMAGE-MODEL-SPECS.md (snapshot 2026-06-22); this file covers video models only.",
+  "image_models": "see specs/IMAGE-MODEL-SPECS.md (snapshot 2026-07-05); this file covers video models only.",
   "models": [
     {
       "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "bytedance_video_upscale",
+      "media_roles": {
+        "medias": [
+          "video_references"
+        ]
+      },
+      "modes": [],
+      "name": "Bytedance Video Upscale",
+      "output_type": "video",
+      "params": [
+        {
+          "default": 24,
+          "description": "Output frame rate in frames per second (24-60).",
+          "max": 60,
+          "min": 24,
+          "name": "fps",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "2k",
+          "description": "Target output resolution.",
+          "name": "resolution",
+          "options": [
+            "1080p",
+            "2k",
+            "4k"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "common",
+          "description": "Content-type preset that tunes the upscaler for the source material.",
+          "name": "preset",
+          "options": [
+            "common",
+            "aigc",
+            "short_series",
+            "ugc",
+            "old_film"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "standard",
+          "description": "Upscaler model tier: 'standard' or higher-quality 'pro'.",
+          "name": "model_version",
+          "options": [
+            "standard",
+            "pro"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "",
+      "resolutions": [
+        "1080p",
+        "2k",
+        "4k"
+      ]
+    },
+    {
+      "aliases": [],
       "aspect_ratios": [
+        "auto",
+        "21:9",
         "16:9",
-        "9:16",
-        "1:1"
+        "4:3",
+        "1:1",
+        "3:4",
+        "9:16"
       ],
       "constraints": [],
       "duration": {
@@ -27,6 +100,35 @@
       "output_type": "video",
       "params": [
         {
+          "default": "720p",
+          "description": "Output resolution (higher = more credits)",
+          "name": "resolution",
+          "options": [
+            "480p",
+            "720p",
+            "1080p",
+            "4k"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "auto",
+          "description": "Cinematic genre hint",
+          "name": "genre",
+          "options": [
+            "auto",
+            "action",
+            "horror",
+            "comedy",
+            "noir",
+            "drama",
+            "epic"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
           "default": false,
           "description": "Generate audio for the video.",
           "name": "generate_audio",
@@ -35,7 +137,12 @@
         }
       ],
       "provider": "Higgsfield",
-      "resolutions": []
+      "resolutions": [
+        "480p",
+        "720p",
+        "1080p",
+        "4k"
+      ]
     },
     {
       "aliases": [],
@@ -150,6 +257,54 @@
           ],
           "required": "optional",
           "type": "string"
+        },
+        {
+          "default": "auto",
+          "description": "Speed-ramp time effect (slowmo, speedup, etc.).",
+          "name": "speedramp",
+          "options": [
+            "auto",
+            "custom",
+            "linear",
+            "slowmo",
+            "speedup",
+            "impact"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Split the video into multiple shots driven by multi_prompt.",
+          "name": "multi_shots",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": "custom",
+          "description": "'auto' lets the model plan shots; 'custom' uses the given multi_prompt.",
+          "name": "multi_shot_mode",
+          "options": [
+            "auto",
+            "custom"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": 0.5,
+          "description": "Prompt adherence strength (0-1).",
+          "max": 1,
+          "min": 0,
+          "name": "cfg_scale",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Preset id from presets_show.",
+          "name": "preset_id",
+          "required": "optional",
+          "type": "string"
         }
       ],
       "provider": "Higgsfield",
@@ -168,6 +323,7 @@
       "params": [
         {
           "description": "Exactly one YouTube URL. For multiple source videos, submit one Clipify job per URL.",
+          "max": 1,
           "name": "urls",
           "required": "required",
           "type": "string_array"
@@ -175,6 +331,8 @@
         {
           "default": 10,
           "description": "How many clips to create.",
+          "max": 20,
+          "min": 1,
           "name": "clips_num",
           "required": "optional",
           "type": "number"
@@ -234,12 +392,6 @@
           "type": "string"
         },
         {
-          "description": "Subtitle font size. Null lets the backend pick the default.",
-          "name": "subtitle_font_size",
-          "required": "optional",
-          "type": "number"
-        },
-        {
           "default": "as-is",
           "description": "Subtitle text case.",
           "name": "subtitle_case",
@@ -261,6 +413,8 @@
         {
           "default": 1080,
           "description": "Maximum source processing height.",
+          "max": 2160,
+          "min": 144,
           "name": "max_height",
           "required": "optional",
           "type": "number"
@@ -268,6 +422,8 @@
         {
           "default": 10,
           "description": "Segment duration in seconds.",
+          "max": 60,
+          "min": 2,
           "name": "segment_seconds",
           "required": "optional",
           "type": "number"
@@ -275,6 +431,92 @@
       ],
       "provider": "Higgsfield",
       "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "explainer_video",
+      "media_roles": {},
+      "modes": [],
+      "name": "Explainer Video",
+      "output_type": "video",
+      "params": [
+        {
+          "description": "Output width in pixels.",
+          "name": "width",
+          "required": "required",
+          "type": "number"
+        },
+        {
+          "description": "Output height in pixels.",
+          "name": "height",
+          "required": "required",
+          "type": "number"
+        },
+        {
+          "description": "Ordered blocks to assemble (two or more). Each block is a clip with an optional per-block voice take.",
+          "name": "items",
+          "required": "required",
+          "type": "string_array"
+        },
+        {
+          "description": "Optional burned-in captions: transcribed from the final voiceover (Whisper word timestamps) and rendered as paper-label phrases. Omit for no subtitles.",
+          "name": "subtitles",
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "constraints": [],
+      "duration": {
+        "max": 10,
+        "min": 4
+      },
+      "id": "gemini_omni",
+      "media_roles": {
+        "medias": [
+          "image_references",
+          "video_references"
+        ]
+      },
+      "modes": [],
+      "name": "Gemini Omni Flash",
+      "output_type": "video",
+      "params": [
+        {
+          "default": 8,
+          "description": "Duration in seconds (4-10).",
+          "max": 10,
+          "min": 4,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "720p",
+          "description": "Output resolution.",
+          "name": "resolution",
+          "options": [
+            "720p"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Google",
+      "resolutions": [
+        "720p"
+      ]
     },
     {
       "aliases": [],
@@ -295,9 +537,19 @@
         ]
       },
       "modes": [],
-      "name": "Grok Imagine",
+      "name": "Grok Video",
       "output_type": "video",
-      "params": [],
+      "params": [
+        {
+          "default": 5,
+          "description": "Duration in seconds (1-15).",
+          "max": 15,
+          "min": 1,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        }
+      ],
       "provider": "xAI",
       "resolutions": []
     },
@@ -316,12 +568,12 @@
         ]
       },
       "modes": [],
-      "name": "Grok Imagine 1.5",
+      "name": "Grok Video 1.5",
       "output_type": "video",
       "params": [
         {
           "default": "720p",
-          "description": "Output resolution",
+          "description": "Output resolution.",
           "name": "resolution",
           "options": [
             "480p",
@@ -329,6 +581,15 @@
           ],
           "required": "optional",
           "type": "string"
+        },
+        {
+          "default": 5,
+          "description": "Duration in seconds (2-15).",
+          "max": 15,
+          "min": 2,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
         }
       ],
       "provider": "xAI",
@@ -387,12 +648,23 @@
         ]
       },
       "modes": [],
-      "name": "Kling 2.6",
+      "name": "Kling 2.6 Video",
       "output_type": "video",
       "params": [
         {
+          "default": 5,
+          "description": "Video duration in seconds.",
+          "name": "duration",
+          "options": [
+            5,
+            10
+          ],
+          "required": "optional",
+          "type": "number"
+        },
+        {
           "default": true,
-          "description": "Generate with audio",
+          "description": "Generate the video with native audio.",
           "name": "sound",
           "required": "optional",
           "type": "bool"
@@ -425,12 +697,21 @@
         "pro",
         "4k"
       ],
-      "name": "Kling 3.0",
+      "name": "Kling v3.0",
       "output_type": "video",
       "params": [
         {
+          "default": 5,
+          "description": "Duration in seconds (3-15).",
+          "max": 15,
+          "min": 3,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
           "default": "std",
-          "description": "Generation mode: std, pro, or 4k",
+          "description": "Generation mode: 'std' (standard), 'pro' (higher quality), or '4k' (4K resolution).",
           "name": "mode",
           "options": [
             "std",
@@ -479,7 +760,7 @@
       "params": [
         {
           "default": "720p",
-          "description": "Output resolution",
+          "description": "Output resolution.",
           "name": "resolution",
           "options": [
             "720p",
@@ -487,6 +768,15 @@
           ],
           "required": "optional",
           "type": "string"
+        },
+        {
+          "default": 5,
+          "description": "Duration in seconds (3-15).",
+          "max": 15,
+          "min": 3,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
         }
       ],
       "provider": "Kling",
@@ -494,6 +784,52 @@
         "720p",
         "1080p"
       ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "llm_text",
+      "media_roles": {
+        "medias": [
+          "input_images"
+        ]
+      },
+      "modes": [],
+      "name": "LLM Generation",
+      "output_type": "video",
+      "params": [
+        {
+          "name": "model",
+          "required": "required",
+          "type": "string"
+        },
+        {
+          "default": "",
+          "name": "user_prompt",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "",
+          "name": "system_prompt",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "name": "reasoning_effort",
+          "options": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "",
+      "resolutions": []
     },
     {
       "aliases": [],
@@ -509,7 +845,7 @@
       "constraints": [],
       "duration": {
         "max": 15,
-        "min": 4
+        "min": 12
       },
       "id": "marketing_studio_video",
       "media_roles": {
@@ -537,11 +873,17 @@
           "type": "string"
         },
         {
-          "default": false,
+          "default": true,
           "description": "Generate audio for the video",
           "name": "generate_audio",
           "required": "optional",
           "type": "bool"
+        },
+        {
+          "description": "Marketing video mode slug — the creative format/style (get the options from `marketing_list_video_presets` or `show_marketing_studio` with `action='presets'`). Choose it deliberately rather than letting it default; pass the chosen format's `presets[].slug`. Omit only when the user explicitly wants a generic video.",
+          "name": "mode",
+          "required": "optional",
+          "type": "string"
         },
         {
           "description": "Marketing project / folder id",
@@ -560,6 +902,13 @@
           "name": "height",
           "required": "optional",
           "type": "number"
+        },
+        {
+          "description": "Avatar ids as a plain UUID array (like `product_ids`) — the server resolves preset vs custom for you, so you don't pass { id, type }. Preferred for a single avatar: `avatar_ids: ['<uuid>']`. Max 1. Pass at most one of `avatars` / `avatar_ids` (if both are given, `avatars` is ignored in favor of `avatar_ids`).",
+          "max": 1,
+          "name": "avatar_ids",
+          "required": "optional",
+          "type": "string_array"
         },
         {
           "description": "Product ids. Field name is `product_ids` (plural array of UUID strings). Do NOT use `product_id` (singular) — the server only accepts `product_ids`. For a single product pass `product_ids: ['<uuid>']`.",
@@ -622,8 +971,8 @@
       "params": [
         {
           "default": "minimax-2.3",
-          "description": "Hailuo model variant",
-          "name": "model",
+          "description": "Minimax Hailuo model variant.",
+          "name": "variant",
           "options": [
             "minimax",
             "minimax-fast",
@@ -634,8 +983,19 @@
           "type": "string"
         },
         {
+          "default": 6,
+          "description": "Duration in seconds.",
+          "name": "duration",
+          "options": [
+            6,
+            10
+          ],
+          "required": "optional",
+          "type": "number"
+        },
+        {
           "default": "768",
-          "description": "Output resolution",
+          "description": "Output resolution. '512' is incompatible with end_image, and is not supported by the 'minimax-2.3' / 'minimax-2.3-fast' variants.",
           "name": "resolution",
           "options": [
             "512",
@@ -655,6 +1015,41 @@
     },
     {
       "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "sam_3_video",
+      "media_roles": {
+        "medias": [
+          "video_references"
+        ]
+      },
+      "modes": [],
+      "name": "Remove Background",
+      "output_type": "video",
+      "params": [
+        {
+          "default": true,
+          "description": "Apply the segmentation mask to the output video.",
+          "name": "apply_mask",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Number of frames to process. Defaults to the full clip when omitted.",
+          "min": 1,
+          "name": "frames_count",
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "",
+      "resolutions": []
+    },
+    {
+      "aliases": [
+        "seedance_1_5"
+      ],
       "aspect_ratios": [
         "auto",
         "16:9",
@@ -672,7 +1067,7 @@
           12
         ]
       },
-      "id": "seedance_1_5",
+      "id": "seedance1_5",
       "media_roles": {
         "medias": [
           "start_image",
@@ -684,8 +1079,20 @@
       "output_type": "video",
       "params": [
         {
+          "default": 4,
+          "description": "Duration of the output video in seconds.",
+          "name": "duration",
+          "options": [
+            4,
+            8,
+            12
+          ],
+          "required": "optional",
+          "type": "number"
+        },
+        {
           "default": "720p",
-          "description": "Output resolution",
+          "description": "Output resolution of the video.",
           "name": "resolution",
           "options": [
             "480p",
@@ -697,7 +1104,7 @@
         },
         {
           "default": true,
-          "description": "Generate audio for the video. Set to false for a silent video.",
+          "description": "Generate native audio for the video. Set false for a silent video.",
           "name": "generate_audio",
           "required": "optional",
           "type": "bool"
@@ -716,12 +1123,12 @@
       ],
       "aspect_ratios": [
         "auto",
-        "21:9",
         "16:9",
+        "9:16",
         "4:3",
-        "1:1",
         "3:4",
-        "9:16"
+        "1:1",
+        "21:9"
       ],
       "constraints": [
         {
@@ -743,11 +1150,11 @@
       "id": "seedance_2_0",
       "media_roles": {
         "medias": [
-          "image",
           "start_image",
           "end_image",
-          "video",
-          "audio"
+          "image_references",
+          "video_references",
+          "audio_references"
         ]
       },
       "modes": [
@@ -758,8 +1165,17 @@
       "output_type": "video",
       "params": [
         {
+          "default": 5,
+          "description": "Duration in seconds (4-15).",
+          "max": 15,
+          "min": 4,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
           "default": "720p",
-          "description": "Output resolution. 4k is supported only with mode='std'; mode='fast' supports 480p/720p only.",
+          "description": "Output resolution. 4k/1080p require mode='std'; mode='fast' supports 480p/720p only.",
           "name": "resolution",
           "options": [
             "480p",
@@ -772,7 +1188,7 @@
         },
         {
           "default": "std",
-          "description": "'std' = higher quality and supports 480p/720p/1080p/4k; 'fast' = cheaper and faster (requires lower plan tier; supports 480p/720p only, not 1080p/4k)",
+          "description": "'std' = higher quality, supports 480p/720p/1080p/4k; 'fast' = cheaper/faster, supports 480p/720p only.",
           "name": "mode",
           "options": [
             "std",
@@ -783,7 +1199,7 @@
         },
         {
           "default": "standard",
-          "description": "'standard' = normal output bitrate, 'high' = higher bitrate output",
+          "description": "'standard' = normal output bitrate; 'high' = higher bitrate output.",
           "name": "bitrate_mode",
           "options": [
             "standard",
@@ -794,7 +1210,7 @@
         },
         {
           "default": "auto",
-          "description": "Cinematic genre hint",
+          "description": "Cinematic genre hint.",
           "name": "genre",
           "options": [
             "auto",
@@ -810,7 +1226,7 @@
         },
         {
           "default": true,
-          "description": "Generate native audio for the video. Set to false for a silent video. Independent of audio reference medias.",
+          "description": "Generate native audio for the video. Set false for a silent video. Independent of audio_references.",
           "name": "generate_audio",
           "required": "optional",
           "type": "bool"
@@ -822,6 +1238,187 @@
         "720p",
         "1080p",
         "4k"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "auto",
+        "16:9",
+        "9:16",
+        "4:3",
+        "3:4",
+        "1:1",
+        "21:9"
+      ],
+      "constraints": [],
+      "duration": {
+        "max": 15,
+        "min": 4
+      },
+      "id": "seedance_2_0_mini",
+      "media_roles": {
+        "medias": [
+          "start_image",
+          "end_image",
+          "image_references",
+          "video_references",
+          "audio_references"
+        ]
+      },
+      "modes": [],
+      "name": "Seedance 2.0 Mini",
+      "output_type": "video",
+      "params": [
+        {
+          "default": 5,
+          "description": "Duration in seconds (4-15).",
+          "max": 15,
+          "min": 4,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "720p",
+          "description": "Output resolution (mini supports 480p/720p only).",
+          "name": "resolution",
+          "options": [
+            "480p",
+            "720p"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "standard",
+          "description": "'standard' = normal output bitrate; 'high' = higher bitrate output.",
+          "name": "bitrate_mode",
+          "options": [
+            "standard",
+            "high"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "auto",
+          "description": "Cinematic genre hint.",
+          "name": "genre",
+          "options": [
+            "auto",
+            "action",
+            "horror",
+            "comedy",
+            "noir",
+            "drama",
+            "epic"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "description": "Generate native audio for the video. Set false for a silent video. Independent of audio_references.",
+          "name": "generate_audio",
+          "required": "optional",
+          "type": "bool"
+        }
+      ],
+      "provider": "Bytedance",
+      "resolutions": [
+        "480p",
+        "720p"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "auto",
+        "21:9",
+        "16:9",
+        "4:3",
+        "1:1",
+        "3:4",
+        "9:16"
+      ],
+      "constraints": [],
+      "duration": null,
+      "id": "topaz_video",
+      "media_roles": {
+        "medias": [
+          "input_video"
+        ]
+      },
+      "modes": [],
+      "name": "Topaz",
+      "output_type": "video",
+      "params": [
+        {
+          "default": "1080p",
+          "name": "resolution",
+          "options": [
+            "1080p",
+            "2160p"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "name": "enhancement",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "name": "frame_interpolation",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 30,
+          "name": "frame_rate",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "name": "frames_count",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "min": 1,
+          "name": "input_width",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "min": 1,
+          "name": "input_height",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 0,
+          "min": 0,
+          "name": "input_video_size",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "name": "folder_id",
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "",
+      "resolutions": [
+        "1080p",
+        "2160p"
       ]
     },
     {
@@ -844,8 +1441,8 @@
       "params": [
         {
           "default": "veo-3-fast",
-          "description": "Model variant: preview (best quality) or fast (faster generation)",
-          "name": "model",
+          "description": "Veo 3 variant: 'veo-3-preview' = best quality; 'veo-3-fast' = faster generation.",
+          "name": "variant",
           "options": [
             "veo-3-preview",
             "veo-3-fast"
@@ -882,8 +1479,20 @@
       "output_type": "video",
       "params": [
         {
+          "default": 8,
+          "description": "Duration of the output video in seconds.",
+          "name": "duration",
+          "options": [
+            4,
+            6,
+            8
+          ],
+          "required": "optional",
+          "type": "number"
+        },
+        {
           "default": "basic",
-          "description": "Output quality",
+          "description": "Output quality tier.",
           "name": "quality",
           "options": [
             "basic",
@@ -895,8 +1504,8 @@
         },
         {
           "default": "veo-3-1-fast",
-          "description": "Model variant: preview (best quality) or fast (faster generation)",
-          "name": "model",
+          "description": "Veo 3.1 variant: 'veo-3-1-preview' = best quality, 'veo-3-1-fast' = faster generation.",
+          "name": "variant",
           "options": [
             "veo-3-1-preview",
             "veo-3-1-fast"
@@ -915,16 +1524,7 @@
         "9:16",
         "auto"
       ],
-      "constraints": [
-        {
-          "param": "resolution",
-          "requires": {
-            "duration": "8"
-          },
-          "source": "resolution description: 1080p requires duration=8.",
-          "value": "1080p"
-        }
-      ],
+      "constraints": [],
       "duration": {
         "values": [
           4,
@@ -940,33 +1540,113 @@
         ]
       },
       "modes": [],
-      "name": "Veo 3.1 Lite",
+      "name": "Google Veo 3.1 Lite",
       "output_type": "video",
       "params": [
         {
-          "default": "720p",
-          "description": "Output resolution. 1080p requires duration=8.",
-          "name": "resolution",
+          "default": 8,
+          "description": "Duration of the output video in seconds.",
+          "name": "duration",
           "options": [
-            "720p",
-            "1080p"
+            4,
+            6,
+            8
           ],
           "required": "optional",
-          "type": "string"
+          "type": "number"
         },
         {
           "default": false,
-          "description": "Generate audio for the video. Enabling it increases credit cost.",
+          "description": "Generate native audio for the video. Enabling it increases credit cost.",
           "name": "generate_audio",
           "required": "optional",
           "type": "bool"
         }
       ],
       "provider": "Google",
-      "resolutions": [
-        "720p",
-        "1080p"
-      ]
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "video_background_remover",
+      "media_roles": {
+        "medias": [
+          "video_references"
+        ]
+      },
+      "modes": [],
+      "name": "Video Background Remover",
+      "output_type": "video",
+      "params": [],
+      "provider": "",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "video_deflicker",
+      "media_roles": {
+        "medias": [
+          "input_video"
+        ]
+      },
+      "modes": [],
+      "name": "Video Deflicker",
+      "output_type": "video",
+      "params": [
+        {
+          "description": "Optional duration of the output video in seconds.",
+          "min": 0,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Optional folder to place the generated output in.",
+          "name": "folder_id",
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "video_upscale",
+      "media_roles": {
+        "medias": [
+          "input_video"
+        ]
+      },
+      "modes": [],
+      "name": "Video Upscale",
+      "output_type": "video",
+      "params": [
+        {
+          "description": "Duration of the source video in seconds. Optional; derived from the video metadata when omitted.",
+          "min": 0,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Optional folder to place the generated output in.",
+          "name": "folder_id",
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "",
+      "resolutions": []
     },
     {
       "aliases": [],
@@ -986,16 +1666,18 @@
       "id": "wan2_6",
       "media_roles": {
         "medias": [
-          "image"
+          "image_references",
+          "video_references",
+          "audio_references"
         ]
       },
       "modes": [],
-      "name": "Wan 2.6",
+      "name": "Wan 2.6 Video",
       "output_type": "video",
       "params": [
         {
           "default": "720p",
-          "description": "Output quality",
+          "description": "Output resolution / quality.",
           "name": "quality",
           "options": [
             "720p",
@@ -1003,6 +1685,18 @@
           ],
           "required": "optional",
           "type": "string"
+        },
+        {
+          "default": 5,
+          "description": "Duration in seconds.",
+          "name": "duration",
+          "options": [
+            5,
+            10,
+            15
+          ],
+          "required": "optional",
+          "type": "number"
         }
       ],
       "provider": "Wan",
@@ -1027,7 +1721,7 @@
         "medias": [
           "start_image",
           "end_image",
-          "audio"
+          "audio_references"
         ]
       },
       "modes": [],
@@ -1035,8 +1729,17 @@
       "output_type": "video",
       "params": [
         {
+          "default": 5,
+          "description": "Duration in seconds (2-15).",
+          "max": 15,
+          "min": 2,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
           "default": "720p",
-          "description": "Output resolution",
+          "description": "Output resolution.",
           "name": "resolution",
           "options": [
             "720p",
@@ -1053,7 +1756,7 @@
       ]
     }
   ],
-  "snapshot_date": "2026-06-22",
-  "snapshot_file": "models_explore_snapshot_2026-06-22.json",
-  "snapshot_sha256": "0e8e7d3d93ff51f9128ea11e857c8874c73e3c9ba3f8abde4193247ac3e77ae1"
+  "snapshot_date": "2026-07-05",
+  "snapshot_file": "models_explore_snapshot_2026-07-05.json",
+  "snapshot_sha256": "a75772e10eb743cf35ce94b5f8850dc5f07a160e7d9dd2f38e8787ee56039b41"
 }

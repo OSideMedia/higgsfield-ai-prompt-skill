@@ -1,0 +1,111 @@
+{
+  "display_name": "Seedance 2.0",
+  "job_type": "seedance_2_0",
+  "params": [
+    {
+      "name": "aspect_ratio",
+      "type": "object",
+      "default": "16:9",
+      "required": false
+    },
+    {
+      "name": "audio_references",
+      "type": "array",
+      "default": null,
+      "required": false
+    },
+    {
+      "name": "bitrate_mode",
+      "type": "object",
+      "default": "standard",
+      "required": false
+    },
+    {
+      "name": "duration",
+      "type": "integer",
+      "default": 5,
+      "required": false
+    },
+    {
+      "name": "end_image",
+      "type": "object|null",
+      "default": null,
+      "required": false
+    },
+    {
+      "name": "generate_audio",
+      "type": "boolean",
+      "default": true,
+      "required": false
+    },
+    {
+      "name": "genre",
+      "type": "object",
+      "default": "auto",
+      "required": false
+    },
+    {
+      "name": "image_references",
+      "type": "array",
+      "default": null,
+      "required": false
+    },
+    {
+      "name": "mode",
+      "type": "object",
+      "default": "std",
+      "required": false
+    },
+    {
+      "name": "prompt",
+      "type": "string",
+      "default": null,
+      "required": true
+    },
+    {
+      "name": "resolution",
+      "type": "object",
+      "default": "720p",
+      "required": false
+    },
+    {
+      "name": "start_image",
+      "type": "object|null",
+      "default": null,
+      "required": false
+    },
+    {
+      "name": "video_references",
+      "type": "array",
+      "default": null,
+      "required": false
+    }
+  ],
+  "rules": [
+    {
+      "cel": "size(params.image_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) <= 9",
+      "message": "at most 9 image references are allowed (counting start_image and end_image)"
+    },
+    {
+      "cel": "size(params.video_references) <= 3",
+      "message": "at most 3 video_references are allowed"
+    },
+    {
+      "cel": "size(params.audio_references) <= 3",
+      "message": "at most 3 audio_references are allowed"
+    },
+    {
+      "cel": "size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) <= 12",
+      "message": "at most 12 reference files are allowed in total across images, videos, and audios (including start_image and end_image)"
+    },
+    {
+      "cel": "size(params.audio_references) == 0 || size(params.image_references) > 0 || size(params.video_references) > 0 || !(params.start_image == null) || !(params.end_image == null)",
+      "message": "audio_references require at least one image, video, start_image, or end_image"
+    },
+    {
+      "cel": "params.mode != \"fast\" || !(params.resolution in [\"1080p\", \"4k\"])",
+      "message": "mode 'fast' supports only 480p/720p; use mode 'std' for 1080p/4k"
+    }
+  ],
+  "type": "video"
+}

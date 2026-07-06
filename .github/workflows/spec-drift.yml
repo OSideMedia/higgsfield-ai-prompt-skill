@@ -17,8 +17,17 @@ name: spec-drift
 #   eventually lapses ("Session expired"). When it does, refresh_specs.py exits 1,
 #   THIS JOB FAILS, and GitHub notifies you. Re-run `higgsfield auth login` and
 #   update the secret. No fragile token auto-rotation — expiry is a loud,
-#   actionable alert, which is exactly the three-exit-state contract the tool was
-#   built around (0 fresh / 3 drift / 1 pull-failed).
+#   actionable alert, which is exactly the exit-state contract the tool is
+#   built around (0 fresh / 3 drift / 1 pull-failed / 4 CLI-shape-changed).
+#
+# ── CLI-SHAPE STORY (exit 4) ─────────────────────────────────────────────────
+#   The CLI installs unpinned from the tap, so an upstream release can change
+#   its JSON output under us (CLI 1.0.1 renamed `job_set_type` → `job_type` and
+#   dropped per-param enums). refresh_specs.py reports that as exit 4 — a
+#   parser-compatibility failure, NOT an auth failure — and this job says "fix
+#   the parser", never "re-auth". A version guard below also warns (without
+#   failing) whenever the installed CLI differs from the last locally-verified
+#   version, so a surprise upstream release is visible even when parsing holds.
 
 on:
   schedule:
@@ -49,6 +58,16 @@ jobs:
           done
           export PATH="$HOME/.local/bin:$HOME/.higgsfield/bin:/usr/local/bin:$PATH"
           higgsfield version || { echo "::error::Higgsfield CLI not on PATH after install — adjust the install step."; exit 1; }
+
+      - name: CLI version guard (warn on unverified upstream release)
+        env:
+          # Bump after locally verifying refresh_specs.py against a new CLI.
+          LAST_VERIFIED_CLI: "1.0.1"
+        run: |
+          INSTALLED=$(higgsfield --version 2>/dev/null | awk '{print $2}')
+          if [ "$INSTALLED" != "$LAST_VERIFIED_CLI" ]; then
+            echo "::warning::Installed Higgsfield CLI $INSTALLED differs from last-verified $LAST_VERIFIED_CLI — if this run fails with exit 4, update refresh_specs.py for the new output shape, then bump LAST_VERIFIED_CLI."
+          fi
 
       - name: Restore CLI credentials
         env:
@@ -81,6 +100,12 @@ jobs:
         if: steps.drift.outputs.code == '1'
         run: |
           echo "::error::spec-drift pull failed (likely an expired session). Re-run 'higgsfield auth login' locally and update the HIGGSFIELD_CREDENTIALS secret."
+          exit 1
+
+      - name: CLI shape changed → fail loudly (fix the parser, NOT auth)
+        if: steps.drift.outputs.code == '4'
+        run: |
+          echo "::error::The Higgsfield CLI's JSON output shape changed and refresh_specs.py can no longer parse it. Update the parser (see refresh_specs.py ShapeError sites), verify locally, and bump LAST_VERIFIED_CLI in this workflow. Do NOT rotate credentials — this is not an auth failure."
           exit 1
 
       - name: Drift detected → open or update an issue

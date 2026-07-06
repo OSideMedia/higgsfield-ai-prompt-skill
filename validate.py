@@ -212,6 +212,21 @@ def check_relative_paths(skill_file: Path):
                  "path-qualify it, or add to EXTERNAL_CITATIONS if it cites an external file")
 
 
+def check_template_paths():
+    """Path-style refs inside templates/ must resolve (same rule as SKILL.md
+    part 1 — templates link back to root reference docs, and a bad `../`
+    prefix silently strands the reader; the v3.18 ad-asset-prep link rotted
+    exactly this way). Bare refs are left to prose."""
+    for md in sorted(ROOT.glob("templates/**/*.md")):
+        text = md.read_text(encoding="utf-8")
+        refs = re.findall(r'`((?:\.\.\/|[\w-]+\/)[\w./%-]+\.(?:md|py|json))`', text)
+        for ref in sorted(set(refs)):
+            target = (md.parent / ref).resolve()
+            exists = target.exists()
+            label = f"{md.relative_to(ROOT)}: ref '{ref}'"
+            check(exists, label, "" if exists else f"resolves to {target} — not found")
+
+
 def check_json_db(label: str, path: Path, required_fields: set):
     print(f"\n  Checking {label} database ({path.relative_to(ROOT)})...")
     if not check(path.exists(), f"{label}: file exists"):
@@ -796,6 +811,9 @@ def main():
         print(f"\n  — {sf.relative_to(ROOT)}")
         check_frontmatter(sf)
         check_relative_paths(sf)
+
+    print("\n[ TEMPLATE PATHS ]")
+    check_template_paths()
 
     # ── 2. JSON databases ───────────────────────────────────────────────────
     print("\n[ JSON DATABASES ]")
