@@ -6,11 +6,13 @@ description: >
   music or BGM in output, or is using any audio-capable model (Kling 3.0, Seedance
   1.5 Pro, Seedance 2.0, Veo 3/3.1, Grok Imagine Video). Also use when the user's
   prompt would benefit from audio direction but they haven't mentioned it.
+  Also use when the user wants standalone audio — a soundtrack, ambience bed,
+  multi-speaker scene audio (Seed Audio 1.0), or text-to-speech voiceover.
 user-invocable: true
 metadata:
-  tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice]
-  version: 3.2.2
-  updated: 2026-06-27
+  tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS]
+  version: 3.3.0
+  updated: 2026-07-05
   parent: higgsfield
 ---
 
@@ -20,10 +22,11 @@ metadata:
 *Routing aids — read the linked sections for the full rules.*
 - Native-joint audio models: Kling 3.0, Seedance 2.0 / 1.5 Pro, Veo 3/3.1, Grok — all others add audio in post [→](#which-models-support-audio)
 - Four layers to consider per prompt: Dialogue / SFX / Ambient / BGM [→](#the-four-audio-layers)
-- Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens [→](#lip-sync-rules)
+- Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens; per-language sync-word budgets are FIELD-reported [→](#lip-sync-rules)
 - **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input-seedance-20-audio1)
 - Cinema Studio 3.0 native joint audio (SCELA): describe audio as a separate section; specific foley beats generic moods [→](#cinema-studio-30-audio-businessteam-plan)
-- Standalone Audio tab = TTS/voice tools (Eleven v3, MiniMax Speech, Seed Speech, VibeVoice), distinct from in-video joint audio [→](#standalone-audio-tab-voice-models-tts-voice-tools)
+- **Seed Audio 1.0** (`seed_audio`, standalone) = whole-scene audio in ONE pass — multi-speaker dialogue + music + SFX + ambience mixed [→](#scene-audio-generation-seed-audio-10)
+- Standalone Audio catalog (2026-07-05 snapshot): `seed_audio`, `text2speech_v2` (5 engines incl. new cozy_voice), plus 3 game-pipeline-only tools — distinct from in-video joint audio [→](#standalone-audio-tab-tool-catalog-2026-07-05-snapshot)
 
 ## Which Models Support Audio?
 
@@ -169,6 +172,32 @@ The production workaround:
 1. Generate each character separately with their own audio segment
 2. Composite in CapCut/Premiere using picture-in-picture + linear mask (15% feather)
 3. Static image for the listening character; generated video for the speaking character
+
+### Per-language dialogue-sync budgets [FIELD — community, seedance-2.0 repo v6.6.0]
+
+Field-observed word budgets for **reliable lip-sync** in a ~15s in-video Seedance
+dialogue clip — not official limits, and not the same as how many words the model
+can *voice*. The **acoustic budget ≠ reliable-sync budget**: the model will happily
+speak more words than it can keep synced to the mouth.
+
+| Language | Reliable-sync budget (~15s clip) | Notes |
+|----------|----------------------------------|-------|
+| English | ~16–20 words (5–10 per line) | Strongest Western language |
+| Mandarin | — | Strongest sync overall |
+| Russian | ~10–15 words | Weak — budget conservatively |
+| Japanese / Korean | Under-tested | No reliable field numbers yet |
+
+Cross-language sizing unit: **"one short sentence ≈ one breath."** Write dialogue
+in breath-sized sentences and count breaths, not seconds.
+
+### Voice-reference lip-sync path [FIELD — community, seedance-2.0 repo v6.6.0]
+
+On surfaces that accept a spoken-voice reference, an attached **rights-cleared
+voice recording drives lip-sync directly** — the model syncs the mouth to your
+recording instead of synthesizing a voice first. This is the most reliable
+field-reported path for **non-English dialogue** (it sidesteps the weak-language
+sync budgets above). **Rights-sensitive:** only use recordings you have clear
+rights to — cloned or scraped voices are out.
 
 ---
 
@@ -480,18 +509,100 @@ Specific sound descriptions directly influence the generated audio output. The m
 
 ---
 
-## Standalone Audio tab — voice models (TTS / voice tools)
+## Scene-Audio Generation — Seed Audio 1.0
 
-Separate from in-video native audio above, the **Audio tab** offers dedicated voice tools — **Voiceover** (text → speech), **Change Voice** (swap a voice in any video), and **Translation** (translate speech in any video) — driven by these models:
+Separate from in-video joint audio above: **Seed Audio 1.0** (ByteDance, released
+2026-06-23 at the FORCE conference) is a standalone **one-pass whole-scene audio
+generator**. One generation produces multi-speaker dialogue + music + SFX +
+ambience, already mixed — a radio-drama scene, not a single voice track. Use it
+to build a soundtrack for footage you'll assemble in post, or scene audio that
+has no video at all.
 
-| Model | Provider | Best for |
-|-------|----------|----------|
-| Eleven v3 | ElevenLabs | Expressive AI voice with emotion control |
-| MiniMax Speech 2.8 HD | MiniMax | Studio-quality text-to-speech |
-| **Seed Speech** *(NEW)* | ByteDance | **Multilingual** text-to-speech |
-| VibeVoice | Higgsfield | Long-form expressive voice synthesis |
+### When to choose it — decision table
 
-Use **Seed Speech** when the deliverable is multilingual voiceover/narration; Eleven v3 when fine emotional/tone control matters; VibeVoice for long-form narration. These are standalone voice generators — distinct from the native joint audio baked into Kling 3.0 / Seedance 2.0 / Veo during video generation. (Hand-maintained UI list — no audio specs snapshot yet; verify live before quoting pricing.)
+| You need | Use | Why |
+|----------|-----|-----|
+| A whole scene's soundtrack: several speakers + music + SFX + ambience, mixed in one pass | **Seed Audio 1.0** (`seed_audio`) | One-pass scene audio; script-style prompt drives the whole mix |
+| One clean voice track (narration, single-speaker VO) | **`text2speech_v2`** (pick an engine) | Single-voice TTS — simpler, engine-selectable |
+| Sound baked into the generated video, synced to on-screen action and lips | **Seedance `generate_audio`** (in-video) | Native joint generation — audio and visuals in the same pass (see § Audio as a Conditioning Input) |
+
+### Verified surface [OFFICIAL — model spec 2026-07-05]
+
+Model id `seed_audio` (output_type `audio`). Parameters:
+
+| Param | Range / options | Default |
+|-------|-----------------|---------|
+| `format` | wav / mp3 / pcm / ogg_opus | wav |
+| `sample_rate` | 8000–48000 Hz | 24000 |
+| `speech_rate` | −50..100 | 0 |
+| `loudness_rate` | −50..100 | 0 |
+| `pitch_rate` | −12..+12 | 0 |
+| `voice_type` + `voice_id` | preset \| element — **must travel together** | none |
+
+Media roles: `image_references` + `audio_references`. Per the fal schema: up to
+**3 reference audio clips** (each ≤30s, ≤10MB) **XOR one image reference** —
+image and audio refs cannot combine. Reference audio inputs in the prompt by
+load order: `@Audio1`, `@Audio2`, `@Audio3`.
+
+### Script-format prompting [EMPIRICAL — community guides, NOT official docs]
+
+Everything in this subsection is community-converged practice, not spec — treat
+as a starting point, not a guarantee. Write the prompt as a **radio-drama
+script**:
+
+- Open with a scene header: `[Scene: busy coffee shop, morning]`
+- Speaker labels with emotion parentheticals: `Host (warm, upbeat): "…"`
+- Inline sound cues where they happen: `[sound: espresso machine, soft jazz fades in]`
+- Music by **mood, not genre**: "soft piano builds to triumphant orchestra", not "cinematic score"
+- **~4 distinct speakers** is the reliable ceiling
+- **Test 20s segments** before scaling toward the ~2-minute cap
+- Output **WAV** (`format: wav`) when the audio is headed for post
+
+Compact worked example:
+
+```
+[Scene: rain-soaked night market, closing time]
+Vendor (tired, warm): "Last skewers — half price, take them."
+Girl (excited): "Two! No — three!"
+[sound: rain drumming on tarp canopy, a scooter passing in the distance]
+Vendor (chuckling): "Three it is. Careful, they're hot."
+[sound: coins dropped on a metal tray, charcoal hiss]
+Music: a lonely muted trumpet fades in under the rain, wistful but hopeful.
+```
+
+---
+
+## Standalone Audio tab — tool catalog (2026-07-05 snapshot)
+
+The live standalone-audio catalog, reconciled against the models_explore
+snapshot of **2026-07-05** (`../../specs/models_explore_snapshot_audio_2026-07-05.json`).
+The Audio tab's UI tools — **Voiceover** (text → speech), **Change Voice** (swap a
+voice in any video), **Translation** (translate speech in any video) — sit on top
+of these models:
+
+| Model id | Name | What it does | Availability |
+|----------|------|--------------|--------------|
+| `seed_audio` | Seed Audio 1.0 (ByteDance) | One-pass whole-scene audio: dialogue + music + SFX + ambience (§ above) | General |
+| `text2speech_v2` | Text to Speech V2 | Single-voice TTS; engine via `variant`: `elevenlabs`, `minimax`, `seed_speech`, `vibe_voice`, **`cozy_voice`** *(NEW)*; preset or reference-element voices (`voice_type` + `voice_id`) | General |
+| `sonilo_music` | Sonilo Music (FAL) | Text-to-music with controllable duration | **Game pipeline only** |
+| `mirelo_text_to_audio` | Mirelo Text to Audio (FAL) | Text-to-audio SFX with controllable duration | **Game pipeline only** |
+| `inworld_text_to_speech` | Inworld TTS (FAL) | Preset-voice TTS, ~110 voices across en/zh/ja/ko/es/fr/de/ru/… | **Game pipeline only** |
+
+Engine picks within `text2speech_v2`: **seed_speech** when the deliverable is
+multilingual voiceover/narration; **elevenlabs** (Eleven v3) when fine
+emotional/tone control matters; **vibe_voice** for long-form narration. These
+are standalone audio generators — distinct from the native joint audio baked
+into Kling 3.0 / Seedance 2.0 / Veo during video generation. (Catalog reflects
+the 2026-07-05 snapshot; verify live before quoting pricing or availability.)
+
+### Post-generation voice-over — Supercomputer workflow [DEMO]
+
+A post-generation alternative to prompting audio at all: upload the **finished
+clip** to Supercomputer and ask for an analyzed voice-over (e.g. "Analyze the
+video and create a voiceover for it in the style of wildlife documentaries") —
+the agent analyzes the footage, writes a script, and offers voices to pick from.
+Shown working in Higgsfield's Seedance-4K tutorial; useful when the visuals are
+already locked and only narration is missing.
 
 ---
 

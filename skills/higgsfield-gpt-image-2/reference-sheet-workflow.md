@@ -281,7 +281,63 @@ no environment, no props, no lighting effects, no beauty retouching.
 
 ---
 
-## 5. Where reference sheets feed downstream
+## 5. Views the video will need (front / side / back — and the bottom)
+
+The REFERENCE SHEET LAYOUT block above says "bottom/underside where relevant."
+The Seedance-4K film tutorial shows exactly when it's relevant, and it is not
+optional there [DEMO — Seedance-4K film tutorial, 2026-07]:
+
+- **Front / side / back is the working minimum** for any prop the camera will
+  move around — the tutorial's TV-remote sheet is three identical remotes on
+  one baseline (front face, true side profile, back shell).
+- **Add a BOTTOM / undercarriage view whenever the object will be flipped,
+  tumbled, or rolled in the video.** The tutorial's snow-truck sheet is a 2×2
+  grid — FRONT / SIDE / REAR / BOTTOM-UNDERCARRIAGE — built specifically
+  because the truck gets flipped onto its roof in the scene. A model cannot
+  invent an underside it has never seen; it will hallucinate one mid-tumble.
+
+Plan the views from the shot list, not from the object: whatever face of the
+prop the video will expose, the sheet must have already photographed.
+
+On background: the GLOBAL IDENTITY LOCK's solid light gray (`#DCDCDC`) sits
+inside the tutorial's tested neutral-grey rule (light-to-medium grey beats
+white or black; `#7f7f7f` for creature sheets) — the canonical statement lives
+in `../../templates/ad-asset-prep.md` § Design for win rate.
+
+If a GPT Image 2 sheet comes back reading flat or 2D, rerun the **same prompt,
+unchanged, in Nano Banana Pro** before rewriting anything — the tutorial
+recovered its remote sheet exactly this way. The full sheet-model ladder
+(GPT Image 2 at 4K default → Nano Banana Pro on flatness → Soul Cinema for
+locations/characters-from-scratch) is in `../../templates/ad-asset-prep.md`
+§ Which model makes the sheet.
+
+---
+
+## 6. Red-arrow annotation — aim the actor at the right control
+
+A fix for a stubborn failure mode: the video actor keeps interacting with the
+**wrong part of the prop** — pressing the wrong button, gripping the wrong
+handle — no matter how the action is re-phrased
+[DEMO — Seedance-4K film tutorial, 2026-07].
+
+The trick encodes the instruction into the reference image itself:
+
+1. **Draw a red arrow on the sheet image** pointing at the exact control or
+   region the action targets (any image editor; the arrow becomes part of the
+   reference).
+2. **Have the prompt read the arrow back in words.** Tutorial verbatim, from
+   the remote-press scene: *"The reference's red arrow points precisely to the
+   CH-UP chevron (˄) directly above the 'CH' label"* — and the ACTION block
+   then places the thumb "where the red arrow points."
+
+The annotated sheet and the prompt now agree on one unambiguous target, so the
+model stops improvising the contact point. Use a copy of the sheet for this —
+keep the clean, arrow-free sheet as the identity reference for every shot that
+doesn't need the pointer.
+
+---
+
+## 7. Where reference sheets feed downstream
 
 The reference sheet is a reusable identity asset, not an end product. Feed it
 into:
@@ -294,7 +350,7 @@ into:
   character turnaround sheets (see `../higgsfield-soul/SKILL.md`
   § Character Sheet Creation).
 
-## 6. Source acknowledgment
+## 8. Source acknowledgment
 
 Translated from Higgsfield's official **Product References & Video
 References** reference-workflow guide (Automatic Product Reference Sheet +
@@ -303,4 +359,6 @@ GLOBAL IDENTITY LOCK prompt, the Automatic Prompt Creator meta-prompt, and
 the two worked examples are preserved close to verbatim as reusable
 copy/paste assets; surrounding guidance re-expressed in house voice. Model
 compatibility (Nano Banana Pro / Nano Banana 2 / GPT Image 2.0) stated per
-the source.
+the source. §§ 5–6 (view coverage for motion, red-arrow annotation) are
+tutorial-demonstrated conventions from the Seedance-4K film breakdown
+[DEMO — Seedance-4K film tutorial, 2026-07].

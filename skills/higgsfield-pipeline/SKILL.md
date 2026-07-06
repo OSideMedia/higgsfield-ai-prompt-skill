@@ -9,8 +9,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
-  version: 3.3.0
-  updated: 2026-05-17
+  version: 3.4.0
+  updated: 2026-07-05
   parent: higgsfield
 ---
 
@@ -33,6 +33,10 @@ metadata:
 - Pipeline E hard rules: 15-second cap per scene, one generation per style, feed the previous scene's video as continuity reference [→](#stage-5-seedance-20-with-keyframe-previous-video)
 - Soul Cinema keyframes: deliberately short 5–15 word prompts with enhancer ON — long prompts starve the enhancer [→](#stage-1-soul-cinema-keyframe-style-first-enhancer-on)
 - Never describe character age in Seedance prompts; >15s per scene degrades prompt adherence — split the scene [→](#pipeline-e-pitfalls)
+- No extend button: attach the accepted clip as a video reference + open with "The scene continues." — and match the source's resolution AND duration [→](#the-extend-a-clip-workflow)
+- Cap seamless extension chains at 2 (hard ceiling 3); re-anchor from ORIGINAL canonical refs, break chains with B-roll [→](#chain-management-depth-caps-and-re-anchoring)
+- An attached source clip carries the state — prompt only the delta; motion vectors, camera-move phase, audio phase stay in prose when handing off from a still frame [→](#source-carries-state-rule)
+- End extension prompts on a camera-angle change so the join reads as coverage; plan transitions ahead (last-channel-on-TV trick) [→](#clean-join-planning)
 - Draw a top-down schema when 2+ characters, a key prop placement, or complex camera geometry — prompt in absolute terms ("A 2m from B") [→](#spatial-blocking-top-down-schema-for-multi-character-scenes)
 - Never animate a "good enough" image; if the character looks wrong in the Hero Frame, Recast is the fix — not the animation prompt [→](#pipeline-pitfalls)
 
@@ -874,6 +878,90 @@ better continuity.
 > **Recurrence as continuity substrate:** The backbone-building work above (scene order, bridge identification, continuity-arc mapping) operates on a substrate — what should recur across shots for a world to cohere. See `../../vocab.md` § World Through Recurrence for the eight named substrate axes.
 
 > **Post-clip next-shot decisions:** Deciding whether a scene needs a bridge (or a continuation, contrast, or reset) is a post-generation question, not a pre-generation one. The four-question diagnostic and the next-shot decision tree formalize the call. See `higgsfield-seedance` § Post-Clip Decisions.
+
+---
+
+## Continuation & Extension Handoff
+
+Extending an accepted clip — a sequel, a prequel, or a chained
+continuation — is a workflow problem before it is a prompt problem.
+This section owns the handoff mechanics: what to attach, what the
+prompt text still has to carry, how deep a chain can safely go, and
+how to plan the joins. The prompt-pattern side (continuation anchor
+phrasing, reference-role wording) lives in
+`../higgsfield-seedance/SKILL.md` — this section does not restate
+those templates. It extends § Working Practices above: the post-clip
+decision tree decides *whether* to continue; this section is *how*.
+
+### The extend-a-clip workflow
+
+[EMPIRICAL — cross-surface] There is no dedicated extend button.
+The extension workflow:
+
+1. **Attach the accepted clip as a video reference.**
+2. **Open the prompt with "The scene continues."** The model
+   continues from the clip's end, carrying motion, characters,
+   environment, even voices. For a prequel clip, open with **"Show
+   me what happens before"** instead — the same mechanism chains
+   past/current/future segments.
+3. **Match the source clip's resolution AND duration** in the new
+   generation (1080p→1080p, 15s→15s). A 720p extension against a
+   1080p source shows a visible quality jump at the join.
+4. **Occluded-identity binding:** if an identity feature is hidden
+   at the source's end (a mole behind a hand, a face turned away),
+   add the character image as a second reference and bind it
+   explicitly — "The woman's identity is @Image1."
+
+### Chain management — depth caps and re-anchoring
+
+[FIELD — community, seedance-2.0 repo v6.6.0] Quality degrades over
+chained extensions: each generation re-ingests the previous
+generation's artifacts, and drift is expected by the ~4th–5th
+generation in a chain. Manage the chain, don't ride it:
+
+- **Cap seamless continuation chains at 2 extensions** — hard
+  ceiling 3.
+- **Re-anchor from the ORIGINAL canonical references** — the
+  character sheets and location refs the project started with,
+  never a frame from the drifted chain tail.
+- **Break chains with B-roll** — a cutaway between extensions
+  resets the degradation clock without breaking story flow.
+- **Treat a scene boundary as an intentional cut** re-opened from
+  canonical refs — don't try to seamlessly extend across it.
+
+### Source-carries-state rule
+
+[FIELD] An attached accepted clip carries its own state — static
+(who is in frame, wardrobe, layout) and dynamic (motion in
+progress, camera move, sound). The prompt text carries **only the
+delta** — what changes next. Delete opening-state prose that
+repeats what the attached source already shows: references outrank
+text when they conflict, so the repetition is wasted budget at
+best and a conflict source at worst.
+
+A still frame is the weaker handoff — it carries static state
+only. Three things a frame cannot carry, which must stay in prose
+when handing off from a screenshot instead of a clip:
+
+- **Open motion vectors** — who is moving, in which direction, how fast
+- **Camera-move phase** — where mid-move the camera is (mid-dolly, mid-arc)
+- **Audio phase** — what sound or dialogue is in progress at the cut point
+
+### Clean-join planning
+
+[EMPIRICAL] Plan the join before generating the extension, not in
+the edit:
+
+- **End extension prompts on a camera-angle change** ("the scene
+  from the character's perspective") so the cut reads as
+  intentional coverage rather than a seam.
+- **Plan scene-to-scene transitions ahead.** The tutorial trick
+  [DEMO]: build the NEXT scene's location early and put it on an
+  in-scene TV as the last channel playing — the last frame becomes
+  the next scene's opening frame.
+- A truly seamless butt-join is a post-editing job — overlap the
+  clips, opacity-ghost align (~5 frames), short audio crossfade —
+  and is out of prompt scope.
 
 ---
 

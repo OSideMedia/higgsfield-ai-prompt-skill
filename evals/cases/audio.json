@@ -1,0 +1,27 @@
+{
+  "skill": "higgsfield-audio",
+  "cases": [
+    {
+      "id": "audio-seed-audio-scene-script",
+      "description": "Standalone scene-audio request routes to Seed Audio 1.0 with the script format (v3.19.0)",
+      "request": "Generate a 60-second multi-speaker night market scene audio with ambience and music",
+      "response": "Routing to higgsfield-audio (standalone scene audio — Seed Audio 1.0, verified against the 2026-07-05 audio snapshot).\n\n**Model**: `seed_audio` (Seed Audio 1.0) — one pass generates dialogue + music + SFX + ambience as a single mixed track. Format: wav, sample_rate 24000.\n\n```\n[Scene: crowded night market, sizzling food stalls, evening]\nVendor (boisterous, warm): \"Fresh skewers! Two for one, tonight only!\"\nCustomer (curious, amused): \"What's in the secret sauce, then?\"\n[sound: wok sizzle, crowd murmur, distant scooter horns]\n[music: soft lo-fi groove rises under the chatter, playful]\n```\n\nNote: the `[Scene:]` / `Speaker (emotion):` / `[sound:]` script format is community practice [EMPIRICAL], not official ByteDance docs — test a 20s segment before scaling toward the ~2-minute cap. Keep distinct speakers to ~4 or fewer for reliable separation.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "seed_audio" },
+        { "type": "sections_present", "names": ["[Scene:", "[sound:"] },
+        { "type": "regex_present", "pattern": "EMPIRICAL" }
+      ]
+    },
+    {
+      "id": "audio-standalone-vs-invideo-choice",
+      "description": "Distinguishes Seed Audio 1.0 vs text2speech_v2 vs Seedance generate_audio (v3.19.0)",
+      "request": "Should I use Seed Audio or the text-to-speech tool for a single narrator voiceover?",
+      "response": "Routing to higgsfield-audio (§ Scene-Audio Generation decision table).\n\nFor a **single narrator voice track**, use `text2speech_v2` (pick an engine via `variant`: elevenlabs, minimax, seed_speech, vibe_voice, or cozy_voice) — it produces one clean voice track you can place in post. Reach for `seed_audio` (Seed Audio 1.0) only when you want the **whole scene in one pass** — multi-speaker dialogue plus music, SFX, and ambience mixed together. And if the audio should be born inside a Seedance video rather than delivered as a file, that's the `generate_audio` toggle on the video call, independent of audio references.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "text2speech_v2" },
+        { "type": "regex_present", "pattern": "cozy_voice" },
+        { "type": "regex_present", "pattern": "generate_audio" }
+      ]
+    }
+  ]
+}

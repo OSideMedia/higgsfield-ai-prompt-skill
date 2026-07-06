@@ -17,10 +17,21 @@ idea, applied upstream at sheet-creation time instead of downstream at take-
 selection time.
 
 - **Grey background wins more often** — nothing in frame competes with the
-  subject, so the model has less to get wrong.
+  subject, so the model has less to get wrong. The Seedance-4K film tutorial
+  states this as tested: "after tons of testing, grey performs way better than
+  white or black" [DEMO — Seedance-4K film tutorial, 2026-07]. Any neutral
+  grey works — light-grey cyclorama for people, medium grey for props,
+  `#7f7f7f` for creature sheets. This bullet is the canonical home of the
+  grey rule; the sheet workflows in
+  `../skills/higgsfield-gpt-image-2/reference-sheet-workflow.md` and
+  `../skills/higgsfield-soul/SKILL.md` § Character Sheet Creation point here.
 - **3/4-angle locations beat flat head-on** — they give the camera depth to move
-  through, so motion tests survive more often.
+  through, so motion tests survive more often. See § Location plates below for
+  the empty-plate rule.
 - **One clean subject per sheet** — a single, unambiguous thing to lock onto.
+  (The one deliberate exception: crowd work, where you *want* a multi-character
+  VARIETY lineup sheet — see `../skills/higgsfield-soul/SKILL.md`
+  § Variety Sheets.)
 
 Higher win rate compounds: cheaper iteration, fewer regenerations, more keeper
 seconds per credit.
@@ -37,7 +48,9 @@ See `../skills/higgsfield-gpt-image-2/reference-sheet-workflow.md`.
 
 Close-up (locks the face) **+** full-body front/back (locks the build), on a
 **grey background**, generated in **Soul Cinema** for the best photoreal skin
-texture. See `../skills/higgsfield-soul/SKILL.md` § Character Sheet Creation.
+texture. One clear face + one full body is the hard floor per character — never
+ship a character on a single image ("so Seedance doesn't have to guess").
+See `../skills/higgsfield-soul/SKILL.md` § Character Sheet Creation.
 
 ### 3. Lock one face — erase the duplicate
 
@@ -87,10 +100,37 @@ Clean studio prop sheets (shoes, bag, moka pot, mug) into GPT Image 2. **No
 motion tests** — props are objects, they don't perform; the prop sheet is enough.
 Generate-many / test-in-motion / lock applies to *performers*, not props.
 
-### 8. Register the `@`-glossary
+Give the prop **multiple views** — front / side / back at minimum, and add a
+**BOTTOM / undercarriage view whenever the object will be flipped, tumbled, or
+rolled** in the video; the model can't invent an underside it has never seen
+[DEMO — Seedance-4K film tutorial, 2026-07]. View-coverage details, plus the
+red-arrow annotation trick for props the actor keeps mishandling:
+`../skills/higgsfield-gpt-image-2/reference-sheet-workflow.md` § Views the
+video will need + § Red-arrow annotation.
 
-Declare every asset once with a stable `@`-name and register each under
-**Elements** with the same name so prompts auto-attach the right images:
+### 8. Location plates (3/4 angle, empty by default)
+
+Locations are the third recurring asset next to characters and props — the
+tutorial's rule is that **every scene needs all three built before any video
+generation** [DEMO]. Two plate disciplines:
+
+- **Ask for a 3/4 angle** — more visible room reads as more depth, which gives
+  camera moves somewhere to go (the win-rate bullet above, applied).
+- **Generate the plate empty** — no people — whenever the video model should
+  own the crowd. A populated plate freezes extras into wallpaper; an empty
+  plate lets the model cast and move them.
+
+Generate location plates in **Soul Cinema** (see § Which model makes the
+sheet below); in video prompts a location plate is typically declared
+"STYLE REFERENCE ONLY, not a fixed keyframe" —
+`../skills/higgsfield-seedance/SKILL.md` § Reference Roles.
+
+### 9. Register the `@`-glossary
+
+**Save every sheet as a Higgsfield Element** — this is what makes the sheet
+`@`-referenceable from video prompts at all. Declare every asset once with a
+stable `@`-name and register each under **Elements** with the same name so
+prompts auto-attach the right images:
 
 ```
 @hero — main character          @boss — side character
@@ -104,6 +144,27 @@ Full slot→role discipline:
 `../skills/higgsfield-seedance/SKILL.md` § Reference Roles. This glossary is the
 second layer of the connected shotlist —
 `../skills/higgsfield-shotlist-director/SKILL.md`.
+
+## Which model makes the sheet
+
+The tutorial's model-hopping ladder [DEMO — Seedance-4K film tutorial,
+2026-07], consistent with `../specs/image-model-specs.json`:
+
+1. **GPT Image 2 at 4K resolution** — the default for character and prop
+   sheets (resolution `4k`, quality `high` for hero assets).
+2. **If the result reads flat / 2D** — rerun the **same prompt, unchanged, in
+   Nano Banana Pro** (also up to `4k`). Demonstrated on the tutorial's TV-remote
+   prop sheet: GPT Image 2's version looked flat, the identical prompt in Nano
+   Banana Pro brought depth and highlights.
+3. **Soul Cinema for locations and characters-from-scratch** — the cheapest
+   first pass at ~0.125 credits per image; the tutorial's on-screen pricing
+   showed **1 credit = 8 images** [DEMO — pricing shown on-screen; verify
+   against the current UI before promising it]. Note Soul Cinema tops out at
+   `2k` quality — when a sheet must be 4K, finish in GPT Image 2 or Nano
+   Banana Pro.
+
+The reason to spend here at all, in the tutorial's words: **"the better the
+input image, the sharper the final video."**
 
 ## Related
 

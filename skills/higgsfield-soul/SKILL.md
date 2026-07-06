@@ -4,8 +4,8 @@ description: "Creates and manages reusable character profiles (Soul IDs) for con
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 3.6.1
-  updated: 2026-06-27
+  version: 3.7.0
+  updated: 2026-07-05
   parent: higgsfield
 ---
 
@@ -18,7 +18,10 @@ metadata:
 - Reference image rules: front or 3/4 angle, even lighting, neutral-to-slight expression, no blur, solo subject [→](#creating-a-strong-soul-id-reference)
 - Reference generators: Soul 2.0 (fashion-forward), Nano Banana Pro (max sharpness), Seedream 4.5 (style range) [→](#creating-a-strong-soul-id-reference)
 - Character sheet angles: front face, 3/4, side profile, optional full body + optional embedded prop sheets [→](#character-sheet-creation)
+- Two-image floor per character: one clear face + one full body, on neutral grey — never a single image [→](#character-sheet-creation)
 - Prefer the single-prompt 3×2 six-panel sheet (one 16:9 generation) — identity locks better than multi-step assembly [→](#single-prompt-6-panel-character-sheet-32-grid)
+- Outfit change without identity drift: split-panel sheet — ghost-mannequin outfit LEFT + "face matches input 100%" close-up RIGHT [→](#split-panel-outfit-change-sheet-ghost-mannequin-identity-panel)
+- Crowds: a single-character reference makes a clone army — build a multi-character lineup and declare it a "VARIETY reference" [→](#variety-sheets-crowds-without-clones)
 - Character Anchor Block = 10 per-shot attributes (identity, screen position, depth layer, frame occupancy, orientation, pose, gaze, contact points, state lock, expression) [→](#character-anchor-block)
 - One Soul ID sheet PER character state — 5 transformation stages = 5 distinct sheets; the prompt names the stage [→](#multi-form-state-tracking)
 - Micro-expression presets: 9 core + 10 extended [→](#core-set)
@@ -218,6 +221,16 @@ A **character sheet** is a multi-angle reference image showing the same characte
 several viewpoints — typically front, 3/4, side profile, and back. It gives the model
 comprehensive geometry to work from and dramatically improves consistency.
 
+**Two-image floor per character** [DEMO — Seedance-4K film tutorial, 2026-07]:
+never hand a video model a character on a single image. The minimum is **one
+clear face view + one full body** — in the tutorial's words, "so Seedance
+doesn't have to guess." Everything below builds upward from that floor.
+
+**Background:** put sheets on **neutral grey**, not white or black — the
+tutorial states this as tested (light-grey cyclorama for people, `#7f7f7f`
+for creature sheets). Canonical statement of the grey rule:
+`../../templates/ad-asset-prep.md` § Design for win rate.
+
 **How to create a character sheet:**
 1. Generate your character in Cinema Studio using your preferred optical stack
 2. Use **Grid Generation (2×2 or 4×4)** to produce multiple variations
@@ -284,6 +297,29 @@ from multiple independent generations — identity can drift
 panel-to-panel even with a strong reference. The single-prompt
 3×2 grid keeps identity locked because all six panels render
 together in one pass.
+
+### Split-Panel Outfit-Change Sheet (ghost-mannequin + identity panel)
+
+A two-panel sheet pattern for **re-dressing an existing character without
+touching identity** [DEMO — Seedance-4K film tutorial, 2026-07] — the
+tutorial used it to put its lead into a new Y2K outfit:
+
+- **LEFT panel — outfit only, ghost-mannequin:** the full new outfit as
+  floating garments styled as worn — invisible body, no person, no head.
+  Describe the clothes in full here (cut, fabric, graphics, accessories,
+  footwear); this panel owns the wardrobe.
+- **RIGHT panel — identity only:** a large head-and-shoulders close-up from
+  the existing character reference, declared **"face matches input 100%"** —
+  same identity, features, hair, skin, no drift. This panel owns the face;
+  wardrobe appears only as the upper edge of the LEFT panel's outfit.
+- **Clear vertical divide, neutral grey studio backdrop, even soft light**
+  across both panels.
+
+The split gives the video model one panel to read for *what they wear* and
+one for *who they are*, so the outfit change can't pull the face with it.
+Registered as a single Element, the sheet carries both. Complements § Multi-
+Form State Tracking below — a wardrobe state is a state like any other and
+gets its own sheet.
 
 ---
 
@@ -502,6 +538,42 @@ Note: Higgsfield can hold multiple Soul IDs. Reference each clearly in the promp
 
 ---
 
+## Variety Sheets — Crowds Without Clones
+
+Everything above optimizes for **one** identity locked tight. Point that
+machinery at a crowd and it backfires: **a single-character reference makes a
+clone army** — every soldier, extra, and passer-by renders as the same person
+[DEMO — Seedance-4K film tutorial, 2026-07]. The tutorial's canonical
+before/after: an elf army generated from one elf reference came back as
+identical clones; the fix was a new sheet plus one label change.
+
+**The fix — a variety lineup sheet:**
+
+1. **Build one sheet with several DISTINCT characters side by side** — the
+   tutorial used four fully-specified elves in a full-body lineup on neutral
+   grey: different genders, hair colors (blonde / dark / auburn / silver),
+   builds, and armor tones (silver / gold / rose). Each lineup member is
+   individually described; sameness anywhere in the sheet becomes sameness
+   in the crowd.
+2. **Declare it a "VARIETY reference" in the video prompt** — not an identity
+   lock. Tutorial pattern: `@elf — VARIETY reference for the elven army: a
+   sheet of FOUR different elves … the army is a varied host drawn from these
+   four types, every elf unique, no two alike.` Reinforce in the positive
+   locks: "a VARIED host built from the four types in @elf."
+
+**The role split:** `100% matches the reference` locks ONE character's
+identity; `VARIETY reference` tells the model to treat the sheet as a
+*population sample* to interpolate a diverse crowd from. Use identity locks
+for leads, a variety sheet for the crowd behind them — both can be Elements
+in the same prompt. (Reference-role vocabulary:
+`../higgsfield-seedance/SKILL.md` § Reference Roles.)
+
+Pairs with the empty-plate rule for locations — generate the location with no
+people and let the video model own the crowd from the variety sheet
+(`../../templates/ad-asset-prep.md` § Location plates).
+
+---
+
 ## AI Influencer Workflow
 
 Soul ID is the foundation of Higgsfield's AI Influencer Studio feature.
@@ -606,6 +678,14 @@ color/grade onto the generation), and an optional **+ Character** reference
 *optional* second pass through GPT Image 2 when a shot needs a specific edit —
 not a requirement of Soul Cinema itself, which stands alone as a single-step
 cinematic scene generator.
+
+That price point is why the Seedance-4K film tutorial reaches for Soul Cinema
+"always" for **location plates and characters built from scratch** — its
+on-screen pricing showed 1 credit = 8 images, the cheapest sheet-making pass
+on the platform [DEMO — pricing shown on-screen; verify against the current
+UI before promising it]. Soul Cinema quality tops out at 2k, so sheets that
+must be 4K finish in GPT Image 2 or Nano Banana Pro — the full ladder is in
+`../../templates/ad-asset-prep.md` § Which model makes the sheet.
 
 ### Soul ID identity prompting in Soul Cinema
 
