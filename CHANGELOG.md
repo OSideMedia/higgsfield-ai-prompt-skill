@@ -1,5 +1,38 @@
 # Changelog
 
+## v3.19.0 — 2026-07-05
+
+**Seedance 4K Masterclass + Seed Audio 1.0** — content wave from six sources gathered 2026-07-05 (plan: `workspace/output/V3.19-PLAN.md`): Higgsfield's own downloadable `prompt-writter.skill`, the official Seedance-4K film tutorial (video + blog, 25 verbatim prompts archived in `workspace/input/`), spec-verified Seed Audio 1.0 research, a cross-surface video-extension workflow, selected field imports from the community seedance-2.0 repo (v6.6.0), and a character-audition system prompt. Every model claim checked against the fresh 2026-07-05 specs snapshots (shipped in v3.18.1). Provenance tiers used throughout: [OFFICIAL] / [DEMO] / [EMPIRICAL] / [FIELD].
+
+### `higgsfield-seedance` 1.8.2 → 1.9.0
+- **§ Official Prompt Architecture — the Block Scaffold** [OFFICIAL — Higgsfield prompt-writter.skill]: the 17-block scaffold (SCENE CONTEXT → POSITIVE LOCKS), distributed-style doctrine (no style prefix), FOV-in-degrees anchor table + CAMERA-3rd-position rule, measurable-language rules (positive-only, km/h, %/meters, human-height scale, left/right-from-camera, Kelvin WB, no director/equipment names), POSITIVE LOCKS, the cut-format ladder + 6-cut vocabulary, tag naming + minimal-reference-text, context isolation, and 4 special protocols (extreme-FOV 4-mechanism stack, whip-pan ≥0.8s, anti-impact locks, observation pattern). Reconciled as a "two regimes" doctrine with the existing six-slot short form; official no-director-names rule noted as overriding the empirical director-substitute trick in block prompts.
+- **NEW reference `PRODUCTION-PATTERNS.md`** [DEMO — Seedance-4K film tutorial]: reference-role vocabulary ("100% matches the reference" / "STYLE REFERENCE ONLY, model extends the world" / "VARIETY reference" + the clone-army fix), coordinate blocking (x%/y%, % of frame width, locked screen direction), non-empty opening frame, per-segment LENS LOCK + timed SMASH/MATCH cuts, red-arrow prop annotation, video-reference 1:1 lock + SCREEN REALISM block + duration-match rule, prompted-imperfection realism, 60:30:10 grade, offscreen voice-only characters, specify-what-plays-on-screens, in-prompt scene transitions.
+- **§ Extension Prompting — Video-Reference Continuation** [EMPIRICAL]: "The scene continues." / "Show me what happens before" openers, occluded-identity `@ImageN` binding, match-source-resolution-AND-duration, chain-degradation + B-roll chain-break, camera-angle-change endings; [FIELD] source-carries-state + references-outrank-text + chain cap ~2 (hard 3) with re-anchor-from-ORIGINAL-references.
+
+### `higgsfield-audio` 3.2.2 → 3.3.0
+- **§ Scene-Audio Generation — Seed Audio 1.0**: what it is (one-pass whole-scene audio, released 2026-06-23), decision table vs `text2speech_v2` vs Seedance `generate_audio`, verified surface [OFFICIAL — 2026-07-05 audio snapshot] (params, ≤3 audio refs ≤30s XOR 1 image ref, `@Audio1..3` tokens), script-format prompting clearly labeled [EMPIRICAL — community, NOT official] with a worked example.
+- Standalone Audio catalog reconciled with the live 5-model catalog (incl. NEW `cozy_voice` engine; game-pipeline-only tools flagged), date-stamped 2026-07-05.
+- [FIELD] per-language dialogue-sync budget table (EN ~16–20 reliable-sync words per ~15s, Mandarin strongest, RU weak) + voice-reference lip-sync path (rights-sensitive) under Lip-Sync Rules; Supercomputer voice-over pointer [DEMO].
+
+### `higgsfield-pipeline` 3.3.0 → 3.4.0
+- **§ Continuation & Extension Handoff**: extend-a-clip workflow, chain management (depth caps + scheduled re-anchoring), source-carries-state rule (stills can't carry motion/camera/audio phase), clean-join planning (angle-change endings, last-channel-on-TV transition trick, post-edit seam note).
+
+### `higgsfield-soul` 3.6.1 → 3.7.0 + asset-prep surfaces
+- Two-image character floor (face + full body) + grey-sheet rule [DEMO]; **§ Split-Panel Outfit-Change Sheet** (ghost-mannequin + identity panel); **§ Variety Sheets — Crowds Without Clones**.
+- `templates/ad-asset-prep.md`: grey-background canonical home, **§ Location plates (3/4 angle, empty by default)**, **§ Which model makes the sheet** (GPT Image 2 4K → Nano Banana Pro on flatness → Soul Cinema for locations/characters); Elements registration.
+- `skills/higgsfield-gpt-image-2/reference-sheet-workflow.md`: **§ Views the video will need** (front/side/back + BOTTOM/undercarriage for flip shots), **§ Red-arrow annotation**.
+
+### `higgsfield-character-design` 1.0.0 → 1.1.0
+- **§ Screen Test / Audition** [EMPIRICAL]: casting read → role options → playable audition lines → voice triggers (≤3 qualities) → final audition prompt (<3500 chars) with divergence rule and a worked mini-example; cross-linked to FACS (direct the takes), Soul (lock the winner), and ad-asset-prep's generate-many → test-in-motion → lock-the-winner loop.
+
+### `higgsfield-models` 3.1.1 → 3.2.0 + guides
+- New model rows [spec-verbatim]: **Gemini Omni Flash** (video), **Soul Cast**, **Soul Location**, **Nano Banana 2 Lite**, **OpenAI Hazel** (image) across model-guide.md, image-models.md, and higgsfield-models (dual-maintained tables kept in sync); recraft id rename + Seedream 4.5 quality tiers reconciled; GPT Image (original) noted as gone from the 2026-07-05 catalog; utility jobs scoped out with a one-liner.
+
+### Root + examples + evals
+- `prompt-examples.md`: **§ Seedance-4K Film Tutorial — Worked Examples** — five annotated verbatim excerpts [DEMO] (prompted imperfection, coordinate blocking + LENS LOCKs, 1:1 video reference + SCREEN REALISM, red-arrow lock, VARIETY-reference before/after).
+- Root SKILL.md: four new routing rows (standalone audio / Seed Audio → audio; extend-continue a clip → seedance + pipeline; asset prep / reference sheets → ad-asset-prep + gpt-image-2 + soul; character audition → character-design). Root version → 3.19.0.
+- Evals: +3 cases (Seed Audio scene script, standalone-vs-in-video audio choice, extension continuation) — 43 total.
+
 ## v3.18.1 — 2026-07-05
 
 Repair wave: un-blind the spec-drift tripwire after the Higgsfield CLI 1.0.1 output-shape change, refresh the specs snapshots (Tier 2, 13 days early — the shape change forced it), and clear the stale-docs debt found by a full repo audit. No new prompting content (that ships in v3.19.0).

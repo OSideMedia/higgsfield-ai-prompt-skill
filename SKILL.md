@@ -12,7 +12,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.18.1
+  version: 3.19.0
   updated: 2026-07-05
   author: O-Side Media
   license: MIT
@@ -167,6 +167,10 @@ budget constraints, client work), **confirm before generating:**
 | User reports a generation result (kept/rejected/flagged) — log it to the ledger | `higgsfield-recall` |
 | Takes-per-kept ratios, credit budgeting from logged data | `higgsfield-assist` |
 | Audio design, dialogue cues, SFX, ambient sound | `higgsfield-audio` |
+| **Standalone audio generation** — soundtrack, ambience bed, multi-speaker scene audio, Seed Audio 1.0 (`seed_audio`), TTS voiceover / narration as its own deliverable | `higgsfield-audio` |
+| **Extend / continue an existing clip** — "make it longer", "what happens next / before", prequel, last-frame handoff, extension chains | `higgsfield-seedance` (§ Extension Prompting) + `higgsfield-pipeline` (§ Continuation & Extension Handoff) |
+| **Prep assets / reference sheets before video** — character sheet, prop three-view, location plate, "build my elements", variety sheet for crowds | `templates/ad-asset-prep.md` + `higgsfield-gpt-image-2` (props) + `higgsfield-soul` (people & crowds) |
+| Audition / screen-test a designed character (how they move, speak, react) before scene generation | `higgsfield-character-design` (§ Screen Test / Audition) |
 | Seedance 2.0 / Pro prompt, flagged prompt, credit waste on Seedance | `higgsfield-seedance` |
 | **Transform footage the user already has** (video-to-video): "make a Seedance prompt for this video/clip", add a VFX element (set my head/hair on fire, transform my hand, make a limb invisible), swap the world/background around a preserved subject (desert, clouds, lava, neon city), put a giant creature behind me or on a landmark, relight/regrade to match, sync a crash-zoom/push-in to a line — a **real source clip** is the starting point | `higgsfield-seedance-vfx` |
 | Precise facial expression / FACS / Action Unit codes (AU12, AU6…), forced or uncanny or mixed expression, close-up micro-performance, monologue/dialogue facial acting, "which AU code for anger/fear", FACS reference sheet | `higgsfield-facs` |

@@ -9,8 +9,8 @@ metadata:
   references:
     - MODELS-DEEP-REFERENCE.md
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana]
-  version: 3.1.1
-  updated: 2026-05-18
+  version: 3.2.0
+  updated: 2026-07-05
   parent: higgsfield
 
 ---
@@ -68,6 +68,7 @@ Fast lookup — for detailed comparisons see the full tables below.
 | Veo 3.1 | ★★★★★ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Ref images, first/last frame, 4K |
 | Veo 3.1 Lite | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–8s | ✅ | Budget 3.1 quality, 1080p, I2V, volume |
 | Veo 3 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 4–8s | ✅ | Nature, environment, stable model |
+| Gemini Omni Flash | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 4–10s | ✅ | Reference-driven video (image + video refs), native audio, 720p |
 | Grok Imagine Video | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★☆ | 1–15s | ✅ | Video editing, animate images |
 | Minimax Hailuo 2.3 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★☆ | 6–10s | ❌ | VFX, fluid motion, anime, physics |
 | Minimax Hailuo 02 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | 6–10s | ❌ | Dance, sports, fluid motion |
@@ -123,6 +124,7 @@ Is this image or video?
     ├── Need maximum reference control?
     │   ├── Up to 12 assets (images+video+audio) → Seedance 2.0
     │   ├── Up to 7 image refs → Kling O1 Video
+    │   ├── Image + video refs with native audio (4–10s, 720p) → Gemini Omni Flash
     │   └── Up to 3 asset refs → Veo 3.1
     │
     └── Speed/cost priority?
@@ -139,6 +141,8 @@ Is this image or video?
 |------|-------|---------|
 | Fashion / cultural portrait | Soul 2.0 | Free |
 | Cinematic keyframe for I2V | Soul Cinema Preview | Low |
+| Consistent character identity (16:9) | Soul Cast | `budget` 10–500 |
+| Environment / location plate | Soul Location | — |
 | Cheapest generation | Z-Image | 0.15 |
 | Low-cost portrait | Higgsfield Soul | 0.5 |
 | Low-cost 2K square | Kling O1 | 0.5 |
@@ -150,7 +154,9 @@ Is this image or video?
 | Artistic / stylized | Wan 2.2 | 1 |
 | Blend multiple references | Multi Reference | 1.5 |
 | Fast pro-quality + text rendering | Nano Banana 2 | 1.5 |
+| Budget NB2 (1k only, `thinking` MINIMAL/HIGH) | Nano Banana 2 Lite | — |
 | Complex prompts / text in image | GPT Image 1.5 | 2 |
+| Reference-based editing + best text rendering | OpenAI Hazel | — |
 | Max fidelity / Thinking mode / 14 refs | Nano Banana Pro | 2 |
 | Image editing / inpainting | Flux Kontext | varies |
 | Photo style transformation (29 cartoon/illustration presets) | Photodump | Low |
@@ -182,7 +188,7 @@ For exact per-model video costs see the Credit Cost Reference in `../../model-gu
 
 | Feature | Available on |
 |---------|-------------|
-| Native audio (dialogue, SFX, ambient) | Kling 3.0/Omni · Seedance 1.5 Pro/2.0 · Veo 3/3.1 · Grok Video |
+| Native audio (dialogue, SFX, ambient) | Kling 3.0/Omni · Seedance 1.5 Pro/2.0 · Veo 3/3.1 · Grok Video · Gemini Omni Flash |
 | Soul ID character slot | Soul 2.0 · GPT Image · Higgsfield Soul |
 | @ Elements syntax | Seedream 4.5/5.0 Lite · Nano Banana Pro · Cinema Studio |
 | Draw (sketch-to-image) | Nano Banana · Nano Banana Pro |
@@ -192,7 +198,7 @@ For exact per-model video costs see the Credit Cost Reference in `../../model-gu
 | Video extension (up to 148s) | Veo 3.1 |
 | Performance cloning from video | Kling 3.0 Omni |
 | Up to 30s camera/motion transfer | Kling 3.0 Motion Control |
-| Soul Cast AI actors | Cinema Studio 2.5 |
+| Soul Cast AI actors | Cinema Studio 2.5 · standalone `soul_cast` image model (16:9, `budget` 10–500) |
 | Soul Cast AI actors (General 2K / Character 4K / Location 4K) | Cinema Studio 3.0 (Business/Team) |
 | Built-in color grading | Cinema Studio 2.5 (full grading suite) · Cinema Studio 3.5 (Color Palette axis in Style Settings — 8 named palettes) |
 | Native dual-channel stereo audio | Cinema Studio 3.0 (Business/Team) · Kling 3.0/Omni · Seedance 2.0/1.5 Pro · Veo 3/3.1 · Wan 2.5/2.7 |
@@ -234,6 +240,10 @@ generation). Real person face uploads blocked — use synthetic character refere
 
 **Grok Imagine:** Aurora architecture (autoregressive, not diffusion) — excels at text/logo
 rendering and multi-image compositing. Image editing supports multi-turn iterative chains.
+
+**Gemini Omni Flash:** Google's reference-driven video model — accepts both image and video
+references, generates native audio, 4–10s at 720p (16:9 or 9:16). Use it when you want
+reference-anchored clips with sound at a fast/light tier rather than flagship fidelity.
 
 For deep documentation on any specific model → read `MODELS-DEEP-REFERENCE.md`
 

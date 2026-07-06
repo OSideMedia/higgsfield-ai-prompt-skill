@@ -1,6 +1,6 @@
 # Higgsfield Image Models — Complete Reference
 
-> **Specs snapshot: 2026-06-22** — machine-readable image-model facts (resolution
+> **Specs snapshot: 2026-07-05** — machine-readable image-model facts (resolution
 > enums, model_type/quality options, aspect ratios) are generated from a
 > `type=image` `models_explore` snapshot into `specs/image-model-specs.yaml` /
 > `.json` and `specs/IMAGE-MODEL-SPECS.md` (regenerate via `python3 sync_specs.py
@@ -37,6 +37,24 @@ G = Google-powered model
 **Status:** Preview version — full Soul Cinema coming soon
 
 **Soul HEX** — Extracts color palettes from reference photos for brand-consistent, color-matched visuals. Works across Soul 2.0, Soul Cinema Preview, and Cinema Studio 2.5.
+
+---
+
+### Soul Cast
+**Model id:** `soul_cast` · **Provider:** Higgsfield
+**Best for:** Consistent cinematic character identity — the same face/character held across many generations
+**Aspect ratio:** 16:9 only (per the 2026-07-05 specs snapshot)
+**Unique control — `budget` (10–500, default 50):** generation budget dial — higher budget spends more compute on the identity
+**Note:** Previously exposed only inside Cinema Studio (2.5/3.0 "Soul Cast AI actors"); now a standalone model in the image catalog. For per-shot character work at other aspect ratios, generate the identity here and carry it into other models via references.
+
+---
+
+### Soul Location
+**Model id:** `soul_location` · **Provider:** Higgsfield
+**Best for:** Environment and location generation — establishing plates, backdrops, location references for I2V and multi-shot pipelines
+**Aspect ratios:** 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, 21:9, 9:21 — widest ratio spread of the Soul family (only model with 9:21 vertical ultrawide)
+**Controls:** No extra parameters — purely prompt-driven
+**Pairs with:** Soul Cast (character) + Soul Location (environment) as reference inputs for reference-driven video models
 
 ---
 
@@ -139,6 +157,8 @@ G = Google-powered model
 **Credits:** 1 per generation
 **UI:** Seedream 4.5 · 4K · 16:9 · 1/4 · @ (Elements) · Unlimited
 **Best for:** 4K output · when maximum resolution matters over speed
+**Quality tiers — `quality`:** `basic` (default, renders up to 4K) / `high` (renders up to ~6K)
+**Aspect ratios:** 1:1, 4:3, 16:9, 3:2, 21:9, 3:4, 9:16, 2:3
 **@ Elements:** Supports @ syntax for referencing saved Elements
 **vs 5.0 Lite:** Higher resolution (4K vs 2K), same cost, slower generation
 
@@ -283,6 +303,19 @@ NBP is the strongest single image model on the platform for sharpness, multi-ele
 
 **SynthID + C2PA:** All Nano Banana family outputs include an invisible SynthID watermark and C2PA Content Credentials for AI provenance verification
 
+---
+
+### Nano Banana 2 Lite
+**Model id:** `nano_banana_2_lite` · **Google-powered**
+**Best for:** Budget NB2-family generation — high volume, drafts, iteration passes before committing to NB2/Pro
+**Resolution:** 1k only (single option — no 2K/4K on Lite)
+**Unique control — `thinking` (MINIMAL / HIGH, default HIGH):** depth of internal reasoning before generation. Drop to MINIMAL for speed on simple prompts; keep HIGH for complex multi-instruction prompts
+**Aspect ratios:** auto, 1:1, 3:2, 2:3, 4:3, 3:4, 4:5, 5:4, 9:16, 16:9, 21:9
+**Reference input:** image references supported
+**vs Nano Banana 2:** Lite trades the 2K/4K resolution ladder for a cheaper tier and an explicit thinking-depth dial; same aspect-ratio spread plus auto
+
+---
+
 ## GPT Image Family (OpenAI-powered)
 
 ### GPT Image
@@ -293,6 +326,7 @@ NBP is the strongest single image model on the platform for sharpness, multi-ele
 **Character slot:** Supports Soul ID character reference (GENERAL shown by default)
 **Default aspect:** 1:1 square
 **Note:** Model selector shows "ChatGPT" branding — OpenAI's GPT-Image model
+**Status:** No longer present in the models catalog (2026-07-05 snapshot) — verify in the UI before recommending; prefer GPT Image 1.5/2 or OpenAI Hazel
 
 ---
 
@@ -319,6 +353,16 @@ NBP is the strongest single image model on the platform for sharpness, multi-ele
 **Multilingual text rendering:** >95% accuracy across Japanese, Korean, Chinese, Hindi, Bengali — first OpenAI image model to handle non-Latin scripts at production-grade fidelity
 **vs GPT Image 1.5:** Photorealism leap, text-rendering leap, native 4K (up from 1536×1024), ~2× speed on standard mode, plus O-series reasoning capability for complex multi-element prompts that previously required Nano Banana Pro Thinking mode
 **Note:** First image model with O-series reasoning capabilities — complex multi-element compositions resolve more reliably than on prior GPT Image generations. For full API specs, rate limits, and deep-reference comparison to siblings, see `skills/higgsfield-models/MODELS-DEEP-REFERENCE.md` § GPT Image 2.
+
+---
+
+### OpenAI Hazel
+**Model id:** `openai_hazel` · **Provider:** OpenAI
+**Best for:** Powerful reference-based editing · best-in-class text rendering
+**Quality selector — `quality`:** low / medium / high (default medium)
+**Aspect ratios:** 1:1, 3:2, 2:3, auto
+**Reference input:** image references supported — feed the image you want edited/transformed
+**vs GPT Image 2:** Hazel is the editing-and-text specialist with a compact aspect set (1:1/3:2/2:3/auto); GPT Image 2 is the native-4K, 16-reference generation flagship. Reach for Hazel when the job is "edit this image" or "get this text exactly right"
 
 ---
 
@@ -372,7 +416,7 @@ All FLUX models show a warning triangle (⚠) in the UI — third-party external
 ## Recraft Family (⚠ External/Third-party)
 
 ### Recraft 4.1
-**Model id:** `recraft-v4-1` · **Provider:** Recraft
+**Model id:** `recraft_v4_1` (renamed from `recraft-v4-1`, which remains a catalog alias) · **Provider:** Recraft
 **UI:** Recraft V4.1 (and **Recraft V4.1 Utility**) · 1:1 · 1/4 · NEW
 **Best for:** Photorealistic + expressive generation, brand assets, logos/icons, product mockups
 **Resolution:** 1k (everyday) / 2k (larger assets) — see `specs/image-model-specs.yaml`
@@ -403,6 +447,8 @@ These are upload-based transformation tools, not text-to-image generators.
 **How it works:** Full character body swap — replaces an entire person in a target image with your uploaded character
 **vs Face Swap:** Face Swap = face only. Character Swap = full body/character replacement.
 
+> The image catalog also carries utility/system entries — AutoSprite (animate a character image into a game-ready sprite sheet), MS Image (Marketing Studio ad images), image_auto (auto model selection), upscalers (Topaz, Bytedance), background remover, and outpaint. These are pipeline tools rather than prompt-crafted generation models and are out of scope for this reference.
+
 ---
 
 ## Complete Cost Reference
@@ -414,21 +460,25 @@ These are upload-based transformation tools, not text-to-image generators.
 | Kling O1 | 0.5 | 2K | Square default |
 | Seedream 4.0 | 1 | Basic | Older tier |
 | Seedream 5.0 Lite | 1 | 2K | Fast |
-| Seedream 4.5 | 1 | 4K | High-res |
+| Seedream 4.5 | 1 | 4K | High-res, `quality` basic/high (~6K) |
 | Nano Banana | 1 | — | Draw, portrait |
 | Wan 2.2 | 1 | — | Artistic |
 | Reve | 1 | — | New |
 | Soul 2.0 | Free | 2K | 5K free gens |
 | Soul Cinema Preview | Low | — | Cinematic keyframes |
+| Soul Cast | TBD | — | Character identity, 16:9, `budget` 10–500 |
+| Soul Location | TBD | — | Environments, 9 aspect ratios |
 | Kling Image 3.0 | TBD | 4K | Native 4K, series mode |
 | Kling Image 3.0 Omni | TBD | 4K | Advanced editing |
 | Nano Banana 2 | 1.5 | 1K | Pro quality at Flash speed |
+| Nano Banana 2 Lite | TBD | 1K only | Budget NB2, `thinking` MINIMAL/HIGH |
 | FLUX.2 Pro | 1.5 | 2K | ⚠ External |
 | Flux Kontext Max | 1.5 | — | ⚠ Edit |
 | Multi Reference | 1.5 | — | Multi-image blend |
 | Recraft 4.1 | varies | 1K/2K | ⚠ External · standard/vector/utility/utility_vector · hex palettes |
-| GPT Image | 2 | — | Character slot |
+| GPT Image | 2 | — | Character slot · gone from 2026-07-05 catalog |
 | GPT Image 1.5 | 2 | — | Text-in-image |
+| OpenAI Hazel | TBD | — | Editing, best text rendering |
 | Character Swap | 2 | — | Body swap |
 | Nano Banana Pro | 2 | 1K | Draw, landscape |
 | FLUX.2 Flex | 5 | 2K | ⚠ External |

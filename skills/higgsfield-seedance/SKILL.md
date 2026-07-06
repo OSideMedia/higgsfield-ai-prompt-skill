@@ -4,8 +4,8 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.8.2
-  updated: 2026-06-30
+  version: 1.9.0
+  updated: 2026-07-05
   parent: higgsfield
 ---
 
@@ -18,6 +18,9 @@ metadata:
 - Six slots, in order: Camera + Subject + Action + Setting + Style + Lighting; missing 3+ slots is where flags come from [→](#the-seedance-prompt-formula)
 - Empirical prompt-craft laws: 50–80-word attention sweet spot (front-load the load-bearing element), name a director/lens not "cinematic", "fast" degrades motion, no negative prompts in the body [→](#prompt-craft-laws)
 - Five prompt modes: Reference-Based / Continuation / Expand Shot / Edit Shot / Transformation — pick the mode before writing [→](#seedance-20-prompt-modes)
+- [OFFICIAL] block scaffold for production prompts: SCENE CONTEXT → … → POSITIVE LOCKS, distributed style (no prefix), FOV in degrees only, CAMERA block 3rd, cut ladder oner / CUT n / timed / freestyle [→](#official-prompt-architecture-the-block-scaffold)
+- Extend an existing clip: attach it as a video reference + open with "The scene continues." — match source resolution AND duration; chain cap ~2 (hard 3), then re-anchor from ORIGINAL references [→](#extension-prompting-video-reference-continuation)
+- Tutorial-demonstrated patterns (reference-role vocabulary incl. VARIETY reference, SCREEN REALISM + duration-match composites, 60:30:10 grade, red-arrow prop annotation): `PRODUCTION-PATTERNS.md` in this directory
 - Hard engine rules (age-blind, exit-frame = cut, off-screen = nonexistent, no reflections, ≤3 tracked characters, double-contrast cuts) + high-risk shot table: `ENGINE-RULES.md` in this directory
 - Reference roles: Character / Last-Frame / Environment / Prop — role determines what the prompt may re-describe [→](#reference-roles)
 - Working modes: Exploration / Continuation / Bridging / Repair (distinct from prompt modes) [→](#working-modes-vs-prompt-modes-two-taxonomies)
@@ -44,6 +47,12 @@ This skill's job is to stop credit waste on filter rejections.
 > `bilingual-JSON` profiles (`../../docs/Seedance 2 Skill.md`) obey the same
 > core. Flag high-risk shot types at authoring time — never silently break a
 > rule the project's hero image happens to conflict with.
+
+> **Production patterns (sibling reference):** patterns demonstrated working
+> in Higgsfield's own Seedance-4K film tutorial — reference-role vocabulary,
+> coordinate blocking, video-reference screen composites, prompted
+> imperfection, 60:30:10 grade — live in `PRODUCTION-PATTERNS.md` in this
+> directory, labeled `[DEMO]`.
 
 ---
 
@@ -159,6 +168,14 @@ named, narrowly-trained referent**:
 
 Positive form of `../higgsfield-prompt/SKILL.md` § Anti-Slop Vocabulary.
 
+> **Official override on director names.** Higgsfield's own prompt-writing
+> skill forbids director names, signature-work references, and equipment
+> model names outright (see § Official Prompt Architecture — the Block
+> Scaffold → Measurable-language rules). The director-substitute trick above
+> is an empirical short-form fallback; in block-scaffold prompts, describe
+> the look in observable terms instead — "centered symmetrical framing,
+> pastel palette", not "Wes Anderson symmetry".
+
 ### "fast" is the highest-degradation keyword
 
 Combined with complex action or camera movement, `fast` is the single
@@ -205,6 +222,191 @@ positive-only requirement is already documented for Cinema Studio 3.0 in
   introduces drift. Keep an I2V prompt to **motion + camera only**. See
   § Seedance 2.0 Prompt Modes / Reference-Based and
   `../higgsfield-prompt/SKILL.md` (I2V key rule).
+
+---
+
+## Official Prompt Architecture — the Block Scaffold
+
+`[OFFICIAL — Higgsfield prompt-writter.skill, 2026-07]` — Higgsfield ships
+its own Seedance 2.0 prompt-writing skill with the Seedance-4K release. This
+section is that doctrine, reconciled with the rest of this file. Where the
+two disagree, the official rule wins inside block-scaffold prompts; the
+empirical rules elsewhere in this skill remain the short-form regime.
+
+**Two regimes, not a contradiction.** The six-slot formula and the
+50–80-word sweet spot (§ Prompt-Craft Laws) govern short-form single shots.
+The block scaffold is the production regime — multi-shot, reference-heavy,
+high-control work — where *structure replaces the word cap*: write densely
+where control matters, sparsely where it does not, and say each important
+thing once. Block prompts routinely trip the linter's overlength rule
+(§ Pre-flight Linter); treat that WARN as expected for this regime, while
+every structural lint rule (shot counts, beat sums, handle declarations,
+enum checks) still applies in full. Likewise, the Voice Rewrite instruction
+to put a Style & Mood clause up front is the short-form filter pass — in a
+block prompt the filter gets its full scene from SCENE CONTEXT, LOCATION MAP,
+and LIGHTING instead, and style is distributed (below).
+
+### Block order
+
+Write blocks in this order, using **only the blocks the shot needs**:
+
+```
+SCENE CONTEXT
+ACTIVE REFERENCES
+LOCATION MAP
+FIRST FRAME / BLOCKING
+FORMAT MODE
+OPTICS
+CAMERA
+ACTION
+PERFORMANCE      (when acting matters)
+PHYSICS
+LIGHTING
+COLOR GRADE      (when the grade is strong / stylized)
+WARDROBE         (when costume matters)
+AUDIO
+STYLE            (technical-style suffix)
+OUTPUT SETTINGS  (when format must be pinned)
+POSITIVE LOCKS
+```
+
+Logic: context and references first, then space and timing, then action and
+physics, then descriptive style in its home positions, then a technical
+suffix, locks last. A naturalistic single take may drop COLOR GRADE,
+WARDROBE, and OUTPUT SETTINGS entirely and fold those notes into LOCATION
+MAP / LIGHTING.
+
+### Distributed style — never a prefix
+
+There is no style-prefix block at the top; the prompt always opens on SCENE
+CONTEXT. Each style aspect lives in the block that governs it: light →
+LIGHTING; color → COLOR GRADE, or folded into LOCATION MAP + LIGHTING for a
+naturalistic look; lens / optical character → OPTICS; skin realism and
+acting → PERFORMANCE; format / grain / fps → the STYLE + OUTPUT SETTINGS
+suffix just before POSITIVE LOCKS. Descriptive style sits in the body next
+to what it describes; technical style sits as the end suffix; nothing
+style-related opens the prompt.
+
+### FOV anchors + the CAMERA-3rd-position rule
+
+In prompt text, state field of view in **degrees from these discrete
+anchors only** — never millimeters, never in-between values (not "23°" —
+use 18° or 29°):
+
+| FOV | mm equiv | Use |
+|-----|----------|-----|
+| 180° | fisheye | spherical distortion — POV, dream-state |
+| 107° | 14–16mm | architectural ultra-wide, epic establish |
+| 84° | 20–24mm | wide — establish, group blocking |
+| 63° | 28–35mm | observational, reportage |
+| 47° | 40–50mm | neutral human perspective |
+| 29° | 75–85mm | portrait compression, dialogue bust |
+| 18° | 100–135mm | close portrait, identity-preserving |
+| 12° | 180–200mm | tele-detail — hands, objects |
+| 8° | 300–400mm | extreme compression, observation, broadcast |
+
+In a multishot, set FOV per segment and add `"no drift mid-segment"`.
+
+Place the CAMERA block in the **3rd position** of the prompt's core layers
+(subject → action → camera → style → constraints). Moved to the end, FOV
+gets ignored; moved to the front, it conflicts with identity.
+
+### Measurable-language rules
+
+- **Positive phrasing only** — official confirmation of the empirical
+  no-negative-prompts law (§ Prompt-Craft Laws).
+- **Speeds in km/h** — "moves at 40 km/h", not "fast" (which is also the
+  highest-degradation keyword, § Prompt-Craft Laws).
+- **Atmosphere in % / meters** — "fog density 40%", "haze visible at 15
+  meters"; build it in steps across shots (20% → 40% → 60%).
+- **Giant scale via human-height comparison** — "as tall as four humans
+  stacked head to toe", not "huge" or "three meters".
+- **Left/right is always from the camera.**
+- **Emotion through muscle movement, not labels** — same rule as Voice
+  Rewrite §3; the muscle-level extreme is `../higgsfield-facs/SKILL.md`.
+- **White balance in Kelvin**, fixed within a scene: 3200K / 4000K / 5600K /
+  8500K.
+- **No director names, signature works, or equipment model names** — they
+  get ignored or break complex moves; describe the look instead. (Overrides
+  the empirical director-substitute in § Prompt-Craft Laws for this regime.)
+- **English prompts only** (for the historical ZH exception, see
+  § Multi-Language Prompt Workarounds).
+
+### POSITIVE LOCKS
+
+A **lock** is a short hard fixer placed next to what it protects —
+`"headlights stay glowing in every shot"`. The POSITIVE LOCKS block closes
+the prompt: continuity (characters, props, environment identical across
+cuts) plus a single positive restatement of critical info. This is where the
+positive constraint statements from § Prompt-Craft Laws live in a block
+prompt.
+
+### Cut-format ladder
+
+Four precision levels — points on a scale, pick the one the shot needs:
+
+1. **Oner** — `"one continuous shot, the camera does not cut on its own."`
+2. **Sequential cuts, no timecodes** — `CUT 1 … CUT 2 … CUT 3`, described in
+   order, when cuts matter but exact timing doesn't.
+3. **Timed multishot** — explicit cuts at stated seconds
+   (`1.0s HARD CUT`), when beats must land on a clock.
+4. **Freestyle b-roll** — don't lock cuts; let the model find angles.
+
+Whenever cuts are specified (timed or not), add: `"cuts only at the
+specified points, the camera does not cut on its own."` Cut vocabulary:
+`HARD CUT`, `SMASH CUT`, `MATCH CUT`, `INSERT CUT`, `REVERSE CUT`,
+`WHIP CUT`; fades/crossfades only if explicitly requested. This ladder is
+the resolution of the pick-a-side anti-pattern in § Output Format
+(per-second labels inside an intended oner read as cut instructions), and
+timed beats must still sum to the declared duration (4–15s) per the runtime
+arithmetic there.
+
+### Tag naming + minimal reference text
+
+- User-specified tags verbatim; otherwise load-order `@image1 @video1
+  @audio1` — consistent with § Reference Roles → Per-Image Role Convention.
+- The `@TAG:` reference line = age + role/build + current state + unique
+  visible features + action-critical details + voice (only if it has a
+  line) + `"100% matches the reference"`.
+- **Keep reference character text minimal** — long appearance text fights
+  the image and degrades it (same mechanism as the I2V subject-drift rule in
+  § Prompt-Craft Laws).
+- **State critical details in words anyway** — small text, logos, colors —
+  even when visible in the reference; the model can drop them.
+- **Never place an `@tag` in a shot where that object is not present** — the
+  model will force it into frame.
+
+### Context isolation
+
+Every generation is a blank slate with no memory of previous shots. Never
+carry in scene numbers, script headings, prior-scene summaries, unused tags
+or characters, or "as above / continues" phrasing. This is *why* the
+Continuation Prompt Formula (below) demands a verbatim identity re-paste
+rather than a reference back to the earlier prompt.
+
+### Special protocols
+
+- **4-mechanism extreme-FOV multishot stack** (8° / 107°): ① sequence-wide
+  identity lock (single location reference across all beats), ② LENS LOCK
+  opener — explicit FOV phrase starting each beat, ③ LENS CHECK closer
+  confirming FOV at the end of each beat, ④ color via material + light, not
+  a list. **All four or extreme-FOV multishots break down after 2–3 beats.**
+- **Whip-pan needs ≥0.8s of blur travel** — under 0.8s it renders as a hard
+  cut without blur (settled → 0.8s WHIP → settled).
+- **Mixed real-time / slow-mo:** hard cuts only between speed modes; each
+  shot is one speed start to finish.
+- **Anti-impact locks** for cracks/breaks: `"crowd PRESSES, not strikes"` ·
+  `"fracture originates from edge stress, not center impact"` · `"no impact
+  point — pressure-based crack"` · sequential timing edge-to-center, not
+  radial from a point.
+- **Observation pattern** (hidden-camera effect), all three at once:
+  foreground occlusion over 20–30% of frame + atmospheric haze between
+  camera and subject + distance vantage at 8–12°. Change the occlusion type
+  between beats; keep the vantage single.
+
+For these protocols applied on real footage — per-segment LENS LOCKs, timed
+SMASH/MATCH cuts, screen composites — see `PRODUCTION-PATTERNS.md` in this
+directory.
 
 ---
 
@@ -381,6 +583,47 @@ secondary memory ("following her glance back"), immediate continuation (steps
 fully into the corridor — the next frame action), no action repeat (the glance
 is referenced, not re-performed).
 
+### Extension Prompting — Video-Reference Continuation
+
+`[EMPIRICAL — cross-surface, verified on Dreamina]` — no Seedance surface
+exposes a dedicated "extend" button. The working extension path: attach the
+existing clip as a **video reference** (the `video_references` media role)
+and open the prompt with **"The scene continues."** The model picks up from
+the clip's end and carries motion, characters, environment, even voices. The
+five rules above still apply — the attached clip simply replaces the prose
+last-frame anchor with the real thing.
+
+- **Prequels:** open with **"Show me what happens before"** instead — the
+  model generates the clip leading *into* the source. Past / current /
+  future can all be chained around one anchor clip.
+- **Match the source clip's resolution AND duration** — 1080p source →
+  1080p extension, 15s source → 15s extension (both inside the model's
+  4–15s range; 1080p/4k require `mode=std`). A 720p extension of a 1080p
+  source shows a visible quality jump at the join. Same family as the
+  duration-match rule for screen composites
+  (`PRODUCTION-PATTERNS.md` § Video-Reference 1:1 Lock + SCREEN REALISM).
+- **Occluded-identity binding:** if an identity feature is hidden at the
+  source clip's end (a mole behind a hand), add the character image as a
+  second reference and bind it explicitly: `"The woman's identity is
+  @Image1."`
+- **Chains degrade.** Each extension re-feeds a generation of a generation
+  and compounds artifacts. `[FIELD — community, seedance-2.0 repo v6.6.0]`:
+  expect visible drift by the 4th–5th chained generation; **cap seamless
+  chains at ~2 (hard ceiling 3), then re-anchor from the ORIGINAL canonical
+  references** — a scene boundary is an intentional cut re-opened from
+  canonical refs, not extension #4. A sequence that must run longer: break
+  the chain with a B-roll cutaway between extensions, or upscale before
+  re-feeding.
+- **Prompt-engineered cut points:** end the extension prompt on a
+  camera-angle change (`"the scene from the character's perspective"`) so
+  the next join reads as intentional coverage rather than a seam.
+- **Source carries state:** the attached clip carries the state; the
+  extension text carries only the delta — see the `[FIELD]` addendum under
+  § Reference Roles → Load-Bearing Rule before writing the opening line.
+- **Extending dialogue:** check the per-language dialogue-sync budget table
+  in `../higgsfield-audio/SKILL.md` before writing the next line — reliable
+  lip-sync word counts differ sharply by language.
+
 ---
 
 ## Working Modes vs Prompt Modes — Two Taxonomies
@@ -458,6 +701,12 @@ prompt patterns by file type.
 
 If a property has to read consistently across multiple shots, assign it
 to a reference role. If it only matters for one shot, write it inline.
+
+Three in-prompt role *phrases* demonstrated in Higgsfield's Seedance-4K
+tutorial — `"100% matches the reference"` (identity lock), `"STYLE
+REFERENCE ONLY"` (environment that the model may extend), and `"VARIETY
+reference"` (crowd lineup sheet, the clone-army fix) — are catalogued in
+`PRODUCTION-PATTERNS.md` § Reference-Role Vocabulary.
 
 ### Character
 
@@ -572,6 +821,17 @@ action, reference wins on texture and world feel" — see
 What It Can't, § Load-Bearing Rule). Same underlying principle from
 different surfaces. The camera-side rule names the WIN order in case of
 conflict; the Seedance-side rule names the LANES each side covers.
+
+> `[FIELD — community, seedance-2.0 repo v6.6.0]` **Source carries state.**
+> When an accepted clip or final frame is attached as a reference, the
+> source carries the state — the prompt text carries only the *delta*.
+> Delete opening-state prose that repeats what the attached source already
+> shows; when a reference and the text conflict, **references outrank
+> text**. One class of state stays in prose regardless: a still frame
+> cannot carry open motion vectors, camera-movement phase, or audio phase —
+> in-flight motion and timing must be restated in words even when the frame
+> is attached. Applied to extensions in § Continuation Prompt Formula →
+> Extension Prompting.
 
 The same distinction applies one level up — at the prompt-construction
 workflow, not just inside the prompt. When a Seedance clip lands and

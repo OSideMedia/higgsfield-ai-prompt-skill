@@ -632,3 +632,220 @@ between start and end or renders an ambiguous blur. The arc is one
 continuous take inside a single 8-second clip. See
 `skills/higgsfield-seedance/SKILL.md` § Transformation for the construction
 pattern.
+
+---
+
+## Seedance-4K Film Tutorial — Worked Examples
+
+Curated from Higgsfield's official Seedance-4K one-minute film tutorial
+[DEMO — Higgsfield Seedance-4K film tutorial, 2026-07, prompts verbatim from
+the official blog]. All prompts ran on Seedance 2.0 at 4K, 16:9. Long prompts
+are excerpted here to their load-bearing blocks — `[…]` marks omitted text.
+Full versions of all 25 tutorial prompts are on the source blog:
+higgsfield.ai/blog/seedance4k-breakdown.
+
+### Scene 4 — Snow Leopard Super-Telephoto Zoom (Prompted Imperfection)
+
+The reusable technique is *prompted imperfection*: real long-lens footage is
+flawed, so the prompt requests the flaws — heat-haze swim, telephoto
+micro-tremor, mushy digital-zoom smear, a brief focus hunt — and the clip
+reads as captured, not generated. Atmosphere is quantified and ramped
+(20% → 70% haze density) rather than described adjectivally, and the lens is
+specified in FOV degrees (84° → 8°), never mm. 10s, one fixed tripod spot,
+pure optical zoom.
+
+```
+OPTICS
+A single massive optical zoom from WIDE 84° FOV to super-telephoto 8° FOV,
+stopping at a HALF-BODY framing of the leopard (head, chest and shoulders,
+roughly half the body). Extreme compression at the long end — mountain layers
+flattened into stacked planes. Genuine long-distance super-tele character:
+from the moment the zoom pushes long, and strongly by the close end, the
+image swims and ripples with heat-haze and atmospheric distortion, edges
+shimmering as if seen through rising air over miles; a constant nervous
+telephoto micro-tremor, the framing trembling and drifting; the picture grows
+softer and slightly mushy, fine sharpness falling off into gentle blur and
+faint digital-zoom smear with light grain; a brief focus hunt before it
+settles on the cat. The wide start is clean and crisp; these artifacts build
+hard as it zooms in. Continuous push, no drift between beats.
+
+LIGHTING
+[…] Atmospheric haze builds across the shot — roughly 20% density at the wide
+start rising to about 70% at the long compressed end, visible deep into the
+layered peaks.
+
+POSITIVE LOCKS
+The camera stays in one fixed spot — static tripod, pure optical zoom only,
+never cuts and never leaves its spot. […] The long-lens look stays clearly
+realistic and imperfect — visible heat-haze swim, telephoto jitter, soft
+mushy grain, all building as it zooms in. […]
+
+[… full prompt also states camera and subject motion separately on a
+second-by-second 10s clock, and describes the leopard entirely in-prompt
+(no reference sheet) with an every-frame consistency lock.]
+```
+
+### Scene 5 — Truck vs. Snow Monster (Coordinate Blocking + Per-Segment LENS LOCKs)
+
+The tutorial's flagship 16-second action shot, six segments in one prompt.
+Three reusable techniques: **coordinate blocking** — subject and storm are
+pinned to x%/y% frame positions with locked screen direction, so the chase
+geometry can't drift; **timestamped cut grammar** — FORMAT MODE names the cut
+type at each second (HARD, SMASH to slow-mo, MATCH); **per-segment LENS
+LOCKs** — every segment carries its own FOV-degree lock so the lens holds
+inside a segment and changes only on the cut.
+
+```
+FIRST FRAME AND SPATIAL BLOCKING
+The first visible frame is an extreme super-wide aerial-height establishing
+vista — maximum scope, @truck1 a tiny speck. The truck sits deep background,
+left-of-center, x 38%, y 44%, scale tiny (under 4% of frame width), driving
+left-to-right at full speed. […] The blizzard wall fills the background
+behind and to the left, x 0% to 70%, upper half of frame, advancing rightward
+— always behind the truck, never in the open road ahead. No empty plate — the
+truck is present and moving left-to-right in frame one. […]
+Truck travel direction: screen-left to screen-right, locked; clear road ahead
+at screen-right. Storm and monster locked to screen-left/rear (behind). […]
+
+FORMAT MODE
+Controlled six-segment sequence in one continuous escalating beat. Seg 1
+real-time push-in. Seg 2 real-time obstacle gauntlet. Seg 3 real-time
+"shark-under-snow" stalk. Seg 4 slow-motion fake-out (claw miss). Seg 5
+slow-motion scoop, launch, and mid-air rotations. Seg 6 low ground-level shot
+as the truck rolls in and stops upside down. HARD CUT at 3.0s, HARD CUT at
+6.0s, SMASH CUT to slow motion at 9.0s, continue slow motion through the
+scoop, MATCH CUT to the ground angle at 13.5s. No subtitles, no music.
+
+OPTICS
+Prime-lens optical character throughout — clean, sharp center field, gentle
+natural falloff, no zoom-breathing, fixed-focal clarity.
+LENS LOCK SEG 1 = begin 107° wide rectilinear (immense environment, straight
+horizon, truck tiny, no fisheye), settling toward 84° classic wide as it
+closes on the cab. No drift beyond this push.
+LENS LOCK SEG 2 = 84° classic wide, low and close, foreground wrecks and
+barricades looming and ripping past the lens, immersive speed, straight lines
+rectilinear.
+LENS LOCK SEG 3 = 47° standard normal side profile, truck and the moving
+snow-bulge both readable, grounded perspective.
+LENS LOCK SEG 4 = 29° short telephoto, slight compression on the near-miss
+claw and the heroes' faces, the monster looming soft behind.
+LENS LOCK SEG 5 = 47° standard normal for the launch/flip — natural human-eye
+proportions, no distortion as the truck tumbles.
+LENS LOCK SEG 6 = 84° classic wide, low ground-level — the truck looms large
+rolling toward the lens, foreground snow road across the lower frame, no
+fisheye.
+
+[… full prompt also carries SCENE CONTEXT, ACTIVE REFERENCES, LOCATION MAP,
+per-segment CAMERA moves, second-by-second ACTION TIMING, PERFORMANCE,
+detailed flip PHYSICS (wheels stay mounted, spinning), COLOR GRADE, LIGHTING,
+WARDROBE, STYLE, OUTPUT SETTINGS, and POSITIVE LOCKS — see the source blog.]
+```
+
+### Scene 5b — Finished Clip Playing on an In-Frame TV (1:1 Video Reference + SCREEN REALISM)
+
+How to composite a finished generation onto a screen inside a new shot: attach
+the clip as `@video_1` with a 1:1 role that forbids reinterpretation, and add
+a SCREEN REALISM block so the picture reads as a filmed physical panel rather
+than a pasted overlay. Two rules travel with the technique: the new
+generation's duration must exactly match the reference clip's (the tutorial
+trimmed Scene 5 to its first 6s to feed this 6s composite — otherwise
+Seedance starts making things up), and never leave in-frame screen content
+unspecified.
+
+```
+ACTIVE REFERENCES
+[…]
+@video_1 — the footage playing on the TV: on-screen content matches the
+source 1:1 — same image, timing, framing, motion and colors, never
+reinterpreted, re-edited, cropped, looped early, or replaced.
+
+SCREEN REALISM
+The TV picture reads as a real physical panel being filmed, not a clean
+digital overlay: the picture sits behind the glass panel and carries a faint
+glass sheen and soft glare, dim reflections of the room and window on the
+screen surface, a subtle pixel/sub-pixel grid and gentle moiré, slight bloom
+on the brightest areas, mild panel contrast and color shift, and a small
+off-axis perspective from the side viewing angle. The underlying picture
+stays fully recognizable as @video_1.
+
+[… full prompt also blocks the watcher low and to one side so the screen
+stays unobstructed, locks the camera static for the full 6 seconds, and
+repeats the 1:1 and screen-size locks in POSITIVE LOCKS — see the source
+blog.]
+```
+
+### Scene 6 — Remote Close-Up (Red-Arrow Annotation + Exactly-One-Press Lock)
+
+The actor kept pressing the wrong button, so the fix happened on the *asset*:
+a red arrow drawn onto the prop reference sheet, then encoded in the prompt
+text so the model reads the annotation. The single press is then locked three
+times — in the blocking, on the action clock, and in POSITIVE LOCKS — and the
+buttons to avoid are steered with positive phrasing ("stays clear of"), never
+negation. 4s static macro at 12° FOV.
+
+```
+ACTIVE REFERENCES
+@REMOTE — matte black household streaming remote. 100% matches the reference.
+[…] a CH rocker on the RIGHT (UP chevron ˄ top, "CH" mid, DOWN chevron ˅
+bottom). The reference's red arrow points precisely to the CH-UP chevron (˄)
+directly above the "CH" label.
+
+ACTION
+0.0s–1.0s — the left hand rests on the left thigh holding @REMOTE, thumb
+resting on the lower-right face just over the CH-UP chevron (˄) directly
+above the "CH" label, where the red arrow points; matte black surface
+catching soft cool ambient light.
+1.0s–2.0s — the thumb presses the CH-UP chevron (˄) one single time — a
+deliberate press, the button giving slightly under the pad, one soft
+mechanical click as the channel changes. The thumb stays clear of the VOL
+rocker to the left, the navigation pad above, and the CH-DOWN chevron (˅)
+below — only CH-UP.
+2.0s–4.0s — the thumb lifts off and settles back, the hand resting steady on
+the thigh, @REMOTE held still, no further presses.
+
+POSITIVE LOCKS
+[…] The thumb presses the CH-UP chevron (˄) directly above "CH" on the
+lower-right CH rocker, where the reference red arrow points — exactly ONE
+time, a single clear press-and-release, then it lifts off and the hand holds
+still. […]
+```
+
+### Scene 8 — Battle v1 → v2: the VARIETY-Reference Fix (Clone Army)
+
+**Before (v1):** the elven army used a single-character reference labeled a
+STYLE reference, with "every elf unique" asked for in prose — and produced an
+army of identical clones, because references outrank text. **After (v2):**
+the fix is not better wording but a better asset — a lineup sheet of FOUR
+fully distinct elves, attached in place of the single character and relabeled
+a **VARIETY reference**. The rest of the prompt is unchanged; only the `@elf`
+role line and its POSITIVE LOCKS sentence differ (plus the matching cape /
+filigree accents in COLOR GRADE).
+
+v1 — `@elf` role line (produced the clone army):
+```
+@elf — STYLE reference for the elven army: silver-and-gold leaf-filigree
+armor, pale-blue capes, elven swords. The army is a varied host — men and
+women, each a distinct face, hair color, build, helmet and cape, every elf
+unique while keeping this armor-and-weapon style, each fighting with a sword
+and striking only at orcs. 100% matches the reference style.
+```
+
+v2 — only the changed lines (with the 4-elf lineup sheet attached as `@elf`):
+```
+@elf — VARIETY reference for the elven army: a sheet of FOUR different elves
+— men and women, blonde / dark / auburn / silver hair, silver-, gold- and
+rose-toned leaf-filigree armor with capes, elven swords. The army is a varied
+host drawn from these four types — a mix of men and women with different
+faces, hair colors, builds and armor tones, every elf unique, no two alike,
+each fighting with a sword and striking only at orcs.
+
+POSITIVE LOCKS
+[…] The elven army is a VARIED host built from the four elf types in @elf —
+men and women, mixed hair colors and silver/gold/rose armor tones, every elf
+unique and no two alike — each fighting with a sword in hand. […]
+```
+
+The general rule: one character reference = one identity, everywhere it
+appears. When a reference should seed a *population*, attach a multi-character
+lineup sheet and name its role VARIETY reference — diversity has to live in
+the pixels, not just the prose.
