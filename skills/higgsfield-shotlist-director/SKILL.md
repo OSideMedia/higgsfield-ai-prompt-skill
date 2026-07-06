@@ -165,7 +165,7 @@ A plain "script → prompts" generator stops at the document. This skill is wire
 into the rest of the repo, which is the whole point:
 
 1. **Preflight every prompt.** Before delivering the shotlist, run each prompt's
-   copy-block through the linter — `python3 seedance_lint.py --preflight --model
+   copy-block through the linter — `python3 scripts/seedance_lint.py --preflight --model
    seedance_2_0 "<prompt>"` (`../higgsfield-seedance/SKILL.md` § Pre-flight
    Linter). Real names, brand/IP, age markers, conflicting instructions, shot-
    count drift, and out-of-enum aspect/resolution/mode are caught **before** the

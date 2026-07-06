@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.19.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.19.1-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--07--05-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
@@ -171,11 +171,16 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 ├── photodump-presets.md              ← Photodump mode presets
 ├── DISCIPLINE.md                     ← Cross-cutting discipline framework (9 patterns, 3-3-3 tier symmetry)
 ├── production-benchmarks.md          ← Production-quality anchors + acceptance-rate calibration
-├── higgsfield_memory.py              ← Memory system script
-├── seedance_lint.py                  ← Seedance preflight linter
-├── validate.py                       ← Pre-release validation script
-├── generate_user_guide.py            ← USER-GUIDE.pdf generator (Path B refactor — v3.7.0)
-├── validate_user_guide.py            ← USER-GUIDE.pdf drift validator (text-extract + binary diff)
+├── scripts/                          ← Python tooling (run from the repo root)
+│   ├── higgsfield_memory.py          ← Memory system script
+│   ├── seedance_lint.py              ← Seedance preflight linter
+│   ├── validate.py                   ← Pre-release validation script
+│   ├── build_index.py                ← Regenerates INDEX.md + checks QUICK FACTS anchors
+│   ├── sync_specs.py                 ← Regenerates specs/ from a models_explore snapshot
+│   ├── refresh_specs.py              ← Spec-drift tripwire (live CLI vs baseline)
+│   ├── generate_user_guide.py        ← USER-GUIDE.pdf generator (Path B refactor — v3.7.0)
+│   ├── validate_user_guide.py        ← USER-GUIDE.pdf drift validator (text-extract + binary diff)
+│   └── sub_skill_descriptions.py     ← Canonical sub-skill roster (shared data module)
 ├── db/
 │   ├── filter-memory.json            ← Content filter memory (seeded)
 │   └── quality-memory.json           ← Quality failure memory (seeded)
@@ -253,10 +258,10 @@ one command — never a form). After ~30–40 rows a production has empirical
 takes-per-kept ratios per shot type instead of vibes:
 
 ```bash
-python3 higgsfield_memory.py log-gen adze --model seedance_2_0 \
+python3 scripts/higgsfield_memory.py log-gen adze --model seedance_2_0 \
   --tags dialogue-cu,two-char --outcome rejected --reason extra-cuts
-python3 higgsfield_memory.py ratio adze --credits     # hit rates + money view
-python3 higgsfield_memory.py budget adze --shots plan.json   # price before burning
+python3 scripts/higgsfield_memory.py ratio adze --credits     # hit rates + money view
+python3 scripts/higgsfield_memory.py budget adze --shots plan.json   # price before burning
 ```
 
 Tags and reject reasons come from controlled vocabularies (`db/ledger/README.md`);
@@ -269,7 +274,7 @@ Two capabilities ship **inactive on purpose** and need a one-time setup.
 
 ### 1. Activate the scheduled spec-drift check
 
-`.github/workflows/spec-drift.yml` runs `refresh_specs.py` weekly to catch when
+`.github/workflows/spec-drift.yml` runs `scripts/refresh_specs.py` weekly to catch when
 Higgsfield changes a model's lineup or capabilities before the 30-day staleness
 warning would. It ships **dormant** until you give it the Higgsfield CLI
 credentials as a repo secret:
@@ -288,13 +293,13 @@ GitHub secret — they are never committed.
 
 ### 2. Let routing telemetry accumulate before pruning
 
-`log-route` / `routing` (in `higgsfield_memory.py`) record which sub-skills each
+`log-route` / `routing` (in `scripts/higgsfield_memory.py`) record which sub-skills each
 request opens, so "which skills are load-bearing, which to retire" becomes a
 data question:
 
 ```bash
-python3 higgsfield_memory.py log-route --skills higgsfield-prompt,higgsfield-camera
-python3 higgsfield_memory.py routing     # ranks opens, lists the never-opened tail
+python3 scripts/higgsfield_memory.py log-route --skills higgsfield-prompt,higgsfield-camera
+python3 scripts/higgsfield_memory.py routing     # ranks opens, lists the never-opened tail
 ```
 
 This is **instrumentation, not a verdict** — let real requests accumulate before
@@ -329,4 +334,4 @@ acting on the tail. A small sample is not evidence a skill is dead.
 
 ---
 
-Built February 2026 · v3.19.0 (updated 2026-07-05) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.19.1 (updated 2026-07-06) · Platform: [higgsfield.ai](https://higgsfield.ai)

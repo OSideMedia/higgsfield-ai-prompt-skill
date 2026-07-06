@@ -1,9 +1,10 @@
 """Shared fixtures for the tooling test suite.
 
-The repo root is added to sys.path so the flat-module tooling
+The scripts/ directory is added to sys.path so the flat-module tooling
 (seedance_lint, sync_specs, higgsfield_memory, validate) imports directly.
-DB redirection uses the HF_DB_DIR env var (see higgsfield_memory.py) because
-it works identically for in-process imports and subprocess CLI invocations.
+DB redirection uses the HF_DB_DIR env var (see scripts/higgsfield_memory.py)
+because it works identically for in-process imports and subprocess CLI
+invocations.
 """
 
 import json
@@ -13,10 +14,11 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parents[1]
+SCRIPTS = REPO / "scripts"
 FIXTURES = Path(__file__).parent / "fixtures"
 MINI_SNAPSHOT = FIXTURES / "models_explore_snapshot_2026-06-11.json"
 
-sys.path.insert(0, str(REPO))
+sys.path.insert(0, str(SCRIPTS))
 
 
 @pytest.fixture

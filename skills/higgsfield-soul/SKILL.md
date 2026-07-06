@@ -12,7 +12,7 @@ metadata:
 # Higgsfield Soul ID — Character Consistency
 
 ## QUICK FACTS
-*Generated-checked block (build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
+*Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
 - Hard rule: every Soul ID prompt splits into Identity Block (static descriptors only) + Motion Block (temporal/camera only) [→](#identity-vs-motion-separation-hard-rule)
 - Don't re-describe the face or core features — only describe what differs from the base character [→](#prompting-with-soul-id)
 - Reference image rules: front or 3/4 angle, even lighting, neutral-to-slight expression, no blur, solo subject [→](#creating-a-strong-soul-id-reference)

@@ -155,4 +155,4 @@ SFX only: rain on leaves, deep low sauropod calls, heavy footfalls landing on th
 - **Creature still reads CG?** Add a real reference photo as `@creature` (texture only), or
   generate the transformed start frame first (`../../skills/higgsfield-seedance-vfx/references/first-frame.md`).
 - **Preflight** the finished prompt through the parent linter:
-  `python3 seedance_lint.py --preflight --model seedance_2_0 "<prompt>"`.
+  `python3 scripts/seedance_lint.py --preflight --model seedance_2_0 "<prompt>"`.

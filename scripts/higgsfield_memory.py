@@ -6,32 +6,32 @@ Database read/write operations for the Higgsfield learning memory system.
 Called by Claude Cowork via the higgsfield-recall skill.
 
 Usage:
-  python higgsfield_memory.py add-filter <json_entry>
-  python higgsfield_memory.py add-quality <json_entry>
-  python higgsfield_memory.py query-filter <search_terms>
-  python higgsfield_memory.py query-quality <search_terms>
-  python higgsfield_memory.py update-filter <entry_id> <outcome>
-  python higgsfield_memory.py update-quality <entry_id> <outcome> [improved_prompt] [notes]
-  python higgsfield_memory.py stats
-  python higgsfield_memory.py export-summary
-  python higgsfield_memory.py health
+  python3 scripts/higgsfield_memory.py add-filter <json_entry>
+  python3 scripts/higgsfield_memory.py add-quality <json_entry>
+  python3 scripts/higgsfield_memory.py query-filter <search_terms>
+  python3 scripts/higgsfield_memory.py query-quality <search_terms>
+  python3 scripts/higgsfield_memory.py update-filter <entry_id> <outcome>
+  python3 scripts/higgsfield_memory.py update-quality <entry_id> <outcome> [improved_prompt] [notes]
+  python3 scripts/higgsfield_memory.py stats
+  python3 scripts/higgsfield_memory.py export-summary
+  python3 scripts/higgsfield_memory.py health
 
 Generation ledger (db/ledger/ — see db/ledger/README.md):
-  python higgsfield_memory.py log-gen <project> --model X --tags a,b --outcome kept
-  python higgsfield_memory.py log-gen <project> '<json row>'
-  python higgsfield_memory.py last-gen <project>
-  python higgsfield_memory.py amend-gen <id> outcome=kept   # superseding row
-  python higgsfield_memory.py ratio <project> [--model X] [--tag Y] [--global] [--credits]
-  python higgsfield_memory.py ab <project> [--tag Y] [--global]   # prompt_method A/B
-  python higgsfield_memory.py agreement <project> [--global]   # vision/human agreement
+  python3 scripts/higgsfield_memory.py log-gen <project> --model X --tags a,b --outcome kept
+  python3 scripts/higgsfield_memory.py log-gen <project> '<json row>'
+  python3 scripts/higgsfield_memory.py last-gen <project>
+  python3 scripts/higgsfield_memory.py amend-gen <id> outcome=kept   # superseding row
+  python3 scripts/higgsfield_memory.py ratio <project> [--model X] [--tag Y] [--global] [--credits]
+  python3 scripts/higgsfield_memory.py ab <project> [--tag Y] [--global]   # prompt_method A/B
+  python3 scripts/higgsfield_memory.py agreement <project> [--global]   # vision/human agreement
 
 Routing telemetry (item 6 — which sub-skills opened per request):
-  python higgsfield_memory.py log-route --skills higgsfield-prompt,higgsfield-camera
-  python higgsfield_memory.py routing            # per-skill opens + long tail
-  python higgsfield_memory.py budget <project> --shots <manifest.json|csv>
+  python3 scripts/higgsfield_memory.py log-route --skills higgsfield-prompt,higgsfield-camera
+  python3 scripts/higgsfield_memory.py routing            # per-skill opens + long tail
+  python3 scripts/higgsfield_memory.py budget <project> --shots <manifest.json|csv>
 
 Per-project namespacing:
-  python higgsfield_memory.py --project <name> <command> ...
+  python3 scripts/higgsfield_memory.py --project <name> <command> ...
 
   Routes every command to db/projects/<name>-filter-memory.json /
   <name>-quality-memory.json instead of the global databases, so
@@ -50,13 +50,13 @@ from pathlib import Path
 from sub_skill_descriptions import SUB_SKILL_DESCRIPTIONS  # canonical sub-skill roster
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
-SCRIPT_DIR = Path(__file__).parent
-# DB files live alongside the script (sibling directory or same directory).
+REPO_ROOT = Path(__file__).resolve().parent.parent  # scripts/ → repo root
+# DB files live under the repo root (db/), one level above scripts/.
 # The directory is created lazily on first write (see save_db / export_summary),
 # not at import time — importing this module should have no filesystem side effects.
 # HF_DB_DIR overrides the location (tests point it at a temp dir; works both
 # in-process and across subprocess boundaries, unlike monkeypatched constants).
-DB_DIR = Path(os.environ["HF_DB_DIR"]) if os.environ.get("HF_DB_DIR") else SCRIPT_DIR / "db"
+DB_DIR = Path(os.environ["HF_DB_DIR"]) if os.environ.get("HF_DB_DIR") else REPO_ROOT / "db"
 FILTER_DB = DB_DIR / "filter-memory.json"
 QUALITY_DB = DB_DIR / "quality-memory.json"
 # Item 6: which sub-skills the dispatcher opened per request. Instrumentation —
@@ -235,7 +235,7 @@ def load_specs_models() -> dict:
     Ledger rows store CANONICAL ids only (aliases resolved at write time) so
     per-model credit averages can't fragment across an alias. Returns {} when
     the specs layer is missing — callers decide whether that's fatal."""
-    path = SCRIPT_DIR / "specs" / "model-specs.json"
+    path = REPO_ROOT / "specs" / "model-specs.json"
     try:
         spec = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
@@ -407,7 +407,7 @@ def build_global() -> dict:
         for r in db["rows"]:
             rows.append({**r, "project": db["project"]})
     return {
-        "_generated": "by higgsfield_memory.py — DO NOT HAND-EDIT; "
+        "_generated": "by scripts/higgsfield_memory.py — DO NOT HAND-EDIT; "
                       "underscore-prefixed ledgers are excluded by design",
         "generated_from": sources,
         "_total_rows": len(rows),
@@ -749,7 +749,7 @@ def log_gen_row(project: str, fields: dict) -> dict:
     if not model_ids:
         raise LedgerError("specs/model-specs.json missing or unreadable — "
                           "the ledger validates model ids against the specs "
-                          "layer (run: python3 sync_specs.py)")
+                          "layer (run: python3 scripts/sync_specs.py)")
     path = ledger_path(project)
     db = load_ledger(path)
 
@@ -778,7 +778,7 @@ def log_gen_row(project: str, fields: dict) -> dict:
 def _parse_log_gen_args(argv: list):
     import argparse
     p = argparse.ArgumentParser(
-        prog="higgsfield_memory.py log-gen",
+        prog="scripts/higgsfield_memory.py log-gen",
         description="Log one generation attempt to a project ledger "
                     "(one line — see db/ledger/README.md).")
     p.add_argument("project")
@@ -895,7 +895,7 @@ def render_ratio(label: str, result: dict, credits_mode: bool = False) -> str:
 def cmd_ratio(argv: list):
     import argparse
     p = argparse.ArgumentParser(
-        prog="higgsfield_memory.py ratio",
+        prog="scripts/higgsfield_memory.py ratio",
         description="Takes-per-kept ratio table from the generation ledger.")
     p.add_argument("project", nargs="?",
                    help="project ledger (omit with --global)")
@@ -958,7 +958,7 @@ def render_method_ab(label: str, result: dict) -> str:
 def cmd_ab(argv: list):
     import argparse
     p = argparse.ArgumentParser(
-        prog="higgsfield_memory.py ab",
+        prog="scripts/higgsfield_memory.py ab",
         description="Prompt_method A/B (quick vs mcsla) from the generation "
                     "ledger — unlabeled rows are excluded, not bucketed.")
     p.add_argument("project", nargs="?", help="project ledger (omit with --global)")
@@ -1004,7 +1004,7 @@ def render_agreement(label: str, result: dict) -> str:
 def cmd_agreement(argv: list):
     import argparse
     p = argparse.ArgumentParser(
-        prog="higgsfield_memory.py agreement",
+        prog="scripts/higgsfield_memory.py agreement",
         description="Vision/human label agreement per reject_reason class — "
                     "measures the vision classifier before it is trusted.")
     p.add_argument("project", nargs="?", help="project ledger (omit with --global)")
@@ -1074,7 +1074,7 @@ def render_budget(label: str, result: dict) -> str:
 def cmd_budget(argv: list):
     import argparse
     p = argparse.ArgumentParser(
-        prog="higgsfield_memory.py budget",
+        prog="scripts/higgsfield_memory.py budget",
         description="Price a shot manifest from logged generation ratios.")
     p.add_argument("project")
     p.add_argument("--shots", required=True, type=Path,
@@ -1243,7 +1243,7 @@ def render_routing(result: dict) -> str:
 
 def cmd_log_route(argv: list):
     import argparse
-    p = argparse.ArgumentParser(prog="higgsfield_memory.py log-route")
+    p = argparse.ArgumentParser(prog="scripts/higgsfield_memory.py log-route")
     p.add_argument("--skills", required=True,
                    help="comma-separated sub-skill names routed to this request")
     p.add_argument("--scene", help="optional scene_ref / request tag")
@@ -1475,7 +1475,7 @@ def build_summary() -> str:
     projects = project_ledger_files()
     if not projects:
         lines.append("No project ledgers yet — log generations with "
-                     "`higgsfield_memory.py log-gen <project> ...`.")
+                     "`scripts/higgsfield_memory.py log-gen <project> ...`.")
     for path in projects:
         db = load_ledger(path)
         lines.append("\n```")

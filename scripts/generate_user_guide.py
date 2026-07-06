@@ -29,7 +29,7 @@ from fpdf import FPDF
 from fpdf.errors import FPDFException
 
 
-REPO_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent  # scripts/ → repo root
 ROOT_SKILL_PATH = REPO_ROOT / "SKILL.md"
 SKILLS_DIR = REPO_ROOT / "skills"
 FONT_DIR = REPO_ROOT / "assets" / "fonts"
@@ -1262,7 +1262,7 @@ def build_pdf(dry_run: bool = False):
                 f"Sub-skill list out of sync between filesystem and SUB_SKILL_DESCRIPTIONS.\n"
                 f"  In filesystem but undeclared: {sorted(added)}\n"
                 f"  Declared but missing from filesystem: {sorted(removed)}\n"
-                f"Update SUB_SKILL_DESCRIPTIONS at top of generate_user_guide.py."
+                f"Update SUB_SKILL_DESCRIPTIONS in scripts/sub_skill_descriptions.py."
             )
 
         pdf.subsection_title(f"Sub-Skills ({len(SUB_SKILL_DESCRIPTIONS)} total)")

@@ -12,7 +12,7 @@ metadata:
 # Higgsfield Cinema Studio 2.5
 
 ## QUICK FACTS
-*Generated-checked block (build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
+*Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
 - Three Cinema Studio versions coexist (2.5 / 3.0 / 3.5) — user-selected, no auto-routing; always detect the version first [→](#version-detection-ask-first)
 - Hard 512-character prompt cap; 2.5 @ Element chips eat ~80–100 hidden chars each [→](#prompt-character-limit-512-characters)
 - Elements System: define @Characters/@Locations/@Props once, call everywhere [→](#elements-system-define-once-call-everywhere)
@@ -1994,7 +1994,7 @@ The matrix has **two axes**: the physics of the shot AND the delivery context. R
 - Master at the model's **maximum resolution in `std` mode**. Never master below **half the delivery resolution** — below that, the upscaler is inventing detail, not recovering it.
 - Per-shot 720p in a 4K-finish pipeline is allowed only as a **logged exception** (e.g. a shot where shimmer demonstrably ruins the take at 1080p) — note the shot and reason in the shotlist so the finishing stage knows the upscale factor changed.
 
-> **The fast-mode trap (verified from the model schema):** Seedance 2.0's `fast` mode **cannot output 1080p** — per `../../specs/model-specs.yaml`, `mode=fast` forbids `resolution=1080p`. Drafting in `fast` and then "switching up to 1080p" silently changes BOTH the mode and the resolution: the final render runs through a different pipeline (`std`) than the one your draft validated. Preflight the final combination explicitly: `python3 seedance_lint.py --model seedance_2_0 --mode fast --resolution 1080p` fails for exactly this reason.
+> **The fast-mode trap (verified from the model schema):** Seedance 2.0's `fast` mode **cannot output 1080p** — per `../../specs/model-specs.yaml`, `mode=fast` forbids `resolution=1080p`. Drafting in `fast` and then "switching up to 1080p" silently changes BOTH the mode and the resolution: the final render runs through a different pipeline (`std`) than the one your draft validated. Preflight the final combination explicitly: `python3 scripts/seedance_lint.py --model seedance_2_0 --mode fast --resolution 1080p` fails for exactly this reason.
 
 **See also:** `../higgsfield-seedance/SKILL.md` for Seedance 2.0 prompt mode guidance.
 

@@ -107,7 +107,7 @@ USER REQUEST
    • applies MCSLA (Model · Camera · Subject · Look · Action)
    • uses named platform vocabulary from `../../vocab.md`
    • appends shared negative constraints
-   • runs `../../seedance_lint.py` preflight (Seedance prompts only)
+   • runs `../../scripts/seedance_lint.py` preflight (Seedance prompts only)
    • produces a production-grade prompt
    ↓
 [ hand-off to whatever execution surface the user has ]
@@ -192,11 +192,11 @@ If multiple surfaces are present, pick the one that fits the user's stated workf
 
 ## Seedance preflight integration
 
-The one place where this skill's tooling earns its keep inside the integrated flow is `../../seedance_lint.py`. Seedance 2.0's content filter rejects instant-fail prompts before they reach the GPU, and the user gets charged credits regardless of whether the rewrite was the issue. The linter catches the predictable rejection patterns at prompt-construction time, before submission.
+The one place where this skill's tooling earns its keep inside the integrated flow is `../../scripts/seedance_lint.py`. Seedance 2.0's content filter rejects instant-fail prompts before they reach the GPU, and the user gets charged credits regardless of whether the rewrite was the issue. The linter catches the predictable rejection patterns at prompt-construction time, before submission.
 
 When the CLI is present AND the prompt being constructed is for Seedance 2.0 or Seedance Pro, append a recommendation:
 
-> `Run python3 seedance_lint.py "<prompt>" before submitting to catch content-filter rejections. The filter is voice-based, not a keyword blacklist — see ../higgsfield-seedance/SKILL.md for the full diagnostic.`
+> `Run python3 scripts/seedance_lint.py "<prompt>" before submitting to catch content-filter rejections. The filter is voice-based, not a keyword blacklist — see ../higgsfield-seedance/SKILL.md for the full diagnostic.`
 
 This is a recommendation to the user. This skill does not run the linter on the user's behalf and does not require the linter to have run before delivering the prompt.
 
@@ -216,6 +216,6 @@ This is a recommendation to the user. This skill does not run the linter on the 
 
 - `../higgsfield-prompt/SKILL.md` — produces the prompt text that gets handed off to any execution surface.
 - `../higgsfield-workspaces/SKILL.md` — handles the upstream "which Higgsfield workspace fits my task" question, which is settled before any execution surface comes into play.
-- `../higgsfield-seedance/SKILL.md` — pairs with the `../../seedance_lint.py` preflight recommendation above; covers the full filter diagnostic and prompt-mode router.
+- `../higgsfield-seedance/SKILL.md` — pairs with the `../../scripts/seedance_lint.py` preflight recommendation above; covers the full filter diagnostic and prompt-mode router.
 - `../higgsfield-assist/SKILL.md` — credit-optimization questions apply regardless of execution surface; route credit/plan questions there.
 - `../higgsfield-soul/SKILL.md` — our Soul prompt-construction sub-skill. Read the Naming collision section above before routing — theirs trains, ours prompts.

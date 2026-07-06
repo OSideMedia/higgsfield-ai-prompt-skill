@@ -3,7 +3,7 @@
 > **Canonical-home note:** the operating HARD RULES live in root `SKILL.md`
 > § HARD RULES — pre-delivery checklist, and ONLY there. This file documents
 > discipline *patterns* and may cite individual HARD RULES by number, but it
-> must never restate or renumber the checklist itself (`validate.py` checks
+> must never restate or renumber the checklist itself (`scripts/validate.py` checks
 > for drift between the two surfaces).
 
 ## What this is
@@ -172,7 +172,7 @@ honest as the `reject_reason` labels feeding it.
 history to read the verdict.
 
 **Demonstrated in:** `skills/higgsfield-prompt/SKILL.md` § Before You
-Iterate + § Batch-and-Select; `higgsfield_memory.py` `compute_ratio` /
+Iterate + § Batch-and-Select; `scripts/higgsfield_memory.py` `compute_ratio` /
 `fork_verdict`; `db/ledger/README.md` § The fork.
 
 ### Vision-Grounded Diagnosis (the fork's accuracy backstop)
@@ -195,7 +195,7 @@ discipline to itself.
 you can actually see; opt-in, not every log.
 
 **Demonstrated in:** `skills/higgsfield-troubleshoot/SKILL.md` §
-Vision-Grounded Diagnosis; `higgsfield_memory.py`
+Vision-Grounded Diagnosis; `scripts/higgsfield_memory.py`
 `compute_vision_agreement`; `db/ledger/README.md` § `vision_reason`.
 
 ### BAD/GOOD/GREAT

@@ -1,6 +1,6 @@
 {
   "_schema_version": "1.0.0",
-  "_description": "Item 6 routing telemetry: which sub-skills the dispatcher opened per request. Append-only. Aggregated by `higgsfield_memory.py routing` to surface load-bearing skills vs the long tail. Instrumentation only — pruning waits for enough requests to trust the distribution.",
+  "_description": "Item 6 routing telemetry: which sub-skills the dispatcher opened per request. Append-only. Aggregated by `scripts/higgsfield_memory.py routing` to surface load-bearing skills vs the long tail. Instrumentation only — pruning waits for enough requests to trust the distribution.",
   "_last_updated": "2026-06-22T00:00:00+00:00",
   "_total_entries": 0,
   "entries": []

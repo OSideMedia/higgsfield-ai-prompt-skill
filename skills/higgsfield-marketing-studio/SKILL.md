@@ -12,7 +12,7 @@ metadata:
 # Higgsfield Marketing Studio
 
 ## QUICK FACTS
-*Generated-checked block (build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
+*Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
 - Hard duration cap: 4–15s per clip; out-of-range values get clamped; longer narrative = multi-clip sequence edited externally [→](#7-generation-parameters)
 - 9 presets: UGC, Tutorial, Unboxing (`ugc_unboxing`), Hyper Motion, Product Review, TV Spot, Wild Card, UGC Virtual Try On, Pro Virtual Try On [→](#3-the-9-presets)
 - Pro Virtual Try On slug is `virtual_try_on`, NOT `pro_virtual_try_on` [→](#slug-naming-is-canonical-routing-mode-lives-on-a-different-mcp-call)

@@ -17,7 +17,7 @@ metadata:
 # Higgsfield Production Pipeline
 
 ## QUICK FACTS
-*Generated-checked block (build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
+*Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
 - 8-stage Master Chain: Popcorn → Seedream/Soul → Animate → Recast → Lipsync → Vibe Motion → Upscale → Assemble; most good short-form uses 3–5 stages [→](#the-master-production-chain)
 - Lock 9 project fields before touching any tool; "what must stay consistent" is the load-bearing one [→](#step-01-start-with-the-project-not-the-prompt)
 - One job per scene — six scene purposes; a good scene prompt answers six questions [→](#step-06-give-every-scene-one-job)

@@ -1,6 +1,6 @@
 name: spec-drift
 
-# Wave C scheduled tripwire (refresh_specs.py). Weekly, pulls the live Higgsfield
+# Wave C scheduled tripwire (scripts/refresh_specs.py). Weekly, pulls the live Higgsfield
 # model catalog via the CLI and diffs it against the committed CLI baseline
 # (specs/cli_baseline.json). DETECT-ONLY — it never writes specs or merges. On
 # drift it opens/updates an issue; on auth failure it fails the job loudly.
@@ -14,7 +14,7 @@ name: spec-drift
 #
 # ── AUTH-REFRESH STORY ───────────────────────────────────────────────────────
 #   The CLI access_token expires; its refresh_token extends the lifetime but
-#   eventually lapses ("Session expired"). When it does, refresh_specs.py exits 1,
+#   eventually lapses ("Session expired"). When it does, scripts/refresh_specs.py exits 1,
 #   THIS JOB FAILS, and GitHub notifies you. Re-run `higgsfield auth login` and
 #   update the secret. No fragile token auto-rotation — expiry is a loud,
 #   actionable alert, which is exactly the exit-state contract the tool is
@@ -23,7 +23,7 @@ name: spec-drift
 # ── CLI-SHAPE STORY (exit 4) ─────────────────────────────────────────────────
 #   The CLI installs unpinned from the tap, so an upstream release can change
 #   its JSON output under us (CLI 1.0.1 renamed `job_set_type` → `job_type` and
-#   dropped per-param enums). refresh_specs.py reports that as exit 4 — a
+#   dropped per-param enums). scripts/refresh_specs.py reports that as exit 4 — a
 #   parser-compatibility failure, NOT an auth failure — and this job says "fix
 #   the parser", never "re-auth". A version guard below also warns (without
 #   failing) whenever the installed CLI differs from the last locally-verified
@@ -61,12 +61,12 @@ jobs:
 
       - name: CLI version guard (warn on unverified upstream release)
         env:
-          # Bump after locally verifying refresh_specs.py against a new CLI.
-          LAST_VERIFIED_CLI: "1.0.1"
+          # Bump after locally verifying scripts/refresh_specs.py against a new CLI.
+          LAST_VERIFIED_CLI: "1.1.5"
         run: |
           INSTALLED=$(higgsfield --version 2>/dev/null | awk '{print $2}')
           if [ "$INSTALLED" != "$LAST_VERIFIED_CLI" ]; then
-            echo "::warning::Installed Higgsfield CLI $INSTALLED differs from last-verified $LAST_VERIFIED_CLI — if this run fails with exit 4, update refresh_specs.py for the new output shape, then bump LAST_VERIFIED_CLI."
+            echo "::warning::Installed Higgsfield CLI $INSTALLED differs from last-verified $LAST_VERIFIED_CLI — if this run fails with exit 4, update scripts/refresh_specs.py for the new output shape, then bump LAST_VERIFIED_CLI."
           fi
 
       - name: Restore CLI credentials
@@ -85,7 +85,7 @@ jobs:
         id: drift
         run: |
           set +e
-          OUT=$(python3 refresh_specs.py 2>&1); CODE=$?
+          OUT=$(python3 scripts/refresh_specs.py 2>&1); CODE=$?
           echo "$OUT"
           echo "$OUT" >> "$GITHUB_STEP_SUMMARY"
           {
@@ -105,7 +105,7 @@ jobs:
       - name: CLI shape changed → fail loudly (fix the parser, NOT auth)
         if: steps.drift.outputs.code == '4'
         run: |
-          echo "::error::The Higgsfield CLI's JSON output shape changed and refresh_specs.py can no longer parse it. Update the parser (see refresh_specs.py ShapeError sites), verify locally, and bump LAST_VERIFIED_CLI in this workflow. Do NOT rotate credentials — this is not an auth failure."
+          echo "::error::The Higgsfield CLI's JSON output shape changed and scripts/refresh_specs.py can no longer parse it. Update the parser (see scripts/refresh_specs.py ShapeError sites), verify locally, and bump LAST_VERIFIED_CLI in this workflow. Do NOT rotate credentials — this is not an auth failure."
           exit 1
 
       - name: Drift detected → open or update an issue
@@ -115,7 +115,7 @@ jobs:
           REPORT: ${{ steps.drift.outputs.report }}
         run: |
           TITLE="spec drift detected — refresh the snapshot"
-          BODY=$(printf 'The weekly spec-drift tripwire found live model changes since the committed baseline:\n\n```\n%s\n```\n\nNext: run the Tier 2 refresh (dump `models_explore` -> `python3 sync_specs.py`), audit `evals/cases/` in the same PR (v3.11.2/v3.11.3 lesson), then accept the new live surface with `python3 refresh_specs.py --update-baseline`.' "$REPORT")
+          BODY=$(printf 'The weekly spec-drift tripwire found live model changes since the committed baseline:\n\n```\n%s\n```\n\nNext: run the Tier 2 refresh (dump `models_explore` -> `python3 scripts/sync_specs.py`), audit `evals/cases/` in the same PR (v3.11.2/v3.11.3 lesson), then accept the new live surface with `python3 scripts/refresh_specs.py --update-baseline`.' "$REPORT")
           EXISTING=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')
           if [ -n "$EXISTING" ]; then
             gh issue comment "$EXISTING" --body "$BODY"

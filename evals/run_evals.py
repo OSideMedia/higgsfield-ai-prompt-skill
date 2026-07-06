@@ -16,7 +16,7 @@ illegal combinations (expect="illegal").
 Usage:
   python3 evals/run_evals.py            # run all cases
   python3 evals/run_evals.py --case ID  # run one
-  python3 validate.py --evals           # same, via the health check
+  python3 scripts/validate.py --evals   # same, via the health check
 
 Exit codes: 0 all pass, 1 any failure.
 """
@@ -32,8 +32,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CASES_DIR = Path(__file__).parent / "cases"
 
-sys.path.insert(0, str(ROOT))
-import seedance_lint as sl  # noqa: E402 — repo-root flat module
+sys.path.insert(0, str(ROOT / "scripts"))
+import seedance_lint as sl  # noqa: E402 — flat module in scripts/
 
 SPECS_PATH = ROOT / "specs" / "model-specs.json"
 ENUM_RULES = {"ar-not-supported", "resolution-not-supported", "mode-not-supported",
@@ -44,7 +44,7 @@ VERDICT_ORDER = {"PASS": 0, "WARN": 1, "FAIL": 2}
 def _spec_index() -> dict:
     index = sl.load_specs(SPECS_PATH)
     if not index:
-        raise SystemExit(f"specs missing/invalid: {SPECS_PATH} — run python3 sync_specs.py")
+        raise SystemExit(f"specs missing/invalid: {SPECS_PATH} — run python3 scripts/sync_specs.py")
     return index
 
 

@@ -1,6 +1,6 @@
 # Higgsfield Memory Summary
 
-Generated: 2026-06-11T20:09:04.918738+00:00
+Generated: 2026-07-06T06:39:21.533301+00:00
 
 
 ## Content Filter Memory
@@ -100,4 +100,4 @@ Total entries: 5
 
 ## Generation Ledger
 
-No project ledgers yet — log generations with `higgsfield_memory.py log-gen <project> ...`.
+No project ledgers yet — log generations with `scripts/higgsfield_memory.py log-gen <project> ...`.

@@ -215,16 +215,16 @@ Cinema Studio 3.0's generation engine produces ~90% usable output. If outputs ar
 
 Troubleshooting that isn't logged is troubleshooting the next session repeats.
 After ANY confirmed fix from this skill, write it to the learning memory
-(`../../higgsfield_memory.py`, databases in `../../db/`):
+(`../../scripts/higgsfield_memory.py`, databases in `../../db/`):
 
 - **Filter workaround confirmed** (the rewritten prompt passed in a real
-  generation): `python3 seedance_lint.py --confirmed "<prompt that passed>"`
+  generation): `python3 scripts/seedance_lint.py --confirmed "<prompt that passed>"`
 - **Quality fix confirmed** (the improved prompt fixed motion / identity /
-  blocking / audio): `python3 higgsfield_memory.py add-quality '<json>'` with
+  blocking / audio): `python3 scripts/higgsfield_memory.py add-quality '<json>'` with
   `original_prompt`, `failure_description`, `improved_prompt`, `model_used` —
   then `update-quality <id> improved` once verified.
 - **Outcome learned later** for an entry that already exists:
-  `python3 higgsfield_memory.py update-filter <id> <fixed|workaround|still-blocked>`
+  `python3 scripts/higgsfield_memory.py update-filter <id> <fixed|workaround|still-blocked>`
 - **Project-specific lessons**: add `--project <name>` to keep them scoped
   under `../../db/projects/` instead of global memory.
 
@@ -261,7 +261,7 @@ multi-motion) are out of scope here; they need frame-by-frame review
 4. **Confirm, then log.** Surface the proposal — *"vision says `physics` (warped
    left hand, center frame); confirm or correct?"* — then:
    ```bash
-   python3 ../../higgsfield_memory.py log-gen <project> --model <id> \
+   python3 ../../scripts/higgsfield_memory.py log-gen <project> --model <id> \
      --tags <shot_tags> --outcome rejected --reason <confirmed> \
      --vision-reason <proposed> --vision-evidence "<one line>"
    ```
@@ -285,7 +285,7 @@ multi-motion) are out of scope here; they need frame-by-frame review
 | FPS drift, temporal de-dup, or **no clean home** | `other` + evidence note |
 
 **Measure before trusting.** Vision is the fork's accuracy backstop only once
-proven. `python3 ../../higgsfield_memory.py agreement <project>` reports, per
+proven. `python3 ../../scripts/higgsfield_memory.py agreement <project>` reports, per
 `reject_reason` class, how often the proposal matched the confirmed verdict. A
 class is `trusted` (vision may be logged without confirmation) only above the
 agreement gate over enough confirmed diagnoses; until then, confirm every one.

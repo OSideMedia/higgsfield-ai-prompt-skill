@@ -1,7 +1,7 @@
 # Bundled fonts — DejaVu Sans Condensed + DejaVu Sans Mono
 
 Four TTFs ship with this repository to support Unicode rendering in
-`generate_user_guide.py`:
+`scripts/generate_user_guide.py`:
 
 | File                                | Style   | Size  |
 |-------------------------------------|---------|-------|
@@ -39,14 +39,14 @@ exceeds ~5%, flag for descope") fired.
 
 DejaVu Sans **Condensed** keeps drift at 0.6-2.8% on real text content
 (6.4% on a synthetic 71×'x' worst case). Zero existing entries
-overflow; the 71-char ceiling in `validate_user_guide.py` stays valid.
+overflow; the 71-char ceiling in `scripts/validate_user_guide.py` stays valid.
 Same Unicode coverage as DV regular; close-to-Helvetica metrics.
 
 Full measurement trail: the v3.7.14 Phase 0 verification notes (internal build notes).
 
 ## Why DejaVu Sans Mono (v3.7.16)
 
-`generate_user_guide.py:code_block` previously used `Courier` (latin-1 core
+`scripts/generate_user_guide.py:code_block` previously used `Courier` (latin-1 core
 font) for inline code snippets. v3.7.16 swaps to `DejaVuSansMono.ttf` under
 a new `Mono` font alias for Unicode-safety symmetry with `Body` (DVC).
 Phase 0 measurement: 0.33% max glyph-width drift vs. Courier on real
@@ -61,7 +61,7 @@ Full measurement trail: the v3.7.16 Phase 0 verification notes (internal build n
 DVC isn't installed on every developer machine by default (macOS ships
 no DejaVu fonts; Linux is variable). Bundling guarantees deterministic
 PDF regeneration across environments — anyone with a checkout of this
-repository can run `python3 generate_user_guide.py` and get the same
+repository can run `python3 scripts/generate_user_guide.py` and get the same
 glyph rendering. Removes a hidden system dependency that would
 otherwise surface as cryptic FPDF errors on first regen.
 
@@ -87,7 +87,7 @@ Re-bundle when:
 
 - DejaVu Fonts ships a newer stable release that fixes a glyph or
   rendering issue affecting USER-GUIDE.pdf
-- `generate_user_guide.py` adds a font weight or style not currently
+- `scripts/generate_user_guide.py` adds a font weight or style not currently
   bundled (e.g., a `BI` bold-italic combination — none used today)
 
 The current convention uses three styles for Body (DejaVu Sans Condensed:

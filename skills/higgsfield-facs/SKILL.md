@@ -413,7 +413,7 @@ A dialogue FACS prompt pairs naturally with the audio conditioning layer:
 ## Worked Examples
 
 All three are lightly normalized from practitioner prompts. Run each through the
-preflight linter before generating (`python3 seedance_lint.py --preflight --model
+preflight linter before generating (`python3 scripts/seedance_lint.py --preflight --model
 seedance_2_0 "<prompt>"`).
 
 ### A — Beat-synced expression sweep (codes-only)

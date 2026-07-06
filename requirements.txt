@@ -1,9 +1,9 @@
 # Python dependencies for repo tooling (not needed to use the skill itself).
 # The skill content is Markdown/JSON; only the PDF user-guide generator needs a
-# third-party package. Everything else (validate.py, higgsfield_memory.py,
-# seedance_lint.py) is pure stdlib.
+# third-party package. Everything else (scripts/validate.py, scripts/higgsfield_memory.py,
+# scripts/seedance_lint.py) is pure stdlib.
 
-fpdf2>=2.8.7,<3   # generate_user_guide.py — renders the PDF user guide
+fpdf2>=2.8.7,<3   # scripts/generate_user_guide.py — renders the PDF user guide
 
 # Dev/CI only (not required to use or validate the skill):
 #   pytest>=8     # tests/ suite — CI installs it in its own step

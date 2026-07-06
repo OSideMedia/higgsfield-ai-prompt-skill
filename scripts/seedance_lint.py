@@ -20,15 +20,15 @@ aspect-ratio / resolution / mode / duration legality per model enum — the
 expensive class of failure (e.g. Seedance `fast` + 1080p, Kling 3.0 + 21:9).
 
 Usage:
-  python3 seedance_lint.py "<prompt text>"
-  echo "<prompt text>" | python3 seedance_lint.py
-  python3 seedance_lint.py --file prompt.txt
-  python3 seedance_lint.py --model seedance_2_0 "<prompt>"   # + structural lint
-  python3 seedance_lint.py --model kling3_0 --ar 21:9 "<prompt>"
-  python3 seedance_lint.py --preflight --model seedance_2_0 "<prompt>"
+  python3 scripts/seedance_lint.py "<prompt text>"
+  echo "<prompt text>" | python3 scripts/seedance_lint.py
+  python3 scripts/seedance_lint.py --file prompt.txt
+  python3 scripts/seedance_lint.py --model seedance_2_0 "<prompt>"   # + structural lint
+  python3 scripts/seedance_lint.py --model kling3_0 --ar 21:9 "<prompt>"
+  python3 scripts/seedance_lint.py --preflight --model seedance_2_0 "<prompt>"
                                                       # filter + structure + memory recall
-  python3 seedance_lint.py --log "<prompt text>"      # log FAIL to filter-memory
-  python3 seedance_lint.py --confirmed "<prompt>"     # log as confirmed workaround
+  python3 scripts/seedance_lint.py --log "<prompt text>"      # log FAIL to filter-memory
+  python3 scripts/seedance_lint.py --confirmed "<prompt>"     # log as confirmed workaround
 
 Settings (aspect ratio / resolution / mode / duration) are read from the
 prompt's settings header lines (e.g. `**Aspect ratio**: 16:9  **Duration**: 8s`)
@@ -44,7 +44,7 @@ Filter-memory loopback:
                   passes Seedance's filter in a real generation.
 
   To update an existing entry's outcome later:
-    python3 higgsfield_memory.py update-filter <id> <outcome>
+    python3 scripts/higgsfield_memory.py update-filter <id> <outcome>
 """
 
 from __future__ import annotations
@@ -223,7 +223,7 @@ class Settings:
     duration: int | None = None
 
 
-SPECS_DEFAULT = Path(__file__).parent / "specs" / "model-specs.json"
+SPECS_DEFAULT = Path(__file__).resolve().parent.parent / "specs" / "model-specs.json"
 
 _SETTINGS_PATTERNS = {
     # Tolerant of **bold**, fullwidth ：, and inline comma-run headers.
@@ -826,7 +826,7 @@ def main() -> int:
         index = load_specs(args.specs)
         if not index:
             print(f"ERROR: specs file missing or invalid: {args.specs} — "
-                  f"run: python3 sync_specs.py", file=sys.stderr)
+                  f"run: python3 scripts/sync_specs.py", file=sys.stderr)
             return 2
         spec = resolve_model(index, args.model)
         if spec is None:

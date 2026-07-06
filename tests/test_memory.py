@@ -11,7 +11,7 @@ import sys
 
 from conftest import REPO
 
-MEM = str(REPO / "higgsfield_memory.py")
+MEM = str(REPO / "scripts" / "higgsfield_memory.py")
 
 
 def run(tmp_db, *args):
