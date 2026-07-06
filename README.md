@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/osidemedia-higgsfield-ai-prompt-skill-badge.png)](https://mseep.ai/app/osidemedia-higgsfield-ai-prompt-skill)
+
 [![Version](https://img.shields.io/badge/version-3.20.1-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--07--05-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
