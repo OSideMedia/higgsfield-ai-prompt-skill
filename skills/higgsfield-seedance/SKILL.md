@@ -4,8 +4,8 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.9.0
-  updated: 2026-07-05
+  version: 1.10.0
+  updated: 2026-07-14
   parent: higgsfield
 ---
 
@@ -210,6 +210,57 @@ the Higgsfield UI's dedicated negative-prompt field (which some image models
 expose and `../../vocab.md` § Composition Vocabulary uses). The same
 positive-only requirement is already documented for Cinema Studio 3.0 in
 `../shared/negative-constraints.md`.
+
+### Ambiguous verbs — the homograph trap (v1.10, Peter's find 2026-07-14)
+
+If a word has a plausible second reading, Seedance may take it. The observed
+case: *"wind tearing at her coat"* — meant as fabric pulled violently; the
+model sometimes reads *tearing* as ripping (fabric shredding) or tearing up
+(crying), and the shot changes accordingly. This is not covered by any known
+prompt guide — treat it as a first-class law:
+
+**Before a verb ships, ask: is there a second physical thing this word can
+look like? If yes, replace it with the phrasing only ONE thing can look like.**
+
+- `wind tearing at her coat` → `wind whipping violently at her coat` /
+  `her coat flutters violently in the wind`
+- Seed homograph list (grow it whenever a generation misreads a word):
+  **tearing** (rip / cry) · **shoot** (fire / film) · **duck** (crouch / bird) ·
+  **bolt** (run / lightning / hardware) · **draw** (pull / sketch / weapon) ·
+  **wave** (hand / ocean) · **charge** (run at / electricity) · **rock**
+  (sway / stone) · **drop** (fall / droplet) · **fire** (flame / shoot /
+  dismiss) · **strike** (hit / match / lightning) · **break** (shatter /
+  pause / dawn) · **pound** (hammer / heartbeat) · **snap** (break / photo /
+  fingers).
+- The list is a seed, not the rule — the rule is the self-check, which
+  generalizes to any word forever.
+
+### Community v3 cherry-picks (Joey drop, audited 2026-07-14)
+
+Adopted (genuinely absent from this skill until now):
+
+- **Camera on the shadow side, with a stated operator axis.** Place the
+  camera on the shadow side of the key light and say where the operator
+  stands/moves — light wraps toward the lens and faces keep dimension.
+- **Detail-on-wide ("snake cam").** 84° low-angle placed hard against a small
+  foreground object — detail-shot intimacy without losing the wide's context.
+- **Intimate wide.** 63–84° on a close face instead of a long lens — presence
+  without compression; the room stays in the frame.
+- **Prompt-reset heuristic.** When iterations are getting *worse*, stop
+  stacking fixes: strip the prompt back to subject + action + camera and
+  re-add only what's necessary. Density is a bell curve; past the peak you
+  can't tell which element the model dropped.
+- **Canonical-over-plate.** Every subject keeps its own identity reference
+  even when it is visible in the environment plate — the plate carries the
+  world, the canonical ref carries identity; never let a plate double as an
+  identity source.
+- **Contrast curve stated three ways.** When the grade matters, state it as
+  tonal curve + specular removal + named grade — one phrasing alone drifts.
+
+Flagged, NOT adopted: their worldbuilder puts the camera block at the BOTTOM
+("at the top FOV fights identity data") — this contradicts both this skill's
+CAMERA-3rd-position rule and their own seedance skill. Keep CAMERA-3rd; test
+day pending.
 
 ### Already-covered siblings (cross-links, not new rules)
 

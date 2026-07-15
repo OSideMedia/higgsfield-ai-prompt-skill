@@ -660,6 +660,8 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Name the thing — kill empty adjectives](skills/higgsfield-seedance/SKILL.md#name-the-thing-kill-empty-adjectives)
     - ["fast" is the highest-degradation keyword](skills/higgsfield-seedance/SKILL.md#fast-is-the-highest-degradation-keyword)
     - [No negative prompts in the prompt body](skills/higgsfield-seedance/SKILL.md#no-negative-prompts-in-the-prompt-body)
+    - [Ambiguous verbs — the homograph trap (v1.10, Peter's find 2026-07-14)](skills/higgsfield-seedance/SKILL.md#ambiguous-verbs-the-homograph-trap-v110-peters-find-2026-07-14)
+    - [Community v3 cherry-picks (Joey drop, audited 2026-07-14)](skills/higgsfield-seedance/SKILL.md#community-v3-cherry-picks-joey-drop-audited-2026-07-14)
     - [Already-covered siblings (cross-links, not new rules)](skills/higgsfield-seedance/SKILL.md#already-covered-siblings-cross-links-not-new-rules)
   - [Official Prompt Architecture — the Block Scaffold](skills/higgsfield-seedance/SKILL.md#official-prompt-architecture-the-block-scaffold)
     - [Block order](skills/higgsfield-seedance/SKILL.md#block-order)
