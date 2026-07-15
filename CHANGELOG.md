@@ -1,5 +1,20 @@
 # Changelog
 
+## v3.21.0 — 2026-07-14
+
+### Added
+- **higgsfield-seedance 1.10.0 — two new Prompt-Craft Laws** (2026-07-14):
+  - *Ambiguous verbs — the homograph trap* (Peter's field find, covered by no
+    known prompt guide): if a verb/noun has a plausible second reading
+    ("tearing" = rip vs cry), the model may take it — replace with the phrasing
+    only one thing can look like; ships with a seed homograph list.
+  - *Community v3 cherry-picks* (Joey drop, audited vs this skill): camera on
+    the shadow side + stated operator axis, detail-on-wide "snake cam",
+    intimate wide, prompt-reset heuristic, canonical-over-plate,
+    contrast-curve-stated-three-ways. Their camera-block-at-bottom claim is
+    flagged, not adopted (contradicts CAMERA-3rd; test day pending).
+
+
 ## v3.20.1 — 2026-07-06
 
 ### Changed
