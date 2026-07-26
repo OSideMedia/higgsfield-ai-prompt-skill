@@ -21,11 +21,13 @@ selection time.
   states this as tested: "after tons of testing, grey performs way better than
   white or black" [DEMO — Seedance-4K film tutorial, 2026-07]. Any neutral
   grey works — light-grey cyclorama for people, medium grey for props,
-  `#7f7f7f` for creature sheets. Field confirmation: harvested production
-  sheet prompts pin the exact hex — "flat solid neutral grey background
-  (#8a8a8a), seamless, no gradient, only a soft contact shadow" — with both
-  views "matched in scale, lighting, and style for consistency" [FIELD —
-  13-project harvest, 2026-07-18]. (Anime/manga sheets are the exception:
+  `#7f7f7f` for creature sheets. Field confirmation of the same practice,
+  with a second pinned value: harvested production **human**-sheet prompts
+  run "flat solid neutral grey background (#8a8a8a), seamless, no gradient,
+  only a soft contact shadow" — with both views "matched in scale, lighting,
+  and style for consistency" [FIELD — 13-project harvest, 2026-07-18]. Any
+  mid-grey works; what matters is pinning ONE exact hex per project so every
+  sheet matches (`#7f7f7f` creature / `#8a8a8a` human are both proven picks). (Anime/manga sheets are the exception:
   they run white seamless — see `../image-models.md` § Seedream 5.0 Pro.) This bullet is the canonical home of the
   grey rule; the sheet workflows in
   `../skills/higgsfield-gpt-image-2/reference-sheet-workflow.md` and
@@ -113,7 +115,8 @@ The same production's 3-frame character sheet is a strong human-sheet shape:
 Frame 1 face portrait · Frame 2 **ghost-mannequin outfit display** ("garments
 hold the natural shape of an invisible body — no head, no hands, no skin
 visible") so wardrobe is its own decoupled panel · Frame 3 back view — thin
-white dividers, equal frames.
+white dividers, equal frames. (The repo's canonical ghost-mannequin recipe:
+`../skills/higgsfield-soul/SKILL.md` § Split-Panel Outfit-Change Sheet.)
 
 ### 7. Prop sheets (objects skip the motion test)
 
@@ -139,7 +142,11 @@ generation** [DEMO]. Two plate disciplines:
   camera moves somewhere to go (the win-rate bullet above, applied).
 - **Generate the plate empty** — no people — whenever the video model should
   own the crowd. A populated plate freezes extras into wallpaper; an empty
-  plate lets the model cast and move them.
+  plate lets the model cast and move them. (The deliberate exception: when a
+  crowded set must **repeat identically** across many shots, composite the
+  crowd once and reuse that populated plate — see
+  `../skills/higgsfield-seedance/PRODUCTION-PATTERNS.md` § Field-Harvested
+  Patterns → populated-plate reuse.)
 
 Generate location plates in **Soul Cinema** (see § Which model makes the
 sheet below); in video prompts a location plate is typically declared

@@ -105,7 +105,7 @@
     },
     {
       "id": "prompt-under-200-words",
-      "description": "HARD RULE #8 — prompts stay under the 200-word soft cap",
+      "description": "HARD RULE #8 — short-form prompts stay under the 200-word soft cap (block-scaffold regime exempt)",
       "model": "kling3_0",
       "request": "Street market scene at dusk",
       "response": "Routing to higgsfield-prompt for an atmosphere scene.\n\n**Model**: Kling 3.0\n**Aspect ratio**: 16:9  **Duration**: 10s  **Style**: Cinematic\n\nA narrow street market at dusk, paper lanterns swaying over produce stalls, a vendor arranging persimmons as steam drifts from a noodle cart. Warm practicals against deep blue dusk, light rain starting to bead on the awnings.\n\n**Camera**: Slow handheld walk-through",
