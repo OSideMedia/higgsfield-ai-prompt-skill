@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, motion, presets, VFX, transformation, transitions, effects]
-  version: 3.2.0
+  version: 3.2.1
   updated: 2026-07-26
   parent: higgsfield
 ---
@@ -18,15 +18,16 @@ Higgsfield has 100+ named motion presets. Reference them **by exact name** in yo
 and the platform applies the preset's signature effect. Think of these as VFX macros —
 one name triggers a complete pre-built visual effect.
 
-> **Scope caveat** `[FIELD — 13-project community harvest, 2026-07-18]`: motion
-> presets are the **viral-effects / social product**, not the film grammar.
-> None of the 13 harvested community film/ad productions used a single motion
-> preset — serious film work free-prompts its camera through Cinema Studio /
+> **Scope caveat** `[FIELD — 13-project community harvest + live
+> preset-catalog pull, both 2026-07-18]`: motion presets are the
+> **viral-effects / social product**, not the film grammar. None of the 13
+> harvested community film/ad productions used a single motion preset —
+> serious film work free-prompts its camera through Cinema Studio /
 > Seedance block briefs (`../higgsfield-camera/SKILL.md`,
-> `../higgsfield-seedance/SKILL.md`). The live catalog is ~100 unique preset
-> names expanded into ~1,900 per-model variants (kling / higgsfield / wan /
-> minimax / seedance families with baked params); category weights today skew
-> to effects/viral/vfx/ugc. Route preset requests here as ever — but don't
+> `../higgsfield-seedance/SKILL.md`). Separately, the live catalog pull
+> showed ~100 unique preset names expanded into ~1,900 per-model variants
+> (kling / higgsfield / wan / minimax / seedance families with baked
+> params); category weights at pull time skewed to effects/viral/vfx/ugc. Route preset requests here as ever — but don't
 > steer a filmmaking request into presets when free-prompted camera language
 > is the production-proven path.
 

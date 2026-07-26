@@ -6,8 +6,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
-  version: 3.0.0
-  updated: 2026-04-06
+  version: 3.0.1
+  updated: 2026-07-26
   parent: higgsfield
 ---
 
@@ -37,7 +37,7 @@ metadata:
 ### Problem: Prompt is ignored / output doesn't match
 **Cause:** Prompt too long, conflicting instructions, over-specified
 **Fix:**
-- Cut prompt to under 200 words — trim the least essential details
+- Cut prompt to under 200 words — trim the least essential details (short-form prompts only; block-scaffold production briefs are a different regime — root `SKILL.md` HARD RULE 8)
 - Remove any contradictory elements (don't say both "moving fast" and "frozen in place")
 - Lead with the most important element: Subject → Action → Camera → Style
 - Split complex scenes into multiple separate generations
@@ -154,7 +154,7 @@ Before generating, verify:
 - [ ] Color grade or lighting mentioned
 - [ ] Aspect ratio included
 - [ ] Model selected (or let Higgsfield default)
-- [ ] Prompt is under 200 words
+- [ ] Prompt is under 200 words (short-form regime — skip for block-scaffold briefs)
 - [ ] No conflicting instructions
 - [ ] Soul ID referenced if character consistency needed
 - [ ] Motion preset named at end if using one

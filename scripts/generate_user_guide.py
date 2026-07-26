@@ -1171,7 +1171,7 @@ def build_pdf(dry_run: bool = False):
             "Be specific. Name camera presets, describe VFX concretely. 'Dolly In' beats 'the camera moves forward.'",
             "One action per shot. AI renders clean physics for one action. Chain multiple shots for complex sequences.",
             "Subject first, style last. Subject -> Action -> Camera -> Style is the most reliable prompt order.",
-            "Keep it under 200 words. Focused prompts outperform exhaustive ones. For Cinema Studio 3.0: 30-100 words is the sweet spot.",
+            "Keep short-form prompts under 200 words. Focused prompts outperform exhaustive ones. Production block-scaffold briefs are the exception - structure replaces the word cap. For Cinema Studio 3.0: 30-100 words is the sweet spot.",
             "Cinema Studio 2.5: 512 character limit. @ Element chips consume ~80-100 hidden characters each.",
             "Use the Hero Frame method. Generate the perfect still image first, then animate it.",
             "Slow motion trick. If fast action keeps breaking, generate in Slow Mo and speed up in post.",

@@ -11,8 +11,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS]
-  version: 3.3.1
-  updated: 2026-07-06
+  version: 3.3.2
+  updated: 2026-07-26
   parent: higgsfield
 ---
 
@@ -414,7 +414,7 @@ Not every prompt needs audio direction. Skip audio cues when:
 - Using a model without native audio (Kling 2.6, Wan 2.6, Seedance Pro, Minimax Hailuo 2.3/02)
 - The content is purely visual (product beauty shots, abstract motion, landscape)
 - Audio will be added entirely in post-production
-- The prompt is already at the 200-word limit and visual direction is more important
+- The prompt is already at the short-form 200-word cap and visual direction is more important
 
 ---
 

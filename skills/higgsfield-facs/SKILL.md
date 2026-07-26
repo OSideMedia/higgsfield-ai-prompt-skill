@@ -4,7 +4,7 @@ description: "Controls facial expressions in Seedance 2.0 with FACS (Facial Acti
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, facs, action-units, facial-expression, micro-expression, dialogue, lip-sync, performance]
-  version: 1.1.0
+  version: 1.1.1
   updated: 2026-07-26
   parent: higgsfield
 ---
@@ -378,7 +378,13 @@ Suppressed Smile and Nervous Composure.
 Chinese source]` — AU codes stop at the face. Production performance direction
 extends the same muscle-level discipline to **throat, breath, skin, and
 posture**. These recipes drop into the PERFORMANCE section of a block prompt
-alongside (or instead of) AU codes:
+alongside (or instead of) AU codes.
+
+**These are menus, not checklists.** The 3–4-expressions-per-generation cap
+and the 1–2-AUs-per-beat rule apply to physical beats by the same logic —
+stacking degrades accuracy. Pick the **2–4 tells** that carry the beat from
+the recipe below; the eight-item anger recipe is the vocabulary to choose
+from, never a stack to render at once:
 
 | Register | Physical recipe |
 |---|---|

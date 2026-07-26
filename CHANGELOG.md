@@ -1,5 +1,23 @@
 # Changelog
 
+## v3.22.1 — 2026-07-26
+
+**Post-release audit fix pass.** A two-agent audit of v3.22.0 (cross-reference integrity + repo hygiene) found no broken references but six substantive contradictions between new and pre-existing rules, plus stale downstream copies of the old 200-word rule. All fixed.
+
+### Fixed
+- **The ~2,500-character "practical limit" scoped as ZH-derived** (seedance 1.11.1 § Shot density): it contradicted the same file's new Field-calibration medians (1,433–2,059w). EN block prompts have no character analogue; ZH keeps the 1,800-char hard cap. Section now cross-links the fuller shotlist-director density heuristic.
+- **Runtime-default contradiction resolved** (shotlist-director 1.1.1): auto-enrichment no longer silently defaults to 8s — inside a shotlist the 15s envelope law governs; standalone prompts keep seedance's "always ask for runtime, never default."
+- **Duration ladder vs 15s target reconciled** (shotlist-director): 15s is the default envelope, not a straitjacket — a scene that fills only 4–8s ships as a deliberately shorter clip rather than padded dead air.
+- **Cut-density norms scoped by register** (shotlist-director): "1–3 cuts per 15s" is the live-action narrative norm; stylized recipes (3D-animated 6/15s, product montage) are denser by design, cross-linked to style § Style Recipes.
+- **mm-vs-FOV leak closed** (shotlist-director + camera 3.4.1): auto-enrichment lens defaults now speak FOV degrees for Seedance block prompts (63°/47°/29°); the camera lens table carries FOV equivalents per row and flags 45mm-macro as having no FOV anchor.
+- **FACS micro-beat recipes capped** (facs 1.1.1): recipes declared menus, not checklists — pick 2–4 tells per beat; the 3–4-expression cap's logic applies to physical beats.
+- **HARD RULE 8 word band corrected** (root 3.22.1): "500–2,000+" → the actual harvest ladder "218–2,059-word medians".
+- **Iteration-anchor arithmetic corrected** (production-benchmarks): 65–100 generations per kept shot (matches the 1.0–1.5% band; was 50–100), and the "16 finals" figure re-scoped to the most-iterated scene, not per-scene.
+- **Grey-sheet hex reconciled** (ad-asset-prep): `#7f7f7f` creature / `#8a8a8a` human both proven — the rule is pin ONE exact hex per project; added back-links for populated-plate reuse and the canonical Soul ghost-mannequin recipe.
+- **Motion caveat provenance split** (motion 3.2.1): catalog stats (~100 presets → ~1,900 variants) attributed to the live catalog pull, not the project harvest.
+- **Stale 200-word copies given the regime carve-out**: troubleshoot 3.0.1 (fix bullet + pre-gen checklist item), audio 3.3.2, `scripts/generate_user_guide.py` tip (the v3.22.0 PDF had shipped with the old unqualified rule), and the eval-case description in `evals/cases/prompt.json`.
+
+
 ## v3.22.0 — 2026-07-26
 
 **The harvest wave.** Absorbs the 13-project community-corpus harvest (2026-07-18: 13 shared Higgsfield projects, 9 creators, ~4,000 production prompts pulled with full params) plus the previously-unported assets from Higgsfield's own skill family (shotlist-builder, seedance-2-pro-director, cinematic-prompt-builder). Chinese-source material re-authored in English.

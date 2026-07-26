@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
-  version: 3.4.0
+  version: 3.4.1
   updated: 2026-07-26
   parent: higgsfield
 ---
@@ -241,11 +241,11 @@ both lens and aperture in the prompt:
 
 | Purpose | Lens | Aperture |
 |---|---|---|
-| Extreme tight emotional close-up (forehead-to-chin fills frame) | 85mm or 100mm | F1.4 |
-| Mid dialogue, two-shot | 50mm | F2.0–F2.8 |
-| Wide / establishing | 35mm | F4–F5.6 |
-| Insert / object detail (focus locked on the object) | 50mm or 85mm | F1.4 |
-| Macro (pores, droplets, fabric) | 45mm macro | F2.8 |
+| Extreme tight emotional close-up (forehead-to-chin fills frame) | 85mm or 100mm (FOV 29° or 18°) | F1.4 |
+| Mid dialogue, two-shot | 50mm (FOV 47°) | F2.0–F2.8 |
+| Wide / establishing | 35mm (FOV 63°) | F4–F5.6 |
+| Insert / object detail (focus locked on the object) | 50mm or 85mm (FOV 47°/29°) | F1.4 |
+| Macro (pores, droplets, fabric) | 45mm macro — no FOV-anchor equivalent; macro framing is described by subject scale in block prompts | F2.8 |
 
 Two standing clauses that ride with these choices:
 

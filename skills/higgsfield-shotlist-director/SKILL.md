@@ -4,7 +4,7 @@ description: "Turns a brief, script, scene breakdown, treatment, or story idea i
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, shotlist, director, style-prefix, ad, commercial, artifact, html]
-  version: 1.1.0
+  version: 1.1.1
   updated: 2026-07-26
   parent: higgsfield
 ---
@@ -123,9 +123,14 @@ CUT 2 — …
 ```
 
 Each prompt **targets 15s** (Seedance generates a fixed-length clip — design the
-cuts to fill it, don't pad with dead air). Most 15s prompts hold 1–3 cuts. If a
-scene runs longer, split it across `3a/3b/3c`, each its own 15s block with the
-full Style Prefix and Characters block, continuity holding across them.
+cuts to fill it, don't pad with dead air). Most 15s prompts hold 1–3 cuts —
+that is the **live-action narrative norm**; stylized registers run denser by
+design (3D-animated 6 shots/15s, product montage 8–10 sections with 0.3s macro
+cuts — `../higgsfield-style/SKILL.md` § Style Recipes), and the flash-establish
+/ insert durations in `../higgsfield-camera/SKILL.md` § Shot duration by type
+are what make dense shapes fit. If a scene runs longer, split it across
+`3a/3b/3c`, each its own 15s block with the full Style Prefix and Characters
+block, continuity holding across them.
 
 **Beat-by-beat choreography, not "he dances."** Generic motion verbs mean nothing
 to Seedance — spell the move out: *"two crisp head nods on the beat, shoulders
@@ -173,7 +178,11 @@ actions · more than 2 camera moves · more than 3 important characters ·
 more than 1 complex VFX event · more than 1 location change — any of these
 means the scene wants another envelope. Duration ladder: 4–8s = one strong
 action · 8–12s = one action + a reveal · 12–15s = 2–3 simple beats ·
-complex fight/chase/transformation = multiple prompts.
+complex fight/chase/transformation = multiple prompts. **Reconciling the
+ladder with the 15s target:** 15s is the default envelope, not a
+straitjacket — when a scene's beats genuinely fill only 4–8s of screen time,
+generate a deliberately shorter clip (Seedance accepts 4–15s) rather than
+padding dead air into 15; the prompt-law's "don't pad" rule wins.
 
 **When in doubt, err toward more prompts and shorter envelopes** — Seedance
 handles tight prompts better than overloaded ones, and the user can run them
@@ -181,10 +190,16 @@ in sequence.
 
 **Auto-enrichment for thin briefs.** When a scene row is thin ("a guy in a
 room, he's angry"), don't ask — fill in production detail with the default
-cinematic choices, never details that change the meaning: 16:9 · 8s · one
+cinematic choices, never details that change the meaning: 16:9 · one
 clear physical action · slow controlled dolly-in or locked-off frame ·
-35–50mm (85mm only if a close-up needs it) · motivated practical light ·
-subtle ambience + one meaningful SFX · a clear final frame.
+a neutral-to-portrait lens (63°/47° FOV in Seedance block prompts — mm
+vocabulary like "35–50mm" is for non-Seedance surfaces; 29° only if a
+close-up needs it — `../higgsfield-seedance/SKILL.md` § FOV anchors) ·
+motivated practical light · subtle ambience + one meaningful SFX · a clear
+final frame. **Duration is never auto-defaulted** — inside a shotlist the
+envelope law above governs (target 15s, shorter deliberate clips per the
+ladder); for a standalone prompt, ask — the seedance rule "always ask the
+user for runtime, never default" stands.
 
 ---
 

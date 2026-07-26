@@ -4,7 +4,7 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.11.0
+  version: 1.11.1
   updated: 2026-07-26
   parent: higgsfield
 ---
@@ -1715,13 +1715,19 @@ Group shot rows into one prompt when ALL of these hold:
 - Continuous emotional / temporal unit (no time skip, no major mood
   pivot)
 - Combined runtime fits within the 15s Seedance cap
-- The grouped prompt text stays within practical generation limits
-  (~2500 characters)
+- The grouped prompt text stays within practical generation limits —
+  for ZH prompts the 1,800-character hard cap; for EN block prompts
+  there is no character analogue (production medians run far longer —
+  § Field calibration). The once-circulating "~2,500 characters"
+  budget is ZH-derived doctrine, not an EN limit.
 
 Split into separate prompts when any of these fire: hard cut
 between locations (e.g. apartment → flashback), major character
 entrance or exit changes the handle list, or the combined runtime
-exceeds 15s.
+exceeds 15s. The fuller production heuristic — five group criteria,
+five split triggers, the complexity budget, and the "don't fragment
+grief" rule — lives in `../higgsfield-shotlist-director/SKILL.md`
+§ Prompt density.
 
 The heuristic is a starting state, not a target. Adjust per project
 as you learn how Seedance handles your particular scene-type
