@@ -4,8 +4,8 @@ description: "Controls facial expressions in Seedance 2.0 with FACS (Facial Acti
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, facs, action-units, facial-expression, micro-expression, dialogue, lip-sync, performance]
-  version: 1.0.0
-  updated: 2026-06-27
+  version: 1.1.0
+  updated: 2026-07-26
   parent: higgsfield
 ---
 
@@ -35,7 +35,8 @@ honest micro-performance in close-up dialogue come from.
 - The reference sheet is a **labelled-grid image** (GPT Image 2 / Nano Banana Pro); the LLM can **mislabel AUs**, so iterate and verify [→](#step-1-generate-the-facs-reference-sheet)
 - The character photo is **optional** — codes work without it; attach it only for identity consistency [→](#step-2-put-au-codes-in-the-seedance-prompt)
 - Common emotions decompose to standard AU recipes (Duchenne smile = AU6+AU12; sadness = AU1+AU4+AU15) [→](#emotion-au-recipes)
-- The payoff is **dialogue / monologue**: AU-per-beat schedule, combined with the `[AUDIO: Xs]` lip-sync block [→](#dialogue-monologue-facial-acting)
+- The payoff is **dialogue / monologue**: AU-per-beat schedule, combined with the `[AUDIO: Xs]` lip-sync block; every line gets pre / during / post-line beats [→](#dialogue-monologue-facial-acting)
+- [OFFICIAL] Body-level micro-beat recipes beyond the face (throat, breath, skin, posture) + the no-perfect-sync stagger (0.3–0.5s) and listeners-in-bokeh rules [→](#physical-micro-beats-the-body-beyond-the-face)
 
 ---
 
@@ -371,6 +372,45 @@ Suppressed Smile and Nervous Composure.
 
 ---
 
+## Physical Micro-Beats — the Body Beyond the Face
+
+`[OFFICIAL — Higgsfield shotlist-builder skill, 2026-07; re-authored from the
+Chinese source]` — AU codes stop at the face. Production performance direction
+extends the same muscle-level discipline to **throat, breath, skin, and
+posture**. These recipes drop into the PERFORMANCE section of a block prompt
+alongside (or instead of) AU codes:
+
+| Register | Physical recipe |
+|---|---|
+| **Anger / determination** | Masseter visibly pulsing at the jaw · carotid pulse visible at the neck · temple veins rising · nostrils flaring on stressed words · pupils tightening · outer eye corners hardening (genuine intensity, not a cheap squint) · **no blink at the climax** · faint sweat beads at brow and nostrils |
+| **Anxiety / nervousness** | One visible swallow (Adam's apple) · a short shallow nasal inhale before the line · tongue wetting a dry lower lip · lower lip pulled slightly in · capillary flush on the cheeks · pupils dilating on the key word |
+| **Sadness without tears** | Outer eye corners dropping · eyes wet with catchlight — **but never spilling** · corrugator knit between the brows · a faint lip tremble · head sinking a few degrees |
+| **Control / calm / superiority** | Even, steady breathing (contrast against a tense scene partner) · relaxed fingers · slow deliberate blinks · slight chin lift · a Duchenne smile that **builds gradually** — never opening on the finished smile |
+| **Heaviness / weighed down** | Shoulders sinking · head dropping slightly · deep slow breathing · a small 5–15° head tilt when answering |
+| **Shock / freeze** | Body frozen 0.3–0.5s at the trigger — no movement at all · pupils dilating inside the freeze · lips parting silently · one delayed sharp nasal inhale as the freeze breaks · eyes locked on the trigger, no blink, no gaze drift |
+| **Suppressed emotion** (the hardest) | Written as *physical resistance*: every facial muscle fighting the rising emotion · masseter slowly tightening · one delayed, effortful swallow · eyes gradually welling until they shine — tears never falling · one slow, deep, controlled inhale with visible chest rise · a single jaw tremor, instantly re-clenched |
+
+**Defaults that prevent AI-video tells:**
+
+- **No tears unless the script explicitly calls for them** — wet-with-catchlight
+  is the default sadness read.
+- **No cartoon grimaces**; no "eyes to the ceiling" for thinking — name a
+  specific gaze direction instead.
+- **Nobody "just stands there talking"** — there is always a micro-movement.
+- **Never perfect sync across characters.** Group reactions stagger by
+  0.3–0.5s per person (`"Roko turns his head first; 0.4s later, Rein;
+  another 0.4s, Jax"`). Three characters never sync perfectly.
+- **Listeners in bokeh are not statues.** Even fully defocused, write their
+  head/gaze direction, shoulder micro-movements, and staggered reactions —
+  blurred stillness reads as mannequins.
+
+**The anti-AI test.** Before delivering, re-read the performance section and
+ask: *could this have come from a prompt template, or does it read like notes
+from a director who watched the actor rehearse?* If it reads templated,
+rewrite — micro-beats should feel observed, not generated.
+
+---
+
 ## Dialogue & Monologue Facial Acting
 
 The reason FACS matters: facial expressions in isolation are a parlor trick; the
@@ -392,6 +432,24 @@ Beat 7 (8-10s): AU4 + AU24 (brow lowerer + lip presser — seriousness cracking 
 The art is the **contrast within a beat**: the mouth performs safety (AU12) while
 the eyes leak terror (AU7) — the audience reads both at once. Keep each beat to
 1–2 AUs so the performance stays legible.
+
+### Every line gets three beats
+
+`[OFFICIAL — shotlist-builder]` — a spoken line is never just the words. Write
+all three phases:
+
+- **Pre-line beat** — what happens before the first word: a swallow, an
+  inhale, a lip lick, a posture shift.
+- **During the line** — which words carry the emphasis, and through what:
+  nostril flare, intonation, pupil shift.
+- **Post-line beat** — ~0.5s of held breath or locked gaze before the next
+  movement, then the release.
+
+> Pre-line: one short nasal inhale, one visible swallow.
+> Line: "Don't ask me again." — the stress lands on *again*, nostrils
+> flaring on the word.
+> Post-line: gaze stays locked on the opponent for 0.5 seconds — then
+> drifts away.
 
 ### Combine with audio + lip-sync
 

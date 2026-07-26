@@ -4,8 +4,8 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.10.0
-  updated: 2026-07-14
+  version: 1.11.0
+  updated: 2026-07-26
   parent: higgsfield
 ---
 
@@ -19,6 +19,9 @@ metadata:
 - Empirical prompt-craft laws: 50–80-word attention sweet spot (front-load the load-bearing element), name a director/lens not "cinematic", "fast" degrades motion, no negative prompts in the body [→](#prompt-craft-laws)
 - Five prompt modes: Reference-Based / Continuation / Expand Shot / Edit Shot / Transformation — pick the mode before writing [→](#seedance-20-prompt-modes)
 - [OFFICIAL] block scaffold for production prompts: SCENE CONTEXT → … → POSITIVE LOCKS, distributed style (no prefix), FOV in degrees only, CAMERA block 3rd, cut ladder oner / CUT n / timed / freestyle [→](#official-prompt-architecture-the-block-scaffold)
+- [FIELD] 13-project corpus calibration: word length scales with register (218w → 2,059w medians — the 50–80w sweet spot is single-shot-only), video briefs hand-authored (`enhance_prompt` off), Style Prefix = per-project constant compiled into home blocks [→](#field-calibration-the-13-project-production-corpus)
+- [FIELD] Three "helpful-instinct" drift sources, each with a standing lock: environment invention (#1, above character drift), character-height equalization, scale drift on wides [→](#positive-locks)
+- Build-safe construction for crowds/destruction/creatures: evacuated cities, contained fights ("stays at the sea surface"), the safe benchmark scene [→](#build-safe-construction-crowds-destruction-creatures)
 - Extend an existing clip: attach it as a video reference + open with "The scene continues." — match source resolution AND duration; chain cap ~2 (hard 3), then re-anchor from ORIGINAL references [→](#extension-prompting-video-reference-continuation)
 - Tutorial-demonstrated patterns (reference-role vocabulary incl. VARIETY reference, SCREEN REALISM + duration-match composites, 60:30:10 grade, red-arrow prop annotation): `PRODUCTION-PATTERNS.md` in this directory
 - Hard engine rules (age-blind, exit-frame = cut, off-screen = nonexistent, no reflections, ≤3 tracked characters, double-contrast cuts) + high-risk shot table: `ENGINE-RULES.md` in this directory
@@ -257,10 +260,13 @@ Adopted (genuinely absent from this skill until now):
 - **Contrast curve stated three ways.** When the grade matters, state it as
   tonal curve + specular removal + named grade — one phrasing alone drifts.
 
-Flagged, NOT adopted: their worldbuilder puts the camera block at the BOTTOM
-("at the top FOV fights identity data") — this contradicts both this skill's
-CAMERA-3rd-position rule and their own seedance skill. Keep CAMERA-3rd; test
-day pending.
+Rejected (was: flagged, test day pending): their worldbuilder puts the camera
+block at the BOTTOM ("at the top FOV fights identity data") — this contradicts
+both this skill's CAMERA-3rd-position rule and their own seedance skill.
+**Resolved 2026-07-26 by field evidence instead of a test day** `[FIELD — 13-project
+community harvest]`: across ~4,000 harvested production prompts from 9 creators,
+the CAMERA block sits mid-document in every final prompt — never at the bottom.
+CAMERA-3rd stands; the bottom-position claim is dropped.
 
 ### Already-covered siblings (cross-links, not new rules)
 
@@ -377,6 +383,16 @@ gets ignored; moved to the front, it conflicts with identity.
   Rewrite §3; the muscle-level extreme is `../higgsfield-facs/SKILL.md`.
 - **White balance in Kelvin**, fixed within a scene: 3200K / 4000K / 5600K /
   8500K.
+- **Masses and sizes in real units for physics** `[FIELD]` — the PHYSICS
+  block writes weights in so gravity reads correctly: `"the spider is 10–12
+  centimeters, 50–70 grams — it falls gently; the man is 70–80 kg — the
+  drop lands hard."` Material behavior gets the same treatment (`"the liana
+  stretches slightly under load and creaks like fibrous wood"`).
+- **Causal prop interaction** `[FIELD]` — objects never move on their own;
+  every prop event needs a visible physical cause with event order:
+  `"the cup tips only from visible sleeve contact"` · `"a button press is a
+  full mechanical event — contact, 2–3 mm of travel, click, spring-back;
+  the screen lights only AFTER the click."`
 - **No director names, signature works, or equipment model names** — they
   get ignored or break complex moves; describe the look instead. (Overrides
   the empirical director-substitute in § Prompt-Craft Laws for this regime.)
@@ -391,6 +407,24 @@ the prompt: continuity (characters, props, environment identical across
 cuts) plus a single positive restatement of critical info. This is where the
 positive constraint statements from § Prompt-Craft Laws live in a block
 prompt.
+
+**Three named "helpful-instinct" drift sources** `[FIELD — 13-project
+harvest]` — the model's own instincts, each needing a standing lock:
+
+1. **Environment invention — the #1 drift source, above character drift.**
+   Whenever a location reference is attached, the model "helpfully" widens
+   rooms and adds furniture it wasn't shown; multiple creators called this
+   the single largest source of drift between clips. Standing lock: `"the
+   set contains only what the reference shows — no added furniture, rooms,
+   or geography beyond the reference"`, plus explicit absences where they
+   matter (`"nothing on the floor, nothing on the bed"`).
+2. **Character-height equalization.** With two people in frame the model
+   drifts toward equal heights. Write real heights into **every** prompt
+   with 2+ characters (`"she is 165 cm, he is 178 cm"`) so relative scale
+   never floats.
+3. **Scale drift on wide shots.** A human anchor shrinks to a speck across
+   cuts. Lock it: `"the girl stays the calm human-sized anchor — never
+   shrunk to a tiny distant dot."`
 
 ### Cut-format ladder
 
@@ -458,6 +492,45 @@ rather than a reference back to the earlier prompt.
 For these protocols applied on real footage — per-segment LENS LOCKs, timed
 SMASH/MATCH cuts, screen composites — see `PRODUCTION-PATTERNS.md` in this
 directory.
+
+### Field calibration — the 13-project production corpus
+
+`[FIELD — community harvest 2026-07-18: 13 shared Higgsfield projects, 9
+creators, ~4,000 production prompts pulled via API with full params]`. What
+the corpus confirms and calibrates about the block scaffold:
+
+- **The scaffold holds platform-wide.** Every project — photoreal adventure,
+  K-drama romance, broadcast-TV drama, anime, stop-motion folklore — runs the
+  same Style-Prefix-plus-Constraints-plus-variable-SHOT structure with the
+  same block anatomy. "SHOT" markers appear in 95% of the flagship project's
+  1,240 Seedance prompts; 15s is the dominant duration (they generate long
+  multi-shot clips and cut the best seconds).
+- **Word-length ladder by register.** Median Seedance prompt length tracks
+  register and ambition, not a fixed cap: tech-demo 218w → broadcast-TV drama
+  538w → commercial 779w → genre anthology 955w → adventure film 1,433w
+  (p90 2,648) → stop-motion emotional drama 2,059w. The 50–80-word sweet spot
+  (§ Prompt-Craft Laws) is *single-shot* doctrine; production multishot briefs
+  live an order of magnitude above it. Length scales with performance
+  complexity — never truncate a reaction arc to be neat.
+- **Register contracts the template.** Photoreal keeps every block (PHYSICS
+  with real masses, pore-level PERFORMANCE); stylized work (anime,
+  stop-motion) drops PHYSICS/skin realism and keeps SHOT beats + continuity +
+  a hard medium lock. See `../higgsfield-style/SKILL.md` § Register Poles.
+- **The Style Prefix is a per-project compiled constant.** The published
+  prefix paragraph is the human-readable summary creators keep as a standing
+  instruction; the final compiled prompt *distributes* those aspects into
+  their home blocks (§ Distributed style). Both forms are real; only the
+  distributed form ships to the model.
+- **Video prompts are hand-authored.** `enhance_prompt` was absent/off on
+  every harvested Seedance job but ON for 1,022 image jobs — let the enhancer
+  expand image prompts, never the video brief.
+- **Platform-layer params observed on Seedance jobs** (Higgsfield surface,
+  not necessarily the raw model API): `multi_shot_mode: "custom"` (the timed
+  multishot mode), `genre: "auto"`, `speedramp: "auto"`, `mode: "std"`,
+  `bitrate_mode: "high"`, `generate_audio: true`, 21:9 at 4K.
+- **Iteration economics** (TESTS-first culture, 50–100 generations per kept
+  shot, five-bucket folder discipline): `../../production-benchmarks.md`
+  § Community-corpus anchors.
 
 ---
 
@@ -653,6 +726,12 @@ last-frame anchor with the real thing.
   source shows a visible quality jump at the join. Same family as the
   duration-match rule for screen composites
   (`PRODUCTION-PATTERNS.md` § Video-Reference 1:1 Lock + SCREEN REALISM).
+- **Feed the tail, not just the frame** `[FIELD — 13-project harvest]`:
+  production practice feeds **the final 3–4 seconds** of the finished take
+  back as the `@video` reference rather than a last-frame still — the clip
+  carries *motion* into the join, so the next shot picks up the exact pose,
+  framing, light, and movement where the previous one left off instead of
+  restarting from a frozen pose.
 - **Occluded-identity binding:** if an identity feature is hidden at the
   source clip's end (a mole behind a hand), add the character image as a
   second reference and bind it explicitly: `"The woman's identity is
@@ -1523,6 +1602,33 @@ to work on past flagged prompts.
 ✅ "The aftermath of something wrong — an empty room, overturned furniture,
   a single smear trailing toward the door, ambient dread, flickering practical
   lamp"
+
+### Build-safe construction — crowds, destruction, creatures
+
+`[OFFICIAL — Higgsfield cinematic-prompt-builder skill, 2026-07]` — don't
+describe something risky and hope it passes; build the scene safe from the
+start. The substitutions usually read as *more* cinematic, not less: a
+standoff is tenser than a massacre, an evacuated city eerier than a crowd in
+panic, a roar more powerful than a kill.
+
+| Avoid | Build instead |
+|---|---|
+| Civilians in panic, crowds fleeing under debris | An **evacuated / empty** city; abandoned streets; one lone figure for scale |
+| Weapons firing into buildings / at people | Energy-discharge standoffs, sweeping searchlights, charged auras, shockwaves with no muzzle fire |
+| Creatures tearing into each other / gore | A grapple / standoff / near-miss / circling / energy clash — combat **contained** |
+| Destruction with people in harm's way | Destruction in **uninhabited terrain** — glaciers, deserts, ruins, open sea, evacuated zones; figures *reacting* to collapsing terrain, never victims |
+
+**Containment doubles as physics.** Give every creature fight a containment
+rule — `"the fight stays at the sea surface — breach, dive, grapple,
+submerge, never airborne"` · `"boss scale locked at ~2.5 human-heights, not
+kaiju-giant"`. The same clause that keeps the scene safe also grounds the
+physics and stops scale escalation.
+
+**The safe benchmark scene** — when a scene drifts risky, pull it back
+toward this confirmed-passing shape: one original creature (no franchise),
+in a generalized monument/amphitheatre location, in daylight, no weapons
+present, performing expressive action (rising, roaring, spreading wings) —
+expressive rather than violent.
 
 ---
 

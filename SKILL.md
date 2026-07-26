@@ -12,8 +12,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.21.0
-  updated: 2026-07-14
+  version: 3.22.0
+  updated: 2026-07-26
   author: O-Side Media
   license: MIT
 ---
@@ -44,7 +44,7 @@ These rules apply to every Higgsfield response. They are written as a pre-delive
 
 7. **Aspect ratio is an enum, not a free-form value.** Check the model's allowed ratios against `specs/model-specs.yaml` before writing them into the header; if the snapshot is stale (>30 days), verify live via schema (`models_explore` / `model get`). Example of why this matters: Seedance 2.0 supports native 21:9, Kling 3.0 does not. Anamorphic / 2.35:1 / 2.39:1 are *style register* vocabulary for the Look line, not output ratios. See `vocab.md` § Aspect Ratio: output spec vs. style register.
 
-8. **Prompt under 200 words.** Soft cap from MCSLA section. Going over is a signal you're padding rather than locking — tighten.
+8. **Prompt under 200 words — short-form regime only.** Soft cap from MCSLA section. Going over is a signal you're padding rather than locking — tighten. **Regime exception:** block-scaffold production prompts (`skills/higgsfield-seedance/SKILL.md` § Official Prompt Architecture) replace the word cap with structural lint — harvested production Seedance briefs run 500–2,000+ word medians depending on register `[FIELD — 13-project community harvest, 2026-07-18]`. The cap governs single-shot MCSLA prompts; a block-scaffold prompt over 200 words is not a rule-8 violation.
 
 **If any of items 1–8 are missing or unverified, the response is incomplete. Complete them before sending, not after.**
 
@@ -253,7 +253,7 @@ Quick summary — five layers, every prompt:
 
 **Core rules:**
 - Be specific — name camera presets, describe VFX concretely
-- Keep prompts under 200 words
+- Keep prompts under 200 words (short-form regime — block-scaffold production prompts follow their own structural rules, HARD RULE 8)
 - Subject → Action → Camera → Style is the most reliable order
 
 ---

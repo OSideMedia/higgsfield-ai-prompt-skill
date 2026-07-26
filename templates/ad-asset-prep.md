@@ -21,7 +21,12 @@ selection time.
   states this as tested: "after tons of testing, grey performs way better than
   white or black" [DEMO — Seedance-4K film tutorial, 2026-07]. Any neutral
   grey works — light-grey cyclorama for people, medium grey for props,
-  `#7f7f7f` for creature sheets. This bullet is the canonical home of the
+  `#7f7f7f` for creature sheets. Field confirmation: harvested production
+  sheet prompts pin the exact hex — "flat solid neutral grey background
+  (#8a8a8a), seamless, no gradient, only a soft contact shadow" — with both
+  views "matched in scale, lighting, and style for consistency" [FIELD —
+  13-project harvest, 2026-07-18]. (Anime/manga sheets are the exception:
+  they run white seamless — see `../image-models.md` § Seedream 5.0 Pro.) This bullet is the canonical home of the
   grey rule; the sheet workflows in
   `../skills/higgsfield-gpt-image-2/reference-sheet-workflow.md` and
   `../skills/higgsfield-soul/SKILL.md` § Character Sheet Creation point here.
@@ -94,6 +99,22 @@ athletic look (`@s_hero`), **soaked/sweaty** look (`@s_hero_wet`). Build the wet
 version **now**, on purpose: asking GPT Image to "sweat him up with words" later
 makes it improvise and "the face drips off of him."
 
+### 6b. Related characters — derive the face, don't describe it
+
+[FIELD — 13-project harvest] For siblings/relatives, don't describe family
+resemblance independently — **generate the relative from the same face**:
+"the 13–14-year-old younger sister of the man in the reference, his spitting
+image: take the exact face from the reference and translate it onto a
+naturally younger teenage girl — same eyes, brows, nose, lips, same moles
+and freckles in matching positions." Resemblance generated from one source
+face holds across shots; two independently-described faces drift apart.
+
+The same production's 3-frame character sheet is a strong human-sheet shape:
+Frame 1 face portrait · Frame 2 **ghost-mannequin outfit display** ("garments
+hold the natural shape of an invisible body — no head, no hands, no skin
+visible") so wardrobe is its own decoupled panel · Frame 3 back view — thin
+white dividers, equal frames.
+
 ### 7. Prop sheets (objects skip the motion test)
 
 Clean studio prop sheets (shoes, bag, moka pot, mug) into GPT Image 2. **No
@@ -124,6 +145,23 @@ Generate location plates in **Soul Cinema** (see § Which model makes the
 sheet below); in video prompts a location plate is typically declared
 "STYLE REFERENCE ONLY, not a fixed keyframe" —
 `../skills/higgsfield-seedance/SKILL.md` § Reference Roles.
+
+### 8b. Reverse-angle plates + master-plate exposure normalization
+
+[FIELD — 13-project harvest] Two location-plate disciplines from production:
+
+- **Reverse-angle plates are first-class elements.** Dialogue coverage that
+  holds the 180° line is done with **paired per-angle location elements** —
+  one plate per side (`loc_room_v2` + `loc_room_v2_reverse`), each saved and
+  `@`-registered separately. The screen-direction lock comes from the plates,
+  not from prose.
+- **Normalize every plate against a master plate before use.** When a set
+  needs multiple plates (desk wall, window wall, reverse), run each through a
+  fast image edit against the chosen master: "match the exposure of this
+  plate to the master plate — the second reference, same room — keeping
+  everything else identical. CHANGE — exposure and light level only."
+  Mismatched plate exposure otherwise reads as a lighting change between
+  cuts.
 
 ### 9. Register the `@`-glossary
 
