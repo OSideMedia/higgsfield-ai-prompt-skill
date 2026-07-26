@@ -1,5 +1,32 @@
 # Changelog
 
+## v3.22.0 — 2026-07-26
+
+**The harvest wave.** Absorbs the 13-project community-corpus harvest (2026-07-18: 13 shared Higgsfield projects, 9 creators, ~4,000 production prompts pulled with full params) plus the previously-unported assets from Higgsfield's own skill family (shotlist-builder, seedance-2-pro-director, cinematic-prompt-builder). Chinese-source material re-authored in English.
+
+### Added
+- **higgsfield-seedance 1.11.0**:
+  - *Field calibration — the 13-project production corpus* `[FIELD]`: word-length ladder by register (218w → 2,059w medians — the 50–80w sweet spot is confirmed single-shot-only), register contraction for stylized work, Style Prefix as per-project compiled constant, video briefs hand-authored (`enhance_prompt` off on video / on for images), observed platform-layer Seedance params (`multi_shot_mode: custom`, `speedramp`, `bitrate_mode`).
+  - *Three "helpful-instinct" drift sources* with standing locks in POSITIVE LOCKS: environment invention (**the #1 drift source, above character drift** — "the set contains only what the reference shows"), character-height equalization (heights written into every 2+ character prompt), scale drift on wides.
+  - Measurable-language additions: masses/sizes in real units for PHYSICS ("50–70 g — it falls gently"), causal prop interaction ("a button press is contact, 2–3 mm travel, click, spring-back — screen lights only AFTER the click").
+  - Extension prompting: *feed the tail, not just the frame* — the final 3–4 seconds as `@video` reference carries motion through the join.
+  - *Build-safe construction* `[OFFICIAL — cinematic-prompt-builder]` in the Rewrite Playbook: evacuated-city / energy-standoff / contained-fight / uninhabited-terrain substitutions, containment-doubles-as-physics, the safe benchmark scene.
+  - PRODUCTION-PATTERNS gains a `[FIELD]` section: selective motion blur as artifact concealment, HEX-array color lock, generate-forward-reverse-in-edit, populated-plate reuse, off-screen transformation staging.
+- **higgsfield-camera 3.4.0** `[OFFICIAL — shotlist-builder]`: lens+aperture by shot purpose (85/100mm F1.4 ECU … 45mm macro F2.8) with focus-lock + distortion-forbid clauses, shot-duration-by-type table (0.3–0.5s flash establish → 8–15s full-arc CU), exact-distance micro-move rule (10–15 cm over 7s).
+- **higgsfield-facs 1.1.0** `[OFFICIAL — shotlist-builder]`: *Physical Micro-Beats — the Body Beyond the Face* (7 register recipes: throat/breath/skin/posture, incl. suppressed-emotion-as-resistance), anti-AI-video defaults (no tears unless scripted, 0.3–0.5s group-reaction stagger, listeners-in-bokeh are not statues), *every line gets three beats* (pre/during/post-line), the anti-AI test.
+- **higgsfield-shotlist-director 1.1.0** `[OFFICIAL — shotlist-builder + pro-director]`: *Prompt density* — group-when-ALL-5 / split-when-ANY-5 heuristic ("don't fragment grief"), complexity budget + duration ladder, err-toward-more-prompts, auto-enrichment defaults for thin briefs.
+- **higgsfield-style 3.1.0**: *Register Poles* `[FIELD]` (film vs broadcast-TV vs stop-motion-on-twos vs anime-cel — the style-anchor slot swaps vocabulary by register; one saturated accent reserved for the story) + *Style Recipes* `[OFFICIAL — cinematic-prompt-builder]` (8 proven shapes: live-action epic, 3D animated 6-shots/15s, game cutscene + pinned HUD, gameplay, FPV oner, product packshot, VFX composite INPUT LOCK, kaiju containment).
+- **image-models.md**: Seedream 5.0 Pro (`seedream_v5_pro`) `[FIELD]` — anime/manga sheet + manga-page dialects, art-era anchoring; flagged as absent from the 2026-07-05 spec snapshot (verify live).
+- **production-benchmarks.md**: *Community-corpus anchors* — 13,626 generations for a 2–3-min solo short, TESTS = 61% of the project, 50–100 generations per kept shot (consistent with Hell Grind's 1.0–1.5%), the five-bucket folder discipline, best-second splice culture.
+- **templates/ad-asset-prep.md**: exact-hex grey sheet spec (#8a8a8a) `[FIELD]`, sibling-face derivation ("spitting image, translated onto…"), ghost-mannequin outfit panel, reverse-angle plates as first-class elements (the 180°-line mechanism), master-plate exposure normalization.
+- **templates/seedance/global-style-prefix.md**: *Field specimens* — the one-axis-per-clause anatomy across the corpus, per-world camera-grammar maps, the reserved-accent discipline, register-aware prefixes; audio policy documented as a project choice, not a law.
+- **higgsfield-motion 3.2.0**: scope caveat `[FIELD]` — none of the 13 harvested film productions used a motion preset; presets are the viral-effects product (~100 unique names → ~1,900 per-model variants), film work free-prompts its camera.
+
+### Changed
+- **HARD RULE 8 regime carve-out** (root SKILL.md): the 200-word cap now explicitly governs the short-form MCSLA regime only; block-scaffold production prompts replace the cap with structural lint (harvest medians 500–2,000+ words by register).
+- **Camera-block-at-bottom claim RESOLVED** (was "test day pending" since v3.21.0): rejected on field evidence — across ~4,000 harvested production prompts the CAMERA block sits mid-document, never at the bottom. CAMERA-3rd stands.
+
+
 ## v3.21.0 — 2026-07-14
 
 ### Added

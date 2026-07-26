@@ -1,6 +1,8 @@
 # Production Patterns — Tutorial-Demonstrated
 
-`[DEMO — Seedance-4K film tutorial, 2026-07]`
+`[DEMO — Seedance-4K film tutorial, 2026-07]` (plus a closing
+`[FIELD]` section of harvest-sourced patterns — see § Field-Harvested
+Patterns)
 
 Patterns shown **working on screen** in Higgsfield's own Seedance-4K film
 tutorial and its blog breakdown. Demonstrated, not spec-guaranteed: each one
@@ -174,3 +176,35 @@ Two demonstrated ways to move between scenes without an editing cut:
   filling with the new location) becomes the next scene's opening frame.
 - **Scale transitions in-prompt:** a continuous move from an army-wide shot
   down to a palm-sized duel, written as one camera journey rather than a cut.
+
+---
+
+## Field-Harvested Patterns
+
+`[FIELD — 13-project community harvest, 2026-07-18]` — patterns pulled from
+harvested production prompts rather than the tutorial. Same status as [DEMO]:
+worked in production, not spec-guaranteed.
+
+- **Selective motion blur as artifact concealment.** Most projects ban motion
+  blur; one 4K tech-demo *inverts the ban on purpose*: "water-covered faces,
+  hands, and foreground figures crossing the lens get motion blur to hide
+  artifacts." Where the model is weakest (lens-crossing limbs, water-occluded
+  faces), prompt blur onto exactly those elements to mask it.
+- **HEX-array color lock (image prompts).** Beyond the 60:30:10 prose grade,
+  a still prompt can end with a machine-readable palette — `HEX VALUES:
+  ["#9d6e5f","#a87e72","#3f4591","#30317f", …]` — locking the color world as
+  a list, not a description.
+- **Generate forward, reverse in the edit.** A rewind/time-reversal effect is
+  never generated — forward plates are reversed manually in post. The model
+  only ever renders forward-time physics.
+- **Populated-plate reuse.** For a recurring crowded set (a restaurant),
+  composite the cast + background diners onto the location plate ONCE, then
+  reuse that populated plate as the reference for every seated scene — the
+  seating, eyelines, and crowd inherit from one source instead of re-rolling
+  per shot. (Complementary to the empty-plate rule in
+  `../../templates/ad-asset-prep.md`: empty when the model should own the
+  crowd, populated-once when the crowd must repeat.)
+- **Transformation staged off-screen.** A character-to-creature (or
+  creature-to-character) transformation is "never shown mid-morph unless
+  staged as a shadow silhouette — otherwise it happens off-screen, only
+  before/after shown." Avoids the model's morph failure mode by design.

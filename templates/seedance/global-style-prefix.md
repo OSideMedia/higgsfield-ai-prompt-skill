@@ -51,6 +51,41 @@ Notes on the fields:
   `../../skills/higgsfield-seedance/SKILL.md` § Prompt-Craft Laws → No negative
   prompts in the prompt body.
 
+## Field specimens — what production prefixes actually lock
+
+`[FIELD — 13-project community harvest, 2026-07-18]` — every harvested
+project runs a prefix of exactly this shape: **one axis per clause, each a
+hard positive rule, always ending on continuity/no-drift + audio policy.**
+Axes observed across the corpus (pick what the project needs):
+
+- **Format** — "4K anamorphic widescreen" / "8K cinematic photoreal"
+- **Medium negative** — "photoreal live-action — no 3D render, no game
+  engine, no animated-film aesthetic"
+- **Camera language, per world/scene when it varies** — "adventure-film
+  language: crash zooms, projectile-follows, one-take oners" · or a
+  **per-scene camera-grammar map** ("handheld operator breath in the living
+  room, chase-cam behind the dragon, locked-off super-telephoto for
+  wildlife")
+- **Lighting** — "single motivated sources — lantern practicals, hard desert
+  sun, warm apartment tungsten against monitor-green"
+- **Color + the reserved accent** — "muted period grades per world, one
+  saturated accent: the device's acid-green glow" (the plot prop owns the
+  only saturated color; a look can also be story-reserved — "golden hour is
+  reserved for the twist")
+- **Skin / acting / physics** — pore-level realism · muscle-level
+  performance, micro-pauses · "gravity and inertia respected — sand sinks,
+  cloth clings, dust settles with real particulate behavior"
+- **Continuity** — "characters, props and environments locked to references
+  across every cut. No identity drift."
+- **Audio** — "environmental SFX and dialogue only. No music." (a *project
+  choice*, not a law — 12 of 13 projects ban music and score in post; one
+  bakes its requiem into the concept)
+
+A **register-aware prefix** is also field-proven: one film ran a warm
+handheld "narrative" register and a clean locked-off "demo cutaway" register
+in the same prefix, with the constraint block itself scoped per register
+("no tripod, no hard studio light — reserved only for the demo cutaways").
+
 ## Per-scene override example (Scene 2 / sunny stadium)
 
 One scene breaks the soft global look. Replace **only the Lighting line** in that

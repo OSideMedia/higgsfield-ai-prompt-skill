@@ -6,8 +6,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
-  version: 3.0.0
-  updated: 2026-04-06
+  version: 3.1.0
+  updated: 2026-07-26
   parent: higgsfield
 ---
 
@@ -220,6 +220,60 @@ Don't just name the decade — specify the **materials and lighting** of the era
 - ~~"1970s style"~~ → `Kodachrome warm tones, wood paneling, orange shag carpet, tungsten bulbs casting amber light`
 - ~~"1940s noir"~~ → `high-contrast black and white, Venetian blind shadows, fedora silhouettes, wet asphalt reflecting streetlamps`
 - ~~"1990s home video"~~ → `Hi8 camcorder grain, autofocus hunting, timestamp overlay, oversaturated greens`
+
+---
+
+## Register Poles — the style dial has opposite ends
+
+`[FIELD — 13-project community harvest, 2026-07-18]` — "photoreal cinematic"
+is not one register. Production projects sit at *named poles* of a dial, and
+the pole decides the whole camera grammar:
+
+| Register pole | Camera grammar | Texture stack |
+|---|---|---|
+| **Film register** (drama/romance features) | Handheld breathing, off-level allowed, natural motion | 35mm grain, milky low contrast, gate weave, halation, "corners as bright as center" |
+| **Broadcast-TV register** (early-2000s drama) | **Locked-off tripod, frontal compositions, held reaction beats, ONE camera move per shot maximum** | Heavy soft diffusion, blooming highlights, telecine grain, flat neutral daytime |
+| **Stop-motion / hand-animated** | Stepped motion — "true 12fps, animated on twos: each pose held two frames then snapping, never gliding" + constant painterly boil | **Split-motion rule:** atmosphere (snow, breath-vapor, smoke) moves SMOOTHLY while figures step on twos — an explicit constraint that fights the video model's default smoothness |
+| **Anime / cel** | Per-shot named camera, fewer physics/skin blocks (the template contracts) | "Cel-shaded 2D, clean flat fills, two-to-three value cel shading — not painterly, not 3D, no CGI smoothness" |
+
+**The style-anchor slot swaps vocabulary by register.** Same slot, different
+language: photoreal anchors on a DP/director look (short-form only — block
+prompts describe the look instead, per the seedance measurable-language
+rules) · anime anchors on an **art era** ("early 2000s retro anime, vintage
+cel proportions") · stop-motion anchors on **medium physics** ("12fps on
+twos, painterly boil"). Never carry one register's anchor into another.
+
+**One saturated accent color, reserved for the story.** The corpus-wide
+color discipline: the plot-critical prop owns the only saturated accent in a
+muted grade (an acid-green device, a chartreuse remote LED) — and the same
+reservation works temporally ("golden hour is reserved for the twist";
+everything before it stays flat neutral). State the reservation explicitly.
+
+---
+
+## Style Recipes — eight proven shapes
+
+`[OFFICIAL — Higgsfield cinematic-prompt-builder skill, 2026-07]` — starting
+recipes, each a distinct render contract. Combine and deviate freely; the
+load-bearing part of each is the **is / is-NOT declaration** and the
+shots-per-15s shape:
+
+| Recipe | Look declaration | Structure + signature | Audio |
+|---|---|---|---|
+| **Live-action epic** | 8K photoreal, anamorphic, fine grain — "photoreal, NOT 3D/game" | Oner or multishot; one "hook" event triggers one held slow-mo beat, then snaps back; scale contrast (tiny figures vs vast subject) | Diegetic; slow-mo drops to muffled vacuum + heartbeat, snaps back with a whoosh |
+| **3D animated feature** | Vibrant glossy CGI, Pixar-quality stylized, subsurface fur/skin | **6 shots / 15s** montage — "don't use one camera angle"; per-shot spoken lines with delivery described; land a visual gag | Light score allowed; often still SFX-forward |
+| **Game cutscene** | UE5 real-time in-engine render — "hyperreal but unmistakably GAME-rendered, NOT film" | 3 shots / 15s, hard cuts; **screen-pinned HUD in a locked accent hex, every element enumerated with exact text** — HUD never parallaxes | No music; SFX + subtle UI ticks |
+| **Gameplay footage** | AAA arcade (racing) — hyper-saturated engine render, "in-game, NOT a film plate" | Rock-steady chase-cam locked to vehicle, NO slow-mo anywhere, live HUD (RPM, boost, minimap) | Engine, gears, boost, tyre screech, UI beeps |
+| **FPV / POV oner** | One unbroken take, photoreal macro, anamorphic | Beats by timestamp in one paragraph; one named speed ramp (240fps bullet-time beat → snap to 24fps); macro brushes against surfaces | Slow-mo swaps ambience for amplified rhythmic sound |
+| **Product / commercial** | 8K editorial, deep black crush, per-section color worlds | 8–10 short sections, hard match-cuts on action; rapid 0.3s macro montage; resolves on a **hero packshot** (product in one third, dark negative space, slow dolly, particle drift, hold) | No music/VO/text — product-handling SFX only |
+| **VFX composite** (on a source clip) | Photoreal practical-FX realism; composition + grade INHERITED from the source | INPUT LOCK: plate preserved unchanged, camera inherited exactly; only additions = new element + its light + contact shadows; parallax-locked to an anchor plane | New element's diegetic sounds over preserved room tone |
+| **Kaiju / creature** | 8K photoreal anamorphic, ORIGINAL design ("not based on any franchise") | ~6 cuts, per-cut OPTICS; the detail that opens CUT 1 is the one CUT 2 zooms into; **containment rule** ("stays at the sea surface, never airborne") grounds physics and scale | Diegetic only — rumble, roars, water-burst, subsonic boom |
+
+Full engine-side counterparts: the HUD recipe and INPUT LOCK live with
+worked patterns in `../higgsfield-seedance/SKILL.md` and
+`../higgsfield-seedance-vfx/SKILL.md`; the containment rule doubles as the
+build-safe construction law (`../higgsfield-seedance/SKILL.md` § Build-safe
+construction).
 
 ---
 

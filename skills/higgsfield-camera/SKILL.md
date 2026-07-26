@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
-  version: 3.3.1
-  updated: 2026-06-30
+  version: 3.4.0
+  updated: 2026-07-26
   parent: higgsfield
 ---
 
@@ -16,6 +16,17 @@ metadata:
 
 Always reference camera controls by their **exact preset name** in prompts.
 Higgsfield recognizes these names directly.
+
+## QUICK FACTS
+*Routing aids — read the linked sections for the actual rules.*
+- Named preset tables by family: dolly / crane / orbit / zoom / follow / specialty / time-based / through-object / vehicle, plus angles and shot sizes — always cite the **exact preset name** [→](#dolly-movements)
+- Layer max two *compatible* moves; sequenced combos get explicit timing; static-pan beats glide for most coverage [→](#combining-camera-controls)
+- **The camera is the emotional double of the focal character** — 7 emotional registers map to camera prescriptions; arcs change the camera in named phases [→](#camera-emotion-sync-movement-per-focal-character-emotion)
+- [OFFICIAL] Lens + aperture chosen by shot *purpose* (85/100mm F1.4 tight emotional CU … 45mm macro F2.8), with standing focus-lock and distortion-forbid clauses [→](#lens-aperture-by-shot-purpose)
+- [OFFICIAL] Shot duration by type: flash establish 0.3–0.5s · dialogue line 3–7s · wordless reaction 5–10s · full-arc emotional CU 8–15s [→](#shot-duration-by-type)
+- Micro-moves need exact distances — state total travel + time ("10–15 cm over 7 seconds"); never write `zoom` for a physical move [→](#micro-moves-need-exact-distances)
+- Cinema Studio 3.0: One-Move Rule, genre presets, reliable phrasing library, camera transfer via `@Video` [→](#cinema-studio-30-camera-best-practices-businessteam-plan)
+- What a `@Video` reference reads reliably (world, materials, physics, camera character) vs cannot do (frame-accurate continuation, identity) [→](#video-reference-what-it-reads-and-what-it-cant)
 
 ---
 
@@ -221,6 +232,53 @@ The camera moves with the actor, not on its own clock.
 > specific named register — see `../higgsfield-prompt/SKILL.md` §
 > Generic-Emotion Decomposition for the "which kind of X?"
 > clarification template.
+
+### Lens + aperture by shot purpose
+
+`[OFFICIAL — Higgsfield shotlist-builder skill, 2026-07; re-authored from
+the Chinese source]` — pick the glass from the shot's *purpose*, then say
+both lens and aperture in the prompt:
+
+| Purpose | Lens | Aperture |
+|---|---|---|
+| Extreme tight emotional close-up (forehead-to-chin fills frame) | 85mm or 100mm | F1.4 |
+| Mid dialogue, two-shot | 50mm | F2.0–F2.8 |
+| Wide / establishing | 35mm | F4–F5.6 |
+| Insert / object detail (focus locked on the object) | 50mm or 85mm | F1.4 |
+| Macro (pores, droplets, fabric) | 45mm macro | F2.8 |
+
+Two standing clauses that ride with these choices:
+
+- **Focus lock on inserts and tight close-ups:** `"focus plane locked on
+  [object] from first frame to last — no focus drift, no rack focus, no
+  autofocus hunting."`
+- **Distortion forbid on wide/fast glass:** `"straight rectilinear lines,
+  no barrel or pincushion distortion, no fisheye, no wide-angle warp."`
+  (For Seedance block prompts, FOV is stated in degrees instead of mm —
+  `../higgsfield-seedance/SKILL.md` § FOV anchors; this table's mm/aperture
+  vocabulary serves Cinema Studio and non-Seedance surfaces, and the
+  *purpose→glass* logic transfers either way.)
+
+### Shot duration by type
+
+Durations inside a 15s multi-shot envelope — divide the envelope using
+these, and let an emotional arc earn its full length:
+
+| Shot type | Duration |
+|---|---|
+| Flash establishing / hard-cut intro (split-second wide) | 0.3–0.5s — a fraction of a second, NOT a full second |
+| One mid-length dialogue line | 3–7s |
+| Wordless reaction with an emotional arc | 5–10s |
+| Insert / wide / freeze | 0.3–2s |
+| Emotional close-up with a full 5–7-beat arc | 8–15s |
+
+### Micro-moves need exact distances
+
+For very slow dollies, state total travel **and** time, or the model
+oversells the move: `"over the full 7 seconds the camera pulls back only
+10–15 centimeters — slow enough to barely register. No zoom, no sudden
+push."` Never write `zoom` for a physical move — name dolly / track /
+push-in / pull-out.
 
 ---
 

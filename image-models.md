@@ -143,6 +143,15 @@ G = Google-powered model
 
 ## Seedream Family
 
+### Seedream 5.0 Pro
+**Model id:** `seedream_v5_pro` `[FIELD — observed on 161 harvested community jobs, 2026-07-18; not yet in the 2026-07-05 spec snapshot — verify params live before citing enums]`
+**Best for:** Anime / manga / stylized-2D image work — character sheets with clean linework, flat cel color fills, multi-panel manga page layouts with screentones and readable panel geometry
+**Field-proven dialects:** split-screen anime character sheets (full-body action pose left, chest-up portrait right, identical character, white seamless background, ~190w median) · black-and-white manga page spreads (panels laid out by position + size + content, refs as Image0/1/2, ink linework, screentones, no color)
+**Style anchoring:** use an **art-era anchor** ("early 2000s retro anime, soft painted cel-shading, vintage proportions") — the stylized-image equivalent of the photoreal director/DP anchor
+**vs 5.0 Lite / 4.5:** the pick when line + flat color + text/panel layout matter more than photoreal texture; photoreal sheet work stays on Soul / GPT Image 2 / Nano Banana Pro
+
+---
+
 ### Seedream 5.0 Lite
 **Credits:** 1 per generation
 **UI:** Seedream 5.0 lite · 2K · 16:9 · 1/4 · @ (Elements) · Unlimited
