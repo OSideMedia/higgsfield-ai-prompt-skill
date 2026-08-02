@@ -1,5 +1,5 @@
 {
-  "captured": "2026-07-05",
+  "captured": "2026-08-01",
   "video": {
     "bytedance_video_upscale": {
       "id": "bytedance_video_upscale",
@@ -119,30 +119,6 @@
         "size(params.urls) == 1"
       ]
     },
-    "explainer_video": {
-      "id": "explainer_video",
-      "output_type": "video",
-      "aspect_ratios": [],
-      "params": {
-        "height": {
-          "options": [],
-          "default": null
-        },
-        "items": {
-          "options": [],
-          "default": null
-        },
-        "subtitles": {
-          "options": [],
-          "default": null
-        },
-        "width": {
-          "options": [],
-          "default": null
-        }
-      },
-      "rules": []
-    },
     "gemini_omni": {
       "id": "gemini_omni",
       "output_type": "video",
@@ -234,7 +210,51 @@
         },
         "resolution": {
           "options": [
+            "1080p",
             "480p",
+            "720p"
+          ],
+          "default": "720p"
+        },
+        "start_image": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": []
+    },
+    "happy_horse_video": {
+      "id": "happy_horse_video",
+      "output_type": "video",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "3:4",
+        "4:3",
+        "9:16"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "3:4",
+            "4:3",
+            "9:16"
+          ],
+          "default": "16:9"
+        },
+        "duration": {
+          "options": [],
+          "default": 5
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1080p",
             "720p"
           ],
           "default": "720p"
@@ -406,6 +426,76 @@
         }
       },
       "rules": []
+    },
+    "minimax_h3": {
+      "id": "minimax_h3",
+      "output_type": "video",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "21:9",
+        "3:4",
+        "4:3",
+        "9:16",
+        "auto"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "21:9",
+            "3:4",
+            "4:3",
+            "9:16",
+            "auto"
+          ],
+          "default": "auto"
+        },
+        "audio_references": {
+          "options": [],
+          "default": null
+        },
+        "duration": {
+          "options": [],
+          "default": 5
+        },
+        "end_image": {
+          "options": [],
+          "default": null
+        },
+        "folder_id": {
+          "options": [],
+          "default": null
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "2K"
+          ],
+          "default": "2K"
+        },
+        "start_image": {
+          "options": [],
+          "default": null
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "(params.start_image == null && params.end_image == null) || (size(params.image_references) == 0 && size(params.video_references) == 0 && size(params.audio_references) == 0)",
+        "params.end_image == null || !(params.start_image == null)",
+        "size(params.audio_references) == 0 || size(params.image_references) > 0 || size(params.video_references) > 0"
+      ]
     },
     "minimax_hailuo": {
       "id": "minimax_hailuo",
@@ -764,43 +854,11 @@
           ],
           "default": "auto"
         },
-        "duration": {
-          "options": [],
-          "default": null
-        },
         "enhancement": {
           "options": [],
           "default": null
         },
-        "folder_id": {
-          "options": [],
-          "default": null
-        },
         "frame_interpolation": {
-          "options": [],
-          "default": null
-        },
-        "frame_rate": {
-          "options": [],
-          "default": 30
-        },
-        "frames_count": {
-          "options": [],
-          "default": null
-        },
-        "input_height": {
-          "options": [],
-          "default": null
-        },
-        "input_video": {
-          "options": [],
-          "default": null
-        },
-        "input_video_size": {
-          "options": [],
-          "default": 0
-        },
-        "input_width": {
           "options": [],
           "default": null
         },
@@ -810,6 +868,10 @@
             "2160p"
           ],
           "default": "1080p"
+        },
+        "video_references": {
+          "options": [],
+          "default": null
         }
       },
       "rules": []
@@ -1105,91 +1167,6 @@
     }
   },
   "image": {
-    "autosprite": {
-      "id": "autosprite",
-      "output_type": "image",
-      "aspect_ratios": [],
-      "params": {
-        "frame_count": {
-          "options": [],
-          "default": 25
-        },
-        "frame_size": {
-          "options": [],
-          "default": 256
-        },
-        "image_url": {
-          "options": [],
-          "default": null
-        },
-        "is_humanoid": {
-          "options": [],
-          "default": true
-        },
-        "kind": {
-          "options": [
-            "attack",
-            "custom",
-            "idle",
-            "iso_idle_down",
-            "iso_idle_northeast",
-            "iso_idle_right",
-            "iso_idle_southeast",
-            "iso_idle_up",
-            "iso_jump_down",
-            "iso_jump_northeast",
-            "iso_jump_right",
-            "iso_jump_southeast",
-            "iso_jump_up",
-            "iso_run_down",
-            "iso_run_northeast",
-            "iso_run_right",
-            "iso_run_southeast",
-            "iso_run_up",
-            "iso_walk_down",
-            "iso_walk_northeast",
-            "iso_walk_right",
-            "iso_walk_southeast",
-            "iso_walk_up",
-            "jump",
-            "run",
-            "walk"
-          ],
-          "default": "idle"
-        },
-        "name": {
-          "options": [],
-          "default": null
-        },
-        "prompt": {
-          "options": [],
-          "default": null
-        },
-        "remove_bg": {
-          "options": [
-            "default",
-            "ultra"
-          ],
-          "default": "default"
-        },
-        "video_tier": {
-          "options": [
-            "max",
-            "pro",
-            "turbo"
-          ],
-          "default": "turbo"
-        },
-        "with_sound": {
-          "options": [],
-          "default": false
-        }
-      },
-      "rules": [
-        "params.kind != \"custom\" || (params.prompt != null && params.name != null)",
-        "params.kind == \"custom\" || (params.prompt == null && params.name == null)"
-      ]
-    },
     "bytedance_image_upscale": {
       "id": "bytedance_image_upscale",
       "output_type": "image",
@@ -1542,59 +1519,6 @@
         "size(params.image_references) <= 8"
       ]
     },
-    "nano_banana_2": {
-      "id": "nano_banana_2",
-      "output_type": "image",
-      "aspect_ratios": [
-        "16:9",
-        "1:1",
-        "21:9",
-        "2:3",
-        "3:2",
-        "3:4",
-        "4:3",
-        "4:5",
-        "5:4",
-        "9:16"
-      ],
-      "params": {
-        "aspect_ratio": {
-          "options": [
-            "16:9",
-            "1:1",
-            "21:9",
-            "2:3",
-            "3:2",
-            "3:4",
-            "4:3",
-            "4:5",
-            "5:4",
-            "9:16"
-          ],
-          "default": "1:1"
-        },
-        "image_references": {
-          "options": [],
-          "default": null
-        },
-        "prompt": {
-          "options": [],
-          "default": null
-        },
-        "resolution": {
-          "options": [
-            "1k",
-            "2k",
-            "4k"
-          ],
-          "default": "2k"
-        }
-      },
-      "rules": [
-        "params.prompt != \"\" || size(params.image_references) > 0",
-        "size(params.image_references) <= 14"
-      ]
-    },
     "nano_banana_2_ai_stylist": {
       "id": "nano_banana_2_ai_stylist",
       "output_type": "image",
@@ -1802,6 +1726,59 @@
       },
       "rules": []
     },
+    "nano_banana_pro": {
+      "id": "nano_banana_pro",
+      "output_type": "image",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "21:9",
+        "2:3",
+        "3:2",
+        "3:4",
+        "4:3",
+        "4:5",
+        "5:4",
+        "9:16"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "21:9",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:3",
+            "4:5",
+            "5:4",
+            "9:16"
+          ],
+          "default": "1:1"
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1k",
+            "2k",
+            "4k"
+          ],
+          "default": "2k"
+        }
+      },
+      "rules": [
+        "params.prompt != \"\" || size(params.image_references) > 0",
+        "size(params.image_references) <= 14"
+      ]
+    },
     "openai_hazel": {
       "id": "openai_hazel",
       "output_type": "image",
@@ -2005,6 +1982,7 @@
       "aspect_ratios": [
         "16:9",
         "1:1",
+        "21:9",
         "3:4",
         "4:3",
         "9:16"
@@ -2014,6 +1992,7 @@
           "options": [
             "16:9",
             "1:1",
+            "21:9",
             "3:4",
             "4:3",
             "9:16"
@@ -2037,6 +2016,54 @@
         }
       },
       "rules": []
+    },
+    "seedream_v5_pro": {
+      "id": "seedream_v5_pro",
+      "output_type": "image",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "21:9",
+        "2:3",
+        "3:2",
+        "3:4",
+        "4:3",
+        "9:16"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "21:9",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:3",
+            "9:16"
+          ],
+          "default": "1:1"
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1.5k",
+            "1k",
+            "2k"
+          ],
+          "default": "2k"
+        }
+      },
+      "rules": [
+        "size(params.image_references) <= 10"
+      ]
     },
     "soul_cast": {
       "id": "soul_cast",
@@ -2489,6 +2516,87 @@
         "prompt": {
           "options": [],
           "default": null
+        }
+      },
+      "rules": []
+    },
+    "qwen_audio_tts": {
+      "id": "qwen_audio_tts",
+      "output_type": "audio",
+      "aspect_ratios": [],
+      "params": {
+        "format": {
+          "options": [
+            "mp3",
+            "ogg_opus",
+            "pcm",
+            "wav"
+          ],
+          "default": "mp3"
+        },
+        "instruction": {
+          "options": [],
+          "default": null
+        },
+        "language": {
+          "options": [
+            "de",
+            "en",
+            "fr",
+            "id",
+            "it",
+            "ja",
+            "ko",
+            "ms",
+            "pt",
+            "ru",
+            "th",
+            "vi",
+            "zh"
+          ],
+          "default": null
+        },
+        "pitch_rate": {
+          "options": [],
+          "default": 1
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "sample_rate": {
+          "options": [
+            "16000",
+            "22050",
+            "24000",
+            "44100",
+            "48000",
+            "8000"
+          ],
+          "default": 24000
+        },
+        "seed": {
+          "options": [],
+          "default": 0
+        },
+        "speech_rate": {
+          "options": [],
+          "default": 1
+        },
+        "voice_id": {
+          "options": [],
+          "default": null
+        },
+        "voice_type": {
+          "options": [
+            "element",
+            "preset"
+          ],
+          "default": null
+        },
+        "volume": {
+          "options": [],
+          "default": 50
         }
       },
       "rules": []

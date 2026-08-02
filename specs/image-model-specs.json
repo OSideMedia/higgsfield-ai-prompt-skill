@@ -999,26 +999,27 @@
       "aliases": [],
       "aspect_ratios": [
         "1:1",
+        "4:3",
+        "3:4",
         "16:9",
         "9:16",
-        "4:3",
-        "3:4"
+        "21:9"
       ],
       "constraints": [],
       "duration": null,
       "id": "seedream_v5_lite",
       "media_roles": {
         "medias": [
-          "image"
+          "image_references"
         ]
       },
       "modes": [],
-      "name": "Seedream 5.0 lite",
+      "name": "Seedream 5.0 Lite",
       "output_type": "image",
       "params": [
         {
           "default": "basic",
-          "description": "Image quality",
+          "description": "Output quality tier.",
           "name": "quality",
           "options": [
             "basic",
@@ -1030,6 +1031,50 @@
       ],
       "provider": "Bytedance",
       "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "1:1",
+        "4:3",
+        "3:4",
+        "16:9",
+        "9:16",
+        "3:2",
+        "2:3",
+        "21:9"
+      ],
+      "constraints": [],
+      "duration": null,
+      "id": "seedream_v5_pro",
+      "media_roles": {
+        "medias": [
+          "image_references"
+        ]
+      },
+      "modes": [],
+      "name": "Seedream 5.0 Pro",
+      "output_type": "image",
+      "params": [
+        {
+          "default": "2k",
+          "description": "Output resolution tier.",
+          "name": "resolution",
+          "options": [
+            "1k",
+            "1.5k",
+            "2k"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Bytedance",
+      "resolutions": [
+        "1k",
+        "1.5k",
+        "2k"
+      ]
     },
     {
       "aliases": [],
@@ -1443,7 +1488,7 @@
       "resolutions": []
     }
   ],
-  "snapshot_date": "2026-07-05",
-  "snapshot_file": "models_explore_snapshot_image_2026-07-05.json",
-  "snapshot_sha256": "dc72a9f813e4b0f7c7968eafa43e510e7968d8012e417b2df810cef49cbb40c1"
+  "snapshot_date": "2026-08-01",
+  "snapshot_file": "models_explore_snapshot_image_2026-08-01.json",
+  "snapshot_sha256": "d0ccad6f606393c2534addbc32a76e268745452ca8fbbcf2aaf1516c0e763555"
 }

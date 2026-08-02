@@ -99,9 +99,9 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Sound Design Specificity](skills/higgsfield-audio/SKILL.md#sound-design-specificity)
   - [Scene-Audio Generation — Seed Audio 1.0](skills/higgsfield-audio/SKILL.md#scene-audio-generation-seed-audio-10)
     - [When to choose it — decision table](skills/higgsfield-audio/SKILL.md#when-to-choose-it-decision-table)
-    - [Verified surface [OFFICIAL — model spec 2026-07-05]](skills/higgsfield-audio/SKILL.md#verified-surface-official-model-spec-2026-07-05)
+    - [Verified surface [OFFICIAL — model spec 2026-08-01]](skills/higgsfield-audio/SKILL.md#verified-surface-official-model-spec-2026-08-01)
     - [Script-format prompting [EMPIRICAL — community guides, NOT official docs]](skills/higgsfield-audio/SKILL.md#script-format-prompting-empirical-community-guides-not-official-docs)
-  - [Standalone Audio tab — tool catalog (2026-07-05 snapshot)](skills/higgsfield-audio/SKILL.md#standalone-audio-tab-tool-catalog-2026-07-05-snapshot)
+  - [Standalone Audio tab — tool catalog (2026-08-01 snapshot)](skills/higgsfield-audio/SKILL.md#standalone-audio-tab-tool-catalog-2026-08-01-snapshot)
     - [Post-generation voice-over — Supercomputer workflow [DEMO]](skills/higgsfield-audio/SKILL.md#post-generation-voice-over-supercomputer-workflow-demo)
   - [Related skills](skills/higgsfield-audio/SKILL.md#related-skills)
 

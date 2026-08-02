@@ -1,5 +1,24 @@
 # Changelog
 
+## v3.24.0 — 2026-08-01
+
+**Tier-2 spec refresh — 2026-08-01 snapshots.** CLI re-authenticated; `refresh_specs.py` flagged real drift since 2026-07-05, so all three catalogs were re-dumped from `models_explore`, specs regenerated, evals audited, and the CLI baseline re-accepted. Lands 4 days before the old snapshots would have crossed the 30-day trust line (which v3.23.0 made a `--strict` failure).
+
+### Specs (generated from the 2026-08-01 dumps)
+- **Video +3**: `minimax_h3` (MiniMax H3 — multimodal keyframes + image/video/audio refs, 5–15s, 2K, 21:9), `happy_horse_video` (T2V/start-frame, 3–15s, 720p/1080p), `sync_so` (Sync Lipsync 3, pipeline tool). Nothing removed.
+- **Image +1**: `seedream_v5_pro` — the v3.22.0 "verify live before citing enums" flag is now resolved: in-snapshot with `resolution` 1k/1.5k/2k (default 2k) and 21:9. `seedream_v5_lite` gained 21:9.
+- **Audio +1**: `qwen_audio_tts` (Qwen Audio 3.0 TTS Flash — expressive `instruction` direction, preset/cloned voices, 13 language hints); documented in higgsfield-audio's catalog table.
+- CLI-surface deltas recorded in `cli_baseline.json` (accepted with `--update-baseline`): `nano_banana_2` and `explainer_video` left the **CLI** list but remain in the models_explore catalog; `grok_video_v15` gained 1080p; Topaz's CLI param surface was reshaped.
+
+### Changed
+- Snapshot-date stamps refreshed everywhere they are load-bearing: README badge, image-models.md header + Soul Cast / GPT Image notes, higgsfield-audio catalog section (incl. heading anchor), model-guide sourcing note, and the eval golden responses that cite a snapshot date (facts re-verified against the new dump).
+- model-guide.md: "new in catalog — not yet field-rated" note for MiniMax H3 + Happy Horse (no invented star ratings), Sync Lipsync 3 added to the out-of-scope utility list.
+
+### Known limitations (accepted)
+- MiniMax H3 and Happy Horse Video have specs coverage but no prompt doctrine or comparison-table rows yet — pending real generations.
+- Sora 2 remains UI-only (absent from the API/MCP catalog).
+
+
 ## v3.23.0 — 2026-08-01
 
 **Council remediation wave.** A three-model council audit (Codex gpt-5.6-sol + Gemini 3.1 Pro + Opus, 2026-08-01) of v3.22.1 found that the harvest wave changed the doctrine while the enforcement layer — linter, validator, evals, dispatcher, templates — still implemented the old one. All verified findings fixed.

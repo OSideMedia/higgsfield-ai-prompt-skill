@@ -163,6 +163,124 @@
       "aspect_ratios": [],
       "constraints": [],
       "duration": null,
+      "id": "qwen_audio_tts",
+      "media_roles": {},
+      "modes": [],
+      "name": "Qwen Audio 3.0 TTS Flash",
+      "output_type": "audio",
+      "params": [
+        {
+          "description": "Use 'preset' for a system voice or 'element' for a cloned voice.",
+          "name": "voice_type",
+          "options": [
+            "preset",
+            "element"
+          ],
+          "required": "required",
+          "type": "string"
+        },
+        {
+          "description": "Preset or reference-element voice ID.",
+          "name": "voice_id",
+          "required": "required",
+          "type": "string"
+        },
+        {
+          "description": "Natural-language direction for emotion, dialect, speed, or style.",
+          "name": "instruction",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Optional target-language hint.",
+          "name": "language",
+          "options": [
+            "zh",
+            "en",
+            "fr",
+            "de",
+            "ja",
+            "ko",
+            "ru",
+            "pt",
+            "th",
+            "id",
+            "vi",
+            "it",
+            "ms"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "mp3",
+          "description": "Output audio container format.",
+          "name": "format",
+          "options": [
+            "wav",
+            "mp3",
+            "pcm",
+            "ogg_opus"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": 24000,
+          "description": "Output sample rate in Hz.",
+          "name": "sample_rate",
+          "options": [
+            8000,
+            16000,
+            22050,
+            24000,
+            44100,
+            48000
+          ],
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 50,
+          "max": 100,
+          "min": 0,
+          "name": "volume",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 1,
+          "max": 2,
+          "min": 0.5,
+          "name": "speech_rate",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 1,
+          "max": 2,
+          "min": 0.5,
+          "name": "pitch_rate",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 0,
+          "max": 65535,
+          "min": 0,
+          "name": "seed",
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "Alibaba Cloud",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
       "id": "seed_audio",
       "media_roles": {
         "medias": [
@@ -315,7 +433,7 @@
       "resolutions": []
     }
   ],
-  "snapshot_date": "2026-07-05",
-  "snapshot_file": "models_explore_snapshot_audio_2026-07-05.json",
-  "snapshot_sha256": "bc4bd3a146b277720c3fb4c2a7811c6d7048ffef1f2dd8784e21cc128c6677fb"
+  "snapshot_date": "2026-08-01",
+  "snapshot_file": "models_explore_snapshot_audio_2026-08-01.json",
+  "snapshot_sha256": "ef2dcdb6eafd4d2ec9717c9e5b70d2e460a1dd66a1053ca231c663c3b1c200c5"
 }

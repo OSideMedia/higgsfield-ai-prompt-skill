@@ -1,6 +1,6 @@
 {
   "generator_version": 1,
-  "image_models": "see specs/IMAGE-MODEL-SPECS.md (snapshot 2026-07-05); this file covers video models only.",
+  "image_models": "see specs/IMAGE-MODEL-SPECS.md (snapshot 2026-08-01); this file covers video models only.",
   "models": [
     {
       "aliases": [],
@@ -577,7 +577,8 @@
           "name": "resolution",
           "options": [
             "480p",
-            "720p"
+            "720p",
+            "1080p"
           ],
           "required": "optional",
           "type": "string"
@@ -595,7 +596,59 @@
       "provider": "xAI",
       "resolutions": [
         "480p",
-        "720p"
+        "720p",
+        "1080p"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:3",
+        "3:4"
+      ],
+      "constraints": [],
+      "duration": {
+        "max": 15,
+        "min": 3
+      },
+      "id": "happy_horse_video",
+      "media_roles": {
+        "medias": [
+          "start_image"
+        ]
+      },
+      "modes": [],
+      "name": "Happy Horse Video",
+      "output_type": "video",
+      "params": [
+        {
+          "default": "720p",
+          "description": "Output resolution.",
+          "name": "resolution",
+          "options": [
+            "720p",
+            "1080p"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": 5,
+          "description": "Duration in seconds (3-15).",
+          "max": 15,
+          "min": 3,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "Happy Horse",
+      "resolutions": [
+        "720p",
+        "1080p"
       ]
     },
     {
@@ -946,6 +999,67 @@
         "480p",
         "720p",
         "1080p"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "auto",
+        "21:9",
+        "16:9",
+        "4:3",
+        "1:1",
+        "3:4",
+        "9:16"
+      ],
+      "constraints": [],
+      "duration": {
+        "max": 15,
+        "min": 5
+      },
+      "id": "minimax_h3",
+      "media_roles": {
+        "medias": [
+          "start_image",
+          "end_image",
+          "image_references",
+          "video_references",
+          "audio_references"
+        ]
+      },
+      "modes": [],
+      "name": "MiniMax H3",
+      "output_type": "video",
+      "params": [
+        {
+          "default": 5,
+          "description": "Duration in seconds (5-15).",
+          "max": 15,
+          "min": 5,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "2K",
+          "description": "Output resolution.",
+          "name": "resolution",
+          "options": [
+            "2K"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Optional folder to place the generated video in.",
+          "name": "folder_id",
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "MiniMax",
+      "resolutions": [
+        "2K"
       ]
     },
     {
@@ -1333,6 +1447,46 @@
     },
     {
       "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "sync_so",
+      "media_roles": {
+        "medias": [
+          "input_video",
+          "input_audio"
+        ]
+      },
+      "modes": [],
+      "name": "Sync Lipsync 3",
+      "output_type": "video",
+      "params": [
+        {
+          "default": "bounce",
+          "description": "How to reconcile a duration mismatch between the video and the audio: 'bounce' ping-pongs the video, 'loop' repeats it, 'cut_off' truncates to the shorter input, 'silence' pads the audio, 'remap' retimes the video.",
+          "name": "sync_mode",
+          "options": [
+            "bounce",
+            "loop",
+            "cut_off",
+            "silence",
+            "remap"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Optional folder to place the generated output in.",
+          "name": "folder_id",
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
       "aspect_ratios": [
         "auto",
         "21:9",
@@ -1347,7 +1501,7 @@
       "id": "topaz_video",
       "media_roles": {
         "medias": [
-          "input_video"
+          "video_references"
         ]
       },
       "modes": [],
@@ -1356,6 +1510,7 @@
       "params": [
         {
           "default": "1080p",
+          "description": "Target output resolution.",
           "name": "resolution",
           "options": [
             "1080p",
@@ -1365,52 +1520,14 @@
           "type": "string"
         },
         {
+          "description": "Enhancement settings (omit to use Topaz defaults).",
           "name": "enhancement",
           "required": "optional",
           "type": "string"
         },
         {
+          "description": "Frame interpolation (omit to disable).",
           "name": "frame_interpolation",
-          "required": "optional",
-          "type": "string"
-        },
-        {
-          "name": "duration",
-          "required": "optional",
-          "type": "number"
-        },
-        {
-          "default": 30,
-          "name": "frame_rate",
-          "required": "optional",
-          "type": "number"
-        },
-        {
-          "name": "frames_count",
-          "required": "optional",
-          "type": "number"
-        },
-        {
-          "min": 1,
-          "name": "input_width",
-          "required": "optional",
-          "type": "number"
-        },
-        {
-          "min": 1,
-          "name": "input_height",
-          "required": "optional",
-          "type": "number"
-        },
-        {
-          "default": 0,
-          "min": 0,
-          "name": "input_video_size",
-          "required": "optional",
-          "type": "number"
-        },
-        {
-          "name": "folder_id",
           "required": "optional",
           "type": "string"
         }
@@ -1756,7 +1873,7 @@
       ]
     }
   ],
-  "snapshot_date": "2026-07-05",
-  "snapshot_file": "models_explore_snapshot_2026-07-05.json",
-  "snapshot_sha256": "a75772e10eb743cf35ce94b5f8850dc5f07a160e7d9dd2f38e8787ee56039b41"
+  "snapshot_date": "2026-08-01",
+  "snapshot_file": "models_explore_snapshot_2026-08-01.json",
+  "snapshot_sha256": "0574b849459cbb0103888f891988cff4f4240bf7f4445a34415fad6f0f5d7842"
 }
