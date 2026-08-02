@@ -48,9 +48,11 @@ def test_values_list_matches():
     assert [ok for ok, *_ in results] == [True]
 
 
-def test_range_endpoints_against_values():
+def test_range_against_noncontiguous_values_fails():
+    # "4–8s" against a [4,6,8] enum invites an illegal duration:7 — a range
+    # cell is honest only when the enum is a contiguous integer run.
     results = run_checks(HEADER + "| Veo 3.1 Lite | ★★★★☆ | 4–8s | budget |\n")
-    assert [ok for ok, *_ in results] == [True]
+    assert [ok for ok, *_ in results] == [False]
 
 
 def test_unknown_model_skipped():

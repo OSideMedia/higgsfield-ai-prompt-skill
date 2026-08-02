@@ -177,7 +177,7 @@ Before generating, verify:
 
 | Symptom | Likely Cause | Fix |
 |---------|-------------|-----|
-| Output blurry, jittery, or morphing | Overspecification — prompt too long or too detailed | Cut prompt to 30–100 words. Use @reference images/videos instead of 50+ words of description |
+| Output blurry, jittery, or morphing | Overspecification — prompt too long or too detailed | Short-form: cut to 30–100 words; use @reference images/videos instead of 50+ words of description. Block-scaffold briefs: don't shorten — tighten structure instead (one axis per clause, HARD RULE 8 regime) |
 | Camera chaotic, spinning, or jittering | Violated the One-Move Rule — multiple camera moves in one shot | Rewrite to ONE primary camera move per shot. Use Cinema Studio 3.0's Smart mode, or split into multi-shot |
 | Character doesn't match reference | Prompt is re-describing the character's appearance | Delete ALL physical descriptions. Describe ONLY action and emotion. The @reference carries identity |
 | Action stiff or lacking impact | Missing intent/physics language | Add degree adverbs (`violently`, `gently`, `explosively`) and physics consequences (`dust erupts`, `sparks fly`, `fabric tears`) |
@@ -188,8 +188,9 @@ Before generating, verify:
 
 ```
 Output bad?
-├── Blurry/morphing → Is prompt > 100 words?
+├── Blurry/morphing → Is it a short-form prompt > 100 words?
 │   ├── Yes → Cut to 30–100 words, use @reference
+│   │        (block-scaffold briefs: tighten structure, never truncate)
 │   └── No → Too many action beats? (>2 per 5s) → Split into multi-shot
 ├── Camera wrong → How many camera moves specified?
 │   ├── Multiple → Reduce to ONE move (One-Move Rule)

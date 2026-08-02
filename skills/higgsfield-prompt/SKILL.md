@@ -15,7 +15,7 @@ metadata:
 *Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
 - MCSLA = Model, Camera, Subject, Look, Action — the five layers of every prompt [→](#the-mcsla-formula)
 - I2V: describe ONLY what moves or changes, never what's already in the image [→](#image-to-video-i2v)
-- Keep prompts under 200 words; Cinema Studio has a hard 512-character cap [→](#high-performing-prompt-patterns)
+- Keep prompts under 200 words — **short-form MCSLA regime only**; block-scaffold production prompts replace the cap with structural lint (HARD RULE 8 carve-out); Cinema Studio has a hard 512-character cap [→](#high-performing-prompt-patterns)
 - 1 primary action per clip, 1–2 secondary max; Fast Motion Trick: render in Slow Mo, speed up in post [→](#one-action-per-scene)
 - Never leave a generic emotion ("sad"/"angry") in a prompt — decompose into muscle movements, breath, eyes, skin [→](#generic-emotion-decomposition-which-kind-of-x)
 - Soul ID / recurring characters: split every prompt into Identity Block + Motion Block — never mix them [→](#identity-vs-motion-separation-rule)
@@ -24,7 +24,7 @@ metadata:
 - Never combine Dolly In + Dolly Out in one shot; @ Elements for static scenes, plain text for action [→](#common-prompt-mistakes)
 - Iterate by changing exactly ONE variable per regeneration [→](#the-iteration-rule-change-one-variable-at-a-time)
 - 6-Pass Diagnostic order: Subject → Action → Camera → Style → Audio → Output; most failures land on Pass 1–2 [→](#when-you-dont-know-whats-wrong-yet-the-6-pass-diagnostic-sequence)
-- Seedance: short prompts (30–100 words) win; Subject + Action must sit in the first 20–30 words [→](#the-directors-formula-mcsla-mapping)
+- Seedance short-form: 30–100 words win; Subject + Action in the first 20–30 words. Block-scaffold production briefs run 218–2,059-word medians by register — see `../higgsfield-seedance/SKILL.md` § Official Prompt Architecture [→](#the-directors-formula-mcsla-mapping)
 - Genre length targets: Product 30–50w, Lifestyle 40–60w, Drama 60–100w, Music Video 50–80w, Anime 50–90w [→](#genre-router-prompt-length-lead-with-targets)
 - Kill slop words (beautiful, stunning, epic, amazing) — replace with concrete visuals/physics [→](#anti-slop-vocabulary)
 - Seedance/CS 3.0 has NO negative-prompt syntax — phrase as positive constraints [→](#no-negative-prompts)
@@ -150,8 +150,12 @@ Higgsfield understands its own preset names. Always use them explicitly.
 **Lead with subject, end with style:**
 Subject → Action → Camera → Style is the most reliable order.
 
-**Keep it under 200 words:**
+**Keep it under 200 words (short-form regime):**
 Focused prompts outperform exhaustive ones. One clear intention > ten vague details.
+**Regime exception (HARD RULE 8):** block-scaffold production prompts —
+`../higgsfield-seedance/SKILL.md` § Official Prompt Architecture — replace the
+word cap with structural lint; harvested production briefs run 218–2,059-word
+medians by register. The cap governs single-shot MCSLA prompts only.
 
 **Cinema Studio: Keep it under 512 characters:**
 Cinema Studio has a hard 512-character limit on prompts (both 2.5 and 3.0).
@@ -521,7 +525,7 @@ These best practices apply to Cinema Studio 3.0's generation engine (Business/Te
 
 ### Intent over Precision
 
-Tell the model WHAT you want and HOW it should FEEL, not every micro-detail. Short prompts (30–100 words) consistently outperform long ones. The model is an AI director you collaborate with, not a render engine you command.
+Tell the model WHAT you want and HOW it should FEEL, not every micro-detail. In the short-form regime, short prompts (30–100 words) consistently outperform long ones. (Block-scaffold production briefs are the other regime — structure replaces the cap there; see `../higgsfield-seedance/SKILL.md` § Official Prompt Architecture.) The model is an AI director you collaborate with, not a render engine you command.
 
 ### The Director's Formula → MCSLA Mapping
 

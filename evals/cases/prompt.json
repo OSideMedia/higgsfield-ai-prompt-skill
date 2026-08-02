@@ -8,11 +8,29 @@
       "request": "Write me a prompt for a detective walking through a rainy alley at night",
       "response": "Routing to higgsfield-prompt + higgsfield-camera for a noir character walk.\n\n**Model**: Kling 3.0\n**Aspect ratio**: 16:9  **Duration**: 8s  **Style**: Cinematic\n\nA trench-coated detective walks slowly down a rain-slick alley at night, neon signage reflecting off wet pavement, steam rising from a grate. Cold teal palette, single sodium streetlamp, shallow depth of field.\n\n**Camera**: Slow dolly-in",
       "assertions": [
-        {"type": "regex_present", "pattern": "^Routing to higgsfield-"},
-        {"type": "sections_present", "names": ["**Model**", "**Aspect ratio**", "**Duration**", "**Camera**"]},
-        {"type": "enum_legal"},
-        {"type": "antislop_absent"},
-        {"type": "lint_verdict", "max": "WARN"}
+        {
+          "type": "regex_present",
+          "pattern": "^Routing to higgsfield-"
+        },
+        {
+          "type": "sections_present",
+          "names": [
+            "**Model**",
+            "**Aspect ratio**",
+            "**Duration**",
+            "**Camera**"
+          ]
+        },
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "antislop_absent"
+        },
+        {
+          "type": "lint_verdict",
+          "max": "WARN"
+        }
       ]
     },
     {
@@ -22,10 +40,20 @@
       "request": "Product video of a ceramic mug rotating on a turntable",
       "response": "Routing to higgsfield-prompt + higgsfield-recipes (product showcase).\n\n**Model**: Seedance 2.0\n**Aspect ratio**: 1:1  **Duration**: 6s  **Style**: Cinematic\n**Resolution**: 1080p  **Mode**: std\n\nA matte ceramic mug rotates on a slow turntable, soft window light raking across its glaze, fine steam curling from the rim. Neutral studio backdrop, warm highlights, macro texture detail.\n\n**Camera**: Static medium, rack focus to the rim",
       "assertions": [
-        {"type": "regex_present", "pattern": "^Routing to higgsfield-"},
-        {"type": "enum_legal"},
-        {"type": "antislop_absent"},
-        {"type": "lint_verdict", "max": "WARN"}
+        {
+          "type": "regex_present",
+          "pattern": "^Routing to higgsfield-"
+        },
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "antislop_absent"
+        },
+        {
+          "type": "lint_verdict",
+          "max": "WARN"
+        }
       ]
     },
     {
@@ -35,10 +63,20 @@
       "request": "Epic drone flight over mountains",
       "response": "Routing to higgsfield-prompt + higgsfield-camera for an aerial landscape pass.\n\n**Model**: Kling 3.0\n**Aspect ratio**: 16:9  **Duration**: 10s  **Style**: Cinematic\n\nAerial drone glide over a granite ridgeline at golden hour, long shadows raking the valley floor, a thin cloud layer breaking against the peaks. Warm backlight, deep blue shadow tones.\n\n**Camera**: Aerial drone, slow forward glide",
       "assertions": [
-        {"type": "antislop_absent"},
-        {"type": "regex_absent", "pattern": "(?i)\\bbreathtaking|stunning|epic\\b.*\\bmasterpiece\\b"},
-        {"type": "enum_legal"},
-        {"type": "lint_verdict", "max": "WARN"}
+        {
+          "type": "antislop_absent"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\bbreathtaking|stunning|epic\\b.*\\bmasterpiece\\b"
+        },
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "lint_verdict",
+          "max": "WARN"
+        }
       ]
     },
     {
@@ -48,10 +86,20 @@
       "request": "A woman receives bad news on the phone",
       "response": "Routing to higgsfield-prompt for a performance close-up.\n\n**Model**: Kling 3.0\n**Aspect ratio**: 16:9  **Duration**: 8s  **Style**: Cinematic\n\nA woman holds a phone to her ear at a kitchen table; her jaw tightens, breath catches, eyes drop to the table surface, free hand flattening slowly against the wood. Morning window light, muted palette.\n\n**Camera**: Static medium close-up",
       "assertions": [
-        {"type": "regex_absent", "pattern": "(?i)looks (sad|angry|upset|devastated)"},
-        {"type": "enum_legal"},
-        {"type": "antislop_absent"},
-        {"type": "lint_verdict", "max": "WARN"}
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)looks (sad|angry|upset|devastated)"
+        },
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "antislop_absent"
+        },
+        {
+          "type": "lint_verdict",
+          "max": "WARN"
+        }
       ]
     },
     {
@@ -61,9 +109,17 @@
       "request": "Animate this portrait photo — she should turn toward the window",
       "response": "Routing to higgsfield-prompt (I2V — motion only, never re-describe the source).\n\n**Model**: Seedance 2.0\n**Aspect ratio**: auto  **Duration**: 5s  **Style**: Cinematic\n\nStarting from the provided image. She turns her head slowly toward the window light, hair shifting with the motion, a slight exhale. Light from the window strengthens across her face.\n\n**Camera**: Static medium close-up",
       "assertions": [
-        {"type": "regex_present", "pattern": "(?i)starting from the provided image"},
-        {"type": "enum_legal"},
-        {"type": "lint_verdict", "max": "WARN"}
+        {
+          "type": "regex_present",
+          "pattern": "(?i)starting from the provided image"
+        },
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "lint_verdict",
+          "max": "WARN"
+        }
       ]
     },
     {
@@ -73,9 +129,16 @@
       "request": "A dancer leaps across a stage",
       "response": "Routing to higgsfield-prompt + higgsfield-camera for a single-action performance clip.\n\n**Model**: Wan 2.7\n**Aspect ratio**: 16:9  **Duration**: 6s  **Style**: Cinematic\n\nA dancer crosses the stage in one extended leap, fabric trailing the arc of the jump, stage haze catching a single spotlight. Deep black surround, warm key from above.\n\n**Camera**: Stabilized tracking, left to right",
       "assertions": [
-        {"type": "enum_legal"},
-        {"type": "antislop_absent"},
-        {"type": "lint_verdict", "max": "WARN"}
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "antislop_absent"
+        },
+        {
+          "type": "lint_verdict",
+          "max": "WARN"
+        }
       ]
     },
     {
@@ -85,10 +148,21 @@
       "request": "Calm lake scene, and I don't want camera shake",
       "response": "Routing to higgsfield-prompt (positive-phrasing constraints — Seedance has no negative-prompt syntax).\n\n**Model**: Seedance 2.0\n**Aspect ratio**: 16:9  **Duration**: 8s  **Style**: Cinematic\n\nA still mountain lake at dawn, mist drifting low over glass-flat water, one loon gliding through the reflection line. Locked-off static camera on a tripod, pastel sky palette.\n\n**Camera**: Locked-off static wide",
       "assertions": [
-        {"type": "regex_absent", "pattern": "(?i)\\bno (shaky|camera shake|blur)\\b"},
-        {"type": "regex_present", "pattern": "(?i)locked-off static"},
-        {"type": "enum_legal"},
-        {"type": "lint_verdict", "max": "WARN"}
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\bno (shaky|camera shake|blur)\\b"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)locked-off static"
+        },
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "lint_verdict",
+          "max": "WARN"
+        }
       ]
     },
     {
@@ -98,9 +172,17 @@
       "request": "A kid flies a kite in a field",
       "response": "Routing to higgsfield-prompt + higgsfield-seedance (age-blind rewrite applied).\n\n**Model**: Seedance 2.0\n**Aspect ratio**: 16:9  **Duration**: 8s  **Style**: Cinematic\n\nA small figure in a striped jumper runs through tall summer grass, a red diamond kite climbing behind them on a long line, string taut against the wind. Late-afternoon backlight, insects drifting in the glow.\n\n**Camera**: Low tracking through the grass",
       "assertions": [
-        {"type": "lint_verdict", "max": "WARN"},
-        {"type": "regex_absent", "pattern": "(?i)\\b(child|kid|boy|girl|teen)\\b"},
-        {"type": "enum_legal"}
+        {
+          "type": "lint_verdict",
+          "max": "WARN"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\b(child|kid|boy|girl|teen)\\b"
+        },
+        {
+          "type": "enum_legal"
+        }
       ]
     },
     {
@@ -110,9 +192,20 @@
       "request": "Street market scene at dusk",
       "response": "Routing to higgsfield-prompt for an atmosphere scene.\n\n**Model**: Kling 3.0\n**Aspect ratio**: 16:9  **Duration**: 10s  **Style**: Cinematic\n\nA narrow street market at dusk, paper lanterns swaying over produce stalls, a vendor arranging persimmons as steam drifts from a noodle cart. Warm practicals against deep blue dusk, light rain starting to bead on the awnings.\n\n**Camera**: Slow handheld walk-through",
       "assertions": [
-        {"type": "lint_verdict", "max": "WARN"},
-        {"type": "enum_legal"},
-        {"type": "antislop_absent"}
+        {
+          "type": "word_count",
+          "max": 200
+        },
+        {
+          "type": "lint_verdict",
+          "max": "WARN"
+        },
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "antislop_absent"
+        }
       ]
     },
     {
@@ -121,9 +214,22 @@
       "request": "Turn my photos into an anime-style photodump",
       "response": "Routing to photodump-presets.md (root reference) for style preset selection.\n\nFor a classic anime aesthetic use the **Old Anime** preset (Ghibli-era warmth, painted backgrounds). For black-and-white comic looks, **Manga** (heavy contrast, detailed linework) or **Ink Sketch** (dense crosshatch pen-and-ink) are the closest presets.",
       "assertions": [
-        {"type": "regex_present", "pattern": "^Routing to "},
-        {"type": "preset_names_valid", "names": ["Old Anime", "Manga", "Ink Sketch"], "source": "photodump-presets.md"},
-        {"type": "antislop_absent"}
+        {
+          "type": "regex_present",
+          "pattern": "^Routing to "
+        },
+        {
+          "type": "preset_names_valid",
+          "names": [
+            "Old Anime",
+            "Manga",
+            "Ink Sketch"
+          ],
+          "source": "photodump-presets.md"
+        },
+        {
+          "type": "antislop_absent"
+        }
       ]
     }
   ]

@@ -54,6 +54,7 @@ import json
 import re
 import sys
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 
 
@@ -99,7 +100,12 @@ BRANDS_IP = [
 # concept can be rendered cinematically via aftermath/tension/physics.
 VIOLENCE_VERBS = [
     r"\bkill(s|ed|ing)?\b", r"\bmurder(s|ed|ing)?\b", r"\bassassinat(e|es|ed|ing)\b",
-    r"\bstab(s|bed|bing)?\b", r"\bshoot(s|ing)?\b", r"\bshot\b",
+    r"\bstab(s|bed|bing)?\b", r"\bshoot(s|ing)?\b",
+    # "shot" is the most common noun in film prompting (two-shot, wide shot,
+    # shot 3, per shot) — flag only verb/violence constructions, never the
+    # cinematography noun.
+    r"\bshot\b(?=\s+(him|her|them|dead|twice|through\b|at\b|in the\b))",
+    r"\b(was|is|are|being|gets?|got|been)\s+shot\b",
     r"\bslash(es|ed|ing)?\b", r"\bbehead(s|ed|ing)?\b", r"\bdecapitat(e|es|ed|ing)\b",
     r"\btortur(e|es|ed|ing)\b", r"\brap(e|es|ed|ing)\b",
     r"\bblood(y|ied|ying)?\b", r"\bgore\b", r"\bgory\b", r"\bgutted?\b",
@@ -264,13 +270,39 @@ def load_specs(path: Path) -> dict:
         spec = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return {}
+    if not spec.get("models"):
+        return {}
     index: dict[str, dict] = {}
-    for m in spec.get("models", []):
+    for m in spec["models"]:
         index[m["id"]] = m
         for alias in m.get("aliases", []):
             index[alias] = m
         index[re.sub(r"[^a-z0-9]+", "", m["name"].lower())] = m
+    index["_snapshot_date"] = spec.get("snapshot_date")
     return index
+
+
+def snapshot_age_finding(index: dict) -> "Finding | None":
+    """INFO finding when the specs snapshot is past the 30-day trust line.
+
+    The enum checks cite the snapshot as authority (never guess enums); past
+    30 days the HARD RULES say to verify live instead, so the report must say
+    so rather than fail/pass with silent stale confidence."""
+    stamp = index.get("_snapshot_date")
+    if not stamp:
+        return None
+    try:
+        age = (date.today() - date.fromisoformat(stamp)).days
+    except ValueError:
+        return None
+    if age > 30:
+        return Finding(
+            "INFO", "stale-specs-snapshot", f"{stamp} ({age}d old)",
+            "Specs snapshot exceeds the 30-day trust window (root SKILL.md "
+            "HARD RULES 3/7) — enum verdicts below may be stale. Verify live "
+            "(`higgsfield model get <model>` / models_explore) and refresh "
+            "via scripts/sync_specs.py.")
+    return None
 
 
 def resolve_model(index: dict, model_arg: str) -> dict | None:
@@ -286,6 +318,37 @@ DECLARED_SHOTS_RES = [
 ]
 SHOT_BLOCK_RES = [re.compile(r"【\s*镜头\s*(\d+)\s*】"),
                   re.compile(r"\[\s*Shot\s*(\d+)\s*\]", re.I)]
+
+# Canonical block-scaffold labels (skills/higgsfield-seedance § Official
+# Prompt Architecture → Block order). A prompt opening on these blocks is the
+# production regime: structure replaces the word cap (HARD RULE 8 carve-out),
+# so the short-form length rules must not fire on it.
+BLOCK_SCAFFOLD_LABELS = [
+    "SCENE CONTEXT", "ACTIVE REFERENCES", "LOCATION MAP",
+    "FIRST FRAME", "BLOCKING", "FORMAT MODE", "OPTICS", "CAMERA", "ACTION",
+    "PERFORMANCE", "PHYSICS", "LIGHTING", "COLOR GRADE", "WARDROBE",
+    "AUDIO", "STYLE", "OUTPUT SETTINGS", "POSITIVE LOCKS",
+]
+BLOCK_LABEL_RE = re.compile(
+    r"^\s*(" + "|".join(re.escape(l) for l in BLOCK_SCAFFOLD_LABELS) + r")\b\s*:?",
+    re.M)
+BLOCK_REGIME_MIN_LABELS = 4
+
+
+def detect_regime(text: str) -> str:
+    """'block' (block-scaffold production prompt) or 'short' (single-shot MCSLA).
+
+    Block regime is recognized from structure, never from length: at least
+    BLOCK_REGIME_MIN_LABELS distinct canonical block labels at line starts,
+    or 2+ 【镜头N】/[Shot N] shot-block markers (the shotlist copy-block form).
+    """
+    labels = {m.group(1) for m in BLOCK_LABEL_RE.finditer(text)}
+    if len(labels) >= BLOCK_REGIME_MIN_LABELS:
+        return "block"
+    shots = {int(m.group(1)) for pat in SHOT_BLOCK_RES for m in pat.finditer(text)}
+    if len(shots) >= 2:
+        return "block"
+    return "short"
 TIMED_BEAT_RANGE = re.compile(r"\[\s*(\d+)\s*[–-]\s*(\d+)\s*s\s*\]")
 HANDLE_RE = re.compile(r"@([\w-]+)")
 HANDLE_DECL_RE = re.compile(r"^\s*[*\-•]?\s*\**@([\w-]+)\**\s*[:=（(—–]")
@@ -311,6 +374,13 @@ def structural_lint(text: str, settings: Settings, spec: dict | None) -> list[Fi
             "FAIL", "shot-count-mismatch", f"declared {declared}, found {actual} blocks",
             "The declared shot count must equal the number of 【镜头N】/[Shot N] "
             "blocks — a mismatch makes the engine improvise cuts."))
+    elif declared is not None and not actual and not TIMED_BEAT_RANGE.search(text):
+        findings.append(Finding(
+            "WARN", "declared-shots-unstructured",
+            f"declared {declared} shots, found 0 blocks and no timed beats",
+            "A declared shot count needs structure to bind to — add "
+            "【镜头N】/[Shot N] blocks or timed beats ([0-2s] …), otherwise "
+            "the engine improvises the cuts."))
 
     # ── Beat durations vs envelope ───────────────────────────────────────
     beats = [(int(a), int(b)) for a, b in TIMED_BEAT_RANGE.findall(text)]
@@ -320,6 +390,25 @@ def structural_lint(text: str, settings: Settings, spec: dict | None) -> list[Fi
                 findings.append(Finding(
                     "WARN", "reversed-beat", f"[{a}-{b}s]",
                     "Beat range end must be after its start."))
+        # Timeline shape: beats must tile the clip — ordered, seamless, from 0.
+        ordered = sorted(b for b in beats if b[1] > b[0])
+        if ordered:
+            if ordered[0][0] != 0:
+                findings.append(Finding(
+                    "WARN", "beats-start-late", f"first beat opens at {ordered[0][0]}s",
+                    "The beat timeline should start at [0-…s] — the engine "
+                    "improvises everything before the first beat."))
+            for (a1, b1), (a2, b2) in zip(ordered, ordered[1:]):
+                if a2 < b1:
+                    findings.append(Finding(
+                        "WARN", "overlapping-beats", f"[{a1}-{b1}s] overlaps [{a2}-{b2}s]",
+                        "Beat ranges must not overlap — overlapping windows "
+                        "give the engine two owners for the same seconds."))
+                elif a2 > b1:
+                    findings.append(Finding(
+                        "WARN", "beat-gap", f"{b1}s → {a2}s uncovered",
+                        "Gap between beats — the engine improvises uncovered "
+                        "seconds. Make ranges contiguous ([0-2s][2-4s]…)."))
         end = max(b for _, b in beats)
         envelope = settings.duration
         env_src = "declared duration"
@@ -332,6 +421,12 @@ def structural_lint(text: str, settings: Settings, spec: dict | None) -> list[Fi
                 "FAIL", "beats-exceed-envelope", f"beats run to {end}s, {env_src} is {envelope}s",
                 "Timed beats must fit inside the clip duration — trailing "
                 "beats are silently truncated."))
+        elif settings.duration is not None and end < settings.duration:
+            findings.append(Finding(
+                "WARN", "beats-undershoot-envelope",
+                f"beats end at {end}s, declared duration is {settings.duration}s",
+                "Beats should sum exactly to the clip duration — trailing "
+                "uncovered seconds are improvised dead air."))
 
     # ── ZH house-format checks ───────────────────────────────────────────
     if CJK_RE.search(text):
@@ -497,7 +592,7 @@ def _has_cue(cues: list[str], text: str) -> bool:
     return any(re.search(c, lowered) for c in cues)
 
 
-def lint(prompt: str) -> list[Finding]:
+def lint(prompt: str, regime: str = "auto") -> list[Finding]:
     findings: list[Finding] = []
     text = prompt.strip()
     word_count = len(re.findall(r"\b\w+\b", text))
@@ -505,6 +600,18 @@ def lint(prompt: str) -> list[Finding]:
     if not text:
         findings.append(Finding("FAIL", "empty", "", "Prompt is empty."))
         return findings
+
+    if regime == "auto":
+        regime = detect_regime(text)
+    if regime == "block":
+        findings.append(Finding(
+            "INFO", "block-scaffold-regime", "",
+            "Block-scaffold production prompt detected — short-form word caps "
+            "suspended (HARD RULE 8 regime exception; harvested production "
+            "briefs run 218–2,059-word medians). All content-filter and "
+            "structural rules still apply. Force with --regime short|block "
+            "if the detection is wrong."
+        ))
 
     # ── FAIL rules ──────────────────────────────────────────────────────────
 
@@ -548,11 +655,14 @@ def lint(prompt: str) -> list[Finding]:
             "'a figure in a wool cloak', 'the rider', 'the traveler'."
         ))
 
-    if word_count > 220:
+    if regime == "short" and word_count > 220:
         findings.append(Finding(
             "FAIL", "overlength", f"{word_count} words",
-            "Over 220 words often hard-fails the text encoder. Cut to "
-            "30–180 words. Keep Style & Mood + camera + action; trim the rest."
+            "Over 220 words often hard-fails the text encoder on short-form "
+            "prompts. Cut to 30–180 words (Style & Mood + camera + action), "
+            "or restructure as a block-scaffold production prompt "
+            "(skills/higgsfield-seedance § Official Prompt Architecture) — "
+            "the word cap does not govern that regime."
         ))
 
     # ── WARN rules ──────────────────────────────────────────────────────────
@@ -584,11 +694,11 @@ def lint(prompt: str) -> list[Finding]:
             "'[0-2s]' / '[2-4s]'. An empty or half-open bracket reads as noise."
         ))
 
-    if word_count > 180:
+    if regime == "short" and word_count > 180:
         findings.append(Finding(
             "WARN", "long", f"{word_count} words",
-            "Over 180 words is risk territory. Trim the least essential "
-            "details before generating."
+            "Over 180 words is risk territory for short-form prompts. Trim "
+            "the least essential details before generating."
         ))
 
     if word_count < 15:
@@ -802,6 +912,13 @@ def main() -> int:
     parser.add_argument("--preflight", action="store_true",
                         help="Full chained preflight: filter lint → structural "
                              "lint → learning-memory recall, one report")
+    parser.add_argument("--regime", choices=["auto", "short", "block"],
+                        default="auto",
+                        help="Prompt regime: 'short' = single-shot MCSLA (word "
+                             "caps apply), 'block' = block-scaffold production "
+                             "prompt (word caps suspended per HARD RULE 8 "
+                             "regime exception). Default 'auto' detects from "
+                             "canonical block labels / shot markers.")
     parser.add_argument("--project", default="default",
                         help="Generation-ledger project for the --log bridge "
                              "(default: 'default'; see db/ledger/README.md)")
@@ -822,15 +939,18 @@ def main() -> int:
         return 2
 
     spec = None
+    age_finding = None
     if args.model:
         index = load_specs(args.specs)
+        age_finding = snapshot_age_finding(index)
         if not index:
             print(f"ERROR: specs file missing or invalid: {args.specs} — "
                   f"run: python3 scripts/sync_specs.py", file=sys.stderr)
             return 2
         spec = resolve_model(index, args.model)
         if spec is None:
-            known = ", ".join(sorted(k for k in index if "_" in k))
+            known = ", ".join(sorted(
+                k for k in index if "_" in k and not k.startswith("_")))
             print(f"ERROR: unknown model {args.model!r}. Known ids: {known}",
                   file=sys.stderr)
             return 2
@@ -842,10 +962,12 @@ def main() -> int:
                  mode=args.mode.lower() if args.mode else None,
                  duration=args.duration))
 
-    filter_findings = lint(prompt)
+    filter_findings = lint(prompt, regime=args.regime)
     run_structural = args.preflight or spec is not None or any(
         [settings.ar, settings.resolution, settings.mode, settings.duration is not None])
     structural = structural_lint(prompt, settings, spec) if run_structural else []
+    if age_finding is not None:
+        structural.insert(0, age_finding)
 
     if args.preflight:
         memory = recall(prompt, spec["id"] if spec else args.model)

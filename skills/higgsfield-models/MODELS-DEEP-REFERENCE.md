@@ -51,7 +51,7 @@ The Kling lineup in Higgsfield spans two generations (2.x and 3.0) plus the O1 r
 
 **Elements system:** Upload reference images to lock character identity across shots. Use `@element_name` syntax (Elements 3.0 tagging) for cross-shot subject consistency.
 
-**Prompt note:** Treat the prompt like a script: describe action, camera, mood, and dialogue cues together. Optimal prompt length: 100–200 words.
+**Prompt note:** Treat the prompt like a script: describe action, camera, mood, and dialogue cues together. Optimal short-form prompt length: 100–200 words (block-scaffold production briefs are a separate regime — HARD RULE 8).
 
 **Sequential action syntax (3.0-specific):** Use "first / then / finally" structure for multi-step scenes.
 

@@ -534,8 +534,9 @@ def build_pdf(dry_run: bool = False):
             ("Portraits, fashion", "Soul 2.0"),
             ("Maximum photorealism", "Nano Banana Pro"),
             ("Fast pro-quality + text", "Nano Banana 2"),
-            ("Text/logo rendering", "GPT Image 1.5"),
+            ("Text/logo rendering", "GPT Image 2"),
             ("Reference editing", "Seedream 4.5"),
+            ("Anime / manga sheets", "Seedream 5.0 Pro"),
             ("Cinematic keyframes for I2V", "Soul Cinema Preview"),
         ]
         for r in irows:
@@ -780,8 +781,9 @@ def build_pdf(dry_run: bool = False):
         pdf.subsection_title("Intent over Precision")
         pdf.body_text(
             "Tell the model WHAT you want and HOW it should FEEL, not every micro-detail. "
-            "Short prompts (30-100 words) consistently outperform long ones. The model is an AI director "
-            "you collaborate with, not a render engine you command.")
+            "In the short-form regime, short prompts (30-100 words) consistently outperform long ones "
+            "(block-scaffold production briefs are the other regime -- structure replaces the word cap there). "
+            "The model is an AI director you collaborate with, not a render engine you command.")
 
         pdf.subsection_title("Genre Router -- Prompt Length Targets")
         w6 = [50, 35, 85]
@@ -1104,7 +1106,7 @@ def build_pdf(dry_run: bool = False):
         pdf.ln(3)
         w12 = [50, 50, 70]
         pdf.table_row(["Symptom", "Likely Cause", "Fix"], w12, bold=True, fill=True)
-        pdf.table_row(["Blurry/jittery/morphing", "Overspecification", "Cut to 30-100 words, use @ref"], w12)
+        pdf.table_row(["Blurry/jittery/morphing", "Overspecification", "Short-form: cut to 30-100 words, use @ref"], w12)
         pdf.table_row(["Camera chaotic", "Multiple moves", "ONE move per shot (One-Move Rule)"], w12)
         pdf.table_row(["Character mismatch", "Re-describing character", "Delete appearance, keep action"], w12)
         pdf.table_row(["Action stiff", "No physics language", "Add adverbs + consequences"], w12)
@@ -1294,7 +1296,7 @@ def build_pdf(dry_run: bool = False):
             ("Can I contribute?",
              "Yes! Fork the repo, add your improvements, and submit a pull request."),
             ("What changed since v3.0.0?",
-             "Thirty-one platform releases shipped between v3.0.0 (April 2026) and this guide (v3.8.1). "
+             "Thirty-one platform releases shipped between v3.0.0 (April 2026) and v3.8.1. "
              "Major themes by era: install-path simplification, Seedance 2.0 prompt modes, Kling 3.0 Motion "
              "Control, and Cinema Studio 3.5 with Image Mode + Physics Rendering Decision Matrix "
              "(v3.3.0 through v3.6.x); a v3.7.0 metadata refactor making version and sub-skill discovery "
@@ -1319,7 +1321,10 @@ def build_pdf(dry_run: bool = False):
              "Control deltas, and the seedance_lint T5 expansion (bracket-notation + NSFW-false-positive + "
              "GREAT-tier vocabulary); and a v3.8.1 tooling-hygiene patch (fpdf2 pinned in requirements.txt, "
              "a contributing-docs dependency note, and a SKILL.md frontmatter date-drift fix). "
-             "See CHANGELOG.md for full per-release detail."),
+             "Later eras -- the v3.9-v3.15 template/memory arcs, the v3.16-v3.21 spec-layer + "
+             "Seedance-doctrine arcs, and the v3.22 thirteen-project community-harvest wave "
+             "(word-length ladder by register, FOV anchors, drift locks, Style Recipes) -- are "
+             "summarized per-release in CHANGELOG.md."),
         ]
         for q, a in faqs:
             pdf.bold_text(f"Q: {q}")

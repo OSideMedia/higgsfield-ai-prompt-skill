@@ -57,6 +57,22 @@ def test_emit_json_deterministic():
         sync_specs.build_spec(MINI_SNAPSHOT))
 
 
+def test_empty_snapshot_rejected():
+    # A dump with no items (truncated file / wrong payload) must never
+    # generate specs — empty specs silently blind every enum check.
+    with pytest.raises(ValueError, match="no 'items'"):
+        sync_specs.normalize_models({}, "video")
+    with pytest.raises(ValueError, match="no 'items'"):
+        sync_specs.normalize_models({"items": []}, "video")
+
+
+def test_wrong_type_snapshot_rejected():
+    snap = {"items": [{"id": "m1", "name": "M1", "output_type": "image",
+                       "parameters": []}]}
+    with pytest.raises(ValueError, match="output_type='video'"):
+        sync_specs.normalize_models(snap, "video")
+
+
 def test_divergent_alias_rejected(tmp_path):
     snap = json.loads(MINI_SNAPSHOT.read_text(encoding="utf-8"))
     dup = next(m for m in snap["items"] if m["id"] == "video_standard")

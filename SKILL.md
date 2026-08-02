@@ -12,8 +12,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.22.1
-  updated: 2026-07-26
+  version: 3.23.0
+  updated: 2026-08-01
   author: O-Side Media
   license: MIT
 ---
@@ -90,13 +90,20 @@ with no specific constraints, **generate immediately** using these sensible defa
 | Parameter | Default |
 |-----------|---------|
 | Aspect ratio | 16:9 |
-| Duration | 8s |
+| Duration | 8s (Kling lanes — see Seedance exception below) |
 | Style | Cinematic |
 | Video model | Kling 3.0 (character-focused) or Seedance 2.0 (action/scale/references) |
 | Image model | Soul 2.0 (portrait) or Nano Banana 2 (everything else) |
 
 Do not ask clarifying questions. Deliver a ready-to-paste prompt. Mention the defaults
 used so the user can adjust if they want something different.
+
+> **Seedance exception:** Seedance 2.0 never gets a silently defaulted runtime
+> (`skills/higgsfield-seedance/SKILL.md` — always ask, never default). On Fast
+> Path that means: if the user named no duration, route video to Kling 3.0;
+> pick Seedance 2.0 only when the request names a duration — or when the user
+> asked for Seedance by name, in which case state the assumed runtime as the
+> first adjustable default in the delivery.
 
 > If you did not read `skills/higgsfield-prompt/SKILL.md` earlier in this conversation, read it now before writing the prompt.
 
@@ -107,8 +114,8 @@ budget constraints, client work), **confirm before generating:**
 
 **Required:**
 - **Generation type**: Image / Video / App (one-click)
-- **Video duration**: 5s / 10s (image-to-video clips are 3–5s; text-to-video up to 10s+)
-- **Aspect ratio**: 16:9 / 9:16 / 1:1 / 4:5 / 4:3 / 2.35:1 (default: 16:9)
+- **Video duration**: model-dependent enum — check the model's `duration` values in `specs/model-specs.yaml` before offering choices (e.g. Seedance 2.0 4–15s, Veo 3.1 4/6/8s; image-to-video clips trend short)
+- **Aspect ratio**: 16:9 / 9:16 / 1:1 / 4:5 / 4:3 / 21:9-where-supported (default: 16:9) — enums per model in `specs/model-specs.yaml` (HARD RULE 7); anamorphic / 2.35:1 / 2.39:1 are **Look-line style register**, never output ratios
 - **Model preference** (or ask Claude to recommend — see `skills/higgsfield-models/SKILL.md`)
 
 **Optional (skip if user already provided):**

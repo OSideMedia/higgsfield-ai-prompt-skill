@@ -18,7 +18,7 @@ metadata:
 - Six slots, in order: Camera + Subject + Action + Setting + Style + Lighting; missing 3+ slots is where flags come from [→](#the-seedance-prompt-formula)
 - Empirical prompt-craft laws: 50–80-word attention sweet spot (front-load the load-bearing element), name a director/lens not "cinematic", "fast" degrades motion, no negative prompts in the body [→](#prompt-craft-laws)
 - Five prompt modes: Reference-Based / Continuation / Expand Shot / Edit Shot / Transformation — pick the mode before writing [→](#seedance-20-prompt-modes)
-- [OFFICIAL] block scaffold for production prompts: SCENE CONTEXT → … → POSITIVE LOCKS, distributed style (no prefix), FOV in degrees only, CAMERA block 3rd, cut ladder oner / CUT n / timed / freestyle [→](#official-prompt-architecture-the-block-scaffold)
+- [OFFICIAL] block scaffold for production prompts: SCENE CONTEXT → … → POSITIVE LOCKS, distributed style on standalone briefs (connected shotlists glue the compiled Style Prefix verbatim instead), FOV in degrees only, CAMERA block 3rd, cut ladder oner / CUT n / timed / freestyle [→](#official-prompt-architecture-the-block-scaffold)
 - [FIELD] 13-project corpus calibration: word length scales with register (218w → 2,059w medians — the 50–80w sweet spot is single-shot-only), video briefs hand-authored (`enhance_prompt` off), Style Prefix = per-project constant compiled into home blocks [→](#field-calibration-the-13-project-production-corpus)
 - [FIELD] Three "helpful-instinct" drift sources, each with a standing lock: environment invention (#1, above character drift), character-height equalization, scale drift on wides [→](#positive-locks)
 - Build-safe construction for crowds/destruction/creatures: evacuated cities, contained fights ("stays at the sea surface"), the safe benchmark scene [→](#build-safe-construction-crowds-destruction-creatures)
@@ -133,9 +133,10 @@ The first sentence carries the most influence; by the third sentence you are in
 "detail territory," where the model stops treating elements as primary
 instructions and starts sampling them diffusely.
 
-- **Sweet spot: 50–80 words.** A 70-word prompt reliably outperforms a
-  structurally identical 200-word version of the same scene — more words past
-  ~3 sentences buys diffusion, not control.
+- **Sweet spot: 50–80 words (short-form regime).** A 70-word prompt reliably
+  outperforms a structurally identical 200-word version of the same scene —
+  more words past ~3 sentences buys diffusion, not control. (Block-scaffold
+  production prompts are the other regime: § Official Prompt Architecture.)
 - **Structure in three sentences:** ① subject + action, ② camera + style,
   ③ constraints / positive locks.
 - **Lead with the single most load-bearing element.** When a shot lives on its
@@ -208,10 +209,14 @@ Face stable. Limbs anatomically natural. Consistent lighting, no flicker.
 Body proportions consistent throughout.
 ```
 
-**Scope:** this is about the Seedance prompt **body**. It does **not** override
-the Higgsfield UI's dedicated negative-prompt field (which some image models
-expose and `../../vocab.md` § Composition Vocabulary uses). The same
-positive-only requirement is already documented for Cinema Studio 3.0 in
+**Scope:** this is about the Seedance prompt **body**, and the target is
+`negative:` list syntax / bare negation lists — not every "no" token. A short
+lock tail inside a positive declaration ("Consistent lighting, no flicker";
+the Style Prefix's "Photorealistic — no 3D render") is fine and field-proven
+across the harvest corpus. It does **not** override the Higgsfield UI's
+dedicated negative-prompt field (which some image models expose and
+`../../vocab.md` § Composition Vocabulary uses). The same positive-only
+requirement is already documented for Cinema Studio 3.0 in
 `../shared/negative-constraints.md`.
 
 ### Ambiguous verbs — the homograph trap (v1.10, Peter's find 2026-07-14)
@@ -295,10 +300,11 @@ empirical rules elsewhere in this skill remain the short-form regime.
 The block scaffold is the production regime — multi-shot, reference-heavy,
 high-control work — where *structure replaces the word cap*: write densely
 where control matters, sparsely where it does not, and say each important
-thing once. Block prompts routinely trip the linter's overlength rule
-(§ Pre-flight Linter); treat that WARN as expected for this regime, while
-every structural lint rule (shot counts, beat sums, handle declarations,
-enum checks) still applies in full. Likewise, the Voice Rewrite instruction
+thing once. The pre-flight linter detects this regime automatically (canonical
+block labels / shot markers) and suspends the short-form word caps — force it
+with `--regime block` if detection misses — while every structural lint rule
+(shot counts, beat sums, handle declarations, enum checks) still applies in
+full. Likewise, the Voice Rewrite instruction
 to put a Style & Mood clause up front is the short-form filter pass — in a
 block prompt the filter gets its full scene from SCENE CONTEXT, LOCATION MAP,
 and LIGHTING instead, and style is distributed (below).
@@ -333,16 +339,25 @@ suffix, locks last. A naturalistic single take may drop COLOR GRADE,
 WARDROBE, and OUTPUT SETTINGS entirely and fold those notes into LOCATION
 MAP / LIGHTING.
 
-### Distributed style — never a prefix
+### Distributed style — the standalone-block rule
 
-There is no style-prefix block at the top; the prompt always opens on SCENE
-CONTEXT. Each style aspect lives in the block that governs it: light →
-LIGHTING; color → COLOR GRADE, or folded into LOCATION MAP + LIGHTING for a
-naturalistic look; lens / optical character → OPTICS; skin realism and
-acting → PERFORMANCE; format / grain / fps → the STYLE + OUTPUT SETTINGS
-suffix just before POSITIVE LOCKS. Descriptive style sits in the body next
-to what it describes; technical style sits as the end suffix; nothing
-style-related opens the prompt.
+In a **standalone block-scaffold prompt** there is no style-prefix block at
+the top; the prompt always opens on SCENE CONTEXT. Each style aspect lives
+in the block that governs it: light → LIGHTING; color → COLOR GRADE, or
+folded into LOCATION MAP + LIGHTING for a naturalistic look; lens / optical
+character → OPTICS; skin realism and acting → PERFORMANCE; format / grain /
+fps → the STYLE + OUTPUT SETTINGS suffix just before POSITIVE LOCKS.
+Descriptive style sits in the body next to what it describes; technical
+style sits as the end suffix; nothing style-related opens the prompt.
+
+**Connected-shotlist carve-out** `[FIELD — 13-project harvest]`: in a
+multi-scene shotlist project, the field-proven shape is the opposite — a
+per-project compiled **Style Prefix glued verbatim to the top of every scene
+prompt** (edit once → changes everywhere), then the scene body. Consistency
+across 25 separately-generated scenes outweighs distributed elegance there.
+That regime is owned by `../higgsfield-shotlist-director/SKILL.md` § Per-scene
+prompt law and `../../templates/seedance/global-style-prefix.md`; this
+section governs standalone prompts only.
 
 ### FOV anchors + the CAMERA-3rd-position rule
 
@@ -516,11 +531,14 @@ the corpus confirms and calibrates about the block scaffold:
   with real masses, pore-level PERFORMANCE); stylized work (anime,
   stop-motion) drops PHYSICS/skin realism and keeps SHOT beats + continuity +
   a hard medium lock. See `../higgsfield-style/SKILL.md` § Register Poles.
-- **The Style Prefix is a per-project compiled constant.** The published
-  prefix paragraph is the human-readable summary creators keep as a standing
-  instruction; the final compiled prompt *distributes* those aspects into
-  their home blocks (§ Distributed style). Both forms are real; only the
-  distributed form ships to the model.
+- **The Style Prefix is a per-project compiled constant.** In connected
+  shotlist projects the corpus ships it **verbatim at the top of every scene
+  prompt** (the Style-Prefix-plus-Constraints-plus-SHOT structure in the
+  first bullet — that is the delivered form, not just an authoring note).
+  Standalone block prompts instead *distribute* those aspects into their
+  home blocks (§ Distributed style — the standalone-block rule). Which form
+  ships is decided by the workflow, not by taste — see
+  `../higgsfield-shotlist-director/SKILL.md` § Per-scene prompt law.
 - **Video prompts are hand-authored.** `enhance_prompt` was absent/off on
   every harvested Seedance job but ON for 1,022 image jobs — let the enhancer
   expand image prompts, never the video brief.
@@ -528,7 +546,7 @@ the corpus confirms and calibrates about the block scaffold:
   not necessarily the raw model API): `multi_shot_mode: "custom"` (the timed
   multishot mode), `genre: "auto"`, `speedramp: "auto"`, `mode: "std"`,
   `bitrate_mode: "high"`, `generate_audio: true`, 21:9 at 4K.
-- **Iteration economics** (TESTS-first culture, 50–100 generations per kept
+- **Iteration economics** (TESTS-first culture, 65–100 generations per kept
   shot, five-bucket folder discipline): `../../production-benchmarks.md`
   § Community-corpus anchors.
 

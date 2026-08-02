@@ -13,7 +13,7 @@ User asks for sci-fi, cyberpunk, futuristic, space, zero gravity, energy effects
 
 ```
 Model: Sora 2
-Aspect: 2.35:1 | Duration: 10s | Style: Cinematic
+Aspect: 16:9 | Duration: 10s | Style: Cinematic
 
 A battle-worn space station corridor, emergency lighting, debris floating in zero gravity.
 A soldier in heavy tactical armor pulls herself along a handrail, rifle raised.
