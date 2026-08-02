@@ -205,8 +205,20 @@ def extract_constraints(model: dict) -> list[dict]:
 
 
 def normalize_models(snapshot: dict, output_type: str = "video") -> list[dict]:
-    items = [m for m in snapshot.get("items", [])
+    # A snapshot with no items — or none of the requested type — is a broken
+    # dump (truncated file, wrong action, wrong type), never a valid state of
+    # the platform. Writing empty specs from it would silently blind every
+    # downstream enum check, so fail loudly instead.
+    if not isinstance(snapshot.get("items"), list) or not snapshot["items"]:
+        raise ValueError(
+            "snapshot has no 'items' list — not a models_explore dump "
+            "(truncated file or wrong payload); refusing to generate specs")
+    items = [m for m in snapshot["items"]
              if m.get("output_type") == output_type]
+    if not items:
+        raise ValueError(
+            f"snapshot contains no output_type={output_type!r} models — "
+            "wrong --type or a partial dump; refusing to generate specs")
     by_id = {m["id"]: m for m in items}
 
     # Fold aliases into canonical entries (after equivalence check).

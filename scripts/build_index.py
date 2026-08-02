@@ -53,6 +53,23 @@ def anchor(heading: str) -> str:
     return re.sub(r"\s+", "-", a.strip())
 
 
+def anchors_for(heads: list[tuple[int, str]]) -> list[str]:
+    """Per-file anchor list with GitHub's duplicate-heading suffixes.
+
+    GitHub gives the first occurrence the base slug and appends -1, -2, …
+    to repeats (two 'Continuation' headings → #continuation, #continuation-1).
+    Generation and verification must both use this, or duplicate headings
+    produce index links that all land on the first occurrence."""
+    seen: dict[str, int] = {}
+    out = []
+    for _, text in heads:
+        base = anchor(text)
+        n = seen.get(base, 0)
+        seen[base] = n + 1
+        out.append(base if n == 0 else f"{base}-{n}")
+    return out
+
+
 def headings(text: str) -> list[tuple[int, str]]:
     """(level, text) for every markdown heading outside code fences."""
     out, in_fence = [], False
@@ -109,7 +126,7 @@ def quick_facts_problems(path: Path) -> list[str]:
             break
     block = "\n".join(lines[start:end])
 
-    valid_anchors = {anchor(t) for _, t in heads}
+    valid_anchors = set(anchors_for(heads))
     for link in re.findall(r"\]\(#([^)]+)\)", block):
         if link not in valid_anchors:
             problems.append(f"{rel}: QUICK FACTS anchor '#{link}' matches no heading")
@@ -133,11 +150,13 @@ def build_index_text() -> str:
         rel = path.relative_to(ROOT).as_posix()
         lines.append(f"## {rel}")
         lines.append("")
-        for level, text in headings(path.read_text(encoding="utf-8")):
+        heads = headings(path.read_text(encoding="utf-8"))
+        slugs = anchors_for(heads)
+        for (level, text), slug in zip(heads, slugs):
             if level > INDEX_MAX_LEVEL:
                 continue
             indent = "  " * (level - 1)
-            lines.append(f"{indent}- [{text}]({rel}#{anchor(text)})")
+            lines.append(f"{indent}- [{text}]({rel}#{slug})")
         lines.append("")
     return "\n".join(lines) + "\n"
 

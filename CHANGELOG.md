@@ -1,5 +1,36 @@
 # Changelog
 
+## v3.23.0 — 2026-08-01
+
+**Council remediation wave.** A three-model council audit (Codex gpt-5.6-sol + Gemini 3.1 Pro + Opus, 2026-08-01) of v3.22.1 found that the harvest wave changed the doctrine while the enforcement layer — linter, validator, evals, dispatcher, templates — still implemented the old one. All verified findings fixed.
+
+### Fixed — doctrine reaches the enforcement layer
+- **Regime-aware pre-flight linter** (`seedance_lint.py`): the 220-word FAIL / 180-word WARN now govern the short-form regime only. Block-scaffold production prompts are auto-detected (4+ canonical block labels, or 2+ shot markers) and exempt per HARD RULE 8; `--regime auto|short|block` forces it. Previously the mandated shotlist workflow (218–2,059-word copy-blocks piped through the linter) could never pass its own preflight — and `tests/test_lint_rules.py` codified the bug.
+- **"shot" false positive killed**: the violence-verb rule matched `\bshot\b` bare — failing "two-shot", "wide shot", and "one shot per scene" in a film-prompting tool. Now fires only on verb/violence constructions ("was shot", "shot him").
+- **Style Prefix doctrine reconciled as regime scoping**: connected shotlists ship the compiled prefix **verbatim** (the field-proven Style-Prefix-plus-SHOT shape observed across the harvested corpus); standalone block prompts distribute style into home blocks. seedance § Distributed style, shotlist-director § Per-scene prompt law, and `templates/seedance/global-style-prefix.md` now each state their regime and cross-link the other. The field-calibration bullet no longer claims "only the distributed form ships" — the corpus says otherwise.
+- **Negative-phrasing law scoped to its real target**: `negative:` lists / bare negation lists are banned; short lock tails inside declarations ("no 3D render", "no flicker" — the law's own canonical example) are fine and field-proven. Template note + seedance law scope updated.
+- **The mandatory prompt skill finally carries the regime carve-out** (`higgsfield-prompt`, the file HARD RULE 2 makes mandatory on every prompt request): QUICK FACTS 200-word + Seedance 30–100w lines, § Keep it under 200 words, and § Intent over Precision all scoped; likewise troubleshoot's blur table + diagnostic tree, MODELS-DEEP-REFERENCE's Kling prompt note, and seedance's 50–80w sweet spot.
+- **Fast Path Seedance runtime exception** (root dispatcher): Seedance 2.0 never gets a silently defaulted 8s — no-duration Fast Path requests route to Kling 3.0; Seedance-by-name states the assumed runtime as the first adjustable.
+- **Aspect-ratio enum leaks closed**: Full Path no longer offers 2.35:1 as an output ratio; `Aspect:` headers in templates 04/05/06 and prompt-examples now carry legal enums (Kling/Sora → 16:9, Seedance → native 21:9) with anamorphic kept in the Style line where HARD RULE 7 puts it.
+- **Model data corrected against specs**: Kling 2.6 HAS native audio (`sound`, default on) — models sub-skill table + decision tree fixed; Seedance 2.0 10s → 4–15s, Seedance 1.5 Pro → 4/8/12s; discrete duration enums no longer written as ranges (Veo 3.1/Lite/Fast 4/6/8s, Wan 2.6 5/10/15s, Hailuo 6/10s, Kling 2.6 5/10s) in model-guide + models sub-skill.
+- **Worked example de-milimetred**: two-character Seedance template now speaks FOV 63° with anamorphic as optical character, per the FOV-anchor law.
+- **Iteration anchor**: seedance § Field calibration "50–100" → the corrected 65–100 generations per kept shot.
+
+### Added — gates that catch this class of drift
+- **`validate.py`**: spec-snapshot staleness now FAILS `--strict` (release must not ship specs the HARD RULES disown) and the age gate covers image + audio spec files (previously ageless); duration cross-check gains name-index overrides (Kling 3.0/2.6, Wan 2.6, Veo 3.1 Lite, Seedance 1.5 Pro +) raising coverage 12 → 16 rows, a ≥14-row coverage floor, and range-vs-enum tightening ("4–8s" against [4,6,8] now fails); **rule-8 restatement scan** over every sub-skill, template, and the PDF generator — any unqualified 200-word-cap copy fails validation (it immediately caught two copies the council itself missed); dispatcher parity now requires a routing-TABLE row, not a prose mention.
+- **Evals**: new `word_count` assertion type — the `prompt-under-200-words` case now actually asserts the cap; new `harvest.json` suite (6 cases): block-scaffold cap exemption end-to-end, FOV-degrees-not-mm, CAMERA-3rd position, environment-invention lock, 15s-envelope beat tiling, character-height lock. 43 → 49 cases.
+- **`seedance_lint.py` structural**: beat-timeline shape checks (gaps, overlaps, late start, envelope undershoot — previously only overshoot); declared-shots-with-no-structure WARN; snapshot-age INFO on enum verdicts past the 30-day trust line.
+- **`sync_specs.py`**: refuses to generate from a snapshot with no items or none of the requested type (a truncated dump could previously write empty specs and exit 0).
+- **`build_index.py`**: GitHub-style duplicate-heading suffixes (`#continuation` / `#continuation-1`) in INDEX.md.
+
+### Changed
+- **USER-GUIDE PDF content refresh**: image-model table gains GPT Image 2 (text/logo) + Seedream 5.0 Pro (anime/manga sheets); short-form length guidance regime-scoped; release-history FAQ no longer ends at v3.8.1.
+
+### Known limitations (accepted)
+- `specs/` snapshots remain dated 2026-07-05 — they cross the 30-day trust line on 2026-08-05 and `--strict` will then fail by design until a Tier-2 refresh; the `higgsfield` CLI session must be re-authenticated first (`higgsfield auth login`).
+- Sora 2 aspect ratios are undocumented (UI-only model) — its example headers use 16:9 as the conservative legal value.
+
+
 ## v3.22.1 — 2026-07-26
 
 **Post-release audit fix pass.** A two-agent audit of v3.22.0 (cross-reference integrity + repo hygiene) found no broken references but six substantive contradictions between new and pre-existing rules, plus stale downstream copies of the old 200-word rule. All fixed.

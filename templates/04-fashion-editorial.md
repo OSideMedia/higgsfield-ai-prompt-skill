@@ -29,7 +29,7 @@ casting a hard shadow. 2.35:1 anamorphic.
 ### Combined prompt (for non-Soul ID use)
 ```
 Model: Kling 3.0
-Aspect: 2.35:1 | Duration: 8s | Style: Cinematic
+Aspect: 16:9 | Duration: 8s | Style: Cinematic
 
 A woman with angular jawline, dark skin, and close-cropped natural hair walks slowly
 toward camera down an empty concrete corridor. She wears a structured black wool overcoat,

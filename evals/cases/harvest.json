@@ -1,0 +1,83 @@
+{
+  "skill": "higgsfield-seedance / higgsfield-shotlist-director / higgsfield-camera",
+  "cases": [
+    {
+      "id": "harvest-block-scaffold-cap-exempt",
+      "description": "HARD RULE 8 regime exception end-to-end — a 200+ word block-scaffold production prompt must NOT fail the linter's short-form word cap",
+      "model": "seedance_2_0",
+      "request": "Full production brief: lighthouse keeper's morning routine, single 15s take",
+      "response": "Routing to higgsfield-seedance + higgsfield-camera for a block-scaffold production brief.\n\n**Aspect ratio**: 21:9  **Duration**: 15s  **Resolution**: 1080p\n\nSCENE CONTEXT: An old stone lighthouse interior at first light, a single keeper mid-routine. The tower room holds a brass lamp assembly, a wooden desk, a logbook, and a tin mug — the set contains only what the reference shows.\n\nLOCATION MAP: The spiral stair enters frame-left; the lamp assembly occupies the center platform; the desk sits against the seaward window frame-right. The keeper moves left to right across the platform.\n\nCAMERA: FOV 47 degrees, tripod-steady, slow dolly-in 10-15 cm over the full take, eye-level, no reframing.\n\nACTION: [0-5s] The keeper climbs the last three stair steps, one hand on the rail, breath visible in the cold air. [5-10s] He crosses to the lamp assembly and wipes the lens housing with a folded cloth, one full circular pass. [10-15s] He sits at the desk, opens the logbook, and writes a single line, pen contact heard on paper.\n\nPHYSICS: The cloth weighs 40-60 g and drapes softly over his hand; the logbook cover falls open under its own weight and settles flat.\n\nLIGHTING: Low-angle dawn light through the seaward window, warm on the brass, cool spill on the stone; no artificial sources.\n\nAUDIO: Wind against glass, boots on stone, the pen's scratch. Diegetic only.\n\nSTYLE: Photoreal, muted maritime palette, fine film grain.\n\nPOSITIVE LOCKS: The set contains only what the reference shows. One keeper, no other figures. The keeper's height stays constant relative to the lamp assembly.",
+      "assertions": [
+        { "type": "word_count", "min": 200 },
+        { "type": "lint_verdict", "max": "WARN" },
+        { "type": "enum_legal" },
+        { "type": "antislop_absent" }
+      ]
+    },
+    {
+      "id": "harvest-fov-degrees-not-mm",
+      "description": "Seedance block prompts speak FOV degrees, never millimetre focal lengths (camera 3.4.1 / seedance FOV-anchor law)",
+      "model": "seedance_2_0",
+      "request": "Camera block for a two-shot conversation scene",
+      "response": "Routing to higgsfield-camera + higgsfield-seedance for a block-prompt camera spec.\n\nSCENE CONTEXT: Two colleagues at a workshop bench, mid-conversation.\n\nLOCATION MAP: Bench runs horizontally; the taller figure stands frame-left, the shorter frame-right; neither crosses the central vertical axis.\n\nCAMERA: Medium two-shot, FOV 47 degrees, camera at chest height, locked off. Focus locked on the frame-left face; the background never pulls focus. No lens distortion.\n\nLIGHTING: Single warm work lamp from above the bench, soft falloff.\n\nPOSITIVE LOCKS: The set contains only what the reference shows.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "FOV\\s*\\d+\\s*degrees" },
+        { "type": "regex_absent", "pattern": "\\d+\\s*mm\\b" },
+        { "type": "lint_verdict", "max": "WARN" },
+        { "type": "antislop_absent" }
+      ]
+    },
+    {
+      "id": "harvest-camera-third-position",
+      "description": "CAMERA-3rd-position rule — the CAMERA block sits mid-document after SCENE CONTEXT and LOCATION MAP, never at the bottom (resolved on field evidence v3.22.0)",
+      "model": "seedance_2_0",
+      "request": "Block prompt for a courtyard reveal",
+      "response": "Routing to higgsfield-seedance for a block-scaffold prompt.\n\nSCENE CONTEXT: A walled courtyard at midday, one gardener raking gravel in long straight lines.\n\nLOCATION MAP: The gate sits frame-left; the raked bed runs diagonally toward frame-right; the gardener works away from camera.\n\nCAMERA: FOV 63 degrees, slow crane-up from chest height to three meters over the take.\n\nACTION: The gardener completes one full rake stroke, pauses, and looks up toward the gate as it swings open.\n\nLIGHTING: Hard overhead sun, crisp shadows, warm stone bounce.\n\nPOSITIVE LOCKS: The set contains only what the reference shows.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "(?s)SCENE CONTEXT.*LOCATION MAP.*CAMERA.*ACTION.*LIGHTING" },
+        { "type": "regex_absent", "pattern": "(?s)POSITIVE LOCKS.*CAMERA" },
+        { "type": "lint_verdict", "max": "WARN" },
+        { "type": "antislop_absent" }
+      ]
+    },
+    {
+      "id": "harvest-environment-invention-lock",
+      "description": "The #1 drift source is environment invention — every reference-bound block prompt carries the 'set contains only what the reference shows' standing lock in POSITIVE LOCKS",
+      "model": "seedance_2_0",
+      "request": "Reference-based interior scene, keep the set exactly as shot",
+      "response": "Routing to higgsfield-seedance for a reference-based block prompt.\n\nSCENE CONTEXT: The apartment kitchen from the reference plate, morning, one figure making coffee.\n\nACTIVE REFERENCES: @kitchen_plate = the master interior plate; @lead = the character sheet.\n\nLOCATION MAP: Counter runs frame-left to frame-right; the window sits behind the counter; @lead stands at the counter's center mark.\n\nCAMERA: FOV 47 degrees, locked off at eye level.\n\nACTION: @lead pours water from the kettle into the mug in one steady motion; steam rises after the pour completes.\n\nLIGHTING: Window daylight only, as in @kitchen_plate.\n\nPOSITIVE LOCKS: The set contains only what the reference shows. No added props, no added rooms, no added figures. @lead's height stays constant relative to the counter.",
+      "assertions": [
+        { "type": "sections_present", "names": ["POSITIVE LOCKS", "ACTIVE REFERENCES"] },
+        { "type": "regex_present", "pattern": "set contains only what the reference shows" },
+        { "type": "lint_verdict", "max": "WARN" },
+        { "type": "antislop_absent" }
+      ]
+    },
+    {
+      "id": "harvest-15s-envelope-beats",
+      "description": "Shotlist 15s envelope law — timed beats tile the declared duration exactly: start at 0, contiguous, sum to the envelope",
+      "model": "seedance_2_0",
+      "request": "15s market scene as one timed multi-beat prompt",
+      "response": "Routing to higgsfield-shotlist-director + higgsfield-seedance for a timed 15s scene.\n\n**Aspect ratio**: 16:9  **Duration**: 15s\n\nSCENE CONTEXT: A covered fish market before opening, one vendor setting out crates of ice.\n\nLOCATION MAP: Stalls run in a single aisle toward a far door; the vendor works the second stall frame-left.\n\nCAMERA: FOV 63 degrees, slow tracking move down the aisle, waist height.\n\nACTION: [0-5s] The vendor slides a full crate onto the counter, ice shifting audibly as it lands. [5-10s] He levels the ice with both hands and lays out the first row of mackerel, one per motion. [10-15s] He wipes his hands on his apron and flips the hand-painted OPEN sign hanging on the stall post.\n\nLIGHTING: Cool pre-dawn fluorescents overhead, wet-surface reflections.\n\nPOSITIVE LOCKS: The set contains only what the reference shows. One vendor, no customers before the sign flips.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "\\[0-5s\\].*\\[5-10s\\].*\\[10-15s\\]" },
+        { "type": "lint_verdict", "max": "WARN" },
+        { "type": "enum_legal" },
+        { "type": "antislop_absent" }
+      ]
+    },
+    {
+      "id": "harvest-character-height-lock",
+      "description": "Drift lock #2 — every 2+ character block prompt writes relative heights explicitly (character-height equalization is a named helpful-instinct drift source)",
+      "model": "seedance_2_0",
+      "request": "Two-character scene, keep their height difference from the references",
+      "response": "Routing to higgsfield-seedance + higgsfield-character-design for a two-character block prompt.\n\nSCENE CONTEXT: A train platform at dusk, two figures waiting under one lamp.\n\nACTIVE REFERENCES: @tall_traveler = the 190 cm coat-wearing figure; @short_traveler = the 158 cm figure with the satchel.\n\nLOCATION MAP: The lamp post is the center anchor; @tall_traveler stands frame-left of it, @short_traveler frame-right; neither crosses the central vertical axis.\n\nCAMERA: FOV 47 degrees, locked off, waist height.\n\nACTION: @short_traveler checks a paper timetable; @tall_traveler leans to read it over her shoulder, bending at the waist to close the height gap.\n\nPHYSICS: The timetable is a single sheet, 5 g, and flexes in the platform wind.\n\nLIGHTING: One sodium platform lamp overhead, warm pool against blue dusk.\n\nPOSITIVE LOCKS: The set contains only what the reference shows. @tall_traveler stays a full head taller than @short_traveler in every frame — heights never equalize.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "\\d+\\s*cm" },
+        { "type": "regex_present", "pattern": "height[s]?\\s+never\\s+equalize|stays a full head taller" },
+        { "type": "lint_verdict", "max": "WARN" },
+        { "type": "antislop_absent" }
+      ]
+    }
+  ]
+}

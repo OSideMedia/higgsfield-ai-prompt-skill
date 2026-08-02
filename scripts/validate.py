@@ -35,6 +35,7 @@ SNAPSHOT_MAX_AGE_DAYS = 30
 # models the snapshot actually contains.
 GUIDE_NAME_OVERRIDES = {
     "veo31": "veo3_1",
+    "veo31lite": "veo3_1_lite",
     "veo3": "veo3",
     "grokimaginevideo": "grok_video",
     # Hailuo variants share one snapshot entry (variant = a `model` param)
@@ -42,7 +43,18 @@ GUIDE_NAME_OVERRIDES = {
     "minimaxhailuo23fast": "minimax_hailuo",
     "minimaxhailuo02": "minimax_hailuo",
     "minimaxhailuo02fast": "minimax_hailuo",
+    # Guide short names vs snapshot long names
+    "kling30": "kling3_0",
+    "kling30turbo": "kling3_0_turbo",
+    "kling26": "kling2_6",
+    "wan26": "wan2_6",
+    "seedance15pro": "seedance1_5",
 }
+# Floor on how many guide rows the duration cross-check must actually match.
+# The name-index silently skips unmapped rows by design (legacy/unsnapshotted
+# models); without a floor, mapping rot could drop coverage to zero while the
+# layer still reports green. Raise this when the snapshot grows.
+GUIDE_CHECK_MIN_ROWS = 14
 DB_FILES = {
     "filter": ROOT / "db/filter-memory.json",
     "quality": ROOT / "db/quality-memory.json",
@@ -107,6 +119,7 @@ SKIP = "\033[36m∅\033[0m"
 
 issues = []
 warnings = []
+STRICT = False  # set from --strict in main(); flips freshness warns to fails
 # Checks that could not run because an OPTIONAL dependency is missing (e.g. the
 # PDF smoke test without fpdf2). A skip is not a failure on a contributor
 # machine — the repo's content checks all still ran — but a release build must
@@ -364,11 +377,20 @@ def check_dispatcher_parity():
     )
     skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
     referenced = set(re.findall(r"higgsfield-[a-z0-9-]+", skill_text))
+    # A routing entry is a TABLE ROW naming the sub-skill — a mention in prose
+    # or a load-map listing is not a route the dispatcher can follow.
+    routed = set()
+    for line in skill_text.splitlines():
+        if line.lstrip().startswith("|"):
+            routed.update(re.findall(r"higgsfield-[a-z0-9-]+", line))
 
     for name in disk_skills:
-        ok = name in referenced
+        ok = name in routed
         check(ok, f"dispatcher routes '{name}'",
-              "" if ok else "built on disk but never referenced in root SKILL.md")
+              "" if ok else
+              ("referenced only in prose — add a routing-table row"
+               if name in referenced
+               else "built on disk but never referenced in root SKILL.md"))
     for name in sorted(referenced):
         if name == "higgsfield":  # the skill-family root token, not a sub-skill
             continue
@@ -481,7 +503,14 @@ def check_guide_against_specs(guide_text: str, spec: dict) -> list:
                     else (min(d["values"]), max(d["values"])))
         kind, val = parsed
         if kind == "range":
-            ok = val == spec_env
+            if "values" in d:
+                # A discrete enum is only honestly writable as a range when it
+                # is a contiguous integer run — "4–8s" against [4,6,8] invites
+                # an illegal duration:7 request.
+                lo, hi = val
+                ok = d["values"] == list(range(lo, hi + 1))
+            else:
+                ok = val == spec_env
         elif kind == "values":
             ok = ("values" in d and val == d["values"]) or (
                 "min" in d and (val[0], val[-1]) == spec_env)
@@ -495,6 +524,25 @@ def check_guide_against_specs(guide_text: str, spec: dict) -> list:
             "" if ok else f"guide says {cells[duration_idx]!r}, snapshot says {spec_fmt}",
         ))
     return results
+
+
+def _snapshot_age_gate(label: str, stamp: str, age: int):
+    """Freshness gate shared by the video/image/audio spec files.
+
+    Past SNAPSHOT_MAX_AGE_DAYS the repo's own HARD RULES (3 and 7) tell the
+    agent to distrust the specs and verify live — so under --strict a stale
+    snapshot FAILS: a release must not ship specs its own rules disown. In
+    default mode it stays a warning."""
+    if age > SNAPSHOT_MAX_AGE_DAYS:
+        detail = (f"{stamp}, {age}d old (> {SNAPSHOT_MAX_AGE_DAYS}) — "
+                  "re-dump models_explore into specs/ and rerun sync_specs.py")
+        if STRICT:
+            check(False, f"{label} fresh", detail)
+        else:
+            warn(f"{label} is {age} days old (>{SNAPSHOT_MAX_AGE_DAYS})",
+                 "re-dump models_explore into specs/ and rerun sync_specs.py")
+    else:
+        check(True, f"{label} fresh ({stamp}, {age}d old)")
 
 
 def check_model_specs():
@@ -515,11 +563,7 @@ def check_model_specs():
     except (KeyError, ValueError) as e:
         check(False, "specs snapshot_date parses", str(e))
         return
-    if age > SNAPSHOT_MAX_AGE_DAYS:
-        warn(f"specs snapshot is {age} days old (>{SNAPSHOT_MAX_AGE_DAYS})",
-             "re-dump models_explore into specs/ and rerun sync_specs.py")
-    else:
-        check(True, f"specs snapshot fresh ({spec['snapshot_date']}, {age}d old)")
+    _snapshot_age_gate("video specs snapshot", spec["snapshot_date"], age)
 
     # Generated files must match a regeneration from the committed snapshot —
     # catches hand-edits of generated files AND snapshot/generator changes.
@@ -543,9 +587,16 @@ def check_model_specs():
     # model-guide.md numbers must not contradict the snapshot.
     guide = ROOT / "model-guide.md"
     if guide.exists():
-        for ok, label, detail in check_guide_against_specs(
-                guide.read_text(encoding="utf-8"), spec):
+        results = check_guide_against_specs(
+            guide.read_text(encoding="utf-8"), spec)
+        for ok, label, detail in results:
             check(ok, label, detail)
+        check(len(results) >= GUIDE_CHECK_MIN_ROWS,
+              f"duration cross-check coverage ({len(results)} rows ≥ "
+              f"{GUIDE_CHECK_MIN_ROWS})",
+              "" if len(results) >= GUIDE_CHECK_MIN_ROWS else
+              "name-index rot is silently dropping guide rows — extend "
+              "GUIDE_NAME_OVERRIDES or lower GUIDE_CHECK_MIN_ROWS deliberately")
 
     # Image side (Brief #2 item 9): WARN while the type=image snapshot TODO
     # stands; once specs/image-model-specs.json exists this flips to a real
@@ -560,6 +611,22 @@ def check_model_specs():
         warn("image-model specs are TODO (no type=image snapshot yet)",
              "image-models.md / photodump-presets.md stay hand-maintained; "
              "dump models_explore type=image into specs/ when ready")
+
+    # Image + audio snapshot age — same trust line as the video specs. Until
+    # this gate, only the video file aged out loudly; the other two went
+    # stale in silence.
+    for label, fname in (("image specs snapshot", "image-model-specs.json"),
+                         ("audio specs snapshot", "audio-model-specs.json")):
+        path = SPECS_DIR / fname
+        if not path.exists():
+            continue
+        try:
+            stamp = json.loads(path.read_text(encoding="utf-8")).get("snapshot_date")
+            side_age = (date.today() - date.fromisoformat(stamp)).days
+        except (json.JSONDecodeError, TypeError, ValueError) as e:
+            check(False, f"{label} snapshot_date parses", f"{fname}: {e}")
+            continue
+        _snapshot_age_gate(label, stamp, side_age)
     for name in ("image-models.md", "photodump-presets.md"):
         path = ROOT / name
         if path.exists():
@@ -764,6 +831,43 @@ def check_hard_rules_canonical():
               "" if not stale else f"stale rule reference(s): {stale}")
 
 
+RULE8_TOKEN = re.compile(r"200[-‑ ]?word|under 200 words", re.IGNORECASE)
+RULE8_QUALIFIER = re.compile(
+    r"short[- ]form|regime|block[- ]scaffold|single[- ]shot|HARD RULE #?8",
+    re.IGNORECASE)
+RULE8_SCAN_WINDOW = 2  # qualifier may sit within ±N lines of the threshold
+
+
+def check_rule8_restatements():
+    """Every downstream restatement of the 200-word cap must carry its regime.
+
+    v3.22.1 fixed four stale copies of the unqualified cap by hand; v3.23.0
+    found four more (higgsfield-prompt ×2, troubleshoot ×2) — because the
+    drift check only watched CLAUDE.md and DISCIPLINE.md. This scan covers
+    the surfaces where the cap actually gets restated: every sub-skill,
+    every template, and the PDF generator's hardcoded copy."""
+    targets = sorted(
+        [*(ROOT / "skills").rglob("*.md"),
+         *(ROOT / "templates").rglob("*.md"),
+         ROOT / "scripts" / "generate_user_guide.py"])
+    offenders = []
+    for path in targets:
+        lines = path.read_text(encoding="utf-8").splitlines()
+        for i, line in enumerate(lines):
+            if not RULE8_TOKEN.search(line):
+                continue
+            lo = max(0, i - RULE8_SCAN_WINDOW)
+            window = "\n".join(lines[lo:i + RULE8_SCAN_WINDOW + 1])
+            if not RULE8_QUALIFIER.search(window):
+                offenders.append(f"{path.relative_to(ROOT)}:{i + 1}")
+    check(not offenders,
+          "200-word-cap restatements all carry a regime qualifier",
+          "" if not offenders else
+          "unqualified copies (add short-form/regime scope or cite HARD RULE 8): "
+          + ", ".join(offenders[:6])
+          + (f" (+{len(offenders) - 6} more)" if len(offenders) > 6 else ""))
+
+
 def check_repo_hygiene():
     """Fail if generated artifacts are tracked in git.
 
@@ -798,6 +902,8 @@ def check_repo_hygiene():
 
 def main():
     args = parse_args()
+    global STRICT
+    STRICT = args.strict
     print(f"\nHiggsfield Skill Repo — Validation Report"
           + (" (--strict)" if args.strict else ""))
     print(f"Root: {ROOT}\n")
@@ -865,6 +971,7 @@ def main():
     # ── 4g. HARD RULES canonical home ───────────────────────────────────────
     print("\n[ HARD RULES ]")
     check_hard_rules_canonical()
+    check_rule8_restatements()
 
     # ── 4g. Repo hygiene ────────────────────────────────────────────────────
     print("\n[ HYGIENE ]")

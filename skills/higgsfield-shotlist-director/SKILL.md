@@ -100,7 +100,12 @@ Every scene is numbered (`1`, `2`, `3`…) and split into named 15-second prompt
 
 ## Per-scene prompt law
 
-Every prompt follows this exact order, top to bottom:
+Every prompt follows this exact order, top to bottom. (This verbatim-prefix
+shape is the **connected-shotlist regime** `[FIELD — 13-project harvest]`;
+a standalone block-scaffold prompt instead distributes style into its home
+blocks and opens on SCENE CONTEXT — `../higgsfield-seedance/SKILL.md`
+§ Distributed style. Which shape ships is decided by the workflow: shotlist →
+this law; single standalone brief → distributed.)
 
 ```
 [STYLE PREFIX — full block, verbatim (or the per-scene override)]
@@ -231,9 +236,12 @@ A plain "script → prompts" generator stops at the document. This skill is wire
 into the rest of the repo, which is the whole point:
 
 1. **Preflight every prompt.** Before delivering the shotlist, run each prompt's
-   copy-block through the linter — `python3 scripts/seedance_lint.py --preflight --model
-   seedance_2_0 "<prompt>"` (`../higgsfield-seedance/SKILL.md` § Pre-flight
-   Linter). Real names, brand/IP, age markers, conflicting instructions, shot-
+   copy-block through the linter — `python3 scripts/seedance_lint.py --preflight
+   --regime block --model seedance_2_0 "<prompt>"`
+   (`../higgsfield-seedance/SKILL.md` § Pre-flight Linter). Copy-blocks are
+   block-scaffold regime: the linter usually auto-detects this, but pin
+   `--regime block` so the short-form word caps can never fire on a
+   full-density scene prompt. Real names, brand/IP, age markers, conflicting instructions, shot-
    count drift, and out-of-enum aspect/resolution/mode are caught **before** the
    user burns credits. A shotlist of 25 prompts is 25 chances to ship a flagged
    one.

@@ -4,6 +4,12 @@ A single style block **glued verbatim to every prompt** in a connected Seedance
 2.0 shotlist. Edit it once → it changes everywhere. It locks the film's global
 look so 25 separately-generated scenes read as one piece.
 
+Regime note: the verbatim prefix is the **connected-shotlist** shape
+`[FIELD — 13-project harvest]`. A *standalone* block-scaffold prompt does the
+opposite — it opens on SCENE CONTEXT and distributes style into home blocks
+(`../../skills/higgsfield-seedance/SKILL.md` § Distributed style — the
+standalone-block rule).
+
 ## When to use this template
 
 Any multi-scene Seedance production where every clip must share a look —
@@ -46,8 +52,13 @@ Notes on the fields:
 - **Audio: diegetic-only** — the prompt body names only real-world SFX; layer any
   score in post. See `../../skills/higgsfield-audio/SKILL.md` § Seedance 2.0 and
   the diegetic-only convention.
-- **No negative phrasing** — every line is a *positive* declaration of what must
-  be true (Seedance reads the body as positive instruction only). See
+- **Declarations, not negative lists** — every line is a *declaration of the
+  state that must hold*. Short lock tails inside a declaration ("Photorealistic
+  — no 3D render", "Diegetic SFX only. No music.") are field-proven across the
+  harvest corpus and match the seedance law's own canonical example ("Consistent
+  lighting, no flicker"). What is banned is `negative:` list syntax or a bare
+  freestanding negation list — Seedance has no negative-embedding architecture
+  and parses those as scene description. See
   `../../skills/higgsfield-seedance/SKILL.md` § Prompt-Craft Laws → No negative
   prompts in the prompt body.
 

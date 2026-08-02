@@ -115,7 +115,7 @@ noir setting. Ultra-realistic 8K quality. Award-winning cinematography.
 **After (strong):**
 ```
 Model: Kling 3.0
-Aspect: 2.35:1 | Duration: 8s | Style: Cinematic
+Aspect: 16:9 | Duration: 8s | Style: Cinematic
 
 A weathered detective stands at the edge of a rain-soaked harbour dock at night.
 An old leather briefcase sits at his feet, open, papers scattered by the wind.
@@ -196,7 +196,7 @@ Style: Cinematic. Cold blue shadows, amber market light, high contrast. 16:9.
 ### Rooftop Fight
 ```
 Model: Sora 2
-Aspect: 2.35:1 | Duration: 10s | Style: Anamorphic
+Aspect: 16:9 | Duration: 10s | Style: Anamorphic
 
 Two silhouettes grapple on a rain-slicked rooftop at night, city spread below them.
 Lightning illuminates the scene in strobe flashes.
@@ -273,7 +273,7 @@ Style: Super 8MM. Warm grain, soft vignette, lifted shadows. 16:9.
 
 ```
 Model: Seedance 2.0 (Continuation mode)
-Aspect: 2.39:1 | Duration: 6s | Style: Naturalistic
+Aspect: 21:9 | Duration: 6s | Style: Naturalistic
 
 Continuing from the prior clip — the husband framed at the bedside, head
 bowed, his hand on hers, the heart monitor's rhythm filling the silence.
@@ -316,7 +316,7 @@ Prompt Formula apply.
 ### Zero Gravity Breach
 ```
 Model: Sora 2
-Aspect: 2.35:1 | Duration: 10s | Style: Cinematic
+Aspect: 16:9 | Duration: 10s | Style: Cinematic
 
 A battle-worn space station corridor, emergency lighting, debris floating in zero gravity.
 A soldier in heavy tactical armor pulls herself along a handrail, rifle raised.
@@ -342,7 +342,7 @@ Style: Cinematic. Deep shadows, neon magenta and cyan, shallow depth of field. 1
 
 ```
 Model: Seedance 2.0 (Reference-Based mode)
-Aspect: 2.39:1 | Duration: 10s | Style: Hard Sci-Fi
+Aspect: 21:9 | Duration: 10s | Style: Hard Sci-Fi
 
 [Reference image: hero character — figure in a battered EVA suit, helmet
 off and clipped to the hip, weathered face, close-cropped grey hair — as

@@ -30,7 +30,7 @@ cold blue fill. 2.35:1 anamorphic.
 ### Combined prompt (for non-Soul ID use)
 ```
 Model: Kling 3.0
-Aspect: 2.35:1 | Duration: 8s | Style: Cinematic
+Aspect: 16:9 | Duration: 8s | Style: Cinematic
 
 A weathered man in his late 40s stands at the edge of a rain-soaked harbour dock at night.
 Salt-and-pepper stubble, worn leather jacket, collar turned up against the driving rain.

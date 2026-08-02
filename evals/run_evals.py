@@ -119,8 +119,23 @@ def assert_preset_names_valid(case, response, params, specs) -> list[str]:
             for name in params["names"] if name not in text]
 
 
+def assert_word_count(case, response, params, specs) -> list[str]:
+    """Word-band assertion (HARD RULE 8 finally gets a real check).
+
+    params: optional 'max' and/or 'min'. Counts words the same way
+    seedance_lint does, so the two layers can never disagree on the number."""
+    n = len(re.findall(r"\b\w+\b", response.strip()))
+    failures = []
+    if "max" in params and n > params["max"]:
+        failures.append(f"word count {n} exceeds max {params['max']}")
+    if "min" in params and n < params["min"]:
+        failures.append(f"word count {n} below min {params['min']}")
+    return failures
+
+
 ASSERTIONS = {
     "lint_verdict": assert_lint_verdict,
+    "word_count": assert_word_count,
     "regex_present": assert_regex_present,
     "regex_absent": assert_regex_absent,
     "sections_present": assert_sections_present,

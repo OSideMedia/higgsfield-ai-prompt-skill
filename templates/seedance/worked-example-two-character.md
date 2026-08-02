@@ -45,8 +45,9 @@ Cross-character relationships:
     frame in this shot.
   Negative space: centered between them, narrowing as Roco advances.
 
-Camera: medium-two-shot, low angle (camera at chest height), 35mm
-  anamorphic lens, slow dolly-in 0.5m over the shot duration.
+Camera: medium-two-shot, low angle (camera at chest height), FOV 63
+  degrees, anamorphic optical character, slow dolly-in 0.5m over the
+  shot duration.
 Setting: rain-soaked alleyway, 2am, light rain, sodium-vapor street
   lamp from screen-right above, steam from a manhole behind Lulu,
   garbage bags + chain-link fence + brick walls.
