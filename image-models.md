@@ -1,6 +1,6 @@
 # Higgsfield Image Models — Complete Reference
 
-> **Specs snapshot: 2026-07-05** — machine-readable image-model facts (resolution
+> **Specs snapshot: 2026-08-01** — machine-readable image-model facts (resolution
 > enums, model_type/quality options, aspect ratios) are generated from a
 > `type=image` `models_explore` snapshot into `specs/image-model-specs.yaml` /
 > `.json` and `specs/IMAGE-MODEL-SPECS.md` (regenerate via `python3 scripts/sync_specs.py
@@ -43,7 +43,7 @@ G = Google-powered model
 ### Soul Cast
 **Model id:** `soul_cast` · **Provider:** Higgsfield
 **Best for:** Consistent cinematic character identity — the same face/character held across many generations
-**Aspect ratio:** 16:9 only (per the 2026-07-05 specs snapshot)
+**Aspect ratio:** 16:9 only (per the 2026-08-01 specs snapshot)
 **Unique control — `budget` (10–500, default 50):** generation budget dial — higher budget spends more compute on the identity
 **Note:** Previously exposed only inside Cinema Studio (2.5/3.0 "Soul Cast AI actors"); now a standalone model in the image catalog. For per-shot character work at other aspect ratios, generate the identity here and carry it into other models via references.
 
@@ -144,7 +144,7 @@ G = Google-powered model
 ## Seedream Family
 
 ### Seedream 5.0 Pro
-**Model id:** `seedream_v5_pro` `[FIELD — observed on 161 harvested community jobs, 2026-07-18; not yet in the 2026-07-05 spec snapshot — verify params live before citing enums]`
+**Model id:** `seedream_v5_pro` — in the 2026-08-01 spec snapshot (resolution `1k`/`1.5k`/`2k`, default 2k; aspect ratios incl. 21:9). `[FIELD provenance: first observed on 161 harvested community jobs, 2026-07-18]`
 **Best for:** Anime / manga / stylized-2D image work — character sheets with clean linework, flat cel color fills, multi-panel manga page layouts with screentones and readable panel geometry
 **Field-proven dialects:** split-screen anime character sheets (full-body action pose left, chest-up portrait right, identical character, white seamless background, ~190w median) · black-and-white manga page spreads (panels laid out by position + size + content, refs as Image0/1/2, ink linework, screentones, no color)
 **Style anchoring:** use an **art-era anchor** ("early 2000s retro anime, soft painted cel-shading, vintage proportions") — the stylized-image equivalent of the photoreal director/DP anchor
@@ -335,7 +335,7 @@ NBP is the strongest single image model on the platform for sharpness, multi-ele
 **Character slot:** Supports Soul ID character reference (GENERAL shown by default)
 **Default aspect:** 1:1 square
 **Note:** Model selector shows "ChatGPT" branding — OpenAI's GPT-Image model
-**Status:** No longer present in the models catalog (2026-07-05 snapshot) — verify in the UI before recommending; prefer GPT Image 1.5/2 or OpenAI Hazel
+**Status:** No longer present in the models catalog (2026-08-01 snapshot) — verify in the UI before recommending; prefer GPT Image 1.5/2 or OpenAI Hazel
 
 ---
 
@@ -485,7 +485,7 @@ These are upload-based transformation tools, not text-to-image generators.
 | Flux Kontext Max | 1.5 | — | ⚠ Edit |
 | Multi Reference | 1.5 | — | Multi-image blend |
 | Recraft 4.1 | varies | 1K/2K | ⚠ External · standard/vector/utility/utility_vector · hex palettes |
-| GPT Image | 2 | — | Character slot · gone from 2026-07-05 catalog |
+| GPT Image | 2 | — | Character slot · gone from catalog (still absent 2026-08-01) |
 | GPT Image 1.5 | 2 | — | Text-in-image |
 | OpenAI Hazel | TBD | — | Editing, best text rendering |
 | Character Swap | 2 | — | Body swap |

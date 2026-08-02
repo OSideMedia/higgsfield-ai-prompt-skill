@@ -26,7 +26,7 @@ metadata:
 - **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input-seedance-20-audio1)
 - Cinema Studio 3.0 native joint audio (SCELA): describe audio as a separate section; specific foley beats generic moods [→](#cinema-studio-30-audio-businessteam-plan)
 - **Seed Audio 1.0** (`seed_audio`, standalone) = whole-scene audio in ONE pass — multi-speaker dialogue + music + SFX + ambience mixed [→](#scene-audio-generation-seed-audio-10)
-- Standalone Audio catalog (2026-07-05 snapshot): `seed_audio`, `text2speech_v2` (5 engines incl. new cozy_voice), plus 3 game-pipeline-only tools — distinct from in-video joint audio [→](#standalone-audio-tab-tool-catalog-2026-07-05-snapshot)
+- Standalone Audio catalog (2026-08-01 snapshot): `seed_audio`, `qwen_audio_tts` (NEW — Qwen 3.0 TTS Flash, expressive instructions + cloned voices), `text2speech_v2` (5 engines incl. cozy_voice), plus 3 game-pipeline-only tools — distinct from in-video joint audio [→](#standalone-audio-tab-tool-catalog-2026-08-01-snapshot)
 
 ## Which Models Support Audio?
 
@@ -526,7 +526,7 @@ has no video at all.
 | One clean voice track (narration, single-speaker VO) | **`text2speech_v2`** (pick an engine) | Single-voice TTS — simpler, engine-selectable |
 | Sound baked into the generated video, synced to on-screen action and lips | **Seedance `generate_audio`** (in-video) | Native joint generation — audio and visuals in the same pass (see § Audio as a Conditioning Input) |
 
-### Verified surface [OFFICIAL — model spec 2026-07-05]
+### Verified surface [OFFICIAL — model spec 2026-08-01]
 
 Model id `seed_audio` (output_type `audio`). Parameters:
 
@@ -572,10 +572,10 @@ Music: a lonely muted trumpet fades in under the rain, wistful but hopeful.
 
 ---
 
-## Standalone Audio tab — tool catalog (2026-07-05 snapshot)
+## Standalone Audio tab — tool catalog (2026-08-01 snapshot)
 
 The live standalone-audio catalog, reconciled against the models_explore
-snapshot of **2026-07-05** (`../../specs/models_explore_snapshot_audio_2026-07-05.json`;
+snapshot of **2026-08-01** (`../../specs/models_explore_snapshot_audio_2026-08-01.json`;
 generated table: `../../specs/AUDIO-MODEL-SPECS.md`, machine twin
 `../../specs/audio-model-specs.json` — regenerate with `python3 scripts/sync_specs.py --type audio`).
 The Audio tab's UI tools — **Voiceover** (text → speech), **Change Voice** (swap a
@@ -585,6 +585,7 @@ of these models:
 | Model id | Name | What it does | Availability |
 |----------|------|--------------|--------------|
 | `seed_audio` | Seed Audio 1.0 (ByteDance) | One-pass whole-scene audio: dialogue + music + SFX + ambience (§ above) | General |
+| `qwen_audio_tts` | Qwen Audio 3.0 TTS Flash (Alibaba) | Expressive TTS: natural-language `instruction` for emotion/dialect/speed, preset or cloned reference-element voices, 13 language hints | General *(NEW 2026-08-01)* |
 | `text2speech_v2` | Text to Speech V2 | Single-voice TTS; engine via `variant`: `elevenlabs`, `minimax`, `seed_speech`, `vibe_voice`, **`cozy_voice`** *(NEW)*; preset or reference-element voices (`voice_type` + `voice_id`) | General |
 | `sonilo_music` | Sonilo Music (FAL) | Text-to-music with controllable duration | **Game pipeline only** |
 | `mirelo_text_to_audio` | Mirelo Text to Audio (FAL) | Text-to-audio SFX with controllable duration | **Game pipeline only** |
@@ -595,7 +596,7 @@ multilingual voiceover/narration; **elevenlabs** (Eleven v3) when fine
 emotional/tone control matters; **vibe_voice** for long-form narration. These
 are standalone audio generators — distinct from the native joint audio baked
 into Kling 3.0 / Seedance 2.0 / Veo during video generation. (Catalog reflects
-the 2026-07-05 snapshot; verify live before quoting pricing or availability.)
+the 2026-08-01 snapshot; verify live before quoting pricing or availability.)
 
 ### Post-generation voice-over — Supercomputer workflow [DEMO]
 

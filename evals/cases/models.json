@@ -6,7 +6,7 @@
       "description": "Seedance 2.0 duration quoted from the specs layer (4-15s, not 10s)",
       "model": "seedance_2_0",
       "request": "How long can a Seedance 2.0 clip be?",
-      "response": "Routing to higgsfield-models (duration question — verified against specs/model-specs.yaml).\n\nSeedance 2.0 supports **4–15 second** clips (snapshot 2026-06-22). Resolutions: 480p / 720p / 1080p / 4k; modes: std / fast — note `fast` caps at 480p/720p (no 1080p or 4k).",
+      "response": "Routing to higgsfield-models (duration question — verified against specs/model-specs.yaml).\n\nSeedance 2.0 supports **4–15 second** clips (snapshot 2026-08-01). Resolutions: 480p / 720p / 1080p / 4k; modes: std / fast — note `fast` caps at 480p/720p (no 1080p or 4k).",
       "assertions": [
         {"type": "regex_present", "pattern": "4–15"},
         {"type": "regex_present", "pattern": "\\b4k\\b"},
@@ -32,7 +32,7 @@
       "description": "Kling 3.0 mode enum is std/pro/4k",
       "model": "kling3_0",
       "request": "What quality modes does Kling 3.0 have?",
-      "response": "Routing to higgsfield-models.\n\nKling 3.0 exposes three generation modes: **std**, **pro**, and **4k** (specs/model-specs.yaml, snapshot 2026-06-22). Sound is a separate on/off parameter — turning it off lowers credit cost.",
+      "response": "Routing to higgsfield-models.\n\nKling 3.0 exposes three generation modes: **std**, **pro**, and **4k** (specs/model-specs.yaml, snapshot 2026-08-01). Sound is a separate on/off parameter — turning it off lowers credit cost.",
       "assertions": [
         {"type": "regex_present", "pattern": "\\bstd\\b.*\\bpro\\b.*\\b4k\\b"},
         {"type": "antislop_absent"}
@@ -55,7 +55,7 @@
       "description": "A model recommendation with a paste-ready header carries only legal values",
       "model": "veo3_1",
       "request": "Recommend settings for a short nature clip on Veo 3.1",
-      "response": "Routing to higgsfield-models (Veo 3.1 settings).\n\n**Model**: Google Veo 3.1\n**Aspect ratio**: 16:9  **Duration**: 8s  **Style**: Cinematic\n\nVeo 3.1 durations are 4/6/8s; aspect ratios 16:9 or 9:16 (specs snapshot 2026-06-22).",
+      "response": "Routing to higgsfield-models (Veo 3.1 settings).\n\n**Model**: Google Veo 3.1\n**Aspect ratio**: 16:9  **Duration**: 8s  **Style**: Cinematic\n\nVeo 3.1 durations are 4/6/8s; aspect ratios 16:9 or 9:16 (specs snapshot 2026-08-01).",
       "assertions": [
         {"type": "enum_legal"},
         {"type": "regex_present", "pattern": "4/6/8"}
@@ -66,7 +66,7 @@
       "description": "Minimax Hailuo durations come from the snapshot (6/10s)",
       "model": "minimax_hailuo",
       "request": "How long can Hailuo clips run?",
-      "response": "Routing to higgsfield-models.\n\nMinimax Hailuo generates **6 or 10 second** clips (specs snapshot 2026-06-22); variant selection (minimax / minimax-fast / minimax-2.3 / minimax-2.3-fast) is a `model` parameter, and resolutions are 512 / 768 / 1080.",
+      "response": "Routing to higgsfield-models.\n\nMinimax Hailuo generates **6 or 10 second** clips (specs snapshot 2026-08-01); variant selection (minimax / minimax-fast / minimax-2.3 / minimax-2.3-fast) is a `model` parameter, and resolutions are 512 / 768 / 1080.",
       "assertions": [
         {"type": "regex_present", "pattern": "6 or 10 second"},
         {"type": "antislop_absent"}
@@ -77,7 +77,7 @@
       "description": "Wan 2.7 duration range from snapshot (2-15s)",
       "model": "wan2_7",
       "request": "Wan 2.7 clip length?",
-      "response": "Routing to higgsfield-models.\n\nWan 2.7 supports **2–15 second** clips with synchronized audio (start_image / end_image / audio reference roles), resolutions 720p / 1080p (specs snapshot 2026-06-22).",
+      "response": "Routing to higgsfield-models.\n\nWan 2.7 supports **2–15 second** clips with synchronized audio (start_image / end_image / audio reference roles), resolutions 720p / 1080p (specs snapshot 2026-08-01).",
       "assertions": [
         {"type": "regex_present", "pattern": "2–15 second"},
         {"type": "antislop_absent"}

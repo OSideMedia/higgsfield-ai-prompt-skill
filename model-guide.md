@@ -38,9 +38,11 @@
 | Minimax Hailuo 02 Fast | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 6/10s | — | 512, 768, 1080 | ❌ | Budget motion, 512p |
 | Higgsfield DoP (Lite/Standard/Turbo) | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 3–5s | — | — | ❌ | I2V specialist, 50+ camera presets, optical physics |
 
-\* **Aspect ratios / Resolutions columns are sourced from the specs layer** (`specs/MODEL-SPECS.md`, `models_explore` snapshot 2026-07-05) — do not hand-edit them. A `—` means the model is legacy/unsnapshotted or the snapshot does not expose that field; verify live before promising values for those rows. Duration cells for snapshot-covered models are cross-checked against the specs by `scripts/validate.py`.
+\* **Aspect ratios / Resolutions columns are sourced from the specs layer** (`specs/MODEL-SPECS.md`, `models_explore` snapshot 2026-08-01) — do not hand-edit them. A `—` means the model is legacy/unsnapshotted or the snapshot does not expose that field; verify live before promising values for those rows. Duration cells for snapshot-covered models are cross-checked against the specs by `scripts/validate.py`.
 
-> The catalog also lists utility/system entries — AutoSprite (game sprite-sheet animation), MS Image (Marketing Studio ad images), Explainer Video, LLM text, upscalers, background removers, outpaint. These are pipeline tools, not prompt-crafted generation models, and are intentionally out of scope for these tables.
+> The catalog also lists utility/system entries — AutoSprite (game sprite-sheet animation), MS Image (Marketing Studio ad images), Explainer Video, LLM text, upscalers, background removers, outpaint, Sync Lipsync 3 (audio-driven lipsync retiming). These are pipeline tools, not prompt-crafted generation models, and are intentionally out of scope for these tables.
+
+> **New in the 2026-08-01 snapshot — not yet field-rated** (no star rows until real generations back them): **MiniMax H3** (`minimax_h3` — multimodal keyframes + image/video/audio references, 5–15s, 2K, incl. 21:9) and **Happy Horse Video** (`happy_horse_video` — T2V / single start-frame, 3–15s, 720p/1080p). Enums per `specs/MODEL-SPECS.md`; verify credits in the UI before recommending.
 
 ## Image Models — Head to Head
 
