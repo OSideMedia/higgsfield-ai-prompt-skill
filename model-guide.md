@@ -19,6 +19,7 @@
 | Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5/10/15s | 16:9, 9:16, 1:1 | — | ❌ | Artistic, stylized, improved physics |
 | Wan 2.5 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–10s | — | — | ✅ | Native audio, artistic, fantasy |
 | Wan 2.5 Fast | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–10s | — | — | ✅ | Fast Wan iteration with audio |
+| Seedance 2.5 | — | — | — | — | 4–30s | auto, 21:9, 16:9, 4:3, 1:1, 3:4, 9:16 | 480p, 720p | ✅ | **Omni-reference**: 30 images / 10 videos / 10 audio refs, **30s in one generation**, plus `video_edit` and forward/backward `video_extension` modes. **No 1080p/4K, no start/end-frame role, no genre hint.** Not yet field-rated |
 | Seedance 2.0 | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 4–15s | auto, 21:9, 16:9, 4:3, 1:1, 3:4, 9:16 | 480p, 720p, 1080p, 4k | ✅ | 12-asset multimodal, complex motion, **native 4K** (`mode=std`), genre hints |
 | Seedance 2.0 Fast | ★★★★☆ | ★★★★☆ | ★★★★★ | ★★★★☆ | 4–15s | auto, 21:9, 16:9, 4:3, 1:1, 3:4, 9:16 | 480p, 720p | ✅ | `mode=fast` of Seedance 2.0 — cheaper/faster, **no 1080p/4K**, lower plan tier |
 | Seedance 2.0 Mini | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★★☆ | 4–15s | auto, 16:9, 9:16, 4:3, 3:4, 1:1, 21:9 | 480p, 720p | ✅ | Distinct API id (`seedance_2_0_mini`, added ~2026-06): budget tier with the full reference-input surface (image/video/audio refs) + native audio; no 1080p/4K |
@@ -36,13 +37,16 @@
 | Minimax Hailuo 2.3 Fast | ★★★★☆ | ★★★★☆ | ★★★★★ | ★★★★☆ | 6/10s | — | 512, 768, 1080 | ❌ | Fast iteration, batch creation |
 | Minimax Hailuo 02 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | 6/10s | — | 512, 768, 1080 | ❌ | Dance, sports, fluid motion |
 | Minimax Hailuo 02 Fast | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 6/10s | — | 512, 768, 1080 | ❌ | Budget motion, 512p |
+| FLUX 3 Video | — | — | — | — | 5–20s | auto, 21:9, 2:1, 16:9, 4:3, 1:1, 3:4, 9:16 | 720p, 1080p | ✅ | T2V + multi-frame I2V + video continuation with synchronized audio; start/end frame + image/video reference roles; only model in the catalog with a native **2:1** ratio. Not yet field-rated |
 | Higgsfield DoP (Lite/Standard/Turbo) | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 3–5s | — | — | ❌ | I2V specialist, 50+ camera presets, optical physics |
 
-\* **Aspect ratios / Resolutions columns are sourced from the specs layer** (`specs/MODEL-SPECS.md`, `models_explore` snapshot 2026-08-01) — do not hand-edit them. A `—` means the model is legacy/unsnapshotted or the snapshot does not expose that field; verify live before promising values for those rows. Duration cells for snapshot-covered models are cross-checked against the specs by `scripts/validate.py`.
+\* **Aspect ratios / Resolutions columns are sourced from the specs layer** (`specs/MODEL-SPECS.md`, `models_explore` snapshot 2026-08-07) — do not hand-edit them. A `—` means the model is legacy/unsnapshotted or the snapshot does not expose that field; verify live before promising values for those rows. Duration cells for snapshot-covered models are cross-checked against the specs by `scripts/validate.py`.
 
-> The catalog also lists utility/system entries — AutoSprite (game sprite-sheet animation), MS Image (Marketing Studio ad images), Explainer Video, LLM text, upscalers, background removers, outpaint, Sync Lipsync 3 (audio-driven lipsync retiming). These are pipeline tools, not prompt-crafted generation models, and are intentionally out of scope for these tables.
+> The catalog also lists utility/system entries — AutoSprite (game sprite-sheet animation), MS Image (Marketing Studio ad images), LLM text, upscalers, background removers, outpaint, Sync Lipsync 3 (audio-driven lipsync retiming). These are pipeline tools, not prompt-crafted generation models, and are intentionally out of scope for these tables. (**Explainer Video left the catalog in the 2026-08-07 snapshot** — it had already dropped out of the CLI list at 2026-08-01. Verify in the UI before referencing it.)
 
-> **New in the 2026-08-01 snapshot — not yet field-rated** (no star rows until real generations back them): **MiniMax H3** (`minimax_h3` — multimodal keyframes + image/video/audio references, 5–15s, 2K, incl. 21:9) and **Happy Horse Video** (`happy_horse_video` — T2V / single start-frame, 3–15s, 720p/1080p). Enums per `specs/MODEL-SPECS.md`; verify credits in the UI before recommending.
+> **New in the 2026-08-07 snapshot — not yet field-rated** (no star rows until real generations back them): **Seedance 2.5** (`seedance_2_5` — see the dedicated row above and `skills/higgsfield-seedance-2-5/SKILL.md`) and **FLUX 3 Video** (`flux_3_video`, Black Forest Labs — T2V / multi-frame I2V / continuation, 5–20s, 720p–1080p). Also changed: **Grok Video 1.5** gained image + audio reference roles (it is no longer I2V-only), and the live CLI reports three mutual-exclusion rules on it — references cannot be combined with `start_image`, audio references require at least one image reference, and 1080p is unavailable once references are attached. **MiniMax H3** gained a `batch_size` parameter (1–4). Enums per `specs/MODEL-SPECS.md`; verify credits in the UI before recommending.
+
+> **New in the 2026-08-01 snapshot — not yet field-rated**: **MiniMax H3** (`minimax_h3` — multimodal keyframes + image/video/audio references, 5–15s, 2K, incl. 21:9) and **Happy Horse Video** (`happy_horse_video` — T2V / single start-frame, 3–15s, 720p/1080p).
 
 ## Image Models — Head to Head
 
@@ -105,6 +109,19 @@ Is this image or video?
     │
     ├── Need very long camera motion (up to 30s)?
     │   └── → Kling 3.0 Motion Control
+    │
+    ├── Is the source an EXISTING video the user wants changed or continued?
+    │   ├── Change one thing inside it (object, background, BGM, spoken
+    │   │   language)? → Seedance 2.5 `video_edit`
+    │   ├── Add footage after — or before — it? → Seedance 2.5
+    │   │   `video_extension` (forward / backward)
+    │   └── Restyle / VFX-transform the whole plate? → Seedance 2.0
+    │       (skills/higgsfield-seedance-vfx) or Grok Imagine Video
+    │
+    ├── One clip longer than 15s, or more than 9 image refs?
+    │   └── → Seedance 2.5 (4–30s, 30 image / 10 video / 10 audio refs) —
+    │       accepting the 720p ceiling; finish on Seedance 2.0 if the
+    │       deliverable needs 1080p/4K
     │
     ├── Is scale / spectacle the focus?
     │   └── Explosions, crowds, physics, epic landscapes? → Seedance 2.0 or

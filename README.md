@@ -1,5 +1,5 @@
-[![Version](https://img.shields.io/badge/version-3.24.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
-[![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--08--01-informational)](specs/MODEL-SPECS.md)
+[![Version](https://img.shields.io/badge/version-3.25.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--08--07-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -13,7 +13,7 @@ A comprehensive Claude skill library for generating high-quality prompts on
 Transforms natural language requests into production-ready Higgsfield prompts using:
 - The **MCSLA formula** (Model · Camera · Subject · Look · Action)
 - Named camera controls and motion presets the platform recognizes
-- Model selection guidance across Kling 3.0 / 3.0 Omni / 3.0 Motion Control, Sora 2, Veo 3.1, Wan, Seedance 2.0, Minimax Hailuo, Higgsfield DoP, and more
+- Model selection guidance across Kling 3.0 / 3.0 Omni / 3.0 Motion Control, Sora 2, Veo 3.1, Wan, Seedance 2.5 / 2.0, FLUX 3 Video, Minimax Hailuo, Higgsfield DoP, and more
 - Genre recipe templates for action, horror, romance, sci-fi, product ads, and more
 - Soul ID character consistency guidance + Character Sheet creation
 - Troubleshooting for failed or poor generations
@@ -21,12 +21,15 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 - **Cinema Studio 3.0** (Business/Team plan): native dual-channel stereo audio, Smart shot control, 15s max duration, 7 genres, @ reference patterns, Soul Cast 3.0
 - **Cinema Studio 3.5**: three-pill main UI (Genre / Style / Camera), Style Settings panel (8 Color Palette / 6 Lighting / 9 Camera Moveset Style + Manual Style mode), Camera Settings four-axis panel (3 Camera Body / 5 Lens / 5 Focal Length including new 75mm / 3 Aperture), Image Mode with four Cinematic models picker (Soul Cinema default, Cinematic Characters, Cinematic Locations, Cinematic Cameras with 2.5 vocabulary)
 - **Seedance 2.0 prompting best practices** — Intent over Precision, Genre Router, I2V Gate, Anti-Slop, Physics Language, SCELA audio, Reference-Based / Continuation / Expand Shot / Edit Shot / Transformation prompt modes, Continuation Prompt Formula, the Iteration Rule
+- **Seedance 2.5 omni-reference director** — the four generation modes (`t2v` / `omni_reference` / `video_edit` / `video_extension`), explicit `@Image` / `@Video` / `@Audio` reference roles with exclusions, the five-step multi-reference workflow, 30-second staging with end states, timestamp pacing, bracket syntax for music / SFX / dialogue / subtitles, in-prompt first-last-frame and multi-keyframe control, storyboard grids, coarse-vs-fine blockout rendering, one-click video, seamless transitions, and a 2.0-vs-2.5 routing table
+- **Hell Grind feature-film pipeline** — Higgsfield's open-sourced 95-minute-feature system: headless character sheets, mask-composited point edits, location sheets with anchors and one light logic, the per-scene GEO SPATIAL LAYOUT block, the position-fixing first second, dialogue construction, the ban dictionary, the 10–15 iteration rule, and the crowd / giant / threshold solutions
+- **Acting director** — performance as behavior under pressure: objective / obstacle / tactics / beats / subtext, listening markers, body + status + proxemics, mandatory eye life, the 150–220-word acting master profile and its per-scene rewrite, the locked voice prompt, a 15-symptom atlas of bad acting, and a 0–5 performance scale
 - **GPT Image 2.0 prompt director** — three-format taxonomy (structured JSON for UI mockups / infographics / reference sheets, dense cinematic prose for single-subject scenes, auto-derive meta-prompt for theme-only concepts) plus reference-sheet and static-ad-recreation workflow satellites
 - **Higgsfield Canvas** — node-based / infinite-board workspace guidance: chaining prompts → images → videos, named canvas patterns, Shared Canvas live collaboration, build-free / generate-paid cost model
 - **Marketing Studio + Content Factory** — 9 DTC ad presets (UGC / Tutorial / Unboxing / Hyper Motion / TV Spot / Wild Card / Virtual Try-On) with 4–15s ad video, plus an end-to-end campaign pipeline (research → plan → generate → publish → report) with a cost-savings report
 - **Shared negative constraints reference** — categorized artifacts + prevention phrases (positive alternatives for 3.0); Kling 3.0 Motion Control failure diagnostic; Physics Rendering — Resolution Decision Matrix (cross-model 480p / 720p / 1080p routing rule for Seedance 2.0 + Cinema Studio 3.x)
 - **Identity vs. Motion separation** — hard rule for character consistency across shots
-- **Annotated templates library** — 10 genre templates with Cinema Studio 3.0 genre mappings, plus Seedance multi-character coordination + text-overlay sub-libraries (17 files across 3 categories)
+- **Annotated templates library** — 10 genre templates with Cinema Studio 3.0 genre mappings, plus Seedance technique + character-design + text-overlay sub-libraries (18 files across 3 categories)
 - **DISCIPLINE.md cross-cutting framework** — 9 named discipline patterns in 3-3-3 tier symmetry (prompt-construction, model-selection, iteration-discipline) governing decisions across all sub-skills
 - **production-benchmarks.md** — Hell Grind 90-min Cannes feature reference, per-character iteration anchors, acceptance-rate calibration; what "production quality" means in practice
 - **FAILURE-MODES.md (Seedance)** — 8 named render failures documented with symptom + mechanism + counter for diagnosis-first iteration
@@ -201,10 +204,11 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 │   ├── 08-comedy-social-media.md
 │   ├── 09-romantic-intimate.md
 │   ├── 10-dance-music-performance.md
-│   ├── seedance/                     ← Multi-character coordination templates
+│   ├── seedance/                     ← Seedance technique templates (9)
 │   │   ├── multi-character-anchor.md
 │   │   ├── single-character-position.md
 │   │   ├── top-down-map.md
+│   │   ├── omni-reference-2-5.md     ← Seedance 2.5 multi-reference brief
 │   │   └── worked-example-two-character.md
 │   └── text-overlays/                ← Text overlay templates
 │       ├── slogan.md
@@ -244,8 +248,15 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
     ├── higgsfield-recall/SKILL.md        ← Recall + regeneration patterns
     ├── higgsfield-cinema/SKILL.md        ← Cinema Studio 2.5 + 3.0 + 3.5 (Soul Cast, Color Grading, 3D Mode, Smart Mode, @ References, Native Audio, three-pill UI, Image Mode, Cinematic models picker)
     ├── higgsfield-seedance/
-    │   ├── SKILL.md                      ← Seedance prompt director + content-filter preflight
+    │   ├── SKILL.md                      ← Seedance 2.0 prompt director + content-filter preflight
+    │   ├── ENGINE-RULES.md               ← Hard rendering constraints shared across the Seedance family
+    │   ├── PRODUCTION-PATTERNS.md        ← Tutorial-demonstrated production patterns
+    │   ├── HELL-GRIND.md                 ← Higgsfield's open-sourced 95-min feature pipeline
     │   └── FAILURE-MODES.md              ← 8 named Seedance render failures (symptom · mechanism · counter)
+    ├── higgsfield-seedance-2-5/
+    │   ├── SKILL.md                      ← Seedance 2.5 omni-reference dialect + 4-mode router
+    │   └── MODE-PLAYBOOKS.md             ← Edit / extend / storyboard / blockout / one-click / transitions
+    ├── higgsfield-acting/SKILL.md        ← Performance craft: objective, beats, eye life, master profile
     ├── higgsfield-vibe-motion/SKILL.md   ← Vibe-based motion direction
     └── higgsfield-workspaces/SKILL.md    ← Workspace-first decision layer (Cinema Studio / Lipsync / Draw-to-Video / Sora 2 Trends / Click to Ad / Higgsfield Audio)
 ```
@@ -334,4 +345,4 @@ acting on the tail. A small sample is not evidence a skill is dead.
 
 ---
 
-Built February 2026 · v3.24.0 (updated 2026-08-01) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.25.0 (updated 2026-08-07) · Platform: [higgsfield.ai](https://higgsfield.ai)

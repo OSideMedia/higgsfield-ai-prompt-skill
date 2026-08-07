@@ -37,9 +37,9 @@ specs/                    ← Machine-readable model specs (generated — never 
 INDEX.md                  ← Generated heading index of every SKILL.md
 tests/                    ← pytest suite for the Python tooling (CI-run)
 evals/                    ← Behavioral eval cases + run_evals.py (CI-run)
-skills/                   ← 30 sub-skill directories + shared/
+skills/                   ← 32 sub-skill directories + shared/
 templates/                ← 10 genre templates + ad-asset-prep.md,
-                            character-design/ (6), seedance/ (8), text-overlays/ (3)
+                            character-design/ (6), seedance/ (9), text-overlays/ (3)
 db/                       ← Filter + quality memory JSON databases
 db/ledger/                ← Generation ledger (one append-only file per project;
                             _global.json generated; see db/ledger/README.md)

@@ -26,6 +26,8 @@ Usage:
   python3 scripts/seedance_lint.py --model seedance_2_0 "<prompt>"   # + structural lint
   python3 scripts/seedance_lint.py --model kling3_0 --ar 21:9 "<prompt>"
   python3 scripts/seedance_lint.py --preflight --model seedance_2_0 "<prompt>"
+  python3 scripts/seedance_lint.py --preflight --model seedance_2_5 \
+      --mode video_extension --extension-mode forward "<prompt>"
                                                       # filter + structure + memory recall
   python3 scripts/seedance_lint.py --log "<prompt text>"      # log FAIL to filter-memory
   python3 scripts/seedance_lint.py --confirmed "<prompt>"     # log as confirmed workaround
@@ -227,6 +229,7 @@ class Settings:
     resolution: str | None = None
     mode: str | None = None
     duration: int | None = None
+    extension_mode: str | None = None
 
 
 SPECS_DEFAULT = Path(__file__).resolve().parent.parent / "specs" / "model-specs.json"
@@ -235,7 +238,12 @@ _SETTINGS_PATTERNS = {
     # Tolerant of **bold**, fullwidth ：, and inline comma-run headers.
     "ar": re.compile(r"aspect[\s_-]*ratio\**\s*[:：]\s*\**\s*(auto|\d+:\d+)", re.I),
     "resolution": re.compile(r"\bresolution\**\s*[:：]\s*\**\s*(\d{3,4}p?|4k)", re.I),
-    "mode": re.compile(r"\bmode\**\s*[:：]\s*\**\s*([a-z0-9]+)", re.I),
+    # extension_mode must be matched BEFORE the bare `mode` pattern can claim it —
+    # merge_settings/parse order keeps them distinct because the `mode` regex
+    # requires a word boundary that `extension_mode` does not satisfy.
+    "extension_mode": re.compile(
+        r"\bextension[\s_-]*mode\**\s*[:：]\s*\**\s*(forward|backward)", re.I),
+    "mode": re.compile(r"(?<!extension[\s_-])\bmode\**\s*[:：]\s*\**\s*([a-z0-9_]+)", re.I),
     "duration": re.compile(r"\bduration\**\s*[:：]\s*\**\s*(\d+)\s*s", re.I),
 }
 
@@ -258,6 +266,7 @@ def merge_settings(header: Settings, cli: Settings) -> Settings:
         resolution=cli.resolution or header.resolution,
         mode=cli.mode or header.mode,
         duration=cli.duration if cli.duration is not None else header.duration,
+        extension_mode=cli.extension_mode or header.extension_mode,
     )
 
 
@@ -544,6 +553,51 @@ def structural_lint(text: str, settings: Settings, spec: dict | None) -> list[Fi
                     "FAIL", "constraint-requires",
                     f"{c['param']}={c['value']} requires {other}={required}, got {val}",
                     f"Illegal combination on {spec['name']}: {c['source']}."))
+
+    findings.extend(_mode_pairing_findings(spec, settings))
+    return findings
+
+
+def _mode_pairing_findings(spec: dict, settings: Settings) -> list[Finding]:
+    """Cross-parameter rules stated in prose that sync_specs cannot extract.
+
+    sync_specs.py only lifts constraints whose wording it recognizes AND whose
+    tokens are legal enum values elsewhere in the same model. Seedance 2.5's
+    `extension_mode` rule ("required for mode 'video_extension' and not allowed
+    otherwise") and its video_edit parameter-ignoring rule are stated in prose
+    the extractor does not match, so they are encoded here — keyed off the
+    model's OWN parameter list, never off a hard-coded model id, so the checks
+    disappear if the platform drops the parameter."""
+    findings: list[Finding] = []
+    param_names = {p.get("name") for p in spec.get("params", [])}
+    modes = [str(m).lower() for m in spec.get("modes", [])]
+
+    if "extension_mode" in param_names and "video_extension" in modes:
+        if settings.mode == "video_extension" and settings.extension_mode is None:
+            findings.append(Finding(
+                "FAIL", "extension-mode-missing", "mode=video_extension",
+                f"{spec['name']} requires extension_mode (forward|backward) in "
+                f"video_extension mode — declare it, and align the boundary "
+                f"frame in the prompt before describing new content."))
+        elif settings.mode is not None and settings.mode != "video_extension" \
+                and settings.extension_mode is not None:
+            findings.append(Finding(
+                "FAIL", "extension-mode-not-allowed",
+                f"mode={settings.mode} + extension_mode={settings.extension_mode}",
+                f"{spec['name']} accepts extension_mode ONLY in "
+                f"video_extension mode — drop one side."))
+
+    if settings.mode == "video_edit" and "video_edit" in modes:
+        ignored = [f"{k}={v}" for k, v in
+                   (("duration", settings.duration), ("aspect ratio", settings.ar))
+                   if v is not None]
+        if ignored:
+            findings.append(Finding(
+                "WARN", "video-edit-ignored-params", ", ".join(ignored),
+                f"{spec['name']} ignores duration and aspect ratio in video_edit "
+                f"mode — both follow the source video, and the render is billed "
+                f"by the source's duration. Remove them so the declaration "
+                f"matches what actually runs."))
     return findings
 
 
@@ -905,6 +959,9 @@ def main() -> int:
     parser.add_argument("--ar", help="Declared aspect ratio (overrides prompt header)")
     parser.add_argument("--resolution", help="Declared resolution (overrides header)")
     parser.add_argument("--mode", help="Declared mode (overrides header)")
+    parser.add_argument("--extension-mode", choices=["forward", "backward"],
+                        help="Declared extension direction (Seedance 2.5 "
+                             "video_extension mode; overrides header)")
     parser.add_argument("--duration", type=int,
                         help="Declared duration in seconds (overrides header)")
     parser.add_argument("--specs", type=Path, default=SPECS_DEFAULT,
@@ -960,7 +1017,9 @@ def main() -> int:
         Settings(ar=args.ar.lower() if args.ar else None,
                  resolution=args.resolution.lower() if args.resolution else None,
                  mode=args.mode.lower() if args.mode else None,
-                 duration=args.duration))
+                 duration=args.duration,
+                 extension_mode=(args.extension_mode.lower()
+                                 if args.extension_mode else None)))
 
     filter_findings = lint(prompt, regime=args.regime)
     run_structural = args.preflight or spec is not None or any(
