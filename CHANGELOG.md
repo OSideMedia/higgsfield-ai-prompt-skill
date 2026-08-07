@@ -1,5 +1,45 @@
 # Changelog
 
+## v3.25.0 — 2026-08-07
+
+**Seedance 2.5 lands, and Higgsfield open-sourced their feature-film pipeline.** Two sources arrived together: ByteDance's *Dreamina Seedance 2.5 Prompt Guide* + *User Guide* (the model vendor's own doctrine for a model that is now live on Higgsfield), and Higgsfield's **Hell Grind** open-source brief — the production system behind their 95-minute AI feature, including the CINEDANCE prompt skill and its acting system. This release absorbs both, plus the Tier-2 spec refresh that Seedance 2.5's arrival forced.
+
+### Specs (generated from the 2026-08-07 video dump)
+- **Video +2**: `seedance_2_5` (Seedance 2.5 — four modes `t2v`/`omni_reference`/`video_edit`/`video_extension`, 4–30s, 480p/720p, `extension_mode` forward/backward, reference roles image/video/audio, **no start/end-frame role, no genre hint, no lane above 720p**) and `flux_3_video` (FLUX 3 Video, Black Forest Labs — T2V + multi-frame I2V + continuation with synchronized audio, 5–20s, 720p/1080p, the only catalog entry with a native 2:1 ratio).
+- **Video −1**: `explainer_video` left the catalog (it had already dropped out of the CLI list at 2026-08-01). Noted in model-guide.md's utility list rather than silently removed.
+- **Changed**: `grok_video_v15` gained `image_references` + `audio_references` roles — it is no longer I2V-only; the live CLI additionally reports three mutual-exclusion rules on it (references vs `start_image`, audio-refs require an image-ref, 1080p unavailable with references), recorded in model-guide.md. `minimax_h3` gained `batch_size` (1–4).
+- Image and audio snapshots are unchanged and remain at 2026-08-01. CLI baseline re-accepted with `--update-baseline`; evals audited in the same PR (v3.11.3 lesson).
+
+### Added — `skills/higgsfield-seedance-2-5/` (new sub-skill)
+- `SKILL.md` — the omni-reference dialect: the four-mode router, the Higgsfield parameter surface with its three credit-relevant consequences (`video_edit` bills by source duration and ignores duration/aspect ratio; `video_extension` inherits the source ratio; there is no `genre`), reference roles that always pair "what to use" with "what not to use", the material budget (30 images / 10 videos / 10 audio, 50 total) with its stability ranges, the five-step multi-reference workflow, 30-second staging with explicit end states, timestamp pacing as a budget rather than an edit point, bracket syntax (`()` music · `<>` SFX · `{}` dialogue · `【】` subtitles), in-prompt first-last-frame and multi-keyframe control, observable-cue emotional direction, the niche-camera-term translation formula, the seven-slot real-person formula, a 2.0-vs-2.5 routing table, the hard-limits list, and a `[DREAMINA-ONLY]` table of product features Higgsfield does **not** expose (Ultra Long Video 180s, mark-based editing, Clay Renderer).
+- `MODE-PLAYBOOKS.md` — the long templates: video editing (sole editing master, Timeline Inheritance, background-by-silhouette, audio-category editing, written-scope editing), forward/backward extension with the boundary-frame contract, storyboard grids, coarse-vs-fine blockouts, one-click video, seamless transitions plus the 11-entry named transition vocabulary.
+- `templates/seedance/omni-reference-2-5.md` — paste-ready multi-reference brief with a filled example.
+- `evals/cases/seedance-2-5.json` — 7 cases including two stale-spec traps (`video_extension` without `extension_mode`; 1080p on a 720p-capped model).
+
+### Added — `skills/higgsfield-seedance/HELL-GRIND.md`
+`[OFFICIAL — Higgsfield "Hell Grind" open-source brief]`. Deliberately scoped to what the repo did **not** already have — the CINEDANCE prompt doctrine was already harvested as § Official Prompt Architecture and is not restated:
+- **Asset construction**: the descriptor+reference pair; the three-panel character sheet with a **headless front figure** (so wide shots cannot source the face from a blurry thumbnail); boring-on-purpose sheets; point changes made in NBP/Seedream then **mask-composited back onto the original**, because an image never runs through a model twice in full.
+- **Location sheets**: 3/4 not frontal, an anchor object to stage against, one light logic, and two reverse-angle recipes (corner generation; or a walk-through video screenshot + texture pass).
+- **The GEO SPATIAL LAYOUT block** — a per-scene floor plan with no people in it, pasted unchanged into every shot of that scene. Distinguished from the existing per-shot Spatial Layout Block.
+- **The position-fixing first second** — a ~1.0s populated wide with no action, the "hm" trick, and the previous-line-tail seam trick. Reconciled explicitly with the Non-Empty Opening Frame pattern (it withholds *action*, never *people*).
+- The `EXACT N CHARACTERS — NO DUPLICATES` header and counted furniture bans; the CHARACTER ACTING / STYLE / QUALITY blocks; the closing technical tag tail; wording rules (present tense, ≤3 sentences per beat, 3,000–4,000-word production prompts, positive-form actions, the ban dictionary); dialogue construction with the anti-ad-lib block and mix notes; INNER (unspoken), phased blinking, and the one-micro-event-per-1–2s rule; the surgical one-line iteration loop and the **10–15 rule** (if a shot has not converged, simplify the shot, not the words); crowds as one asset with an explicit count, threshold transitions, and the giant SCALE LAW with its named failure condition.
+
+### Added — `skills/higgsfield-acting/` (new sub-skill)
+The performance craft layer, distinct from FACS's muscle codes: acting as behavior under pressure; the five pillars (objective / obstacle+stakes / tactics / beats / subtext); listening markers; body parameters, business and the interrupted-action accent, proxemics as drama, status and status breaks; the **150–220-word acting master profile** with fixed block order, tics-with-triggers, named gaits, and the mandatory "However, when X…" mask-crack; mandatory eye life; scene adaptation that transforms rather than deletes; the locked voice prompt; states-not-transitions; ensemble wave reactions; a 15-symptom atlas of bad acting with prompt-level fixes; the 0–5 performance scale with the two-truths rule; a pre-send checklist and a worked master-profile-plus-adaptation example.
+
+### Changed
+- **Age contradiction resolved.** `skills/higgsfield-seedance/SKILL.md` § Tag naming carried the official skill's `age + role/build` template while engine rule 1 forbids age words in either language. The Hell Grind brief supplies the mechanism — the content filter tightens sharply the moment it reads a minor — so the `@TAG:` line now reads role/build first with an explicit no-age note, and the same override is stated in the 2.5 skill's real-person formula (whose source guide labels slot 1 `[Age/Race]`).
+- `scripts/seedance_lint.py`: `extension_mode` is now a first-class setting (header pattern + `--extension-mode` flag), and two cross-parameter rules that `sync_specs.py` cannot extract from prose are encoded — `extension_mode` required for and only for `video_extension` (FAIL), and `video_edit` ignoring duration/aspect ratio (WARN). Both key off the model's own parameter list rather than a hard-coded id, so they disappear if the platform drops the parameter.
+- `evals/run_evals.py`: the two new rules joined `ENUM_RULES` so trap cases can assert on them.
+- Routing: dispatcher rows for Seedance 2.5, the 2.0-vs-2.5 tiebreaker, character performance, and the film pipeline; sub-skill catalog and `sub_skill_descriptions.py` updated; model-guide.md gained Seedance 2.5 + FLUX 3 rows, an existing-video branch and a >15s branch in the decision flowchart, and the 2026-08-07 delta note.
+- README: version + specs badge, feature list (three new bullets), structure tree, template count, footer.
+
+### Known limitations (accepted)
+- **Seedance 2.5 and FLUX 3 Video are not field-rated.** No star ratings in model-guide.md until real generations back them; the 2.5 doctrine is vendor-official prompt grammar plus the platform's own parameter surface, not O-Side production experience.
+- The `[DREAMINA-ONLY]` features (Ultra Long Video 180s, mark-based frame annotation, Clay Renderer) have no Higgsfield equivalent; the documented workarounds (30s + extension chains, written edit scopes, blockout prompting) are structural substitutes, not the same capability.
+- Hell Grind's numbers (3,000–4,000-word prompts, the 10–15 rule, three-or-four voices per character) are that production's calibration, not measured on this repo's material.
+
+
 ## v3.24.0 — 2026-08-01
 
 **Tier-2 spec refresh — 2026-08-01 snapshots.** CLI re-authenticated; `refresh_specs.py` flagged real drift since 2026-07-05, so all three catalogs were re-dumped from `models_explore`, specs regenerated, evals audited, and the CLI baseline re-accepted. Lands 4 days before the old snapshots would have crossed the 30-day trust line (which v3.23.0 made a `--strict` failure).

@@ -434,42 +434,67 @@
     },
     {
       "aliases": [],
-      "aspect_ratios": [],
+      "aspect_ratios": [
+        "auto",
+        "21:9",
+        "2:1",
+        "16:9",
+        "4:3",
+        "1:1",
+        "3:4",
+        "9:16"
+      ],
       "constraints": [],
-      "duration": null,
-      "id": "explainer_video",
-      "media_roles": {},
+      "duration": {
+        "max": 20,
+        "min": 5
+      },
+      "id": "flux_3_video",
+      "media_roles": {
+        "medias": [
+          "start_image",
+          "end_image",
+          "image_references",
+          "video_references"
+        ]
+      },
       "modes": [],
-      "name": "Explainer Video",
+      "name": "FLUX 3 Video",
       "output_type": "video",
       "params": [
         {
-          "description": "Output width in pixels.",
-          "name": "width",
-          "required": "required",
+          "default": 5,
+          "description": "Duration in whole seconds (5-20).",
+          "max": 20,
+          "min": 5,
+          "name": "duration",
+          "required": "optional",
           "type": "number"
         },
         {
-          "description": "Output height in pixels.",
-          "name": "height",
-          "required": "required",
-          "type": "number"
-        },
-        {
-          "description": "Ordered blocks to assemble (two or more). Each block is a clip with an optional per-block voice take.",
-          "name": "items",
-          "required": "required",
-          "type": "string_array"
-        },
-        {
-          "description": "Optional burned-in captions: transcribed from the final voiceover (Whisper word timestamps) and rendered as paper-label phrases. Omit for no subtitles.",
-          "name": "subtitles",
+          "default": "720p",
+          "description": "Output resolution: 720p or 1080p.",
+          "name": "resolution",
+          "options": [
+            "720p",
+            "1080p"
+          ],
           "required": "optional",
           "type": "string"
+        },
+        {
+          "default": true,
+          "description": "Generate synchronized speech, effects, and ambience.",
+          "name": "generate_audio",
+          "required": "optional",
+          "type": "bool"
         }
       ],
-      "provider": "",
-      "resolutions": []
+      "provider": "Black Forest Labs",
+      "resolutions": [
+        "720p",
+        "1080p"
+      ]
     },
     {
       "aliases": [],
@@ -564,7 +589,9 @@
       "id": "grok_video_v15",
       "media_roles": {
         "medias": [
-          "start_image"
+          "start_image",
+          "image_references",
+          "audio_references"
         ]
       },
       "modes": [],
@@ -1051,6 +1078,15 @@
           "type": "string"
         },
         {
+          "default": 1,
+          "description": "Number of videos to generate (1-4).",
+          "max": 4,
+          "min": 1,
+          "name": "batch_size",
+          "required": "optional",
+          "type": "number"
+        },
+        {
           "description": "Optional folder to place the generated video in.",
           "name": "folder_id",
           "required": "optional",
@@ -1437,6 +1473,96 @@
           "name": "generate_audio",
           "required": "optional",
           "type": "bool"
+        }
+      ],
+      "provider": "Bytedance",
+      "resolutions": [
+        "480p",
+        "720p"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "auto",
+        "21:9",
+        "16:9",
+        "4:3",
+        "1:1",
+        "3:4",
+        "9:16"
+      ],
+      "constraints": [],
+      "duration": {
+        "max": 30,
+        "min": 4
+      },
+      "id": "seedance_2_5",
+      "media_roles": {
+        "medias": [
+          "image_references",
+          "video_references",
+          "audio_references"
+        ]
+      },
+      "modes": [
+        "t2v",
+        "omni_reference",
+        "video_edit",
+        "video_extension"
+      ],
+      "name": "Seedance 2.5",
+      "output_type": "video",
+      "params": [
+        {
+          "default": "t2v",
+          "description": "Generation mode: 't2v' for prompt-only generation, 'omni_reference' for image, video, or audio references, 'video_edit' to edit one reference video (billed by that video's duration; 'duration' and 'aspect_ratio' are ignored), or 'video_extension' to extend a reference video ('aspect_ratio' follows the extended video).",
+          "name": "mode",
+          "options": [
+            "t2v",
+            "omni_reference",
+            "video_edit",
+            "video_extension"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": 5,
+          "description": "Duration in seconds (4-30).",
+          "max": 30,
+          "min": 4,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "720p",
+          "description": "Output resolution: 480p or 720p.",
+          "name": "resolution",
+          "options": [
+            "480p",
+            "720p"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "description": "Generate audio for the output video.",
+          "name": "generate_audio",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Extension direction; required for mode 'video_extension' and not allowed otherwise.",
+          "name": "extension_mode",
+          "options": [
+            "backward",
+            "forward"
+          ],
+          "required": "optional",
+          "type": "string"
         }
       ],
       "provider": "Bytedance",
@@ -1873,7 +1999,7 @@
       ]
     }
   ],
-  "snapshot_date": "2026-08-01",
-  "snapshot_file": "models_explore_snapshot_2026-08-01.json",
-  "snapshot_sha256": "0574b849459cbb0103888f891988cff4f4240bf7f4445a34415fad6f0f5d7842"
+  "snapshot_date": "2026-08-07",
+  "snapshot_file": "models_explore_snapshot_2026-08-07.json",
+  "snapshot_sha256": "4b9a4f9efa66e48d8a7c4676087d266eac5d487d783b5e46746e4b0f6d4a32a7"
 }

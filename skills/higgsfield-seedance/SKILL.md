@@ -23,7 +23,10 @@ metadata:
 - [FIELD] Three "helpful-instinct" drift sources, each with a standing lock: environment invention (#1, above character drift), character-height equalization, scale drift on wides [→](#positive-locks)
 - Build-safe construction for crowds/destruction/creatures: evacuated cities, contained fights ("stays at the sea surface"), the safe benchmark scene [→](#build-safe-construction-crowds-destruction-creatures)
 - Extend an existing clip: attach it as a video reference + open with "The scene continues." — match source resolution AND duration; chain cap ~2 (hard 3), then re-anchor from ORIGINAL references [→](#extension-prompting-video-reference-continuation)
+- **This file is Seedance 2.0.** For **2.5** — four modes incl. `video_edit` / `video_extension`, 4–30s, 30/10/10 references, in-prompt first-last frames, 720p ceiling — use `../higgsfield-seedance-2-5/SKILL.md`
 - Tutorial-demonstrated patterns (reference-role vocabulary incl. VARIETY reference, SCREEN REALISM + duration-match composites, 60:30:10 grade, red-arrow prop annotation): `PRODUCTION-PATTERNS.md` in this directory
+- [OFFICIAL] Feature-film pipeline (asset construction, per-scene GEO SPATIAL LAYOUT, the position-fixing first second, dialogue construction, ban dictionary, the 10–15 iteration rule, crowds / giants / thresholds): `HELL-GRIND.md` in this directory
+- Performance — objective, obstacle, tactics, beats, subtext, eye life, the acting master profile: `../higgsfield-acting/SKILL.md`
 - Hard engine rules (age-blind, exit-frame = cut, off-screen = nonexistent, no reflections, ≤3 tracked characters, double-contrast cuts) + high-risk shot table: `ENGINE-RULES.md` in this directory
 - Reference roles: Character / Last-Frame / Environment / Prop — role determines what the prompt may re-describe [→](#reference-roles)
 - Working modes: Exploration / Continuation / Bridging / Repair (distinct from prompt modes) [→](#working-modes-vs-prompt-modes-two-taxonomies)
@@ -465,9 +468,14 @@ arithmetic there.
 
 - User-specified tags verbatim; otherwise load-order `@image1 @video1
   @audio1` — consistent with § Reference Roles → Per-Image Role Convention.
-- The `@TAG:` reference line = age + role/build + current state + unique
-  visible features + action-critical details + voice (only if it has a
-  line) + `"100% matches the reference"`.
+- The `@TAG:` reference line = role/build + current state + unique visible
+  features + action-critical details + voice (only if it has a line) +
+  `"100% matches the reference"`. **No age.** The official skill's own template
+  opened this line with an age token; engine rule 1 (`ENGINE-RULES.md`) forbids
+  it in either language, and Higgsfield's feature-film brief gives the reason —
+  the content filter tightens sharply the moment it reads a minor
+  (`HELL-GRIND.md` § Wording rules). Carry the same information through build,
+  wear, and posture.
 - **Keep reference character text minimal** — long appearance text fights
   the image and degrades it (same mechanism as the I2V subject-drift rule in
   § Prompt-Craft Laws).
@@ -1876,6 +1884,18 @@ before reaching for it.
 
 ## Related Skills
 
+- `../higgsfield-seedance-2-5/SKILL.md` — **Seedance 2.5**, the omni-reference
+  dialect: four modes (`t2v` / `omni_reference` / `video_edit` /
+  `video_extension`), 4–30s, 30/10/10 reference materials, in-prompt first-last
+  frames, video editing and forward/backward extension. Caps at 720p — route
+  there when the job is long, edit-shaped, or reference-heavy; stay here when it
+  needs 4K, a start/end-frame role, or a genre hint
+- `../higgsfield-acting/SKILL.md` — the performance layer that fills the
+  PERFORMANCE / CHARACTER ACTING block: objective, obstacle, tactics, beats,
+  subtext, status, mandatory eye life, the acting master profile
+- `HELL-GRIND.md` (this directory) — Higgsfield's open-sourced feature-film
+  pipeline: asset construction, the per-scene GEO SPATIAL LAYOUT block, the
+  position-fixing first second, dialogue construction, iteration discipline
 - `higgsfield-seedance-vfx` — the video-to-video sibling: transform footage the
   user already shot (preserve subject + camera, add a VFX element / swap the
   world / drop a creature / relight to match / sync a timed zoom), std-4K

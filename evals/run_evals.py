@@ -37,7 +37,8 @@ import seedance_lint as sl  # noqa: E402 — flat module in scripts/
 
 SPECS_PATH = ROOT / "specs" / "model-specs.json"
 ENUM_RULES = {"ar-not-supported", "resolution-not-supported", "mode-not-supported",
-              "duration-out-of-range", "mode-constraint", "constraint-requires"}
+              "duration-out-of-range", "mode-constraint", "constraint-requires",
+              "extension-mode-missing", "extension-mode-not-allowed"}
 VERDICT_ORDER = {"PASS": 0, "WARN": 1, "FAIL": 2}
 
 

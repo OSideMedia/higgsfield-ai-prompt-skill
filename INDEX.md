@@ -24,6 +24,34 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [Shared Resources](SKILL.md#shared-resources)
   - [Sub-Skills (auto-loaded as needed)](SKILL.md#sub-skills-auto-loaded-as-needed)
 
+## skills/higgsfield-acting/SKILL.md
+
+- [Higgsfield Acting Director](skills/higgsfield-acting/SKILL.md#higgsfield-acting-director)
+  - [QUICK FACTS](skills/higgsfield-acting/SKILL.md#quick-facts)
+  - [Where this sits among the repo's performance tools](skills/higgsfield-acting/SKILL.md#where-this-sits-among-the-repos-performance-tools)
+- [Part I — The craft](skills/higgsfield-acting/SKILL.md#part-i-the-craft)
+  - [What good acting is](skills/higgsfield-acting/SKILL.md#what-good-acting-is)
+  - [The five pillars of every scene](skills/higgsfield-acting/SKILL.md#the-five-pillars-of-every-scene)
+  - [Listening and reaction](skills/higgsfield-acting/SKILL.md#listening-and-reaction)
+  - [The body](skills/higgsfield-acting/SKILL.md#the-body)
+  - [How good acting sounds](skills/higgsfield-acting/SKILL.md#how-good-acting-sounds)
+- [Part II — Writing the acting](skills/higgsfield-acting/SKILL.md#part-ii-writing-the-acting)
+  - [The acting master profile](skills/higgsfield-acting/SKILL.md#the-acting-master-profile)
+  - [Eye life](skills/higgsfield-acting/SKILL.md#eye-life)
+  - [Scene adaptation](skills/higgsfield-acting/SKILL.md#scene-adaptation)
+  - [Voice — fixed identity, never adapted](skills/higgsfield-acting/SKILL.md#voice-fixed-identity-never-adapted)
+  - [States, not transitions](skills/higgsfield-acting/SKILL.md#states-not-transitions)
+  - [Ensemble and space](skills/higgsfield-acting/SKILL.md#ensemble-and-space)
+- [Part III — Quality control](skills/higgsfield-acting/SKILL.md#part-iii-quality-control)
+  - [The atlas of bad acting](skills/higgsfield-acting/SKILL.md#the-atlas-of-bad-acting)
+  - [The performance scale](skills/higgsfield-acting/SKILL.md#the-performance-scale)
+  - [Pre-send checklist](skills/higgsfield-acting/SKILL.md#pre-send-checklist)
+- [Part IV — Worked example](skills/higgsfield-acting/SKILL.md#part-iv-worked-example)
+  - [Master profile](skills/higgsfield-acting/SKILL.md#master-profile)
+  - [Scene adaptation](skills/higgsfield-acting/SKILL.md#scene-adaptation-1)
+  - [Final axioms](skills/higgsfield-acting/SKILL.md#final-axioms)
+  - [Related Skills](skills/higgsfield-acting/SKILL.md#related-skills)
+
 ## skills/higgsfield-apps/SKILL.md
 
 - [Higgsfield Apps — One-Click Workflows](skills/higgsfield-apps/SKILL.md#higgsfield-apps-one-click-workflows)
@@ -747,6 +775,31 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [Multi-Language Prompt Workarounds](skills/higgsfield-seedance/SKILL.md#multi-language-prompt-workarounds)
     - [Chinese (as of 2026-05-17)](skills/higgsfield-seedance/SKILL.md#chinese-as-of-2026-05-17)
   - [Related Skills](skills/higgsfield-seedance/SKILL.md#related-skills)
+
+## skills/higgsfield-seedance-2-5/SKILL.md
+
+- [Higgsfield Seedance 2.5 Director](skills/higgsfield-seedance-2-5/SKILL.md#higgsfield-seedance-25-director)
+  - [QUICK FACTS](skills/higgsfield-seedance-2-5/SKILL.md#quick-facts)
+  - [Provenance](skills/higgsfield-seedance-2-5/SKILL.md#provenance)
+  - [The Mode Router](skills/higgsfield-seedance-2-5/SKILL.md#the-mode-router)
+  - [The Higgsfield Parameter Surface](skills/higgsfield-seedance-2-5/SKILL.md#the-higgsfield-parameter-surface)
+  - [The Core Prompt Formula](skills/higgsfield-seedance-2-5/SKILL.md#the-core-prompt-formula)
+  - [Reference Roles — Say What to Use *and* What Not to Use](skills/higgsfield-seedance-2-5/SKILL.md#reference-roles-say-what-to-use-and-what-not-to-use)
+    - [Material budget](skills/higgsfield-seedance-2-5/SKILL.md#material-budget)
+  - [Multi-Reference — the Five-Step Workflow](skills/higgsfield-seedance-2-5/SKILL.md#multi-reference-the-five-step-workflow)
+  - [Long Video — Stages and End States](skills/higgsfield-seedance-2-5/SKILL.md#long-video-stages-and-end-states)
+    - [Timestamps and pacing](skills/higgsfield-seedance-2-5/SKILL.md#timestamps-and-pacing)
+  - [Audio and Text — Bracket Syntax](skills/higgsfield-seedance-2-5/SKILL.md#audio-and-text-bracket-syntax)
+  - [First-Last Frame and Multi-Keyframe Control](skills/higgsfield-seedance-2-5/SKILL.md#first-last-frame-and-multi-keyframe-control)
+  - [Editing, Extension, and the Composite Modes](skills/higgsfield-seedance-2-5/SKILL.md#editing-extension-and-the-composite-modes)
+  - [Emotional Direction and Camera Terms](skills/higgsfield-seedance-2-5/SKILL.md#emotional-direction-and-camera-terms)
+  - [The Real-Person Character Formula](skills/higgsfield-seedance-2-5/SKILL.md#the-real-person-character-formula)
+  - [Choosing 2.0 vs 2.5](skills/higgsfield-seedance-2-5/SKILL.md#choosing-20-vs-25)
+    - [What carries over from 2.0 unchanged](skills/higgsfield-seedance-2-5/SKILL.md#what-carries-over-from-20-unchanged)
+  - [Hard Limits — Do Not Over-Promise These](skills/higgsfield-seedance-2-5/SKILL.md#hard-limits-do-not-over-promise-these)
+  - [Dreamina-Only — What Higgsfield Does Not Expose](skills/higgsfield-seedance-2-5/SKILL.md#dreamina-only-what-higgsfield-does-not-expose)
+  - [Pre-Submission Checklist](skills/higgsfield-seedance-2-5/SKILL.md#pre-submission-checklist)
+  - [Related Skills](skills/higgsfield-seedance-2-5/SKILL.md#related-skills)
 
 ## skills/higgsfield-seedance-vfx/SKILL.md
 

@@ -1,0 +1,92 @@
+{
+  "skill": "higgsfield-seedance-2-5",
+  "cases": [
+    {
+      "id": "s25-mode-routing-edit",
+      "description": "An 'change one thing in my existing video' request routes to video_edit, not regeneration",
+      "model": "seedance_2_5",
+      "request": "I have a 12s clip and the wall light on the right is the wrong colour. I don't want to regenerate it.",
+      "response": "Routing to higgsfield-seedance-2-5 (§ The Mode Router — video_edit).\n\n**Model**: Seedance 2.5\n**Mode**: video_edit  **Resolution**: 720p\n\nDuration and aspect ratio are not settable in this mode — both follow the source, and the render is billed by the source clip's 12 seconds.\n\n```\n[Edit Goal]\nEdit @Video 1. Across the whole clip, change the cool blue light on the right wall to warm orange light.\n\n[Source Video Role]\n@Video 1 is the sole editing master. It defines the character, room layout, actions, composition, camera movement, audio, and event order.\n\n[Edit Scope]\nChange only the light colour on the right wall and the area it illuminates. Allow skin tone to respond naturally to the environmental light.\n\n[Content to Preserve]\nKeep identity, clothing, expression, position, motion, room structure, camera movement, dialogue, and ambience from @Video 1.\n```",
+      "assertions": [
+        {"type": "enum_legal"},
+        {"type": "regex_present", "pattern": "^Routing to higgsfield-seedance-2-5"},
+        {"type": "regex_present", "pattern": "sole editing master"},
+        {"type": "regex_present", "pattern": "(?i)billed by the source"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "s25-extension-mode-declared",
+      "description": "A forward-extension answer declares extension_mode and aligns the boundary frame before new content",
+      "model": "seedance_2_5",
+      "request": "Extend my 8-second Seedance clip so the courier keeps walking.",
+      "response": "Routing to higgsfield-seedance-2-5 (§ Editing, Extension, and the Composite Modes).\n\n**Model**: Seedance 2.5\n**Mode**: video_extension  **Extension mode**: forward  **Duration**: 8s  **Resolution**: 720p\n\nAspect ratio follows the source clip and is not settable.\n\n```\n@Video 1 is the source video to extend forward.\n\nExtend @Video 1 forward. The first frame of the extended segment directly continues from the last frame of @Video 1. Maintain continuity in the courier's pose and orientation, the crate position, the loading-bay background, the camera position and composition, the overcast lighting, and the direction of travel.\n\nThen, the courier reaches the freight door, sets the crate down on the ramp, and pulls the handle with both hands.\n\nThroughout the extension, maintain continuity in the courier's identity and clothing, the crate, the bay layout, and the axis of action. Keep the courier as the same continuous instance throughout: do not duplicate or split.\n```\n\nBoundary frames connect naturally, not identically — review both sides of the seam plus the full extended segment.",
+      "assertions": [
+        {"type": "enum_legal"},
+        {"type": "regex_present", "pattern": "Extension mode\\*\\*: forward"},
+        {"type": "regex_present", "pattern": "directly continues from the last frame"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "s25-reference-roles-with-exclusions",
+      "description": "Multi-reference answer binds one subject per line and pairs every role with an exclusion",
+      "model": "seedance_2_5",
+      "request": "I have photos of two characters, a prop and a location, plus a motion clip. Build me a Seedance 2.5 prompt.",
+      "response": "Routing to higgsfield-seedance-2-5 (§ Multi-Reference — the Five-Step Workflow).\n\n**Model**: Seedance 2.5\n**Mode**: omni_reference  **Aspect ratio**: 16:9  **Duration**: 12s  **Resolution**: 720p\n\n```\n[Characters]\n<Florist> corresponds to @Image 1. Use only the appearance, hairstyle, and dark green apron.\n<Assistant> corresponds to @Image 2. Use only the appearance, hairstyle, and clothing.\nDo not interchange these characters' appearances, clothing, actions, positions, or dialogue.\n\n[Props]\n<Wrapped Bouquet> corresponds to @Image 3 and belongs only to <Florist>. Use only the structure, flower types, and ribbon colour.\n\n[Scenes]\n<Shop Workbench> references @Image 4. Use only the spatial layout, timber surfaces, and window light. Do not use the people in the image.\n\n[Motion and Audio]\n@Video 1 defines the pacing of trimming stems and tying a ribbon. Do not use the person's identity, clothing, or scene from the video.\n```\n\nOne line per subject — never \"@Images 1 through 4 define four characters\", which does not say which image is which.",
+      "assertions": [
+        {"type": "enum_legal"},
+        {"type": "regex_present", "pattern": "Do not use the people in the image"},
+        {"type": "regex_present", "pattern": "corresponds to @Image 1"},
+        {"type": "regex_absent", "pattern": "@Images 1 through 4 define four characters respectively"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "s25-routes-4k-back-to-2-0",
+      "description": "A 4K request is routed back to Seedance 2.0 instead of promising a resolution 2.5 does not have",
+      "model": "seedance_2_0",
+      "request": "Give me a Seedance 2.5 prompt at 4K.",
+      "response": "Routing to higgsfield-seedance-2-5 (§ Choosing 2.0 vs 2.5) → higgsfield-seedance.\n\nSeedance 2.5 caps at **720p** — there is no 1080p or 4K lane on it (specs/model-specs.yaml, snapshot 2026-08-07). A 4K deliverable is a **Seedance 2.0** job.\n\n**Model**: Seedance 2.0\n**Aspect ratio**: 16:9  **Duration**: 8s  **Resolution**: 4k  **Mode**: std\n\n4K requires `mode=std`; `fast` caps at 480p/720p. If you also need something 2.5-only — a clip over 15s, video editing, or forward/backward extension — structure it on 2.5 at 720p and finish the hero shots on 2.0.",
+      "assertions": [
+        {"type": "enum_legal"},
+        {"type": "regex_present", "pattern": "(?i)caps at \\*\\*720p\\*\\*"},
+        {"type": "regex_present", "pattern": "specs/model-specs\\.yaml"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "s25-staged-long-video",
+      "description": "A 25s request is staged with one primary change and an explicit end state per stage",
+      "model": "seedance_2_5",
+      "request": "25 seconds, a florist packing an order start to finish.",
+      "response": "Routing to higgsfield-seedance-2-5 (§ Long Video — Stages and End States).\n\n**Model**: Seedance 2.5\n**Mode**: t2v  **Aspect ratio**: 16:9  **Duration**: 25s  **Resolution**: 720p\n\n```\n[Generation Goal]\nGenerate an observational documentary clip. The central subject is the florist, and the primary event is packing one order from loose stems to a finished bouquet on the pickup shelf.\n\n[Stage 1]\nInitial state: the florist stands behind the workbench; loose stems, scissors, and wrapping paper lie on the tabletop.\nPrimary event: the florist arranges the stems and trims them to length.\nEnd state: the florist holds the bouquet in the left hand; the scissors are back on the right side of the workbench.\n\n[Stage 2]\nContinue from the previous stage: the same identity and clothing, and the florist still holds the bouquet.\nPrimary event: the assistant unfolds the wrapping paper; the florist places the bouquet inside and ties the ribbon.\nEnd state: the wrapped bouquet lies flat in the centre of the workbench, ribbon bow facing camera.\n\n[Stage 3]\nPrimary event: the assistant lifts the bouquet onto the pickup shelf.\nEnd state: the bouquet is centred on the pickup shelf; both stand behind the workbench looking at the finished order.\n\n[Maintain Consistency]\nKeep both identities, clothing, workbench orientation, scissors position, and bouquet ownership consistent.\n```\n\nStages, not timestamps: timestamps allocate a time budget and are not frame-accurate edit points.",
+      "assertions": [
+        {"type": "enum_legal"},
+        {"type": "regex_present", "pattern": "End state:"},
+        {"type": "regex_present", "pattern": "(?i)not frame-accurate edit points"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "trap-s25-extension-mode-missing",
+      "description": "STALE-SPEC TRAP — video_extension without extension_mode must be flagged",
+      "model": "seedance_2_5",
+      "request": "(trap) extension header with no direction declared",
+      "response": "**Model**: Seedance 2.5\n**Mode**: video_extension  **Duration**: 8s  **Resolution**: 720p\n\nThe courier keeps walking toward the freight door, same pace and screen direction, overcast light unchanged.",
+      "assertions": [
+        {"type": "enum_legal", "expect": "illegal"}
+      ]
+    },
+    {
+      "id": "trap-s25-1080p",
+      "description": "STALE-SPEC TRAP — 1080p on Seedance 2.5 must be flagged (2.0's lane, not 2.5's)",
+      "model": "seedance_2_5",
+      "request": "(trap) header promising a resolution 2.5 does not expose",
+      "response": "**Model**: Seedance 2.5\n**Mode**: t2v  **Aspect ratio**: 16:9  **Duration**: 10s  **Resolution**: 1080p\n\nA kettle reaches boil on a gas stove, steam pulsing against morning window light. Static close-up.",
+      "assertions": [
+        {"type": "enum_legal", "expect": "illegal"}
+      ]
+    }
+  ]
+}
