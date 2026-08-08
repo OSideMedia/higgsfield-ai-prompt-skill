@@ -23,6 +23,7 @@ The rest of this skill library answers *"how do I prompt this?"* This skill answ
 - The strongest anti-slop tool is the **Forbidden List** in the Style Sheet — naming what the world is NOT is often more useful than the palette [→](#step-5-style-sheet-visual-dna-forbidden-list)
 - Specificity beats adjectives: if *any* character could say it, it's a stereotype; keep asking **"why?"** until the answer surprises you [→](#anti-generic-drills)
 - Fillable worksheets live in `../../templates/character-design/` — hand them to the user or fill them together [→](#templates)
+- Construction laws for the sheet as an artifact: **plain grey background** · creature sheets get **two close-ups (mouth open + closed)** · the **face-lock crop** · a **size-ref frame** for scale between two subjects [FIELD] [→](#sheet-construction-laws)
 - Once the character **looks** right, don't jump to scenes — run a **screen test**: casting read → role options → playable lines → voice triggers → one audition prompt [EMPIRICAL] [→](#screen-test-audition)
 - This skill produces inputs; it does **not** generate. Hand the locked Visual DNA + character sheet to `higgsfield-prompt` [→](#step-6-hand-off-to-generation)
 
@@ -136,6 +137,46 @@ This skill produces inputs; it does not generate. When the bible is locked, rout
 - **The model** → `model-guide.md` / `image-models.md`. For a character who recurs across many shots, train a **Soul ID / Soul Cast** identity (`higgsfield-soul`) rather than re-rolling one-offs; for a single hero image that won't reappear, a one-off generation is fine.
 - **Multi-shot sequences** → `higgsfield-cinema` (Cinema Studio) for shot-by-shot continuity; the Story Spine beats become the shot list.
 - **Generic prompts get generic characters.** A thin prompt ("a young man's portrait, cyberpunk") cannot recover what the sheet would have supplied — the locked sheet is the difference between a function and a person on screen.
+
+---
+
+## Sheet Construction Laws
+
+`[FIELD — AI-vs-VFX, 2026-08-08]` The sections above decide **what** is on the sheet. These
+are the construction laws for the sheet as an *artifact* — the flaws they prevent are the
+ones you otherwise pay for in every downstream generation that references it.
+
+**Plain grey background, always.** Not a set, not an environment, not a gradient. A sheet
+built on a busy background makes the downstream model decide which pixels are the character
+and which are the world, and that decision costs re-rolls. Grey is the credit-saver.
+
+**Creature and non-human sheets carry two head close-ups: mouth open and mouth closed.**
+A creature detailed enough to be interesting is detailed enough to glitch between
+expressions — a jaw that reshapes the skull when it opens. Two close-ups at the same angle,
+one closed and one in a full roar, pin both extremes. The canonical layout is three panels:
+full body, head closed, head open.
+
+**The face-lock crop.** A three-panel human sheet gives the model three faces to average —
+front full-body, back full-body, close-up — and at full-body scale the face is only a few
+dozen pixels, so averaging drags identity toward generic. **Crop the heads out of the
+full-body panels.** The full-body frames keep doing their real job (build, silhouette,
+wardrobe); the close-up becomes the single source of truth for the face.
+
+**Scale between two subjects needs its own asset.** Relative size is the first thing to
+drift and the last thing words can fix — "tiny compared to the enormous creature" returns a
+different size every generation, and worst on wides. Build a **size-ref frame**: merge the
+two character sheets plus a frame whose scale was right into one image showing them
+together, write the proportion in human-height comparisons ("wingspan as wide as twenty
+humans lying head to toe"), save it as its own named asset, and attach it to every shot
+containing both. Add the asymmetry lock — *if scale is uncertain, render the smaller
+subject smaller, never larger* — because an undersized subject reads as distance while an
+oversized one reads as fake.
+
+**Fix a flawed sheet; don't rebuild it.** A warped logo or a colour cast on an otherwise
+good sheet is a one-line edit on the model that holds inputs best (Nano Banana 2), not a
+re-prompt: `change the logo to the one in image two`. Re-prompting re-rolls everything that
+was already right. Model routing per asset class: `../../image-models.md` § Routing by
+Asset Class.
 
 ---
 

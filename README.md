@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.25.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.26.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--08--07-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
@@ -23,6 +23,7 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 - **Seedance 2.0 prompting best practices** — Intent over Precision, Genre Router, I2V Gate, Anti-Slop, Physics Language, SCELA audio, Reference-Based / Continuation / Expand Shot / Edit Shot / Transformation prompt modes, Continuation Prompt Formula, the Iteration Rule
 - **Seedance 2.5 omni-reference director** — the four generation modes (`t2v` / `omni_reference` / `video_edit` / `video_extension`), explicit `@Image` / `@Video` / `@Audio` reference roles with exclusions, the five-step multi-reference workflow, 30-second staging with end states, timestamp pacing, bracket syntax for music / SFX / dialogue / subtitles, in-prompt first-last-frame and multi-keyframe control, storyboard grids, coarse-vs-fine blockout rendering, one-click video, seamless transitions, and a 2.0-vs-2.5 routing table
 - **Hell Grind feature-film pipeline** — Higgsfield's open-sourced 95-minute-feature system: headless character sheets, mask-composited point edits, location sheets with anchors and one light logic, the per-scene GEO SPATIAL LAYOUT block, the position-fixing first second, dialogue construction, the ban dictionary, the 10–15 iteration rule, and the crowd / giant / threshold solutions
+- **AI-VFX pipeline** — the production layer under Seedance 2.5, from Higgsfield's AI-vs-VFX challenge build: model routing per asset class (faces / creatures / clothing / locations), the plain-grey sheet law, two-close-up creature sheets, the face-lock crop, the size-ref frame for scale between two subjects, location batching selected on light, the `omni_reference` video-to-video lane (source ≥4s, duration = source) with its performance-inheritance clause, the four-batch stop rule and the i2v fallback with a deliberate empty-frame stitch point, and a slop catalog of the tells that give a shot away
 - **Acting director** — performance as behavior under pressure: objective / obstacle / tactics / beats / subtext, listening markers, body + status + proxemics, mandatory eye life, the 150–220-word acting master profile and its per-scene rewrite, the locked voice prompt, a 15-symptom atlas of bad acting, and a 0–5 performance scale
 - **GPT Image 2.0 prompt director** — three-format taxonomy (structured JSON for UI mockups / infographics / reference sheets, dense cinematic prose for single-subject scenes, auto-derive meta-prompt for theme-only concepts) plus reference-sheet and static-ad-recreation workflow satellites
 - **Higgsfield Canvas** — node-based / infinite-board workspace guidance: chaining prompts → images → videos, named canvas patterns, Shared Canvas live collaboration, build-free / generate-paid cost model
@@ -255,7 +256,8 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
     │   └── FAILURE-MODES.md              ← 8 named Seedance render failures (symptom · mechanism · counter)
     ├── higgsfield-seedance-2-5/
     │   ├── SKILL.md                      ← Seedance 2.5 omni-reference dialect + 4-mode router
-    │   └── MODE-PLAYBOOKS.md             ← Edit / extend / storyboard / blockout / one-click / transitions
+    │   ├── MODE-PLAYBOOKS.md             ← Edit / extend / storyboard / blockout / one-click / transitions
+    │   └── VFX-PIPELINE.md               ← AI-VFX pipeline: asset routing, size-ref frame, omni_reference v2v, slop catalog
     ├── higgsfield-acting/SKILL.md        ← Performance craft: objective, beats, eye life, master profile
     ├── higgsfield-vibe-motion/SKILL.md   ← Vibe-based motion direction
     └── higgsfield-workspaces/SKILL.md    ← Workspace-first decision layer (Cinema Studio / Lipsync / Draw-to-Video / Sora 2 Trends / Click to Ad / Higgsfield Audio)
@@ -345,4 +347,4 @@ acting on the tail. A small sample is not evidence a skill is dead.
 
 ---
 
-Built February 2026 · v3.25.0 (updated 2026-08-07) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.26.0 (updated 2026-08-08) · Platform: [higgsfield.ai](https://higgsfield.ai)

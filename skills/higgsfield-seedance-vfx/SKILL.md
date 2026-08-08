@@ -18,6 +18,13 @@ grammar verbatim** — the six-slot formula, the Prompt-Craft Laws, the prefligh
 and adds the transformation layer below. Do not contradict the parent skill; when a shot
 needs filter-safety, mode selection, or engine rules, defer to it.
 
+> **This file is the Seedance 2.0 v2v lane.** It stays the right choice when the job needs
+> **4K**, `mode=std`, a platform start/end frame, or a `genre` hint. If the plate job is
+> running on **Seedance 2.5** — 720p ceiling, up to 30 s, many references — the lane is
+> `omni_reference` with the clip attached as a video reference, and its production doctrine
+> (source ≥ 4 s, duration = source, the four-batch rule, the performance-inheritance clause)
+> lives in `../higgsfield-seedance-2-5/VFX-PIPELINE.md`.
+
 > **This skill is a video-to-video layer on top of `../higgsfield-seedance/SKILL.md`.**
 > Every VFX transform is still a Seedance prompt. This skill only changes the *starting
 > point*: a real source clip whose subject, performance, and camera move must survive the
