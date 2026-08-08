@@ -195,6 +195,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [Step 4 — Story Spine](skills/higgsfield-character-design/SKILL.md#step-4-story-spine)
   - [Step 5 — Style Sheet (Visual DNA + Forbidden List)](skills/higgsfield-character-design/SKILL.md#step-5-style-sheet-visual-dna-forbidden-list)
   - [Step 6 — Hand off to generation](skills/higgsfield-character-design/SKILL.md#step-6-hand-off-to-generation)
+  - [Sheet Construction Laws](skills/higgsfield-character-design/SKILL.md#sheet-construction-laws)
   - [Screen Test / Audition](skills/higgsfield-character-design/SKILL.md#screen-test-audition)
     - [Worked mini-example (the tide-city fixer from Step 3)](skills/higgsfield-character-design/SKILL.md#worked-mini-example-the-tide-city-fixer-from-step-3)
     - [Direct the takes, then lock the winner](skills/higgsfield-character-design/SKILL.md#direct-the-takes-then-lock-the-winner)

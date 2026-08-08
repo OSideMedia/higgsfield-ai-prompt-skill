@@ -14,6 +14,36 @@ G = Google-powered model
 
 ---
 
+## Routing by Asset Class
+
+`[FIELD — AI-vs-VFX, 2026-08-08]` There is no single best image model for a project —
+there is a best model **per asset class**, and switching between them mid-project is the
+normal case. This table is the routing; the per-model sections below are the reference.
+
+| Asset class | Model | Why |
+|---|---|---|
+| Human character sheet, face matching | **Nano Banana 2** | Strongest face match on the platform |
+| Small corrective edits to an existing asset | **Nano Banana 2** | Holds its input images best — switch *to* it for a one-line fix instead of re-prompting the whole sheet |
+| Fantasy creature / non-human character sheet | **Seedream 5.0** | Best at fantasy creatures |
+| Clothing, wardrobe changes, branded garments | **GPT Image 2** | Handles clothing best |
+| Locations and environment stills | **Soul Cinema** | Most cinematic frames; GPT skews yellow, Nano Banana makes locations too clean and too symmetrical |
+
+Two economics notes that follow from it:
+
+- **Location work batches.** Seven credits buys one GPT Image 2 generation or ~56 Soul
+  Cinema variations — so on locations, batch wide and select rather than prompt-tuning.
+  Select on **light**: bad light in the still is the most common cause of a slop video.
+- **Fix, don't rebuild.** A warped logo or a colour cast on an otherwise-good sheet is a
+  Nano Banana 2 one-liner (`change the logo to the one in image two`). Re-prompting the
+  sheet re-rolls everything that was already right.
+
+Sheet-construction laws (grey background, the two-close-up creature sheet, the face-lock
+crop, the size-ref frame) live in `skills/higgsfield-character-design/SKILL.md`
+§ Sheet Construction Laws; the full production pipeline is
+`skills/higgsfield-seedance-2-5/VFX-PIPELINE.md`.
+
+---
+
 ## Higgsfield Native Models
 
 ### Soul 2.0

@@ -38,6 +38,14 @@ duration** and ignores the `duration` and `aspect_ratio` parameters entirely
 
 ## Video editing
 
+> **Check the lane before writing an edit order.** `video_edit` is for a **scoped change
+> inside a master whose timeline must survive untouched** — a wall's light colour from
+> 4–7 s, one prop swapped, the music removed. It ignores `duration`, ignores
+> `aspect_ratio`, and bills by the master's full length. A *footage-transformation* job —
+> replace the subject, inherit the plate's performance frame for frame, keep every other
+> pixel — is the **`omni_reference` v2v lane** instead, where duration is settable and must
+> equal the source (which is why the source has to be ≥ 4 s): `VFX-PIPELINE.md` § Stage 4.
+
 Define the source as the **sole editing master**, then state the edit target, the scope, the
 target material, and what must not change.
 

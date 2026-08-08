@@ -40,6 +40,7 @@ a mode.
 - First/last frames and multi-keyframes are declared **in the prompt** (`@Image 1 is the first frame`) — aspect ratio locks to the first image; never merge the two anchors into one sentence [→](#first-last-frame-and-multi-keyframe-control)
 - Editing needs a **sole editing master** + edit scope + Timeline Inheritance; extension needs the **boundary frame aligned before** any new content: `MODE-PLAYBOOKS.md`
 - Storyboard grids, coarse-vs-fine blockouts, one-click video, seamless transitions: `MODE-PLAYBOOKS.md`
+- **AI-VFX production pipeline** — model-per-asset-class routing, the size-ref frame, location batching, the `omni_reference` v2v lane (source ≥4s, duration = source), the four-batch rule, the slop catalog: `VFX-PIPELINE.md`
 - Emotion needs 2–4 **observable** cues, not adjectives; niche camera terms get translated into a visible result [→](#emotional-direction-and-camera-terms)
 - The real-person formula is 7 slots — and slot 1 is **role, never age**: the age-blind engine rule outranks the source guide's `[Age/Race]` label [→](#the-real-person-character-formula)
 - Hard limits that must not be over-promised (frame accuracy, locked parameters, pixel-identical transitions) [→](#hard-limits-do-not-over-promise-these)
@@ -83,6 +84,14 @@ Two rules that fall out of this:
 2. **Editing is not regeneration.** If the user wants the shot rebuilt, that is
    `omni_reference` with the old clip as a motion reference — not `video_edit`. `video_edit`
    preserves the master's timeline and changes one scoped thing inside it.
+
+> **Video-to-video is not automatically `video_edit`.** The field VFX workflow — swap the
+> person in this plate, keep every other pixel — runs in **`omni_reference` with the source
+> attached as a video reference**, because that is the lane where `duration` is settable and
+> must be **matched to the source** (and where the source therefore has to be **≥ 4 s**, the
+> `duration` floor). `video_edit` is the lane for a scoped change inside a master whose
+> timeline must survive untouched. Full routing table + the performance-inheritance clause:
+> `VFX-PIPELINE.md` § Stage 4. `[FIELD — AI-vs-VFX, 2026-08-08]`
 
 ---
 
@@ -609,3 +618,5 @@ rather than extending an extension — the same degradation curve as 2.0's chain
 - `../higgsfield-models/SKILL.md` — model choice against the specs layer
 - `../higgsfield-pipeline/SKILL.md` — assembling 30-second pieces into a longer deliverable
 - `MODE-PLAYBOOKS.md` — the editing / extension / one-click / transition / blockout templates
+- `VFX-PIPELINE.md` — the AI-VFX production pipeline: asset-class model routing, the size-ref
+  frame, location batching, the `omni_reference` v2v lane, the four-batch rule, the slop catalog

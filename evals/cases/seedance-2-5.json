@@ -8,11 +8,24 @@
       "request": "I have a 12s clip and the wall light on the right is the wrong colour. I don't want to regenerate it.",
       "response": "Routing to higgsfield-seedance-2-5 (§ The Mode Router — video_edit).\n\n**Model**: Seedance 2.5\n**Mode**: video_edit  **Resolution**: 720p\n\nDuration and aspect ratio are not settable in this mode — both follow the source, and the render is billed by the source clip's 12 seconds.\n\n```\n[Edit Goal]\nEdit @Video 1. Across the whole clip, change the cool blue light on the right wall to warm orange light.\n\n[Source Video Role]\n@Video 1 is the sole editing master. It defines the character, room layout, actions, composition, camera movement, audio, and event order.\n\n[Edit Scope]\nChange only the light colour on the right wall and the area it illuminates. Allow skin tone to respond naturally to the environmental light.\n\n[Content to Preserve]\nKeep identity, clothing, expression, position, motion, room structure, camera movement, dialogue, and ambience from @Video 1.\n```",
       "assertions": [
-        {"type": "enum_legal"},
-        {"type": "regex_present", "pattern": "^Routing to higgsfield-seedance-2-5"},
-        {"type": "regex_present", "pattern": "sole editing master"},
-        {"type": "regex_present", "pattern": "(?i)billed by the source"},
-        {"type": "antislop_absent"}
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "^Routing to higgsfield-seedance-2-5"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "sole editing master"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)billed by the source"
+        },
+        {
+          "type": "antislop_absent"
+        }
       ]
     },
     {
@@ -22,10 +35,20 @@
       "request": "Extend my 8-second Seedance clip so the courier keeps walking.",
       "response": "Routing to higgsfield-seedance-2-5 (§ Editing, Extension, and the Composite Modes).\n\n**Model**: Seedance 2.5\n**Mode**: video_extension  **Extension mode**: forward  **Duration**: 8s  **Resolution**: 720p\n\nAspect ratio follows the source clip and is not settable.\n\n```\n@Video 1 is the source video to extend forward.\n\nExtend @Video 1 forward. The first frame of the extended segment directly continues from the last frame of @Video 1. Maintain continuity in the courier's pose and orientation, the crate position, the loading-bay background, the camera position and composition, the overcast lighting, and the direction of travel.\n\nThen, the courier reaches the freight door, sets the crate down on the ramp, and pulls the handle with both hands.\n\nThroughout the extension, maintain continuity in the courier's identity and clothing, the crate, the bay layout, and the axis of action. Keep the courier as the same continuous instance throughout: do not duplicate or split.\n```\n\nBoundary frames connect naturally, not identically — review both sides of the seam plus the full extended segment.",
       "assertions": [
-        {"type": "enum_legal"},
-        {"type": "regex_present", "pattern": "Extension mode\\*\\*: forward"},
-        {"type": "regex_present", "pattern": "directly continues from the last frame"},
-        {"type": "antislop_absent"}
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "Extension mode\\*\\*: forward"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "directly continues from the last frame"
+        },
+        {
+          "type": "antislop_absent"
+        }
       ]
     },
     {
@@ -35,11 +58,24 @@
       "request": "I have photos of two characters, a prop and a location, plus a motion clip. Build me a Seedance 2.5 prompt.",
       "response": "Routing to higgsfield-seedance-2-5 (§ Multi-Reference — the Five-Step Workflow).\n\n**Model**: Seedance 2.5\n**Mode**: omni_reference  **Aspect ratio**: 16:9  **Duration**: 12s  **Resolution**: 720p\n\n```\n[Characters]\n<Florist> corresponds to @Image 1. Use only the appearance, hairstyle, and dark green apron.\n<Assistant> corresponds to @Image 2. Use only the appearance, hairstyle, and clothing.\nDo not interchange these characters' appearances, clothing, actions, positions, or dialogue.\n\n[Props]\n<Wrapped Bouquet> corresponds to @Image 3 and belongs only to <Florist>. Use only the structure, flower types, and ribbon colour.\n\n[Scenes]\n<Shop Workbench> references @Image 4. Use only the spatial layout, timber surfaces, and window light. Do not use the people in the image.\n\n[Motion and Audio]\n@Video 1 defines the pacing of trimming stems and tying a ribbon. Do not use the person's identity, clothing, or scene from the video.\n```\n\nOne line per subject — never \"@Images 1 through 4 define four characters\", which does not say which image is which.",
       "assertions": [
-        {"type": "enum_legal"},
-        {"type": "regex_present", "pattern": "Do not use the people in the image"},
-        {"type": "regex_present", "pattern": "corresponds to @Image 1"},
-        {"type": "regex_absent", "pattern": "@Images 1 through 4 define four characters respectively"},
-        {"type": "antislop_absent"}
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "Do not use the people in the image"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "corresponds to @Image 1"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "@Images 1 through 4 define four characters respectively"
+        },
+        {
+          "type": "antislop_absent"
+        }
       ]
     },
     {
@@ -49,10 +85,20 @@
       "request": "Give me a Seedance 2.5 prompt at 4K.",
       "response": "Routing to higgsfield-seedance-2-5 (§ Choosing 2.0 vs 2.5) → higgsfield-seedance.\n\nSeedance 2.5 caps at **720p** — there is no 1080p or 4K lane on it (specs/model-specs.yaml, snapshot 2026-08-07). A 4K deliverable is a **Seedance 2.0** job.\n\n**Model**: Seedance 2.0\n**Aspect ratio**: 16:9  **Duration**: 8s  **Resolution**: 4k  **Mode**: std\n\n4K requires `mode=std`; `fast` caps at 480p/720p. If you also need something 2.5-only — a clip over 15s, video editing, or forward/backward extension — structure it on 2.5 at 720p and finish the hero shots on 2.0.",
       "assertions": [
-        {"type": "enum_legal"},
-        {"type": "regex_present", "pattern": "(?i)caps at \\*\\*720p\\*\\*"},
-        {"type": "regex_present", "pattern": "specs/model-specs\\.yaml"},
-        {"type": "antislop_absent"}
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)caps at \\*\\*720p\\*\\*"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "specs/model-specs\\.yaml"
+        },
+        {
+          "type": "antislop_absent"
+        }
       ]
     },
     {
@@ -62,10 +108,20 @@
       "request": "25 seconds, a florist packing an order start to finish.",
       "response": "Routing to higgsfield-seedance-2-5 (§ Long Video — Stages and End States).\n\n**Model**: Seedance 2.5\n**Mode**: t2v  **Aspect ratio**: 16:9  **Duration**: 25s  **Resolution**: 720p\n\n```\n[Generation Goal]\nGenerate an observational documentary clip. The central subject is the florist, and the primary event is packing one order from loose stems to a finished bouquet on the pickup shelf.\n\n[Stage 1]\nInitial state: the florist stands behind the workbench; loose stems, scissors, and wrapping paper lie on the tabletop.\nPrimary event: the florist arranges the stems and trims them to length.\nEnd state: the florist holds the bouquet in the left hand; the scissors are back on the right side of the workbench.\n\n[Stage 2]\nContinue from the previous stage: the same identity and clothing, and the florist still holds the bouquet.\nPrimary event: the assistant unfolds the wrapping paper; the florist places the bouquet inside and ties the ribbon.\nEnd state: the wrapped bouquet lies flat in the centre of the workbench, ribbon bow facing camera.\n\n[Stage 3]\nPrimary event: the assistant lifts the bouquet onto the pickup shelf.\nEnd state: the bouquet is centred on the pickup shelf; both stand behind the workbench looking at the finished order.\n\n[Maintain Consistency]\nKeep both identities, clothing, workbench orientation, scissors position, and bouquet ownership consistent.\n```\n\nStages, not timestamps: timestamps allocate a time budget and are not frame-accurate edit points.",
       "assertions": [
-        {"type": "enum_legal"},
-        {"type": "regex_present", "pattern": "End state:"},
-        {"type": "regex_present", "pattern": "(?i)not frame-accurate edit points"},
-        {"type": "antislop_absent"}
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "End state:"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)not frame-accurate edit points"
+        },
+        {
+          "type": "antislop_absent"
+        }
       ]
     },
     {
@@ -75,7 +131,10 @@
       "request": "(trap) extension header with no direction declared",
       "response": "**Model**: Seedance 2.5\n**Mode**: video_extension  **Duration**: 8s  **Resolution**: 720p\n\nThe courier keeps walking toward the freight door, same pace and screen direction, overcast light unchanged.",
       "assertions": [
-        {"type": "enum_legal", "expect": "illegal"}
+        {
+          "type": "enum_legal",
+          "expect": "illegal"
+        }
       ]
     },
     {
@@ -85,7 +144,69 @@
       "request": "(trap) header promising a resolution 2.5 does not expose",
       "response": "**Model**: Seedance 2.5\n**Mode**: t2v  **Aspect ratio**: 16:9  **Duration**: 10s  **Resolution**: 1080p\n\nA kettle reaches boil on a gas stove, steam pulsing against morning window light. Static close-up.",
       "assertions": [
-        {"type": "enum_legal", "expect": "illegal"}
+        {
+          "type": "enum_legal",
+          "expect": "illegal"
+        }
+      ]
+    },
+    {
+      "id": "s25-v2v-routes-to-omni-reference",
+      "description": "A footage-transformation request (swap the subject, keep every other pixel) routes to omni_reference with the plate as a video reference — NOT video_edit — and duration is matched to the source",
+      "model": "seedance_2_5",
+      "request": "I have a 4-second clip of a guy against a rock wall. Swap him for my character sheet and keep everything else identical.",
+      "response": "Routing to higgsfield-seedance-2-5 (§ The Mode Router + VFX-PIPELINE.md § Stage 4).\n\n**Model**: Seedance 2.5\n**Mode**: omni_reference  **Duration**: 4s  **Resolution**: 720p\n\nThis is a footage transformation, not a scoped edit, so it runs in omni_reference with the plate attached as a video reference — that is the lane where duration is settable, and it must be matched to the source. video_edit would ignore duration and bill by the master's full length. Your plate is already at the 4s floor; a shorter clip would need its last frame freeze-framed out to 4s first.\n\n```\nSCENE CONTEXT\nVideo-to-video character replacement. Replace the man in @video1 with the man from @sheet. Everything else stays exactly as in @video1.\n\nACTIVE REFERENCES\n@video1 — source footage: master for camera, framing, focus, motion, expression timing, background, lighting, grain and duration.\n@sheet — replacement character: young man, curly black hair, mustache, charcoal-gray softshell jacket. 100% matches the reference.\n\nEDIT INSTRUCTION\nThe man from @sheet takes the original man's place and inherits his exact performance frame by frame: same body position and posture, same head angle, same expression with identical blink timing, same motion at the exact same frames with matching motion blur. Silhouette scale and screen position match the original at every frame.\n\nSTYLE\nPhotoreal, seamless integration into the source plate: grain, motion blur, focus falloff, compression character and color match @video1 so the replaced man is indistinguishable from originally shot footage.\n\nPOSITIVE LOCKS\nCamera behavior, framing and focus identical to @video1 for the full duration, one continuous shot. Every pixel outside the replaced man remains exactly as in @video1. Duration and all action timing unchanged.\n```",
+      "assertions": [
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "^Routing to higgsfield-seedance-2-5"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)mode\\*?\\*?:\\s*omni_reference"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)inherits his exact performance frame by frame"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)matched to the source"
+        },
+        {
+          "type": "antislop_absent"
+        }
+      ]
+    },
+    {
+      "id": "trap-s25-four-batch-rule",
+      "description": "Repeated identical failures across batches must stop the batching and diagnose prompt/source, not recommend more re-rolls",
+      "model": "seedance_2_5",
+      "request": "My v2v shot of me jumping onto a dragon has failed the same way in all four batches. Should I run more batches?",
+      "response": "Routing to higgsfield-seedance-2-5 (VFX-PIPELINE.md § Stage 5).\n\nNo — stop batching. The same defect across all four batches is a prompt or source fault, and further batching only burns credits.\n\nThe likely cause is an anchor problem: video-to-video inherits motion from the plate, so it can only render an action the plate has an anchor for. If there is no actual jump moment in your source footage, no re-roll will produce one.\n\nThe fallback is image-to-video:\n\n1. Screenshot a frame of the location out of the plate.\n2. Declare it as the starting frame in the prompt (2.5 has no start_image role — the anchor is a reference whose role sentence says it is the first frame).\n3. Write the action from scratch, since nothing is being inherited any more.\n4. Write a deliberate empty-frame pause of about 1.5 seconds where you intend to cut — an empty frame is a clean stitch point, and it doubles as a tension beat.",
+      "assertions": [
+        {
+          "type": "regex_present",
+          "pattern": "^Routing to higgsfield-seedance-2-5"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)stop batching"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)empty[- ]frame pause"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)(run|try) (a few |some )?more batches"
+        },
+        {
+          "type": "antislop_absent"
+        }
       ]
     }
   ]
