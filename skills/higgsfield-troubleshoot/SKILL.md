@@ -6,8 +6,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
-  version: 3.0.1
-  updated: 2026-07-26
+  version: 3.1.0
+  updated: 2026-08-09
   parent: higgsfield
 ---
 
@@ -209,6 +209,29 @@ Output bad?
 ### Success Rate Note
 
 Cinema Studio 3.0's generation engine produces ~90% usable output. If outputs are **consistently** bad across multiple attempts, the prompt is almost certainly the problem — not the model. Apply the diagnostic tree systematically before regenerating.
+
+---
+
+## Retry Ladder — a failed take edits the plan, not just the dice
+
+`[EMPIRICAL — MiniMax H3 skill corpus, re-derived]` When a take fails or drifts and the
+diagnostic tree confirms the references and mappings were right, escalate in this order.
+Each rung terminates — never loop on one rung:
+
+1. **Re-run once, quoting the reference map verbatim.** The original role + exclusion
+   lines, unedited. If the mapping was right, one clean re-roll is legitimate variance.
+2. **Treat the second failure as evidence the shot is over-packed.** Shorten the
+   envelope and/or split the surplus beats into a new adjacent prompt (the shotlist
+   density split triggers apply), then re-run the preflight linter on **both** halves
+   before firing either. A second identical re-roll pays twice for the same overload.
+3. **Switch models for that one shot.** One shot on a different engine beats bending
+   the whole piece around a shot the current engine won't hold.
+4. **Stop after three paid attempts and present named options** — accept the best
+   take, re-scope the shot, defer it, or ship with an explicit `placeholder: missing
+   clip` note in the deliverable. Silent omission is never one of the options.
+
+Log the rung that resolved it (§ Log the Outcome) — rung-2 resolutions are shotlist
+authoring lessons, not generation luck.
 
 ---
 

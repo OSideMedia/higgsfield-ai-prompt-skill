@@ -4,8 +4,8 @@ description: "Turns a brief, script, scene breakdown, treatment, or story idea i
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, shotlist, director, style-prefix, ad, commercial, artifact, html]
-  version: 1.1.1
-  updated: 2026-07-26
+  version: 1.2.0
+  updated: 2026-08-09
   parent: higgsfield
 ---
 
@@ -30,6 +30,8 @@ prompts that all inherit both.
 - Three structural layers, top to bottom: **Global Style Prefix → `@`-asset glossary → named per-scene prompts** [→](#the-three-layers)
 - Per-scene prompt law: `Style → Characters → Scene → CUT 1..N`; each prompt targets **15s**; split long scenes as `3a/3b/3c` [→](#per-scene-prompt-law)
 - [OFFICIAL] Density heuristic: group rows when ALL of {same cast, same location, one emotional unit, ≤15s, inside length limits}; split on ANY of {location cut, cast change, setup change, performance arc, insert} — **don't fragment grief**; complexity budget + auto-enrichment defaults for thin briefs [→](#prompt-density-grouping-shot-rows-into-15s-envelopes)
+- Whole-sequence checks before delivery: **tempo budget** (cut durations sum exactly to runtime; one 6–8s hero hold) + **monotony audit** (no 3 consecutive cuts sharing shot size AND camera move) [→](#sequence-tempo-and-variety)
+- Continuity carries exits too: an **Off-screen line** (exit side + last state) per just-departed character keeps re-entry direction legal [→](#per-scene-prompt-law)
 - **Edit-once-propagates**: change the prefix once → it changes in every prompt; per-scene **override** lets one scene break the global look [→](#edit-once-and-per-scene-override)
 - Differentiators over a bare shotlist generator: **preflight linter**, **reference-role lanes**, **Elements `@`-auto-attach**, **failure-mode awareness**, **acceptance-rate logging** [→](#what-makes-this-outclass-a-bare-generator)
 - English prompt text only (Seedance expects English), even if the user writes in another language [→](#workflow)
@@ -91,6 +93,15 @@ Per-Image Role Convention. **Multi-state variants get their own locked entry**
 (`@s_hero_wet`), built on purpose up front — asking the model to "sweat him up"
 later makes it improvise and the face drifts.
 
+**Each glossary entry also carries a fidelity grade** — a role says what job the
+asset does, the grade says how much of it must survive into the pixels:
+*full-preserve* / *partial-preserve (name the parts)* / *attribute-transfer (name
+the target it lifts onto)* / *loose-guide*. One word per line is enough
+(`@headphones — product, full-preserve`); the grades and their prompt phrasing
+live in `../higgsfield-seedance-2-5/SKILL.md` § Reference Roles → Fidelity.
+Without a grade, "use @image4 for the coat" silently means whatever the model
+felt like keeping that day.
+
 ### 3. Named per-scene prompts
 
 Every scene is numbered (`1`, `2`, `3`…) and split into named 15-second prompts
@@ -114,6 +125,11 @@ Characters:
 [Only the characters in this prompt. @names + locked physical descriptors +
 carried state — wet hair from the prior scene, strap on one shoulder, same
 wardrobe unless it changed on screen.]
+
+Off-screen (only when someone just left):
+[Anyone in the PREVIOUS prompt but absent here: exit side + last visible state —
+"Bo — exited frame-left, still carrying the crate." Carry for one prompt, drop
+after two consecutive absent prompts.]
 
 Scene:
 [1–2 sentences. Where, when, and the geo-spatial blocking — where each character
@@ -142,9 +158,17 @@ to Seedance — spell the move out: *"two crisp head nods on the beat, shoulders
 rolling back one at a time, a soft knee-dip, a loose finger-snap, finishing on a
 quarter-spin."* (Full pattern: `../../templates/10-dance-music-performance.md`.)
 
+**The Off-screen line is what keeps re-entries legal.** Carried state covers who
+is in frame; it says nothing about who just left, and re-entry from the wrong
+side is a classic continuity break the viewer feels before they can name it.
+One line per departed character buys the next prompt the correct entering side
+and hand-state for free. `[EMPIRICAL — MiniMax H3 skill corpus; re-derived]`
+
 **Match-cut via a repeated anchor action.** When independently-generated scenes
 must cut together, end and begin neighboring scenes on the **same gesture** (the
 ear-cup tap) — the reused motion lets them "cut on action" most of the time.
+When those clips then sit on one timeline, plan the unifying finish pass and cut
+placement per `../higgsfield-audio/SKILL.md` § Cutting to music.
 
 ---
 
@@ -208,6 +232,30 @@ user for runtime, never default" stands.
 
 ---
 
+## Sequence tempo and variety
+
+`[EMPIRICAL — third-party director-skill evaluations 2026-08-09; re-derived
+heuristics, unmeasured here]` — two whole-sequence checks that no per-prompt
+rule can catch, run once before delivery:
+
+**Tempo budget — the arithmetic gate.** Budget the piece before writing it:
+total runtime at ~4–6s average per cut gives the cut count the piece can carry,
+with **one deliberately longer hero hold (6–8s)** reserved for the money moment.
+Rough bands: ≤15s → ~3 cuts · ~20s → 4–5 · ~30s → ~6 · ~45s → 7–8 · ~60s →
+9–11. Then check the sum: stated cut durations must **add up to the requested
+runtime exactly**. A budget that doesn't add up ships dead air or an impossible
+cut, and the error is invisible until the timeline.
+
+**Monotony audit — read the column, not the prompt.** After drafting, read only
+the framing + camera-move line of every cut, top to bottom, as one column. No
+run of **three consecutive cuts** may share the same shot size *and* the same
+camera move; when every cut reads "medium, slow push-in", vary the shot's
+*function and scale* — not just its duration. Per-prompt review can't see this
+failure at all; it only shows when the column is read as a sequence, and it is
+the single most common tell of a generated shotlist.
+
+---
+
 ## Edit-once and per-scene override
 
 Talk to the user's revisions like an editor of one connected document, never 20
@@ -244,7 +292,9 @@ into the rest of the repo, which is the whole point:
    full-density scene prompt. Real names, brand/IP, age markers, conflicting instructions, shot-
    count drift, and out-of-enum aspect/resolution/mode are caught **before** the
    user burns credits. A shotlist of 25 prompts is 25 chances to ship a flagged
-   one.
+   one. In the same pass run the § Sequence tempo and variety checks — the
+   linter sees one prompt at a time; the sum check and monotony audit see the
+   sequence.
 2. **Reference-role lanes.** The `@`-glossary uses the stable slot→role
    convention so `@Image1` = character holds across all 25 prompts and nobody
    re-checks which face the model expects at shot 47.

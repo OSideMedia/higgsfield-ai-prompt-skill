@@ -261,6 +261,13 @@ or music>.
 State the reading order explicitly, and state what to **ignore** from the grid itself — the
 line-art style and placeholder figures are the two things that leak.
 
+When the board is monochrome and the film is not, say so in its own sentence: *"Do not
+render in pencil, ink, or monochrome — the board's drawing style is not the film's
+style."* The generic exclusion covers borders and labels; it does not stop the board's
+*medium* from being read as the film's look, and the failure is unmistakable — the render
+comes back gray and sketchy. `[EMPIRICAL — third-party Seedance 2.5 field skill,
+2026-08-09 evaluation; vendor-consistent]`
+
 ---
 
 ## Blockout references

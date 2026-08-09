@@ -1,5 +1,28 @@
 # Changelog
 
+## v3.28.0 — 2026-08-09
+
+**Seven approved cherry-picks from the 2026-08-09 third-party evaluation sweep** (liyue-aigc director skills, MiniMax-H3 bundled skills, and a third-party Seedance 2.5 storyboard skill audited by the dialect-warden). All content re-derived in house voice — no source text copied (the xianxia repo carries no license; MiniMax skills carry no per-file attribution). Provider-steering lines and the invalid "Negative Prompt:" field in the sources were deliberately NOT adopted.
+
+### Added
+- `skills/higgsfield-seedance-2-5/SKILL.md` § Reference Roles → **Fidelity — say how much of each material must survive**: four grades per material (full-preserve / partial-preserve / attribute-transfer / loose-guide), with attribute-transfer requiring a named target — the case a bare role line cannot express. Plus two new role rules: **character sheets leak their staging** (backdrop/panel-layout exclusion) and **beat lines name characters, never handles** (name + one visible marker at first appearance; `[OFFICIAL — SD25-PE mapping priority]`).
+- `skills/higgsfield-seedance-2-5/MODE-PLAYBOOKS.md` § Storyboard grids — the **anti-monochrome-bleed sentence**: when the board is monochrome and the film is not, exclude the board's *medium* explicitly or the render comes back gray and sketchy.
+- `skills/higgsfield-shotlist-director/SKILL.md`:
+  - § **Sequence tempo and variety** — whole-sequence delivery checks no per-prompt rule can catch: **tempo budget** (runtime → cut count at ~4–6s average, one 6–8s hero hold, stated durations must sum exactly to the requested runtime) and **monotony audit** (no 3 consecutive cuts sharing shot size AND camera move; vary function and scale, not just duration).
+  - Per-scene prompt law gains an **Off-screen line** — just-departed characters carry exit side + last visible state for one prompt (dropped after two consecutive absences), keeping re-entry direction legal.
+  - `@`-glossary entries now carry a **fidelity grade** (pointer to the 2.5 fidelity section).
+- `skills/higgsfield-camera/SKILL.md` § Micro-moves — the **reverse consistency check**: the stated travel must be able to produce the stated end framing; when move and end frame disagree the prompt is internally impossible.
+- `skills/higgsfield-audio/SKILL.md` § **Cutting to music — assembling separately-generated clips on one track**: one master track law · cuts land on musical punctuation, never inside a sung vowel (ECU mouth-match exception) · unified grain + LUT as a deliberate batch-color-drift mask.
+- `skills/higgsfield-troubleshoot/SKILL.md` § **Retry Ladder** — four terminating rungs; rung 2 treats a second failure as evidence the shot is over-packed (shorten/split + re-lint before re-firing, not a re-roll); rung 4 stops after three paid attempts with named options — silent omission is never one.
+
+### Changed
+- QUICK FACTS routing lines updated in shotlist-director, seedance-2-5, and audio for the new sections.
+- Sub-skill versions: shotlist-director 1.2.0, seedance-2-5 1.1.0, camera 3.5.0, audio 3.5.0, troubleshoot 3.1.0.
+
+### Known limitations (accepted)
+- All seven additions are `[EMPIRICAL — third-party skill corpora, re-derived]` except where marked `[OFFICIAL — SD25-PE]` — transferable craft judged sound by evaluation, **not measured on our routes**. The tempo-budget bands and the 3-consecutive-cuts monotony threshold are re-derived defaults to tune, not findings.
+- The related panel-to-timestamp storyboard mapping from the same evaluation is deliberately **not** shipped here — it is gated on probe P1 (480p A/B on the Ark route) because the vendor explicitly disclaims strict storyboard alignment.
+
 ## v3.27.0 — 2026-08-09
 
 **Two approved cherry-picks from the dramaclaw evaluation.** Motion-prompt laws earned in dramaclaw's Seedance production corpus (model-agnostic i2v craft, carried as `[EMPIRICAL]` practitioner findings), plus the audio-reference enforcement bounds surfaced by the dialect-warden reconciliation (drift item S2).

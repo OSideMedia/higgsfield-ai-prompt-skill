@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, camera, movement, dolly, crane, FPV, orbit, shot]
-  version: 3.4.1
-  updated: 2026-07-26
+  version: 3.5.0
+  updated: 2026-08-09
   parent: higgsfield
 ---
 
@@ -279,6 +279,14 @@ oversells the move: `"over the full 7 seconds the camera pulls back only
 10–15 centimeters — slow enough to barely register. No zoom, no sudden
 push."` Never write `zoom` for a physical move — name dolly / track /
 push-in / pull-out.
+
+**And run the check in reverse: the stated move must be able to produce the
+stated end framing.** "A slow push" cannot end on an extreme close-up from a
+wide, and a 10cm pull cannot land a full-body reveal. When move and end frame
+disagree, the prompt is internally impossible — the model picks one and
+improvises the other. Fix it on whichever side is cheaper: enlarge the move
+(name the bigger travel) or shrink the framing change. `[EMPIRICAL —
+third-party director-skill evaluations 2026-08-09; re-derived]`
 
 ---
 

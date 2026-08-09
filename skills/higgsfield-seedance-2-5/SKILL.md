@@ -4,8 +4,8 @@ description: "Seedance 2.5 prompt director — the omni-reference dialect. Route
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.5, dreamina, jimeng, omni-reference, video-edit, video-extension, multi-reference, long-video, keyframes, storyboard, blockout, transitions]
-  version: 1.0.0
-  updated: 2026-08-07
+  version: 1.1.0
+  updated: 2026-08-09
   parent: higgsfield
 ---
 
@@ -33,6 +33,7 @@ a mode.
 - Higgsfield surface: **480p/720p only**, duration **4–30s**, no start/end-frame role, no genre hint, `extension_mode` required for (and only for) `video_extension` [→](#the-higgsfield-parameter-surface)
 - `video_edit` **ignores** `duration` and `aspect_ratio` and bills by the source video's length; `video_extension` inherits the source's aspect ratio [→](#the-higgsfield-parameter-surface)
 - Every reference material gets an explicit role **and** an exclusion — "what to use" plus "what not to use"; never let the model infer the mapping [→](#reference-roles-say-what-to-use-and-what-not-to-use)
+- Each material also declares a **fidelity grade** — full-preserve / partial-preserve / attribute-transfer (name the target) / loose-guide; beat lines name characters (name + one visible marker), never handles [→](#fidelity-say-how-much-of-each-material-must-survive)
 - Material budget: 30 images / 10 videos ≤30s total / 10 audio ≤30s total, 50 materials max; stability ranges are 1–8 subjects (images), 1–5 subjects at 5–10s (video/audio) [→](#material-budget)
 - Multi-reference is a 5-step workflow — map → group → profile → select-by-scene, one line per subject; `@Images 1 through 4 define four characters` is the canonical failure [→](#multi-reference-the-five-step-workflow)
 - Long videos are **staged**, not paragraphed: one primary change per stage + an explicit **end state**; timestamps allocate a budget, they are not frame-accurate edit points [→](#long-video-stages-and-end-states)
@@ -194,6 +195,36 @@ Rules:
   define subjects, scene, action, and visual style.
 - **Never place a reference handle in a shot where that subject is absent** — the same rule
   as 2.0's tag discipline; the model forces it into frame.
+- **Character sheets leak their staging.** A sheet's neutral backdrop and multi-view panel
+  layout are the most common character-material leak — the flat gray studio renders as the
+  actual set. Pair every character-sheet role with its own exclusion: *"Do not take the
+  gray backdrop, the panel borders, or the multi-view layout."*
+- **Beat lines name characters, never handles.** In action/beat prose, a character appears
+  as name + one visible marker at their first appearance in the beat — *"Mira — silver
+  streak, rust-red jacket — crosses the stall line"* — not as `@Image 2`. The model binds
+  by what it can see in the material, and a handle used as a sentence subject is the
+  classic way one character comes back as two people. `[OFFICIAL — SD25-PE mapping
+  priority: material content outranks upload order]`
+
+### Fidelity — say how much of each material must survive
+
+`[EMPIRICAL — MiniMax H3 skill corpus, re-derived; cross-model structure, unmeasured on
+Seedance]` A role says what job a material does; it still doesn't say how much of the
+material must reach the pixels. Declare one fidelity grade per material, in the same
+sentence as its role:
+
+- **full-preserve** — the subject appears as-is: face, build, wardrobe, all of it.
+- **partial-preserve** — the named parts survive, the rest is free: *"the jacket and the
+  scar; hairstyle may change."*
+- **attribute-transfer** — named traits lift onto a **different, named target**: *"apply
+  this fabric's weave and sheen to Mira's coat."* The target must be named — this is the
+  one case a bare role line cannot express, and the one that goes wrong silently.
+- **loose-guide** — mood, palette, or energy only; nothing is copied literally.
+
+```
+@Image 4 defines the brocade fabric — attribute-transfer onto Mira's coat only.
+Do not carry the garment's cut, the mannequin, or the studio backdrop.
+```
 
 ### Material budget
 
