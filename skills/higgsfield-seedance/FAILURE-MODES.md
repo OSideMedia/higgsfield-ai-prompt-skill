@@ -3,15 +3,15 @@ name: higgsfield-seedance
 description: >
   Failure-mode reference for Seedance 2.0 / Seedance Pro. Catalog of
   named output failures (FPS drift, NSFW false-positive, keyframe-
-  invention, physics-state drift, multi-motion overload, spatial-
-  awareness failures) with symptom + mechanism + prompt-side counter
+  invention, physics-state drift, action-reversal fill, multi-motion
+  overload, spatial-awareness failures) with symptom + mechanism + counter
   for each. Consulted when a Seedance generation lands in a recognizable
   failure pattern.
 user-invocable: false
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, failure-modes, recovery, prompt]
-  version: 1.0.0
-  updated: 2026-05-18
+  version: 1.1.0
+  updated: 2026-08-09
   parent: higgsfield
 ---
 
@@ -184,6 +184,32 @@ adjacent-object drift drops noticeably when the invariant is named.
 
 ---
 
+## Action-reversal fill
+
+**Symptom.** The prompted action completes in the first seconds and the
+rest of the clip plays it back in reverse — the character walks forward
+then steps back to the start mark, leans in then pulls away, reaches out
+then withdraws the hand. Reads as an unmotivated there-and-back. The
+camera version: a move with no stated destination drifts back the way it
+came once it arrives.
+
+**Mechanism.** A short action finishes before the clip does, and the
+model still has seconds of timeline to fill. With no further instruction
+in the prompt, the cheapest continuation consistent with the scene is to
+run the motion it already rendered in reverse. `[EMPIRICAL — dramaclaw
+production corpus, Seedance]`; model-agnostic i2v behavior, not a
+Seedance spec.
+
+**Counter.** Give the motion enough material to spend the whole clip in
+one direction: chain 2–3 connected actions along the same vector (walks
+to the window, pulls the curtain aside, leans into the glass). If the
+story calls for a there-and-back, that is two shots, not one prompt. For
+camera moves, name the endpoint — state what the frame shows when the
+move finishes. Full treatment: `SKILL.md` § Prompt-Craft Laws →
+Motion-prompt laws.
+
+---
+
 ## Multi-motion camera overload
 
 **Symptom.** A camera move with multiple stacked motions
@@ -255,6 +281,9 @@ burned generation.
   invention.
 - **Adjacent-object invariants named** where applicable (`X stays
   attached`, `Y does not move`)? Cross-ref: § Physics-state-anchor.
+- **Motion spends the whole clip in one direction**? Short actions
+  chained into 2–3 same-direction beats; camera move has a named
+  endpoint? Cross-ref: § Action-reversal fill.
 - **One dominant camera motion per shot**? Compound moves split into
   sequenced phases or separate cuts? Cross-ref: § Multi-motion
   camera overload.

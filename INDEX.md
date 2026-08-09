@@ -697,6 +697,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [No negative prompts in the prompt body](skills/higgsfield-seedance/SKILL.md#no-negative-prompts-in-the-prompt-body)
     - [Ambiguous verbs — the homograph trap (v1.10, Peter's find 2026-07-14)](skills/higgsfield-seedance/SKILL.md#ambiguous-verbs-the-homograph-trap-v110-peters-find-2026-07-14)
     - [Community v3 cherry-picks (Joey drop, audited 2026-07-14)](skills/higgsfield-seedance/SKILL.md#community-v3-cherry-picks-joey-drop-audited-2026-07-14)
+    - [Motion-prompt laws (dramaclaw production corpus, audited 2026-08-09)](skills/higgsfield-seedance/SKILL.md#motion-prompt-laws-dramaclaw-production-corpus-audited-2026-08-09)
     - [Already-covered siblings (cross-links, not new rules)](skills/higgsfield-seedance/SKILL.md#already-covered-siblings-cross-links-not-new-rules)
   - [Official Prompt Architecture — the Block Scaffold](skills/higgsfield-seedance/SKILL.md#official-prompt-architecture-the-block-scaffold)
     - [Block order](skills/higgsfield-seedance/SKILL.md#block-order)

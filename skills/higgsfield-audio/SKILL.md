@@ -11,8 +11,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS]
-  version: 3.3.2
-  updated: 2026-07-26
+  version: 3.4.0
+  updated: 2026-08-09
   parent: higgsfield
 ---
 
@@ -355,6 +355,12 @@ Background ambient: [environment description].
 - Upload MP3 audio as @Audio reference (part of Rule of 12)
 - **MP3 only** — WAV/AAC/OGG/FLAC fail silently with no error
 - Max 15s per clip, 3 audio files, 10MB each; **≥256kbps** for beat-sync (beat detection)
+- **Measured enforcement bounds** `[EMPIRICAL — third-party, China Ark lane, 2026-08]`:
+  per-clip duration is enforced at **1.8–15.2s**, and the **total across all attached
+  clips is also capped at ≤15.2s** — three individually-legal 6s clips get rejected
+  (captured 400 errors). Measured on the China Ark lane by a third party; Higgsfield's
+  own proxy enforcement is **unverified** — if a multi-clip attach fails, this total
+  cap is the first suspect.
 - Timestamp anchoring (audio-as-output): `"Audio @Audio1 plays exactly as uploaded from 0s to end. Do not modify."`
   Then remove all ambient/SFX/music tokens to prevent the generative engine from overriding.
 - **`@Audio1` is also a visual driver** — beat sync, the `[AUDIO: Xs]` script block,
