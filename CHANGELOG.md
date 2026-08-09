@@ -19,9 +19,11 @@
 - QUICK FACTS routing lines updated in shotlist-director, seedance-2-5, and audio for the new sections.
 - Sub-skill versions: shotlist-director 1.2.0, seedance-2-5 1.1.0, camera 3.5.0, audio 3.5.0, troubleshoot 3.1.0.
 
+- `skills/higgsfield-seedance-2-5/MODE-PLAYBOOKS.md` § Storyboard grids → **Panel-to-timestamp mapping — the optional adherence raiser**. Probe P1 (2026-08-09 A/B, (2.5, Ark), 480p) came back positive: order was followed in BOTH arms, but the mapping landed cuts on the declared stamps and kept each panel's props in its own shot, while the unmapped arm paced itself and leaked a shot-3 prop into shot 1. Shipped `[MEASURED — one pair]` with the vendor non-strict disclaimer and the keyframes pointer kept; same probe day also measured slot order as non-semantic (board-first vs board-last: identical order adherence — SD25-PE confirmed) and the image-reference aspect bound [0.4, 2.5] enforced at create.
+
 ### Known limitations (accepted)
-- All seven additions are `[EMPIRICAL — third-party skill corpora, re-derived]` except where marked `[OFFICIAL — SD25-PE]` — transferable craft judged sound by evaluation, **not measured on our routes**. The tempo-budget bands and the 3-consecutive-cuts monotony threshold are re-derived defaults to tune, not findings.
-- The related panel-to-timestamp storyboard mapping from the same evaluation is deliberately **not** shipped here — it is gated on probe P1 (480p A/B on the Ark route) because the vendor explicitly disclaims strict storyboard alignment.
+- The seven evaluation-sweep additions are `[EMPIRICAL — third-party skill corpora, re-derived]` except where marked `[OFFICIAL — SD25-PE]` — transferable craft judged sound by evaluation, **not measured on our routes**. The tempo-budget bands and the 3-consecutive-cuts monotony threshold are re-derived defaults to tune, not findings.
+- The panel-to-timestamp A/B is a single pair on one synthetic board — a strong directional read, not a distribution.
 
 ## v3.27.0 — 2026-08-09
 
