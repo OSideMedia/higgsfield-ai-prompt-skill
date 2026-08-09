@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, v2.0.2]
-  version: 3.1.0
-  updated: 2026-05-18
+  version: 3.2.0
+  updated: 2026-08-09
   parent: higgsfield
 ---
 
@@ -452,6 +452,14 @@ Budget:    3 audio files max (part of Rule of 12)
 Bitrate:   128–320 kbps
 Size:      ≤10 MB per file
 ```
+
+> **Measured enforcement bounds** `[EMPIRICAL — third-party, China Ark lane,
+> 2026-08]`: per-clip duration is enforced at **1.8–15.2s**, and the **total
+> across all attached clips is also ≤15.2s** — three individually-legal 6s
+> clips get rejected (captured 400 errors). Higgsfield's own proxy enforcement
+> is **unverified**; if a multi-clip attach fails, the total cap is the first
+> suspect. Sourcing detail: `../higgsfield-audio/SKILL.md` § Audio by Model →
+> Seedance 2.0.
 
 **Negative prompts:** NOT SUPPORTED. Use positive constraints only:
 ```

@@ -4,8 +4,8 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.11.1
-  updated: 2026-07-26
+  version: 1.12.0
+  updated: 2026-08-09
   parent: higgsfield
 ---
 
@@ -16,7 +16,7 @@ metadata:
 - The filter is an LLM reading full-scene intent, not a keyword blacklist — describe a SCENE, not a subject; fix the voice first [→](#the-filter-model-read-this-first)
 - Instant fail (<10s) = filter rejection; delayed fail (>30s) = infra/complexity — never regenerate an instant fail unchanged [→](#instant-fail-vs-delayed-fail-the-diagnostic)
 - Six slots, in order: Camera + Subject + Action + Setting + Style + Lighting; missing 3+ slots is where flags come from [→](#the-seedance-prompt-formula)
-- Empirical prompt-craft laws: 50–80-word attention sweet spot (front-load the load-bearing element), name a director/lens not "cinematic", "fast" degrades motion, no negative prompts in the body [→](#prompt-craft-laws)
+- Empirical prompt-craft laws: 50–80-word attention sweet spot (front-load the load-bearing element), name a director/lens not "cinematic", "fast" degrades motion, no negative prompts in the body, unidirectional motion chains + named camera endpoint + detail scale follows shot size [→](#prompt-craft-laws)
 - Five prompt modes: Reference-Based / Continuation / Expand Shot / Edit Shot / Transformation — pick the mode before writing [→](#seedance-20-prompt-modes)
 - [OFFICIAL] block scaffold for production prompts: SCENE CONTEXT → … → POSITIVE LOCKS, distributed style on standalone briefs (connected shotlists glue the compiled Style Prefix verbatim instead), FOV in degrees only, CAMERA block 3rd, cut ladder oner / CUT n / timed / freestyle [→](#official-prompt-architecture-the-block-scaffold)
 - [FIELD] 13-project corpus calibration: word length scales with register (218w → 2,059w medians — the 50–80w sweet spot is single-shot-only), video briefs hand-authored (`enhance_prompt` off), Style Prefix = per-project constant compiled into home blocks [→](#field-calibration-the-13-project-production-corpus)
@@ -275,6 +275,33 @@ both this skill's CAMERA-3rd-position rule and their own seedance skill.
 community harvest]`: across ~4,000 harvested production prompts from 9 creators,
 the CAMERA block sits mid-document in every final prompt — never at the bottom.
 CAMERA-3rd stands; the bottom-position claim is dropped.
+
+### Motion-prompt laws (dramaclaw production corpus, audited 2026-08-09)
+
+`[EMPIRICAL — dramaclaw production corpus, Seedance]` — practitioner findings
+earned in dramaclaw's Seedance production work. The craft is model-agnostic
+i2v motion-writing rather than a Seedance spec; same epistemic status as the
+rest of this section (strong heuristics — confirm on your own material).
+
+- **Unidirectional motion only.** A short action that finishes early leaves
+  the model with seconds of clip to fill, and it fills them by **reversing**
+  the action — the character walks forward then steps back, leans in then
+  pulls away. Chain **2–3 connected actions in the same direction** so the
+  motion spends the whole clip; a deliberate there-and-back is **two shots**,
+  never one prompt. (Failure face: `FAILURE-MODES.md` § Action-reversal
+  fill.)
+- **Name the camera endpoint.** A camera move needs a destination, not just
+  a name — say **what the frame shows when the move finishes** ("slow
+  dolly-in, ending on her hands wrapped around the cup"), not only the
+  move's name. A move that runs out of instruction before it runs out of
+  clip drifts or reverses — the camera face of the unidirectional law.
+- **Detail scale follows shot size.** Close-ups earn micro-detail (fingers
+  tightening, a jaw flex); wides earn broad arcs (crossing the courtyard,
+  the crowd parting). Cross-matching — micro-detail written into a wide, or
+  a broad traversal written into a close-up — is unrenderable at that shot
+  size and degrades the whole clip. (Detail *inside* a wide is a
+  composition problem, not a prompt-detail problem — see the snake-cam
+  cherry-pick above.)
 
 ### Already-covered siblings (cross-links, not new rules)
 

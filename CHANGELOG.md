@@ -1,5 +1,25 @@
 # Changelog
 
+## v3.27.0 — 2026-08-09
+
+**Two approved cherry-picks from the dramaclaw evaluation.** Motion-prompt laws earned in dramaclaw's Seedance production corpus (model-agnostic i2v craft, carried as `[EMPIRICAL]` practitioner findings), plus the audio-reference enforcement bounds surfaced by the dialect-warden reconciliation (drift item S2).
+
+### Added
+- `skills/higgsfield-seedance/SKILL.md` § Prompt-Craft Laws → **Motion-prompt laws (dramaclaw production corpus)**, three laws none of which the repo carried before:
+  - **Unidirectional motion only** — a short action finishes early and the model reverses it to fill the clip (walks forward then steps back, leans in then pulls away). Chain 2–3 connected actions in the same direction; a there-and-back is two shots.
+  - **Name the camera endpoint** — a move needs a destination: state what the frame shows when the move finishes, not just the move's name.
+  - **Detail scale follows shot size** — close-ups earn micro-detail, wides earn broad arcs; cross-matching is unrenderable. Cross-linked against the existing snake-cam cherry-pick (composition answer to detail-in-a-wide) so the two don't read as contradicting.
+- `skills/higgsfield-seedance/FAILURE-MODES.md` — new catalog entry **§ Action-reversal fill** (symptom / mechanism / counter face of the unidirectional law) + a matching self-repair checklist bullet.
+- **Seedance 2.0 audio-reference enforcement bounds** in `skills/higgsfield-audio/SKILL.md` (§ Audio by Model → Seedance 2.0) and `skills/higgsfield-models/MODELS-DEEP-REFERENCE.md` (§ Audio — Rules and Failure Modes): per-clip duration **1.8–15.2s** AND **total across all attached clips ≤15.2s** — three individually-legal 6s clips get rejected. The previously-documented caps (15s/clip, 3 files, 10MB) had **no per-clip minimum and no total cap**, so a multi-clip attach that obeyed every documented limit could still 400.
+
+### Changed
+- `skills/higgsfield-seedance/SKILL.md` QUICK FACTS — prompt-craft-laws routing line now names the three motion laws.
+- Sub-skill versions: higgsfield-seedance SKILL 1.12.0, FAILURE-MODES 1.1.0, higgsfield-audio 3.4.0, MODELS-DEEP-REFERENCE 3.2.0.
+
+### Known limitations (accepted)
+- **The motion laws are dramaclaw's field findings, not measured here.** Earned in dramaclaw's production corpus on Seedance; carried as `[EMPIRICAL — dramaclaw production corpus, Seedance]` per this repo's convention — strong heuristics to confirm on your own material, not guaranteed model behavior.
+- **The audio bounds are a third-party measurement on the China Ark lane (2026-08, captured 400 errors) — NOT verified Higgsfield behavior.** Higgsfield's own proxy enforcement is unverified; the files say so and frame the total cap as the first suspect when a multi-clip attach fails, not as platform doctrine. `specs/` stays untouched (generated surfaces carry only snapshot-derived data).
+
 ## v3.26.0 — 2026-08-08
 
 **The AI-VFX pipeline.** Higgsfield ran a public challenge — their host rebuilt a VFX artist's Iceland plate footage (character replacement, a cliff jump onto a dragon, a flight through a waterfall) using only Seedance 2.5, then built the same film again with no plate at all. Three sources came out of it: the *AI vs VFX* blog write-up with every production prompt, the 25-minute build video, and `prompt-builder-2-5.skill`, the prompt skill they published alongside. This release absorbs the **production doctrine** in them — the shot-building pipeline and its failure modes. The prompt-craft layer (block scaffold, FOV anchors, distributed style, optical techniques, the 4-mechanism extreme-FOV stack) was already house doctrine in `skills/higgsfield-seedance/SKILL.md` and is deliberately **not** restated.
