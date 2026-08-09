@@ -261,6 +261,40 @@ or music>.
 State the reading order explicitly, and state what to **ignore** from the grid itself — the
 line-art style and placeholder figures are the two things that leak.
 
+When the board is monochrome and the film is not, say so in its own sentence: *"Do not
+render in pencil, ink, or monochrome — the board's drawing style is not the film's
+style."* The generic exclusion covers borders and labels; it does not stop the board's
+*medium* from being read as the film's look, and the failure is unmistakable — the render
+comes back gray and sketchy. `[EMPIRICAL — third-party Seedance 2.5 field skill,
+2026-08-09 evaluation; vendor-consistent]`
+
+### Panel-to-timestamp mapping — the optional adherence raiser
+
+`[MEASURED — 2026-08-09 A/B, (2.5, Ark), 480p, one pair]` Adding an explicit
+panel→time mapping to the grid's role line changes *when* the cuts land, not whether
+the shots come in order:
+
+```
+Panel 1 (left) is 0-1.5s, panel 2 (middle) is 1.5-2.5s, panel 3 (right) is 2.5-4s.
+Do not reorder the shots. Do not invent shots that are not on the board.
+```
+
+What the A/B showed on a clean 3-panel board: **order was followed in both arms** —
+order alone doesn't need the mapping. The mapping arm's cuts landed on the declared
+stamps and each panel's contents stayed in its own shot; the unmapped arm chose its own
+pacing (the middle shot swallowed half the runtime) and let a shot-3 prop leak into
+shot 1. Use the mapping when the *time budget* per panel matters or when props/actors
+must not bleed across panels.
+
+Two boundaries hold: the vendor disclaims strict storyboard alignment — the grid stays
+a "high-level plot reference", and the mapping raises adherence rather than
+guaranteeing it (timestamps allocate a budget; they are not frame-accurate edit
+points). When true per-panel strictness is required, that is the **multi-keyframe
+channel** (`SKILL.md` § First/last frame and multi-keyframe control), not a grid.
+Slot position, by contrast, is not worth fighting over: the same A/B day measured
+board-first vs board-last with identical order adherence — upload order is a
+tie-breaker, not semantics (SD25-PE confirmed).
+
 ---
 
 ## Blockout references

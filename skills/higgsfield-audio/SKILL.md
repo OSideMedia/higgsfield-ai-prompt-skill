@@ -11,7 +11,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS]
-  version: 3.4.0
+  version: 3.5.0
   updated: 2026-08-09
   parent: higgsfield
 ---
@@ -24,6 +24,7 @@ metadata:
 - Four layers to consider per prompt: Dialogue / SFX / Ambient / BGM [→](#the-four-audio-layers)
 - Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens; per-language sync-word budgets are FIELD-reported [→](#lip-sync-rules)
 - **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input-seedance-20-audio1)
+- Multi-clip assembly: one master track · cuts land on musical punctuation, never inside a sung vowel (ECU mouth-match is the one exception) · unified grain + LUT masks batch color drift [→](#cutting-to-music-assembling-separately-generated-clips-on-one-track)
 - Cinema Studio 3.0 native joint audio (SCELA): describe audio as a separate section; specific foley beats generic moods [→](#cinema-studio-30-audio-businessteam-plan)
 - **Seed Audio 1.0** (`seed_audio`, standalone) = whole-scene audio in ONE pass — multi-speaker dialogue + music + SFX + ambience mixed [→](#scene-audio-generation-seed-audio-10)
 - Standalone Audio catalog (2026-08-01 snapshot): `seed_audio`, `qwen_audio_tts` (NEW — Qwen 3.0 TTS Flash, expressive instructions + cloned voices), `text2speech_v2` (5 engines incl. cozy_voice), plus 3 game-pipeline-only tools — distinct from in-video joint audio [→](#standalone-audio-tab-tool-catalog-2026-08-01-snapshot)
@@ -260,6 +261,24 @@ fighting an EDM track sends the temporal branch conflicting instructions — sam
 failure class as mixing reference *images* of clashing styles. Pick references
 that can coexist. (Sibling of `../higgsfield-seedance/SKILL.md` § Reference Roles
 → Load-Bearing Rule: references stay in their lanes.)
+
+### Cutting to music — assembling separately-generated clips on one track
+
+`[EMPIRICAL — MiniMax H3 skill corpus, re-derived; cross-model editing craft]`
+Beat sync governs what happens *inside* a clip; these three laws govern the
+timeline the clips land on:
+
+- **One master track.** The piece binds to a single continuous music track laid
+  in post — never per-clip audio stitched end to end. A join in the music is
+  audible before a join in the picture is visible.
+- **Cuts land on musical punctuation** — a breath, a lyric pause, a snare, the
+  drop. Never hard-cut inside a sung vowel unless the incoming shot is an ECU
+  whose mouth shape continues that vowel: lip continuity is an *edit*
+  constraint, not only a prompt constraint.
+- **Mask batch color drift on purpose.** Clips generated in separate runs never
+  match grade exactly. One unified fine-grain pass plus one LUT across the whole
+  timeline, applied as a deliberate finishing step, hides the inter-clip color
+  variance that would otherwise read as a continuity error.
 
 ### The `[AUDIO: Xs]` script block — dialogue + SFX + lip-sync from text alone
 
