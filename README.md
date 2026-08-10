@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.30.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.31.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--08--07-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
@@ -33,7 +33,7 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 - **Annotated templates library** — 10 genre templates with Cinema Studio 3.0 genre mappings, plus Seedance technique + character-design + text-overlay sub-libraries (18 files across 3 categories)
 - **DISCIPLINE.md cross-cutting framework** — 9 named discipline patterns in 3-3-3 tier symmetry (prompt-construction, model-selection, iteration-discipline) governing decisions across all sub-skills
 - **production-benchmarks.md** — Hell Grind 90-min Cannes feature reference, per-character iteration anchors, acceptance-rate calibration; what "production quality" means in practice
-- **FAILURE-MODES.md (Seedance)** — 8 named render failures documented with symptom + mechanism + counter for diagnosis-first iteration
+- **FAILURE-MODES.md (Seedance)** — 11 named render failures documented with symptom + mechanism + counter for diagnosis-first iteration
 - **C-arc Building Complete AI Projects — 10-Step Methodology** — end-to-end pipeline from idea to delivered project; complements the genre/scene templates
 - **Expanded Seedance methodology + Soul refinement** — Iteration Rule + 6-Pass Diagnostic Sequence + Four Questions + Next-Shot Decision Tree + Bridging / Continuation / Repair working modes; Character Anchor Block + Two-Tool Refinement Pipeline for character consistency at production scale
 
@@ -347,4 +347,4 @@ acting on the tail. A small sample is not evidence a skill is dead.
 
 ---
 
-Built February 2026 · v3.30.0 (updated 2026-08-09) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.31.0 (updated 2026-08-09) · Platform: [higgsfield.ai](https://higgsfield.ai)

@@ -4,7 +4,7 @@ description: "Seedance 2.5 prompt director — the omni-reference dialect. Route
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.5, dreamina, jimeng, omni-reference, video-edit, video-extension, multi-reference, long-video, keyframes, storyboard, blockout, transitions]
-  version: 1.1.0
+  version: 1.2.0
   updated: 2026-08-09
   parent: higgsfield
 ---
@@ -382,7 +382,13 @@ Two house rules carry over from `../higgsfield-audio/SKILL.md` and the film pipe
 `../higgsfield-seedance/HELL-GRIND.md`:
 
 - **Speech lives in the audio clause only** — not a word of dialogue inside the action
-  description, or the model narrates it as behavior.
+  description, or the model narrates it as behavior. The trap is that writers do not think
+  of *subtext* as speech: `they exchange a look that says "you too?"` is a line the script
+  never wrote, and it comes back spoken. `[HOUSE — the failing take is timecoded in the
+  nutllwhy/seedance-tvc-director evaluation, MIT, 2026-08-09.]` Anything readable is a
+  voicing request — quoted subtext, a remembered line, a slogan, a sign read aloud. Write
+  the visible behavior instead (*jaw sets, eyes hold*), and note that adding "no dialogue"
+  does not undo it: the readable text is still there being asked for.
 - **Diegetic-only is a project choice, and 2.5 finally obeys it.** Random subtitles and
   unrequested BGM were 2.0's most-reported nuisance; ByteDance calls suppression of both a
   headline 2.5 fix `[OFFICIAL — Dreamina]`. Still say it — `(no music)` and no `【】` block —
