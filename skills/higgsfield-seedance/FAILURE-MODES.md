@@ -10,7 +10,7 @@ description: >
 user-invocable: false
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, failure-modes, recovery, prompt]
-  version: 1.1.0
+  version: 1.1.1
   updated: 2026-08-09
   parent: higgsfield
 ---
@@ -314,6 +314,10 @@ majority of preventable failures before credit burn.
   the spatial layout block uses
 - `SKILL.md` § Single-vs-multi-shot decision — multi-shot split
   mechanics referenced from § Multi-motion camera overload
+- `../higgsfield-troubleshoot/SKILL.md` § Sequence & Continuation
+  Failure Atlas — symptom → single-repair-variable table for
+  chained/continuation defects (this catalog covers single-clip
+  render failures; the atlas covers the joins)
 - `../higgsfield-soul/SKILL.md` § Character Sheet Creation —
   upstream character-anchoring discipline that prevents character-
   drift failures

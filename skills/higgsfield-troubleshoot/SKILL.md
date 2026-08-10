@@ -6,12 +6,29 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
-  version: 3.1.0
+  version: 3.2.0
   updated: 2026-08-09
   parent: higgsfield
 ---
 
 # Higgsfield Troubleshooting Guide
+
+## QUICK FACTS
+*Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
+- Face inconsistency, dead camera moves, ignored prompts, static i2v, blocked dark content — the per-problem fix list [→](#common-problems-fixes)
+- Kling 3.0 Motion Control failures are almost always upstream of the prompt: reference clip, character image, or orientation/scene-source settings [→](#motion-control-failures-kling-30)
+- Pre-generation checklist: subject, action, named camera preset, style, grade, aspect, <200 words (short-form regime) [→](#pre-generation-checklist)
+- Seedance/Cinema Studio symptom table + diagnostic flowchart: blurry = overspecified; chaotic camera = One-Move Rule violated; wrong character = prompt re-describes the reference [→](#cinema-studio-30-seedance-20-diagnostic-tree)
+- Every delivered take gets ONE of five verdicts before anything re-fires: keep / fix-in-post / edit / re-roll / rewrite [→](#take-triage-five-verdicts-for-a-delivered-take)
+- Two takes with the same flaw = rewrite, by rule; different flaws per roll = stochastic → batch-and-cull, not rewrite [→](#take-triage-five-verdicts-for-a-delivered-take)
+- Re-roll = same prompt again, unchanged — no seed parameter on this surface; every roll is a fresh sample [→](#take-triage-five-verdicts-for-a-delivered-take)
+- Change exactly one variable between takes so causality stays readable [→](#one-variable-per-retake)
+- Declare the take budget AND a written "good enough" bar before take one; half-budget with no progress forces a strategy change [→](#attempt-budget-declared-before-take-one-heuristic)
+- The shot log is the ledger row — one line per take, changed variable in `notes` [→](#the-shot-log-is-the-ledger-row)
+- Continuation/extension defects: 12-row symptom → cause → single-repair-variable atlas (planned-vs-observed opening, motion-vector drop, prop contradictions, chain-depth drift…) [→](#sequence-continuation-failure-atlas)
+- Retry Ladder: 4 terminating rungs — re-run once verbatim → treat 2nd failure as over-packing → switch model for that shot → stop after 3 paid attempts with named options [→](#retry-ladder-a-failed-take-edits-the-plan-not-just-the-dice)
+- Log EVERY confirmed fix to learning memory, and check memory first before troubleshooting [→](#log-the-outcome-always)
+- Vision-grounded diagnosis (stills only): vision proposes the `reject_reason`, the human confirms — advisory until a class clears the agreement gate [→](#vision-grounded-diagnosis-classify-the-rejected-still-dont-guess)
 
 ## Common Problems & Fixes
 
@@ -212,6 +229,96 @@ Cinema Studio 3.0's generation engine produces ~90% usable output. If outputs ar
 
 ---
 
+## Take Triage — Five Verdicts for a Delivered Take
+
+`[FIELD — community, Emily2040/seedance-2.0 skill (MIT), re-derived 2026-08-09]`
+The sections above repair outright failure. Most real takes land in between —
+partially good — and the expensive habit is treating every flaw as a
+regeneration. Before anything re-fires, every delivered take gets exactly one
+of five verdicts:
+
+| Verdict | When | Next move |
+|---------|------|-----------|
+| **Keep** | The thing this shot is FOR is delivered and nothing is fatal | Lock it, log it, move on. Perfection in secondary details is post's job |
+| **Fix in post** | The flaw lives in the editor's domain: color, on-screen text, sound mix, trim, a few unstable frames at the ends | Never burn takes on what an edit fixes in minutes |
+| **Edit, don't regenerate** | Composition and timing are right; exactly one layer is wrong and an edit surface supports it | Repair only the failing layer — the editor-not-regenerator mindset (`../higgsfield-seedance/SKILL.md` § Keyframe Workflow; `../higgsfield-pipeline/SKILL.md` Pipeline E Stage 2) |
+| **Re-roll** | The prompt is right; the sample was unlucky | Same prompt again, unchanged — every roll is fresh on this surface (no seed parameter; `../higgsfield-seedance/SKILL.md` § Drafts Validate the Prompt, Not the Take). With enough ledger history, let the fork verdict decide iterate-vs-batch instead of eyeballing (`higgsfield-recall` § Read the verdict) |
+| **Rewrite** | The same flaw appears in two takes | Systematic, not luck — **two takes with the same flaw = rewrite, by rule**. Diagnose (tables above; `../higgsfield-seedance/FAILURE-MODES.md`), change the prompt |
+
+The rewrite tripwire cuts both ways: the same flaw twice means stop re-rolling
+into the same wall, but *different* flaws on every roll mean the miss is
+stochastic — that's batch-and-cull territory, not a rewrite
+(`../higgsfield-prompt/SKILL.md` § Before You Iterate). When the verdict is
+re-roll or rewrite and the failure keeps recurring, escalation is governed by
+the Retry Ladder below.
+
+### One variable per retake
+
+Whatever the verdict changes — one prompt clause, OR the mode, OR one
+reference — change exactly one thing between takes so causality stays
+readable. Full mechanics: `../higgsfield-prompt/SKILL.md` § The Iteration
+Rule — Change One Variable at a Time (and `DISCIPLINE.md` § Single-Variable
+Iteration). The shot log below records *which* variable, per take.
+
+### Attempt budget — declared before take one [heuristic]
+
+Write two things down before the first fire:
+
+- **A take budget** — a number, sized against the acceptance-rate reality in
+  `../../production-benchmarks.md` (draft-tier exploration stretches it —
+  § Drafts Validate the Prompt, Not the Take).
+- **A written "good enough" bar** — the primary thing delivered, secondary
+  flaws postable. Without it written down, the bar silently becomes
+  "perfect," and no budget survives that.
+
+At half the budget with no progress on the same flaw, stop iterating and
+change strategy: a different mode, a shot split, or the Retry Ladder's rung-4
+named options. Iteration without a stop condition is how a cheap shot becomes
+an expensive one. The budget is not a promise of success — it is the tripwire
+that forces the strategy change.
+
+### The shot log is the ledger row
+
+One line per take — what changed, what resulted — and the repo already has
+the surface for it: the generation ledger (`../../db/ledger/`, § Log the
+Outcome below, 5-second rule). Put the one changed variable in `notes`
+("changed: lens lock line"); `prompt_hash` already dedupes identical
+re-rolls. Two rows sharing a flaw is the rewrite tripwire made auditable —
+re-reading the log beats re-living it.
+
+---
+
+## Sequence & Continuation Failure Atlas
+
+`[FIELD — community, Emily2040/seedance-2.0 skill (MIT), re-derived 2026-08-09]`
+Symptom → likely cause → single repair variable for chained work:
+continuations, extensions, and start-frame-pinned handoffs. One repair
+variable per retake — the one-variable rule applied to sequences. Handoff
+mechanics live in `../higgsfield-pipeline/SKILL.md` § Continuation & Extension
+Handoff; prompt templates in `../higgsfield-seedance/SKILL.md` § Continuation
+Prompt Formula. This table is the symptom-side index into both.
+
+| Symptom | Likely cause | Repair variable (change this one thing) |
+|---------|-------------|------------------------------------------|
+| Continuation opens from the *planned* ending, not the delivered one | Prompt written from the shot plan; the accepted take's actual end state was never reviewed | Rewrite the opening from what the parent clip actually shows — the source carries state, the prompt carries only the delta (`higgsfield-pipeline` § Source-carries-state rule) |
+| Action restarts from the top | Completed beat never marked as already done | State the beat as completed ("the door already stands open") and prompt only what happens next |
+| A later beat shows up early | Future-beat material leaked into this clip's prompt | Strip every future beat from prompt and endpoint — one clip owns one beat |
+| Identity drifts across extensions | The chain tail displaced the canonical identity reference | Re-anchor from the ORIGINAL character refs, never a frame from the drifted tail (`higgsfield-pipeline` § Chain management) |
+| Screen direction flips at the join | Axis never locked, or reset unintentionally | State the direction ("walks screen-left to screen-right") or declare the axis change as intentional coverage |
+| Mid-flight motion stops dead | Open motion vector not carried across a still-frame handoff | Carry subject/camera speed and direction in prose — one of the three things a frame cannot carry (`higgsfield-pipeline` § Source-carries-state rule) |
+| Camera move restarts from rest | Parent's camera-move phase missing from the prompt | Open from the observed camera phase ("mid-dolly, continuing in") |
+| Prop contradicts the prior clip | Prop owner / position / condition not tracked across the handoff | Add a prop-state line (who holds it, where it sits, what condition); prop sheet for recurring props (`higgsfield-pipeline` Pipeline E Stage 3) |
+| Dialogue repeats a delivered line | Audio phase not carried at the cut point | Mark the line as delivered and continue from the audio phase — a frame cannot carry it |
+| Each extension looks worse than the last | Expected chain-depth drift — each generation re-ingests the previous one's artifacts | Re-anchor from canonical refs or cut intentionally; cap chains at 2 extensions, hard ceiling 3 (`higgsfield-pipeline` § Chain management) |
+| A reference bleeds into the wrong role | Transfer / ignore clauses absent | Split the roles: per-image role line plus explicit exclusions (`higgsfield-seedance` § Reference Roles) |
+| Too much happens; nothing lands | Several beats compiled into one prompt | Reassign future beats to later clips (`higgsfield-seedance` § Single-vs-multi-shot decision) |
+
+A repair that works gets logged (§ Log the Outcome). Two takes failing on the
+SAME row is the rewrite tripwire in § Take Triage — stop re-rolling into the
+same wall.
+
+---
+
 ## Retry Ladder — a failed take edits the plan, not just the dice
 
 `[EMPIRICAL — MiniMax H3 skill corpus, re-derived]` When a take fails or drifts and the
@@ -322,4 +429,5 @@ agreement gate over enough confirmed diagnoses; until then, confirm every one.
 - `higgsfield-models` — Model selection (wrong model = many quality issues)
 - `higgsfield-audio` — Audio-specific failures and fixes
 - `higgsfield-cinema` — Cinema Studio–specific issues (512 char limit, @ Element bugs)
+- `higgsfield-pipeline` — Continuation & Extension Handoff mechanics (workflow side of the Sequence & Continuation Failure Atlas)
 - `../shared/negative-constraints.md` — Prevention-focused constraint reference
