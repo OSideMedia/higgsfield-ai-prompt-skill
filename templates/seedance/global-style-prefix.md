@@ -52,6 +52,12 @@ Notes on the fields:
 - **Audio: diegetic-only** — the prompt body names only real-world SFX; layer any
   score in post. See `../../skills/higgsfield-audio/SKILL.md` § Seedance 2.0 and
   the diegetic-only convention.
+- **Texture lines are look declarations, not quality pleas** — "180° shutter
+  motion blur" in the Camera line and any grain named in Color are *declared
+  registers of the film*, which is the legal form. The degradation case is the
+  same vocabulary trailing a per-scene prompt unattached to anything; the two
+  are separated in
+  `../../skills/shared/negative-constraints.md` § Whole-Frame Degradation.
 - **Declarations, not negative lists** — every line is a *declaration of the
   state that must hold*. Short lock tails inside a declaration ("Photorealistic
   — no 3D render", "Diegetic SFX only. No music.") are field-proven across the

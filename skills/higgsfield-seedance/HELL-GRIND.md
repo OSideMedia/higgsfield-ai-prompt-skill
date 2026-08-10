@@ -329,6 +329,13 @@ The voice and its emotion → the line in quotes → the physical action → the
 - **Seedance adds its own "uhms", chuckles, and whole phrases**, so the prompt carries a hard
   block: everyone speaks **only** the line in quotes; whoever has no line stays completely
   silent; a "half-laugh" written in the action is a facial expression, **with no sound**.
+  `[HOUSE — the rest of this bullet is ours, not the brief's]` "Stays silent" settles the
+  *sound*; the **picture** needs its own fact, so every other visible face also carries a
+  positive at-rest mouth state — "lips at rest", "jaw closed, listening" — an unmarked mouth
+  in frame being one the model may decide is talking. The risk direction is the **short**
+  line: one that ends well before the shot does leaves audio air the model fills with
+  invented mumble (`FAILURE-MODES.md` § Filler-babble on a short dialogue line — measured at
+  ≤6 words on a 4-second shot; the at-rest mouth fact itself is not yet live-fired here).
 - **Write the mix too**: voices clean and close to the microphone, ambience under them,
   ambience dips when someone speaks.
 - **Rare names get a transcription**, or the model breaks them.

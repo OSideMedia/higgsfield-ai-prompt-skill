@@ -4,8 +4,8 @@ description: "Use when building, writing, refining, or structuring a Higgsfield 
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 3.6.0
-  updated: 2026-06-27
+  version: 3.7.0
+  updated: 2026-08-09
   parent: higgsfield
 ---
 
@@ -556,6 +556,11 @@ Different genres perform best with different prompt lengths and lead elements:
 | Commercial / Brand | Style | 40–70 words | "Clean white studio, soft even lighting, product hero moment..." |
 | Anime / Artistic | Style | 50–90 words | "Cel-shaded lines, saturated palette, Studio Ghibli cloud physics..." |
 
+> A texture word in a Style lead ("16mm grain") is a **look choice** and belongs
+> there. The same word trailing a prompt as a bare quality plea softens the whole
+> frame instead — the distinction lives in `../shared/negative-constraints.md`
+> § Whole-Frame Degradation.
+
 ### Anti-Slop Vocabulary
 
 Kill these words — they add zero information and waste tokens:
@@ -611,8 +616,11 @@ Every action prompt should follow this arc:
 Cinema Studio 3.0's generation engine does not support negative prompt syntax. Do not write "no blur" or "avoid shaky camera." Instead, use positive constraints — describe what you WANT:
 
 - ~~"no shaky camera"~~ → `locked-off static camera, no movement`
-- ~~"no blur"~~ → `sharp focus throughout, deep depth of field`
+- ~~"no blur"~~, meaning the whole frame is mushy → `sharp focus throughout, deep depth of field`
+- ~~"no blur"~~, meaning the background blur ate the subject → `subject in sharp focus, background falling into soft bokeh`
 - ~~"don't make it dark"~~ → `bright, evenly lit, overcast daylight`
+
+The two depth-of-field spellings are not interchangeable — pick by which plane has to stay sharp (`../shared/negative-constraints.md` § Depth of field — two substitutes, two intents).
 
 ### Audio as First-Class Element
 

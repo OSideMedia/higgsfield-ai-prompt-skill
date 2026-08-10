@@ -53,6 +53,61 @@ These occur when the model misinterprets visual style or rendering instructions.
 
 ---
 
+## Whole-Frame Degradation — quality words vs. look choices
+
+Some tokens authors reach for to make an output feel filmic are read as instructions
+about the **rendering** rather than about the subject, and a rendering instruction
+lands on the entire frame. `film grain` dropped in as a quality note softens
+everything in the image; `imperfect focus` takes the frame out of focus, subject
+included.
+
+**The governing distinction:** *content* may be imperfect — uneven light, an
+asymmetric composition, a messy room, an operator's wobble. *Image quality* must be
+sharp. Imperfection is a subject choice; it is never a rendering instruction.
+
+That is why the same word is deliberate craft in one clause and expensive in another.
+Three uses are legal and are used on purpose across this repo:
+
+| Legal use | What it is | Where the repo does it |
+|-----------|-----------|------------------------|
+| **Look choice** | The stock or texture is the piece's declared register, named in the Style / Look slot with what it belongs to | `../higgsfield-prompt/SKILL.md` § Genre Router (a Music Video lead opens on "16mm grain"); `../../vocab.md` § Film Stock Emulation; `../higgsfield-cinema/SKILL.md` film-stock axis |
+| **Optics as content** | A named optical event, happening to a named element, at a named moment | `../higgsfield-seedance/PRODUCTION-PATTERNS.md` § Prompted Imperfection as Realism (heat-haze swim, a brief focus hunt before lock) and its targeted motion blur as artifact concealment |
+| **Plate matching** | Grain, blur and focus falloff matched to an existing plate so a composited element does not read pasted-in | `../higgsfield-seedance-vfx/SKILL.md` § Lighting integration; `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Reverse-angle locations |
+
+What degrades is the fourth use: the token dropped in bare, attached to nothing,
+trailing the prompt as a general plea for realism.
+
+| Written as a bare quality note | What the model does with it | Write instead |
+|--------------------------------|-----------------------------|---------------|
+| `film grain` (trailing, unattached) | Noise laid across the whole image; fine detail softens with it | Name it as a look with its stock and its home: "Super 8MM warm grain, soft vignette" — or as a plate match: "grain matched to the reference frame" |
+| `imperfect focus` / `soft focus` / `dreamy` | Global sharpness loss — the subject goes soft along with everything else | Name the optical event, its element and its moment: "a brief focus hunt on the badge before it locks" |
+| `edges not perfectly sharp` / `slight natural deviation` / `not completely stable` | Effective resolution drops; the frame reads mushy | Drop them, and put the imperfection in the *subject* instead — a crooked frame on the wall, a chipped mug, light reaching only one side of the face |
+| `blurry background` | The subject blurs with it | Say which plane stays sharp — see § Depth of field below |
+| `hazy` / `foggy` (unquantified) | Whole-frame fog, subject included | Keep for genuine aerial perspective, quantified and located ("haze ramps 20% → 70% behind the ridge"), with the subject's own sharpness stated |
+
+`[UNPROVEN HERE]` — re-derived from a third-party prompting corpus and **not
+A/B'd on our own material**. The probe that settles it is a two-arm 480p pair on
+one identical shot: arm A ends on a bare `film grain, imperfect focus`, arm B on the
+named-look substitute, compared for detail retention on the subject. Until that
+runs this is a drafting preference, not a rule — nothing here blocks a prompt, and
+no linter enforces it.
+
+### Depth of field — two substitutes, two intents
+
+"No blur" is two different requests and the positive substitute differs. Both
+spellings used in this repo are correct; they are not interchangeable.
+
+| What the author actually wants | Positive phrasing | Reach for it when |
+|--------------------------------|-------------------|-------------------|
+| Everything in frame sharp, front to back | "sharp focus throughout, deep depth of field" | Landscapes, establishing shots, group blocking, product-on-set where the background is information |
+| The subject crisp and the background soft **on purpose** | "subject in sharp focus, background falling into soft bokeh" | Portraits, dialogue coverage, isolating one figure in a busy set |
+
+The first answers "the whole image is mushy"; the second answers "the background
+blur ate my subject." `blurry background` on its own answers neither, because it
+never says which plane is meant to stay sharp.
+
+---
+
 ## Temporal / Consistency Artifacts
 
 These occur across frames in video or across multiple generations in a sequence.
@@ -102,7 +157,8 @@ These only apply when working in Cinema Studio 2.5.
 | Negative (don't use with 3.0) | Positive alternative |
 |-------------------------------|---------------------|
 | "no shaky camera" | "locked-off static camera, no movement" |
-| "no blur" | "sharp focus throughout, deep depth of field" |
+| "no blur" — meaning the whole frame is mushy | "sharp focus throughout, deep depth of field" |
+| "no blur" — meaning the background blur ate the subject | "subject in sharp focus, background falling into soft bokeh" |
 | "don't make it dark" | "bright, evenly lit, overcast daylight" |
 | "avoid jittery motion" | "smooth, fluid motion, one action per shot" |
 | "no extra limbs" | "anatomically correct, all limbs naturally positioned" |
@@ -120,6 +176,7 @@ When building a prompt, scan the categories above that match the prompt's conten
 2. **Action/chase prompt** → check Body/Motion + Temporal/Consistency
 3. **Horror/dark prompt** → check Content Filter/Safety + Face/Identity
 4. **Product/commercial prompt** → check Texture/Lighting
+4b. **Prompt reaching for a filmic / imperfect / analog feel** → check Whole-Frame Degradation before writing the texture words
 5. **Multi-shot sequence** → check Temporal/Consistency + Face/Identity
 6. **Cinema Studio prompt** → check Cinema Studio–Specific + all relevant categories
 6b. **Cinema Studio 3.0 prompt** → check Cinema Studio 3.0 Notes + all relevant categories (use positive alternatives only)
