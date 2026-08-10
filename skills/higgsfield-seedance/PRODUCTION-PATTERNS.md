@@ -130,6 +130,13 @@ content: heat-haze swim, telephoto micro-tremor, a digital-zoom "mushy"
 smear, a brief focus hunt before lock. Quantify atmosphere per the official
 %-rule — the demo ran a haze ramp from 20% to 70% across the shot.
 
+The word **content** is load-bearing: each flaw above is attached to something —
+a named element at a named moment, or, for the atmospheric ones, a quantified
+ramp with a stated extent. The same vocabulary written as a bare quality plea
+trailing the prompt is the degradation case, not this one — see
+`../shared/negative-constraints.md` § Whole-Frame Degradation, which also covers
+the § Field-Harvested Patterns motion-blur bullet below.
+
 ---
 
 ## 60:30:10 Color Grade

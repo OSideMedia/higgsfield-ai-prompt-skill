@@ -3,14 +3,14 @@ name: higgsfield-seedance
 description: >
   Failure-mode reference for Seedance 2.0 / Seedance Pro. Catalog of
   named output failures (FPS drift, NSFW false-positive, keyframe-
-  invention, physics-state drift, action-reversal fill, multi-motion
-  overload, spatial-awareness failures) with symptom + mechanism + counter
-  for each. Consulted when a Seedance generation lands in a recognizable
-  failure pattern.
+  invention, physics-state drift, action-reversal fill, filler-babble on
+  short dialogue lines, multi-motion overload, spatial-awareness failures)
+  with symptom + mechanism + counter for each. Consulted when a Seedance
+  generation lands in a recognizable failure pattern.
 user-invocable: false
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, failure-modes, recovery, prompt]
-  version: 1.1.1
+  version: 1.2.0
   updated: 2026-08-09
   parent: higgsfield
 ---
@@ -210,6 +210,64 @@ Motion-prompt laws.
 
 ---
 
+## Filler-babble on a short dialogue line
+
+**Symptom.** A short scripted line in a solo shot comes back wrapped in
+invented mumble — garbled pseudo-speech before or after the words, or
+the scripted line delivered twice. Graded from transcripts, so this is
+an AUDIO symptom; whether the mouth also keeps moving was not graded by
+the rig below and is not claimed here.
+
+**Mechanism.** The audio branch fills dead air, the same way § Action-
+reversal fill spends leftover motion time. A line that ends well before
+the clip does leaves a silent window, and the cheapest continuation
+consistent with the shot is more speech-shaped sound in the same voice.
+`[MEASURED — sync-budget ladder, 2026-08-09, EN × 4s × 480p × Seedance
+2.0]`: every take at ≤6 words carried it; 8- and 12-word lines came back
+4/4 clean. The risk direction is the **short** line, not the long one —
+no truncation was observed up to 12 words (≈3 words per second).
+
+**Counter.** Give the dead air a job instead of leaving the choice to
+the model, and state the mouth state of every face that is visible:
+
+1. **Fill the window.** Extend the line to roughly 8+ words in a
+   4-second shot, or cut the shot down to the line.
+2. **Script the silence.** If the line has to stay short, write what
+   occupies the rest of the window — a named pause beat, an ambient or
+   SFX event, action prose covering the gap before and after the line.
+3. **One speaker, one line, once.** The speaking character says the
+   line and nothing else; `HELL-GRIND.md` § Dialogue construction
+   carries the full audio-block phrasing. A beat that carries a thought
+   rather than a line is typed `INNER (unspoken)` there, which keeps it
+   out of the mouth entirely.
+4. **Every other visible face gets a positive at-rest mouth fact.** An
+   unmarked mouth in frame is a mouth the model may decide is talking.
+   State the rest state as something that *is* true — "lips at rest",
+   "jaw closed, breath lifting the chest", "eyes on the speaker, mouth
+   still" — never as a negation (`SKILL.md` § Prompt-Craft Laws → No
+   negative prompts in the prompt body). Note that "listens without
+   speaking" reads positive but carries *without*, so it trips the same
+   law; prefer the forms above.
+
+**Worked example.** A 4-second two-shot carrying one scripted line:
+
+❌ `AUDIO — MIRA (dry, clipped): "It's gone."` Most of the window is
+left unwritten, and the second face in frame has no mouth state at all.
+
+✅ `AUDIO — Diegetic only: rain on the skylight, one door latch at 3.4s.
+MIRA (dry, clipped) says her line once and nothing else: "It's gone, and
+it took the ledger with it." DEV keeps his eyes on her — lips at rest,
+jaw closed, his breath lifting his chest.`
+
+The line rewrite is the measured half: it fills the window. The at-rest
+mouth fact on the second character is the **unmeasured** half — it is
+the prompt-side handling for when a second face cannot be kept out of
+the shot, and it is not yet live-fired here. A one-shot 480p A/B (two
+characters, one short line, mouth fact present vs. absent) would settle
+it.
+
+---
+
 ## Multi-motion camera overload
 
 **Symptom.** A camera move with multiple stacked motions
@@ -284,6 +342,10 @@ burned generation.
 - **Motion spends the whole clip in one direction**? Short actions
   chained into 2–3 same-direction beats; camera move has a named
   endpoint? Cross-ref: § Action-reversal fill.
+- **Dialogue window fully written**? A short line extended (~8+ words in
+  a 4-second shot) or its silence scripted, and every visible face
+  carrying a mouth state? Cross-ref: § Filler-babble on a short dialogue
+  line.
 - **One dominant camera motion per shot**? Compound moves split into
   sequenced phases or separate cuts? Cross-ref: § Multi-motion
   camera overload.
@@ -314,6 +376,9 @@ majority of preventable failures before credit burn.
   the spatial layout block uses
 - `SKILL.md` § Single-vs-multi-shot decision — multi-shot split
   mechanics referenced from § Multi-motion camera overload
+- `HELL-GRIND.md` § Dialogue construction — the audio-block phrasing
+  and the `INNER (unspoken)` marker that § Filler-babble on a short
+  dialogue line depends on
 - `../higgsfield-troubleshoot/SKILL.md` § Sequence & Continuation
   Failure Atlas — symptom → single-repair-variable table for
   chained/continuation defects (this catalog covers single-clip

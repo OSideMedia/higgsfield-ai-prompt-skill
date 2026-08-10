@@ -1,5 +1,24 @@
 # Changelog
 
+## v3.30.0 — 2026-08-09
+
+**Two approved cherry-picks from the HBAI-Ltd/Toonflow-app evaluation** (2026-08-09, Apache-2.0 + commercial rider). Technique re-derived in house voice — no source text copied. Most of that evaluation's picks were rejected against our own measurements; these two survived. The source's anti-clone clause was deliberately NOT adopted: this repo already carries that law in four places (`higgsfield-seedance` § ENGINE-RULES clone row, `PRODUCTION-PATTERNS.md` § clone-army, `HELL-GRIND.md`, `higgsfield-seedance-2-5`), and a fifth copy is the drift the single-home rule exists to prevent.
+
+### Added
+- `skills/shared/negative-constraints.md` § **Whole-Frame Degradation — quality words vs. look choices**: the distinction this repo was contradicting itself on. Tokens like `film grain` and `imperfect focus` are read as instructions about the *rendering*, so they land on the whole frame — but the same words are deliberate craft in three legal uses, and the section names all three with where the repo already does them (look choice in a Style lead, optics-as-content attached to an element and a moment, plate matching in the VFX skills). A five-row table gives the degradation case and what to write instead. Governing line: *content* may be imperfect; *image quality* must be sharp.
+- `skills/shared/negative-constraints.md` § **Depth of field — two substitutes, two intents**: "no blur" is two different requests. `sharp focus throughout, deep depth of field` answers "the whole image is mushy"; `subject in sharp focus, background falling into soft bokeh` answers "the background blur ate my subject". Both spellings were already in the repo, unreconciled, giving an agent two contradictory answers to one question.
+- `skills/higgsfield-seedance/FAILURE-MODES.md` § **Filler-babble on a short dialogue line**: a MEASURED failure ported from OSIDE's registry (sync-budget ladder, 2026-08-09, EN × 4s × 480p × Seedance 2.0 — every take at ≤6 words carried it; 8- and 12-word lines came back 4/4 clean). The risk direction is the **short** line, not the long one. Symptom is scoped to what the rig actually graded (transcripts, so audio only — mouth movement was not graded and is not claimed).
+
+### Changed
+- `skills/higgsfield-prompt/SKILL.md`: Genre Router gains a texture-word note (a look choice belongs in the Style lead; the same word trailing as a quality plea softens the frame), and the Cinema Studio 3.0 positive-alternatives list splits the "no blur" row by intent. Version 3.7.0.
+- `skills/higgsfield-seedance/PRODUCTION-PATTERNS.md` § Prompted Imperfection as Realism: cross-reference making explicit that its flaws are attached to elements or quantified ramps, which is what separates it from the degradation case.
+- `skills/higgsfield-seedance/HELL-GRIND.md`: the dialogue-block silence bullet extended (not duplicated) with the picture half — every other visible face carries a positive at-rest mouth state, since "stays silent" settles only the sound. Tagged `[HOUSE]` inline because the file is otherwise stamped `[OFFICIAL]`. Version 1.2.0 on FAILURE-MODES.md.
+- `templates/seedance/global-style-prefix.md`: note on where texture words belong in the frozen prefix.
+
+### Known limitations (accepted)
+- The Whole-Frame Degradation section is `[UNPROVEN HERE]` — re-derived from a third-party corpus, not A/B'd on our material. The settling probe is named in the section itself: a two-arm 480p pair on one identical shot, bare `film grain, imperfect focus` versus the named-look substitute, compared for subject detail retention. Nothing blocks a prompt and no linter enforces it.
+- The at-rest mouth fact for non-speaking faces is likewise unproven here; only the filler-babble half of that entry is measured. OSIDE's compiler-side implementation of the same idea was built and then **withdrawn** this session — it emitted "the rest of the shot is silent" directly above the SFX and Ambient layers, cancelling its own sound design. Anyone re-attempting it should read that failure first.
+
 ## v3.29.0 — 2026-08-09
 
 **Two approved cherry-picks from the Emily2040/seedance-2.0 skill evaluation** (2026-08-09, MIT-licensed). Idea-ports re-derived in house voice — no source text copied. The source's same-seed-experiment clause ("same seed + one prompt change ≈ controlled experiment") was deliberately NOT adopted: it contradicts the measured fact that this surface exposes no seed parameter and every roll is fresh (`higgsfield-seedance` § Drafts Validate the Prompt, Not the Take). Re-roll is documented as "same prompt again, unchanged" with zero seed language.
