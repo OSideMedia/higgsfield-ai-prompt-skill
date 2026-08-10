@@ -1,5 +1,22 @@
 # Changelog
 
+## v3.31.0 — 2026-08-09
+
+**Four approved cherry-picks from the nutllwhy/seedance-tvc-director evaluation** (2026-08-09, MIT). Technique re-derived in house voice — no source text copied. That skill is a commercial-directing router; its *ad* layer (0–3s hook gate, packshot budgets, flavour evidence chains) was deliberately declined as a genre lane we do not run. What survived is the craft underneath it, written from timecoded postmortems of real takes. Everything here is `[HOUSE]` and `[UNPROVEN HERE]`: the source's durations are one practitioner's figures, so they are quoted as directions to lean, never as measured constraints.
+
+### Added
+- `skills/higgsfield-seedance/FAILURE-MODES.md` § **Truncated action — the cut lands before the result**: the shot list reads as full coverage while nothing in the film ever lands, because shots are priced by what they contain rather than by what must finish inside them. Counter is a named completion state that settles before the cut, or the next shot opening on the result already true. Explicitly the picture twin of the dialogue-handle law this repo already carries for sound.
+- `skills/higgsfield-seedance/FAILURE-MODES.md` § **Mimed manipulation — hands move, the object does not**: a manipulation written as its verb ("tears it open cleanly") gives the model a gesture and no mechanism. Counter is the five-part causal chain (initial structure → anchor → force point and direction → visible material feedback → finished state) plus two routing rules: use two states and a sound when the action is only transport, and never invent a structure the reference cannot show.
+- `skills/higgsfield-seedance/FAILURE-MODES.md` § **Orphan limbs in a group shot**: at three-plus characters with no order lock the model re-derives the group each cut, and a hand enters the action from a body that is not in frame. Counter is the headcount + screen-order lock held across cuts, an owner and entry side for every acting hand, a two-hand-actor cap per shot, and the three-shot split for detail + faces + group recap.
+- `skills/higgsfield-seedance-2-5/MODE-PLAYBOOKS.md` § Seamless transitions → **Give the bridge a deadline**: the named transition vocabulary was already safe because every entry names a finish; the failure lives in the freehand wording around it. Un-terminated verbs ("drifts through", "floats across", "gradually becomes") eat the segment after them. Adds the three-state shape with a stated arrival time and four guardrails (ordinary bridge 0.2–0.8s, one hero bridge ~1.2s, no near-empty frame, name when the target is established).
+
+### Changed
+- `skills/higgsfield-seedance-2-5/SKILL.md` § Audio and Text: the speech-lives-in-the-audio-clause rule extended with the trap that makes it fail — writers do not think of *subtext* as speech, so `a look that says "you too?"` written as staging comes back spoken. Anything readable is a voicing request, and "no dialogue" does not undo it. Version 1.2.0; FAILURE-MODES.md 1.3.0.
+
+### Known limitations (accepted)
+- All four are re-derived from a third-party corpus and are **not** A/B'd on our material. The cheapest settling probes, if they are ever worth firing: one 480p pair on a single manipulation shot (verb-only vs. five-part chain), and one on a three-hander reach (order+owner lock present vs. absent).
+- The durations carried in these sections (0.15–0.35s completion hold, 0.2–0.8s bridge, ~2.5s of total transition in a 30s piece) are the source author's practitioner figures. They are labelled as such at every use and no linter enforces them.
+
 ## v3.30.0 — 2026-08-09
 
 **Two approved cherry-picks from the HBAI-Ltd/Toonflow-app evaluation** (2026-08-09, Apache-2.0 + commercial rider). Technique re-derived in house voice — no source text copied. Most of that evaluation's picks were rejected against our own measurements; these two survived. The source's anti-clone clause was deliberately NOT adopted: this repo already carries that law in four places (`higgsfield-seedance` § ENGINE-RULES clone row, `PRODUCTION-PATTERNS.md` § clone-army, `HELL-GRIND.md`, `higgsfield-seedance-2-5`), and a fifth copy is the drift the single-home rule exists to prevent.

@@ -4,13 +4,14 @@ description: >
   Failure-mode reference for Seedance 2.0 / Seedance Pro. Catalog of
   named output failures (FPS drift, NSFW false-positive, keyframe-
   invention, physics-state drift, action-reversal fill, filler-babble on
-  short dialogue lines, multi-motion overload, spatial-awareness failures)
+  short dialogue lines, truncated action, mimed manipulation, orphan
+  limbs in a group shot, multi-motion overload, spatial-awareness failures)
   with symptom + mechanism + counter for each. Consulted when a Seedance
   generation lands in a recognizable failure pattern.
 user-invocable: false
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, failure-modes, recovery, prompt]
-  version: 1.2.0
+  version: 1.3.0
   updated: 2026-08-09
   parent: higgsfield
 ---
@@ -265,6 +266,105 @@ the prompt-side handling for when a second face cannot be kept out of
 the shot, and it is not yet live-fired here. A one-shot 480p A/B (two
 characters, one short line, mouth fact present vs. absent) would settle
 it.
+
+---
+
+## Truncated action — the cut lands before the result
+
+**Symptom.** The shot list reads as full coverage and the film shows
+nothing landing. The lid is still closing when the cut comes, the hand
+is still reaching, the door is half shut. Every action in the sequence
+is an attempt; none of them is a result. Fast-cut sequences carry this
+most, and it survives review because each individual shot looks correct.
+
+**Mechanism.** Shots get priced by what they *contain*, not by what has
+to *finish* inside them, so the model spends the runtime on the approach
+and the completion falls past the boundary. Nothing in the prompt says
+which state must be visible before the shot may end, so any frame is as
+good a stopping point as any other. `[HOUSE — technique re-derived from
+the nutllwhy/seedance-tvc-director evaluation, MIT, 2026-08-09.
+UNPROVEN HERE: not A/B'd on our material.]`
+
+**Counter.** Name the completion state as a visible fact and let it
+settle before anything else happens — *the lid seats flush and stays
+there*, *the glass comes to rest on the wood*, *her hand closes fully
+around the handle*. Where the pace genuinely needs the cut sooner, open
+the **next** shot on the result already true (the laptop shut, the room
+already dark) so the sequence inherits what the cut skipped. The source
+holds the completion for roughly 0.15–0.35s before cutting; treat that
+as the direction to lean, not as a measured figure.
+
+The audio twin of this law is already in this repo — a spoken line pinned
+early so the cut inherits a tail (§ Filler-babble, and OSIDE's
+`dialogue-no-handle`). This is the same law for picture.
+
+---
+
+## Mimed manipulation — hands move, the object does not
+
+**Symptom.** A character opens, tears, pours, presses or spreads
+something and the object never changes: fingers work convincingly over a
+pack that stays sealed, a cap that never breaks its seal, a surface that
+never creases. Reads as an actor rehearsing without a prop.
+
+**Mechanism.** The manipulation was written as its verb — *tears it open
+cleanly*, *twists the cap off* — which gives the model a gesture and no
+mechanism. With no structure, no anchor and no material response stated,
+the gesture is the only part it can render. `[HOUSE — re-derived from the
+same evaluation. UNPROVEN HERE.]`
+
+**Counter.** Write the causal chain, in order:
+
+1. **Initial structure** — what the object is before contact (sealed
+   along the top edge, capped, full).
+2. **Anchor** — what holds it steady and how (the other hand gripping
+   the body of the pack, the base flat on the counter).
+3. **Force** — where the force is applied and which way it travels
+   (thumb and forefinger at the notch, pulling across).
+4. **Material feedback** — what the material visibly does (the film
+   parts from the notch, the pack creases where it is held).
+5. **Finished state** — what is true when it is done (a continuous
+   opening with the contents visible, the torn strip clear of the pack).
+
+Two routing rules travel with it. If the manipulation only *gets us to*
+the next state rather than being the point of the shot, use two states
+and a sound instead — sealed pack, a tear heard off screen, hands
+already inside it; it is cheaper and it cannot fail this way. And never
+invent a structure the reference cannot show: if the notch, the seal or
+the catch is not visible in the material you hold, open it off screen,
+cut around it, or shoot it for real.
+
+Do not stack a legible brand face, a two-handed manipulation and a
+strong effect in one shot — the manipulation shot proves the mechanism,
+a separate shot proves the label.
+
+---
+
+## Orphan limbs in a group shot
+
+**Symptom.** Three or more characters, and a hand enters the action with
+no body behind it: a sleeve crossing another character's chest, a
+forearm from off screen with no shoulder, an extra hand nobody owns.
+Adjacent to it: the headcount changes across a cut, or two neighbours
+trade places between the wide and the close-up.
+
+**Mechanism.** With no order lock, the model re-derives the group on
+every cut rather than carrying one forward. Reaching is the moment it
+shows, because a hand is the smallest thing in frame that has to belong
+to somebody. `[HOUSE — re-derived from the same evaluation. UNPROVEN
+HERE.]`
+
+**Counter.** Lock the group before the action: the exact headcount, the
+left-to-right screen order, who sits next to whom — held in every
+framing. Then give each hand entering the action an owner: whose hand,
+which hand, what sleeve, which side of frame it enters from, where it
+returns to. Cap hand action at two characters per shot; the rest watch.
+
+When the shot wants a detail, two faces and a group recap at once, that
+is three shots — a fixed insert on the object with at most two
+attributable hands, a two-shot on the neighbours who react, then a
+static group frame with hands already clear of the object. One
+continuous push-out cannot deliver all three.
 
 ---
 

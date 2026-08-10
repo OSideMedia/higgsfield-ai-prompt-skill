@@ -468,6 +468,42 @@ film's style."
 **The ceiling:** a transition targets visual and audio continuity. It is a generated bridge,
 not a pixel-identical edit splice of both sources.
 
+### Give the bridge a deadline
+
+`[HOUSE — re-derived from the nutllwhy/seedance-tvc-director evaluation, MIT, 2026-08-09.
+UNPROVEN HERE: the durations below are that source's practitioner figures, not measured on
+our material.]`
+
+A transition written without an arrival keeps going. The vocabulary above is safe because
+every entry names a finish; the failure is in the freehand wording around it — **"drifts
+through", "floats across", "travels into", "gradually becomes"** name a passage and no
+endpoint, so the bridge eats the segment after it and the next scene arrives late.
+
+Write every bridge as three states with a stated clock:
+
+```
+Last state of the outgoing scene → one bridging action → target scene fully established at <time>.
+```
+
+Four guardrails, in the source's numbers — lean this way rather than treating them as
+measured:
+
+- **An ordinary bridge is short** — roughly 0.2–0.8s. It is a seam, not a shot.
+- **One hero transition per piece** may run longer, ~1.2s, and only one.
+- **No empty frame inside it.** A bridge that passes through a near-solid or subject-less
+  frame for more than a beat reads as a dropout; the target scene should be establishing
+  itself before the bridging element clears.
+- **Say when the target is established**, not just that it arrives: *"the whip begins at
+  9.0s; the living room is fully readable by 9.5s"*. A named arrival time is what stops the
+  passage from expanding into the next segment's runtime.
+
+Total transition time across a 30s piece stays small — the source budgets ~2.5s for all of
+them combined. Everything else belongs to the scenes.
+
+Reach for a morph only when the concept itself is the transformation. Otherwise a hard cut,
+an action match or a short whip is both cheaper and more reliable — and each one has a
+finish written into its own name.
+
 ---
 
 ## Related
