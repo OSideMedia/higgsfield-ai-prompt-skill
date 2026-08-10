@@ -937,6 +937,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
 ## skills/higgsfield-troubleshoot/SKILL.md
 
 - [Higgsfield Troubleshooting Guide](skills/higgsfield-troubleshoot/SKILL.md#higgsfield-troubleshooting-guide)
+  - [QUICK FACTS](skills/higgsfield-troubleshoot/SKILL.md#quick-facts)
   - [Common Problems & Fixes](skills/higgsfield-troubleshoot/SKILL.md#common-problems-fixes)
     - [Problem: Character face is inconsistent or morphing](skills/higgsfield-troubleshoot/SKILL.md#problem-character-face-is-inconsistent-or-morphing)
     - [Problem: Camera movement isn't working / is generic](skills/higgsfield-troubleshoot/SKILL.md#problem-camera-movement-isnt-working-is-generic)
@@ -955,6 +956,11 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Quick Diagnostic](skills/higgsfield-troubleshoot/SKILL.md#quick-diagnostic)
     - [Diagnostic Flowchart](skills/higgsfield-troubleshoot/SKILL.md#diagnostic-flowchart)
     - [Success Rate Note](skills/higgsfield-troubleshoot/SKILL.md#success-rate-note)
+  - [Take Triage — Five Verdicts for a Delivered Take](skills/higgsfield-troubleshoot/SKILL.md#take-triage-five-verdicts-for-a-delivered-take)
+    - [One variable per retake](skills/higgsfield-troubleshoot/SKILL.md#one-variable-per-retake)
+    - [Attempt budget — declared before take one [heuristic]](skills/higgsfield-troubleshoot/SKILL.md#attempt-budget-declared-before-take-one-heuristic)
+    - [The shot log is the ledger row](skills/higgsfield-troubleshoot/SKILL.md#the-shot-log-is-the-ledger-row)
+  - [Sequence & Continuation Failure Atlas](skills/higgsfield-troubleshoot/SKILL.md#sequence-continuation-failure-atlas)
   - [Retry Ladder — a failed take edits the plan, not just the dice](skills/higgsfield-troubleshoot/SKILL.md#retry-ladder-a-failed-take-edits-the-plan-not-just-the-dice)
   - [Log the Outcome — Always](skills/higgsfield-troubleshoot/SKILL.md#log-the-outcome-always)
   - [Vision-Grounded Diagnosis — Classify the Rejected Still, Don't Guess](skills/higgsfield-troubleshoot/SKILL.md#vision-grounded-diagnosis-classify-the-rejected-still-dont-guess)

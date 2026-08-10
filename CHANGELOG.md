@@ -1,5 +1,26 @@
 # Changelog
 
+## v3.29.0 — 2026-08-09
+
+**Two approved cherry-picks from the Emily2040/seedance-2.0 skill evaluation** (2026-08-09, MIT-licensed). Idea-ports re-derived in house voice — no source text copied. The source's same-seed-experiment clause ("same seed + one prompt change ≈ controlled experiment") was deliberately NOT adopted: it contradicts the measured fact that this surface exposes no seed parameter and every roll is fresh (`higgsfield-seedance` § Drafts Validate the Prompt, Not the Take). Re-roll is documented as "same prompt again, unchanged" with zero seed language.
+
+### Added
+- `skills/higgsfield-troubleshoot/SKILL.md` § **Take Triage — Five Verdicts for a Delivered Take**: every delivered take gets exactly one verdict — keep / fix-in-post / edit-don't-regenerate / re-roll / rewrite — before anything re-fires. Carries three sub-rules:
+  - **Two takes with the same flaw = rewrite, by rule** (stop re-rolling into the same wall) — cut the other way, different flaws per roll = stochastic = batch-and-cull, keeping the verdict consistent with the iterate-vs-batch fork.
+  - **Attempt budget declared before take one** `[heuristic]` — a take budget sized against `production-benchmarks.md` plus a *written* "good enough" bar; half-budget with no progress on the same flaw forces a strategy change (mode switch, shot split, or Retry Ladder rung 4).
+  - **The shot log is the ledger row** — one line per take with the one changed variable in `notes`; no new logging surface invented (5-second rule stands).
+  - One-variable-per-retake cites `higgsfield-prompt` § The Iteration Rule and `DISCIPLINE.md` § Single-Variable Iteration rather than restating them.
+- `skills/higgsfield-troubleshoot/SKILL.md` § **Sequence & Continuation Failure Atlas**: 12-row symptom → likely cause → single-repair-variable table for chained work (continuations, extensions, start-frame-pinned handoffs), each row cross-wired to the existing owner section (`higgsfield-pipeline` § Source-carries-state / § Chain management, `higgsfield-seedance` § Reference Roles / § Single-vs-multi-shot).
+
+### Changed
+- `skills/higgsfield-pipeline/SKILL.md`: § Continuation & Extension Handoff now points to the atlas for symptom-level repair; Step 08+09 routes the keep/post/edit/re-roll/rewrite call to Take Triage. Version 3.4.1.
+- `skills/higgsfield-seedance/FAILURE-MODES.md`: cross-reference to the atlas (this catalog = single-clip render failures; the atlas = the joins). Version 1.1.1.
+- Sub-skill version: troubleshoot 3.2.0.
+
+### Known limitations (accepted)
+- Both additions are `[FIELD — community, Emily2040/seedance-2.0 skill (MIT), re-derived]` — transferable craft judged sound by evaluation, not measured on our routes. The atlas rows' likely-cause column is diagnostic default, not a distribution.
+- The source's allocation-model reference (fidelity-budget allocation across identity/motion/density) did not merge naturally into either section and was deferred, not ported.
+
 ## v3.28.0 — 2026-08-09
 
 **Seven approved cherry-picks from the 2026-08-09 third-party evaluation sweep** (liyue-aigc director skills, MiniMax-H3 bundled skills, and a third-party Seedance 2.5 storyboard skill audited by the dialect-warden). All content re-derived in house voice — no source text copied (the xianxia repo carries no license; MiniMax skills carry no per-file attribution). Provider-steering lines and the invalid "Negative Prompt:" field in the sources were deliberately NOT adopted.

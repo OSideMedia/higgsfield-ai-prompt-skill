@@ -9,8 +9,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
-  version: 3.4.0
-  updated: 2026-07-05
+  version: 3.4.1
+  updated: 2026-08-09
   parent: higgsfield
 ---
 
@@ -338,7 +338,10 @@ the lighting if it worked. Fix only the mistake.
 > Rule — Change One Variable at a Time. Step 08+09 here names the
 > three rhetorical handles ("make it better" anti-pattern, 80%
 > rule, "every failure should become a new rule" framing); the
-> mechanics live there.
+> mechanics live there. Whether a take is even a regeneration
+> candidate — versus keep, fix-in-post, or edit — is decided by the
+> five-verdict triage in `../higgsfield-troubleshoot/SKILL.md`
+> § Take Triage — Five Verdicts for a Delivered Take.
 
 ### Step 10 — Build the Project in Passes
 
@@ -892,6 +895,9 @@ phrasing, reference-role wording) lives in
 `../higgsfield-seedance/SKILL.md` — this section does not restate
 those templates. It extends § Working Practices above: the post-clip
 decision tree decides *whether* to continue; this section is *how*.
+When a continuation comes back wrong, the symptom-level repair table
+lives in `../higgsfield-troubleshoot/SKILL.md` § Sequence &
+Continuation Failure Atlas — one repair variable per symptom.
 
 ### The extend-a-clip workflow
 
