@@ -142,11 +142,36 @@ generation** [DEMO]. Two plate disciplines:
   camera moves somewhere to go (the win-rate bullet above, applied).
 - **Generate the plate empty** — no people — whenever the video model should
   own the crowd. A populated plate freezes extras into wallpaper; an empty
-  plate lets the model cast and move them. (The deliberate exception: when a
+  plate lets the model cast and move them. (Two deliberate exceptions: when a
   crowded set must **repeat identically** across many shots, composite the
   crowd once and reuse that populated plate — see
   `../skills/higgsfield-seedance/PRODUCTION-PATTERNS.md` § Field-Harvested
-  Patterns → populated-plate reuse.)
+  Patterns → populated-plate reuse; and when the crowd **is** the location
+  — a festival, a packed arena — where an empty plate makes every shot prompt
+  re-invent the throng. The full test is in
+  `../skills/higgsfield-soul/SKILL.md` § Variety Sheets.)
+- **Pin the sun before you pick.** A master plate should fix the light — its
+  direction, height and quality — so it cannot jump between generations.
+  Everything else in the scene inherits from it; a plate with ambiguous light
+  hands you a different time of day per take.
+
+**Choosing between plates: judge AFFORDANCE, not beauty.** Generate several
+(location batches are the cheapest asset you will make) and reject on staging
+grounds first [DEMO — Higgsfield "AI Love Stories" tutorial, 2026-08]. The
+reported claim is that **~70% of the final video's quality comes from the
+location** — [UNPROVEN HERE] as a number, but the selection discipline behind
+it stands on its own, and the rejections are more instructive than the pick:
+
+| Rejected | The actual reason |
+|---|---|
+| "gorgeous ship, but no room for a crowd and no room for a run" | **the blocking does not fit.** The scene needs a packed pier, a collision and a long sprint; the geometry has to hold all three |
+| "no room between the cranes, way too much clutter" | **clutter turns to mush** under generation — busy detail at mid-depth degrades into noise once the frame moves |
+| "good layout, but that heavy yellow tint would leak onto every scene" | **the plate's grade is contagious.** A tinted plate is a colour decision applied to the whole sequence, made by accident |
+| *the pick:* "long pier — room for the crowd, the crash and the sprint; the sides hold all the mess, leaving the middle clean for the action" | **it has a clean action corridor**, and the clutter is pushed to the edges where it belongs |
+
+Run the scene's beats against the plate before locking it. If a beat has
+nowhere to happen, the plate is wrong no matter how good the still looks —
+and you will not discover it until you are paying for shots.
 
 Generate location plates in **Soul Cinema** (see § Which model makes the
 sheet below); in video prompts a location plate is typically declared

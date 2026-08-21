@@ -4,8 +4,8 @@ description: "Seedance 2.5 prompt director — the omni-reference dialect. Route
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.5, dreamina, jimeng, omni-reference, video-edit, video-extension, multi-reference, long-video, keyframes, storyboard, blockout, transitions]
-  version: 1.2.0
-  updated: 2026-08-09
+  version: 1.3.0
+  updated: 2026-08-21
   parent: higgsfield
 ---
 
@@ -37,6 +37,7 @@ a mode.
 - Material budget: 30 images / 10 videos ≤30s total / 10 audio ≤30s total, 50 materials max; stability ranges are 1–8 subjects (images), 1–5 subjects at 5–10s (video/audio) [→](#material-budget)
 - Multi-reference is a 5-step workflow — map → group → profile → select-by-scene, one line per subject; `@Images 1 through 4 define four characters` is the canonical failure [→](#multi-reference-the-five-step-workflow)
 - Long videos are **staged**, not paragraphed: one primary change per stage + an explicit **end state**; timestamps allocate a budget, they are not frame-accurate edit points [→](#long-video-stages-and-end-states)
+- Staging fixes too many EVENTS; two incompatible JOBS in one generation (physics + performance) is a separate cut — split into two prompts and stitch [→](#split-by-job-not-only-by-length)
 - Bracket syntax: `()` music · `<>` SFX · `{}` dialogue · `【】` subtitles; non-Chinese dialogue needs a language line before the line [→](#audio-and-text-bracket-syntax)
 - First/last frames and multi-keyframes are declared **in the prompt** (`@Image 1 is the first frame`) — aspect ratio locks to the first image; never merge the two anchors into one sentence [→](#first-last-frame-and-multi-keyframe-control)
 - Editing needs a **sole editing master** + edit scope + Timeline Inheritance; extension needs the **boundary frame aligned before** any new content: `MODE-PLAYBOOKS.md`
@@ -327,6 +328,42 @@ End state: <final visible state>.
 Keep <character identity, number of characters, clothing, prop ownership, spatial direction,
 and audio relationships> consistent.
 ```
+
+### Split by JOB, not only by length
+
+Staging solves *too many events in one paragraph*. It does not solve **two
+incompatible jobs in one generation**, and that is a separate cut worth making
+[DEMO — Higgsfield "AI Love Stories" tutorial, 2026-08].
+
+The reported case: an arena scene containing a fight (a giant throw, a sword
+snatch, a takedown) and, in the same beat, the acting around it (a hidden
+worry, a flirtatious exit, hope draining from a face). Run as one prompt it
+held — badly, in both directions at once: *"the fight gets softer, the faces get
+flatter."* The model spends its attention budget once. Asked to nail physics
+and micro-performance in one generation, it half-does each.
+
+Split into **two prompts, one job each, stitched in the edit**:
+
+| Cut it here | Because |
+|---|---|
+| **physics ↔ performance** | mass, contact and follow-through vs. eyes, breath and micro-expression. Different attention, different optics, usually different shot sizes |
+| **action ↔ dialogue** | the same split wearing other clothes |
+| **the beat that needs room** | the second reported case: a 30s carnival scene *held* as one prompt, and was still split into 3×15s because the first-touch beat needed room — *"these beats felt completely rushed"*. Length was not the constraint; **pacing** was |
+
+**How to tell which cut you need.** Length-driven splits are decided by
+counting events. This one is decided by asking: *what is this shot's dominant
+job?* If a prompt has two honest answers, it has two shots in it. That is the
+same question the Feasibility Veto asks about a single frame, applied to a
+whole generation.
+
+Note the direction of the second case: it fit, and was split anyway. "It
+generated" is not the bar — a scene that renders every beat but rushes the one
+that matters has failed at the thing you were making it for.
+
+Practical consequence, stated plainly by the same production: **a perfect 30s
+render does not exist.** Generate raw footage per job, then assemble. Several
+of the finished scenes in that film take the background from one take and the
+foreground action from another.
 
 ### Timestamps and pacing
 

@@ -1,5 +1,92 @@
 # Changelog
 
+## v3.32.0 — 2026-08-21
+
+**Five picks and one correction from the Higgsfield "AI Love Stories" tutorial**
+(@adilinthewild, 2026-08-20 — the 23-minute build video plus its published
+prompt corpus). Technique re-derived in house voice; no source text copied.
+Everything is tagged `[DEMO — …]` and, where it is one production's figure
+rather than a mechanism, `[UNPROVEN HERE]`.
+
+### Added
+
+- `skills/higgsfield-soul/SKILL.md` § **The Hybrid Sheet — Casting a REAL
+  Person** (3.7.0 → 3.8.0). Every sheet workflow in this skill assumed an
+  *invented* character. Casting a real person is a different problem and the
+  pipeline does not solve it — the sheet comes back as "a lookalike actor, not
+  the actual person": costume and body land, the face is a near-miss that the
+  subject's own family spots instantly. The demonstrated fix is a composite:
+  keep the generated costume and body, **erase the head on the full-body
+  panels**, and paste the person's real photograph into the portrait panel, so
+  the composite contains exactly one face and it came from a camera.
+  Explicitly distinguished from § Face-from-Wide-Shot Workaround, which repairs
+  *plastic AI faces* with generated pixels and is a different job. Carries the
+  consent constraint, because this puts an identifiable real person into a
+  generation pipeline.
+- `skills/higgsfield-soul/SKILL.md` § **Pick the Sheet Model per JOB**. One
+  sheet prompt through three image models does not give three qualities of the
+  same thing — it gives different strengths (Seedream 5.0 Pro won costume
+  texture and cross-panel consistency; GPT Image 2 won curly hair, "the other
+  models couldn't hold them"). The *method* is the finding, not the table: run
+  the prompt through two or three models and compare before locking, because
+  the deciding axis is whatever your character is hardest to render, and that
+  changes per character.
+- `skills/higgsfield-seedance-2-5/SKILL.md` § **Split by JOB, not only by
+  length** (1.2.0 → 1.3.0). Staging solves *too many events in one paragraph*.
+  It does not solve **two incompatible jobs in one generation**, which is a
+  separate cut: an arena scene carrying both a fight and the acting around it
+  held as one prompt and lost both — "the fight gets softer, the faces get
+  flatter". The model spends its attention budget once. Includes the second,
+  sharper case: a 30-second carnival scene that *fit* and was split into 3×15s
+  anyway, because the beat that mattered was rushed. Length was not the
+  constraint; pacing was, and "it generated" is not the bar.
+- `templates/ad-asset-prep.md` § 8 — **choosing between location plates by
+  AFFORDANCE, not beauty**, with the four rejections that teach it (no room for
+  the crowd or the run; clutter that turns to mush; a yellow tint that would
+  leak onto every scene) and the pick that reads as staging arithmetic: a clean
+  action corridor with the mess pushed to the edges. Run the scene's beats
+  against the plate before locking it; a beat with nowhere to happen is not
+  discovered until you are paying for shots. Also adds "pin the sun before you
+  pick". The reported "~70% of final quality is the location" is carried as
+  `[UNPROVEN HERE]` — the selection discipline stands without the number.
+- `skills/higgsfield-audio/SKILL.md` § **Scope an audio reference — say which
+  property rides** (3.5.0 → 3.6.0), plus a third row in the `@Audio1` job
+  table: **audio-as-performance**. Every *image* reference in this stack is
+  scoped in both directions; audio references had no equivalent vocabulary and
+  need one for the same reason — a sound file carries several properties at
+  once and an unscoped reference lends all of them. Demonstrated on a character
+  who had to hum a specific tune: with no reference the model invented a
+  different melody every take; with a voice memo attached and scoped to *the
+  melody only, never the voice or timbre*, it landed. Generalised into the
+  three-part pattern, of which the third part is the one that gets skipped —
+  name what rides, name what must not, and **say where the excluded property
+  comes from instead**, because a reference told only what not to do leaves the
+  model to pick, and it picks the reference.
+
+### Fixed
+
+- `templates/seedance/top-down-map.md` — **states, at the top, that the floor
+  plan is never attached to the generation.** The template always meant this
+  (what ships is the blocking *note*), but it nowhere said so, and the omission
+  became load-bearing the moment this release started talking about drawn
+  staging references: a reader who learns that a diagram can ride as a
+  reference could reasonably attach this one. Top-down is the right shape for
+  *reasoning* about a space and the wrong shape for *showing* one — a staging
+  reference a video model actually sees is drawn front-on from the camera's
+  side, because video models think in frames, not floor plans. Both are true at
+  once; this template lives entirely on the reasoning side.
+- `skills/higgsfield-soul/SKILL.md` § Variety Sheets — **the empty-plate rule
+  was stated here without its condition.** The default still holds (empty
+  plate + variety sheet, so the crowd stays directable), but it **inverts when
+  the crowd IS the location**: a night carnival square kept breaking from an
+  empty plate because every take had to re-invent the throng from prose, and
+  baking the crowd into the location asset fixed it — with the tell being that
+  "the prompt stayed clean and simple". Adds the four-way decision table and
+  the test that settles it: **write the crowd out in prose and see how long it
+  is** — if specifying it costs a paragraph in every shot prompt, that
+  paragraph belongs in the location asset. `templates/ad-asset-prep.md` § 8
+  gains the matching second exception and cross-links to it.
+
 ## v3.31.0 — 2026-08-09
 
 **Four approved cherry-picks from the nutllwhy/seedance-tvc-director evaluation** (2026-08-09, MIT). Technique re-derived in house voice — no source text copied. That skill is a commercial-directing router; its *ad* layer (0–3s hook gate, packshot budgets, flavour evidence chains) was deliberately declined as a genre lane we do not run. What survived is the craft underneath it, written from timecoded postmortems of real takes. Everything here is `[HOUSE]` and `[UNPROVEN HERE]`: the source's durations are one practitioner's figures, so they are quoted as directions to lean, never as measured constraints.

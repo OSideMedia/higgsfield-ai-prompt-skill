@@ -4,8 +4,8 @@ description: "Creates and manages reusable character profiles (Soul IDs) for con
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 3.7.0
-  updated: 2026-07-05
+  version: 3.8.0
+  updated: 2026-08-21
   parent: higgsfield
 ---
 
@@ -33,6 +33,8 @@ metadata:
 - Studio-feeling output is an intermediate, not a final — re-pass through Soul Cinema with grade, directional lighting, lens character [→](#studio-look-vs-cinematic-look-soul-cinema-as-the-re-pass)
 - Skip Soul ID for single shots or when you want maximum creative variation [→](#when-to-use-soul-id)
 - Plasticky face in wide shots: crop the face from a closer-shot panel and replace it in post [→](#face-from-wide-shot-workaround)
+- Casting a REAL person: the sheet alone returns a lookalike — erase the head on the body panels and paste their actual photo into the portrait panel [→](#the-hybrid-sheet-casting-a-real-person)
+- Run the same sheet prompt through 2–3 image models and compare before locking; the deciding axis changes per character [→](#pick-the-sheet-model-per-job-not-per-project)
 
 
 ## What Is Soul ID?
@@ -260,6 +262,67 @@ Then use 3D Mode to orbit and capture additional angles from the same generation
 **Why it matters:** A multi-angle character sheet gives Soul ID far more geometry data
 than a single photo. This translates directly into better consistency across extreme
 angle changes, action shots, and profile views.
+
+### The Hybrid Sheet — Casting a REAL Person
+
+Everything above assumes the character is *invented*. Casting a real person —
+a client, a friend, the couple in a wedding film — is a different problem, and
+the sheet pipeline alone does not solve it [DEMO — Higgsfield "AI Love Stories"
+tutorial, 2026-08]. Feed someone's photos in as references and the sheet comes
+back as **a lookalike actor, not the actual person**: costume and body land,
+the face is a near-miss. It is the kind of near-miss the subject's own family
+spots instantly and nobody else notices, which makes it the worst kind.
+
+Note what this is NOT. § Face-from-Wide-Shot Workaround below fixes *plastic AI
+faces* by cropping a face from a closer generated panel into a wider one — a
+quality repair, generated pixels throughout. This fixes *identity*, and the
+pixels come from a camera.
+
+**The hybrid, as demonstrated:**
+
+1. Generate the sheet normally. Keep it for what it is genuinely good at —
+   costume texture, wear, silhouette, body, the panel geometry.
+2. **Erase the head on the full-body panels.** Leave them headless. The
+   generated face is the part that was wrong; deleting it stops it competing.
+3. **Paste the person's real photograph into the portrait panel.** That panel
+   is now photographic, not generated.
+4. Ride the composite as the character reference.
+
+**Why it works:** the portrait panel is where a video model reads identity, and
+it is now a real face rather than an approximation of one. The full-body panels
+still carry wardrobe and proportion, which is all they were ever needed for —
+and a headless panel cannot contribute a wrong face, so the composite has
+exactly one face in it and that face is correct.
+
+**Constraints, and they are not optional.** This puts a real, identifiable
+person into a generation pipeline. Have their permission for this specific
+use, keep the source photos out of anything you publish, and do not use the
+technique on someone who has not agreed to it. The dating, wedding and gift
+work this method is aimed at is exactly the context where consent is easy to
+get and easy to skip.
+
+### Pick the Sheet Model per JOB, Not per Project
+
+The same sheet prompt through three image models does not produce three
+qualities of the same thing — it produces three different strengths, and the
+right answer is per-character [DEMO — Higgsfield "AI Love Stories" tutorial,
+2026-08]. In that run, from one prompt across Seedream 5.0 Pro, GPT Image 2 and
+Nano Banana:
+
+| Model | What it won on, in that comparison |
+|---|---|
+| Seedream 5.0 Pro | costume **texture and wear**, and consistency of the costume across all three panels |
+| GPT Image 2 | **curly hair** — full, natural, and identical from every angle; the others could not hold it |
+
+[UNPROVEN HERE] — one production's comparison, on two characters. Treat the
+*method* as the finding, not the table: **run the same sheet prompt through
+two or three models and compare before locking**, because the axis that decides
+it is whatever your character is hardest to render (hair, wardrobe wear, skin,
+a signature prop), and that axis changes per character. Sheets are cheap
+relative to the shots that depend on them; a wrong lock is paid for in every
+later generation.
+
+Model specs and current pricing: `../../image-models.md`.
 
 ### Single-prompt 6-panel character sheet (3×2 grid)
 
@@ -568,9 +631,39 @@ for leads, a variety sheet for the crowd behind them — both can be Elements
 in the same prompt. (Reference-role vocabulary:
 `../higgsfield-seedance/SKILL.md` § Reference Roles.)
 
-Pairs with the empty-plate rule for locations — generate the location with no
-people and let the video model own the crowd from the variety sheet
-(`../../templates/ad-asset-prep.md` § Location plates).
+**Pairs with the empty-plate rule for locations — but that rule has a
+condition, and it used to be stated here without one.** The default still
+holds: generate the location with no people and let the video model own the
+crowd from the variety sheet (`../../templates/ad-asset-prep.md` § Location
+plates). It gives you one plate that serves every shot, and the crowd stays
+directable per shot.
+
+It **inverts on a location whose crowd IS the location** [DEMO — Higgsfield
+"AI Love Stories" tutorial, 2026-08]. A night carnival square kept breaking
+from an empty plate — the model had to invent a packed festival throng from
+prose on every take, and the takes disagreed with each other. Generating the
+square **already alive with the costumed crowd**, baked into the location
+asset, fixed it, and the reported side effect is the tell: *"the prompt stayed
+clean and simple."* The crowd stopped being something every shot prompt had to
+re-specify.
+
+**Which rule applies — decide on the plate, before the shots:**
+
+| Empty plate + variety sheet | Crowd baked into the plate |
+|---|---|
+| the crowd is *staffage* — passers-by, background traffic | the crowd **is the set**: a festival, a packed arena, a market at full tilt |
+| headcount and behaviour change shot to shot | the same dense mass in every shot of the scene |
+| you need the crowd directable ("they scatter") | the crowd is scenery and never takes direction |
+| density is low-to-medium | density is so high that prose cannot specify it without bloating every prompt |
+
+The test that decides it: **write the crowd out in prose and see how long it
+is.** If specifying it costs a paragraph in every shot prompt, that paragraph
+belongs in the location asset instead. And verify before committing the scene —
+that production ran one cheap test generation purely to see whether the baked
+crowd held, which is the right order.
+
+[UNPROVEN HERE] — one production, one location type. What is certainly true is
+that the unconditional form of this rule was wrong.
 
 ---
 
