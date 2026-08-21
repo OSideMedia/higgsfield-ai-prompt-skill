@@ -4,6 +4,19 @@ Meta-prompt template for **Claude** (not Seedance). Generates a top-down
 floor plan + paste-ready Seedance blocking note in one pass — locks
 spatial geometry before any Seedance generation begins.
 
+> **The map is for YOU. The prose is for the model.** The HTML artifact this
+> template renders is an authoring aid — you read it, you check the geometry
+> against your intent, and what travels into the Seedance prompt is the
+> **blocking note**. Never attach the floor plan itself as a reference image.
+>
+> That is not a style preference, it is the one thing the diagram method is
+> agreed on across sources: a staging reference shown to a video model is drawn
+> **front-on, from the camera's side, never top-down** — video models think in
+> frames, not floor plans, and a floor plan handed to one is geometry it has no
+> way to map onto a shot. Top-down is the right shape for *reasoning* about a
+> space and the wrong shape for *showing* one. Both facts are true at once, and
+> this template lives entirely on the reasoning side.
+
 ## When to use this template
 
 Any multi-character or geometrically-complex shot where Seedance has

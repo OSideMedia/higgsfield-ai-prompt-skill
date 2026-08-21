@@ -11,8 +11,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS]
-  version: 3.5.0
-  updated: 2026-08-09
+  version: 3.6.0
+  updated: 2026-08-21
   parent: higgsfield
 ---
 
@@ -24,6 +24,7 @@ metadata:
 - Four layers to consider per prompt: Dialogue / SFX / Ambient / BGM [→](#the-four-audio-layers)
 - Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens; per-language sync-word budgets are FIELD-reported [→](#lip-sync-rules)
 - **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input-seedance-20-audio1)
+- Scope an audio reference like an image one: name the property that rides, the property that must NOT, and where the excluded one comes from instead [→](#scope-an-audio-reference-say-which-property-rides)
 - Multi-clip assembly: one master track · cuts land on musical punctuation, never inside a sung vowel (ECU mouth-match is the one exception) · unified grain + LUT masks batch color drift [→](#cutting-to-music-assembling-separately-generated-clips-on-one-track)
 - Cinema Studio 3.0 native joint audio (SCELA): describe audio as a separate section; specific foley beats generic moods [→](#cinema-studio-30-audio-businessteam-plan)
 - **Seed Audio 1.0** (`seed_audio`, standalone) = whole-scene audio in ONE pass — multi-speaker dialogue + music + SFX + ambience mixed [→](#scene-audio-generation-seed-audio-10)
@@ -217,12 +218,72 @@ This means `@Audio1` has **two distinct jobs**, and you pick one per shot:
 |-----|---------------------|-------------------|
 | **Audio-as-output** | Plays the uploaded track unmodified as the clip's soundtrack | Timestamp-anchor it (`plays exactly as uploaded from 0s to end`) and **remove** all ambient/SFX/music tokens so the engine doesn't override it (see § Seedance 2.0 below) |
 | **Audio-as-driver (beat sync)** | Drives the **visuals** — cut timing, camera acceleration, action pace, energy peaks | Write the audio→visual mapping explicitly (below). The clip can still get generated sound, or set `generate_audio` false for visuals-only. |
+| **Audio-as-performance** | The character on screen **performs** the track — hums, sings, plays along, moves to it — hitting the actual notes | Scope it to the one property you want (§ Scope an audio reference, below). Unscoped, it also lends its voice. |
 
 > **Why it works (author's model — empirical, not in the official spec):** the
 > temporal branch that reasons about motion and pacing reads the sound's
 > structure — beat positions, dynamic contour, timbral texture, song-structure
 > sections — and maps it to visual rhythm. Treat the mechanism as a working
 > model; treat the capability (audio reference role) as confirmed.
+
+### Scope an audio reference — say which property rides
+
+Every *image* reference in this stack is scoped in both directions: what it
+locks, and what must be read past ("ignore the sheet's grey background", "not
+its camera vantage"). **Audio references have had no equivalent vocabulary, and
+they need one for the same reason** — a sound file carries several properties
+at once, and an unscoped reference lends all of them.
+
+The case that shows it [DEMO — Higgsfield "AI Love Stories" tutorial, 2026-08]:
+a character had to hum a specific tune on camera. Without a reference the model
+**invented a different melody every take** — the reported result of the
+no-reference control was a performance that was off-key with no rhythm. With a
+voice memo of the tune attached, it hit the notes on the first take.
+
+But the memo was somebody else's voice, and the character has his own. So the
+reference was **scoped in prose**:
+
+```
+@Audio1 is the reference for the HUMMED LINE only. Take from it ONLY the
+melody: the exact notes, pitches and intervals, the tempo, the phrasing and
+the rhythmic pause — note for note, beat for beat, nothing improvised. Do NOT
+copy the voice, timbre or vocal identity heard in the recording — he hums in
+his OWN natural speaking voice, the same voice he speaks his lines with. All
+spoken dialogue is performed as scripted below, not taken from any audio.
+```
+
+**The pattern, generalised — three parts, and the third is the one that gets
+skipped:**
+
+1. **Name the property that rides**, as narrowly as you can: notes, pitches and
+   intervals; tempo and phrasing; the rhythmic pause. Not "the song".
+2. **Name what must NOT ride**, explicitly: voice, timbre, vocal identity.
+   Sound files carry a performer as well as a performance.
+3. **Say where the excluded property comes from instead** — "his own natural
+   speaking voice, the same one he speaks his lines with". A reference that is
+   only told what not to do leaves the model to pick, and it will pick the
+   reference.
+
+The same three-part shape works for other audio properties:
+
+| Riding | Excluded | Sourced instead from |
+|---|---|---|
+| melody, tempo, phrasing | voice, timbre, identity | the character's own speaking voice |
+| rhythm and accent pattern | instrumentation, key | the scene's own diegetic sound |
+| emotional contour, dynamics | the words | the scripted dialogue |
+
+**Scope note.** Whether a reference track becomes the spoken output differs by
+model line — see § Audio by Model. The scoping vocabulary above is about which
+*property* transfers, and is written to be read alongside whatever that line
+does with an attached track, not instead of it.
+
+**Rights:** the memo above was recorded by the person for this purpose. Same
+constraint as the voice-reference lip-sync path — use recordings you have clear
+rights to.
+
+[UNPROVEN HERE] — one production, one property (melody). The *mechanism* is
+already confirmed (audio is a reference media role); what is unproven here is
+how far prose scoping steers it. Cheap to test on any tune you own.
 
 ### Beat sync — the audio choreographs the visuals
 
