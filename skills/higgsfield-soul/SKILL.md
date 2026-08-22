@@ -4,7 +4,7 @@ description: "Creates and manages reusable character profiles (Soul IDs) for con
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 3.9.0
+  version: 3.10.0
   updated: 2026-08-22
   parent: higgsfield
 ---
@@ -216,6 +216,70 @@ The quality of your Soul ID reference image determines consistency quality.
 - **Seedream 4.5** — good for a range of styles
 
 ---
+
+## A sheet is not a menu — everything on it is a request
+
+`[FIELD — Higgsfield Studio, ZEPHYR breakdown, 2026-08-06]` The intuitive way to build a
+sheet is to put *everything* on it — every weapon, every state, the mechanism drawn open —
+and then reference only the parts you need per shot. **That is not how the model reads it.
+If it sees a detail, it will try to show it.**
+
+The reported failure: a mecha sheet included the cockpit hatch in its open state. The model
+**prioritised the open hatch over the subject's standard look**, so most generations came
+back with the hatch open when it should have been shut — or with the open and closed
+versions colliding and deforming the whole design. The main body being larger on the sheet
+did not help; presence beat proportion.
+
+The fix is more sheets, not a richer one:
+
+- **Erase states that are not the default** from the base sheet, and be especially careful
+  with anything retractable, hinged, or deployable.
+- **Build a separate sheet per scenario**, even when the differences look minor. Attach the
+  extended-weapon sheet **only in the shots where it is actually extended**.
+- **Better still, give a mechanism its own close-up as a separate input** when the shot has
+  to show how it works, so it gets focus instead of competing with the full figure.
+
+> **Captions on a sheet do almost nothing for video.** A little label under a detail does
+> not teach the model to operate it — you still have to describe the whole operation in the
+> prompt. The model will not reason *"retractable blade, I know how to stage that"*; every
+> mechanism gets written out as physical action in the shot that uses it.
+
+This is the sheet-side twin of § Variety Sheets: the question is never "what could this
+sheet contain" but "what will the model be asked to render from it."
+
+## The Untouched Base — build a character in two passes
+
+`[FIELD — Higgsfield Studio, ONEIRIC + ADILIADA breakdowns, 2026-08-13]` A character is
+built in two passes with two models, and the discipline is in what happens *after*:
+
+1. **The face pass** makes the identity plate — generated in **close-up**, so the model
+   captures identity at maximum detail. That close-up is the anchor every later asset of
+   the character is checked against.
+2. **The looks pass** builds full-figure wardrobe — costume, materials, silhouette — fitted
+   to the already-locked face.
+
+The two are then assembled into a sheet **with one hard condition: the original close-up
+portrait is never run through a model again.** Assembly happens in editing tools *around*
+it. Every state change — a scar, a haircut, dirt, a wound, a new wardrobe piece — is
+integrated point by point with masks, **without touching the base**.
+
+**Why it matters:** the base image stays the same *pixels*, so identity and the skin texture
+that carries it survive every later version of the character. This is the structural answer
+to the drift documented in § Two-Tool Refinement Pipeline, where each successive model pass
+softens texture toward plastic — the base never takes another pass, so it never softens.
+
+### Hold the face, change everything else
+
+The same rule scales to alternate versions of one character — a different era, a different
+universe, hero in one world and villain in the next. **A new version is a new look, not a
+new person:** wardrobe, makeup, hair, scars and damage all change, and the face stays the
+same set of pixels. That is what keeps an alternate version still reading as the same
+person, which is the whole difficulty of the job — living between "make them different" and
+"make them the same".
+
+A corollary worth stating, because it is where sheets quietly rot: **a new state is a new
+asset with a new name, never an overwrite.** A character in the common room and the same
+character in a hospital bed are two assets of one man.
 
 ## The Reference Plate — the two axes
 

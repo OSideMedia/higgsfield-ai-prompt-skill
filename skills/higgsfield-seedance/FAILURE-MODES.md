@@ -11,8 +11,8 @@ description: >
 user-invocable: false
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, failure-modes, recovery, prompt]
-  version: 1.3.0
-  updated: 2026-08-09
+  version: 1.4.0
+  updated: 2026-08-22
   parent: higgsfield
 ---
 
@@ -420,6 +420,40 @@ the action description. State explicitly:
 See `SKILL.md` § Spatial Layout Block for the full block structure
 and § Frame Coordinate System for the per-subject coordinate
 vocabulary.
+
+---
+
+## A fight generated as separate clips comes back choppy
+
+`[FIELD — Higgsfield Studio, RED FLAG breakdown, 2026-08-19]` A multi-move exchange
+generated as independent clips does not cut together. **Each clip re-guesses pose and
+tempo**, so the bodies reset at every join and a pause creeps into every cut — the moves
+are all present and the fight still reads as a slideshow.
+
+Three counters, in order of how much they buy:
+
+1. **Frame-chain the clips.** The last frame of clip N becomes the first frame of clip
+   N+1, **with the action crossing the cut mid-move** — not at the rest position between
+   moves. Chaining at a completed beat still reads as a stop.
+2. **Give the money move one continuous take.** Write the whole combination as a single
+   timeline in seconds rather than as separate generations.
+3. **Ban slow motion by name, and say real-time speed.** Video models reach for slow
+   motion in a fight on their own; if the shot is supposed to land at real speed, the
+   prompt has to say so. (This is a case where naming the thing is worth its priming cost,
+   because the model's default is already the failure.)
+
+**Every move gets named AND vectored.** A move written without its direction is re-invented
+each take — *"she rolls him over herself with her foot"* leaves where he ends up unstated,
+and the body lands somewhere different every time. Write the vector into the move:
+*"…he lands face toward her, head toward the window."*
+
+**When full-body continuity is too expensive, cut into the body.** Quick inserts of hands,
+waist and feet hide transitions and add impact — and **a close-up of feet is far harder to
+break than a wide shot of two bodies**. Fight keyframes can also carry their own stick-figure
+blocking maps as first-frame geometry (`../../templates/seedance/staging-reference.md`).
+
+Related: § Truncated action (the cut landing before the result) and § Orphan limbs in a
+group shot are the two failures most likely to co-occur with this one.
 
 ---
 

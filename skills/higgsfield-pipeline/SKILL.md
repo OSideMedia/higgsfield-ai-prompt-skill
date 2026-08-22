@@ -9,8 +9,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
-  version: 3.4.1
-  updated: 2026-08-09
+  version: 3.5.0
+  updated: 2026-08-22
   parent: higgsfield
 ---
 
@@ -835,6 +835,33 @@ Export all 8 clips, drop into your NLE, crossfade on the teleport flashes, add m
 **Pitfall 6: >15 seconds per scene.** Seedance 2.0 caps at 15s, and beyond that prompt adherence degrades. Split longer scenes in two if needed.
 
 ---
+
+## The Edit — five stages to picture lock
+
+`[FIELD — Higgsfield Studio, ONEIRIC + ADILIADA breakdowns, 2026-08]` On a generated film
+the edit is not the last step, it is a **loop with a declared exit**. The stage that does
+not exist in conventional post is the third one, and it is the reason the loop terminates:
+
+1. **Assembly** — all scenes in script order, no rhythm yet. Goal: see the whole film,
+   find the sags and the coverage holes.
+2. **Rough cut** — rhythm, trims, rearrangements. The main list of shot re-orders forms here.
+3. **Generation supervision** — a quality-control pass *after* the rough cut: re-generate
+   broken shots, clear out AI slop, catch what does not work **before** the fine cut. This
+   is the stage where a generated film differs from a shot one — the material can still be
+   re-shot, and this is the declared window for doing it.
+4. **Fine cut** — precise fitting, screenings with cold viewers.
+5. **Picture lock** — the picture is fixed. **After lock there are no new generations**,
+   except emergency fixes with notice to colour and sound.
+
+Picture lock has to be enforced precisely *because* re-generating is cheap: without a
+declared stop, supervision never ends and colour and sound can never start against stable
+material.
+
+> **Every generation arrives with its own grade baked in.** Unlike footage from one camera,
+> neighbouring shots do not share a starting look — so the colourist's job on a generated
+> film is **unification** first and interpretation second: bringing adjacent shots to one
+> look so the picture reads as a single piece. Budget for it, and stop trying to win the
+> final grade inside individual prompts.
 
 ## Working Practices
 

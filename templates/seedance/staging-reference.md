@@ -139,6 +139,36 @@ their scripted action.
 as belonging together. Bump `_v2`, `_v3` on every retake and reference only the active
 version per shot — a stale tag causes ghost blocking.
 
+## Revising a diagram
+
+`[FIELD — Higgsfield Studio, ONEIRIC breakdown, 2026-08-13]` Two rules, and the second is
+the one that quietly ruins a sequence:
+
+1. **Name every element by its assigned colour, never by the object or person.** *"Move the
+   BLUE figure to the couch's left edge"*, not *"move Rudy"*. Colour is the diagram's
+   language; character names belong to the video prompt. Ask for the revision in the same
+   place the original diagram prompt was written, so the full colour key and geometry are
+   still in play.
+2. **Regenerate from the ORIGINAL FRAME, never from the previous diagram.** A diagram is
+   always drawn from the real shot. Feed a drawing back into the image model and it starts
+   copying **the drawing's flaws** instead of the frame's geometry — every pass compounds
+   the last one's errors.
+
+**Coverage becomes a conversation.** Once a scene has a diagram, new setups are cheap to
+ask for: *"give me the MCU on the blue"*, *"now the POV of the green"* — and you get a
+re-staged diagram for the new shot size or angle, with the same colour bindings intact.
+
+**Keep the drawing out of the writing loop.** The prompt is written from the *text*
+description of the frame, not by looking at the diagram image — which is why every figure's
+position, pose and facing has to be spelled out in words at step 1. The words are what the
+video prompt is built from; the drawing only has to agree with them.
+
+> **Talk about it as spatial data, not as a picture.** The framing that makes this work is
+> treating the reference as a system of lines, colours, coordinates and directions rather
+> than an image to copy — which is why it is worth avoiding the words "image" and
+> "reference" when instructing around it, and saying *positions, poses, facing directions*
+> instead.
+
 ## Known failures
 
 | Failure | Cause | Fix |
