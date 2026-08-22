@@ -284,6 +284,11 @@ post-production, and a generated soundtrack only gets in the way of the edit. (A
 choice, consistent with the harvest corpus's 12-of-13 music ban; see
 `../../templates/seedance/global-style-prefix.md` § Field specimens.)
 
+> `[HOUSE]` The prefix above is quoted as this production shipped it. When writing a
+> **new** prefix, prefer **`NO BGM`** over `No music` — the production term reads as a
+> hard spec where the bare negation reads as a stylistic preference the model can
+> override. See `../higgsfield-audio/SKILL.md` § Suppressing music.
+
 ---
 
 ## Wording rules

@@ -4,8 +4,8 @@ description: "Seedance 2.5 prompt director — the omni-reference dialect. Route
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.5, dreamina, jimeng, omni-reference, video-edit, video-extension, multi-reference, long-video, keyframes, storyboard, blockout, transitions]
-  version: 1.3.0
-  updated: 2026-08-21
+  version: 1.4.0
+  updated: 2026-08-22
   parent: higgsfield
 ---
 
@@ -245,6 +245,15 @@ shot may need several attempts — budget for it, or split the scene.
 **More than five subjects needing multiple views → one view per image.** Independent view
 images beat a single collage of views; the collage is the less stable form.
 
+**Spend one view on a strong expression, not four resting faces.** `[OFFICIAL — Higgsfield
+Seedance 2.5 deck, PART 2]` A set of neutral views teaches the model the face at rest and
+nothing else, so the first line of dialogue invents a mouth. Generate the views on a neutral
+light-grey ground and make **one of them a strong expression** — anger, or a wide smile —
+so the model learns the character's **facial dynamics and teeth structure**, not only the
+resting face. The canonical four: front view · back view · facial details at neutral ·
+facial dynamics and teeth under strong emotion. Close the set with the identity line
+(§ Reference Roles) so all four are read as one person.
+
 ---
 
 ## Multi-Reference — the Five-Step Workflow
@@ -428,8 +437,11 @@ Two house rules carry over from `../higgsfield-audio/SKILL.md` and the film pipe
   does not undo it: the readable text is still there being asked for.
 - **Diegetic-only is a project choice, and 2.5 finally obeys it.** Random subtitles and
   unrequested BGM were 2.0's most-reported nuisance; ByteDance calls suppression of both a
-  headline 2.5 fix `[OFFICIAL — Dreamina]`. Still say it — `(no music)` and no `【】` block —
-  rather than trusting the improvement.
+  headline 2.5 fix `[OFFICIAL — Dreamina]`. Still say it — and no `【】` block — rather
+  than trusting the improvement. Write the suppression as **`NO BGM`**, not `(no music)`:
+  a production term reads as a hard spec where a bare negation reads as a preference, and
+  lead with the positive diegetic list before it (`../higgsfield-audio/SKILL.md` §
+  Suppressing music).
 
 ---
 

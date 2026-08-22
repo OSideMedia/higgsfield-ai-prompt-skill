@@ -4,8 +4,8 @@ description: "Writes the character-performance layer of a video prompt as behavi
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, acting, performance, character, behavior, emotion, subtext, beats, eye-life, voice, ensemble, master-profile]
-  version: 1.0.0
-  updated: 2026-08-07
+  version: 1.1.0
+  updated: 2026-08-22
   parent: higgsfield
 ---
 
@@ -107,6 +107,87 @@ repetitions (asking the same thing — they don't believe the answer) · abrupt 
 jokes at the wrong moment (a shield against vulnerability) · answers that are too short
 ("Fine." "Sure." — a closed door).
 
+## The layer above the pillars — one direction, different fuel
+
+`[DEMO — Tigran (tig-acting-task), 2026-07-10]` `[UNPROVEN HERE]` The five pillars are
+per-character. They do not say what holds an ensemble together, and that is why scenes
+built from them alone can read as several good performances that are not in the same
+scene. One layer sits above them.
+
+**The scene has ONE direction, and every character plays toward it.** Usually unspoken —
+a mutual silent agreement about how this time will be lived. *Part without pain, stay
+positive* (a mother packing her son's kit before he leaves). It belongs to everyone in
+the room at once. It is **not** the film's dramaturgic function: characters never play
+the reveal or the theme, which are accomplished *through* them as a byproduct.
+
+**Each character pushes that direction for their own reason — the MOTIVE.** Same vector,
+different fuel. The son keeps it painless *for his mother*; the mother out of
+*superstition* (tears before a journey are a bad omen). **The fuel is what makes each
+performance distinct while the scene still reads unified** — and it is the piece most
+often skipped, which is what collapses an ensemble into one note repeated.
+
+Given circumstances constrain the motive: a character who already took a compromised job
+cannot play moral innocence. If the motive contradicts the backstory, re-derive it.
+
+Distinguish carefully, because these are four different things and only the last two are
+per-character:
+
+| Layer | Whose | Example |
+|---|---|---|
+| Scene direction | Shared by all | *keep it painless* |
+| Motive (fuel) | Each character's own | *superstition* / *for her* |
+| Objective (§ pillar 1) | Each character's own | *send him off strong* |
+| Tactic (§ pillar 3) | Each character's own | *pack ordinarily, steal looks* |
+
+### Name the event from the ENDING
+
+Read how the scene **ends** before naming what it is about. The last line or beat is the
+key you read the whole scene backward through — and watch for the double-meaning last
+line, spoken about one thing and meant about another (*"Poor bastard. Just can't forgive
+himself"* — said over a patient, meant about the speaker).
+
+**The test: the event must contain EVERY character in the scene**, including silent and
+unconscious ones, as participants or mirrors of the same process. **If a character stands
+outside the named event, the event is named wrong** — rename it until they are all inside
+it. This is the cheapest structural check in this file and it catches the scene where one
+character is merely present.
+
+### The physical action is the channel
+
+The surface activity — the *terrain* — stays as the physical action, and each character
+pursues the event **through it, via their own distinct, camera-readable behaviour**. The
+invisible task must have a visible channel or the model has nothing to render.
+
+One terrain (*routine hospital rounds*), one event (*the search for self-forgiveness*),
+three channels:
+
+- one character through **remembering** — REM under closed lids, a tear
+- one through **obligated actions done right** — correct metrics, on time, double-checking an entry
+- one through **caring** — patient-care gestures beyond the checklist, checking the man rather than the chart
+
+Give every character in the scene their own physical channel for the same event. Different
+behaviours, one event, one terrain. This is what turns an acting note into something a
+video model can actually generate.
+
+### Contrast pairing — build duos on mirrored +/−
+
+A two-hander is richer when the pair is built on contrast: **each character carries one
+plus and one minus, inverted relative to the partner**, and one axis is named as the
+**essential axis** — the opposition the audience actually reads. The other traits are
+colour.
+
+A lab pair, essential axis *care for the patient*:
+
+- **Doctor — loyal (+) / careless (−).** Genuinely loyal, but to the institution and the money. His plus serves the wrong master, so on the essential axis he is **minus**.
+- **Medic — compromised (−) / caring (+).** Compromised by taking the job at all, but caring toward the patient. His minus is real; his plus survives inside it — on the essential axis he is **plus**.
+
+Both still push the same scene direction. The contrast lives *under* it and leaks out
+through the tactics: the careless one's routine is real, the caring one's routine is
+armour, and it cracks.
+
+**The seeming trait is often scar tissue over its opposite** — "careless" is hope lost,
+not care absent. Direct the history, not the surface.
+
 ## Listening and reaction
 
 Performance lives not in the lines but **between** them. Four observable markers to write in:
@@ -122,6 +203,12 @@ Performance lives not in the lines but **between** them. Four observable markers
 4. **Contagion from the partner.** Tempo, volume, and energy shift in response: a shout is
    answered either with a counter-shout or with pointed quiet — but *answered*, not continued
    over.
+
+**A silent listener still gets a task, not just markers.** The four markers above describe
+how a reaction *reads*; they do not give the listener anything to be doing between them,
+and a listener with no task is where the dead face comes back in a two-shot. Name the work:
+*decide whether he is serious · wait for the opening · protect the mood · catch him in the
+lie.* Every character in frame gets living eyes this way.
 
 ## The body
 
@@ -251,7 +338,15 @@ naturalistic ocular life, in the profile *and* in every scene.
   eyes drift, flick away in thought, scan to a detail and settle back. They never lock frozen.
 - **Realistic blink rate and quality**, tied to state: rapid blink-bursts under stress; slow
   calm lids in control; a blink-and-glaze on a moment of dissociation.
-- **Live catchlights** — the eyes must read as wet, lit, and alive.
+- **Live catchlights** — the eyes must read as wet, lit, and alive. But a catchlight is a
+  *render* property, not a cure: **dead eyes are not fixed by lighting tricks, they are
+  fixed by giving the eyes a task.** A glassy stare with a beautiful catchlight is still a
+  glassy stare. Write the eye-work as purposeful action aimed at the partner — *checking
+  both of their eyes for a sparkle of trust · registering after each point whether it
+  landed · stealing a look and snapping back before being caught · measuring them,
+  comparing what I feel against what they show.* **The eye movement IS the doing**, and
+  aliveness is the mind visibly working on the task moment to moment. Catchlights make
+  that legible; they never substitute for it.
 - **Controlled stillness is chosen, never dead.** For a near-unblinking predator calm, keep
   blinks rare, slow, and deliberate — a decision, not a freeze — and let the gaze still shift
   slowly with intent.

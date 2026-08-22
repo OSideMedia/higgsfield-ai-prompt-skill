@@ -11,8 +11,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS]
-  version: 3.6.0
-  updated: 2026-08-21
+  version: 3.7.0
+  updated: 2026-08-22
   parent: higgsfield
 ---
 
@@ -114,6 +114,56 @@ BGM: lo-fi hip-hop beat, warm vinyl crackle, relaxed.
 - "Tense strings, building" works better than "suspenseful music"
 - Specify when music enters/exits: "Piano enters at the midpoint, builds to the end"
 - For beat-sync content: "Cuts match the downbeat" or "Movement peaks on the drop"
+
+### Suppressing music — `NO BGM` is a spec, `no music` is a preference
+
+`[DEMO — Joey cinema-director-v3, 2026-08-16]` `[UNPROVEN HERE]` When a piece must
+carry no score, the phrase matters. **`no music` reads as a weak stylistic preference**
+and loses to the model's strong prior that generated video wants a bed under it.
+**`NO BGM` reads as a production term** — a hard spec — and is the form to write.
+Expand it once on first use so the abbreviation is unambiguous, then let it carry.
+
+**Lead positive, then negate.** Name what the audio *is* before naming what it is not —
+diegetic sources tied to surfaces and materials, plus room tone. A suppression clause
+with nothing positive in it leaves the model to decide what "silence" sounds like, and
+it decides in favour of a pad.
+
+```
+Audio: diegetic sound only — footsteps on wet stone, fabric shift, breath, room tone.
+NO BGM — no background music of any kind. No score, no soundtrack, no instrumental,
+no underscore, no ambient musical pad, no drone, no tone bed. Nothing musical at any point.
+```
+
+**Promote it to the top on a scene that must land silent.** Audio instructions carry
+more weight early; by the time the model reaches a closing audio block it has already
+decided what the piece sounds like. State `NO BGM` in the header alongside shot count
+and cut policy, then restate it as the closing audio clause.
+
+> **Enumerate with care — this cuts against the house rule on negation.**
+> `../shared/negative-constraints.md` and the repo's staging-reference doctrine both
+> hold that **naming a thing under a negation ships the token anyway** and can prime
+> the very output you are refusing. The source's long list (score, soundtrack,
+> instrumental, underscore, ambient pad, drone, tone bed, swell, sting, humming,
+> whistling, lyrics) is its answer to a real failure — a bare negation lets the model
+> supply an "ambient texture" and consider the instruction honoured — but it is one
+> practitioner's fix and is **not measured here**. Default to the short form above;
+> reach for the full enumeration only when a short form has already failed on the
+> shot in front of you, and expect the enumeration itself to carry some priming risk.
+
+**Attached-track lock.** When an audio or video track is attached it is the sole and
+complete audio source, and it owns all internal timing — never impose per-beat timing
+on a lipsync take:
+
+```
+AUDIO: the attached clip @Video 1 is the sole and complete audio source for this
+sequence. Generate no additional audio of any kind — no room tone, no foley, no
+ambience, no breath, no added dialogue, NO BGM.
+```
+
+**The unheard-track technique** lets bodies perform to music that is not in the mix —
+useful when the score is added in post: state that the track is inaudible, then describe
+the performance against it (*"singing roughly in time to the unheard 87 BPM beat"*),
+plus the diegetic layer that IS heard.
 
 ---
 
