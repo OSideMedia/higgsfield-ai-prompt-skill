@@ -151,6 +151,31 @@ base of the neck. Match this proportion in every frame. Ignore this image's back
 lighting and grade.
 ```
 
+> ### Where a sentence DOES hold — the size gap decides the instrument
+>
+> `[FIELD — Higgsfield Studio, RED FLAG breakdown, 2026-08-19]` "The last thing words can
+> fix" is true of the case above — an extreme ratio, a rider against a dragon at 12×. It is
+> **not** true of ordinary set geometry, and reading it that way sends people to build a
+> size-ref frame for a handrail. On a near-human prop a written ruler holds, and it holds
+> because it is **converted into a body landmark** rather than left as a number:
+>
+> ```
+> the railing is 110 cm; on a 185 cm man the top rail lands just above his belt
+> ```
+>
+> Without the second clause the railing floated up to chest height — the bare measurement
+> did nothing on its own, because the model has no way to cash a centimetre into a frame.
+>
+> **The trap that makes this dangerous:** the landmark must be *arithmetically true* for
+> the two figures named. A wrong anchor is not ignored — it is obeyed, and the model
+> resizes the **object** to satisfy your false claim, so an invented body-part comparison
+> actively corrupts the scale it was written to protect. Compute it from the real
+> dimensions or leave it out.
+>
+> So: **near-human props → a computed anchor sentence. Extreme ratios → the size-ref
+> image.** Reach for the image when the gap is large enough that no single body landmark
+> can express it.
+
 Two locks earn their place next to it:
 
 - **The asymmetry lock.** `If scale is uncertain, render the rider SMALLER, never larger.`

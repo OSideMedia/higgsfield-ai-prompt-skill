@@ -1,5 +1,73 @@
 # Changelog
 
+## v3.35.0 — 2026-08-22
+
+**The reconciliation pass on five picks deferred from v3.34.0.** Each of these overlapped
+a section the repo already had, so none of them is an append — every one was integrated
+into the existing text, and two of them turned out to be **mostly already held**, which is
+recorded here rather than quietly re-shipped.
+
+### Changed
+
+- `skills/higgsfield-seedance/SKILL.md` § Tag naming (1.13.0 → 1.14.0) `[FIELD — ONEIRIC]`.
+  The section already said what a tag *line* contains and how handles are assigned; it said
+  nothing about **constructing the name**, and "user-specified tags verbatim" left the
+  convention undefined. Adds the `@loc_` / `@char_` / `@prop_` form with project, scene and
+  version segments, under the rule that motivates it — **one element, one name**, because
+  without it a project grows duplicates and nobody can tell which reference is real. The
+  identity half of the state rule is **not** restated here: it lives in `higgsfield-soul`
+  § The Untouched Base and this section points at it.
+- `skills/higgsfield-acting/SKILL.md` § Voice — fixed identity (1.1.0 → 1.2.0) `[FIELD —
+  ONEIRIC]`. **Mostly already held** — the section already required the voice prompt to be
+  pasted verbatim and never modified. What it lacked was the failure mode: "verbatim" gets
+  broken by a writer *improving* the wording between shots and believing the meaning is
+  preserved. It is not — swapping *warm* for *rich* moves the generated voice. Adds the
+  not-even-a-synonym clause and the voice-bible artifact (one place, decided once, pasted
+  from rather than retyped).
+- `skills/higgsfield-seedance/FAILURE-MODES.md` § Orphan limbs (1.4.0 → 1.5.0) `[FIELD —
+  RED FLAG]`. The section was scoped to three-plus characters and an order lock. Extends it
+  with the case that scope misses: **a solo close-up can grow a third hand**, where there is
+  no order to lock. Anatomy needs an explicit headcount even at one character, and the
+  counter states count, ownership **and entry point** — count alone still lets a
+  correctly-numbered pair arrive from two directions.
+- `skills/higgsfield-seedance/FAILURE-MODES.md` § **Walking is the hardest stunt** — NEW
+  entry `[FIELD — RED FLAG]`. The repo carried gait as *characterisation*
+  (`higgsfield-acting`) and had no failure mode for the mechanics breaking: gliding with no
+  weight transfer, both feet airborne, the same foot twice, two walkers drifting apart, a
+  figure teleporting up a stairwell or the stair opening bricked into solid wall. The
+  counter writes the cycle as physics (`heel lands first, strict left-right alternation,
+  one foot always on the ground`), gives an abreast pair its own lock, and makes an
+  off-screen mechanism a **named, mandatory object** — the stairwell fails precisely
+  because the mechanism is off screen, so nothing in frame holds the model to it. Also
+  carries the cross-shot case: **camera speed** mismatched between two tracking shots of
+  one walk, invisible per shot, fixed only by writing the relation into both.
+- `skills/higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 2 — **a seam inside the repo,
+  settled** `[FIELD — RED FLAG]`. This file said relative scale is "the last thing words can
+  fix" and the fix "is an image, not a sentence". A field build then fixed a handrail with a
+  written ruler. Both are right, and the **size gap decides the instrument**: near-human
+  props take a computed anchor sentence, extreme ratios take the size-ref image. Read
+  without that boundary, the existing line sends people to build a size-ref frame for a
+  handrail. Two mechanisms named: a bare measurement does nothing on its own (the model
+  cannot cash a centimetre into a frame) so it must be **converted to a body landmark**;
+  and the landmark must be **arithmetically true**, because a wrong anchor is not ignored —
+  it is obeyed, and the model resizes the *object* to satisfy the false claim.
+- `skills/higgsfield-cinema/SKILL.md` § Location Reference Sheets (3.3.0 → 3.4.0) `[FIELD —
+  ADILIADA]`. The section stopped a location being *reinvented* but not people **moving
+  around inside it**. Adds deliberately planted visual anchors — the chair, the window, the
+  bead curtain — chosen to be distinctive and immovable (a second matching chair is an
+  ambiguity, not an anchor), so blocking can be written against something nameable. Plus
+  matching plate colour, light and saturation **at the asset stage**, since otherwise every
+  generation inherits a slightly different world and the mismatch only surfaces in the
+  edit, where it becomes the unification problem in `higgsfield-pipeline` § The Edit.
+
+### Known limitations (accepted)
+
+- All five are `[FIELD]` — one studio's practice, **not A/B'd on our material**.
+- The scale reconciliation is a **boundary claim** (near-human vs extreme ratio) drawn from
+  two field reports that each worked in their own regime. Where exactly the boundary sits
+  is not measured; the guidance is to reach for the image when no single body landmark can
+  express the gap.
+
 ## v3.34.0 — 2026-08-22
 
 **Eight picks from the four Higgsfield Studio project breakdowns** — RED FLAG, ONEIRIC,

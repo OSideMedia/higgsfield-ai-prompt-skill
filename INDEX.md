@@ -249,6 +249,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Multi-Shot Manual](skills/higgsfield-cinema/SKILL.md#multi-shot-manual)
   - [Reference Anchor System](skills/higgsfield-cinema/SKILL.md#reference-anchor-system)
   - [Location Reference Sheets](skills/higgsfield-cinema/SKILL.md#location-reference-sheets)
+    - [Plant visual anchors before you shoot the space](skills/higgsfield-cinema/SKILL.md#plant-visual-anchors-before-you-shoot-the-space)
     - [The Five-View Location Sheet](skills/higgsfield-cinema/SKILL.md#the-five-view-location-sheet)
     - [What to Preserve on Reuse](skills/higgsfield-cinema/SKILL.md#what-to-preserve-on-reuse)
     - [Failure Mode This Prevents](skills/higgsfield-cinema/SKILL.md#failure-mode-this-prevents)

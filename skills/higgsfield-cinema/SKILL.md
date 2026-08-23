@@ -4,8 +4,8 @@ description: "Guides users through professional filmmaking workflows in Higgsfie
 user-invocable: true
 metadata:
   tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
-  version: 3.3.0
-  updated: 2026-05-11
+  version: 3.4.0
+  updated: 2026-08-22
   parent: higgsfield
 ---
 
@@ -589,6 +589,27 @@ a standalone asset and reuse it — don't re-describe it inside each scene promp
 Scene-by-scene re-description is the root cause of the "every shot reinterprets
 the environment" failure: walls drift, furniture rearranges, scale shifts, and the
 world stops feeling like a single place.
+
+### Plant visual anchors before you shoot the space
+
+`[FIELD — Higgsfield Studio, ADILIADA breakdown, 2026-08-14]` A location sheet stops the
+room being *reinvented*; it does not by itself stop people **moving around inside it**.
+The cheap addition is to deliberately plant a few fixed, distinctive objects and then stage
+against them: the chair a character sits in, the window two of them talk by, the beaded
+curtain a body goes through. They give the model something nameable to hold position
+against across generations, and they give you something to write blocking against — *"at
+the window, screen-left"* is checkable in a way that *"on the left side of the room"* is
+not.
+
+Choose anchors that are **distinctive and immovable**. A second matching chair is not an
+anchor, it is an ambiguity.
+
+**Tune the plates against each other before generating anything.** Locations that will cut
+together get their colour, light and saturation matched at the asset stage, so the scenes
+already agree in character once shots start landing — otherwise every generation inherits a
+slightly different world and the mismatch surfaces only in the edit, where it is
+`../higgsfield-pipeline/SKILL.md` § The Edit's unification problem to solve at
+colour-correction instead.
 
 ### The Five-View Location Sheet
 

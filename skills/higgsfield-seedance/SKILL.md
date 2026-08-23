@@ -4,7 +4,7 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.13.0
+  version: 1.14.0
   updated: 2026-08-22
   parent: higgsfield
 ---
@@ -510,6 +510,30 @@ arithmetic there.
   even when visible in the reference; the model can drop them.
 - **Never place an `@tag` in a shot where that object is not present** — the
   model will force it into frame.
+
+**Naming the tags themselves** `[FIELD — Higgsfield Studio, ONEIRIC breakdown, 2026-08-13]`
+The bullets above say what a tag *line* contains; on a project of any size the *name* needs
+a convention too, and the rule behind it is **one element, one name**. Without it a project
+grows duplicates — the same couch living under three names — and nobody can tell which
+reference is the real one:
+
+```
+@loc_ON_dorm_commonroom_front_s2     type + project + name + [angle] + scene
+@char_ON_Rudy_s2_v1                  type + project + name + scene + version
+@prop_ON_pizza                       type + project + name
+```
+
+- **The scene suffix ties an asset to where it lives**, so two dressings of one room, or
+  two versions of a location across a time jump, cannot collide.
+- **The version suffix appears when a state changes** — and a changed state is a **new
+  asset with a new name, never an overwrite**. One character in a dorm room and the same
+  character in a hospital bed are two assets of one man. The identity discipline behind
+  that split lives in `../higgsfield-soul/SKILL.md` § The Untouched Base; this bullet is
+  only the naming half of it.
+- Tags are arbitrary strings, so mixed case is safe and **consistency is the only rule**.
+  Pair related names visibly (a location and its staging reference sharing a stem) so it
+  reads at a glance which assets belong together — see
+  `../../templates/seedance/staging-reference.md` § Tag naming for the staging-side form.
 
 ### Context isolation
 

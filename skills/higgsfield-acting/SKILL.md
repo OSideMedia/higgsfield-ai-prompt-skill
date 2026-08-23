@@ -4,7 +4,7 @@ description: "Writes the character-performance layer of a video prompt as behavi
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, acting, performance, character, behavior, emotion, subtext, beats, eye-life, voice, ensemble, master-profile]
-  version: 1.1.0
+  version: 1.2.0
   updated: 2026-08-22
   parent: higgsfield
 ---
@@ -386,6 +386,13 @@ never paste it.
 Acting is rewritten per scene; **voice is locked.** Each character gets one Voice prompt — a
 permanent vocal identity pasted **verbatim** into the audio field every time they speak, and
 never modified. If the character appears but says nothing, omit it.
+
+> **Not even a synonym.** `[FIELD — Higgsfield Studio, ONEIRIC breakdown, 2026-08-13]`
+> "Verbatim" is stricter than it sounds, and the way it gets broken is not carelessness —
+> it is a writer improving the wording between shots and believing the meaning is
+> preserved. It is not: swapping *warm* for *rich*, or *gravelly* for *raspy*, moves the
+> generated voice. Keep every locked block in one place — a **voice bible** for the
+> production, decided once — and paste from it rather than retyping.
 
 ```
 "A [origin / accent descriptor]. [Timbre and register]; [pace and delivery manner];
