@@ -11,7 +11,7 @@ description: >
 user-invocable: false
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, failure-modes, recovery, prompt]
-  version: 1.4.0
+  version: 1.5.0
   updated: 2026-08-22
   parent: higgsfield
 ---
@@ -366,6 +366,22 @@ attributable hands, a two-shot on the neighbours who react, then a
 static group frame with hands already clear of the object. One
 continuous push-out cannot deliver all three.
 
+**It is not only a group failure — a solo close-up can grow a third hand.**
+`[FIELD — Higgsfield Studio, RED FLAG breakdown, 2026-08-19]` A close-up of
+one person picking a lock returned a third hand, with nobody else in the
+scene for it to belong to. The mechanism is the same (a hand is the smallest
+thing in frame that has to belong to somebody) but the order lock above does
+not apply, because there is no order. **Anatomy needs an explicit headcount
+even at one character.** Carry it in every close-up on hands:
+
+```
+There are only two hands in the frame, both belonging to the same person,
+entering from the same sleeve.
+```
+
+Note the shape — it states the count, the ownership, **and the entry point**.
+Count alone still lets a correctly-numbered pair arrive from two directions.
+
 ---
 
 ## Multi-motion camera overload
@@ -420,6 +436,44 @@ the action description. State explicitly:
 See `SKILL.md` § Spatial Layout Block for the full block structure
 and § Frame Coordinate System for the per-subject coordinate
 vocabulary.
+
+---
+
+## Walking is the hardest stunt
+
+**Symptom.** Ordinary walking comes back wrong in small, unmistakable ways: the figure
+**glides** with no weight transfer, both feet are airborne at once, or the same foot steps
+twice. Two people walking together drift apart or one pulls ahead. A figure that should
+rise out of a stairwell teleports up in one jump — or the stair opening is deleted and
+bricked into solid wall.
+
+**Mechanism.** `[FIELD — Higgsfield Studio, RED FLAG breakdown, 2026-08-19]` Locomotion is
+a cyclic physical constraint, and the model animates the *appearance* of walking rather
+than running the constraint. Anything the frame does not force — alternation, ground
+contact, a relationship between two walkers, an opening the body has to come out of — is
+free to drift. The stairwell case is the extreme: the mechanism is **off screen**, so
+nothing in frame holds the model to it and the simplest solution is to delete it.
+
+**Counter.** State the cycle as physics, not as an activity:
+
+```
+heel lands first, strict left-right alternation, one foot always on the ground
+```
+
+- **Two people abreast need their own lock** — *"shoulder to shoulder, on one depth line,
+  both heads the same size"* — or one drifts ahead and the pairing reads as two separate
+  walks. The head-size clause is what keeps it from becoming a depth change.
+- **Write an entrance as physics with a duration**: *"lifted into frame one invisible step
+  at a time, over two to three seconds."* And **make the off-screen mechanism a named,
+  mandatory object** — an opening the model is told must exist is far harder to brick over
+  than one it merely infers.
+
+**Matching cuts expose a sneakier one — camera speed.** Two tracking shots of the same walk
+came back at different speeds ("fast feet, slow backs"), which no per-shot description
+catches because each shot is individually fine. Fix it across the pair by stating the
+relation: `the camera speed of shot 9 equals shot 10, exactly.` Anything that must match
+between two shots has to be written as a relation in both, since neither prompt can see the
+other (§ Context isolation in `SKILL.md`).
 
 ---
 
