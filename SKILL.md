@@ -12,8 +12,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.32.0
-  updated: 2026-08-21
+  version: 3.34.0
+  updated: 2026-08-22
   author: O-Side Media
   license: MIT
 ---
@@ -135,6 +135,7 @@ budget constraints, client work), **confirm before generating:**
 | User unsure which workspace/tool fits, or asks "what should I use for X" | `higgsfield-workspaces` |
 | Write or improve a prompt | `higgsfield-prompt` + relevant sub-skills |
 | Develop a character / world / story / premise before prompting, build a character sheet / story bible, lock a visual style ("visual DNA"), keep a character consistent across many shots, or "I keep getting generic AI characters" | `higgsfield-character-design` |
+| Audit or strengthen a scene / sequence / beat outline before generating it, or "is this scene working", "what's weak here", "why doesn't this land" | `higgsfield-scene-engine` |
 | Cinematic still image prompt (shot framing, angles) | `higgsfield-image-shots` |
 | GPT Image 2.0 / gpt-image-2 prompt, UI mockup, infographic, character/reference sheet, layout-dense image, or static-ad recreation | `higgsfield-gpt-image-2` |
 | Choose the right model | `higgsfield-models` |
@@ -353,6 +354,7 @@ Result. Ratios and budgeting: `skills/higgsfield-assist/SKILL.md`.
 | `higgsfield-style` | Visual style / aesthetic questions |
 | `higgsfield-soul` | Character consistency / Soul ID |
 | `higgsfield-character-design` | Pre-production story bible — premise / world / 9-question character / story spine / visual DNA (before prompting) |
+| `higgsfield-scene-engine` | Scene/sequence structural audit — Goal / Obstacle / Tactic / Reversal / Value Shift (before spending credits) |
 | `higgsfield-apps` | One-click app recommendations |
 | `higgsfield-recipes` | Genre scene templates |
 | `higgsfield-troubleshoot` | Failed generations / quality issues |

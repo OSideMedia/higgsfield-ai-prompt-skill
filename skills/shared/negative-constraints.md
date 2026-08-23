@@ -168,6 +168,44 @@ These only apply when working in Cinema Studio 2.5.
 
 ---
 
+## The words you write are the words you summon
+
+`[FIELD — Higgsfield Studio, RED FLAG + ONEIRIC + ADILIADA breakdowns, 2026-08]` The studio
+that publishes these models states the rule as one of four things that hold a production
+together: **"Say what you want, not what you avoid — the words you write are the words you
+summon, including the ones inside a 'no'."** Two field cases make it concrete.
+
+**The colour war.** A film committed to cold teal-green corridors kept having them flipped
+warm yellow, because the references themselves leaked it — a lit window here, warm globe
+lamps there — and the model amplified it. **Negative lists ("no yellow") did nothing.**
+What worked was positive, with a budget and a failure condition:
+
+```
+The dominant color must be cold teal-green. Yellow exists only inside
+the lamp bulb and a palm-sized halo beneath it. If the frame turns
+yellow, the frame is wrong.
+```
+
+Note the shape: it does not forbid yellow, it **allocates** it — one named source and a
+stated size — and then gives the model a test it can apply to its own output.
+
+**Overriding a reference in prose.** When a reference photo carried a glowing red window
+that could not be cropped out, the fix was not a ban but a statement of fact about the
+film's world:
+
+> *"That window glowing in the reference is switched off in our film."*
+
+The model accepted it. A reference is not a contract — you can tell it what is different in
+the shot, and saying so positively beats forbidding what the reference shows.
+
+**Where this collides with a legitimate ban.** Two exceptions already documented elsewhere
+in the repo: a property baked into an asset gets its garbage banned **at the asset stage
+only** and then never mentioned again downstream
+(`../higgsfield-seedance/SKILL.md` § Bake it into the asset), and a default the model
+actively reaches for — slow motion in a fight — is worth naming because the untouched
+default is already the failure (`../higgsfield-seedance/FAILURE-MODES.md` § A fight
+generated as separate clips). Outside those, prefer the positive form.
+
 ## How to Use This File
 
 When building a prompt, scan the categories above that match the prompt's content:

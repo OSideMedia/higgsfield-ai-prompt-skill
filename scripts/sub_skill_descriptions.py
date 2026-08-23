@@ -37,6 +37,7 @@ SUB_SKILL_DESCRIPTIONS = {
     "higgsfield-vibe-motion": "Vibe Motion / motion graphics",
     "higgsfield-motion-design": "Animated-ad flow: brief -> storyboard -> Seedance video",
     "higgsfield-character-design": "Pre-production story bible: world, 9-Q character, visual DNA",
+    "higgsfield-scene-engine": "Scene/sequence structural audit before you spend credits",
     "higgsfield-seedance":    "Seedance 2.0 + frame coords + spatial layout + named failure modes",
     "higgsfield-seedance-2-5": "Seedance 2.5 omni-reference: 4 modes, 30s staging, edit + extend",
     "higgsfield-seedance-vfx": "Video-to-video footage VFX transforms (preserve + change, std 4K)",

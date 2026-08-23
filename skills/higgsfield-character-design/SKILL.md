@@ -4,8 +4,8 @@ description: "Pre-production story-and-character development for Higgsfield proj
 user-invocable: true
 metadata:
   tags: [higgsfield, character-design, story, worldbuilding, character-sheet, story-bible, visual-dna, pre-production, consistency, narrative]
-  version: 1.1.0
-  updated: 2026-07-05
+  version: 1.2.0
+  updated: 2026-08-22
   parent: higgsfield
 ---
 
@@ -137,6 +137,38 @@ This skill produces inputs; it does not generate. When the bible is locked, rout
 - **The model** → `model-guide.md` / `image-models.md`. For a character who recurs across many shots, train a **Soul ID / Soul Cast** identity (`higgsfield-soul`) rather than re-rolling one-offs; for a single hero image that won't reappear, a one-off generation is fine.
 - **Multi-shot sequences** → `higgsfield-cinema` (Cinema Studio) for shot-by-shot continuity; the Story Spine beats become the shot list.
 - **Generic prompts get generic characters.** A thin prompt ("a young man's portrait, cyberpunk") cannot recover what the sheet would have supplied — the locked sheet is the difference between a function and a person on screen.
+
+### Ship the bible as a reusable artifact, not a paste
+
+`[DEMO — Joey story-bible-builder, 2026-08-16]` `[UNPROVEN HERE]` A bible that lives in a
+chat transcript gets re-explained every session, drifts a little each time it is retyped,
+and is the reason "the same" character comes back subtly different a week later. **Write it
+out once as a single dense canon document and reuse the file** — one artifact that every
+later prompt reads from, rather than context reassembled from memory.
+
+Two ways it gets used, and they want slightly different shapes:
+
+1. **Standalone canon reference** — you consult it while writing prompts. Optimised for a
+   human reading it.
+2. **Context source for prompt work** — it is loaded alongside the prompt so the world,
+   characters, voices, tone and production rules are already known. Optimised for
+   retrieval: short labelled sections, one fact per line, no narrative throat-clearing.
+
+Keep it in `workspace/input/` so it is found the way every other supplied document is
+(root `SKILL.md` § Workspace). For anything recurring, give each character a **voice lock**
+and a **movement lock** — one line each, fixed wording, reused verbatim — so speech register
+and physical signature stay pinned the way the Visual DNA pins the look.
+
+**Build it by interview, not by questionnaire dump.** Scope first (how big is this — one
+short, or a series?), then the spine (premise, thesis, timeline, aesthetic), then factions,
+locations and world rules, then characters, then relationships and ensemble dynamics, then
+the structural engines, then the production rules. Ask in that order and each answer
+constrains the next; ask everything at once and you get a pile of unrelated facts that
+contradict each other three sections later.
+
+**Only build the part that is needed.** A single hero image does not need a faction table.
+Scope the interview to the work in front of you and leave the rest unbuilt — an unfinished
+bible is normal, an invented one is not.
 
 ---
 

@@ -255,6 +255,56 @@ The scene-physics framing replaces stylistic adjectives (`moody`, `dramatic`, `c
 
 > When *integrating* a preserved real subject or an added creature into a new plate (video-to-video), color matching alone reads as "pasted in." Match key direction, environmental bounce, optics/atmospheric haze, and edge grounding together — the full recipe is in `skills/higgsfield-seedance-vfx/SKILL.md` § Lighting integration.
 
+### The night register
+
+`[DEMO — Joey banana-pro-director 3.0, 2026-08-16]` `[UNPROVEN HERE]` "Night" prompted
+plainly comes back as **bright-night** — an evenly lit scene with a blue-teal wash over it,
+which is the look of a day plate graded cool, not the look of night. Theatrical night
+cinema is **mostly dark, with hard punchy practicals cutting through it**. The register
+splits in two, and the split is about **what is allowed to be the light source**:
+
+**A. Exterior / open night** (canyon roads, remote exteriors, anywhere with no built
+lighting). Light comes **exclusively from practical sources in the scene** — headlights,
+brake lights, dash glow leaking out of an open door, distant city glow. **No ambient
+moonlight, no ambient sky lift.** Sky and surroundings commit to deep, crushed near-black.
+Haze in the air catches the beams as visible volumetric shafts; backscatter lights only the
+immediate front of a vehicle and the ground directly ahead of it. Everything outside the
+throws falls to near-black, so subjects read primarily as silhouettes with their light
+sources defining the forward edges. A faint horizon glow may sit at extreme distance —
+small, contained, barely readable as far-off civilisation, and **never bright enough to
+illuminate anything** in the foreground or midground.
+
+**B. Interior / urban night** (garages, warehouses, streets, cabins). Practicals still drive
+the look — sodium vapour, fluorescent, neon, dash glow, brake lights. **A teal–amber split
+is legal here** precisely because the practicals motivate it: cool sodium and fluorescent
+against warm dash and amber. It is the unmotivated version — teal poured over everything
+with no source in frame — that reads as a grade rather than a scene.
+
+The governing test is the one this repo already applies to lighting generally: **name the
+source, not the mood.** `Motivated` and `Practical only` in the table above are the two rows
+that carry a night scene; `low-key` alone is not enough, because it says how dark without
+saying where the light is from.
+
+### Strobe
+
+A strobe-lit scene needs the pulse described as an event, not as an adjective, and needs
+three things stated together or it reads as broken footage:
+
+1. **The pulse itself** — hard on, hard off, on a stated BPM, with occasional double and
+   triple stutter runs. Each flash instantaneous and brilliant, revealing the scene crisply
+   frozen mid-motion; each interval dropping to near-total darkness. No fades — every
+   transition a hard snap.
+2. **A secondary light** holding a dim constant glow between hits, so forms stay readable in
+   the black rather than the frame going to nothing.
+3. **A continuous-motion clause** — *"nothing is ever frozen, held or static between
+   flashes; every body is in continuous motion at all times, it is only the light that stops
+   them."* Without this the model renders the bodies as actually stopping, which is the
+   difference between a strobe and a stutter.
+
+> **Per-beat light pulsing causes perceived choppiness.** On a report of choppy output,
+> soften the pulse to a slow continuous swell first; if it persists, kill the pulse and go
+> constant. The pulse is usually the cause, not the frame rate.
+
 ---
 
 ## Subject & Character Vocabulary

@@ -16,6 +16,11 @@ spatial geometry before any Seedance generation begins.
 > way to map onto a shot. Top-down is the right shape for *reasoning* about a
 > space and the wrong shape for *showing* one. Both facts are true at once, and
 > this template lives entirely on the reasoning side.
+>
+> **The showing side is `staging-reference.md`** — the front-on, colour-coded outline
+> drawing that IS attached to the generation, with the three-layer anti-bleed
+> architecture that makes it safe to attach. Read its measured caveat before promising
+> anyone it will pin positions.
 
 ## When to use this template
 

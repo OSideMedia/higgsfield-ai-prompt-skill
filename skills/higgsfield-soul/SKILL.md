@@ -4,8 +4,8 @@ description: "Creates and manages reusable character profiles (Soul IDs) for con
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 3.8.0
-  updated: 2026-08-21
+  version: 3.10.0
+  updated: 2026-08-22
   parent: higgsfield
 ---
 
@@ -217,6 +217,148 @@ The quality of your Soul ID reference image determines consistency quality.
 
 ---
 
+## A sheet is not a menu — everything on it is a request
+
+`[FIELD — Higgsfield Studio, ZEPHYR breakdown, 2026-08-06]` The intuitive way to build a
+sheet is to put *everything* on it — every weapon, every state, the mechanism drawn open —
+and then reference only the parts you need per shot. **That is not how the model reads it.
+If it sees a detail, it will try to show it.**
+
+The reported failure: a mecha sheet included the cockpit hatch in its open state. The model
+**prioritised the open hatch over the subject's standard look**, so most generations came
+back with the hatch open when it should have been shut — or with the open and closed
+versions colliding and deforming the whole design. The main body being larger on the sheet
+did not help; presence beat proportion.
+
+The fix is more sheets, not a richer one:
+
+- **Erase states that are not the default** from the base sheet, and be especially careful
+  with anything retractable, hinged, or deployable.
+- **Build a separate sheet per scenario**, even when the differences look minor. Attach the
+  extended-weapon sheet **only in the shots where it is actually extended**.
+- **Better still, give a mechanism its own close-up as a separate input** when the shot has
+  to show how it works, so it gets focus instead of competing with the full figure.
+
+> **Captions on a sheet do almost nothing for video.** A little label under a detail does
+> not teach the model to operate it — you still have to describe the whole operation in the
+> prompt. The model will not reason *"retractable blade, I know how to stage that"*; every
+> mechanism gets written out as physical action in the shot that uses it.
+
+This is the sheet-side twin of § Variety Sheets: the question is never "what could this
+sheet contain" but "what will the model be asked to render from it."
+
+## The Untouched Base — build a character in two passes
+
+`[FIELD — Higgsfield Studio, ONEIRIC + ADILIADA breakdowns, 2026-08-13]` A character is
+built in two passes with two models, and the discipline is in what happens *after*:
+
+1. **The face pass** makes the identity plate — generated in **close-up**, so the model
+   captures identity at maximum detail. That close-up is the anchor every later asset of
+   the character is checked against.
+2. **The looks pass** builds full-figure wardrobe — costume, materials, silhouette — fitted
+   to the already-locked face.
+
+The two are then assembled into a sheet **with one hard condition: the original close-up
+portrait is never run through a model again.** Assembly happens in editing tools *around*
+it. Every state change — a scar, a haircut, dirt, a wound, a new wardrobe piece — is
+integrated point by point with masks, **without touching the base**.
+
+**Why it matters:** the base image stays the same *pixels*, so identity and the skin texture
+that carries it survive every later version of the character. This is the structural answer
+to the drift documented in § Two-Tool Refinement Pipeline, where each successive model pass
+softens texture toward plastic — the base never takes another pass, so it never softens.
+
+### Hold the face, change everything else
+
+The same rule scales to alternate versions of one character — a different era, a different
+universe, hero in one world and villain in the next. **A new version is a new look, not a
+new person:** wardrobe, makeup, hair, scars and damage all change, and the face stays the
+same set of pixels. That is what keeps an alternate version still reading as the same
+person, which is the whole difficulty of the job — living between "make them different" and
+"make them the same".
+
+A corollary worth stating, because it is where sheets quietly rot: **a new state is a new
+asset with a new name, never an overwrite.** A character in the common room and the same
+character in a hospital bed are two assets of one man.
+
+## The Reference Plate — the two axes
+
+`[DEMO — Joey character-builder / banana-pro-director 3.0, 2026-08-16]` `[UNPROVEN HERE]`
+Photoreal character work runs two things that sound like one thing and are not. Separating
+them is the single most useful idea in plate building, because "photorealistic" sounds like
+it means both and only one of them belongs on a reference.
+
+**Axis 1 — biological realism: fully ON.** The subject must read as a real living person:
+pore texture, peach fuzz at jaw and hairline, subsurface scattering, hair strand by strand
+with flyaways, fabric with real weave and drape, metal with real surface, eyes with depth
+and moisture. This never comes off.
+
+**Axis 2 — photographic capture behaviour: OFF on every plate.** A plate is not a photograph
+of a lit set. No key direction, no shadow side, no cast or contact shadow, no falloff on the
+background, no spill, no bokeh, no depth-of-field falloff, no vignette, no flare, no haze.
+
+**Why Axis 2 is off:** these are *references*, not finished frames. Any lighting baked into
+a plate — a cheek triangle, a nose shadow, a contact shadow under the feet, a warm bleed on
+the backdrop — is inherited and amplified by every downstream generation that reads it, and
+it fights whatever lighting the actual scene wants. **The plate carries zero lighting; the
+scene prompt does all the lighting later.**
+
+> **The trap.** Writing *"photographed on a real camera by a real photographer on a real
+> set"* into a plate prompt switches Axis 2 **on** along with Axis 1 — and Axis 2 is exactly
+> what poisons a reference. The subject should look like a real person, rendered flat,
+> against nothing.
+
+The one capture phrase that survives: `Photographed on a 50mm prime, even sharpness, soft
+natural film grain. Photographed not generated.` — the focal length is named in plain words
+with no aperture, no bokeh and no falloff attached, so it buys the anti-AI-uniformity signal
+without switching on capture behaviour.
+
+### The background is a FIELD, not a ROOM
+
+The distinction most often lost. A photographed seamless is a *physical surface* — it takes
+light, it falls off, it catches spill, it holds the subject's shadow, it has a floor the
+subject stands on. **A plate background is none of that.** It is a flat uniform colour field
+with nothing behind the subject at all: no surface, no floor, no wall, no corner, no seam,
+no horizon, no plane the subject makes contact with. The subject does not stand *on*
+anything and does not stand *in front of* anything, and nothing the subject does affects the
+field.
+
+### The flattering-realism ceiling
+
+Full skin realism is always on — but realism never means unflattering. No acne, blemishes,
+prominent spots, unrequested scarring, cratered pores, or aggressive detail that reads
+clinical. The texture is fine, soft, even, natural. **Matte is the anti-plastic lever;
+fine-and-even is the flattering lever, and both run together.** Where they conflict, resolve
+toward flattering — a face should always look good.
+
+### Prompt economy — lean prompts hold faces better
+
+This runs counter to instinct. When strong references are attached, **the references carry
+the identity load, and the prompt's job is to say what to DO with that identity in this
+image.** Heavy visual description layered on top of a strong reference creates a
+double-weight prompt that dilutes the direction the model actually needs from the text.
+
+- Identify subjects by a **short distinguishing handle** — *"the woman with the deep
+  red-burgundy hair"* — not a paragraph re-describing bone structure the attached plate
+  already shows.
+- Put the load on what the prompt **uniquely** communicates: composition, framing, pose,
+  expression, what the hands are doing, wardrobe not already in a reference.
+- **Drop identity description that the reference already carries**, unless it is
+  load-bearing for this specific image.
+- The model reads the front of the prompt most heavily — put composition and pose there
+  rather than burying them under description.
+
+**Rule of thumb:** if a sentence re-describes something already visible in an attached
+reference, cut it unless the composition depends on it. **The exception is the first plate**
+— a face lock has no reference to lean on, it *is* the reference, and it gets the longest,
+most specific description of anything in this file. Everything after it gets leaner.
+
+When two or more references are attached, **say what each one carries** so the model does
+not average them: *"face, bone structure and skin tone come from the character reference;
+wardrobe and accessories come from the look reference."*
+
+---
+
 ## Character Sheet Creation
 
 A **character sheet** is a multi-angle reference image showing the same character from
@@ -232,6 +374,16 @@ doesn't have to guess." Everything below builds upward from that floor.
 tutorial states this as tested (light-grey cyclorama for people, `#7f7f7f`
 for creature sheets). Canonical statement of the grey rule:
 `../../templates/ad-asset-prep.md` § Design for win rate.
+
+*Why grey works* `[DEMO — Joey character-builder, 2026-08-16]` `[UNPROVEN HERE]`: pure
+white and pure black create **maximum subject-to-background contrast**, and image and video
+models amplify errors hardest at high-contrast edges — that is where halo, edge breathing
+and contour instability get baked in. A neutral mid-grey ground lowers that contrast, giving
+cleaner edge extraction and far less inherited contrast when the still is later read as a
+reference frame. Since virtually every character plate eventually seeds video work, grey is
+the correct standing default rather than a stylistic preference. Keep the *field* neutral
+and never warm-shifted, but do not let it cool the subject — skin and wardrobe render at
+their true tone, as under neutral daylight. See § The Reference Plate — the two axes.
 
 **How to create a character sheet:**
 1. Generate your character in Cinema Studio using your preferred optical stack

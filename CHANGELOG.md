@@ -1,5 +1,268 @@
 # Changelog
 
+## v3.34.0 — 2026-08-22
+
+**Eight picks from the four Higgsfield Studio project breakdowns** — RED FLAG, ONEIRIC,
+ADILIADA and ZEPHYR, read from the published project briefs on higgsfield.ai. These are
+the same studio as the Hell Grind brief absorbed in v3.28, and much of what they restate
+(the model has no memory, describe everything every time, an asset is a text+image pair)
+this repo already carries in `higgsfield-seedance/HELL-GRIND.md` and is deliberately not
+duplicated. What follows is what was genuinely absent.
+
+The three YouTube links in the same drop are **the finished films**, not build videos, so
+they carry no prompt craft and were not mined. The craft is in the briefs.
+
+### Added
+
+- `skills/higgsfield-seedance/SKILL.md` § **Bake it into the asset when the prompt will
+  not hold it** (1.12.0 → 1.13.0) `[FIELD — ONEIRIC]`. The general move, and the most
+  useful single idea in this drop: **when a property drifts no matter how well it is
+  written, stop writing it and move it one step earlier — generate it into the asset.**
+  The worked case is anamorphic optics, which drift shot-to-shot when asked for in a video
+  prompt and hold when the location plate is generated with the lens character already in
+  it — *the plate itself becomes the lens*. Carries the image-stage prompt block, the
+  dose ladder, and the rule that follows from it: the optics vocabulary then **never
+  appears in the video prompt at all, not even as a ban**. Also names the cost, which the
+  source does not — a baked property is no longer directable per shot, so bake only what
+  should be constant.
+  **This corrects existing guidance:** `higgsfield-recipes` offers `anamorphic` as a style
+  word to write into a prompt, which is exactly the thing measured not to hold.
+- `skills/higgsfield-seedance/SKILL.md` § **Depth Map** as a reference role `[FIELD —
+  ADILIADA]`. Greyscale, light = near, dark = far; the model reads it as the scene's depth
+  skeleton, fixing composition, volume and proportion. The failure it prevents is a space
+  that **rearranges itself between shots**. A geometry input that carries no style — pair
+  it with the environment reference that owns surfaces and light.
+- `skills/higgsfield-soul/SKILL.md` § **A sheet is not a menu — everything on it is a
+  request** (3.9.0 → 3.10.0) `[FIELD — ZEPHYR]`. The intuitive build is one rich master
+  sheet showing every weapon and state, referenced selectively per shot. **That is not how
+  the model reads it: if it sees a detail, it will try to show it.** A cockpit hatch drawn
+  open was prioritised over the subject's standard look, and most generations came back
+  with the hatch open when it should have been shut or the two states colliding and
+  deforming the design — the main body being larger on the sheet did not help, presence
+  beat proportion. The fix is more sheets, not a richer one, plus the note that **captions
+  on a sheet do almost nothing for video**: a label under a mechanism does not teach the
+  model to operate it, and every mechanism still gets written out as physical action in the
+  shot that uses it.
+- `skills/higgsfield-soul/SKILL.md` § **The Untouched Base** and § **Hold the face, change
+  everything else** `[FIELD — ONEIRIC + ADILIADA]`. A character is built in two passes —
+  a close-up face plate that becomes the anchor everything is checked against, then
+  full-figure wardrobe fitted to the locked face — and assembled **with one hard condition:
+  the original close-up is never run through a model again.** State changes go in point by
+  point with masks, around the base, so it stays the same *pixels*. This is the structural
+  answer to the texture drift this skill already documents in § Two-Tool Refinement
+  Pipeline: the base never takes another pass, so it never softens toward plastic. Scales
+  to alternate versions of one character — a new version is a new look, not a new person —
+  with the corollary that **a new state is a new asset with a new name, never an
+  overwrite.**
+- `skills/higgsfield-seedance/FAILURE-MODES.md` § **A fight generated as separate clips
+  comes back choppy** (1.3.0 → 1.4.0) `[FIELD — RED FLAG]`. Each clip re-guesses pose and
+  tempo, so bodies reset at every join and a pause creeps into every cut — every move
+  present, and the fight reads as a slideshow. Three counters: **frame-chain with the
+  action crossing the cut mid-move** (chaining at a completed beat still reads as a stop),
+  one continuous take for the money move written as a single timeline in seconds, and
+  **slow motion banned by name** because models reach for it in a fight on their own. Plus
+  the rule that every move is **named AND vectored** — a move without its direction is
+  re-invented each take — and the fallback of cutting into the body, where a close-up of
+  feet is far harder to break than a wide shot of two bodies.
+- `skills/shared/negative-constraints.md` § **The words you write are the words you
+  summon** `[FIELD — RED FLAG + ONEIRIC + ADILIADA]`. The publishing studio states this as
+  one of the four laws holding a production together, and two field cases make it concrete.
+  **The colour war:** a film committed to cold teal-green kept being flipped warm by leakage
+  from its own references, and **negative lists ("no yellow") did nothing** — what worked
+  was positive, and note its shape: it does not forbid yellow, it *allocates* it to one
+  named source at a stated size and then hands the model a test it can apply to its own
+  output. **Overriding a reference in prose:** an un-croppable glowing window was handled
+  not with a ban but with a statement of fact — *"that window glowing in the reference is
+  switched off in our film"* — and the model accepted it. A reference is not a contract.
+  The section also names the two documented exceptions where a ban is still correct, so the
+  rule does not read as absolute.
+- `templates/seedance/staging-reference.md` § **Revising a diagram** `[FIELD — ONEIRIC]`.
+  Two rules, the second of which quietly ruins a sequence: name every element **by its
+  assigned colour, never by the character** (colour is the diagram's language, names belong
+  to the video prompt), and **regenerate from the ORIGINAL FRAME, never from the previous
+  diagram** — feed a drawing back into the image model and it copies the drawing's flaws
+  instead of the frame's geometry, compounding every pass. Plus coverage-as-conversation
+  ("give me the MCU on the blue"), and the note that the prompt is written from the *text*
+  description of the frame rather than by looking at the diagram.
+- `skills/higgsfield-pipeline/SKILL.md` § **The Edit — five stages to picture lock**
+  (3.4.1 → 3.5.0) `[FIELD — ONEIRIC + ADILIADA]`. On a generated film the edit is a loop
+  with a declared exit, and the stage that does not exist in conventional post is the one
+  that makes it terminate: **generation supervision**, a QC pass *after* the rough cut where
+  broken shots are re-generated and slop cleared, before the fine cut. **Picture lock has to
+  be enforced precisely because re-generating is cheap** — without a declared stop,
+  supervision never ends and colour and sound never get stable material. Plus the colour
+  consequence: **every generation arrives with its own grade baked in**, so unlike footage
+  from one camera the colourist's first job is *unification*, and the final grade should
+  stop being fought for inside individual prompts.
+
+### Known limitations (accepted)
+
+- All eight are `[FIELD]` — one studio's production practice, documented in their own
+  breakdowns, **not A/B'd on our material**.
+- **A tension worth stating plainly:** these briefs claim the staging diagram raises
+  staging-accurate win rate "dramatically", while our own counterbalanced measurement found
+  it does **not** move blocking (6/12 = chance) though it is safe (0/18 bleed). Both are
+  recorded. `templates/seedance/staging-reference.md` keeps the measured caveat at the top
+  and the field claim is not promoted over it.
+- Deferred rather than dropped, from the same briefs: the tag-naming convention
+  (`@loc_`/`@char_`/`@prop_` with project + scene + version), the Voice Bible pasted
+  verbatim with never a synonym changed, per-shot scale rulers and hand headcounts, the
+  walking and camera-speed locks, and location visual anchors. Each overlaps existing
+  sections and wants a reconciliation pass rather than an append.
+
+## v3.33.0 — 2026-08-22
+
+**Sixteen picks from the "HIGGS" source drop** — nine folders of Higgsfield material
+(project pages, Discord decks, and community skill files) plus one third-party bundle
+that is not Higgsfield's. Technique re-derived in house voice; no source text copied.
+
+Five of the nine folders turned out to be **already absorbed** and are recorded here so
+the next drop does not re-litigate them: CULLY HILL BOYS and `Zephyr/cinedance` are the
+CINEDANCE material taken in v3.28 (the latter is that same file refactored into reference
+files, and its FOV bank carries six anchors where ours carries ten plus a measured
+reliability zone); `AI vs VFX/seedance-clean` is the `prompt-builder-2-5.skill` whose
+prompt-craft layer v3.29 deliberately declined; "How to Create AI Love Stories" shipped as
+v3.32.0; and the Discord copy of `sd25-pe` is **v0.1.0, older than the doctrine this repo
+already carries**. The two Seedance 2.5 decks are near-fully covered by the Dreamina
+doctrine absorbed in v3.29 — one gap survived.
+
+Everything below is tagged `[DEMO — …]` with `[UNPROVEN HERE]` where it is one
+practitioner's method rather than a mechanism measured on our material.
+
+### Added
+
+- **`templates/seedance/staging-reference.md` — NEW.** The front-on, colour-coded outline
+  blocking map, with the **three-layer anti-bleed architecture** (outlines never fills ·
+  the connector block in positive form, never naming the map's graphic style *even as a
+  negation* · staging attached LAST so photo references win the style vote), the
+  letters-in-prompt-space / colours-in-image-space rule, both prompt templates, tag
+  naming, the known-failure table, the QA checklist, and the trajectory / camera-path /
+  movement extensions. **This repo already named front-on-from-the-camera's-side as the
+  correct shape for a staging reference and shipped no method for producing one** —
+  `top-down-map.md` states the shape and lives entirely on the reasoning side. It now
+  cross-links here for the showing side. Carries its measurement up front: **the map does
+  NOT reliably move the blocking** (counterbalanced, 6/12 = chance, after a first pass in
+  which the model's compositional prior dominated 11/12 cells), but it **is safe**
+  (0/18 bleed) — so the anti-bleed architecture is settled and reusable while the blocking
+  claim is not.
+- **`skills/higgsfield-scene-engine/SKILL.md` — NEW sub-skill** (1.0.0), routed from the
+  root dispatcher. A five-element structural audit — Goal · Obstacle · Tactic · Reversal ·
+  Value Shift — run on text **before** any generation. The reason a prompter carries it:
+  a structurally dead scene generates exactly as cleanly as a live one, because the model
+  has no opinion about whether a beat earns its place, so the failure only surfaces once
+  the footage exists. Its keystone is the rule the whole engine turns on — **a reversal
+  with no value shift is inert**: if you cannot name the audience's before-verdict and
+  after-verdict, the turn is dead weight no matter how much plot flipped. Includes the
+  wheel-spin test (a failed tactic must return information), the sequence definition
+  (jeopardy opens → resolves) with ≥1 reversal per resolved sequence, and the
+  minimal/clean/optional three-tier fix format.
+- `skills/higgsfield-acting/SKILL.md` § **The layer above the pillars — one direction,
+  different fuel** (1.0.0 → 1.1.0). The five pillars are per-character and say nothing
+  about what holds an ensemble together, which is why scenes built from them alone can
+  read as several good performances that are not in the same scene. Adds the scene's
+  single shared direction (usually unspoken, belonging to everyone at once, and never the
+  film's own dramaturgic function — characters never play the reveal), the **motive** as
+  each character's distinct fuel along that shared vector, and a table separating
+  direction / motive / objective / tactic. Plus two tests: **name the event from the
+  ENDING** (reading the scene backward from its last line, watching for the double-meaning
+  last line), and **the event must contain every character** including silent ones — a
+  character standing outside the named event means the event is named wrong. Plus **the
+  physical action as the channel**: one terrain, one event, and a distinct camera-readable
+  behaviour per character, which is what turns an acting note into something a video model
+  can render. Plus **contrast pairing** on a named essential axis, with the observation
+  that a seeming trait is often scar tissue over its opposite — direct the history, not
+  the surface.
+- `skills/higgsfield-acting/SKILL.md` § Listening — **a silent listener gets a task, not
+  just markers.** The four reaction markers describe how a reaction reads but give the
+  listener nothing to be doing between them, and a listener with no task is where the dead
+  face returns in a two-shot.
+- `skills/higgsfield-soul/SKILL.md` § **The Reference Plate — the two axes** (3.8.0 →
+  3.9.0). Biological realism **on**, photographic capture behaviour **off**, on every
+  plate — with the trap named: writing *"photographed on a real camera by a real
+  photographer on a real set"* switches on the capture layer, and the capture layer is
+  exactly what poisons a reference, because any baked-in lighting is inherited and
+  amplified by every downstream generation that reads it. Plus the surviving capture
+  phrase, **the background is a FIELD, not a ROOM** (no surface, floor, seam, or contact
+  plane), the **flattering-realism ceiling** (matte is the anti-plastic lever,
+  fine-and-even the flattering one; where they conflict, resolve toward flattering), and
+  **prompt economy** — references carry the identity load, the prompt says what to DO with
+  it, and a sentence re-describing something already visible in an attached reference gets
+  cut. The face lock is the stated exception: it has no reference to lean on, it *is* the
+  reference.
+- `skills/higgsfield-audio/SKILL.md` § **Suppressing music — `NO BGM` is a spec, `no
+  music` is a preference** (3.6.0 → 3.7.0). A production term reads as a hard spec where a
+  bare negation reads as a stylistic preference the model overrides with its prior that
+  generated video wants a bed under it. Leads positive (name the diegetic sources and room
+  tone first, because a suppression clause with nothing positive in it leaves the model to
+  decide what silence sounds like), promotes the clause to the header on a scene that must
+  land silent, and adds the attached-track lock and the unheard-track technique. **The
+  enumeration is flagged, not adopted flat:** listing forbidden musical forms cuts against
+  this repo's own rule that naming a thing under a negation ships the token anyway, so the
+  short form is the default and the long list is an escalation carrying its own priming
+  risk.
+- `vocab.md` § **The night register** and § **Strobe**. "Night" prompted plainly returns
+  *bright-night* — a day plate graded cool. Theatrical night is mostly dark with hard
+  practicals cutting through, and the register splits by **what is allowed to be the light
+  source**: open exterior night runs on practicals only with no ambient moonlight or sky
+  lift, while interior/urban night makes a teal–amber split legal *because the practicals
+  motivate it*. Strobe needs the pulse, a secondary light holding form in the black, and a
+  continuous-motion clause stated together — plus the note that per-beat pulsing is
+  usually what a "choppy output" report is actually describing.
+- `skills/higgsfield-seedance-2-5/SKILL.md` § Material budget — **spend one view on a
+  strong expression, not four resting faces** (1.3.0 → 1.4.0) `[OFFICIAL — Higgsfield
+  Seedance 2.5 deck]`. A set of neutral views teaches the face at rest and nothing else, so
+  the first line of dialogue invents a mouth; one view at a strong expression teaches
+  facial dynamics and teeth structure.
+- `skills/higgsfield-character-design/SKILL.md` § **Ship the bible as a reusable artifact,
+  not a paste** (1.1.0 → 1.2.0). A bible living in a chat transcript is re-explained every
+  session and drifts each time it is retyped. Names the two shapes it takes (human-read
+  canon vs. retrieval-optimised context), the voice lock and movement lock per recurring
+  character, the interview order in which each answer constrains the next, and the rule
+  that an unfinished bible is normal while an invented one is not.
+
+### Changed
+
+- `skills/higgsfield-acting/SKILL.md` § Eye life — **the catchlight seam, reconciled.**
+  The section listed "live catchlights" among the markers of a living eye, which reads as
+  though lighting the eye is a fix. It is not: a catchlight is a *render* property, and a
+  glassy stare with a beautiful catchlight is still a glassy stare. **Dead eyes are fixed
+  by giving the eyes a task**, written as purposeful action aimed at the partner — checking
+  both of their eyes for a sparkle of trust, registering whether a point landed, stealing a
+  look and snapping back. The eye movement IS the doing; catchlights make it legible and
+  never substitute for it.
+- `skills/higgsfield-soul/SKILL.md` § Character Sheet Creation — **the grey rule gains its
+  mechanism.** The rule was stated as "tested" with no reason attached, which makes it look
+  like a stylistic preference a user can trade away. White and black create maximum
+  subject-to-background contrast, and models amplify errors hardest at high-contrast edges —
+  that is where halo, edge breathing and contour instability get baked in. A mid-grey ground
+  lowers that contrast, giving cleaner edge extraction and far less inherited contrast when
+  the still is later read as a reference frame. Since virtually every character plate
+  eventually seeds video work, grey is a standing default rather than a taste call.
+- `skills/higgsfield-seedance-2-5/SKILL.md` § diegetic-only: the recommendation was
+  `(no music)` — **the exact weak form** the new audio section identifies as losing to the
+  model's prior. Now points at `NO BGM` and the positive-first ordering.
+- `skills/higgsfield-seedance/HELL-GRIND.md`: the quoted `SFX only. No music.` prefix
+  stays as that production shipped it, with a `[HOUSE]` note that a **new** prefix should
+  use `NO BGM`. Tagged inline because the file is otherwise stamped `[OFFICIAL]`.
+- `templates/seedance/top-down-map.md`: cross-links to the new staging-reference template
+  as the showing-side companion, with a pointer to its measured caveat.
+- Root `SKILL.md`: routes `higgsfield-scene-engine` in both the routing table and the
+  sub-skill list; `scripts/sub_skill_descriptions.py` gains its entry.
+
+### Known limitations (accepted)
+
+- Every pick except the Seedance 2.5 deck item is re-derived from a third-party corpus and
+  is **not A/B'd on our material**. The `[UNPROVEN HERE]` tags are load-bearing.
+- The `NO BGM` claim is a phrasing claim about how a model weights a production term
+  against a plain negation. It is cheap and low-risk to adopt, and it is **unmeasured** —
+  the settling probe, if it is ever worth firing, is one 480p pair on a scene that must
+  land silent, `no music` vs `NO BGM`, scored on whether a bed appears.
+- The staging reference ships with its measurement attached precisely because the method
+  is attractive and does not do the thing people will reach for it to do.
+- **Not yet mined:** the four Higgsfield project pages (Adiliada, Oneiric, Zephyr, Red
+  Flag) and their three build videos. Two of those folders contain only a URL, so all of
+  that material is still on the web and is a separate pass.
+
 ## v3.32.0 — 2026-08-21
 
 **Five picks and one correction from the Higgsfield "AI Love Stories" tutorial**

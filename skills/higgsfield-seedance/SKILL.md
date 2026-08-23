@@ -4,8 +4,8 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.12.0
-  updated: 2026-08-09
+  version: 1.13.0
+  updated: 2026-08-22
   parent: higgsfield
 ---
 
@@ -950,6 +950,53 @@ Pattern in a Seedance prompt:
 behavior.] [How the prop appears in the new shot — same geometry and
 material as the reference.]
 ```
+
+### Depth Map
+
+`[FIELD — Higgsfield Studio, ADILIADA breakdown, 2026-08-14]` A greyscale image where
+**light areas are near and dark areas are far**. The model reads it as the scene's depth
+skeleton — an explicit three-dimensional read that fixes composition, volume and
+proportion. The failure it prevents is a space that **rearranges itself between shots**:
+without a depth anchor, geometry drifts and a location subtly re-plans itself every few
+seconds.
+
+Use it where the space itself must hold — a fight in a specific room, a chase through
+architecture that has to stay the same architecture. It is a *geometry* input and carries
+no style: pair it with the environment reference that owns surfaces and light.
+
+### Bake it into the asset when the prompt will not hold it
+
+`[FIELD — Higgsfield Studio, ONEIRIC breakdown, 2026-08-13]` The general move, and one of
+the most useful in this file: **when a property drifts no matter how well you write it,
+stop writing it and move it one step earlier — generate it into the asset.** The reference
+image then carries the property, the model reads it off the plate, and it stops being
+something the text has to win every shot.
+
+The worked case is **anamorphic optics**. Asked for in a video prompt, the lens character
+drifts shot to shot. Asked for at the *image* stage, it holds — because the plate itself
+becomes the lens. There is no "anamorphic" switch in an image model either, so the effect
+is assembled from the geometry of the lens, written out, at the end of the location image
+prompt:
+
+```
+STRONG anamorphic lens character: horizontal squeeze and compression,
+oval elliptical bokeh, horizontally stretched highlights, curved barrel
+edge distortion, chromatic aberration toward the edges.
+NO lens flares, NO light streaks, NO floating bokeh circles. 2.39:1.
+```
+
+Dose with *subtle / gentle / moderate / strong / maximum*. Ban the garbage that tags along
+(flares, streaks, floating bokeh orbs) **at the image stage only**.
+
+> **Then never say those words again.** In the video prompt the optics vocabulary does not
+> appear at all — **not even as a ban** — because naming a thing under a negation summons
+> it (`../shared/negative-constraints.md`). The video prompt describes only clean glass and
+> contained glows; the anamorphic character arrives with the asset.
+
+This generalises past optics: a grain structure, a lens character, a colour cast, a crowd
+that costs a paragraph to specify — anything the text keeps losing is a candidate for
+baking into the plate. Note the cost: a baked property is no longer directable per shot,
+so bake only what should be *constant* across the sequence.
 
 ### Per-Image Role Convention
 
