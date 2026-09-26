@@ -63,7 +63,10 @@ high-consistency generation asset out.
 ## 2. GLOBAL IDENTITY LOCK — paste-ready prompt
 
 Works with any product. Keep the camera/capture and background blocks intact;
-the model adapts the view list to the product type.
+the model adapts the view list to the product type. The `#DCDCDC` light grey
+below is one shade inside the repo's grey law — light-to-mid neutral grey, one
+pinned hex per project — stated once in `../../templates/ad-asset-prep.md`
+§ Design for win rate; if the project already pinned a different grey, use it.
 
 ```text
 Use @image1 as a strict photographic reference of a real product.

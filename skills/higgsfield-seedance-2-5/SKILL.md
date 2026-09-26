@@ -40,7 +40,7 @@ mode.
 - Multi-reference is a 5-step workflow — map → group → profile → select-by-scene, one line per subject; `@Images 1 through 4 define four characters` is the canonical failure [→](#multi-reference--the-five-step-workflow)
 - Long videos are **staged**, not paragraphed: one primary change per stage + an explicit **end state**; timestamps allocate a budget, they are not frame-accurate edit points [→](#long-video--stages-and-end-states)
 - Staging fixes too many EVENTS; two incompatible JOBS in one generation (physics + performance) is a separate cut — split into two prompts and stitch [→](#split-by-job-not-only-by-length)
-- Bracket syntax: `()` music · `<>` SFX · `{}` dialogue · `【】` subtitles; non-Chinese dialogue needs a language line before the line; a music suppression never goes inside `()` — `(no music)` is a music cue in the music channel [→](#audio-and-text--bracket-syntax)
+- Bracket syntax: `()` music · `<>` SFX · `{}` dialogue · `【】` subtitles; non-Chinese dialogue needs a language line before the line; a music suppression never goes inside `()` — `(no music)` there reads as a music cue (house inference, the default) [→](#audio-and-text--bracket-syntax)
 - First/last frames are `omni_reference` work: the platform `start_image`/`end_image` roles **or** an in-prompt declaration (`@Image 1 is the first frame`) — which holds better is unmeasured; keyframes 3+ are always in the prompt; never merge two anchors into one sentence [→](#first-last-frame-and-multi-keyframe-control)
 - Editing needs a **sole editing master** + edit scope + Timeline Inheritance; extension needs the **boundary frame aligned before** any new content: `MODE-PLAYBOOKS.md`
 - Storyboard grids, coarse-vs-fine blockouts, one-click video, seamless transitions: `MODE-PLAYBOOKS.md`
@@ -231,8 +231,9 @@ Rules:
   § Tag naming). Handles stay in the role map on 2.5 — the `[Characters]` lines, a staging
   legend (`@A = the BLUE figure`) — and out of the beat prose (`../shared/house-rulings.md`
   P2-13). Handle *spelling* follows the surface: Dreamina's guide writes upload-order
-  handles (`@Image 1`), the Higgsfield field build writes named asset tags (`@video1`,
-  `@size-ref`); pick one form per project and never mix them in one prompt.
+  handles with a space (`@Image 1`); the Higgsfield field build writes the upload-order form
+  without one (`@video1`) and named asset tags (`@size-ref`, `@dragon-v3`). Pick one form per
+  project and never mix them in one prompt.
 
 ### Fidelity — say how much of each material must survive
 
@@ -472,8 +473,10 @@ Two house rules carry over from `../higgsfield-audio/SKILL.md` and the film pipe
   headline 2.5 fix `[OFFICIAL — Dreamina]`. Still say it — and no `【】` block — rather
   than trusting the improvement. Two parts of this are settled: **lead with the positive
   diegetic list** (the sources and room tone the audio *is*), and **never put the
-  suppression inside the `()` bracket** — `()` is the music channel, and `(no music)` there
-  is a music cue. Write it as plain audio text after the list. Which token to write —
+  suppression inside the `()` bracket** — `()` is the music channel, so `(no music)` there
+  is most likely read as a music cue. That last step is a `[HOUSE]` inference, not a
+  measurement; it stands as the default because writing the suppression as plain audio text
+  after the list costs nothing. Which token to write —
   **`NO BGM`** (one third-party skill: a production term reads as a hard spec,
   `../higgsfield-audio/SKILL.md` § Suppressing music `[EMPIRICAL]`) or **`No music.`** (the
   form 12 of 13 harvested projects shipped, `../../templates/seedance/global-style-prefix.md`

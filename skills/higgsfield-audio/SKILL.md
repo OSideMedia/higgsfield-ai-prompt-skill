@@ -26,7 +26,7 @@ metadata:
 - Native-joint audio models: Kling 3.0, Seedance 2.0 / 1.5 Pro, Veo 3/3.1, Grok — all others add audio in post [→](#which-models-support-audio)
 - Four layers to consider per prompt: Dialogue / SFX / Ambient / BGM [→](#the-four-audio-layers)
 - Suppressing a score: name the diegetic sound first, then the suppression as plain text; `NO BGM` vs `No music.` is OPEN (house-rulings P2-7) [→](#suppressing-music--no-bgm-is-a-spec-no-music-is-a-preference)
-- Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens; per-language sync-word budgets are FIELD-reported [→](#lip-sync-rules)
+- Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens; per-language sync-word budgets come from a third-party skill (EMPIRICAL, unmeasured here) [→](#lip-sync-rules)
 - **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input--seedance-20-audio1)
 - Scope an audio reference like an image one: name the property that rides, the property that must NOT, and where the excluded one comes from instead [→](#scope-an-audio-reference--say-which-property-rides)
 - Multi-clip assembly: one master track · cuts land on musical punctuation, never inside a sung vowel (ECU mouth-match is the one exception) · unified grain + LUT masks batch color drift [→](#cutting-to-music--assembling-separately-generated-clips-on-one-track)
@@ -129,9 +129,10 @@ form 12 of 13 harvested projects shipped (`../../templates/seedance/global-style
 the positive list either way, and never write the suppression inside Seedance 2.5's `()` music
 bracket.
 
-When a piece must carry no score, the phrase matters. **`no music` reads as a weak stylistic preference**
-and loses to the model's strong prior that generated video wants a bed under it.
-**`NO BGM` reads as a production term** — a hard spec — and is the form to write.
+The source's argument: when a piece must carry no score, the phrase matters. **`no music` reads as a
+weak stylistic preference** and loses to the model's strong prior that generated video wants a
+bed under it; **`NO BGM` reads as a production term** — a hard spec — and is, in its view, the
+form to write. (Unmeasured here — see the OPEN note above.)
 Expand it once on first use so the abbreviation is unambiguous, then let it carry.
 
 **Lead positive, then negate.** Name what the audio *is* before naming what it is not —
@@ -150,8 +151,11 @@ pad, no drone, no tone bed."
 
 **Promote it to the top on a scene that must land silent.** Audio instructions carry
 more weight early; by the time the model reaches a closing audio block it has already
-decided what the piece sounds like. State `NO BGM` in the header alongside shot count
-and cut policy, then restate it as the closing audio clause.
+decided what the piece sounds like. Promote the **whole** audio policy to the header,
+alongside shot count and cut policy — the positive diegetic list first, the suppression
+after it (`Audio: diegetic only — footsteps, room tone. NO BGM.`), never the suppression on
+its own — then restate it as the closing audio clause. The positive-first order is the
+settled part of `../shared/house-rulings.md` P2-7 and holds in the header too.
 
 > **Enumerate with care — this cuts against the house rule on negation.**
 > `../shared/negative-constraints.md` and the repo's staging-reference doctrine both
@@ -239,9 +243,9 @@ The production workaround:
 2. Composite in CapCut/Premiere using picture-in-picture + linear mask (15% feather)
 3. Static image for the listening character; generated video for the speaking character
 
-### Per-language dialogue-sync budgets [FIELD — community, seedance-2.0 repo v6.6.0]
+### Per-language dialogue-sync budgets [EMPIRICAL — community seedance-2.0 repo v6.6.0, imported 2026-07-05]
 
-Field-observed word budgets for **reliable lip-sync** in a ~15s in-video Seedance
+A third-party skill's word budgets for **reliable lip-sync** in a ~15s in-video Seedance
 dialogue clip — not official limits, and not the same as how many words the model
 can *voice*. The **acoustic budget ≠ reliable-sync budget**: the model will happily
 speak more words than it can keep synced to the mouth.
@@ -264,12 +268,12 @@ reading the two meet at one 8–10-word line in a 4 s shot (`../shared/house-rul
 Cross-language sizing unit: **"one short sentence ≈ one breath."** Write dialogue
 in breath-sized sentences and count breaths, not seconds.
 
-### Voice-reference lip-sync path [FIELD — community, seedance-2.0 repo v6.6.0]
+### Voice-reference lip-sync path [EMPIRICAL — community seedance-2.0 repo v6.6.0, imported 2026-07-05]
 
 On surfaces that accept a spoken-voice reference, an attached **rights-cleared
 voice recording drives lip-sync directly** — the model syncs the mouth to your
-recording instead of synthesizing a voice first. This is the most reliable
-field-reported path for **non-English dialogue** (it sidesteps the weak-language
+recording instead of synthesizing a voice first. The source reports it as the most
+reliable path for **non-English dialogue** (it sidesteps the weak-language
 sync budgets above). **Rights-sensitive:** only use recordings you have clear
 rights to — cloned or scraped voices are out.
 

@@ -251,7 +251,7 @@ prompts where the user request is technique-shaped rather than genre-shaped:
 | Anime / stylized-2D animation — layered formula + style block + character turnaround | `templates/seedance/anime-animation.md` |
 | Close-up facial acting via FACS Action Unit codes — beat-synced expression schedule | `templates/seedance/facs-expression-beats.md` |
 | Seedance **2.5** multi-reference brief — role map + staged beats with end states | `templates/seedance/omni-reference-2-5.md` |
-| Show the model WHERE figures stand — a front-on outline position reference attached LAST (measured safe; NOT reliable at moving blocking) | `templates/seedance/staging-reference.md` |
+| Show the model WHERE figures stand — a front-on outline position reference attached LAST (one incomplete-record run: no bleed, NOT reliable at moving blocking) | `templates/seedance/staging-reference.md` |
 
 **Text-overlay templates** (`templates/text-overlays/`) — paste-ready text-rendering
 prompts for slogan / subtitle / speech-bubble overlays:

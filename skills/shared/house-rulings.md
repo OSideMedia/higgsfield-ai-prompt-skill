@@ -92,9 +92,10 @@ directory. All entries dated **2026-09-26** unless marked.
   → start *in* the state; **simple same-direction motion** that must fill the clip → chain 2–3
   connected actions; an **object that must visibly change** → the five-step causal chain.
 - **Sides:** `../higgsfield-acting/SKILL.md` § States, not transitions `[OFFICIAL — Hell Grind]`
-  · `../higgsfield-seedance/SKILL.md` § Motion-prompt laws + `FAILURE-MODES.md` § Action-reversal
-  fill `[EMPIRICAL — dramaclaw]` · `FAILURE-MODES.md` § Mimed manipulation `[EMPIRICAL —
-  nutllwhy]`.
+  · `../higgsfield-seedance/SKILL.md` § Motion-prompt laws + `../higgsfield-seedance/FAILURE-MODES.md`
+  § Action-reversal fill `[EMPIRICAL — dramaclaw]` · `../higgsfield-seedance/FAILURE-MODES.md`
+  § Mimed manipulation `[EMPIRICAL — nutllwhy]`. Each of the three now states its scope and
+  cites the other two.
 - **Unmeasured edge:** how many same-direction steps a chain holds before it collapses.
 
 ### P2-2 · Voice: paste every time, or once?
@@ -139,6 +140,10 @@ directory. All entries dated **2026-09-26** unless marked.
 - **OPEN:** whether one full Nano Banana 2 pass alone measurably softens a sheet.
 - **Default:** make the point edit with the one-liner, then **mask the changed region back onto
   the original**. The mask costs minutes; a softened base is paid for in every shot that reads it.
+- **Siblings pointed at the default:** `../higgsfield-soul/SKILL.md` § Two-Tool Refinement
+  Pipeline (GPT Image 2 edits on the anchor sheet — a whole-frame *adjust lighting* has no region
+  to mask back, so it belongs on a derived look frame) and `../../templates/ad-asset-prep.md`
+  § 3 (erasing the duplicate face in GPT Image 2).
 
 ### P2-4 · Film grain on a character sheet?
 
@@ -199,9 +204,10 @@ directory. All entries dated **2026-09-26** unless marked.
 ### P2-7 · `NO BGM` or `No music.`?
 
 - **Ruling:** **OPEN — unmeasured** on the token. Settled around it.
-- **Settled:** lead with the positive diegetic list; never put the suppression inside the 2.5
-  `()` music bracket — `(no music)` there is a music cue (fixed in
-  `../../templates/seedance/omni-reference-2-5.md`).
+- **Settled:** lead with the positive diegetic list. **Default** `[HOUSE]` inference, unmeasured:
+  never put the suppression inside the 2.5 `()` music bracket — `()` is the music channel, so
+  `(no music)` there is most likely read as a music cue; plain text after the list costs nothing
+  (fixed in `../../templates/seedance/omni-reference-2-5.md`).
 - **Sides:** `NO BGM` reads as a hard spec — `../higgsfield-audio/SKILL.md` § Suppressing music
   `[EMPIRICAL — Joey cinema-director-v3]` · `No music.` — the form 12 of 13 harvested projects
   shipped, `../../templates/seedance/global-style-prefix.md` `[FIELD]` and
@@ -247,15 +253,21 @@ both prompts** — `../higgsfield-seedance/FAILURE-MODES.md` § Walking is the h
   rate "dramatically" `[FIELD]`; the house A/B found orientation tracking at chance (6/12) and no
   bleed (0/18) `[MEASURED — record incomplete]`. What a user is promised follows the measurement
   (`../../templates/seedance/staging-reference.md`, top box).
-- **Fixed:** `../higgsfield-seedance/FAILURE-MODES.md` § A fight … called it "first-frame
-  geometry"; it is attached **last**, position only — a drawing in the first-frame role becomes
-  frame one.
+- **Fixed:** `../higgsfield-seedance/FAILURE-MODES.md` § A fight generated as separate clips
+  comes back choppy called it "first-frame geometry"; it is attached **last**, position only — a
+  drawing in the first-frame role becomes frame one. `../higgsfield-workspaces/SKILL.md` § Draw
+  to Video / Sketch to Video ("the sketch carries composition and blocking") is now scoped to
+  that workspace and points here. The house A/B's record is incomplete, so root `SKILL.md`,
+  `../higgsfield-seedance/SKILL.md` and the staging eval now say "one incomplete-record run",
+  not "measured safe".
 
 ### P2-12 · A top-down map in the shotlist glossary — FIXED
 
 `../higgsfield-shotlist-director/SKILL.md` § The three layers registered a top-down map as an
 attachable asset, against `../../templates/seedance/top-down-map.md` (never attach the floor
-plan). The glossary entry is now a front-on staging reference, attached last.
+plan). The glossary entry is now a front-on staging reference, attached last, named by the
+staging template's convention (`@staging_[PROJECT]_[scene]_[version]`) with no slot filename
+beside it — a file named `image_1` would sit in the character's slot.
 
 ### P2-13 · Handles as sentence subjects
 
@@ -263,7 +275,7 @@ plan). The glossary entry is now a front-on staging reference, attached last.
 - **Scope:** on **2.5** beat prose names the character plus one visible marker, never a handle
   (`../higgsfield-seedance-2-5/SKILL.md` § Reference Roles `[EMPIRICAL — sd25-pe]`); handles live
   in the role map and legends. On **2.0** the house convention leads the acting line with the tag
-  (`../higgsfield-acting/SKILL.md` § Scene adaptation).
+  (`../higgsfield-acting/SKILL.md` § Scene adaptation, rule 6 — which now states both models).
 - **Fixed:** the 2.5 prompt in `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § The empty-frame pause
   and the letter example in `../../templates/seedance/staging-reference.md` now follow the scope.
   Handle *spelling* (`@Image 1` vs named tags): one form per project, never mixed in a prompt.
@@ -281,8 +293,10 @@ plan). The glossary entry is now a front-on staging reference, attached last.
 ### P3-1 · Sheet background shade, contact shadow, and the headless figure
 
 - **Ruling:** SCOPE on the shade and the face law; **OPEN** on the contact shadow, with a default.
-- **Canonical home:** `../../templates/ad-asset-prep.md` § Design for win rate — every other sheet
-  surface cites it.
+- **Canonical home:** `../../templates/ad-asset-prep.md` § Design for win rate. The sheet
+  surfaces that name a background shade point to it — including, since the v3.38.0 review,
+  `../higgsfield-soul/SKILL.md` § Split-Panel Outfit-Change Sheet, `../higgsfield-gpt-image-2/reference-sheet-workflow.md`
+  (`#DCDCDC`) and `../higgsfield-cinema/references/reference-sheet-types.md`.
 - **Shade:** light to mid neutral grey, one pinned hex per project; three stated mechanisms
   (nothing competes · low edge contrast · a boring sheet keeps reacting to scene light) are
   compatible.
@@ -334,7 +348,7 @@ plan). The glossary entry is now a front-on staging reference, attached last.
   cannot grow inside the budget, script the silence. `../higgsfield-seedance/FAILURE-MODES.md`
   § Filler-babble (its `[MEASURED]` tag is now marked record-incomplete: no route, no n at ≤6
   words, record held outside this repo) · `../higgsfield-audio/SKILL.md` § Per-language
-  dialogue-sync budgets `[FIELD — community skill; reads as EMPIRICAL]`.
+  dialogue-sync budgets `[EMPIRICAL — community seedance-2.0 repo v6.6.0]` (relabelled from FIELD in audio, seedance and pipeline alike).
 
 ---
 
@@ -343,7 +357,7 @@ plan). The glossary entry is now a front-on staging reference, attached last.
 | Error | Fixed in |
 |---|---|
 | "Two hands … entering from the same sleeve" (anatomically impossible) | `../higgsfield-seedance/FAILURE-MODES.md` § Orphan limbs |
-| Unresolvable "OSIDE's `dialogue-no-handle`" citation | `../higgsfield-seedance/FAILURE-MODES.md` § Truncated action — now cites HELL-GRIND's seam tricks |
+| Unresolvable citation of an outside product's registry entry (`dialogue-no-handle`) | `../higgsfield-seedance/FAILURE-MODES.md` § Truncated action — now cites HELL-GRIND's seam tricks |
 | `16:9. 12s.` quoted as prompt text without saying they are parameters | `../higgsfield-seedance/HELL-GRIND.md` § Two extra blocks |
 | HELL-GRIND "overrides the `@TAG:` age form" — the form was already removed | `../higgsfield-seedance/HELL-GRIND.md` § Wording rules |
 | 3,000–4,000 words called "the top of the register ladder" — it is above it | `../higgsfield-seedance/HELL-GRIND.md` § Wording rules |

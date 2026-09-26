@@ -4,8 +4,8 @@ description: "Use when the user is unsure which Higgsfield workspace fits their 
 user-invocable: true
 metadata:
   tags: [higgsfield, workspaces, routing, decision, cinema-studio, lipsync, draw-to-video, sora-trends, click-to-ad, higgsfield-audio]
-  version: 1.2.0
-  updated: 2026-06-03
+  version: 1.2.1
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -86,6 +86,17 @@ carries everything else. Subject details, environment, lighting, mood, and
 material qualities all live in the prompt. Think of the prompt as describing
 the realized scene the sketch was hinting at — the sketch told the engine
 *where* things sit and *how* they move; the prompt tells it *what* they are.
+
+**Scope — this workspace, not a Seedance reference slot.** Here the sketch *is*
+the input the workspace is built to realize, and a draft that inherits its
+layout is the point. Attached to a Seedance generation it is a different
+regime: a drawing in the first-frame role becomes frame one, drawing and all,
+and a position diagram goes in **last** as a position reference only — one
+incomplete-record house run found it does not reliably move blocking
+(`../higgsfield-seedance/FAILURE-MODES.md` § A fight generated as separate
+clips comes back choppy; `../../templates/seedance/staging-reference.md`;
+`../shared/house-rulings.md` P2-11). Do not carry "the sketch carries
+blocking" from here into a Seedance prompt.
 
 **Output expectations:** test-quality, short. The output is a tool for shot
 validation, not usually the final delivery. Treat the result as a draft, then

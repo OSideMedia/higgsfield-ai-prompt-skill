@@ -948,7 +948,7 @@ The extension workflow:
 
 ### Chain management — depth caps and re-anchoring
 
-[FIELD — community, seedance-2.0 repo v6.6.0] Quality degrades over
+[EMPIRICAL — community seedance-2.0 repo v6.6.0, imported 2026-07-05] Quality degrades over
 chained extensions: each generation re-ingests the previous
 generation's artifacts, and drift is expected by the ~4th–5th
 generation in a chain. Manage the chain, don't ride it:

@@ -117,7 +117,12 @@ win rate → one readable face):
 Erase the face from the full-body shot on the right panel.
 ```
 
-One face left → the video model stops drifting between faces.
+One face left → the video model stops drifting between faces. The erase is a
+GPT Image 2 pass over the sheet, and every such pass softens skin: if this
+sheet is the character's **identity base**, mask only the erased region back
+onto the untouched original (§ 5 below;
+`../skills/higgsfield-soul/SKILL.md` § The Untouched Base;
+`../skills/shared/house-rulings.md` P2-3).
 
 ### 4. Outfit design loop — 10 ideas → mix and recolor
 

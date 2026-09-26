@@ -20,7 +20,7 @@ side**, because video models think in frames, not floor plans.
 >   cells regardless of arm; the second, **counterbalanced** — two mirrored maps, so the
 >   prior is identical in both arms and cancels — had renders tracking the map's
 >   orientation **6/12, which is chance**. Do not promise a user that this pins positions.
-> - **It IS safe.** **0/18 bleed** across both passes: with the three-layer architecture
+> - **It showed no bleed.** **0/18 bleed** across both passes: with the three-layer architecture
 >   below in place, the map's graphic look did not enter the shot. The bleed count (18)
 >   and the orientation count (24) differ and the record does not say why — read the
 >   bleed figure as a direction, not a rate.
@@ -28,11 +28,12 @@ side**, because video models think in frames, not floor plans.
 > **The field claim, recorded beside it.** The Higgsfield Studio breakdowns that supplied
 > § Revising a diagram claim a staging diagram raises staging-accurate win rate
 > "dramatically" `[FIELD — Higgsfield Studio breakdowns, 2026-08]`. Our measurement
-> disagrees on blocking (and, separately, finds the map safe to attach). Both stand; what
-> you **promise a user** follows the measurement — `../../skills/shared/house-rulings.md`
+> disagrees on blocking (and, separately, found no bleed from the map). Both stand; what
+> you **promise a user** follows the measurement — as a direction, since its record is
+> incomplete — `../../skills/shared/house-rulings.md`
 > P2-11.
 >
-> So: the anti-bleed architecture is settled and reusable, and the blocking claim is not.
+> So: the anti-bleed architecture is the best-supported part — reusable, one incomplete-record run behind it — and the blocking claim is not.
 > Reach for this when you want a shared, unambiguous *authoring* artifact for a complex
 > multi-character frame — and when a position genuinely must hold, back it with the prose
 > blocking locks in `../../skills/higgsfield-seedance/SKILL.md`, not with the map alone.

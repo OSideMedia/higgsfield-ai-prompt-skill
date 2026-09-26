@@ -65,13 +65,14 @@ table above.
 
 | As written | Read as |
 |---|---|
-| `[FIELD — community, <skill or repo>]` — e.g. `seedance-2.0 repo v6.6.0` | EMPIRICAL — third-party skill material |
+| `[FIELD — community, <skill or repo>]` — e.g. `seedance-2.0 repo v6.6.0` (every use of that one is now relabelled EMPIRICAL) | EMPIRICAL — third-party skill material |
 | `[EMPIRICAL — community workflow]` · `[EMPIRICAL — community guides, NOT official docs]` | EMPIRICAL, source unnamed — the weakest form; prefer a named source |
 | `[EMPIRICAL — third-party, China Ark lane, 2026-08]` | EMPIRICAL — a third party's measurement on a non-Higgsfield route (rule 3) |
 | `[FIELD]` · `[OFFICIAL]` · `[DEMO]` alone | The same label, with the source named in the enclosing section's or file's header tag |
 | `[FIELD provenance: first observed on N harvested jobs, <date>]` | FIELD |
 | `[HOUSE — re-derived from <third-party skill>]` | EMPIRICAL (rule 2) |
 | `[DEMO — <person> (<skill file>)]` + `[UNPROVEN HERE]` | EMPIRICAL (rule 2) |
+| `[HYPOTHESIS — UNMEASURED]` · `[INFERENCE — untested]` · `[heuristic]` | HOUSE — this repo's own inference or rule of thumb, unmeasured; the argument must be on the page |
 
 ---
 
@@ -80,6 +81,8 @@ table above.
 - `house-rulings.md` — every contested question, its ruling or "OPEN — unmeasured", and the
   files that carry each side
 - `negative-constraints.md` — the shared prevention reference (its Whole-Frame Degradation
-  section is the worked example of an EMPIRICAL claim with its settling probe named)
+  section is the worked example of a **settling probe** named beside an unmeasured claim; its
+  own tag is the weakest EMPIRICAL form — the source is not named in this repo — so it shows
+  the probe discipline, not a complete tag)
 - `../higgsfield-seedance-2-5/SKILL.md` § Provenance · `../higgsfield-seedance-2-5/VFX-PIPELINE.md`
   § Provenance — the local source tables

@@ -557,7 +557,8 @@ tutorial used it to put its lead into a new Y2K outfit:
   same identity, features, hair, skin, no drift. This panel owns the face;
   wardrobe appears only as the upper edge of the LEFT panel's outfit.
 - **Clear vertical divide, neutral grey studio backdrop, even soft light**
-  across both panels.
+  across both panels. (The grey law — shade range, one pinned hex per project —
+  is stated once in `../../templates/ad-asset-prep.md` § Design for win rate.)
 
 The split gives the video model one panel to read for *what they wear* and
 one for *who they are*, so the outfit change can't pull the face with it.
@@ -682,6 +683,13 @@ The split is by task:
   costume, swap accessories, adjust lighting, or extend the sheet
   with state variations. Better preservation of the face under edit
   pressure.
+
+**Scope** (`../shared/house-rulings.md` P2-3). An edit pass is a second full pass. On the
+character's **identity base** — the close-up face plate every shot reads — make the edit, then
+**mask only the changed region back onto the untouched original** (§ Anti-"slop" realism
+composite below; § The Untouched Base). A whole-frame edit such as *adjust lighting* has no
+region to mask back, and lighting baked into a reference plate is what § The Reference Plate
+keeps off: it belongs on a derived look frame, never on the identity base.
 
 When to reach for both tools: the character will appear in tens of
 shots and is worth front-loading iteration cost into. A planning

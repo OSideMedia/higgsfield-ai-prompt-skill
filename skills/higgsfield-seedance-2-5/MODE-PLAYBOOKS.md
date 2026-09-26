@@ -273,7 +273,7 @@ re-derived 2026-08-09; vendor-consistent]`
 
 ### Panel-to-timestamp mapping — the optional adherence raiser
 
-`[MEASURED — Ark, Seedance 2.5 · 480p, n=1 pair, 2026-08-09]` Adding an explicit
+`[MEASURED — Ark, Seedance 2.5 · 480p, n=1 pair, 2026-08-09; record incomplete: mode not recorded]` Adding an explicit
 panel→time mapping to the grid's role line changes *when* the cuts land, not whether
 the shots come in order:
 

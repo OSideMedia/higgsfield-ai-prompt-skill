@@ -212,6 +212,13 @@ camera moves, name the endpoint — state what the frame shows when the
 move finishes. Full treatment: `SKILL.md` § Prompt-Craft Laws →
 Motion-prompt laws.
 
+**Scope** (`../shared/house-rulings.md` P2-1). The chain is for **simple
+same-direction motion** whose job is to fill the clip. A **result** reached
+through a reversing process (reaches in, pulls out, winds up) is the other
+case — start *in* the state (`../higgsfield-acting/SKILL.md` § States, not
+transitions); an **object that must visibly change** under the hands takes
+the causal chain in § Mimed manipulation below. Pick by what the shot is for.
+
 ---
 
 ## Filler-babble on a short dialogue line
@@ -227,8 +234,8 @@ reversal fill spends leftover motion time. A line that ends well before
 the clip does leaves a silent window, and the cheapest continuation
 consistent with the shot is more speech-shaped sound in the same voice.
 `[MEASURED — sync-budget ladder, Seedance 2.0, EN, 4 s, 480p, 2026-08-09;
-record incomplete: route not recorded, take count at ≤6 words not recorded,
-record held outside this repo]`: every take at ≤6 words carried it; 8- and
+record incomplete: route not recorded, mode not recorded, take count at ≤6
+words not recorded, record held outside this repo]`: every take at ≤6 words carried it; 8- and
 12-word lines came back 4/4 clean each. Read it as a **direction**, not a rate
 (`../shared/provenance.md` § Modifiers): the risk sits with the **short**
 line, not the long one — no truncation was observed up to 12 words (≈3 words

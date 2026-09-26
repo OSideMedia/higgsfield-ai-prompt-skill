@@ -84,12 +84,18 @@ auto-attaches the right images:
 @kitchen · @stadium · @street — locations
 @s_hero — athletic-look hero     @s_hero_wet — sweaty post-run hero
 @music_track (audio_1.wav) — motion locks to this beat
-@staging_street_v1 (image_1.png) — front-on position reference, attached LAST
+@staging_ACME_street_v1 — front-on position reference, attached LAST
 ```
 
 A position map in the glossary is always the **front-on staging reference**
 (`../../templates/seedance/staging-reference.md`: outline figures, position only,
-attached after the photo references). A **top-down** floor plan is never
+attached after the photo references), named by that template's § Tag naming
+(`@staging_[PROJECT]_[scene]_[version]`; `ACME` above is a placeholder project). No
+slot filename goes beside it: slots are assigned by upload order, so a staging
+reference filed as `image_1` would sit in the character's slot. Elements
+auto-attach finds the right images, but nothing in this repo documents the order
+it attaches them in — when the staging reference must land last, check the
+attach order before firing, or attach it by hand after the photo references. A **top-down** floor plan is never
 registered or attached — it is an authoring aid whose output travels into the
 prompt as a written blocking note (`../../templates/seedance/top-down-map.md`).
 

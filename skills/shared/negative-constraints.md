@@ -85,7 +85,7 @@ trailing the prompt as a general plea for realism.
 | `blurry background` | The subject blurs with it | Say which plane stays sharp — see § Depth of field below |
 | `hazy` / `foggy` (unquantified) | Whole-frame fog, subject included | Keep for genuine aerial perspective, quantified and located ("haze ramps 20% → 70% behind the ridge"), with the subject's own sharpness stated |
 
-`[EMPIRICAL — third-party prompting corpus (not named in this repo), re-derived]` —
+`[EMPIRICAL — third-party prompting corpus (not named in this repo), re-derived 2026-08-09]` —
 **not A/B'd on our own material**. The probe that settles it is a two-arm 480p pair on
 one identical shot: arm A ends on a bare `film grain, imperfect focus`, arm B on the
 named-look substitute, compared for detail retention on the subject. Until that

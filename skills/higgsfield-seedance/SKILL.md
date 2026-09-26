@@ -328,8 +328,11 @@ rest of this section (strong heuristics — confirm on your own material).
 - **Image-to-video subject drift** → re-describing what's already in the source
   image gives the model two competing inputs for one subject; reconciliation
   introduces drift. Keep an I2V prompt to **motion + camera only**. See
-  § Seedance 2.0 Prompt Modes / Reference-Based and
-  `../higgsfield-prompt/SKILL.md` (I2V key rule).
+  `../higgsfield-prompt/SKILL.md` § Image-to-Video (I2V) and
+  `../higgsfield-seedance-vfx/references/first-frame.md` (the `start_image`
+  handoff). This rule is for an image that **is frame one**; an image attached
+  as an identity reference is § Reference-Based, where how much matching
+  identity text may ride beside it is OPEN (`../shared/house-rulings.md` P1-1).
 
 ---
 
@@ -840,7 +843,7 @@ last-frame anchor with the real thing.
   second reference and bind it explicitly: `"The woman's identity is
   @Image1."`
 - **Chains degrade.** Each extension re-feeds a generation of a generation
-  and compounds artifacts. `[FIELD — community, seedance-2.0 repo v6.6.0]`:
+  and compounds artifacts. `[EMPIRICAL — community seedance-2.0 repo v6.6.0, imported 2026-07-05]`:
   expect visible drift by the 4th–5th chained generation; **cap seamless
   chains at ~2 (hard ceiling 3), then re-anchor from the ORIGINAL canonical
   references** — a scene boundary is an intentional cut re-opened from
@@ -1115,7 +1118,7 @@ What It Can't, § Load-Bearing Rule). Same underlying principle from
 different surfaces. The camera-side rule names the WIN order in case of
 conflict; the Seedance-side rule names the LANES each side covers.
 
-> `[FIELD — community, seedance-2.0 repo v6.6.0]` **Source carries state.**
+> `[EMPIRICAL — community seedance-2.0 repo v6.6.0, imported 2026-07-05]` **Source carries state.**
 > When an accepted clip or final frame is attached as a reference, the
 > source carries the state — the prompt text carries only the *delta*.
 > Delete opening-state prose that repeats what the attached source already
@@ -1271,7 +1274,8 @@ the block: `../../templates/seedance/top-down-map.md` — a floor plan for you,
 never attached. To *show* positions to the model:
 `../../templates/seedance/staging-reference.md` — a front-on outline drawing
 attached **last**, as a position reference only, never as the first frame.
-It is measured safe (no bleed) and **not** reliable at moving blocking, so
+One house run, record incomplete — a direction, not a rate — found it safe
+(no bleed, 0/18) and **not** reliable at moving blocking (6/12, chance), so
 the block you write here stays the load-bearing instruction.
 
 ---
