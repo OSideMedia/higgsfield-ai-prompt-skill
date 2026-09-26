@@ -188,12 +188,14 @@
         {
           "description": "Natural-language direction for emotion, dialect, speed, or style.",
           "name": "instruction",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         },
         {
           "description": "Optional target-language hint.",
           "name": "language",
+          "nullable": true,
           "options": [
             "zh",
             "en",
@@ -359,6 +361,7 @@
         {
           "description": "Optional voice source: 'preset' for a built-in voice id, or 'element' for a workspace voice reference element. Must be sent together with voice_id.",
           "name": "voice_type",
+          "nullable": true,
           "options": [
             "preset",
             "element"
@@ -369,6 +372,7 @@
         {
           "description": "Voice id: a preset voice id when voice_type='preset', or a voice reference element id when voice_type='element'. Must be sent together with voice_type.",
           "name": "voice_id",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }

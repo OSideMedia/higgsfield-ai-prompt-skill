@@ -1,0 +1,20 @@
+{
+  "_doc": "GENERATED + APPEND-ONLY by scripts/sync_specs.py — never delete an entry. Every model id that some committed models_explore snapshot carried and no type's NEWEST snapshot (nor any alias) carries. Generation-ledger rows written under a since-retired id stay valid history through this list (scripts/higgsfield_memory.py load_specs_models).",
+  "retired": {
+    "explainer_video": {
+      "last_seen": "2026-08-01",
+      "last_snapshot": "models_explore_snapshot_2026-08-01.json",
+      "type": "video"
+    },
+    "gpt_image": {
+      "last_seen": "2026-06-22",
+      "last_snapshot": "models_explore_snapshot_image_2026-06-22.json",
+      "type": "image"
+    },
+    "llm_text": {
+      "last_seen": "2026-08-07",
+      "last_snapshot": "models_explore_snapshot_2026-08-07.json",
+      "type": "video"
+    }
+  }
+}

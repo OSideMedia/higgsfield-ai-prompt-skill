@@ -1,6 +1,7 @@
 """validate.py — exit-code contract and the guide↔specs contradiction checker."""
 
 import importlib.util
+import json
 import subprocess
 import sys
 
@@ -79,6 +80,95 @@ def test_repo_validates_clean():
     result = subprocess.run([sys.executable, str(REPO / "scripts" / "validate.py")],
                             capture_output=True, text=True)
     assert result.returncode == 0, result.stdout[-2000:]
+
+
+# ── v3.37.0: every spec type is regenerated from its NEWEST snapshot ────────
+
+@pytest.fixture
+def scratch_specs(tmp_path, monkeypatch):
+    """A scratch COPY of specs/ that both validate and sync_specs point at
+    (module paths included, so the pre-fix code is exercised fairly too).
+    Fresh issue/warning lists so assertions see only this run."""
+    import shutil
+    import sync_specs
+    s = tmp_path / "specs"
+    shutil.copytree(REPO / "specs", s)
+    monkeypatch.setattr(validate, "SPECS_DIR", s)
+    monkeypatch.setattr(validate, "SPECS_JSON", s / "model-specs.json")
+    monkeypatch.setattr(validate, "issues", [])
+    monkeypatch.setattr(validate, "warnings", [])
+    monkeypatch.setattr(validate, "STRICT", False)
+    monkeypatch.setattr(sync_specs, "SPECS_DIR", s)
+    for attr, name in (("YAML_OUT", "model-specs.yaml"), ("JSON_OUT", "model-specs.json"),
+                       ("MD_OUT", "MODEL-SPECS.md")):
+        monkeypatch.setattr(sync_specs, attr, s / name)
+    return s
+
+
+def _run_specs_check():
+    import contextlib
+    import io
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        validate.check_model_specs()
+    return validate.issues
+
+
+@pytest.mark.parametrize("fname", ["image-model-specs.json", "audio-model-specs.json",
+                                   "3d-model-specs.json", "model-specs.json"])
+def test_hand_edited_generated_specs_fail_for_every_type(scratch_specs, fname):
+    p = scratch_specs / fname
+    d = json.loads(p.read_text(encoding="utf-8"))
+    d["models"][0]["name"] += " HANDEDIT"
+    p.write_text(json.dumps(d, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    issues = _run_specs_check()
+    assert any("match regeneration" in i and fname in i for i in issues), issues
+
+
+def test_newer_unsynced_snapshot_fails(scratch_specs):
+    """A newer dump committed without re-running sync_specs: the pre-fix check
+    rebuilt from the snapshot the JSON names itself, so this passed."""
+    snap = json.loads((scratch_specs / "models_explore_snapshot_2026-09-26.json")
+                      .read_text(encoding="utf-8"))
+    for m in snap["items"]:
+        if m["id"] == "seedance_2_5":
+            for prm in m["parameters"]:
+                if prm["name"] == "resolution":
+                    prm["options"].append("4k")
+    (scratch_specs / "models_explore_snapshot_2099-01-01.json").write_text(
+        json.dumps(snap), encoding="utf-8")
+    issues = _run_specs_check()
+    assert any("newest snapshot is models_explore_snapshot_2099-01-01.json" in i
+               for i in issues), issues
+
+
+def test_missing_tombstone_fails(scratch_specs):
+    (scratch_specs / "retired-model-ids.json").unlink()
+    issues = _run_specs_check()
+    assert any("retired-model-ids.json" in i for i in issues), issues
+
+
+def test_clean_scratch_copy_passes(scratch_specs):
+    assert _run_specs_check() == []
+
+
+def test_snapshot_age_mode_is_strict_and_covers_3d(scratch_specs, monkeypatch, capsys):
+    import sync_specs
+    p = scratch_specs / "3d-model-specs.json"
+    d = json.loads(p.read_text(encoding="utf-8"))
+    d["snapshot_date"] = "2020-01-01"
+    p.write_text(json.dumps(d), encoding="utf-8")
+    validate.check_typed_snapshot_ages(sync_specs.TYPES)
+    assert validate.issues == []                      # non-strict: a warning only
+    monkeypatch.setattr(validate, "STRICT", True)
+    validate.check_typed_snapshot_ages(sync_specs.TYPES)
+    assert any("3d specs snapshot fresh" in i for i in validate.issues)
+
+
+def test_snapshot_age_cli_mode_exit_codes():
+    ok = subprocess.run([sys.executable, str(REPO / "scripts" / "validate.py"),
+                         "--snapshot-age"], capture_output=True, text=True)
+    assert "3d specs snapshot" in ok.stdout
+    assert ok.returncode in (0, 1)   # 1 only once the committed snapshots age out
 
 
 @pytest.mark.skipif(importlib.util.find_spec("fpdf") is not None,

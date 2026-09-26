@@ -245,6 +245,7 @@ models:
         required: optional
         type: string
         description: Optional folder placement for the generated image.
+        nullable: true
     constraints: []
   - id: flux_kontext
     aliases: []
@@ -375,6 +376,7 @@ models:
           - auto
           - opaque
           - transparent
+        nullable: true
     constraints: []
   - id: grok_image
     aliases: []
@@ -869,6 +871,7 @@ models:
         required: optional
         type: string
         description: Optional folder placement for the generated image.
+        nullable: true
     constraints: []
   - id: recraft_v4_1
     aliases:
@@ -919,6 +922,7 @@ models:
         required: optional
         type: string
         description: "Optional #RRGGBB background color with no alpha channel, or null. Use for controlled flat backgrounds, brand swatches, product mockups, icons, and vector-style work."
+        nullable: true
     constraints: []
   - id: seedream_5_0_flash
     aliases: []
@@ -959,11 +963,13 @@ models:
         type: number
         description: "Optional width stored in generation metadata; not sent to the provider."
         min: 1
+        nullable: true
       - name: height
         required: optional
         type: number
         description: "Optional height stored in generation metadata; not sent to the provider."
         min: 1
+        nullable: true
     constraints: []
   - id: seedream_v4_5
     aliases: []
@@ -1061,11 +1067,13 @@ models:
         type: number
         description: Optional output width stored with the generation.
         min: 1
+        nullable: true
       - name: height
         required: optional
         type: number
         description: Optional output height stored with the generation.
         min: 1
+        nullable: true
       - name: remove_bg
         required: optional
         type: bool
@@ -1287,6 +1295,7 @@ models:
         required: optional
         type: string
         description: Destination folder id.
+        nullable: true
     constraints: []
   - id: topaz_image_generative
     aliases: []

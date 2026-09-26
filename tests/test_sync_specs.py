@@ -83,12 +83,119 @@ def test_divergent_alias_rejected(tmp_path):
         sync_specs.build_spec(bad)
 
 
-def test_repo_specs_in_sync():
-    """The committed specs/ files must match regeneration from the committed
-    snapshot — same gate validate.py enforces, asserted here for pytest runs."""
+@pytest.mark.parametrize("output_type", ["video", "image", "audio", "3d"])
+def test_repo_specs_in_sync(output_type):
+    """The committed specs/ files of EVERY type must match regeneration from
+    that type's newest snapshot — same gate validate.py enforces. (Pre-v3.37
+    this ran `--check` with no --type, i.e. video only.)"""
     import subprocess
     import sys
     result = subprocess.run(
-        [sys.executable, str(REPO / "scripts" / "sync_specs.py"), "--check"],
+        [sys.executable, str(REPO / "scripts" / "sync_specs.py"), "--check",
+         "--type", output_type],
         capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
+
+
+def test_all_four_types_are_wired():
+    assert sync_specs.TYPES == ("video", "image", "audio", "3d")
+    names = [p.name for p in sync_specs.output_paths("3d")]
+    assert names == ["3d-model-specs.yaml", "3d-model-specs.json", "3D-MODEL-SPECS.md"]
+    for p in sync_specs.output_paths("3d"):
+        assert p.exists(), f"{p.name} not generated"
+
+
+# ── v3.37.0: paginated partial dumps are refused ─────────────────────────────
+
+@pytest.mark.parametrize("has_more", [True, None, "true", 1])
+def test_partial_paginated_dump_refused(has_more):
+    snap = json.loads(MINI_SNAPSHOT.read_text(encoding="utf-8"))
+    snap["has_more"] = has_more
+    with pytest.raises(ValueError, match="PARTIAL paginated dump"):
+        sync_specs.normalize_models(snap, "video")
+
+
+def test_complete_dump_accepted():
+    snap = json.loads(MINI_SNAPSHOT.read_text(encoding="utf-8"))
+    snap["has_more"] = False
+    assert sync_specs.normalize_models(snap, "video")
+
+
+def test_partial_dump_refused_end_to_end(tmp_path):
+    snap = json.loads(MINI_SNAPSHOT.read_text(encoding="utf-8"))
+    snap["has_more"] = True
+    p = tmp_path / "models_explore_snapshot_2026-06-11.json"
+    p.write_text(json.dumps(snap), encoding="utf-8")
+    with pytest.raises(ValueError, match="has_more"):
+        sync_specs.build_spec(p)
+
+
+# ── v3.37.0: `nullable` is carried; unknown keys still are not ───────────────
+
+def test_nullable_carried_but_keys_not_widened():
+    snap = {"items": [{"id": "m", "name": "M", "output_type": "3d", "parameters": [
+        {"name": "seed", "type": "number", "required": "optional", "nullable": True,
+         "format": "int32", "pattern": "^x$"}]}]}
+    p = sync_specs.normalize_models(snap, "3d")[0]["params"][0]
+    assert p["nullable"] is True
+    assert "format" not in p and "pattern" not in p
+
+
+def test_committed_specs_carry_nullable():
+    spec = json.loads((REPO / "specs" / "model-specs.json").read_text(encoding="utf-8"))
+    s25 = next(m for m in spec["models"] if m["id"] == "seedance_2_5")
+    ext = next(p for p in s25["params"] if p["name"] == "extension_mode")
+    assert ext.get("nullable") is True
+
+
+# ── v3.37.0: retired-id tombstones (append-only, order-independent) ──────────
+
+def _snap(path, ids, otype="video"):
+    path.write_text(json.dumps({"has_more": False, "items": [
+        {"id": i, "name": i, "output_type": otype, "parameters": []} for i in ids]}),
+        encoding="utf-8")
+
+
+def test_retired_id_is_tombstoned_from_snapshot_history(tmp_path):
+    _snap(tmp_path / "models_explore_snapshot_2026-08-07.json", ["a", "llm_text"])
+    _snap(tmp_path / "models_explore_snapshot_2026-09-26.json", ["a"])
+    retired = sync_specs.compute_retired(tmp_path)
+    assert retired == {"llm_text": {"type": "video", "last_seen": "2026-08-07",
+                                    "last_snapshot": "models_explore_snapshot_2026-08-07.json"}}
+
+
+def test_tombstones_do_not_depend_on_sync_order(tmp_path):
+    # A type whose SPEC has not been generated yet (first-ever 3d sync) must
+    # not have its live ids tombstoned when another type is synced first.
+    _snap(tmp_path / "models_explore_snapshot_2026-09-26.json", ["v1"])
+    _snap(tmp_path / "models_explore_snapshot_3d_2026-09-26.json", ["mesh1"], "3d")
+    assert not (tmp_path / "3d-model-specs.json").exists()
+    assert sync_specs.compute_retired(tmp_path) == {}
+
+
+def test_aliases_are_never_tombstoned(tmp_path):
+    _snap(tmp_path / "models_explore_snapshot_2026-06-11.json", ["video_standard", "seedance_1_5"])
+    _snap(tmp_path / "models_explore_snapshot_2026-09-26.json", ["seedance_2_0"])
+    assert sync_specs.compute_retired(tmp_path) == {}
+
+
+def test_tombstones_are_append_only(tmp_path):
+    (tmp_path / sync_specs.RETIRED_FILE).write_text(sync_specs.emit_retired(
+        {"old_gone": {"type": "video", "last_seen": "2026-01-01", "last_snapshot": "x"}}),
+        encoding="utf-8")
+    _snap(tmp_path / "models_explore_snapshot_2026-09-26.json", ["a"])
+    merged = sync_specs.merged_retired(tmp_path)
+    assert "old_gone" in merged          # history pruned, tombstone survives
+    assert sync_specs.retired_is_stale(tmp_path) is False
+
+
+def test_missing_tombstone_is_stale(tmp_path):
+    _snap(tmp_path / "models_explore_snapshot_2026-08-07.json", ["a", "gone"])
+    _snap(tmp_path / "models_explore_snapshot_2026-09-26.json", ["a"])
+    assert sync_specs.retired_is_stale(tmp_path) is True
+
+
+def test_committed_tombstones_include_llm_text():
+    retired = sync_specs.load_retired()
+    assert {"llm_text", "explainer_video", "gpt_image"} <= set(retired)
+    assert sync_specs.retired_is_stale() is False

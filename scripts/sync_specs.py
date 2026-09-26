@@ -11,7 +11,11 @@ said 4-15s). Every model fact in specs/ comes from the snapshot JSON — this
 script normalizes, it never invents.
 
 Inputs:
-  specs/models_explore_snapshot_<YYYY-MM-DD>.json   (verbatim MCP tool output)
+  specs/models_explore_snapshot_<YYYY-MM-DD>.json          (video)
+  specs/models_explore_snapshot_<type>_<YYYY-MM-DD>.json   (image|audio|3d)
+  — each the verbatim MCP tool output. A paginated PARTIAL dump
+  (`has_more: true`) is refused: specs generated from page 1 silently drop
+  every model on the later pages.
 
 Outputs (all generated — never hand-edit):
   specs/model-specs.yaml   canonical record per model (the contract other
@@ -20,9 +24,16 @@ Outputs (all generated — never hand-edit):
                            consumers (validate.py, seedance_lint.py) read this
                            with stdlib json instead of growing a YAML parser
   specs/MODEL-SPECS.md     human-readable table, stamped with snapshot date
+  (image-/audio-/3d-model-specs.{yaml,json} + IMAGE-/AUDIO-/3D-MODEL-SPECS.md
+  for the other types)
+  specs/retired-model-ids.json  APPEND-ONLY tombstones: every id the committed
+                           snapshot history has seen that no current spec
+                           carries. Generation-ledger rows written under a
+                           since-retired id stay valid history through it.
 
 Usage:
   python3 scripts/sync_specs.py            # regenerate from the newest snapshot
+  python3 scripts/sync_specs.py --type 3d  # video|image|audio|3d
   python3 scripts/sync_specs.py --check    # verify outputs match the snapshot (CI)
 
 Exit codes: 0 ok, 1 drift/--check failure or bad snapshot, 2 usage.
@@ -53,7 +64,38 @@ AUDIO_YAML_OUT = SPECS_DIR / "audio-model-specs.yaml"
 AUDIO_JSON_OUT = SPECS_DIR / "audio-model-specs.json"
 AUDIO_MD_OUT = SPECS_DIR / "AUDIO-MODEL-SPECS.md"
 
+THREED_YAML_OUT = SPECS_DIR / "3d-model-specs.yaml"
+THREED_JSON_OUT = SPECS_DIR / "3d-model-specs.json"
+THREED_MD_OUT = SPECS_DIR / "3D-MODEL-SPECS.md"
+
+TYPES = ("video", "image", "audio", "3d")
+# Per-type output file names (relative to a specs dir). One table so every
+# consumer — --check, validate.py, higgsfield_memory — agrees on the set.
+_OUTPUT_NAMES = {
+    "video": ("model-specs.yaml", "model-specs.json", "MODEL-SPECS.md"),
+    "image": ("image-model-specs.yaml", "image-model-specs.json", "IMAGE-MODEL-SPECS.md"),
+    "audio": ("audio-model-specs.yaml", "audio-model-specs.json", "AUDIO-MODEL-SPECS.md"),
+    "3d": ("3d-model-specs.yaml", "3d-model-specs.json", "3D-MODEL-SPECS.md"),
+}
+RETIRED_FILE = "retired-model-ids.json"
+
+# Snapshot parameter keys carried into the specs. `nullable` joined in
+# v3.37.0: it is the only field that separates "optional, no default, null is
+# legal" (e.g. seedance_2_5 extension_mode, gpt_image_2_5 background) from
+# "optional with a default" — a settings-legality consumer (the preflight
+# linter, a ledger field check) needs it. `format` / `pattern` appeared once
+# (08-07) and are gone from the 09-26 dumps, so they stay out: not widened
+# blindly.
+PARAM_KEYS = ("name", "required", "type", "description", "default", "options",
+              "min", "max", "nullable")
+
 GENERATOR_VERSION = 1
+
+
+def output_paths(output_type: str, specs_dir: Path = None) -> tuple:
+    """(yaml, json, md) paths for one type."""
+    d = specs_dir or SPECS_DIR
+    return tuple(d / name for name in _OUTPUT_NAMES[output_type])
 
 # Snapshot entries that are alternate routes to the SAME model. The duplicate
 # is folded into the canonical record's `aliases` after verifying its enums
@@ -90,8 +132,9 @@ REQUIRES_RE = re.compile(
     re.IGNORECASE)
 
 
-def find_snapshot(specs_dir: Path = SPECS_DIR, output_type: str = "video") -> Path:
+def find_snapshot(specs_dir: Path = None, output_type: str = "video") -> Path:
     """Newest snapshot by the date embedded in the filename."""
+    specs_dir = specs_dir or SPECS_DIR
     pattern = ("models_explore_snapshot_*.json" if output_type == "video"
                else f"models_explore_snapshot_{output_type}_*.json")
     candidates = sorted(specs_dir.glob(pattern))
@@ -213,6 +256,14 @@ def normalize_models(snapshot: dict, output_type: str = "video") -> list[dict]:
         raise ValueError(
             "snapshot has no 'items' list — not a models_explore dump "
             "(truncated file or wrong payload); refusing to generate specs")
+    # A paginated dump that stopped on page 1 looks valid (items present) but
+    # silently drops every later model. Only an explicit `has_more: false` (or
+    # its absence, as in hand-trimmed test fixtures) is a complete catalog.
+    if snapshot.get("has_more", False) is not False:
+        raise ValueError(
+            f"snapshot is a PARTIAL paginated dump (has_more: "
+            f"{snapshot.get('has_more')!r}) — fetch every page of `models_explore` "
+            "(action=list) and dump the complete list; refusing to generate specs")
     items = [m for m in snapshot["items"]
              if m.get("output_type") == output_type]
     if not items:
@@ -268,10 +319,7 @@ def normalize_models(snapshot: dict, output_type: str = "video") -> list[dict]:
             "media_roles": {e.get("name", "medias"): list(e.get("roles") or [])
                             for e in m.get("medias", [])},
             "params": [
-                {k: p[k] for k in
-                 ("name", "required", "type", "description", "default", "options",
-                  "min", "max")
-                 if k in p}
+                {k: p[k] for k in PARAM_KEYS if k in p}
                 for p in m.get("parameters", [])
             ],
             "constraints": extract_constraints(m),
@@ -279,7 +327,9 @@ def normalize_models(snapshot: dict, output_type: str = "video") -> list[dict]:
     return models
 
 
-def build_spec(snapshot_path: Path, output_type: str = "video") -> dict:
+def build_spec(snapshot_path: Path, output_type: str = "video",
+               specs_dir: Path = None) -> dict:
+    specs_dir = specs_dir or SPECS_DIR
     raw = snapshot_path.read_bytes()
     snapshot = json.loads(raw)
     date = snapshot_date(snapshot_path)
@@ -294,7 +344,7 @@ def build_spec(snapshot_path: Path, output_type: str = "video") -> dict:
         # The image-side marker lives in the video spec. It was a TODO until a
         # type=image snapshot existed (Brief #2 item 9); once one is committed
         # it flips to a pointer at the generated image specs.
-        image_snapshots = sorted(SPECS_DIR.glob("models_explore_snapshot_image_*.json"))
+        image_snapshots = sorted(specs_dir.glob("models_explore_snapshot_image_*.json"))
         if image_snapshots:
             img_date = re.search(r"(\d{4}-\d{2}-\d{2})", image_snapshots[-1].name)
             stamp = img_date.group(1) if img_date else date
@@ -411,8 +461,7 @@ def emit_markdown(spec: dict) -> str:
             f"| {', '.join(m['resolutions']) or '—'} | {', '.join(m['modes']) or '—'} "
             f"| {', '.join(m['aspect_ratios']) or '—'} | {roles} | {cons} |")
     otype = spec["models"][0]["output_type"] if spec["models"] else "video"
-    stem = {"video": "model-specs", "image": "image-model-specs",
-            "audio": "audio-model-specs"}.get(otype, "model-specs")
+    stem = _OUTPUT_NAMES.get(otype, _OUTPUT_NAMES["video"])[1][:-len(".json")]
     lines += [
         "",
         f"Full per-model parameter schemas live in `specs/{stem}.yaml` / "
@@ -422,25 +471,138 @@ def emit_markdown(spec: dict) -> str:
     return "\n".join(lines)
 
 
+def render_outputs(spec: dict, output_type: str, specs_dir: Path = None) -> dict:
+    """{path: content} for one type's three generated files."""
+    y, j, m = output_paths(output_type, specs_dir)
+    return {y: emit_yaml(spec), j: emit_json(spec), m: emit_markdown(spec)}
+
+
+# ── Retired-id tombstones (append-only) ─────────────────────────────────────
+
+_RETIRED_DOC = (
+    "GENERATED + APPEND-ONLY by scripts/sync_specs.py — never delete an entry. "
+    "Every model id that some committed models_explore snapshot carried and no "
+    "type's NEWEST snapshot (nor any alias) carries. Generation-ledger rows "
+    "written under a since-retired id stay valid history through this list "
+    "(scripts/higgsfield_memory.py load_specs_models).")
+
+
+def _snapshot_files(specs_dir: Path) -> list:
+    return sorted(specs_dir.glob("models_explore_snapshot_*.json"),
+                  key=lambda p: (snapshot_date(p), p.name))
+
+
+def current_model_ids(specs_dir: Path = None) -> set:
+    """Ids live NOW: every item of each type's NEWEST snapshot, plus every
+    alias (ALIAS_MAP, HISTORICAL_IDS). Derived from the snapshots, never from
+    the generated spec files — otherwise the answer would depend on which
+    --type was synced first (a first-ever 3d sync would tombstone every live
+    3d id when video is synced before it), and an append-only file would keep
+    that mistake forever."""
+    ids = set(ALIAS_MAP)
+    for olds in HISTORICAL_IDS.values():
+        ids.update(olds)
+    for t in TYPES:
+        try:
+            snap = find_snapshot(specs_dir, t)
+        except FileNotFoundError:
+            continue
+        ids.update(m["id"] for m in json.loads(snap.read_text(encoding="utf-8")).get("items") or []
+                   if isinstance(m, dict) and m.get("id"))
+    return ids
+
+
+def compute_retired(specs_dir: Path = None) -> dict:
+    """{id: {type, last_seen, last_snapshot}} derived from snapshot history."""
+    specs_dir = specs_dir or SPECS_DIR
+    current = current_model_ids(specs_dir)
+    seen = {}
+    for p in _snapshot_files(specs_dir):
+        for m in json.loads(p.read_text(encoding="utf-8")).get("items") or []:
+            if isinstance(m, dict) and m.get("id"):
+                seen[m["id"]] = {"type": m.get("output_type"),
+                                 "last_seen": snapshot_date(p),
+                                 "last_snapshot": p.name}
+    return {k: v for k, v in seen.items() if k not in current}
+
+
+def load_retired(specs_dir: Path = None) -> dict:
+    """The committed tombstones ({} when the file is absent)."""
+    p = (specs_dir or SPECS_DIR) / RETIRED_FILE
+    if not p.exists():
+        return {}
+    return dict(json.loads(p.read_text(encoding="utf-8")).get("retired") or {})
+
+
+def merged_retired(specs_dir: Path = None) -> dict:
+    """Committed tombstones ∪ newly derived ones. Existing entries are never
+    removed or rewritten — the file only grows, like the ledger it protects."""
+    merged = load_retired(specs_dir)
+    for mid, info in compute_retired(specs_dir).items():
+        merged.setdefault(mid, info)
+    return merged
+
+
+def emit_retired(retired: dict) -> str:
+    return json.dumps({"_doc": _RETIRED_DOC, "retired": retired},
+                      indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+
+
+def stale_outputs(output_type: str, specs_dir: Path = None,
+                  snapshot_path: Path = None) -> tuple:
+    """(snapshot path, [stale file names]) — regenerate `output_type` from its
+    NEWEST snapshot (or `snapshot_path`) and compare with the committed files.
+    The one comparison both `--check` and validate.py run. Raises
+    FileNotFoundError / ValueError / json.JSONDecodeError on a missing or
+    broken snapshot."""
+    specs_dir = specs_dir or SPECS_DIR
+    snap = snapshot_path or find_snapshot(specs_dir, output_type)
+    spec = build_spec(snap, output_type, specs_dir)
+    stale = [p.name for p, content in render_outputs(spec, output_type, specs_dir).items()
+             if not p.exists() or p.read_text(encoding="utf-8") != content]
+    return snap, stale
+
+
+def retired_is_stale(specs_dir: Path = None) -> bool:
+    """True when the committed tombstone file is missing an id the snapshot
+    history says is retired (or is absent / not in canonical form)."""
+    rp = (specs_dir or SPECS_DIR) / RETIRED_FILE
+    return (not rp.exists()
+            or rp.read_text(encoding="utf-8") != emit_retired(merged_retired(specs_dir)))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[2])
     parser.add_argument("--check", action="store_true",
                         help="verify generated files match the snapshot; write nothing")
     parser.add_argument("--snapshot", type=Path, default=None,
                         help="explicit snapshot path (default: newest in specs/)")
-    parser.add_argument("--type", choices=("video", "image", "audio"), default="video",
+    parser.add_argument("--type", choices=TYPES, default="video",
                         help="which models_explore snapshot type to sync "
-                             "(image/audio require a models_explore_snapshot_"
+                             "(image/audio/3d require a models_explore_snapshot_"
                              "<type>_<date>.json dump — nothing is fabricated "
                              "without one)")
     args = parser.parse_args()
 
     try:
         snapshot_path = args.snapshot or find_snapshot(output_type=args.type)
+        if args.check:
+            snapshot_path, stale = stale_outputs(args.type, snapshot_path=snapshot_path)
+            if retired_is_stale():
+                stale.append(RETIRED_FILE)
+            if stale:
+                for name in stale:
+                    print(f"STALE: specs/{name}", file=sys.stderr)
+                print(f"specs out of date — rerun: python3 scripts/sync_specs.py "
+                      f"--type {args.type}", file=sys.stderr)
+                return 1
+            n = len(json.loads(output_paths(args.type)[1].read_text(encoding="utf-8"))["models"])
+            print(f"specs in sync with {snapshot_path.name} ({n} models)")
+            return 0
         spec = build_spec(snapshot_path, output_type=args.type)
     except FileNotFoundError as e:
         print(f"ERROR: {e}", file=sys.stderr)
-        if args.type in ("image", "audio"):
+        if args.type != "video":
             print(f"Typed snapshots are dumped, never fabricated: dump "
                   f"`models_explore` (action=list, type={args.type}) verbatim "
                   f"into specs/models_explore_snapshot_{args.type}_"
@@ -450,33 +612,19 @@ def main() -> int:
         print(f"ERROR: {e}", file=sys.stderr)
         return 1
 
-    out_paths = {
-        "video": (YAML_OUT, JSON_OUT, MD_OUT),
-        "image": (IMAGE_YAML_OUT, IMAGE_JSON_OUT, IMAGE_MD_OUT),
-        "audio": (AUDIO_YAML_OUT, AUDIO_JSON_OUT, AUDIO_MD_OUT),
-    }[args.type]
-    outputs = {
-        out_paths[0]: emit_yaml(spec),
-        out_paths[1]: emit_json(spec),
-        out_paths[2]: emit_markdown(spec),
-    }
-
-    if args.check:
-        stale = [p for p, content in outputs.items()
-                 if not p.exists() or p.read_text(encoding="utf-8") != content]
-        if stale:
-            for p in stale:
-                print(f"STALE: {p.relative_to(ROOT)}", file=sys.stderr)
-            print("specs out of date — rerun: python3 scripts/sync_specs.py", file=sys.stderr)
-            return 1
-        print(f"specs in sync with {snapshot_path.name} "
-              f"({len(spec['models'])} models)")
-        return 0
+    outputs = render_outputs(spec, args.type)
+    retired_path = SPECS_DIR / RETIRED_FILE
 
     SPECS_DIR.mkdir(parents=True, exist_ok=True)
     for p, content in outputs.items():
         p.write_text(content, encoding="utf-8")
         print(f"wrote {p.relative_to(ROOT)}")
+    # Tombstones AFTER the outputs: "current" must be the spec just written.
+    before = load_retired()
+    after = merged_retired()
+    retired_path.write_text(emit_retired(after), encoding="utf-8")
+    for mid in sorted(set(after) - set(before)):
+        print(f"tombstoned retired id: {mid} (last seen {after[mid]['last_seen']})")
     print(f"{len(spec['models'])} models from {snapshot_path.name}")
     return 0
 

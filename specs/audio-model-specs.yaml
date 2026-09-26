@@ -178,6 +178,7 @@ models:
         required: optional
         type: string
         description: "Natural-language direction for emotion, dialect, speed, or style."
+        nullable: true
       - name: language
         required: optional
         type: string
@@ -196,6 +197,7 @@ models:
           - vi
           - it
           - ms
+        nullable: true
       - name: format
         required: optional
         type: string
@@ -314,10 +316,12 @@ models:
         options:
           - preset
           - element
+        nullable: true
       - name: voice_id
         required: optional
         type: string
         description: "Voice id: a preset voice id when voice_type='preset', or a voice reference element id when voice_type='element'. Must be sent together with voice_type."
+        nullable: true
     constraints: []
   - id: sonilo_music
     aliases: []
