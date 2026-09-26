@@ -1,5 +1,5 @@
 {
-  "_doc": "Known, adjudicated CLI <-> models_explore (MCP) disagreements for scripts/snapshot_crosscheck.py. Hand-maintained, reviewed in PRs. Every entry names the model, field, kind, the date it was SEEN, and the exact observed detail: an allowlisted disagreement is still printed, fails again if its detail changes, and is reported stale once the sources agree. Add an entry only after deciding the snapshot is right (or the difference is representation); if the snapshot is wrong, re-dump models_explore instead.",
+  "_doc": "Known, adjudicated CLI <-> models_explore (MCP) disagreements for scripts/snapshot_crosscheck.py. Hand-maintained, reviewed in PRs. Every entry names the model, field, kind, the date it was SEEN, and the exact observed detail: an allowlisted disagreement is still printed, fails again if its detail changes, and is reported stale once the sources agree. Add an entry only after deciding the snapshot is right (or the difference is representation); if the snapshot is wrong, re-dump models_explore instead. Catalog MEMBERSHIP entries (kind snapshot-only | cli-only) name the model, kind, type, seen date and a note saying why the model is in one source only; they go stale when the model stops being one-sided.",
   "entries": [
     {
       "model": "gpt_image_2",
@@ -88,6 +88,167 @@
       "seen": "2026-09-26",
       "detail": "cli enum=[auto, opaque, transparent]",
       "note": "The MCP surface genuinely lacks it: models_explore list AND get (2026-09-26) expose only resolution/quality, while `model get` lists background plus mask/is_inpaint. The snapshot is faithful to the MCP; the disagreement is recorded in image-models.md (gpt_image_2 CLI↔MCP table). Re-check when either surface changes."
+    },
+    {
+      "model": "cinematic_studio_3_0",
+      "kind": "snapshot-only",
+      "type": "video",
+      "seen": "2026-09-26",
+      "note": "MCP-listed studio model the CLI list hides: absent from `model list --video`, but `model get` answers (type video, 'Cinematic Studio 3.0'). Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "cinematic_studio_video",
+      "kind": "snapshot-only",
+      "type": "video",
+      "seen": "2026-09-26",
+      "note": "MCP-listed studio model the CLI list hides: absent from `model list --video`, but `model get` answers (type video, 'Cinematic Studio Video'). Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "cinematic_studio_video_v2",
+      "kind": "snapshot-only",
+      "type": "video",
+      "seen": "2026-09-26",
+      "note": "MCP-listed studio model the CLI list hides: absent from `model list --video`, but `model get` answers (type video, 'Cinematic Studio Video V2'). Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "higgsfield_preset",
+      "kind": "snapshot-only",
+      "type": "video",
+      "seen": "2026-09-26",
+      "note": "MCP-only id: `model get` answers \"No model with job_type\" — the CLI has no such job type. A models_explore preset route. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "marketing_studio_video",
+      "kind": "snapshot-only",
+      "type": "video",
+      "seen": "2026-09-26",
+      "note": "MCP-listed studio model the CLI list hides: absent from `model list --video`, but `model get` answers (type video, 'Marketing Studio Video'). Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "sync_so",
+      "kind": "snapshot-only",
+      "type": "video",
+      "seen": "2026-09-26",
+      "note": "MCP-only id: `model get` answers \"No model with job_type\" — the CLI has no such job type. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "autosprite",
+      "kind": "snapshot-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "MCP-only id: `model get` answers \"No model with job_type\" — the CLI has no such job type. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "cinematic_studio_2_5",
+      "kind": "snapshot-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "MCP-listed studio model the CLI list hides: absent from `model list --image`, but `model get` answers (type image, 'Cinematic Studio 2.5'). Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "marketing_studio_image",
+      "kind": "snapshot-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "MCP-listed studio model the CLI list hides: absent from `model list --image`, but `model get` answers (type image, 'Marketing Studio Image'). Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "ms_image",
+      "kind": "snapshot-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "MCP-listed studio model the CLI list hides: absent from `model list --image`, but `model get` answers (type image, 'MS Image'). Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "nano_banana_2",
+      "kind": "snapshot-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "MCP-listed studio model the CLI list hides: absent from `model list --image`, but `model get` answers (type image, 'Nano Banana Pro'). Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "soul_2",
+      "kind": "snapshot-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "MCP-only id: `model get` answers \"No model with job_type\" — the CLI has no such job type. The CLI's Soul 2.0 id is text2image_soul_v2. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "soul_v2",
+      "kind": "snapshot-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "MCP-only id: `model get` answers \"No model with job_type\" — the CLI has no such job type. The CLI's Soul 2.0 id is text2image_soul_v2. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "meshy_image_to_3d",
+      "kind": "snapshot-only",
+      "type": "3d",
+      "seen": "2026-09-26",
+      "note": "MCP-only id: `model get` answers \"No model with job_type\" — the CLI has no such job type. Its models_explore record (name, params, media) is identical to image_to_3d, which the CLI lists. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "meshy_multi_image_to_3d",
+      "kind": "snapshot-only",
+      "type": "3d",
+      "seen": "2026-09-26",
+      "note": "MCP-only id: `model get` answers \"No model with job_type\" — the CLI has no such job type. Its models_explore record (name, params, media) is identical to multi_image_to_3d, which the CLI lists. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "meshy_rigging",
+      "kind": "snapshot-only",
+      "type": "3d",
+      "seen": "2026-09-26",
+      "note": "MCP-only id: `model get` answers \"No model with job_type\" — the CLI has no such job type. Its models_explore record (name, params) is identical to 3d_rigging, which the CLI lists. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "nano_banana_2_ai_stylist",
+      "kind": "cli-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "CLI-only variant id (display 'Nano Banana Pro'; params background_preset_id, outfit_preset_ids, pose_preset_id, user_outfit_ids, image_references) — absent from the models_explore dump. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "nano_banana_2_relight",
+      "kind": "cli-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "CLI-only variant id (display 'Nano Banana Pro'; params brightness, color, light_quality, light_source, remove_bg, image_references) — absent from the models_explore dump. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "nano_banana_2_skin_enhancer",
+      "kind": "cli-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "CLI-only variant id (display 'Nano Banana Pro'; params preset_id, remove_bg, image_references) — absent from the models_explore dump. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "nano_banana_flash",
+      "kind": "cli-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "CLI-only id (display 'Nano Banana 2'; params aspect_ratio, resolution, image_references, mask, is_inpaint) — absent from the models_explore dump. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "text2image_soul_v2",
+      "kind": "cli-only",
+      "type": "image",
+      "seen": "2026-09-26",
+      "note": "CLI-only id (display 'Higgsfield Soul 2.0'; params aspect_ratio, quality, seed, style_id, custom_reference_id, image_references) — models_explore lists Soul 2.0 as soul_2 / soul_v2, which the CLI does not know. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "depth_anything_video",
+      "kind": "cli-only",
+      "type": "video",
+      "seen": "2026-09-26",
+      "note": "CLI-only utility id (display 'Depth Anything Video'; params colormap, max_frames, resolution, side_by_side, variant, video_references) — absent from the models_explore dump. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "fps_boost",
+      "kind": "cli-only",
+      "type": "video",
+      "seen": "2026-09-26",
+      "note": "CLI-only utility id (display 'FPS Boost'; params fps, variant, video_references) — absent from the models_explore dump. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
     }
   ]
 }

@@ -33,18 +33,29 @@ Steps — stop at the first failure and report it:
    `python3 scripts/snapshot_crosscheck.py` (read-only `model list/get`).
    It compares, per model in both sources, every snapshot enum option and
    default with `higgsfield model get --json`, every CLI enum with the
-   snapshot, aspect ratios, and media roles. For each `✗ DISAGREE` decide:
+   snapshot, aspect ratios, and media roles — and, per type, catalog
+   membership (a model only one source lists: `snapshot-only` / `cli-only`).
+   For each `✗ DISAGREE` decide:
    - the snapshot is wrong or incomplete → re-dump (step 1), or
    - it is a known representation difference → add an entry to
      `specs/crosscheck_allowlist.json` naming `model`, `field`, `kind`, the
-     date `seen`, and the exact `detail` the checker printed, plus a `note`.
+     date `seen`, and the exact `detail` the checker printed, plus a `note`;
+     for a membership difference, verify the id live first
+     (`higgsfield model get <id> --json`) and add `model`, `kind`
+     (`snapshot-only` | `cli-only`), `type`, `seen` and a `note` saying why
+     (MCP-only id, list-hidden studio model, CLI-only variant or utility).
    Remove every entry reported as `STALE`. The check must exit 0 before you
-   continue. Known CLI↔MCP disagreements already allowlisted (seen
-   2026-09-26): gpt_image_2 defaults (resolution 1k vs 2k, quality low vs
-   high), aspect ratios (CLI adds 4:5/5:4/auto) and media roles (`mask`);
-   soul_cinematic `soul_id` (MCP-only); role naming `image` (MCP) vs
-   `image_references` (CLI) on image_auto, soul_cinematic, image_to_3d,
-   multi_image_to_3d, sam_3_3d. Note: the CLI has no `model list --3d`
+   continue: exit 3 (`UNCHECKED` — a type with no snapshot or zero models
+   in both sources, or a CLI pull/shape failure) is never a pass. Known
+   CLI↔MCP disagreements already allowlisted (seen 2026-09-26): gpt_image_2
+   defaults (resolution 1k vs 2k, quality low vs high), aspect ratios (CLI
+   adds 4:5/5:4/auto) and media roles (`mask`); soul_cinematic `soul_id`
+   (MCP-only); role naming `image` (MCP) vs `image_references` (CLI) on
+   image_auto, soul_cinematic, image_to_3d, multi_image_to_3d, sam_3_3d;
+   and 23 membership differences (MCP-only ids such as sync_so / soul_2 /
+   meshy_*; studio models `model list` hides but `model get` answers; the
+   CLI-only nano_banana_2 variants, nano_banana_flash, text2image_soul_v2,
+   depth_anything_video, fps_boost). Note: the CLI has no `model list --3d`
    flag — 3d rows come from the unfiltered list by their `type` field.
 
 4. **Audit the eval cases for moved models (v3.11.3 lesson):**

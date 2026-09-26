@@ -58,3 +58,9 @@ def test_refresh_specs_command_covers_the_tier2_chain():
                                      "validate.py --strict", "--update-baseline")]
     assert order == sorted(order)
     assert "never call a `generate_*`" in text.lower() or "Never call a `generate_*`" in text
+
+
+def test_refresh_specs_command_says_membership_and_unchecked_block():
+    text = (CMD / "refresh-specs.md").read_text(encoding="utf-8")
+    assert "`snapshot-only` | `cli-only`" in text      # membership entries documented
+    assert "exit 3 (`UNCHECKED`" in text and "never a pass" in text

@@ -121,6 +121,8 @@ def test_committed_allowlist_is_well_formed_and_dated():
     entries = xc.load_allowlist()
     assert entries, "specs/crosscheck_allowlist.json should document the known disagreements"
     for e in entries:
+        if e["kind"] in xc.MEMBERSHIP_KINDS:
+            continue                  # checked in test_committed_membership_entries_…
         assert e["model"] and e["field"] and e["kind"] and e["detail"]
         assert e["seen"] == "2026-09-26" or len(e["seen"]) == 10
     kinds = {(e["model"], e["kind"]) for e in entries}
@@ -131,3 +133,99 @@ def test_cli_shape_surprise_exits_3(tmp_path):
     argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"))
     (tmp_path / "cli" / "get_m1.json").write_text(json.dumps(["not", "an", "object"]))
     assert xc.main(argv) == 3
+
+
+# ── v3.37.0 review: nothing compared is not agreement; membership blocks ────
+
+def _member(model="m2", kind="cli-only", type_="image", **kw):
+    e = {"model": model, "kind": kind, "type": type_, "seen": "2026-09-26",
+         "note": "CLI-only utility id, verified live"}
+    e.update(kw)
+    return e
+
+
+def _add_cli_row(tmp_path, row):
+    p = tmp_path / "cli" / "list_all.json"
+    rows = json.loads(p.read_text())
+    rows.append(row)
+    p.write_text(json.dumps(rows))
+
+
+def test_zero_shared_models_is_unchecked_never_agree(tmp_path, capsys):
+    # An empty `model list` used to print "0 shared model(s)" and "agree", exit 0.
+    argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"),
+                  allow=[_member("m1", "snapshot-only")])
+    (tmp_path / "cli" / "list_all.json").write_text("[]")
+    assert xc.main(argv) == 3
+    out = capsys.readouterr().out
+    assert "UNCHECKED" in out and "agree" not in out.split("UNCHECKED")[-1]
+
+
+def test_rows_without_a_type_are_a_shape_change_not_zero_rows(tmp_path):
+    argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"))
+    (tmp_path / "cli" / "list_all.json").write_text(json.dumps([{"job_type": "m1"}]))
+    assert xc.main(argv) == 3
+
+
+def test_a_type_without_a_snapshot_is_unchecked(tmp_path, monkeypatch, capsys):
+    def no_snapshot(*a, **k):
+        raise FileNotFoundError("no snapshot")
+    monkeypatch.setattr(xc.sync_specs, "find_snapshot", no_snapshot)
+    argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"))
+    argv = [a for a in argv]
+    i = argv.index("--snapshot")
+    del argv[i:i + 2]
+    assert xc.main(argv) == 3
+    assert "UNCHECKED" in capsys.readouterr().out
+
+
+def test_catalog_membership_difference_fails_unless_allowlisted(tmp_path, capsys):
+    (tmp_path / "a").mkdir()
+    (tmp_path / "b").mkdir()
+    argv = _write(tmp_path / "a", RES_SNAP, _cli_res("1k", "2k"))
+    _add_cli_row(tmp_path / "a", {"job_type": "m2", "type": "image", "display_name": "M2"})
+    assert xc.main(argv) == 1
+    assert "m2.membership [cli-only]" in capsys.readouterr().out
+    argv = _write(tmp_path / "b", RES_SNAP, _cli_res("1k", "2k"), allow=[_member()])
+    _add_cli_row(tmp_path / "b", {"job_type": "m2", "type": "image", "display_name": "M2"})
+    assert xc.main(argv) == 0
+    assert "allowlisted (seen 2026-09-26) m2 [cli-only]" in capsys.readouterr().out
+
+
+def test_membership_entry_is_per_kind_and_type(tmp_path):
+    # allowlisted as snapshot-only, observed cli-only → still blocking
+    argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"),
+                  allow=[_member(kind="snapshot-only")])
+    _add_cli_row(tmp_path, {"job_type": "m2", "type": "image", "display_name": "M2"})
+    assert xc.main(argv) == 1
+
+
+def test_stale_membership_and_never_checked_entries_are_reported(tmp_path, capsys):
+    ghost = _entry(model="ghost_model")      # a structural entry nobody compared
+    argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"), allow=[_member(), ghost])
+    _add_cli_row(tmp_path, {"job_type": "ghost_model", "type": "image", "display_name": "G"})
+    assert xc.main(argv) == 1          # ghost_model is now an unadjudicated cli-only id
+    out = capsys.readouterr().out
+    assert "STALE allowlist entry — no longer disagrees, remove it: m2 [cli-only]" in out
+    assert "STALE allowlist entry — its model was not compared this run, remove it: " \
+           "ghost_model.resolution [options]" in out
+
+
+@pytest.mark.parametrize("bad", [
+    {k: v for k, v in _member().items() if k != "note"},
+    {k: v for k, v in _member().items() if k != "type"},
+    _member(type_="hologram"),
+])
+def test_malformed_membership_entry_is_a_usage_error(tmp_path, bad):
+    argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"), allow=[bad])
+    assert xc.main(argv) == 2
+
+
+def test_committed_membership_entries_carry_type_and_reason():
+    members = [e for e in xc.load_allowlist() if e["kind"] in xc.MEMBERSHIP_KINDS]
+    got = {(e["model"], e["kind"], e["type"]) for e in members}
+    assert {("depth_anything_video", "cli-only", "video"), ("fps_boost", "cli-only", "video"),
+            ("sync_so", "snapshot-only", "video"), ("soul_2", "snapshot-only", "image"),
+            ("nano_banana_flash", "cli-only", "image")} <= got
+    for e in members:
+        assert len(e["note"]) > 40 and "Verified" in e["note"], e

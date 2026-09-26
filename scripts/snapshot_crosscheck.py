@@ -21,11 +21,22 @@ tolerated. Checks, per shared model:
   media_roles                 snapshot medias[].roles vs the CLI's media-role
                               params (start_image, image_references, mask, …)
 
-Known disagreements live in specs/crosscheck_allowlist.json — each entry names
-the model, field, kind, the date it was seen, AND the observed detail. An
-allowlisted disagreement is still PRINTED; if its detail changes it fails again
-(the allowlist accepts one observed fact, not a class of future ones); an entry
-that no longer disagrees is reported as stale.
+and, per type, CATALOG MEMBERSHIP: a model only one source lists
+(`snapshot-only` — in the models_explore dump, absent from `model list`;
+`cli-only` — the reverse) fails like any other disagreement.
+
+Known disagreements live in specs/crosscheck_allowlist.json — each structural
+entry names the model, field, kind, the date it was seen, AND the observed
+detail; a membership entry names the model, kind (snapshot-only | cli-only),
+type, seen date and a note saying why. An allowlisted disagreement is still
+PRINTED; if its detail changes it fails again (the allowlist accepts one
+observed fact, not a class of future ones); an entry that no longer disagrees
+— or whose model was never compared — is reported as stale.
+
+NOTHING COMPARED IS NOT AGREEMENT. A type with no snapshot, or with zero
+models present in both sources (an empty `model list`, 3d rows without a
+`type`), is UNCHECKED and the run exits 3 — "0 shared, agree" was a pass on
+an unchecked subject.
 
 Usage:
   python3 scripts/snapshot_crosscheck.py                    # every type, live CLI
@@ -34,7 +45,8 @@ Usage:
         DIR/list_all.json (unfiltered `model list --json`) + DIR/get_<id>.json
 
 Exit codes: 0 agree (allowlisted items printed), 1 disagreement,
-            2 usage / bad allowlist, 3 could not compare (CLI pull or shape).
+            2 usage / bad allowlist, 3 could not compare (CLI pull or shape,
+            a type with no snapshot or zero shared models).
 """
 
 from __future__ import annotations
@@ -51,6 +63,13 @@ import sync_specs
 ALLOWLIST_PATH = sync_specs.SPECS_DIR / "crosscheck_allowlist.json"
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _ALLOW_KEYS = ("model", "field", "kind", "seen", "detail")
+# Catalog-membership kinds: a model only one source lists.
+MEMBERSHIP_KINDS = ("snapshot-only", "cli-only")
+_MEMBERSHIP_KEYS = ("model", "kind", "type", "seen", "note")
+_MEMBERSHIP_DETAIL = {
+    "snapshot-only": "in the models_explore snapshot, absent from `model list`",
+    "cli-only": "in `model list`, absent from the models_explore snapshot",
+}
 
 
 def _norm(v) -> str:
@@ -117,9 +136,15 @@ def crosscheck(snapshot: dict, output_type: str, catalog: list, get_payload) -> 
     problems = []
     for mid in shared:
         problems.extend(compare_model(snap[mid], get_payload(mid)))
-    return {"type": output_type, "checked": shared,
-            "snapshot_only": sorted(set(snap) - cli_ids),
-            "cli_only": sorted(cli_ids - set(snap)), "problems": problems}
+    snapshot_only = sorted(set(snap) - cli_ids)
+    cli_only = sorted(cli_ids - set(snap))
+    for kind, ids in (("snapshot-only", snapshot_only), ("cli-only", cli_only)):
+        for mid in ids:
+            problems.append({"model": mid, "field": "membership", "kind": kind,
+                             "type": output_type, "detail": _MEMBERSHIP_DETAIL[kind]})
+    return {"type": output_type, "checked": shared, "snapshot_only": snapshot_only,
+            "cli_only": cli_only, "known": sorted(set(snap) | cli_ids),
+            "problems": problems}
 
 
 def load_allowlist(path: Path = None) -> list:
@@ -133,23 +158,47 @@ def load_allowlist(path: Path = None) -> list:
     if not isinstance(entries, list):
         raise ValueError(f"{path.name}: `entries` must be a list")
     for i, e in enumerate(entries):
-        missing = [k for k in _ALLOW_KEYS if not (isinstance(e, dict) and e.get(k))]
-        if missing:
-            raise ValueError(f"{path.name} entry {i}: missing {', '.join(missing)} "
-                             f"(every entry names model, field, kind, seen date, detail)")
+        if isinstance(e, dict) and e.get("kind") in MEMBERSHIP_KINDS:
+            missing = [k for k in _MEMBERSHIP_KEYS if not e.get(k)]
+            if missing:
+                raise ValueError(f"{path.name} entry {i}: missing {', '.join(missing)} "
+                                 f"(a membership entry names model, kind, type, seen "
+                                 f"date, and a note saying why)")
+            if e["type"] not in sync_specs.TYPES:
+                raise ValueError(f"{path.name} entry {i}: type={e['type']!r} is not one of "
+                                 f"{', '.join(sync_specs.TYPES)}")
+        else:
+            missing = [k for k in _ALLOW_KEYS if not (isinstance(e, dict) and e.get(k))]
+            if missing:
+                raise ValueError(f"{path.name} entry {i}: missing {', '.join(missing)} "
+                                 f"(every entry names model, field, kind, seen date, detail)")
         if not _DATE_RE.match(str(e["seen"])):
             raise ValueError(f"{path.name} entry {i}: seen={e['seen']!r} is not YYYY-MM-DD")
     return entries
 
 
+def _is_membership(e: dict) -> bool:
+    return e.get("kind") in MEMBERSHIP_KINDS
+
+
 def apply_allowlist(problems: list, entries: list, types_checked: set) -> tuple:
-    """(blocking, allowed, stale). A problem is allowed only when model, field,
-    kind AND detail all match an entry; an entry for a checked model that
-    matches nothing is stale."""
+    """(blocking, allowed, stale) for ONE type's problems. A structural
+    problem is allowed only when model, field, kind AND detail all match an
+    entry; a membership problem when model, kind and type match. A
+    structural entry for a checked model that matches nothing is stale;
+    membership entries are judged per type by stale_membership()."""
     key = lambda d: (d["model"], d["field"], d["kind"])  # noqa: E731
-    by_key = {key(e): e for e in entries}
+    by_key = {key(e): e for e in entries if not _is_membership(e)}
+    by_member = {(e["model"], e["kind"], e["type"]): e for e in entries if _is_membership(e)}
     blocking, allowed, used = [], [], set()
     for p in problems:
+        if p["kind"] in MEMBERSHIP_KINDS:
+            e = by_member.get((p["model"], p["kind"], p["type"]))
+            if e:
+                allowed.append((p, e))
+            else:
+                blocking.append(p)
+            continue
         e = by_key.get(key(p))
         if e and e["detail"] == p["detail"]:
             allowed.append((p, e))
@@ -159,24 +208,59 @@ def apply_allowlist(problems: list, entries: list, types_checked: set) -> tuple:
             used.add(key(p))
         else:
             blocking.append(p)
-    stale = [e for e in entries if key(e) not in used and e["model"] in types_checked]
+    stale = [e for e in entries if not _is_membership(e) and key(e) not in used
+             and e["model"] in types_checked]
     return blocking, allowed, stale
+
+
+def stale_membership(entries: list, result: dict) -> list:
+    """Membership entries of this type whose model is no longer one-sided."""
+    side = {"snapshot-only": set(result["snapshot_only"]),
+            "cli-only": set(result["cli_only"])}
+    return [e for e in entries if _is_membership(e) and e["type"] == result["type"]
+            and e["model"] not in side[e["kind"]]]
+
+
+def never_checked(entries: list, checked: set, known: set, all_types: bool) -> list:
+    """Structural entries whose model was not compared this run: it is known
+    to one source only (so nothing structural can disagree), or — when every
+    type ran — to neither. Such an entry vouches for nothing: stale."""
+    out = []
+    for e in entries:
+        if _is_membership(e) or e["model"] in checked:
+            continue
+        if e["model"] in known or all_types:
+            out.append(e)
+    return out
 
 
 # ── CLI sources ─────────────────────────────────────────────────────────────
 
+def _rows_of_type(rows, output_type: str, context: str) -> list:
+    """Rows of one type, selected by the row's own `type`. A row that is not
+    an object, or an unfiltered list whose rows carry no `type`, is a CLI
+    shape change — filtering it would silently leave zero rows."""
+    if not isinstance(rows, list):
+        raise rs.ShapeError(f"{context}: expected a JSON array")
+    for r in rows:
+        if not isinstance(r, dict) or "type" not in r:
+            raise rs.ShapeError(f"{context}: row {str(r)[:60]!r} is not an object with a "
+                                f"`type` — {output_type} models cannot be selected")
+    return [r for r in rows if r.get("type") == output_type]
+
+
 def _live_source(output_type: str):
     rows = rs._cli_json(rs._list_args(output_type))
-    if not isinstance(rows, list):
-        raise rs.ShapeError("model list: expected a JSON array")
     if output_type not in rs._LIST_FLAG:
-        rows = [r for r in rows if isinstance(r, dict) and r.get("type") == output_type]
+        rows = _rows_of_type(rows, output_type, "model list")
+    elif not isinstance(rows, list):
+        raise rs.ShapeError("model list: expected a JSON array")
     return rows, lambda mid: rs._cli_json(["model", "get", mid])
 
 
 def _recorded_source(cli_dir: Path, output_type: str):
     rows = json.loads((cli_dir / "list_all.json").read_text(encoding="utf-8"))
-    rows = [r for r in rows if isinstance(r, dict) and r.get("type") == output_type]
+    rows = _rows_of_type(rows, output_type, "list_all.json")
     return rows, lambda mid: json.loads((cli_dir / f"get_{mid}.json").read_text(encoding="utf-8"))
 
 
@@ -198,12 +282,14 @@ def main(argv=None) -> int:
         print(f"ALLOWLIST INVALID: {e}", file=sys.stderr)
         return 2
 
-    all_blocking, all_allowed, all_stale = [], [], []
+    all_blocking, all_allowed, all_stale, unchecked = [], [], [], []
+    checked_ids, known_ids = set(), set()
     for t in types:
         try:
             snap_path = args.snapshot or sync_specs.find_snapshot(sync_specs.SPECS_DIR, t)
         except FileNotFoundError:
-            print(f"[{t}] no snapshot — skipped")
+            print(f"[{t}] ? UNCHECKED — no {t} snapshot in specs/, nothing compared")
+            unchecked.append(f"{t}: no snapshot")
             continue
         snapshot = json.loads(snap_path.read_text(encoding="utf-8"))
         try:
@@ -217,31 +303,54 @@ def main(argv=None) -> int:
             print(f"[{t}] PULL FAILED kind={e.kind}: {e}\n  → {rs.REMEDIES[e.kind]}",
                   file=sys.stderr)
             return 3
+        checked_ids |= set(result["checked"])
+        known_ids |= set(result["known"])
         blocking, allowed, stale = apply_allowlist(result["problems"], entries,
                                                    set(result["checked"]))
+        stale += stale_membership(entries, result)
         source = f"recorded CLI ({args.cli_dir})" if args.cli_dir else "live CLI"
         print(f"[{t}] {snap_path.name} vs {source}: {len(result['checked'])} shared model(s); "
               f"snapshot-only {result['snapshot_only'] or '—'}; cli-only {result['cli_only'] or '—'}")
+        if not result["checked"]:
+            print(f"  ? UNCHECKED — zero models are in both sources, so nothing "
+                  f"structural was compared for {t}")
+            unchecked.append(f"{t}: 0 shared models")
         for p in blocking:
             extra = (f"  (allowlisted detail was: {p['allowlisted_detail']})"
                      if "allowlisted_detail" in p else "")
             print(f"  ✗ DISAGREE {p['model']}.{p['field']} [{p['kind']}] {p['detail']}{extra}")
         for p, e in allowed:
-            print(f"  · allowlisted (seen {e['seen']}) {p['model']}.{p['field']} "
-                  f"[{p['kind']}] {p['detail']}")
-        for e in stale:
-            print(f"  · STALE allowlist entry — no longer disagrees, remove it: "
-                  f"{e['model']}.{e['field']} [{e['kind']}] (seen {e['seen']})")
+            if p["kind"] in MEMBERSHIP_KINDS:
+                print(f"  · allowlisted (seen {e['seen']}) {p['model']} [{p['kind']}] "
+                      f"— {e['note']}")
+            else:
+                print(f"  · allowlisted (seen {e['seen']}) {p['model']}.{p['field']} "
+                      f"[{p['kind']}] {p['detail']}")
         all_blocking += blocking
         all_allowed += allowed
         all_stale += stale
+    all_stale += [e for e in never_checked(entries, checked_ids, known_ids,
+                                           all_types=set(types) == set(sync_specs.TYPES))
+                  if e not in all_stale]
+    for e in all_stale:
+        what = (f"{e['model']} [{e['kind']}] ({e['type']})" if _is_membership(e)
+                else f"{e['model']}.{e['field']} [{e['kind']}]")
+        why = ("its model was not compared this run" if not _is_membership(e)
+               and e["model"] not in checked_ids else "no longer disagrees")
+        print(f"  · STALE allowlist entry — {why}, remove it: {what} (seen {e['seen']})")
     if all_blocking:
         print(f"\n{len(all_blocking)} unadjudicated CLI↔MCP disagreement(s). Decide per item: "
               "re-dump models_explore if the snapshot is wrong/incomplete, or add an "
-              "allowlist entry (model, field, kind, seen, detail) if it is a known "
+              "allowlist entry (model, field, kind, seen, detail — or, for catalog "
+              "membership, model, kind, type, seen, note) if it is a known "
               "representation difference.")
         return 1
-    print(f"\nsnapshot and CLI agree ({len(all_allowed)} allowlisted known difference(s)).")
+    if unchecked:
+        print(f"\nUNCHECKED — nothing was compared for: {'; '.join(unchecked)}. "
+              "Not a pass: dump the missing snapshot / fix the CLI listing, then rerun.")
+        return 3
+    print(f"\nsnapshot and CLI agree ({len(all_allowed)} allowlisted known difference(s), "
+          f"{len(checked_ids)} model(s) compared).")
     return 0
 
 
