@@ -19,13 +19,13 @@ The rest of this skill library answers *"how do I prompt this?"* This skill answ
 *Routing aids — read the linked sections for the actual method.*
 - **World first, always.** Lock the world before you cast a character; the world is the gravity that shapes who they have to become [→](#the-method-world-first)
 - Six steps, each locks an output you do not revisit: Premise → World → Character → Story Spine → Style Sheet → hand-off [→](#the-method-world-first)
-- The flagship artifact is the **9-Question Character Sheet** — thematic role, external/internal goal, psychological/moral need, wound, spark, silhouette, contradiction [→](#step-3-character-9-questions-the-web)
-- The strongest anti-slop tool is the **Forbidden List** in the Style Sheet — naming what the world is NOT is often more useful than the palette [→](#step-5-style-sheet-visual-dna-forbidden-list)
+- The flagship artifact is the **9-Question Character Sheet** — thematic role, external/internal goal, psychological/moral need, wound, spark, silhouette, contradiction [→](#step-3--character-9-questions--the-web)
+- The strongest anti-slop tool is the **Forbidden List** in the Style Sheet — naming what the world is NOT is often more useful than the palette [→](#step-5--style-sheet-visual-dna--forbidden-list)
 - Specificity beats adjectives: if *any* character could say it, it's a stereotype; keep asking **"why?"** until the answer surprises you [→](#anti-generic-drills)
 - Fillable worksheets live in `../../templates/character-design/` — hand them to the user or fill them together [→](#templates)
 - Construction laws for the sheet as an artifact: **plain grey background** · creature sheets get **two close-ups (mouth open + closed)** · the **face-lock crop** · a **size-ref frame** for scale between two subjects [FIELD] [→](#sheet-construction-laws)
-- Once the character **looks** right, don't jump to scenes — run a **screen test**: casting read → role options → playable lines → voice triggers → one audition prompt [EMPIRICAL] [→](#screen-test-audition)
-- This skill produces inputs; it does **not** generate. Hand the locked Visual DNA + character sheet to `higgsfield-prompt` [→](#step-6-hand-off-to-generation)
+- Once the character **looks** right, don't jump to scenes — run a **screen test**: casting read → role options → playable lines → voice triggers → one audition prompt [EMPIRICAL] [→](#screen-test--audition)
+- This skill produces inputs; it does **not** generate. Hand the locked Visual DNA + character sheet to `higgsfield-prompt` [→](#step-6--hand-off-to-generation)
 
 ---
 

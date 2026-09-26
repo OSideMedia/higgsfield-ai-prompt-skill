@@ -16,12 +16,12 @@ A full motion-design creation flow run through the Higgsfield MCP connector. Fol
 > **Not a spec sheet.** Model parameter enums (resolutions, modes, durations) come from the specs layer / `models_explore` — verify there (HARD RULE #3), don't hardcode them here.
 
 ## QUICK FACTS
-- Two flows: **classicMD** (smooth, elegant, cinematic) vs **highMD** (fast cuts, extreme dynamics, CGI energy) — pick before anything else [→](#step-0-determine-the-flow-type)
-- Ask **all** brief questions in ONE message — never split intake into rounds [→](#step-1-brief-intake-one-message)
-- Storyboard = **one** image: a single grid sheet with all N panels via GPT Image 2 — never N separate images [→](#step-3-generate-the-storyboard)
-- Final video = **Seedance 2.0** (`seedance_2_0`); confirm the model id with `models_explore` if unsure [→](#step-4-generate-the-video)
-- highMD rule: no realistic humans — silhouettes, chrome figures, or 3D abstract shapes only [→](#notes-rules)
-- highMD rule: the logo lock is a static hold proportional to clip length (~1s / ~2s / ~2–3s for 5 / 10 / 15s) [→](#step-4-generate-the-video)
+- Two flows: **classicMD** (smooth, elegant, cinematic) vs **highMD** (fast cuts, extreme dynamics, CGI energy) — pick before anything else [→](#step-0--determine-the-flow-type)
+- Ask **all** brief questions in ONE message — never split intake into rounds [→](#step-1--brief-intake-one-message)
+- Storyboard = **one** image: a single grid sheet with all N panels via GPT Image 2 — never N separate images [→](#step-3--generate-the-storyboard)
+- Final video = **Seedance 2.0** (`seedance_2_0`); confirm the model id with `models_explore` if unsure [→](#step-4--generate-the-video)
+- highMD rule: no realistic humans — silhouettes, chrome figures, or 3D abstract shapes only [→](#notes--rules)
+- highMD rule: the logo lock is a static hold proportional to clip length (~1s / ~2s / ~2–3s for 5 / 10 / 15s) [→](#step-4--generate-the-video)
 
 ---
 

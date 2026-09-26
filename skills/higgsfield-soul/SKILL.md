@@ -13,15 +13,15 @@ metadata:
 
 ## QUICK FACTS
 *Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
-- Hard rule: every Soul ID prompt splits into Identity Block (static descriptors only) + Motion Block (temporal/camera only) [→](#identity-vs-motion-separation-hard-rule)
+- Hard rule: every Soul ID prompt splits into Identity Block (static descriptors only) + Motion Block (temporal/camera only) [→](#identity-vs-motion-separation--hard-rule)
 - Don't re-describe the face or core features — only describe what differs from the base character [→](#prompting-with-soul-id)
 - Reference image rules: front or 3/4 angle, even lighting, neutral-to-slight expression, no blur, solo subject [→](#creating-a-strong-soul-id-reference)
 - Reference generators: Soul 2.0 (fashion-forward), Nano Banana Pro (max sharpness), Seedream 4.5 (style range) [→](#creating-a-strong-soul-id-reference)
 - Character sheet angles: front face, 3/4, side profile, optional full body + optional embedded prop sheets [→](#character-sheet-creation)
 - Two-image floor per character: one clear face + one full body, on neutral grey — never a single image [→](#character-sheet-creation)
 - Prefer the single-prompt 3×2 six-panel sheet (one 16:9 generation) — identity locks better than multi-step assembly [→](#single-prompt-6-panel-character-sheet-32-grid)
-- Outfit change without identity drift: split-panel sheet — ghost-mannequin outfit LEFT + "face matches input 100%" close-up RIGHT [→](#split-panel-outfit-change-sheet-ghost-mannequin-identity-panel)
-- Crowds: a single-character reference makes a clone army — build a multi-character lineup and declare it a "VARIETY reference" [→](#variety-sheets-crowds-without-clones)
+- Outfit change without identity drift: split-panel sheet — ghost-mannequin outfit LEFT + "face matches input 100%" close-up RIGHT [→](#split-panel-outfit-change-sheet-ghost-mannequin--identity-panel)
+- Crowds: a single-character reference makes a clone army — build a multi-character lineup and declare it a "VARIETY reference" [→](#variety-sheets--crowds-without-clones)
 - Character Anchor Block = 10 per-shot attributes (identity, screen position, depth layer, frame occupancy, orientation, pose, gaze, contact points, state lock, expression) [→](#character-anchor-block)
 - One Soul ID sheet PER character state — 5 transformation stages = 5 distinct sheets; the prompt names the stage [→](#multi-form-state-tracking)
 - Micro-expression presets: 9 core + 10 extended [→](#core-set)
@@ -30,10 +30,10 @@ metadata:
 - Soul Cast specs: up to 4K (Character/Location modes) / 2K (General); batch 1 or 10; 0.125 credits per image [→](#30-soul-cast-specs)
 - Use 2–3 reference shots (frontal, 3/4, side); if features drift, use the character sheet as @Image1 [→](#character-consistency-best-practices)
 - Soul Cinema is the default CS 3.0/3.5 image-mode model — single-step, ~0.125 credits/image [→](#soul-cinema-as-the-cs-3035-default-image-model)
-- Studio-feeling output is an intermediate, not a final — re-pass through Soul Cinema with grade, directional lighting, lens character [→](#studio-look-vs-cinematic-look-soul-cinema-as-the-re-pass)
+- Studio-feeling output is an intermediate, not a final — re-pass through Soul Cinema with grade, directional lighting, lens character [→](#studio-look-vs-cinematic-look--soul-cinema-as-the-re-pass)
 - Skip Soul ID for single shots or when you want maximum creative variation [→](#when-to-use-soul-id)
 - Plasticky face in wide shots: crop the face from a closer-shot panel and replace it in post [→](#face-from-wide-shot-workaround)
-- Casting a REAL person: the sheet alone returns a lookalike — erase the head on the body panels and paste their actual photo into the portrait panel [→](#the-hybrid-sheet-casting-a-real-person)
+- Casting a REAL person: the sheet alone returns a lookalike — erase the head on the body panels and paste their actual photo into the portrait panel [→](#the-hybrid-sheet--casting-a-real-person)
 - Run the same sheet prompt through 2–3 image models and compare before locking; the deciding axis changes per character [→](#pick-the-sheet-model-per-job-not-per-project)
 
 

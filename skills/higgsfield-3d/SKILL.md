@@ -13,17 +13,17 @@ metadata:
 
 ## QUICK FACTS
 *Routing aids — read the linked sections for the full rules. Nothing in this sub-skill is field-tested.*
-- 17 3D models in the 2026-09-26 snapshot, six jobs: single image→3D, multi-view→3D, text→3D, rig, remesh / retexture, 3D Body [→](#the-catalog-17-models-six-jobs)
+- 17 3D models in the 2026-09-26 snapshot, six jobs: single image→3D, multi-view→3D, text→3D, rig, remesh / retexture, 3D Body [→](#the-catalog--17-models-six-jobs)
 - **THE law:** the mesh reproduces only what is in the source image — to add or change props, clothing or held objects, edit the IMAGE first, then convert the edited result [→](#the-source-image-law)
 - Multi-view beats single-view for geometry: 2–4 views of the same subject → `multi_image_to_3d` / `tripo_h3_1_multiview_to_3d` [→](#multi-view-beats-single-view)
-- The `prompt` field: the MCP schema says only `sam_3_3d` accepts one; the CLI marks it REQUIRED on the three text→3D models — send it there, confirm with `get_cost` [→](#the-prompt-field-two-surfaces-disagree)
+- The `prompt` field: the MCP schema says only `sam_3_3d` accepts one; the CLI marks it REQUIRED on the three text→3D models — send it there, confirm with `get_cost` [→](#the-prompt-field--two-surfaces-disagree)
 - Server-enforced rules: animation needs rigging; texture options need texturing ON; Hunyuan std caps the prompt at 200 characters and has no PBR [→](#parameter-rules-the-server-enforces)
 - Rig + animate: humanoids rig best; `animation_action_id` comes from a 678-action library (ids 0–696, not contiguous — look up, never guess) [→](#rigging-and-animation)
 - `get_cost: true` preflights for free; never auto-resubmit after a transport timeout [→](#cost-and-submission-discipline)
 - 3D Jutsu = private Blender 5.2 scene projects: inspect (query) → guarded edit (run) → `show_scene` LAST [→](#3d-jutsu-scene-builder-3d)
 - A generated GLB cannot enter a 3D Jutsu scene — imports are curated-catalog assets only in this version [→](#what-3d-jutsu-cannot-take-in)
-- Film use 1: a mesh turnaround as a multi-angle reference — UNMEASURED [→](#film-use-1-a-3d-turnaround-as-a-multi-angle-reference)
-- Film use 2: a 3D blockout rendered front-on from the camera's side becomes the SOURCE FRAME for the staging template — UNMEASURED [→](#film-use-2-a-3d-blockout-as-a-staging-reference)
+- Film use 1: a mesh turnaround as a multi-angle reference — UNMEASURED [→](#film-use-1--a-3d-turnaround-as-a-multi-angle-reference)
+- Film use 2: a 3D blockout rendered front-on from the camera's side becomes the SOURCE FRAME for the staging template — UNMEASURED [→](#film-use-2--a-3d-blockout-as-a-staging-reference)
 
 ---
 

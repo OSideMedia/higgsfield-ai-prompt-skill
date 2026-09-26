@@ -21,12 +21,12 @@ Higgsfield recognizes these names directly.
 *Routing aids — read the linked sections for the actual rules.*
 - Named preset tables by family: dolly / crane / orbit / zoom / follow / specialty / time-based / through-object / vehicle, plus angles and shot sizes — always cite the **exact preset name** [→](#dolly-movements)
 - Layer max two *compatible* moves; sequenced combos get explicit timing; static-pan beats glide for most coverage [→](#combining-camera-controls)
-- **The camera is the emotional double of the focal character** — 7 emotional registers map to camera prescriptions; arcs change the camera in named phases [→](#camera-emotion-sync-movement-per-focal-character-emotion)
-- [OFFICIAL] Lens + aperture chosen by shot *purpose* (85/100mm F1.4 tight emotional CU … 45mm macro F2.8), with standing focus-lock and distortion-forbid clauses [→](#lens-aperture-by-shot-purpose)
+- **The camera is the emotional double of the focal character** — 7 emotional registers map to camera prescriptions; arcs change the camera in named phases [→](#camera-emotion-sync--movement-per-focal-character-emotion)
+- [OFFICIAL] Lens + aperture chosen by shot *purpose* (85/100mm F1.4 tight emotional CU … 45mm macro F2.8), with standing focus-lock and distortion-forbid clauses [→](#lens--aperture-by-shot-purpose)
 - [OFFICIAL] Shot duration by type: flash establish 0.3–0.5s · dialogue line 3–7s · wordless reaction 5–10s · full-arc emotional CU 8–15s [→](#shot-duration-by-type)
 - Micro-moves need exact distances — state total travel + time ("10–15 cm over 7 seconds"); never write `zoom` for a physical move [→](#micro-moves-need-exact-distances)
 - Cinema Studio 3.0: One-Move Rule, genre presets, reliable phrasing library, camera transfer via `@Video` [→](#cinema-studio-30-camera-best-practices-businessteam-plan)
-- What a `@Video` reference reads reliably (world, materials, physics, camera character) vs cannot do (frame-accurate continuation, identity) [→](#video-reference-what-it-reads-and-what-it-cant)
+- What a `@Video` reference reads reliably (world, materials, physics, camera character) vs cannot do (frame-accurate continuation, identity) [→](#video-reference--what-it-reads-and-what-it-cant)
 
 ---
 

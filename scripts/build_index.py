@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent  # scripts/ → repo root
@@ -44,29 +45,51 @@ FENCE_RE = re.compile(r"^\s*(```|~~~)")
 
 
 def anchor(heading: str) -> str:
-    """GitHub-style anchor: lowercase, drop punctuation, spaces → hyphens.
+    """GitHub's heading slug (github-slugger), exactly:
 
-    Must be the same function for generation and verification — internal
-    consistency is the contract, exact GitHub parity is best-effort."""
-    a = heading.strip().lower()
-    a = re.sub(r"[^\w\s一-鿿-]", "", a)
-    return re.sub(r"\s+", "-", a.strip())
+      1. lowercase;
+      2. drop the Unicode categories github-slugger's script/generate-regex.js
+         strips — Other_Number, Open/Close/Initial/Final/Other/Dash
+         punctuation (except `-`), every Symbol, Control, Private_Use,
+         Format, Unassigned, and every Separator except ASCII space — minus
+         Alphabetic code points. What survives: letters, marks, Nd/Nl digits,
+         connector punctuation (`_`), `-` and ` `. So `—`, `.`, `@`, `(`,
+         backticks, `*` emphasis markers and `²` all vanish;
+      3. replace EACH space with `-` — no collapsing, no trimming.
+
+    So "Audio — Seedance 2.0" → "audio--seedance-20". The pre-v3.37 version
+    collapsed `\\s+` into one hyphen ("audio-seedance-20"): internally
+    consistent, so validate certified it, but ~303/932 INDEX anchors and
+    103/234 QUICK FACTS links did not resolve on GitHub.
+    (ponytail: `str.isalpha()` stands in for the Alphabetic property, so an
+    Other_Alphabetic symbol such as a circled letter is dropped where GitHub
+    keeps it — none occur in any heading; swap in a real property table if
+    one ever does.)"""
+    out = []
+    for ch in heading.strip().lower():
+        cat = unicodedata.category(ch)
+        if ch in " -" or cat[0] in "LM" or cat in ("Nd", "Nl", "Pc") or ch.isalpha():
+            out.append(ch)
+    return "".join(out).replace(" ", "-")
 
 
 def anchors_for(heads: list[tuple[int, str]]) -> list[str]:
     """Per-file anchor list with GitHub's duplicate-heading suffixes.
 
-    GitHub gives the first occurrence the base slug and appends -1, -2, …
-    to repeats (two 'Continuation' headings → #continuation, #continuation-1).
-    Generation and verification must both use this, or duplicate headings
-    produce index links that all land on the first occurrence."""
-    seen: dict[str, int] = {}
+    github-slugger's occurrence rule: the first use of a slug is bare; a
+    repeat gets `-1`, `-2`, … and every emitted slug is itself reserved, so a
+    literal heading "foo-1" after two "foo" headings becomes "foo-1-1".
+    Generation and verification both use this, or duplicate headings produce
+    links that all land on the first occurrence."""
+    occurrences: dict[str, int] = {}
     out = []
     for _, text in heads:
-        base = anchor(text)
-        n = seen.get(base, 0)
-        seen[base] = n + 1
-        out.append(base if n == 0 else f"{base}-{n}")
+        slug = original = anchor(text)
+        while slug in occurrences:
+            occurrences[original] += 1
+            slug = f"{original}-{occurrences[original]}"
+        occurrences[slug] = 0
+        out.append(slug)
     return out
 
 

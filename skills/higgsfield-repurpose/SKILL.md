@@ -14,7 +14,7 @@ metadata:
 ## QUICK FACTS
 *Routing aids — read the linked sections for the full rules. Nothing in this sub-skill is field-tested.*
 - Four surfaces take a video that already exists: Shorts Studio (restyle → shorts), Clipify (YouTube → subtitled clips), Virality Predictor (a score), Video Analysis (a scene breakdown) [→](#what-this-sub-skill-is-for)
-- Paid vs free is per tool — `shorts_studio_create` is **PAID**; its `get_cost` estimate and preset creation state they are free; list / status calls state no cost [→](#paid-or-free-read-this-before-calling-anything)
+- Paid vs free is per tool — `shorts_studio_create` is **PAID**; its `get_cost` estimate and preset creation state they are free; list / status calls state no cost [→](#paid-or-free--read-this-before-calling-anything)
 - Shorts Studio: source 4–120s, output **720p only**, 9:16 default (16:9 optional); preflight with `get_cost: true` + `duration_seconds` — no preset or upload needed for the estimate [→](#shorts-studio)
 - Shorts Studio presets store a STYLE (≤10 media, videos ≤30s, public https URLs) — write the preset prompt as laws, not adjectives [→](#style-presets-free)
 - Clipify: exactly ONE YouTube URL per job; 1–20 clips; 9:16 / 1:1 / 16:9; subtitle font, case, position and highlight colour are parameters [→](#clipify)

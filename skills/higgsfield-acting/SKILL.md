@@ -34,7 +34,7 @@ prompt. It does not change camera, light, wardrobe, or grade.
 - Every tic carries a **trigger**; every mask carries a **crack** — at least one "However, when X…" clause per profile [→](#the-acting-master-profile)
 - **Eye life is mandatory and never optional** — saccades, blink quality, live catchlights, eyes-lead-thought. Dead eyes are the number-one tell of AI acting [→](#eye-life)
 - Scene adaptation **transforms, never deletes**: a behavior that can't physically happen is displaced into another outlet, not removed [→](#scene-adaptation)
-- The **voice prompt is locked** — one per character, pasted verbatim into the audio field, never adapted per scene [→](#voice-fixed-identity-never-adapted)
+- The **voice prompt is locked** — one per character, pasted verbatim into the audio field, never adapted per scene [→](#voice--fixed-identity-never-adapted)
 - **States, not transitions.** Models fail process and nail state: "mid-throw, arm extended", not "reaches in, pulls out, winds up" [→](#states-not-transitions)
 - Ensemble reactions travel in a **wave, never in sync**; the strong are still and quiet, the weak fidget and shout [→](#ensemble-and-space)
 - 15 named bad-acting symptoms with prompt-level fixes, and a 0–5 self-check scale — **aim every hero shot at 4+** [→](#the-atlas-of-bad-acting)

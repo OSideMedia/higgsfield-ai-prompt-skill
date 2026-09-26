@@ -26,12 +26,12 @@ metadata:
 - Native-joint audio models: Kling 3.0, Seedance 2.0 / 1.5 Pro, Veo 3/3.1, Grok — all others add audio in post [→](#which-models-support-audio)
 - Four layers to consider per prompt: Dialogue / SFX / Ambient / BGM [→](#the-four-audio-layers)
 - Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens; per-language sync-word budgets are FIELD-reported [→](#lip-sync-rules)
-- **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input-seedance-20-audio1)
-- Scope an audio reference like an image one: name the property that rides, the property that must NOT, and where the excluded one comes from instead [→](#scope-an-audio-reference-say-which-property-rides)
-- Multi-clip assembly: one master track · cuts land on musical punctuation, never inside a sung vowel (ECU mouth-match is the one exception) · unified grain + LUT masks batch color drift [→](#cutting-to-music-assembling-separately-generated-clips-on-one-track)
+- **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input--seedance-20-audio1)
+- Scope an audio reference like an image one: name the property that rides, the property that must NOT, and where the excluded one comes from instead [→](#scope-an-audio-reference--say-which-property-rides)
+- Multi-clip assembly: one master track · cuts land on musical punctuation, never inside a sung vowel (ECU mouth-match is the one exception) · unified grain + LUT masks batch color drift [→](#cutting-to-music--assembling-separately-generated-clips-on-one-track)
 - Cinema Studio 3.0 native joint audio (SCELA): describe audio as a separate section; specific foley beats generic moods [→](#cinema-studio-30-audio-businessteam-plan)
-- **Seed Audio 1.0** (`seed_audio`, standalone) = whole-scene audio in ONE pass — multi-speaker dialogue + music + SFX + ambience mixed [→](#scene-audio-generation-seed-audio-10)
-- Standalone Audio catalog (2026-09-26 snapshot): `seed_audio`, `qwen_audio_tts` (Qwen 3.0 TTS Flash — gained `batch_size` 1–4 on 2026-09-26, the only audio change since 08-01), `text2speech_v2` (5 engines incl. cozy_voice), plus 3 game-pipeline-only tools — distinct from in-video joint audio [→](#standalone-audio-tab-tool-catalog-2026-09-26-snapshot)
+- **Seed Audio 1.0** (`seed_audio`, standalone) = whole-scene audio in ONE pass — multi-speaker dialogue + music + SFX + ambience mixed [→](#scene-audio-generation--seed-audio-10)
+- Standalone Audio catalog (2026-09-26 snapshot): `seed_audio`, `qwen_audio_tts` (Qwen 3.0 TTS Flash — gained `batch_size` 1–4 on 2026-09-26, the only audio change since 08-01), `text2speech_v2` (5 engines incl. cozy_voice), plus 3 game-pipeline-only tools — distinct from in-video joint audio [→](#standalone-audio-tab--tool-catalog-2026-09-26-snapshot)
 - **Voice change** (`voice_change`) swaps the speaker in a finished video, keeping timing and visuals — no prompt; priced by duration. **Voice cloning** (`create_voice`) makes a reusable `voice_type: 'element'` voice — usable only once `completed` + `is_audio_eligible` [→](#voice-change-and-voice-cloning)
 
 ## Which Models Support Audio?
