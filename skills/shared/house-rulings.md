@@ -189,7 +189,7 @@ directory. All entries dated **2026-09-26** unless marked.
   relabelled: the bake rule already decides that case and nothing argues the other way.)
 - **Scope:** a standalone shot, a t2v shot or a genre recipe has nothing to bake into — the lens
   words in the Look line are the only route (`../higgsfield-recipes/SKILL.md`,
-  `../higgsfield-seedance/SKILL.md` § Name the thing, root `SKILL.md` HARD RULE 7). A sequence
+  `../higgsfield-seedance/SKILL.md` § Name the thing, `../../SKILL.md` HARD RULE 7). A sequence
   whose baked plate is attached to **every** shot → the optics words leave the video prompt
   (`../higgsfield-seedance/SKILL.md` § Bake it into the asset `[FIELD — ONEIRIC]`, one studio,
   not measured here) — **including the Style Prefix**, which is pasted verbatim into every
@@ -223,7 +223,7 @@ directory. All entries dated **2026-09-26** unless marked.
   reference's voice, resizing the wrong subject, and the garbage of a baked property all pass.
 - **Where:** `negative-constraints.md` § Where a ban is still correct (the table), which now
   covers the bans the old two-item list omitted. `../higgsfield-seedance/FAILURE-MODES.md`
-  § Filler-babble no longer bans the word *without* — it is a preference inside the law, which
+  § Filler-babble on a short dialogue line no longer bans the word *without* — it is a preference inside the law, which
   targets negative lists and bare negations, not every "no" token
   (`../higgsfield-seedance/SKILL.md` § No negative prompts).
 
@@ -257,7 +257,7 @@ both prompts** — `../higgsfield-seedance/FAILURE-MODES.md` § Walking is the h
   comes back choppy called it "first-frame geometry"; it is attached **last**, position only — a
   drawing in the first-frame role becomes frame one. `../higgsfield-workspaces/SKILL.md` § Draw
   to Video / Sketch to Video ("the sketch carries composition and blocking") is now scoped to
-  that workspace and points here. The house A/B's record is incomplete, so root `SKILL.md`,
+  that workspace and points here. The house A/B's record is incomplete, so `../../SKILL.md`,
   `../higgsfield-seedance/SKILL.md` and the staging eval now say "one incomplete-record run",
   not "measured safe".
 

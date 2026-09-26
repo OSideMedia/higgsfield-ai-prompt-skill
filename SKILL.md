@@ -148,7 +148,7 @@ budget constraints, client work), **confirm before generating:**
 | One-click App workflow | `higgsfield-apps` |
 | Genre recipe (action, horror, ad, etc.) | `higgsfield-recipes` |
 | Fix a failing generation | `higgsfield-troubleshoot` |
-| A Seedance take came back wrong (not flagged) — reversal, babble, a third hand, gliding walk, choppy fight | `higgsfield-seedance` (`FAILURE-MODES.md`) + `higgsfield-troubleshoot` (§ Stop-Rule Ladder) |
+| A Seedance take came back wrong (not flagged) — reversal, babble, a third hand, gliding walk, choppy fight | `higgsfield-seedance` (`skills/higgsfield-seedance/FAILURE-MODES.md`) + `higgsfield-troubleshoot` (§ Stop-Rule Ladder) |
 | Moodboard, style direction, Soul Hex color | `higgsfield-moodboard` |
 | Visual consistency across a project | `higgsfield-moodboard` |
 | Mixed Media presets (Noir, Sketch, Particles, etc.) | `higgsfield-mixed-media` |

@@ -155,7 +155,7 @@ Two ways it gets used, and they want slightly different shapes:
    retrieval: short labelled sections, one fact per line, no narrative throat-clearing.
 
 Keep it in `workspace/input/` so it is found the way every other supplied document is
-(root `SKILL.md` § Working Folders). For anything recurring, give each character a **voice
+(root `../../SKILL.md` § Working Folders). For anything recurring, give each character a **voice
 lock** and a **movement lock** — one line each, fixed wording, reused verbatim — so speech
 register and physical signature stay pinned the way the Visual DNA pins the look. The locks
 fix the *words*, not where they go: the movement lock is copied verbatim wherever that
