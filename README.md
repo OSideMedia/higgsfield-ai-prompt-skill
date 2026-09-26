@@ -33,10 +33,10 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 - **Marketing Studio + Content Factory** — 9 DTC ad presets (UGC / Tutorial / Unboxing / Hyper Motion / TV Spot / Wild Card / Virtual Try-On) with 4–15s ad video, plus an end-to-end campaign pipeline (research → plan → generate → publish → report) with a cost-savings report
 - **Shared negative constraints reference** — categorized artifacts + prevention phrases (positive alternatives for 3.0); Kling 3.0 Motion Control failure diagnostic; Physics Rendering — Resolution Decision Matrix (cross-model 480p / 720p / 1080p routing rule for Seedance 2.0 + Cinema Studio 3.x)
 - **Identity vs. Motion separation** — hard rule for character consistency across shots
-- **Annotated templates library** — 10 genre templates with Cinema Studio 3.0 genre mappings, plus Seedance technique + character-design + text-overlay sub-libraries (18 files across 3 categories)
+- **Annotated templates library** — 10 genre templates with Cinema Studio 3.0 genre mappings, plus Seedance technique + character-design + text-overlay sub-libraries (19 files across 3 categories)
 - **DISCIPLINE.md cross-cutting framework** — 9 named discipline patterns in 3-3-3 tier symmetry (prompt-construction, model-selection, iteration-discipline) governing decisions across all sub-skills
 - **production-benchmarks.md** — Hell Grind 90-min Cannes feature reference, per-character iteration anchors, acceptance-rate calibration; what "production quality" means in practice
-- **FAILURE-MODES.md (Seedance)** — 11 named render failures documented with symptom + mechanism + counter for diagnosis-first iteration
+- **FAILURE-MODES.md (Seedance)** — 15 named render failures documented with symptom + mechanism + counter for diagnosis-first iteration
 - **C-arc Building Complete AI Projects — 10-Step Methodology** — end-to-end pipeline from idea to delivered project; complements the genre/scene templates
 - **Expanded Seedance methodology + Soul refinement** — Iteration Rule + 6-Pass Diagnostic Sequence + Four Questions + Next-Shot Decision Tree + Bridging / Continuation / Repair working modes; Character Anchor Block + Two-Tool Refinement Pipeline for character consistency at production scale
 
@@ -263,12 +263,13 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
     │   ├── ENGINE-RULES.md               ← Hard rendering constraints shared across the Seedance family
     │   ├── PRODUCTION-PATTERNS.md        ← Tutorial-demonstrated production patterns
     │   ├── HELL-GRIND.md                 ← Higgsfield's open-sourced 95-min feature pipeline
-    │   └── FAILURE-MODES.md              ← 8 named Seedance render failures (symptom · mechanism · counter)
+    │   └── FAILURE-MODES.md              ← 15 named Seedance render failures (symptom · mechanism · counter)
     ├── higgsfield-seedance-2-5/
     │   ├── SKILL.md                      ← Seedance 2.5 omni-reference dialect + 4-mode router
     │   ├── MODE-PLAYBOOKS.md             ← Edit / extend / storyboard / blockout / one-click / transitions
     │   └── VFX-PIPELINE.md               ← AI-VFX pipeline: asset routing, size-ref frame, omni_reference v2v, slop catalog
     ├── higgsfield-acting/SKILL.md        ← Performance craft: objective, beats, eye life, master profile
+    ├── higgsfield-scene-engine/SKILL.md  ← Structural scene audit: goal · obstacle · tactic · reversal · value shift
     ├── higgsfield-vibe-motion/SKILL.md   ← Vibe-based motion direction
     └── higgsfield-workspaces/SKILL.md    ← Workspace-first decision layer (Cinema Studio / Lipsync / Draw-to-Video / Sora 2 Trends / Click to Ad / Higgsfield Audio)
 ```

@@ -14,7 +14,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS, voice-change, voice-clone]
-  version: 3.8.0
+  version: 3.9.0
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -25,6 +25,7 @@ metadata:
 *Routing aids — read the linked sections for the full rules.*
 - Native-joint audio models: Kling 3.0, Seedance 2.0 / 1.5 Pro, Veo 3/3.1, Grok — all others add audio in post [→](#which-models-support-audio)
 - Four layers to consider per prompt: Dialogue / SFX / Ambient / BGM [→](#the-four-audio-layers)
+- Suppressing a score: name the diegetic sound first, then the suppression as plain text; `NO BGM` vs `No music.` is OPEN (house-rulings P2-7) [→](#suppressing-music-no-bgm-is-a-spec-no-music-is-a-preference)
 - Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens; per-language sync-word budgets are FIELD-reported [→](#lip-sync-rules)
 - **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input--seedance-20-audio1)
 - Scope an audio reference like an image one: name the property that rides, the property that must NOT, and where the excluded one comes from instead [→](#scope-an-audio-reference--say-which-property-rides)
@@ -121,8 +122,14 @@ BGM: lo-fi hip-hop beat, warm vinyl crackle, relaxed.
 
 ### Suppressing music — `NO BGM` is a spec, `no music` is a preference
 
-`[DEMO — Joey cinema-director-v3, 2026-08-16]` `[UNPROVEN HERE]` When a piece must
-carry no score, the phrase matters. **`no music` reads as a weak stylistic preference**
+`[EMPIRICAL — Joey cinema-director-v3 skill (2026-08-16), re-derived 2026-08-22]`
+**Contested — OPEN, unmeasured here** (`../shared/house-rulings.md` P2-7): `No music.` is the
+form 12 of 13 harvested projects shipped (`../../templates/seedance/global-style-prefix.md`
+[FIELD]); this section is one practitioner skill's argument. Both forms are legal; lead with
+the positive list either way, and never write the suppression inside Seedance 2.5's `()` music
+bracket.
+
+When a piece must carry no score, the phrase matters. **`no music` reads as a weak stylistic preference**
 and loses to the model's strong prior that generated video wants a bed under it.
 **`NO BGM` reads as a production term** — a hard spec — and is the form to write.
 Expand it once on first use so the abbreviation is unambiguous, then let it carry.
@@ -134,9 +141,12 @@ it decides in favour of a pad.
 
 ```
 Audio: diegetic sound only — footsteps on wet stone, fabric shift, breath, room tone.
-NO BGM — no background music of any kind. No score, no soundtrack, no instrumental,
-no underscore, no ambient musical pad, no drone, no tone bed. Nothing musical at any point.
+NO BGM.
 ```
+
+The escalation, only once a short form has failed on this shot: "NO BGM — no background
+music of any kind. No score, no soundtrack, no instrumental, no underscore, no ambient musical
+pad, no drone, no tone bed." 
 
 **Promote it to the top on a scene that must land silent.** Audio instructions carry
 more weight early; by the time the model reaches a closing audio block it has already
@@ -242,6 +252,10 @@ speak more words than it can keep synced to the mouth.
 | Mandarin | — | Strongest sync overall |
 | Russian | ~10–15 words | Weak — budget conservatively |
 | Japanese / Korean | Under-tested | No reliable field numbers yet |
+
+This is a ceiling for reliable sync across a clip; the floor for one short shot is
+`../higgsfield-seedance/FAILURE-MODES.md` § Filler-babble on a short dialogue line — they meet
+at one 8–10-word line in a 4 s shot (`../shared/house-rulings.md` P3-6).
 
 Cross-language sizing unit: **"one short sentence ≈ one breath."** Write dialogue
 in breath-sized sentences and count breaths, not seconds.
@@ -379,7 +393,7 @@ that can coexist. (Sibling of `../higgsfield-seedance/SKILL.md` § Reference Rol
 
 ### Cutting to music — assembling separately-generated clips on one track
 
-`[EMPIRICAL — MiniMax H3 skill corpus, re-derived; cross-model editing craft]`
+`[EMPIRICAL — MiniMax H3 skill corpus, re-derived 2026-08-09; cross-model editing craft]`
 Beat sync governs what happens *inside* a clip; these three laws govern the
 timeline the clips land on:
 
