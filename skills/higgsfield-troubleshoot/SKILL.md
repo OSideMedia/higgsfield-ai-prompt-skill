@@ -27,7 +27,7 @@ metadata:
 - The shot log is the ledger row — one line per take, changed variable in `notes` [→](#the-shot-log-is-the-ledger-row)
 - Continuation/extension defects: 12-row symptom → cause → single-repair-variable atlas (planned-vs-observed opening, motion-vector drop, prop contradictions, chain-depth drift…) [→](#sequence--continuation-failure-atlas)
 - Retry Ladder: 4 terminating rungs — re-run once verbatim → treat 2nd failure as over-packing → switch model for that shot → stop after 3 paid attempts with named options [→](#retry-ladder--a-failed-take-edits-the-plan-not-just-the-dice)
-- Five stop numbers, one ladder — they count different things: 2 same-flaw re-rolls → rewrite · 3 paid attempts (no declared budget) → named options · 4 v2v batches (ceiling) → prompt/source fault · 10–15 surgical iterations (declared budget) → simplify the shot · 65–100 generations per kept shot is a project benchmark, never a stop rule. The earliest tripwire wins [→](#stop-rule-ladder--which-number-governs)
+- Six stop numbers, one ladder: 2 same-flaw re-rolls → rewrite · 3 paid attempts (no declared budget) → named options · half a declared budget with no progress → change strategy · 4 v2v batches (ceiling) → prompt/source fault · 10–15 surgical iterations (declared budget) → simplify the shot · 65–100 generations per kept shot is a project benchmark, never a stop rule. The earliest tripwire wins; where 2 and 4 count the same v2v runs it is OPEN, default the earlier stop [→](#stop-rule-ladder--which-number-governs)
 - Log EVERY confirmed fix to learning memory, and check memory first before troubleshooting [→](#log-the-outcome--always)
 - Vision-grounded diagnosis (stills only): vision proposes the `reject_reason`, the human confirms — advisory until a class clears the agreement gate [→](#vision-grounded-diagnosis--classify-the-rejected-still-dont-guess)
 
@@ -251,7 +251,10 @@ of five verdicts:
 The rewrite tripwire cuts both ways: the same flaw twice means stop re-rolling
 into the same wall, but *different* flaws on every roll mean the miss is
 stochastic — that's batch-and-cull territory, not a rewrite
-(`../higgsfield-prompt/SKILL.md` § Before You Iterate). When the verdict is
+(`../higgsfield-prompt/SKILL.md` § Before You Iterate). When two *failed* takes
+differ, the Retry Ladder below reads them the other way (over-packed → split);
+that disagreement is recorded OPEN, with its tie-break, in § Stop-Rule Ladder.
+When the verdict is
 re-roll or rewrite and the failure keeps recurring, escalation is governed by
 the Retry Ladder below.
 
@@ -278,7 +281,8 @@ Write two things down before the first fire:
 
 At half the budget with no progress on the same flaw, stop iterating and
 change strategy: a different mode, a shot split, or the Retry Ladder's rung-4
-named options. Iteration without a stop condition is how a cheap shot becomes
+named options. This is rung 2b of § Stop-Rule Ladder — it sits beside, and can
+fire before, the 10–15 ceiling. Iteration without a stop condition is how a cheap shot becomes
 an expensive one. The budget is not a promise of success — it is the tripwire
 that forces the strategy change.
 
@@ -336,6 +340,8 @@ Each rung terminates — never loop on one rung:
    envelope and/or split the surplus beats into a new adjacent prompt (the shotlist
    density split triggers apply), then re-run the preflight linter on **both** halves
    before firing either. A second identical re-roll pays twice for the same overload.
+   (If the two failures differ, § Take Triage reads them as stochastic instead —
+   OPEN; tie-break in § Stop-Rule Ladder.)
 3. **Switch models for that one shot.** One shot on a different engine beats bending
    the whole piece around a shot the current engine won't hold.
 4. **Stop after three paid attempts and present named options** — accept the best
@@ -349,29 +355,43 @@ authoring lessons, not generation luck.
 
 ## Stop-Rule Ladder — which number governs
 
-`[HOUSE]` ordering of five sourced numbers (`../shared/house-rulings.md` P1-2). The repo
-carries five "stop" numbers and they do not disagree — **they count different things**. Read
-the unit before the number. **The earliest tripwire that fires wins; every later number is a
-ceiling, never a quota.**
+`[HOUSE]` ordering of six sourced numbers (`../shared/house-rulings.md` P1-2). Most of them
+count different things — read the unit before the number. Two places where they count the
+**same** thing and disagree are recorded below, not smoothed over. **The earliest tripwire that
+fires wins; every later number is a ceiling, never a quota.**
 
 | Rung | What is counted | Where it applies | Tripwire | When it trips | Source |
 |---|---|---|---|---|---|
-| 1 | Re-rolls of one **unchanged** prompt showing the **same** flaw | any shot | **2** | Stop re-rolling; rewrite — diagnose, change one variable. Different flaws per roll → batch-and-cull instead | § Take Triage `[EMPIRICAL — Emily2040/seedance-2.0 skill (MIT), re-derived 2026-08-09]` |
+| 1 | Re-rolls of one **unchanged** prompt showing the **same** flaw | any shot | **2** | Stop re-rolling; rewrite — diagnose, change one variable. Different flaws per roll → see "Different flaws" below | § Take Triage `[EMPIRICAL — Emily2040/seedance-2.0 skill (MIT), re-derived 2026-08-09]` |
 | 2 | **Paid attempts** on one shot whose references and mapping are verified right, **no budget declared** | the agent's own default ceiling | **3** | Stop; present named options — accept the best take, re-scope, defer, or ship a `placeholder: missing clip` note | § Retry Ladder, rung 4 `[EMPIRICAL — MiniMax H3 skill corpus, re-derived 2026-08-09]` |
+| 2b | **Attempts** on one shot against a **declared** take budget, with no progress on the same flaw | any shot with a declared budget — replaces rung 2 | **half the budget** | Stop iterating; change strategy — a different mode, a shot split, or rung 2's named options | § Attempt budget `[heuristic]` — read as `[HOUSE]` |
 | 3 | **Batches** of one v2v prompt + source showing the same defect | Seedance 2.5 `omni_reference` v2v | **4** (ceiling) | Stop batching — the prompt or the source is at fault; check the plate has an anchor for the action, else fall back to i2v | `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 5 `[FIELD — AI-vs-VFX, 2026-08-08]` |
 | 4 | **Prompt versions** — one surgical line changed each — on one shot, inside a **declared** production budget | feature-film and hero shots | **10–15** (ceiling) | Stop rewording; simplify the *shot* — split it, remove an action, change the angle | `../higgsfield-seedance/HELL-GRIND.md` § The iteration loop `[OFFICIAL — Hell Grind brief]` |
 | — | **Generations per kept shot** across a project | planning only | 65–100 per kept shot; 72 for one iteration-heavy establishing shot | Nothing — a budget benchmark, **never a stop rule** and never a target | `../../production-benchmarks.md` `[FIELD — 13-project harvest]` · Hell Grind disclosure |
 
 How they compose:
 
-- **Rung 1 fires inside every other rung.** Inside a v2v batch run, two takes with the same
-  defect already mean rewrite — four batches is where the field build *learned* the lesson,
-  not a count to reach. Stopping at the first repeat is the cheaper failure: at worst one
-  rewrite of a prompt that was fine, at best the batches you did not buy.
-- **Rung 2 vs rung 4 is decided by § Attempt budget.** With no declared budget the agent stops
-  at three paid attempts and hands the choice back. A user who declared a budget — a feature,
-  a hero shot — has replaced that default; the half-budget tripwire applies, and 10–15
-  surgical iterations is the ceiling before the shot itself is restructured.
+- **Rung 1 vs rung 3 in v2v — the same count, recorded OPEN with a default.** Inside a v2v
+  batch run both rungs count same-defect runs of one unchanged prompt + source, and they
+  disagree: rung 1 says rewrite at 2, the field build stopped at 4. Nothing here measures which
+  stop point is right. **Default: stop at the first repeat.** It is the cheaper failure — at
+  worst one single-variable rewrite of a prompt that was fine (revertible, and the log shows
+  what changed), against at worst two more batches bought on a defect that was already
+  systematic. Four is where the field build *learned* the lesson, not a count to reach.
+- **Different flaws on two failed takes — recorded OPEN.** Rung 1's own escape (different
+  flaws per roll → stochastic → batch-and-cull, `../higgsfield-prompt/SKILL.md` § Before You
+  Iterate) and § Retry Ladder rung 2 (a *second* failure is evidence the shot is over-packed →
+  split it) read the same two failures in opposite directions. Both are third-party
+  practitioner material, and at n = 2 the ledger's fork verdict is `low-n` — it cannot decide.
+  Tie-break `[HOUSE]`, unmeasured: § Before You Iterate's own test is "varied ways, **with the
+  occasional near-hit**". If either take nearly delivered the shot's primary job, batch-and-cull;
+  if neither did, treat it as over-packing and split.
+- **Rung 2 vs rungs 2b and 4 is decided by § Attempt budget.** With no declared budget the
+  agent stops at three paid attempts and hands the choice back. A user who declared a budget —
+  a feature, a hero shot — has replaced that default with two tripwires, and whichever fires
+  first wins: **half the budget** with no progress on the same flaw forces a strategy change,
+  and **10–15** surgical iterations is the ceiling before the shot itself is restructured. On a
+  20-attempt budget the half-budget tripwire fires at 10, before rung 4's range is reached.
 - **Rung 4 counts rewrites, not re-rolls.** Every Hell Grind iteration changes one line, so
   rung 1 is already satisfied inside it.
 - **The benchmark never licenses spend.** "65–100 per kept shot" describes a finished

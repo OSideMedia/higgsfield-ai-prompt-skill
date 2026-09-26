@@ -49,20 +49,37 @@ directory. All entries dated **2026-09-26** unless marked.
 
 ### P1-2 · How many takes before a failing shot is rewritten, escalated or restructured?
 
-- **Ruling:** SCOPE — five numbers counting five different things, ordered as one ladder in
-  `../higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder. The earliest tripwire wins; later
-  numbers are ceilings, never quotas.
+- **Ruling:** SCOPE for most of the ladder; **OPEN** at two points where rungs count the same
+  thing. Six numbers, ordered as one ladder in `../higgsfield-troubleshoot/SKILL.md`
+  § Stop-Rule Ladder. The earliest tripwire wins; later numbers are ceilings, never quotas.
+  (Was labelled SCOPE throughout — "they do not disagree". Relabelled: rungs 1 and 3 overlap in
+  v2v, and rung 1's different-flaws escape meets the Retry Ladder's step 2.)
 - **Rungs:** 2 same-flaw re-rolls of an unchanged prompt → rewrite (troubleshoot § Take Triage
   `[EMPIRICAL — Emily2040]`) · 3 paid attempts with no declared budget → named options
-  (troubleshoot § Retry Ladder `[EMPIRICAL — MiniMax H3]`) · 4 v2v batches, ceiling →
-  prompt/source fault (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 5 `[FIELD —
-  AI-vs-VFX]`) · 10–15 surgical iterations inside a declared budget → simplify the shot
+  (troubleshoot § Retry Ladder `[EMPIRICAL — MiniMax H3]`) · half a declared budget with no
+  progress on the same flaw → change strategy (troubleshoot § Attempt budget `[heuristic]`, read
+  as `[HOUSE]`) · 4 v2v batches, ceiling → prompt/source fault
+  (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 5 `[FIELD — AI-vs-VFX]`) · 10–15
+  surgical iterations inside a declared budget → simplify the shot
   (`../higgsfield-seedance/HELL-GRIND.md` § The iteration loop `[OFFICIAL — Hell Grind]`) ·
   65–100 generations per kept shot → a planning benchmark, never a stop rule
   (`../../production-benchmarks.md` `[FIELD — 13-project harvest]`).
-- **Why the ordering is safe:** stopping at the first repeat is the cheaper failure — at worst
-  one rewrite of a prompt that was fine. A declared budget (troubleshoot § Attempt budget) is
-  what replaces rung 2's default with rung 4's ceiling.
+- **SCOPE:** paid attempts, budget fractions, prompt versions and a project funnel are
+  different units. A declared budget (troubleshoot § Attempt budget) replaces the three-attempt
+  default with the half-budget tripwire and the 10–15 ceiling — whichever fires first.
+- **OPEN — rung 1 vs rung 3 in v2v:** both count same-defect runs of one unchanged prompt +
+  source; one says 2, the other stopped at 4. Unmeasured here. **Default:** stop at the first
+  repeat — the cheaper failure: at worst one single-variable rewrite of a prompt that was fine
+  (revertible, logged), against at worst two more batches bought on a defect that was already
+  systematic.
+- **OPEN — two failed takes with different flaws:** troubleshoot § Take Triage
+  `[EMPIRICAL — Emily2040]` (with `../higgsfield-prompt/SKILL.md` § Before You Iterate) reads them
+  as stochastic (batch-and-cull); troubleshoot § Retry Ladder step 2 `[EMPIRICAL — MiniMax H3]`
+  reads a second failure as over-packing (split). At n = 2 the ledger verdict is `low-n`. No default on cost — a wasted batch and a needless split are comparable. Tie-break
+  `[HOUSE]`, from Before You Iterate's own wording ("with the occasional near-hit"): a near-hit
+  on the shot's primary job → batch-and-cull; no near-hit → split.
+- **Settling probe:** for the first OPEN point, the ledger — log every v2v batch with its defect
+  class, and read how often a same-defect pair at batch 2 recovered by batch 4.
 
 ---
 

@@ -497,11 +497,12 @@ Generate in **batches, scene by scene**.
   the angle.
 
 > **Where 10–15 sits among the repo's other stop numbers** — 2 same-flaw re-rolls, 3 paid
-> attempts, the four-batch v2v ceiling, and the 65–100-per-kept-shot project benchmark — is
+> attempts, the half-budget tripwire, the four-batch v2v ceiling, and the 65–100-per-kept-shot
+> project benchmark — is
 > one ladder in `../higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder
 > (`../shared/house-rulings.md` P1-2). The 10–15 rule counts **surgical prompt versions on one
 > shot inside a declared production budget**; it is a ceiling before the shot is restructured,
-> never a quota, and the benchmark (`../../production-benchmarks.md`) describes a project's
+> never a quota — and the half-budget tripwire in the same budget can fire first, and the benchmark (`../../production-benchmarks.md`) describes a project's
 > funnel, not a license to keep firing.
 
 ---

@@ -38,14 +38,18 @@
         {
           "type": "regex_absent",
           "pattern": "(?i)65\\s*[–-]\\s*100[^.\\n]{0,80}\\b(is|are)\\s+(normal|expected|typical|fine)\\b"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\b(a couple|a few|some|one|two|three)\\s+more\\s+(re-?rolls?|rolls?|takes?|tries|generations?|attempts?)\\b|\\bluck varies\\b"
         }
       ]
     },
     {
       "id": "stop-ladder-declared-budget-simplify-shot",
-      "description": "Inside a declared production budget, 10–15 surgical iterations without convergence means simplify the SHOT, not the wording (house-rulings P1-2, rung 4)",
+      "description": "Inside a declared production budget the half-budget tripwire fires first (20-attempt budget → 10) and 10–15 surgical iterations without convergence means simplify the SHOT, not the wording (house-rulings P1-2, rungs 2b + 4)",
       "request": "Hero shot for our feature, budget is 20 attempts. I'm on iteration 14 of one-line prompt tweaks and the door-smash still won't land. Keep tweaking?",
-      "response": "Routing to higgsfield-troubleshoot (§ Stop-Rule Ladder) + higgsfield-seedance (`HELL-GRIND.md` § The iteration loop).\n\nYou declared a budget, so the three-attempt default does not apply — but you have reached rung 4: 10–15 surgical iterations without convergence means the problem is not the wording. Stop tweaking lines and simplify the shot:\n\n1. **Split it.** The approach to the door becomes its own shot.\n2. **Open on the state.** The smash shot starts with him ALREADY mid-swing and the door ALREADY cracking — complex action never sits in the middle of the timing.\n3. **Or remove an action / change the angle** — a tighter angle on the impact carries the beat with less to get wrong.\n\nLog which restructure you chose in the ledger row, so the next scene starts from it.",
+      "response": "Routing to higgsfield-troubleshoot (§ Stop-Rule Ladder) + higgsfield-seedance (`HELL-GRIND.md` § The iteration loop).\n\nNo. You declared a budget, so the three-attempt default does not apply — the budget replaced it with two tripwires, and both have fired. On a 20-attempt budget the half-budget tripwire fired at attempt 10: half the budget gone with no progress on the same flaw means change strategy, not wording. And at 14 you are inside rung 4: 10–15 surgical iterations without convergence means the problem is not the wording. Stop tweaking lines and simplify the shot:\n\n1. **Split it.** The approach to the door becomes its own shot.\n2. **Open on the state.** The smash shot starts with him ALREADY mid-swing and the door ALREADY cracking — complex action never sits in the middle of the timing.\n3. **Or remove an action / change the angle** — a tighter angle on the impact carries the beat with less to get wrong.\n\nLog which restructure you chose in the ledger row, so the next scene starts from it.",
       "assertions": [
         {
           "type": "regex_present",
@@ -61,6 +65,14 @@
         },
         {
           "type": "regex_present",
+          "pattern": "(?i)\\bhalf[- ](the |your |of (the |your ))?budget"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)\\b(at|by) (attempt |iteration |take )?(10|ten)\\b"
+        },
+        {
+          "type": "regex_present",
           "pattern": "(?i)\\bsplit\\b"
         },
         {
@@ -69,7 +81,7 @@
         },
         {
           "type": "regex_absent",
-          "pattern": "(?i)\\b(one more|another|a few more) (tweak|iteration|wording pass|line change)s?\\b"
+          "pattern": "(?i)\\b(one more|another|a few more|one last|a couple more)\\s+(\\w+\\s+){0,2}(tweak|iteration|pass|change|rewrite|rewording|version|try|attempt)s?\\b"
         }
       ]
     }

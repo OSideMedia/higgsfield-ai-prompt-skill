@@ -26,7 +26,7 @@ that build.
 - Locations are **batched cheap and selected by light** — bad light in the still is why the video comes out as slop [→](#stage-3--locations-batch-cheap-select-by-light)
 - Field v2v runs in **`omni_reference` with a video reference, not `video_edit`** — which is why duration is settable, and must equal the source [→](#stage-4--footage-transformation-the-omni_reference-v2v-lane)
 - Source clip **≥ 4 s** (the model's own duration floor); pad a shorter one by freeze-framing its last frame [→](#stage-4--footage-transformation-the-omni_reference-v2v-lane)
-- **The four-batch rule**: the same defect in all four batches is a prompt or source fault — more batching only burns credits; four is a **ceiling**, and two takes with the same defect already mean rewrite (troubleshoot § Stop-Rule Ladder) [→](#stage-5--when-v2v-fails-the-four-batch-rule)
+- **The four-batch rule**: the same defect in all four batches is a prompt or source fault — more batching only burns credits; four is a **ceiling**; the rewrite rule's two counts the same runs — OPEN, default: stop at the first repeat (troubleshoot § Stop-Rule Ladder) [→](#stage-5--when-v2v-fails-the-four-batch-rule)
 - v2v cannot invent an action the plate has no anchor for; fall back to **i2v from a location screenshot** and write a deliberate **empty-frame pause** as the stitch point [→](#stage-5--when-v2v-fails-the-four-batch-rule)
 - "Make it more natural" does nothing — the fix is a **physical picture** of the movement [→](#the-slop-catalog)
 - The tells that give a shot away — the CG-double fall, the origami wing, the warped logo — and what each one is asking you to write [→](#the-slop-catalog)
@@ -348,10 +348,13 @@ The lesson generalises into the most credit-saving rule in the build:
 > **If the same defect shows up across all four batches, the fault is the prompt or the
 > source. Batching further is burning credits for nothing.**
 
-Four is where the build *learned* the lesson — a **ceiling**, not a count to reach. Two takes
-with the same defect already trip the rewrite rule, and stopping at the first repeat is the
-cheaper failure; the full ordering of the repo's stop numbers is
-`../higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder (`../shared/house-rulings.md` P1-2).
+Four is where the build *learned* the lesson — a **ceiling**, not a count to reach. Here the
+rewrite rule counts the same thing — same-defect runs of an unchanged prompt — and says two,
+so the two rules genuinely disagree; that is recorded **OPEN** with a default: stop at the
+first repeat, the cheaper failure (at worst one rewrite of a prompt that was fine, against
+batches bought on a defect that was already systematic). The full ordering of the repo's stop
+numbers is `../higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder
+(`../shared/house-rulings.md` P1-2).
 
 The diagnostic that follows is about **anchors**: v2v inherits motion from the plate, so it
 can only render an action the plate has an anchor for. There was no jump moment in the
