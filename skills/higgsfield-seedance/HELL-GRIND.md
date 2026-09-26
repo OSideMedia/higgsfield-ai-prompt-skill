@@ -8,7 +8,11 @@ skill it ships with. This file is the part of that system the repo did not alrea
 optics decision tree, positive locks, cut vocabulary, context isolation, tag naming — is
 already the `[OFFICIAL]` doctrine in `SKILL.md` § Official Prompt Architecture, harvested
 from the same source family. It is not restated here. Neither are the engine rules
-(`ENGINE-RULES.md`) or the tutorial patterns (`PRODUCTION-PATTERNS.md`).
+(`ENGINE-RULES.md`) or the tutorial patterns (`PRODUCTION-PATTERNS.md`). One place this
+file does **not** agree with that doctrine, and says so: how much character text rides next
+to an attached reference — § The core problem here vs `SKILL.md` § Tag naming + minimal
+reference text. Both are Higgsfield sources; the disagreement is recorded, not resolved, in
+`../shared/house-rulings.md` P1-1.
 
 What *is* here is the layer above the prompt: how the assets are built before anything is
 generated, how a scene's geography is locked across every shot in it, how dialogue is
@@ -31,6 +35,17 @@ technique below is a consequence of that single fact.
 **Describe everything, every time.** The descriptor goes into every prompt **word for word,
 never shortened.** Consistency is not a setting; it is repetition.
 
+> **Where this rule is settled and where it is not** (`../shared/house-rulings.md` P1-1).
+> *Settled:* with **no** reference image carrying identity, the descriptor is the only
+> identity the model gets, so it goes into every prompt, word for word. *Settled the other
+> way:* on a **start frame** (I2V — the image *is* frame one) the prompt carries motion and
+> camera only (`SKILL.md` § Already-covered siblings). *OPEN — unmeasured here:* with a
+> character **reference** attached as identity — this pipeline's asset is text + image —
+> Higgsfield's prompt-writing skill keeps the reference text minimal because long
+> appearance text fights the image (`SKILL.md` § Tag naming + minimal reference text),
+> while this brief pastes the full descriptor. Both sides agree on the part that matters
+> most: the identity text never varies between shots and never contradicts the reference.
+
 ---
 
 ## Pre-production: assets
@@ -39,7 +54,11 @@ An **asset** is a pair: **text + image**. The text is a full description — the
 that is pasted verbatim into every prompt. The image is the reference the model anchors to.
 Neither works alone.
 
-References are **assets only**: characters and locations. Everything else is prompt text.
+References are **assets only** — the brief names characters and locations, and by its own
+rule 1 (§ The five rules) props too: `@prop_` tags (`SKILL.md` § Tag naming), and geometry
+inputs such as a depth map (`SKILL.md` § Depth Map) or a size-ref frame
+(`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 2) are assets of the same kind.
+Anything that is not a locked, reused asset is prompt text.
 
 ### The character sheet is three images — and one of them has no head
 
@@ -57,13 +76,20 @@ and it fixed a whole class of broken shots.
 **Keep the sheet deliberately boring.** Neutral grey background, flat light, real skin with
 visible pores, no retouch. The cinema look lives in the locations and the video prompts — bake
 film grain and a cinematic lens into the sheet and the character carries that look into every
-scene and stops reacting to new light.
+scene and stops reacting to new light. (The grey-background and one-readable-face laws are
+stated once, with every source's shade and mechanism, in `../../templates/ad-asset-prep.md`
+§ Design for win rate. `../higgsfield-soul/SKILL.md` § The Reference Plate's capture phrase
+adds *soft natural film grain* to a plate; that disagreement is OPEN, with a default, in
+`../shared/house-rulings.md` P2-4.)
 
 **Sheets read best with a large portrait in 3/4 view** — face turned slightly, not straight-on.
 
 > Complements `../higgsfield-soul/SKILL.md` § Character Sheet Creation (the Soul-ID route to
 > the same goal) and `../../templates/ad-asset-prep.md` (asset prep generally). The headless
-> front panel and the boring-on-purpose rule are the Hell Grind additions.
+> front panel and the boring-on-purpose rule are the Hell Grind additions. This sheet removes
+> only the **front** figure's head (the back view shows no face); the AI-vs-VFX build crops
+> the heads from every full-body panel. Both leave exactly one readable face — the canonical
+> statement is `../../templates/ad-asset-prep.md` § Design for win rate.
 
 ### Point changes go on with masks, never with a second full pass
 
@@ -78,6 +104,12 @@ plastic, and lifeless — and that dead texture later damages the character's *a
 The model makes the point edit; the final is always assembled with masks on top of the
 original.
 
+> **Scope** (`../shared/house-rulings.md` P2-3). This governs the **identity base** —
+> `../higgsfield-soul/SKILL.md` § The Untouched Base holds the same line. The one-line Nano
+> Banana 2 fix in `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1 is compatible with it
+> as long as the changed region comes back onto the untouched original through a mask;
+> whether a single full pass on its own measurably degrades a sheet is unmeasured here.
+
 ### The voice is not an asset — it is a locked descriptor
 
 Seedance holds three or four voices per character inside one tonality. That is enough for a
@@ -85,7 +117,11 @@ feature film **only if the voice is managed**.
 
 Lock every character's voice in pre-production, before any dialogue is written, right in the
 descriptor: **register, tempo, accent, manner.** It is pasted into the audio field as-is,
-every time that character speaks, and it never changes.
+every time that character speaks, and it never changes. (This is the Seedance **2.0** form.
+On **2.5** the reused character-sheet reference carries the voice together with the
+appearance, so the voice line is written once, in the character's role sentence — still
+verbatim from the voice bible: `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § The voice lock,
+`../shared/house-rulings.md` P2-2.)
 
 ```
 Voice: deep, gravelly bass-baritone; slow, calculated pacing; London street accent;
@@ -225,6 +261,16 @@ ACTION TIMING
 > frame — a frame with nobody in it while the model "arrives". The Hell Grind wide is
 > **fully populated from frame one**; what it withholds is *action*, for exactly one second,
 > to buy positional lock across the whole scene.
+>
+> **Two more neighbours, same resolution** (`../shared/house-rulings.md` P2-9). The Style
+> Prefix pasted into this same prompt says *"Every person moving from frame one"* and
+> *"Characters never standing, always reacting"*. Read those as **life**, not action: breath,
+> eyes, weight shifts and micro-reactions run through the wide (§ Physics, not adjectives —
+> stillness is held tension, never a freeze); what the wide withholds is a blocking change, a
+> scripted action beat and a camera move. And `../higgsfield-seedance-2-5/VFX-PIPELINE.md`
+> § Direction patterns says *open mid-action* — that governs a shot whose job is an
+> **event** (a creature breaking through); this wide's job is **positional lock** for the
+> dialogue shots that follow. Pick by the shot's job.
 
 ---
 
@@ -245,7 +291,10 @@ Exactly ONE mannequin, NEVER render a second one.
 FIVE smashed mannequins, never re-rendered as intact, never multiplied. Two trays, never more.
 ```
 
-Counted objects belong in POSITIVE LOCKS, phrased as what **is** in the frame.
+Counted objects belong in POSITIVE LOCKS, phrased as what **is** in the frame. The *NEVER
+render a second one* wording is a deliberate ban: duplication is a default the model already
+reaches for, which is the case where naming the failure is worth its priming cost — lead with
+the count, as above (`../shared/negative-constraints.md` § Where a ban is still correct).
 
 ---
 
@@ -279,15 +328,23 @@ Prefix:
 Photoreal. NON-IP. 16:9. 12s. SFX only. NO CGI. Cinematic.
 ```
 
+`16:9` and `12s` are quoted as the production shipped them. On Higgsfield they are
+**generation parameters** — aspect ratio and duration are set on the job, and writing them
+into the prose sets nothing (`../higgsfield-seedance-2-5/SKILL.md` § The Core Prompt Formula;
+`../higgsfield-prompt/SKILL.md` § Common Prompt Mistakes). Keep the tail to the look and audio
+tags; put the numbers in the settings.
+
 `SFX only. No music.` is treated as mandatory in this pipeline — music belongs to
 post-production, and a generated soundtrack only gets in the way of the edit. (A *project*
 choice, consistent with the harvest corpus's 12-of-13 music ban; see
 `../../templates/seedance/global-style-prefix.md` § Field specimens.)
 
-> `[HOUSE]` The prefix above is quoted as this production shipped it. When writing a
-> **new** prefix, prefer **`NO BGM`** over `No music` — the production term reads as a
-> hard spec where the bare negation reads as a stylistic preference the model can
-> override. See `../higgsfield-audio/SKILL.md` § Suppressing music.
+> The prefix above is quoted as this production shipped it. Whether a **new** prefix should
+> write **`NO BGM`** instead of `No music.` is **OPEN — unmeasured here**
+> (`../shared/house-rulings.md` P2-7): one third-party skill argues the production term reads
+> as a hard spec (`../higgsfield-audio/SKILL.md` § Suppressing music), while `No music.` is the
+> form 12 of 13 harvested projects shipped `[FIELD]`. Settled either way: name the diegetic
+> sound first, then the suppression.
 
 ---
 
@@ -298,17 +355,18 @@ choice, consistent with the harvest corpus's 12-of-13 music ban; see
 - **Keep each beat light: up to three sentences per beat.** Overload a beat and the model
   smears it.
 - **Length is not the enemy — an overloaded beat is.** Hell Grind's prompts ran **3,000–4,000
-  words**. This sits at the top of the harvest corpus's register ladder (`SKILL.md` § Field
-  calibration) and confirms it: structure replaces the word cap in the block-scaffold regime.
+  words** — **above** the top of the harvest corpus's register ladder (highest median 2,059
+  words; the adventure film's p90 2,648: `SKILL.md` § Field calibration). An outlier in the
+  same direction rather than a point on the ladder: structure replaces the word cap in the
+  block-scaffold regime.
 - **Actions only in positive form.** The model ignores "does NOT fall on his back" — or does
   the opposite. Write "falls on his stomach."
 - **The character is in frame from the first frame, and never looks into the camera** unless
   you ask for it.
 - **Never write age, in any language.** The content filter becomes markedly stricter the
   moment it reads a minor. Give the **role, the clothes, the action** instead. This is the
-  production reason behind engine rule 1 (`ENGINE-RULES.md`) — and it **overrides** the
-  `@TAG:` line's `age + role/build` form in `SKILL.md` § Tag naming: write role and build,
-  drop the age.
+  production reason behind engine rule 1 (`ENGINE-RULES.md`), and it is why the `@TAG:` line
+  in `SKILL.md` § Tag naming opens on role and build with no age token.
 - **Keep a ban dictionary** of words the model punishes, and grow it as you find them:
 
 | Instead of | Write |
@@ -339,8 +397,9 @@ The voice and its emotion → the line in quotes → the physical action → the
   positive at-rest mouth state — "lips at rest", "jaw closed, listening" — an unmarked mouth
   in frame being one the model may decide is talking. The risk direction is the **short**
   line: one that ends well before the shot does leaves audio air the model fills with
-  invented mumble (`FAILURE-MODES.md` § Filler-babble on a short dialogue line — measured at
-  ≤6 words on a 4-second shot; the at-rest mouth fact itself is not yet live-fired here).
+  invented mumble (`FAILURE-MODES.md` § Filler-babble on a short dialogue line — a direction
+  recorded at ≤6 words on a 4-second shot, record incomplete; the at-rest mouth fact itself is
+  not yet live-fired here).
 - **Write the mix too**: voices clean and close to the microphone, ambience under them,
   ambience dips when someone speaks.
 - **Rare names get a transcription**, or the model breaks them.
@@ -436,9 +495,13 @@ Generate in **batches, scene by scene**.
   problem is not the wording.** Simplify the *shot*: split it in two, remove an action, change
   the angle.
 
-> Consistent with the iteration economics in `../../production-benchmarks.md` (65–100
-> generations per kept shot across a project) — the 10–15 rule governs a *single prompt's*
-> convergence before it must be restructured, not the project's total take count.
+> **Where 10–15 sits among the repo's other stop numbers** — 2 same-flaw re-rolls, 3 paid
+> attempts, the four-batch v2v ceiling, and the 65–100-per-kept-shot project benchmark — is
+> one ladder in `../higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder
+> (`../shared/house-rulings.md` P1-2). The 10–15 rule counts **surgical prompt versions on one
+> shot inside a declared production budget**; it is a ceiling before the shot is restructured,
+> never a quota, and the benchmark (`../../production-benchmarks.md`) describes a project's
+> funnel, not a license to keep firing.
 
 ---
 
@@ -476,6 +539,12 @@ next to a standing human = failed shot.
   language rules — with two additions: the human anchor must be **in the frame**, and the
   prompt names what a **failed** shot looks like.
 
+  Note what this case shows: an extreme ratio (≥5×) held in **prose**, because the prose is a
+  visible **body landmark** (*reaches just above the ankle*) with the human in frame and a
+  failure condition. `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 2 reaches for a
+  size-ref *image* at extreme ratios; which instrument holds better where both are possible
+  is unmeasured here, and `../shared/house-rulings.md` P2-5 carries the default.
+
 ---
 
 ## The five rules, compressed
@@ -483,7 +552,8 @@ next to a standing human = failed shot.
 1. **Assets first.** Do not generate a single shot until every character, location, and prop is
    locked and stress-tested. This one rule saves more money than everything else combined.
 2. **Describe everything, every time.** The model has no memory. The descriptor goes into every
-   prompt, word for word, never shortened.
+   prompt, word for word, never shortened. (Regime: § The core problem — settled with no
+   reference attached, contested with one.)
 3. **Change one thing at a time.** Rewrite a prompt fully and you lose the parts that worked.
    One line per iteration, everything into the log.
 4. **Give the model less freedom.** A corner instead of a room, an anchor instead of an open

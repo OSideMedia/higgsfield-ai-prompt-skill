@@ -4,7 +4,7 @@ description: "Seedance 2.5 prompt director — the omni-reference dialect. Route
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.5, dreamina, jimeng, omni-reference, video-edit, video-extension, multi-reference, long-video, keyframes, storyboard, blockout, transitions]
-  version: 1.5.0
+  version: 1.6.0
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -34,13 +34,13 @@ mode.
 - Four modes, picked **before** writing: `t2v` · `omni_reference` · `video_edit` · `video_extension`; the mode changes what the prompt *is* [→](#the-mode-router)
 - Higgsfield surface: **480p/720p/1080p** (no 4K), duration **4–30s**, `start_image`/`end_image` **only in `omni_reference`**, `t2v` takes zero references, no genre hint, `extension_mode` required for (and only for) `video_extension` [→](#the-higgsfield-parameter-surface)
 - `video_edit` **ignores** `duration` and `aspect_ratio` and bills by the source video's length; `video_extension` inherits the source's aspect ratio [→](#the-higgsfield-parameter-surface)
-- Every reference material gets an explicit role **and** an exclusion — "what to use" plus "what not to use"; never let the model infer the mapping [→](#reference-roles--say-what-to-use-and-what-not-to-use)
-- Each material also declares a **fidelity grade** — full-preserve / partial-preserve / attribute-transfer (name the target) / loose-guide; beat lines name characters (name + one visible marker), never handles [→](#fidelity--say-how-much-of-each-material-must-survive)
-- Material budget: 30 images / 10 videos ≤30s total / 10 audio ≤30s total, 50 materials max — a platform `start_image`/`end_image` counts against both the 30-image and the 50-material caps; stability ranges are 1–8 subjects (images), 1–5 subjects at 5–10s (video/audio) [→](#material-budget)
-- Multi-reference is a 5-step workflow — map → group → profile → select-by-scene, one line per subject; `@Images 1 through 4 define four characters` is the canonical failure [→](#multi-reference--the-five-step-workflow)
-- Long videos are **staged**, not paragraphed: one primary change per stage + an explicit **end state**; timestamps allocate a budget, they are not frame-accurate edit points [→](#long-video--stages-and-end-states)
+- Every reference material gets an explicit role **and** an exclusion — "what to use" plus "what not to use"; never let the model infer the mapping [→](#reference-roles-say-what-to-use-and-what-not-to-use)
+- Each material also declares a **fidelity grade** — full-preserve / partial-preserve / attribute-transfer (name the target) / loose-guide; beat lines name characters (name + one visible marker), never handles [→](#fidelity-say-how-much-of-each-material-must-survive)
+- Material budget: 30 images / 10 videos ≤30s total / 10 audio ≤30s total, 50 materials max (Dreamina's figures — the platform enforces only the 30-image and 50-material caps) — a platform `start_image`/`end_image` counts against both; stability ranges are 1–8 subjects (images), 1–5 subjects at 5–10s (video/audio) [→](#material-budget)
+- Multi-reference is a 5-step workflow — map → group → profile → select-by-scene, one line per subject; `@Images 1 through 4 define four characters` is the canonical failure [→](#multi-reference-the-five-step-workflow)
+- Long videos are **staged**, not paragraphed: one primary change per stage + an explicit **end state**; timestamps allocate a budget, they are not frame-accurate edit points [→](#long-video-stages-and-end-states)
 - Staging fixes too many EVENTS; two incompatible JOBS in one generation (physics + performance) is a separate cut — split into two prompts and stitch [→](#split-by-job-not-only-by-length)
-- Bracket syntax: `()` music · `<>` SFX · `{}` dialogue · `【】` subtitles; non-Chinese dialogue needs a language line before the line [→](#audio-and-text--bracket-syntax)
+- Bracket syntax: `()` music · `<>` SFX · `{}` dialogue · `【】` subtitles; non-Chinese dialogue needs a language line before the line; a music suppression never goes inside `()` — `(no music)` is a music cue in the music channel [→](#audio-and-text-bracket-syntax)
 - First/last frames are `omni_reference` work: the platform `start_image`/`end_image` roles **or** an in-prompt declaration (`@Image 1 is the first frame`) — which holds better is unmeasured; keyframes 3+ are always in the prompt; never merge two anchors into one sentence [→](#first-last-frame-and-multi-keyframe-control)
 - Editing needs a **sole editing master** + edit scope + Timeline Inheritance; extension needs the **boundary frame aligned before** any new content: `MODE-PLAYBOOKS.md`
 - Storyboard grids, coarse-vs-fine blockouts, one-click video, seamless transitions: `MODE-PLAYBOOKS.md`
@@ -54,13 +54,17 @@ mode.
 
 ## Provenance
 
-Two independent sources, labelled throughout:
+Two primary sources, labelled throughout, plus the secondary sources below. What each
+label *means* — and the evidence it requires — is the repo-wide legend in
+`../shared/provenance.md`.
 
 | Label | Source |
 |---|---|
 | `[OFFICIAL — Dreamina]` | ByteDance's *Dreamina Seedance 2.5 Prompt Guide* + *User Guide* — the model vendor's own prompt doctrine. Prompt grammar is model-side, so it carries across to Higgsfield's hosting. |
 | `[OFFICIAL — platform]` | Higgsfield's live `models_explore` catalog, snapshot **2026-09-26** (`../../specs/model-specs.json`). Parameters, enums, and media roles come from here and nowhere else. |
 | `[DREAMINA-ONLY]` | A Dreamina *product* feature with no Higgsfield parameter behind it. Never quote these as things the user can do here. |
+| `[EMPIRICAL — sd25-pe]` | `sd25-pe`, a Seedance 2.5 skill file. The repo records only a Discord copy (v0.1.0, noted in the v3.33.0 changelog) and **not who wrote it**, so it is not labelled OFFICIAL. Its mapping-priority claim — material content outranks upload order — agrees with the one measurement here (`MODE-PLAYBOOKS.md` § Panel-to-timestamp mapping: board-first vs board-last, identical order adherence, on Ark). |
+| Secondary labels | `[OFFICIAL — Higgsfield Seedance 2.5 deck]` · `[DEMO — Higgsfield "AI Love Stories" tutorial]` · `[FIELD — AI-vs-VFX]` (the build in `VFX-PIPELINE.md`) · `[EMPIRICAL — MiniMax H3 skill corpus]` · `[EMPIRICAL — nutllwhy/seedance-tvc-director skill]` — each named where it is used. |
 
 Where the two disagree about what is *settable*, the platform snapshot wins — it is what
 the API actually accepts.
@@ -219,13 +223,21 @@ Rules:
   as name + one visible marker at their first appearance in the beat — *"Mira — silver
   streak, rust-red jacket — crosses the stall line"* — not as `@Image 2`. The model binds
   by what it can see in the material, and a handle used as a sentence subject is the
-  classic way one character comes back as two people. `[OFFICIAL — SD25-PE mapping
-  priority: material content outranks upload order]`
+  classic way one character comes back as two people. `[EMPIRICAL — sd25-pe mapping
+  priority, re-derived 2026-08-09: material content outranks upload order]` **Scope:**
+  this is the 2.5 rule. On 2.0 the house convention is the opposite — the acting paragraph
+  *leads* with the character's tag so the model binds the performance to the right person
+  (`../higgsfield-acting/SKILL.md` § Scene adaptation, `../higgsfield-seedance/SKILL.md`
+  § Tag naming). Handles stay in the role map on 2.5 — the `[Characters]` lines, a staging
+  legend (`@A = the BLUE figure`) — and out of the beat prose (`../shared/house-rulings.md`
+  P2-13). Handle *spelling* follows the surface: Dreamina's guide writes upload-order
+  handles (`@Image 1`), the Higgsfield field build writes named asset tags (`@video1`,
+  `@size-ref`); pick one form per project and never mix them in one prompt.
 
 ### Fidelity — say how much of each material must survive
 
-`[EMPIRICAL — MiniMax H3 skill corpus, re-derived; cross-model structure, unmeasured on
-Seedance]` A role says what job a material does; it still doesn't say how much of the
+`[EMPIRICAL — MiniMax H3 skill corpus, re-derived 2026-08-09; cross-model structure,
+unmeasured on Seedance]` A role says what job a material does; it still doesn't say how much of the
 material must reach the pixels. Declare one fidelity grade per material, in the same
 sentence as its role:
 
@@ -253,10 +265,11 @@ Do not carry the garment's cut, the mannequin, or the studio backdrop.
 | Audio | 10 clips, ≤30s combined | only clips directly relevant |
 | Video-edit source | 1 video + reference images | source ≤20s, 1–5 reference images |
 
-50 reference materials total. On Higgsfield the catalog enforces the 30-image and 50-item caps
-(no per-type video or audio cap in its rules) and counts a platform `start_image` / `end_image`
-against them: image refs + start + end ≤ 30, all
-materials + start + end ≤ 50 `[OFFICIAL — platform, CLI rules 2026-09-26]`. Above the stable ranges (9–12 subjects in images, 6–10 in
+50 reference materials total. On Higgsfield the platform enforces **two** of these caps and
+counts a `start_image` / `end_image` against both: image refs + start + end ≤ 30, all
+materials + start + end ≤ 50 `[OFFICIAL — platform, CLI rules 2026-09-26]`. The 10-video,
+10-audio and ≤30 s-combined figures are Dreamina's; no platform rule states them — treat
+them as the vendor's model limits, unverified on Higgsfield. Above the stable ranges (9–12 subjects in images, 6–10 in
 audio/video, 6–8 edit reference images) generation still works but stability drops and the
 shot may need several attempts — budget for it, or split the scene.
 
@@ -266,7 +279,8 @@ images beat a single collage of views; the collage is the less stable form.
 **Spend one view on a strong expression, not four resting faces.** `[OFFICIAL — Higgsfield
 Seedance 2.5 deck, PART 2]` A set of neutral views teaches the model the face at rest and
 nothing else, so the first line of dialogue invents a mouth. Generate the views on a neutral
-light-grey ground and make **one of them a strong expression** — anger, or a wide smile —
+light-grey ground (shade and mechanism: `../../templates/ad-asset-prep.md` § Design for win
+rate) and make **one of them a strong expression** — anger, or a wide smile —
 so the model learns the character's **facial dynamics and teeth structure**, not only the
 resting face. The canonical four: front view · back view · facial details at neutral ·
 facial dynamics and teeth under strong emotion. Close the set with the identity line
@@ -448,18 +462,22 @@ Two house rules carry over from `../higgsfield-audio/SKILL.md` and the film pipe
 - **Speech lives in the audio clause only** — not a word of dialogue inside the action
   description, or the model narrates it as behavior. The trap is that writers do not think
   of *subtext* as speech: `they exchange a look that says "you too?"` is a line the script
-  never wrote, and it comes back spoken. `[HOUSE — the failing take is timecoded in the
-  nutllwhy/seedance-tvc-director evaluation, MIT, 2026-08-09.]` Anything readable is a
+  never wrote, and it comes back spoken. `[EMPIRICAL — nutllwhy/seedance-tvc-director skill
+  (MIT), re-derived 2026-08-09; the failing take is timecoded in that evaluation]` Anything readable is a
   voicing request — quoted subtext, a remembered line, a slogan, a sign read aloud. Write
   the visible behavior instead (*jaw sets, eyes hold*), and note that adding "no dialogue"
   does not undo it: the readable text is still there being asked for.
 - **Diegetic-only is a project choice, and 2.5 finally obeys it.** Random subtitles and
   unrequested BGM were 2.0's most-reported nuisance; ByteDance calls suppression of both a
   headline 2.5 fix `[OFFICIAL — Dreamina]`. Still say it — and no `【】` block — rather
-  than trusting the improvement. Write the suppression as **`NO BGM`**, not `(no music)`:
-  a production term reads as a hard spec where a bare negation reads as a preference, and
-  lead with the positive diegetic list before it (`../higgsfield-audio/SKILL.md` §
-  Suppressing music).
+  than trusting the improvement. Two parts of this are settled: **lead with the positive
+  diegetic list** (the sources and room tone the audio *is*), and **never put the
+  suppression inside the `()` bracket** — `()` is the music channel, and `(no music)` there
+  is a music cue. Write it as plain audio text after the list. Which token to write —
+  **`NO BGM`** (one third-party skill: a production term reads as a hard spec,
+  `../higgsfield-audio/SKILL.md` § Suppressing music `[EMPIRICAL]`) or **`No music.`** (the
+  form 12 of 13 harvested projects shipped, `../../templates/seedance/global-style-prefix.md`
+  `[FIELD]`) — is **OPEN, unmeasured here** (`../shared/house-rulings.md` P2-7).
 
 ---
 
@@ -645,7 +663,8 @@ seed to pin.
 The engine rules are shared. `../higgsfield-seedance/ENGINE-RULES.md` applies in full —
 age-blind characters, exit-frame = implicit cut, off-screen = nonexistent, avoid reflection
 shots, ≤3 tracked characters, double-contrast cuts, micro-expressions as physics. So do the
-positive-phrasing law (Seedance has no negative-embedding architecture in either version),
+positive-phrasing law (stated for 2.0 as an empirical law — Seedance parses negative-list
+syntax as scene description; for 2.5 it is carried over by house assumption, unmeasured),
 the homograph trap, and the block scaffold for production-scale briefs.
 
 ---
@@ -684,7 +703,7 @@ not offer them here.
 
 | Dreamina feature | Status on Higgsfield | Closest thing that does work |
 |---|---|---|
-| **Ultra Long Video** — 30–180s in one generation | Not exposed; `duration` caps at 30 | Stage a 30s generation, then chain `video_extension` |
+| **Ultra Long Video** — 30–180s in one generation | Not exposed; `duration` caps at 30 | Stage a 30s generation and extend it once, to the 60 s single-chain ceiling (§ Extension chain math below); past that, re-anchor from the original references and assemble in post |
 | **Nested extension to 60s** via repeated UI operations | The *model* rule (source ≤30s → extend up to 30s) holds; the one-click nesting UI does not exist | Chain `video_extension` calls, re-checking the boundary each time |
 | **Edit with marks / Advanced Edit** — box, arrow, brush, anchor annotations on a frame | Not exposed; there is no annotation channel | `video_edit` with a written scope: object + change + effective time range |
 | **Clay Renderer plugin** — white-model rendering workflow | Not exposed as a plugin | Coarse/fine blockout prompting via `omni_reference` (`MODE-PLAYBOOKS.md` § Blockout references) |

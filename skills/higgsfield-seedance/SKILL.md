@@ -4,7 +4,7 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.15.0
+  version: 1.16.0
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -28,6 +28,10 @@ metadata:
 - [OFFICIAL] Feature-film pipeline (asset construction, per-scene GEO SPATIAL LAYOUT, the position-fixing first second, dialogue construction, ban dictionary, the 10–15 iteration rule, crowds / giants / thresholds): `HELL-GRIND.md` in this directory
 - Performance — objective, obstacle, tactics, beats, subtext, eye life, the acting master profile: `../higgsfield-acting/SKILL.md`
 - Hard engine rules (age-blind, exit-frame = cut, off-screen = nonexistent, no reflections, ≤3 tracked characters, double-contrast cuts) + high-risk shot table: `ENGINE-RULES.md` in this directory
+- **Render failures** (the take came back wrong, not flagged) — 15 named failures with symptom · mechanism · counter, incl. action-reversal fill, filler-babble, truncated action, mimed manipulation, orphan limbs / the solo third hand, walking + cross-shot camera speed, fights as separate clips — plus a self-repair checklist: `FAILURE-MODES.md` in this directory
+- [FIELD] **Bake it into the asset**: a property that drifts however well it is written (a lens character, a grain, a colour cast) moves one step earlier, into the plate — then leaves the video prompt entirely; bake only what should stay constant [→](#bake-it-into-the-asset-when-the-prompt-will-not-hold-it)
+- [FIELD] **Depth map** as a reference role — greyscale, light = near; a geometry input that stops a space re-planning itself between shots, carries no style [→](#depth-map)
+- Contested doctrine (character-text volume with a reference attached, anamorphic words vs a baked plate, `NO BGM` vs `No music.`, the stop numbers) is recorded — not silently resolved — in `../shared/house-rulings.md`; label meanings in `../shared/provenance.md`
 - Reference roles: Character / Last-Frame / Environment / Prop — role determines what the prompt may re-describe [→](#reference-roles)
 - Working modes: Exploration / Continuation / Bridging / Repair (distinct from prompt modes) [→](#working-modes-vs-prompt-modes--two-taxonomies)
 - Layer 1 briefing vs Layer 2 production prompt — never paste Layer 1 into the prompt box [→](#two-layer-prompt-authoring)
@@ -173,7 +177,11 @@ named, narrowly-trained referent**:
 | "cinematic lighting" | a **lighting setup**: "golden-hour backlight, long shadows stretching forward" |
 | "beautiful" / "high quality" | a **lens spec**: "anamorphic 2.39:1, lens flare from a practical light source" |
 
-Positive form of `../higgsfield-prompt/SKILL.md` § Anti-Slop Vocabulary.
+Positive form of `../higgsfield-prompt/SKILL.md` § Anti-Slop Vocabulary. The lens-spec row is
+short-form, single-shot doctrine: for a **sequence** whose location plates are generated with
+the lens already in them, the optics words leave the video prompt (§ Bake it into the asset) —
+and whether a Style Prefix that still names the lens helps or fights a baked plate is OPEN
+(`../shared/house-rulings.md` P2-6).
 
 > **Official override on director names.** Higgsfield's own prompt-writing
 > skill forbids director names, signature-work references, and equipment
@@ -220,7 +228,8 @@ across the harvest corpus. It does **not** override the Higgsfield UI's
 dedicated negative-prompt field (which some image models expose and
 `../../vocab.md` § Composition Vocabulary uses). The same positive-only
 requirement is already documented for Cinema Studio 3.0 in
-`../shared/negative-constraints.md`.
+`../shared/negative-constraints.md`, which also carries the test for when a short, specific ban
+*is* correct (§ Where a ban is still correct — is the model's default already the failure?).
 
 ### Ambiguous verbs — the homograph trap (v1.10, Peter's find 2026-07-14)
 
@@ -289,7 +298,14 @@ rest of this section (strong heuristics — confirm on your own material).
   pulls away. Chain **2–3 connected actions in the same direction** so the
   motion spends the whole clip; a deliberate there-and-back is **two shots**,
   never one prompt. (Failure face: `FAILURE-MODES.md` § Action-reversal
-  fill.)
+  fill.) **Scope** (`../shared/house-rulings.md` P2-1): this chain is for
+  **low-complexity, same-vector** motion whose job is to fill the clip — walks
+  to the window, pulls the curtain, leans into the glass. A multi-step process
+  that reverses direction on the way to a peak (reaches in, pulls out, winds
+  up) is the case `../higgsfield-acting/SKILL.md` § States, not transitions
+  opens *already in* the state instead; an object that must visibly change
+  under the hands takes the causal chain in `FAILURE-MODES.md` § Mimed
+  manipulation. Pick by what the shot is for.
 - **Name the camera endpoint.** A camera move needs a destination, not just
   a name — say **what the frame shows when the move finishes** ("slow
   dolly-in, ending on her hands wrapped around the cup"), not only the
@@ -505,7 +521,14 @@ arithmetic there.
   wear, and posture.
 - **Keep reference character text minimal** — long appearance text fights
   the image and degrades it (same mechanism as the I2V subject-drift rule in
-  § Prompt-Craft Laws).
+  § Prompt-Craft Laws). *Contested* (`../shared/house-rulings.md` P1-1):
+  Higgsfield's feature-film pipeline pastes the **full** descriptor, word for
+  word, next to the same kind of reference (`HELL-GRIND.md` § The core
+  problem). Both are Higgsfield sources and nothing here measures which holds
+  identity better. Settled on both sides: on a start frame (I2V) — motion and
+  camera only; with **no** reference — the descriptor is the only identity
+  carrier and goes in verbatim every time; whatever identity text you write is
+  fixed wording that never contradicts the reference.
 - **State critical details in words anyway** — small text, logos, colors —
   even when visible in the reference; the model can drop them.
 - **Never place an `@tag` in a shot where that object is not present** — the
@@ -525,11 +548,13 @@ reference is the real one:
 
 - **The scene suffix ties an asset to where it lives**, so two dressings of one room, or
   two versions of a location across a time jump, cannot collide.
-- **The version suffix appears when a state changes** — and a changed state is a **new
-  asset with a new name, never an overwrite**. One character in a dorm room and the same
-  character in a hospital bed are two assets of one man. The identity discipline behind
-  that split lives in `../higgsfield-soul/SKILL.md` § The Untouched Base; this bullet is
-  only the naming half of it.
+- **The version suffix appears when an asset's pixels change** — a character's state
+  change, or a plate or diagram regenerated — and a changed asset is a **new asset with a new
+  name, never an overwrite**. One character in a dorm room and the same character in a
+  hospital bed are two assets of one man. The identity discipline behind that split lives in
+  `../higgsfield-soul/SKILL.md` § The Untouched Base; this bullet is only the naming half of
+  it. A location carries a version too once its plate is regenerated — the staging-side form
+  (`@loc_…_v2` beside `@staging_…_v2`) bumps only the tag whose image changed.
 - Tags are arbitrary strings, so mixed case is safe and **consistency is the only rule**.
   Pair related names visibly (a location and its staging reference sharing a stem) so it
   reads at a glance which assets belong together — see
@@ -624,7 +649,8 @@ The prompt builds a scene around a source image that carries the visual identity
 character, wardrobe, palette, sometimes composition. The prompt's job is NOT to
 re-describe what the image already shows; it's to place the subject into a new
 action, setting, or motion context. This is the workhorse mode for any sequence
-that needs a consistent character across varied shots.
+that needs a consistent character across varied shots. (How much identity text may
+still ride next to the image is contested — `../shared/house-rulings.md` P1-1.)
 
 ```
 [Source image role: "as the main character" / "as the starting frame"].
@@ -929,6 +955,10 @@ Pattern in a Seedance prompt:
 subject performs.] ...
 ```
 
+The identity block is the character's fixed descriptor — the same words in every prompt.
+How long it should be while the image is attached is the open question in
+`../shared/house-rulings.md` P1-1 (minimal per § Tag naming; full per `HELL-GRIND.md`).
+
 ### Last-Frame
 
 Anchors the start of a new clip to a specific frame from the previous
@@ -997,8 +1027,8 @@ image then carries the property, the model reads it off the plate, and it stops 
 something the text has to win every shot.
 
 The worked case is **anamorphic optics**. Asked for in a video prompt, the lens character
-drifts shot to shot. Asked for at the *image* stage, it holds — because the plate itself
-becomes the lens. There is no "anamorphic" switch in an image model either, so the effect
+drifts shot to shot; asked for at the *image* stage, it holds — because the plate itself
+becomes the lens. (One studio's production report, `[FIELD]` — not measured here.) There is no "anamorphic" switch in an image model either, so the effect
 is assembled from the geometry of the lens, written out, at the end of the location image
 prompt:
 
@@ -1021,6 +1051,15 @@ This generalises past optics: a grain structure, a lens character, a colour cast
 that costs a paragraph to specify — anything the text keeps losing is a candidate for
 baking into the plate. Note the cost: a baked property is no longer directable per shot,
 so bake only what should be *constant* across the sequence.
+
+**Scope** (`../shared/house-rulings.md` P2-6). The rule presupposes a **sequence** in which
+the baked plate is attached to **every** shot that needs the property. A standalone shot, a
+t2v shot with no plate, or a genre recipe on another model has nothing to bake into — there
+the lens words in the Look line are the only route (`../higgsfield-recipes/SKILL.md`,
+§ Name the thing above). Where the two regimes meet — a connected shotlist whose Style
+Prefix names the lens (`../../templates/seedance/global-style-prefix.md`, a
+`[FIELD — 13-project harvest]` shape) while its plates already carry it — nothing here
+measures whether the words help or fight the plate: OPEN.
 
 ### Per-Image Role Convention
 
@@ -1226,6 +1265,14 @@ then describes the action that happens inside that geometry.
 
 The block does not replace the six-slot formula — camera, lens,
 lighting, and shot timing stay in their respective slots.
+
+**Two companion templates.** To *reason* about the space before writing
+the block: `../../templates/seedance/top-down-map.md` — a floor plan for you,
+never attached. To *show* positions to the model:
+`../../templates/seedance/staging-reference.md` — a front-on outline drawing
+attached **last**, as a position reference only, never as the first frame.
+It is measured safe (no bleed) and **not** reliable at moving blocking, so
+the block you write here stays the load-bearing instruction.
 
 ---
 
@@ -1927,11 +1974,16 @@ The next shot is chosen by function, not by excitement.
 ## When the User Is Already in a Failure Loop
 
 This section handles **filter rejections** — prompts the Seedance
-filter blocks before generation. For **render failures** (FPS drift,
-NSFW false-positive, keyframe-invention, physics-state drift, spatial-
-awareness failures, multi-motion overload), see `FAILURE-MODES.md` in
-this directory — sibling catalog with symptom + mechanism + counter
-per named failure.
+filter blocks before generation. For **render failures** — FPS drift,
+frame-level review, failed-generation salvage, NSFW false-positive,
+keyframe-invention, physics-state drift, action-reversal fill,
+filler-babble on a short line, truncated action, mimed manipulation,
+orphan limbs, multi-motion overload, spatial-awareness failures, walking
+and cross-shot camera speed, fights generated as separate clips — see
+`FAILURE-MODES.md` in this directory: symptom + mechanism + counter per
+named failure, and a self-repair checklist to run before delivery. For
+how many takes a failing shot gets before it is rewritten or restructured,
+`../higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder.
 
 If the user tells you Seedance has flagged them multiple times in a row:
 
