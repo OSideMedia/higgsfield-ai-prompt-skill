@@ -306,7 +306,7 @@ The Hell Grind skeleton is `SKILL.md` § Block order plus three blocks it names 
 |---|---|
 | **CHARACTER ACTING** | Per character: emotional state · what they want in this moment · what they are hiding · dominant body rhythm · visible habits in this beat · what changes across the shot |
 | **STYLE** | The Style Prefix, pasted word for word (`../../templates/seedance/global-style-prefix.md`) |
-| **QUALITY** | Detail and stability requirements — "8K detail, pore-level skin, no jitter, no flicker; the faces stay exactly their references at every distance" |
+| **QUALITY** | Detail and stability requirements — as shipped: "8K detail, pore-level skin, no jitter, no flicker; the faces stay exactly their references at every distance" (on Higgsfield `8K` sets nothing — resolution is the job setting; the template prefix writes "fine detail held at every distance") |
 
 CHARACTER ACTING is the PERFORMANCE block's production form. Worked example:
 

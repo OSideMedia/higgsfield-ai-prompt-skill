@@ -28,7 +28,7 @@ Replace the bracketed fields; keep the labelled structure. Once set, do not edit
 per-prompt — edit it once and re-render the whole shotlist.
 
 ```
-Style: [8K IMAX commercial], [16:9] widescreen. Photorealistic — no 3D render, no game engine.
+Style: [IMAX commercial], photoreal live-action. Photorealistic — no 3D render, no game engine.
 Lighting: [Natural light only — soft, even morning daylight, gentle atmospheric haze throughout. Key light from sky and windows only. No artificial light.]
 Color: [60:30:10] — dominant / secondary / accent.
 Camera: Physical cine lens. 180° shutter motion blur.
@@ -37,16 +37,27 @@ Acting: Hollywood — micro-pauses before reactions, precise eye-line, eyes alwa
 Physics: Gravity and inertia respected — mass has real weight, correct contact shadows. No floating props.
 Composition: Rule of thirds + golden ratio. Every person moving from frame one.
 Continuity: Characters, props, environment identical across every cut. No identity drift.
-Technical: 24fps smooth motion. 8K detail. No jitter.
+Technical: 24fps-cadence smooth motion. Fine detail held at every distance. No jitter.
 Audio: Diegetic dialogue and environmental SFX only. No music. No subtitles.
 ```
 
 Notes on the fields:
 
-- **Format / resolution** — match the deliverable's aspect ratio. Seedance 2.0
-  supports `auto/21:9/16:9/4:3/1:1/3:4/9:16` and `480p/720p/1080p/4k` (4K in
-  `mode=std` only). Keep it inside the model enum — the preflight linter catches
-  out-of-enum values.
+- **Format / resolution are job settings, never prefix text.** The prefix is pasted
+  verbatim into every scene prompt, so a number in it is a number in the prose — and
+  `16:9` or `8K` written there sets nothing (`../../skills/higgsfield-seedance/HELL-GRIND.md`
+  § Two extra blocks; `../../skills/higgsfield-prompt/SKILL.md` § Common Prompt
+  Mistakes). Set aspect ratio and resolution on the job, inside the model enum:
+  Seedance 2.0 supports `auto/21:9/16:9/4:3/1:1/3:4/9:16` and `480p/720p/1080p/4k`
+  (4K in `mode=std` only); the preflight linter catches out-of-enum values.
+  `24fps-cadence` in the Technical line is a motion register, not a setting —
+  Seedance has no frame-rate parameter.
+- **Lens words** — name a lens character in the Style line only when the
+  location plates do **not** already carry it. In a sequence whose plates were
+  generated with the lens baked in, the prefix drops the optics words like every
+  other part of the video prompt
+  (`../../skills/higgsfield-seedance/SKILL.md` § Bake it into the asset;
+  `../../skills/shared/house-rulings.md` P2-6).
 - **Color `60:30:10`** — dominant / secondary / accent ratio; name the three
   colours in the per-scene Scene block, not here.
 - **Audio: diegetic-only** — the prompt body names only real-world SFX; layer any
@@ -91,10 +102,11 @@ project runs a prefix of exactly this shape: **one axis per clause, each a
 hard positive rule, always ending on continuity/no-drift + audio policy.**
 Axes observed across the corpus (pick what the project needs):
 
-- **Format** — "4K anamorphic widescreen" / "8K cinematic photoreal" (when the
-  project's location plates already carry a baked lens, whether the prefix should
-  still name it is OPEN — `../../skills/higgsfield-seedance/SKILL.md` § Bake it into
-  the asset, `../../skills/shared/house-rulings.md` P2-6)
+- **Format** — "4K anamorphic widescreen" / "8K cinematic photoreal", quoted as
+  harvested. None of these projects reports a baked plate, so they are the
+  no-plate regime; on Higgsfield the numbers go in the job settings (see the
+  Format note above), and over baked plates the lens word leaves too
+  (`../../skills/shared/house-rulings.md` P2-6)
 - **Medium negative** — "photoreal live-action — no 3D render, no game
   engine, no animated-film aesthetic"
 - **Camera language, per world/scene when it varies** — "adventure-film

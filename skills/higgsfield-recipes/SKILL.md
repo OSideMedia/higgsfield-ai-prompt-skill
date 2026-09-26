@@ -23,8 +23,8 @@ with your specific details. All examples are compliant — no real names or IPs.
 > output ratio). For a multi-shot **Seedance** sequence that must hold the lens
 > across shots, the lens goes into the location plates instead and the optics
 > words leave the video prompt (`../higgsfield-seedance/SKILL.md` § Bake it into
-> the asset); where a Style Prefix still names the lens over baked plates, the
-> question is open (`../shared/house-rulings.md` P2-6).
+> the asset) — the Style Prefix included, since it is pasted into every scene
+> prompt (`../shared/house-rulings.md` P2-6).
 
 ---
 

@@ -76,7 +76,7 @@ Final frame: Roco one step closer, Lulu's back touching the fence,
   Look choice. Across a sequence that must hold the lens, bake it into the
   location plate and drop the optics words from the video prompt
   (`../../skills/higgsfield-seedance/SKILL.md` § Bake it into the asset;
-  the open edge of that rule is `../../skills/shared/house-rulings.md` P2-6)
+  the Style Prefix drops them too — `../../skills/shared/house-rulings.md` P2-6)
 - Continuity locks explicit + Soul ID handles (`@Image1`, `@Image2`)
   match upload-order convention — see § Per-Image Role Convention +
   § Multi-Form State Tracking + § Physics-state-anchor for the

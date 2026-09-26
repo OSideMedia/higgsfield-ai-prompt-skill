@@ -137,17 +137,21 @@ directory. All entries dated **2026-09-26** unless marked.
 
 ### P2-6 · Anamorphic in the video prompt vs baking it into the asset
 
-- **Ruling:** SCOPE + **OPEN** where the regimes meet. No default.
+- **Ruling:** SCOPE — by whether a baked plate exists. (Was recorded OPEN at the Style Prefix;
+  relabelled: the bake rule already decides that case and nothing argues the other way.)
 - **Scope:** a standalone shot, a t2v shot or a genre recipe has nothing to bake into — the lens
   words in the Look line are the only route (`../higgsfield-recipes/SKILL.md`,
   `../higgsfield-seedance/SKILL.md` § Name the thing, root `SKILL.md` HARD RULE 7). A sequence
   whose baked plate is attached to **every** shot → the optics words leave the video prompt
   (`../higgsfield-seedance/SKILL.md` § Bake it into the asset `[FIELD — ONEIRIC]`, one studio,
-  not measured here).
-- **OPEN:** a connected shotlist whose Style Prefix names the lens
-  (`../../templates/seedance/global-style-prefix.md` `[FIELD — 13-project harvest]`) while its
-  plates already carry it — whether the words help or fight the plate. Neither failure is
-  clearly cheaper.
+  not measured here) — **including the Style Prefix**, which is pasted verbatim into every
+  scene prompt and so *is* the video prompt
+  (`../../templates/seedance/global-style-prefix.md`).
+- **Why not OPEN:** the harvest prefixes that name a lens
+  (`../../templates/seedance/global-style-prefix.md` § Field specimens `[FIELD — 13-project
+  harvest]`) never report baked plates — they sit in the first regime and are no second source
+  for the second. If a production is found that names the lens over a baked plate *and* reports
+  the result, this reopens.
 
 ### P2-7 · `NO BGM` or `No music.`?
 

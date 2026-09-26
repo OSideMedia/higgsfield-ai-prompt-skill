@@ -180,7 +180,7 @@ named, narrowly-trained referent**:
 Positive form of `../higgsfield-prompt/SKILL.md` § Anti-Slop Vocabulary. The lens-spec row is
 short-form, single-shot doctrine: for a **sequence** whose location plates are generated with
 the lens already in them, the optics words leave the video prompt (§ Bake it into the asset) —
-and whether a Style Prefix that still names the lens helps or fights a baked plate is OPEN
+the Style Prefix included, since it is pasted into every prompt
 (`../shared/house-rulings.md` P2-6).
 
 > **Official override on director names.** Higgsfield's own prompt-writing
@@ -1056,10 +1056,10 @@ so bake only what should be *constant* across the sequence.
 the baked plate is attached to **every** shot that needs the property. A standalone shot, a
 t2v shot with no plate, or a genre recipe on another model has nothing to bake into — there
 the lens words in the Look line are the only route (`../higgsfield-recipes/SKILL.md`,
-§ Name the thing above). Where the two regimes meet — a connected shotlist whose Style
-Prefix names the lens (`../../templates/seedance/global-style-prefix.md`, a
-`[FIELD — 13-project harvest]` shape) while its plates already carry it — nothing here
-measures whether the words help or fight the plate: OPEN.
+§ Name the thing above). **The Style Prefix is part of the video prompt** — it is pasted
+verbatim into every scene prompt (`../../templates/seedance/global-style-prefix.md`) — so in
+a baked-plate sequence the prefix drops the lens words too. The harvest prefixes that name a
+lens never report baked plates; they are the first regime, not a counter-source.
 
 ### Per-Image Role Convention
 
