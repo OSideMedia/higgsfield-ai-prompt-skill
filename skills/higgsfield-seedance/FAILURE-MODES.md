@@ -243,7 +243,9 @@ the model, and state the mouth state of every face that is visible:
    `../higgsfield-audio/SKILL.md` § Per-language dialogue-sync budgets).
    The two numbers sit on different axes — this one is a floor against dead
    air in one short shot, that one a ceiling for reliable lip-sync across a
-   clip — and they meet at one 8–10-word line in a 4 s shot. When the line
+   clip, read `[HOUSE]` as a per-clip total with a per-line cap, not a rate
+   (as a rate, ~1.1–1.3 w/s, an 8-word 4 s line would be over it) — and on
+   that reading they meet at one 8–10-word line in a 4 s shot. When the line
    cannot grow inside the budget, use counter 2 instead.
 2. **Script the silence.** If the line has to stay short, write what
    occupies the rest of the window — a named pause beat, an ambient or

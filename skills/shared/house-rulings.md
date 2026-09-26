@@ -223,10 +223,13 @@ directory. All entries dated **2026-09-26** unless marked.
 
 ### P2-9 · The Style Prefix's "moving from frame one" vs the still first-second wide
 
-- **Ruling:** SCOPE — "moving" and "always reacting" mean **life** (breath, eyes, weight,
-  micro-reactions), not an action beat; the Hell Grind wide withholds a blocking change, a
-  scripted action and a camera move, not life. "Open mid-action" governs a shot whose job is an
-  **event**; the wide's job is **positional lock**.
+- **Ruling:** SCOPE, resting on a `[HOUSE]` reading (unmeasured): "moving" and "always
+  reacting" mean **life** (breath, eyes, weight, micro-reactions), not an action beat. The Hell
+  Grind wide withholds a scripted action beat and a camera move ("No camera move, no action
+  beat"), not life — and not movement already in progress: the brief's own example has REIN
+  walking in during that second. "Open mid-action" governs a shot whose job is an **event**;
+  the wide's job is **positional lock**. If the model reads the prefix line as action, the
+  reading fails and the escape hatch below applies.
 - **Sides:** `../../templates/seedance/global-style-prefix.md` `[FIELD]` ·
   `../higgsfield-seedance/HELL-GRIND.md` § The first second is always a wide `[OFFICIAL]` ·
   `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Direction patterns `[FIELD — AI-vs-VFX]`.
@@ -291,11 +294,15 @@ plan). The glossary entry is now a front-on staging reference, attached last.
 
 ### P3-2 · Clothing: GPT Image 2 or Seedream 5.0 Pro?
 
-- **Ruling:** SCOPE by job — wardrobe **edits** on an existing sheet → GPT Image 2
-  (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1 `[FIELD — AI-vs-VFX]`); costume
-  **texture on a from-scratch sheet** → Seedream 5.0 Pro won one comparison
-  (`../higgsfield-soul/SKILL.md` § Pick the Sheet Model per JOB `[DEMO]`). Two productions, no
-  measurement; the method (run the sheet through 2–3 models) stands.
+- **Ruling:** **OPEN — unmeasured**, with a `[HOUSE]` job split as the working reading. The
+  AI-vs-VFX build routes "clothing, wardrobe changes, branded garments" to GPT Image 2
+  (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1 `[FIELD — AI-vs-VFX]`); one tutorial
+  comparison picked Seedream 5.0 Pro for costume **texture and wear** on a from-scratch sheet
+  (`../higgsfield-soul/SKILL.md` § Pick the Sheet Model per JOB `[DEMO]`). Neither source splits
+  by job. The house reading — **edits** on an existing sheet → GPT Image 2, **texture from
+  scratch** → Seedream 5.0 Pro — makes both true but is an inference, and it is labelled as one
+  in the source rows (`../higgsfield-seedance-2-5/VFX-PIPELINE.md`, `../../image-models.md`).
+  Two productions, no measurement; the method (run the sheet through 2–3 models) stands.
 
 ### P3-3 · Tag versioning
 
@@ -319,8 +326,12 @@ plan). The glossary entry is now a front-on staging reference, attached last.
 ### P3-6 · Filler-babble's 8+-word floor vs the ~16–20-words-per-15 s sync budget
 
 - **Ruling:** SCOPE — a floor against dead air in one short shot vs a ceiling for reliable
-  lip-sync across a clip; they meet at one 8–10-word line in a 4 s shot. When the line cannot
-  grow inside the budget, script the silence. `../higgsfield-seedance/FAILURE-MODES.md`
+  lip-sync across a clip. The meeting point depends on how the budget is read: `[HOUSE]` reads
+  "~16–20 words per ~15 s clip (5–10 per line)" as a **per-clip total with a per-line cap**, and
+  on that reading they meet at one 8–10-word line in a 4 s shot. As a **rate** (~1.1–1.3 w/s)
+  that line (2–2.5 w/s) would be over budget; the one house run (record incomplete) found 8-
+  and 12-word 4 s lines clean — a direction against the rate reading, not proof. When the line
+  cannot grow inside the budget, script the silence. `../higgsfield-seedance/FAILURE-MODES.md`
   § Filler-babble (its `[MEASURED]` tag is now marked record-incomplete: no route, no n at ≤6
   words, record held outside this repo) · `../higgsfield-audio/SKILL.md` § Per-language
   dialogue-sync budgets `[FIELD — community skill; reads as EMPIRICAL]`.

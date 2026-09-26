@@ -82,7 +82,7 @@ and switching between them mid-project is the normal case, not a fallback.
 | Human character sheet, face matching | **Nano Banana 2** | Strongest face match on the platform |
 | Small corrective edits to an existing sheet | **Nano Banana 2** | Holds its input images best — the model to switch *to* when something needs fixing rather than rebuilding |
 | Fantasy creature / non-human character sheet | **Seedream 5.0** (the build does not say Lite or Pro) | Best at fantasy creatures |
-| Clothing, wardrobe changes, branded garments | **GPT Image 2** | Handles clothing best — for *edits* to wardrobe. For costume texture and wear on a sheet generated from scratch, another single production picked Seedream 5.0 Pro (`../higgsfield-soul/SKILL.md` § Pick the Sheet Model per JOB) |
+| Clothing, wardrobe changes, branded garments | **GPT Image 2** | Handles clothing best. (`[HOUSE]` note, not the build's words: another single production picked Seedream 5.0 Pro for costume texture and wear on a from-scratch sheet — `../higgsfield-soul/SKILL.md` § Pick the Sheet Model per JOB; this repo reads the two as edits vs from-scratch, unmeasured — `../shared/house-rulings.md` P3-2) |
 | Locations and environment stills | **Soul Cinema** | Most cinematic frames; GPT skews yellow, Nano Banana makes locations too clean and too symmetrical |
 
 Full specs, pricing and UI controls for each of these live in `../../image-models.md`;

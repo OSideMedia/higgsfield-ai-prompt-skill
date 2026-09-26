@@ -68,10 +68,12 @@ Notes on the fields:
   a production term reads as a harder spec) is **OPEN — unmeasured here**
   (`../../skills/shared/house-rulings.md` P2-7); either is legal, and neither goes
   inside a 2.5 `()` bracket.
-- **Acting / Composition lines mean life, not action** — "always reacting" and
-  "every person moving from frame one" are satisfied by breath, eyes, weight shifts
-  and micro-reactions. They do not forbid the one-second position-fixing wide that
-  opens a Hell Grind scene with no action beat and no camera move
+- **Acting / Composition lines mean life, not action** (`[HOUSE]` reading,
+  unmeasured) — "always reacting" and "every person moving from frame one" are
+  satisfied by breath, eyes, weight shifts, micro-reactions and movement already
+  in progress (an entrance still walking in). They do not forbid the one-second
+  position-fixing wide that opens a Hell Grind scene with no action beat and no
+  camera move
   (`../../skills/higgsfield-seedance/HELL-GRIND.md` § The first second is always a
   wide; `../../skills/shared/house-rulings.md` P2-9). If a scene needs that wide and
   the model reads the line as action, override the Composition line for that one

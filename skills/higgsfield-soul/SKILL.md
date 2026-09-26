@@ -488,10 +488,12 @@ Nano Banana:
 | Seedream 5.0 Pro | costume **texture and wear**, and consistency of the costume across all three panels |
 | GPT Image 2 | **curly hair** — full, natural, and identical from every angle; the others could not hold it |
 
-The AI-vs-VFX build routes clothing to GPT Image 2 (`../higgsfield-seedance-2-5/VFX-PIPELINE.md`
-§ Stage 1) — for wardrobe *edits* on an existing sheet; this comparison picked Seedream 5.0
-Pro for costume texture on a sheet generated from scratch. Two productions, two jobs, no
-measurement here (`../shared/house-rulings.md` P3-2).
+The AI-vs-VFX build routes "clothing, wardrobe changes, branded garments" to GPT Image 2
+(`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1); this comparison picked Seedream 5.0
+Pro for costume texture on a sheet generated from scratch. The build does not split by job —
+reading the two as *edits on an existing sheet* vs *texture from scratch* is a `[HOUSE]`
+inference that lets both stand. Two productions, no measurement here
+(`../shared/house-rulings.md` P3-2).
 
 [UNPROVEN HERE] — one production's comparison, on two characters. Treat the
 *method* as the finding, not the table: **run the same sheet prompt through

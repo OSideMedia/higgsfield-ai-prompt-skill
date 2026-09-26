@@ -265,10 +265,13 @@ ACTION TIMING
 >
 > **Two more neighbours, same resolution** (`../shared/house-rulings.md` P2-9). The Style
 > Prefix pasted into this same prompt says *"Every person moving from frame one"* and
-> *"Characters never standing, always reacting"*. Read those as **life**, not action: breath,
-> eyes, weight shifts and micro-reactions run through the wide (§ Physics, not adjectives —
-> stillness is held tension, never a freeze); what the wide withholds is a blocking change, a
-> scripted action beat and a camera move. And `../higgsfield-seedance-2-5/VFX-PIPELINE.md`
+> *"Characters never standing, always reacting"*. `[HOUSE]` reading, unmeasured: take those as
+> **life**, not an action beat — breath, eyes, weight shifts and micro-reactions run through
+> the wide (§ Physics, not adjectives — stillness is held tension, never a freeze). What the
+> brief's wide withholds is a **scripted action beat** and a **camera move** ("No camera move,
+> no action beat"); movement already in progress may carry through it — in the example above
+> REIN is still walking in, one step inside the door, during that second. And
+> `../higgsfield-seedance-2-5/VFX-PIPELINE.md`
 > § Direction patterns says *open mid-action* — that governs a shot whose job is an
 > **event** (a creature breaking through); this wide's job is **positional lock** for the
 > dialogue shots that follow. Pick by the shot's job.
