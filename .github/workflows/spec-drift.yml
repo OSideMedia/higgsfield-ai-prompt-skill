@@ -2,32 +2,58 @@ name: spec-drift
 
 # Wave C scheduled tripwire (scripts/refresh_specs.py). Weekly, pulls the live Higgsfield
 # model catalog via the CLI and diffs it against the committed CLI baseline
-# (specs/cli_baseline.json). DETECT-ONLY — it never writes specs or merges. On
-# drift it opens/updates an issue; on auth failure it fails the job loudly.
+# (specs/cli_baseline.json). DETECT-ONLY — it never writes specs or merges.
+#
+# EVERY OUTCOME IS HANDLED (v3.37.0). refresh_specs.py exits 0 fresh / 3 changed /
+# 1 pull-failed / 2 usage / 4 CLI-shape-changed and writes a --status-json with the
+# failure KIND and the CLI's VERBATIM line. Before v3.37.0 only 0/1/3/4 had steps, so
+# any other code matched nothing and the job went green, and every code-1 failure
+# was blamed on the credentials: the job failed 10 straight weeks — "Session expired"
+# to 08-24, then "Error: No workspace selected." from 08-31 — while the remedy
+# printed was always "update HIGGSFIELD_CREDENTIALS".
+#
+#   0 fresh    → close any open "spec drift detected" and "tripwire BLIND" issues
+#   3 changed  → open/refresh the "spec drift detected" issue; close BLIND
+#   anything else, or the tripwire never ran → BLIND: ::error:: with the CLI's own
+#                words + the remedy for that kind; open/update a
+#                "tripwire BLIND since <date>" issue; the job fails
 #
 # ── SETUP (one-time) ─────────────────────────────────────────────────────────
 #   1. Authenticate the CLI locally:   higgsfield auth login
 #   2. Add credentials as a repo secret named HIGGSFIELD_CREDENTIALS:
 #        gh secret set HIGGSFIELD_CREDENTIALS < ~/.config/higgsfield/credentials.json
-#   Until the secret exists, the job exits early with a clear error (it never
-#   silently passes — a silent pass would falsely read as "specs are fresh").
+#   3. (If the CLI reports "No workspace selected.") find the id with
+#        higgsfield workspace list
+#      and add it as the repo secret HIGGSFIELD_WORKSPACE_ID — the workflow runs
+#      `higgsfield workspace set <id>` before the pull. Optional: unset = skipped.
+#   A missing credentials secret is a BLIND run (issue + failed job), never a pass.
 #
-# ── AUTH-REFRESH STORY ───────────────────────────────────────────────────────
-#   The CLI access_token expires; its refresh_token extends the lifetime but
-#   eventually lapses ("Session expired"). When it does, scripts/refresh_specs.py exits 1,
-#   THIS JOB FAILS, and GitHub notifies you. Re-run `higgsfield auth login` and
-#   update the secret. No fragile token auto-rotation — expiry is a loud,
-#   actionable alert, which is exactly the exit-state contract the tool is
-#   built around (0 fresh / 3 drift / 1 pull-failed / 4 CLI-shape-changed).
+# ── AUTH / WORKSPACE STORY ───────────────────────────────────────────────────
+#   The failure kind comes from the CLI's stderr, classified in refresh_specs.py:
+#     auth       "Session expired" etc. → re-run `higgsfield auth login` locally and
+#                update HIGGSFIELD_CREDENTIALS
+#     workspace  "No workspace selected." → set HIGGSFIELD_WORKSPACE_ID (see SETUP 3)
+#     other      anything unrecognized → read the quoted CLI line; do not assume auth
+#   No fragile token auto-rotation — expiry is a loud, actionable alert.
 #
 # ── CLI-SHAPE STORY (exit 4) ─────────────────────────────────────────────────
-#   The CLI installs unpinned from the tap, so an upstream release can change
-#   its JSON output under us (CLI 1.0.1 renamed `job_set_type` → `job_type` and
-#   dropped per-param enums). scripts/refresh_specs.py reports that as exit 4 — a
-#   parser-compatibility failure, NOT an auth failure — and this job says "fix
-#   the parser", never "re-auth". A version guard below also warns (without
-#   failing) whenever the installed CLI differs from the last locally-verified
-#   version, so a surprise upstream release is visible even when parsing holds.
+#   The CLI installs unpinned from the tap, so an upstream release can change its
+#   JSON output under us (CLI 1.0.1 renamed `job_set_type` → `job_type`; a
+#   `rules: null` or a non-object payload is the same class). That is exit 4 — fix
+#   the parser, never re-auth. The version guard warns (without failing) whenever
+#   the installed CLI differs from the last locally-verified version.
+#
+# ── STALENESS EVEN WHEN BLIND ────────────────────────────────────────────────
+#   `validate.py --snapshot-age` runs FIRST and needs no auth: a spec snapshot older
+#   than 30 days fails this job even while the CLI cannot log in.
+#
+# ── THE SCHEDULE CAN SWITCH ITSELF OFF ───────────────────────────────────────
+#   GitHub docs ("Disabling and enabling a workflow"): "In a public repository,
+#   scheduled workflows are automatically disabled when no repository activity has
+#   occurred in 60 days." Re-enable with `gh workflow enable spec-drift.yml` (or
+#   Actions → spec-drift → Enable workflow); per the `schedule` event docs, a commit
+#   that changes the cron line also reactivates it. validate.yml checks this
+#   workflow's state on every push and warns when it is not `active`.
 
 on:
   schedule:
@@ -37,6 +63,10 @@ on:
 permissions:
   contents: read
   issues: write
+
+env:
+  DRIFT_TITLE: "spec drift detected — refresh the snapshot"
+  BLIND_PREFIX: "tripwire BLIND since"
 
 jobs:
   spec-drift:
@@ -48,6 +78,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      - name: Snapshot-age gate (auth-free — runs even when the CLI is blind)
+        id: age
+        continue-on-error: true
+        run: python3 scripts/validate.py --snapshot-age
 
       - name: Install Higgsfield CLI
         run: |
@@ -62,7 +97,7 @@ jobs:
       - name: CLI version guard (warn on unverified upstream release)
         env:
           # Bump after locally verifying scripts/refresh_specs.py against a new CLI.
-          LAST_VERIFIED_CLI: "1.1.5"
+          LAST_VERIFIED_CLI: "1.1.23"
         run: |
           INSTALLED=$(higgsfield --version 2>/dev/null | awk '{print $2}')
           if [ "$INSTALLED" != "$LAST_VERIFIED_CLI" ]; then
@@ -70,55 +105,159 @@ jobs:
           fi
 
       - name: Restore CLI credentials
+        id: creds
         env:
           CREDS: ${{ secrets.HIGGSFIELD_CREDENTIALS }}
         run: |
           if [ -z "$CREDS" ]; then
-            echo "::error::HIGGSFIELD_CREDENTIALS secret not set — see workflow header for setup."
-            exit 1
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::error::HIGGSFIELD_CREDENTIALS secret not set — see the workflow header (SETUP)."
+            exit 0   # the tripwire step records this as a BLIND run
           fi
           mkdir -p "$HOME/.config/higgsfield"
           printf '%s' "$CREDS" > "$HOME/.config/higgsfield/credentials.json"
           chmod 600 "$HOME/.config/higgsfield/credentials.json"
+          echo "present=true" >> "$GITHUB_OUTPUT"
+
+      - name: Select workspace (optional HIGGSFIELD_WORKSPACE_ID secret)
+        if: steps.creds.outputs.present == 'true'
+        env:
+          WORKSPACE_ID: ${{ secrets.HIGGSFIELD_WORKSPACE_ID }}
+        run: |
+          if [ -z "$WORKSPACE_ID" ]; then
+            echo "HIGGSFIELD_WORKSPACE_ID not set — using the CLI's current workspace context."
+            exit 0
+          fi
+          # A failure here is not fatal on its own: the tripwire pull that follows
+          # classifies the CLI's answer ("No workspace selected." → kind=workspace).
+          if ! OUT=$(higgsfield workspace set "$WORKSPACE_ID" 2>&1); then
+            echo "::warning::higgsfield workspace set failed: $(printf '%s' "$OUT" | head -n 1 | tr -d '\r')"
+          fi
 
       - name: Run spec-drift tripwire
         id: drift
+        env:
+          CREDS_PRESENT: ${{ steps.creds.outputs.present }}
         run: |
           set +e
-          OUT=$(python3 scripts/refresh_specs.py 2>&1); CODE=$?
+          STATUS="$RUNNER_TEMP/drift-status.json"
+          if [ "$CREDS_PRESENT" != "true" ]; then
+            OUT="HIGGSFIELD_CREDENTIALS secret not set — the tripwire cannot pull."
+            CODE=1
+            printf '%s\n' '{"code": 1, "state": "pull-failed", "kind": "no-credentials", "line": "", "remedy": "add the HIGGSFIELD_CREDENTIALS repo secret (see the spec-drift.yml header, SETUP)"}' > "$STATUS"
+          else
+            OUT=$(python3 scripts/refresh_specs.py --status-json "$STATUS" 2>&1); CODE=$?
+          fi
           echo "$OUT"
           echo "$OUT" >> "$GITHUB_STEP_SUMMARY"
+          field() { python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); print(str(d.get(sys.argv[2]) or "").replace("\r"," ").replace("\n"," "))' "$STATUS" "$1" 2>/dev/null; }
+          DELIM="EOF_$(python3 -c 'import secrets; print(secrets.token_hex(8))')"
           {
-            echo "report<<DRIFT_EOF"
-            echo "$OUT"
-            echo "DRIFT_EOF"
             echo "code=$CODE"
+            echo "kind=$(field kind)"
+            echo "line=$(field line)"
+            echo "remedy=$(field remedy)"
+            echo "report<<$DELIM"
+            echo "$OUT"
+            echo "$DELIM"
           } >> "$GITHUB_OUTPUT"
-          exit 0   # branch on the code in later steps; never mask the three states
+          exit 0   # branch on the code below — every code, including unknown ones
 
-      - name: Auth/pull failure → fail loudly (re-auth needed)
-        if: steps.drift.outputs.code == '1'
+      - name: Classify the outcome (every exit code has a branch)
+        id: verdict
+        if: always()
+        env:
+          CODE: ${{ steps.drift.outputs.code }}
+          KIND: ${{ steps.drift.outputs.kind }}
+          LINE: ${{ steps.drift.outputs.line }}
+          REMEDY: ${{ steps.drift.outputs.remedy }}
         run: |
-          echo "::error::spec-drift pull failed (likely an expired session). Re-run 'higgsfield auth login' locally and update the HIGGSFIELD_CREDENTIALS secret."
-          exit 1
+          LINE=$(printf '%s' "$LINE" | tr -d '\r\n')
+          case "$CODE" in
+            0) STATE=fresh;  REASON="" ;;
+            3) STATE=changed; REASON="" ;;
+            1) STATE=blind;  REASON="pull failed (kind=${KIND:-unknown}) — CLI said: ${LINE:-<no CLI output>} — remedy: ${REMEDY}" ;;
+            4) STATE=blind;  REASON="CLI output shape changed (exit 4) — ${REMEDY}" ;;
+            2) STATE=blind;  REASON="refresh_specs.py usage error (exit 2) — the workflow invocation is wrong; fix this file" ;;
+            "") STATE=blind; REASON="the tripwire never ran — an earlier step failed (CLI install?); see the failed step above" ;;
+            *) STATE=blind;  REASON="refresh_specs.py exited ${CODE}, a code this workflow does not know (0 fresh / 3 changed / 1 pull-failed / 2 usage / 4 shape) — treated as blind" ;;
+          esac
+          echo "state=$STATE" >> "$GITHUB_OUTPUT"
+          echo "reason=$REASON" >> "$GITHUB_OUTPUT"
+          if [ "$STATE" = "blind" ]; then
+            echo "::error::spec-drift is BLIND — ${REASON}"
+          fi
 
-      - name: CLI shape changed → fail loudly (fix the parser, NOT auth)
-        if: steps.drift.outputs.code == '4'
+      - name: Blind → open or update the BLIND issue
+        if: always() && steps.verdict.outputs.state == 'blind'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REASON: ${{ steps.verdict.outputs.reason }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          echo "::error::The Higgsfield CLI's JSON output shape changed and scripts/refresh_specs.py can no longer parse it. Update the parser (see scripts/refresh_specs.py ShapeError sites), verify locally, and bump LAST_VERIFIED_CLI in this workflow. Do NOT rotate credentials — this is not an auth failure."
-          exit 1
+          EXISTING=$(gh issue list --state open --search "\"$BLIND_PREFIX\" in:title" --json number,title \
+            --jq "map(select(.title | startswith(\"$BLIND_PREFIX\"))) | .[0].number // empty")
+          BODY=$(printf 'The weekly spec-drift tripwire could not see the live catalog on %s — neither "fresh" nor "changed" is known.\n\n%s\n\nRun: %s\n\nThis issue closes itself on the next run that exits 0 (fresh) or 3 (changed).' "$(date -u +%F)" "$REASON" "$RUN_URL")
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+          else
+            gh issue create --title "$BLIND_PREFIX $(date -u +%F)" --body "$BODY"
+          fi
 
-      - name: Drift detected → open or update an issue
-        if: steps.drift.outputs.code == '3'
+      - name: Sighted again → close the BLIND issue
+        if: always() && (steps.verdict.outputs.state == 'fresh' || steps.verdict.outputs.state == 'changed')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATE: ${{ steps.verdict.outputs.state }}
+        run: |
+          for N in $(gh issue list --state open --search "\"$BLIND_PREFIX\" in:title" --json number,title \
+                       --jq ".[] | select(.title | startswith(\"$BLIND_PREFIX\")) | .number"); do
+            gh issue close "$N" --comment "The tripwire can see again ($(date -u +%F): $STATE). Closing."
+          done
+
+      - name: Drift detected → open or refresh the drift issue
+        if: always() && steps.verdict.outputs.state == 'changed'
         env:
           GH_TOKEN: ${{ github.token }}
           REPORT: ${{ steps.drift.outputs.report }}
         run: |
-          TITLE="spec drift detected — refresh the snapshot"
-          BODY=$(printf 'The weekly spec-drift tripwire found live model changes since the committed baseline:\n\n```\n%s\n```\n\nNext: run the Tier 2 refresh (dump `models_explore` -> `python3 scripts/sync_specs.py`), audit `evals/cases/` in the same PR (v3.11.2/v3.11.3 lesson), then accept the new live surface with `python3 scripts/refresh_specs.py --update-baseline`.' "$REPORT")
-          EXISTING=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')
-          if [ -n "$EXISTING" ]; then
-            gh issue comment "$EXISTING" --body "$BODY"
-          else
-            gh issue create --title "$TITLE" --body "$BODY"
+          BODY=$(printf 'The weekly spec-drift tripwire found live model changes since the committed baseline (latest run %s):\n\n```\n%s\n```\n\nNext: run the Tier 2 refresh (`/refresh-specs`: dump `models_explore` -> `python3 scripts/sync_specs.py`), audit `evals/cases/` in the same PR (v3.11.2/v3.11.3 lesson), then accept the new live surface with `python3 scripts/refresh_specs.py --update-baseline`.' "$(date -u +%F)" "$REPORT")
+          EXISTING=$(gh issue list --state open --search "\"$DRIFT_TITLE\" in:title" --json number,title \
+            --jq "map(select(.title == \"$DRIFT_TITLE\")) | .[0].number // empty")
+          if [ -z "$EXISTING" ]; then
+            gh issue create --title "$DRIFT_TITLE" --body "$BODY"
+            exit 0
           fi
+          # Refresh the body to the CURRENT report (a weeks-old body is how #87
+          # went stale); comment only when the report itself changed.
+          OLD=$(gh issue view "$EXISTING" --json body --jq .body | sed -n '/^```$/,/^```$/p')
+          NEW=$(printf '```\n%s\n```' "$REPORT")
+          gh issue edit "$EXISTING" --body "$BODY"
+          if [ "$OLD" != "$NEW" ]; then
+            gh issue comment "$EXISTING" --body "Drift report changed on $(date -u +%F) — issue body refreshed to the latest run."
+          fi
+
+      - name: Fresh → close the drift issue
+        if: always() && steps.verdict.outputs.state == 'fresh'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for N in $(gh issue list --state open --search "\"$DRIFT_TITLE\" in:title" --json number,title \
+                       --jq ".[] | select(.title == \"$DRIFT_TITLE\") | .number"); do
+            gh issue close "$N" --comment "Fresh as of $(date -u +%F): the live CLI matches specs/cli_baseline.json (the reviewed baseline was accepted with --update-baseline). Closing."
+          done
+
+      - name: Fail the job when blind or stale
+        if: always()
+        env:
+          STATE: ${{ steps.verdict.outputs.state }}
+          AGE: ${{ steps.age.outcome }}
+        run: |
+          FAIL=0
+          if [ "$STATE" != "fresh" ] && [ "$STATE" != "changed" ]; then
+            echo "::error::spec-drift was blind this run (see the classification step)."; FAIL=1
+          fi
+          if [ "$AGE" != "success" ]; then
+            echo "::error::A spec snapshot is older than 30 days (validate.py --snapshot-age) — run the Tier 2 refresh (/refresh-specs)."; FAIL=1
+          fi
+          exit $FAIL
