@@ -62,6 +62,8 @@ DB_FILES = {
 # Entry schemas live in higgsfield_memory (its add-* commands enforce the same
 # set on write) — one definition, so the writer and this checker cannot drift.
 from higgsfield_memory import FILTER_REQUIRED_FIELDS, QUALITY_REQUIRED_FIELDS  # noqa: E402
+# Every tree walk prunes .claude/worktrees/ and nested checkouts.
+from repo_walk import walk_files  # noqa: E402
 # Supported top-level SKILL.md frontmatter attributes (tags now lives inside metadata)
 FRONTMATTER_REQUIRED = {"name", "description", "user-invocable"}
 # Fields that must live nested under `metadata:` per the CLAUDE.md contract.
@@ -105,10 +107,15 @@ def repo_filename_index() -> set:
     if _repo_filename_index is None:
         _repo_filename_index = {
             p.name for ext in ("md", "py", "json")
-            for p in ROOT.rglob(f"*.{ext}")
-            if ".git" not in p.parts and "__pycache__" not in p.parts
+            for p in walk_files(ROOT, f"*.{ext}")
         }
     return _repo_filename_index
+
+
+def find_skill_files() -> list:
+    """Every SKILL.md of THIS checkout — never one inside `.claude/worktrees/`
+    or any nested checkout (see scripts/repo_walk.py)."""
+    return walk_files(ROOT, "SKILL.md")
 
 PASS = "\033[32m✓\033[0m"
 FAIL = "\033[31m✗\033[0m"
@@ -228,7 +235,7 @@ def check_template_paths():
     part 1 — templates link back to root reference docs, and a bad `../`
     prefix silently strands the reader; the v3.18 ad-asset-prep link rotted
     exactly this way). Bare refs are left to prose."""
-    for md in sorted(ROOT.glob("templates/**/*.md")):
+    for md in walk_files(ROOT / "templates", "*.md", repo_root=ROOT):
         text = md.read_text(encoding="utf-8")
         refs = re.findall(r'`((?:\.\.\/|[\w-]+\/)[\w./%-]+\.(?:md|py|json))`', text)
         for ref in sorted(set(refs)):
@@ -784,6 +791,13 @@ def check_memory_summary():
         check(True, "db/memory-summary.md is current")
         return
 
+    if STRICT:
+        # A release gate must not quietly repair the tree it is certifying —
+        # in CI the regenerated file was discarded and the run went green.
+        check(False, "db/memory-summary.md is current",
+              "stale — run: python3 scripts/higgsfield_memory.py export-summary, "
+              "review and commit it")
+        return
     warn("db/memory-summary.md was stale — regenerated",
          "review and commit the refreshed summary")
     tmp = summary_path.with_suffix(".tmp")
@@ -851,6 +865,10 @@ def check_ledger():
         on_disk = None
     if on_disk == fresh:
         check(True, "db/ledger/_global.json matches regeneration")
+    elif STRICT:
+        check(False, "db/ledger/_global.json matches regeneration",
+              "stale — run: python3 scripts/validate.py (non-strict regenerates it), "
+              "then commit the refreshed view")
     else:
         warn("db/ledger/_global.json was stale — regenerated",
              "commit the refreshed view (generated, never hand-edit)")
@@ -916,8 +934,8 @@ def check_rule8_restatements():
     the surfaces where the cap actually gets restated: every sub-skill,
     every template, and the PDF generator's hardcoded copy."""
     targets = sorted(
-        [*(ROOT / "skills").rglob("*.md"),
-         *(ROOT / "templates").rglob("*.md"),
+        [*walk_files(ROOT / "skills", "*.md", repo_root=ROOT),
+         *walk_files(ROOT / "templates", "*.md", repo_root=ROOT),
          ROOT / "scripts" / "generate_user_guide.py"])
     offenders = []
     for path in targets:
@@ -992,7 +1010,7 @@ def main():
 
     # ── 1. Find all SKILL.md files ──────────────────────────────────────────
     print("[ SKILL.md FILES ]")
-    skill_files = list(ROOT.rglob("SKILL.md"))
+    skill_files = find_skill_files()
     print(f"  Found {len(skill_files)} SKILL.md files")
 
     for sf in sorted(skill_files):

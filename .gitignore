@@ -31,6 +31,9 @@ Desktop.ini
 # Claude Code
 CLAUDE.local.md
 .claude/settings.local.json
+# Agent worktrees are full second checkouts created inside the repo — never
+# content of this one (scripts/repo_walk.py also prunes them from every walk).
+.claude/worktrees/
 
 # Logs / temp
 *.log

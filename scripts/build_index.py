@@ -86,8 +86,10 @@ def headings(text: str) -> list[tuple[int, str]]:
 
 
 def skill_files() -> list[Path]:
-    return sorted(p for p in ROOT.rglob("SKILL.md")
-                  if ".git" not in p.parts)
+    """This checkout's SKILL.md files — never those of an agent worktree under
+    `.claude/worktrees/` or any nested checkout (scripts/repo_walk.py)."""
+    from repo_walk import walk_files
+    return walk_files(ROOT, "SKILL.md")
 
 
 def quick_facts_problems(path: Path) -> list[str]:

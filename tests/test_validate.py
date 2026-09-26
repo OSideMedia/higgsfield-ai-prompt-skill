@@ -171,10 +171,86 @@ def test_snapshot_age_cli_mode_exit_codes():
     assert ok.returncode in (0, 1)   # 1 only once the committed snapshots age out
 
 
-@pytest.mark.skipif(importlib.util.find_spec("fpdf") is not None,
-                    reason="fpdf2 installed — strict-mode SKIP path not reachable")
-def test_strict_fails_without_fpdf2():
-    result = subprocess.run([sys.executable, str(REPO / "scripts" / "validate.py"), "--strict"],
+# ── v3.37.0: --strict fails on stale generated DB views (no silent repair) ───
+
+@pytest.fixture
+def fresh_report(monkeypatch):
+    monkeypatch.setattr(validate, "issues", [])
+    monkeypatch.setattr(validate, "warnings", [])
+
+
+def _quiet(fn):
+    import contextlib
+    import io
+    with contextlib.redirect_stdout(io.StringIO()):
+        fn()
+
+
+@pytest.mark.parametrize("strict", [True, False])
+def test_stale_memory_summary(tmp_path, monkeypatch, fresh_report, strict):
+    (tmp_path / "db").mkdir()
+    stale = tmp_path / "db" / "memory-summary.md"
+    stale.write_text("# STALE hand-edited summary\n", encoding="utf-8")
+    monkeypatch.setattr(validate, "ROOT", tmp_path)
+    monkeypatch.setattr(validate, "STRICT", strict)
+    _quiet(validate.check_memory_summary)
+    if strict:
+        assert any("memory-summary.md is current" in i for i in validate.issues)
+        assert stale.read_text(encoding="utf-8").startswith("# STALE")   # gate never repairs
+    else:
+        assert validate.issues == [] and validate.warnings    # warn + regenerate
+        assert not stale.read_text(encoding="utf-8").startswith("# STALE")
+
+
+@pytest.mark.parametrize("strict", [True, False])
+def test_stale_global_ledger(tmp_path, monkeypatch, fresh_report, strict):
+    import higgsfield_memory as hm
+    ledger = tmp_path / "db" / "ledger"
+    ledger.mkdir(parents=True)
+    glob = ledger / "_global.json"
+    glob.write_text(json.dumps({"rows": ["hand-edited"]}), encoding="utf-8")
+    monkeypatch.setattr(validate, "ROOT", tmp_path)
+    monkeypatch.setattr(validate, "STRICT", strict)
+    monkeypatch.setattr(hm, "LEDGER_DIR", ledger)
+    monkeypatch.setattr(hm, "GLOBAL_LEDGER", glob)
+    _quiet(validate.check_ledger)
+    if strict:
+        assert any("_global.json matches regeneration" in i for i in validate.issues)
+        assert json.loads(glob.read_text())["rows"] == ["hand-edited"]
+    else:
+        assert validate.issues == [] and validate.warnings
+        assert json.loads(glob.read_text())["rows"] == []
+
+
+def _env_without_fpdf(tmp_path):
+    """An environment in which `import fpdf` fails exactly as it does when
+    fpdf2 is not installed: a stub package first on PYTHONPATH that raises
+    ModuleNotFoundError. validate.py passes its env to the PDF child, so the
+    skip path is reachable even where fpdf2 IS installed (incl. CI) — the old
+    skipif made this test run nowhere."""
+    import os
+    stub = tmp_path / "no_fpdf" / "fpdf"
+    stub.mkdir(parents=True)
+    (stub / "__init__.py").write_text(
+        "raise ModuleNotFoundError(\"No module named 'fpdf'\", name='fpdf')\n",
+        encoding="utf-8")
+    prior = os.environ.get("PYTHONPATH", "")
+    return dict(os.environ, PYTHONPATH=str(tmp_path / "no_fpdf") + (os.pathsep + prior if prior else ""))
+
+
+def test_strict_fails_without_fpdf2(tmp_path):
+    env = _env_without_fpdf(tmp_path)
+    # Positive control: the stub really blocks fpdf in a child interpreter.
+    probe = subprocess.run([sys.executable, "-c", "import fpdf"], env=env,
+                           capture_output=True, text=True)
+    assert probe.returncode != 0 and "No module named 'fpdf'" in probe.stderr
+    validate_py = str(REPO / "scripts" / "validate.py")
+    strict = subprocess.run([sys.executable, validate_py, "--strict"], env=env,
                             capture_output=True, text=True)
-    assert result.returncode == 1
-    assert "skipped check" in result.stdout
+    assert strict.returncode == 1, strict.stdout[-1500:]
+    assert ("[strict] skipped check must pass for release: generate_user_guide.py --dry-run"
+            in strict.stdout)
+    loose = subprocess.run([sys.executable, validate_py], env=env,
+                           capture_output=True, text=True)
+    assert loose.returncode == 0, loose.stdout[-1500:]
+    assert "generate_user_guide.py --dry-run" in loose.stdout and "[SKIP]" in loose.stdout
