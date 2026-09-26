@@ -23,7 +23,7 @@ The rest of this skill library answers *"how do I prompt this?"* This skill answ
 - The strongest anti-slop tool is the **Forbidden List** in the Style Sheet — naming what the world is NOT is often more useful than the palette [→](#step-5--style-sheet-visual-dna--forbidden-list)
 - Specificity beats adjectives: if *any* character could say it, it's a stereotype; keep asking **"why?"** until the answer surprises you [→](#anti-generic-drills)
 - Fillable worksheets live in `../../templates/character-design/` — hand them to the user or fill them together [→](#templates)
-- Construction laws for the sheet as an artifact: **plain grey background** · creature sheets get **two close-ups (mouth open + closed)** · the **face-lock crop** · a **size-ref frame** for scale at extreme ratios [FIELD] — grey and the one-face law are canonical in `../../templates/ad-asset-prep.md` [→](#sheet-construction-laws)
+- Construction laws for the sheet as an artifact: **plain grey background** · creature sheets get **two close-ups (mouth open + closed)** · the **face-lock crop** · a **size-ref frame** for scale at extreme ratios no true landmark can express [FIELD] — grey and the one-face law are canonical in `../../templates/ad-asset-prep.md` [→](#sheet-construction-laws)
 - Once the character **looks** right, don't jump to scenes — run a **screen test**: casting read → role options → playable lines → voice triggers → one audition prompt [EMPIRICAL] [→](#screen-test--audition)
 - This skill produces inputs; it does **not** generate. Hand the locked Visual DNA + character sheet to `higgsfield-prompt` [→](#step-6--hand-off-to-generation)
 
@@ -203,14 +203,16 @@ wardrobe); the close-up becomes the single source of truth for the face. (The He
 sheet removes only the front figure's head — both variants leave one readable face; the
 canonical statement is `../../templates/ad-asset-prep.md` § Design for win rate.)
 
-**Scale between two subjects needs its own asset — at extreme ratios.** Relative size is the
-first thing to drift, and *vague* words do not fix it — "tiny compared to the enormous
-creature" returns a different size every generation, and worst on wides. A true, visible
-body landmark does hold: near-human props take a computed anchor sentence, and one feature
-held a ≥5× giant in prose with the human in frame (`../higgsfield-seedance-2-5/VFX-PIPELINE.md`
-§ Stage 2, `../higgsfield-seedance/HELL-GRIND.md` § Solutions born under deadline). Where
-both are possible, stack the landmark sentence and the size-ref (`../shared/house-rulings.md`
-P2-5). Build a **size-ref frame**: merge the
+**Scale between two subjects — a landmark sentence, a size-ref asset, or both.** Relative
+size is the first thing to drift, and *vague* words do not fix it — "tiny compared to the
+enormous creature" returns a different size every generation, and worst on wides. A true,
+visible body landmark does hold: near-human props take a computed anchor sentence, and one
+feature anchored a thirty-metre giant (about 16× a human) with a landmark sentence and the
+human in frame (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 2,
+`../higgsfield-seedance/HELL-GRIND.md` § Solutions born under deadline). An extreme ratio
+**no true landmark can express** needs its own asset; where both are possible, stack the
+landmark sentence and the size-ref (`../shared/house-rulings.md` P2-5). Build a **size-ref
+frame**: merge the
 two character sheets plus a frame whose scale was right into one image showing them
 together, write the proportion in human-height comparisons ("wingspan as wide as twenty
 humans lying head to toe"), save it as its own named asset, and attach it to every shot

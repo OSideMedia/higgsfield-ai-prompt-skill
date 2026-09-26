@@ -139,16 +139,21 @@ directory. All entries dated **2026-09-26** unless marked.
 
 - **Ruling:** SCOPE + **OPEN** at the boundary, with a default.
 - **Scope:** vague comparatives ("tiny next to the enormous dragon") hold nowhere. A **true,
-  visible body landmark** holds near-human props (`VFX-PIPELINE.md` § Stage 2 `[FIELD — RED
-  FLAG]`) and held a ≥5× giant with the human in frame (`HELL-GRIND.md` § Solutions born under
-  deadline `[OFFICIAL]`). An extreme ratio **no landmark can express** takes the size-ref image
-  (`VFX-PIPELINE.md` § Stage 2 `[FIELD — AI-vs-VFX]`).
+  visible body landmark** holds near-human props (`../higgsfield-seedance-2-5/VFX-PIPELINE.md`
+  § Stage 2 `[FIELD — RED FLAG]`) and is Hell Grind's stated solution for a thirty-metre giant
+  (about 16× a human; "at least five times" is the floor the prompt writes) with the human in
+  frame (`../higgsfield-seedance/HELL-GRIND.md` § Solutions born under deadline `[OFFICIAL]` —
+  the brief does not say whether a size-ref image was also attached). An extreme ratio **no
+  landmark can express** takes the size-ref image
+  (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 2 `[FIELD — AI-vs-VFX]`).
 - **OPEN:** which instrument holds better where both are possible.
 - **Default:** stack them when a reference slot is free — the sentence costs nothing, the image
   costs one generation, lost scale costs every wide. The landmark must be arithmetically true.
 - **Also fixed:** the absolutes "scale does not survive on words" / "the last thing words can
-  fix" (`VFX-PIPELINE.md` QUICK FACTS + § Stage 2, `../higgsfield-character-design/SKILL.md`)
-  now say *vague* words.
+  fix" / "the fix is an image, not a sentence" (`../higgsfield-seedance-2-5/VFX-PIPELINE.md`
+  QUICK FACTS + § Stage 2, `../higgsfield-character-design/SKILL.md` § Sheet Construction Laws)
+  now say *vague* words, and the image is scoped to an extreme ratio with no true, visible
+  landmark.
 
 ### P2-6 · Anamorphic in the video prompt vs baking it into the asset
 

@@ -540,11 +540,13 @@ next to a standing human = failed shot.
   language rules — with two additions: the human anchor must be **in the frame**, and the
   prompt names what a **failed** shot looks like.
 
-  Note what this case shows: an extreme ratio (≥5×) held in **prose**, because the prose is a
-  visible **body landmark** (*reaches just above the ankle*) with the human in frame and a
-  failure condition. `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 2 reaches for a
-  size-ref *image* at extreme ratios; which instrument holds better where both are possible
-  is unmeasured here, and `../shared/house-rulings.md` P2-5 carries the default.
+  Note what this case shows: at an extreme ratio — thirty metres is about 16× a human; the
+  "five times" is the floor the prompt writes, not the ratio — the prose anchor is a visible
+  **body landmark** (*reaches just above the ankle*) with the human in frame and a failure
+  condition. The brief does not say whether a size-ref image was attached as well.
+  `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 2 reaches for a size-ref *image* at
+  extreme ratios with no usable landmark; which instrument holds better where both are
+  possible is unmeasured here, and `../shared/house-rulings.md` P2-5 carries the default.
 
 ---
 

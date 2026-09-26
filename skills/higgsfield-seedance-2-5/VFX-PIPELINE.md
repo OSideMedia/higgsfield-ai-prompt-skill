@@ -22,7 +22,7 @@ that build.
 - One model per **asset class**, not one model for the project: faces + fixes → Nano Banana 2 · creatures → Seedream 5.0 · clothing → GPT Image 2 · locations → Soul Cinema [→](#stage-1--assets-one-model-per-asset-class)
 - Character sheets go on a **plain grey background** (canonical shade + mechanism: `../../templates/ad-asset-prep.md`); creature sheets carry **two close-ups, mouth open and mouth closed** [→](#stage-1--assets-one-model-per-asset-class)
 - The **face-lock crop**: crop the head out of the full-body frames so the model has exactly one place to pull the face from [→](#the-face-lock-crop)
-- Vague scale words do not hold ("tiny compared to the enormous dragon") — at extreme ratios build a **size-ref frame**, save it as its own asset, attach it to every scene, and lock "if scale is uncertain, render smaller"; a computed **body landmark** sentence holds near-human props [→](#stage-2--the-scale-law-a-size-ref-frame)
+- Vague scale words do not hold ("tiny compared to the enormous dragon") — at an extreme ratio no true body landmark can express, build a **size-ref frame**, save it as its own asset, attach it to every scene, and lock "if scale is uncertain, render smaller"; a computed **body landmark** sentence holds near-human props [→](#stage-2--the-scale-law-a-size-ref-frame)
 - Locations are **batched cheap and selected by light** — bad light in the still is why the video comes out as slop [→](#stage-3--locations-batch-cheap-select-by-light)
 - Field v2v runs in **`omni_reference` with a video reference, not `video_edit`** — which is why duration is settable, and must equal the source [→](#stage-4--footage-transformation-the-omni_reference-v2v-lane)
 - Source clip **≥ 4 s** (the model's own duration floor); pad a shorter one by freeze-framing its last frame [→](#stage-4--footage-transformation-the-omni_reference-v2v-lane)
@@ -139,7 +139,9 @@ to drift, and **vague** scale words do not fix it. A rider written as "tiny comp
 enormous dragon" comes back a different size in every generation, and the drift is worst
 on wides — which is exactly where scale is the whole point of the shot.
 
-The fix is an image, not a sentence. **Build a size-ref frame:**
+At an extreme ratio with **no true, visible landmark** to anchor it — a rider on a dragon's
+shoulders, where no body part of one lines up with the other — the fix is an image, not a
+sentence. (Where a true landmark exists, see the box below.) **Build a size-ref frame:**
 
 1. Take the creature sheet, the character sheet, and a screenshot from a generation whose
    scale was right.
@@ -162,11 +164,12 @@ lighting and grade.
 
 > ### Where a sentence DOES hold — the size gap decides the instrument
 >
-> `[FIELD — Higgsfield Studio, RED FLAG breakdown, 2026-08-19]` "The last thing words can
-> fix" is true of the case above — an extreme ratio, a rider against a dragon at 12×. It is
-> **not** true of ordinary set geometry, and reading it that way sends people to build a
-> size-ref frame for a handrail. On a near-human prop a written ruler holds, and it holds
-> because it is **converted into a body landmark** rather than left as a number:
+> `[FIELD — Higgsfield Studio, RED FLAG breakdown, 2026-08-19]` The size-ref frame is the
+> instrument for the case above — an extreme ratio, a rider against a dragon at 12×, with no
+> landmark to hang it on. It is **not** the instrument for ordinary set geometry, and reading
+> it that way sends people to build a size-ref frame for a handrail. On a near-human prop a
+> written ruler holds, and it holds because it is **converted into a body landmark** rather
+> than left as a number:
 >
 > ```
 > the railing is 110 cm; on a 185 cm man the top rail lands just above his belt
@@ -185,11 +188,14 @@ lighting and grade.
 > image.** Reach for the image when the gap is large enough that no single body landmark
 > can express it.
 >
-> **A third report moves that boundary.** `[OFFICIAL — Hell Grind brief]` held a ≥5× giant
-> in prose alone — a visible body landmark (*"ROCO at his foot reaches just above the
-> ankle"*), a human in frame, and a stated failure condition
-> (`../higgsfield-seedance/HELL-GRIND.md` § Solutions born under deadline). So the deciding
-> question is whether a **true, visible** landmark exists, not the ratio alone. Which
+> **A third report moves that boundary.** `[OFFICIAL — Hell Grind brief]` gives, as its
+> solution for giants, a prose anchor in every prompt — a thirty-metre guardian, about 16× a
+> human, with a visible body landmark (*"ROCO at his foot reaches just above the ankle"*), a
+> human in frame, a written floor of "at least FIVE TIMES the height of the human figure",
+> and a stated failure condition (`../higgsfield-seedance/HELL-GRIND.md` § Solutions born
+> under deadline). The brief does not say whether a size-ref image was attached as well, so
+> it shows a landmark sentence working at an extreme ratio — not that prose alone did it.
+> The deciding question is whether a **true, visible** landmark exists, not the ratio alone. Which
 > instrument holds better where both are possible is unmeasured here; the default when a
 > reference slot is free is to **stack them** — the landmark sentence costs nothing and the
 > size-ref costs one image, while lost scale is paid in every wide
