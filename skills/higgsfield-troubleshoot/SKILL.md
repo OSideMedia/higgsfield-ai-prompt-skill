@@ -25,11 +25,11 @@ metadata:
 - Change exactly one variable between takes so causality stays readable [→](#one-variable-per-retake)
 - Declare the take budget AND a written "good enough" bar before take one; half-budget with no progress forces a strategy change [→](#attempt-budget--declared-before-take-one-heuristic)
 - The shot log is the ledger row — one line per take, changed variable in `notes` [→](#the-shot-log-is-the-ledger-row)
-- Continuation/extension defects: 12-row symptom → cause → single-repair-variable atlas (planned-vs-observed opening, motion-vector drop, prop contradictions, chain-depth drift…) [→](#sequence-continuation-failure-atlas)
-- Retry Ladder: 4 terminating rungs — re-run once verbatim → treat 2nd failure as over-packing → switch model for that shot → stop after 3 paid attempts with named options [→](#retry-ladder-a-failed-take-edits-the-plan-not-just-the-dice)
-- Five stop numbers, one ladder — they count different things: 2 same-flaw re-rolls → rewrite · 3 paid attempts (no declared budget) → named options · 4 v2v batches (ceiling) → prompt/source fault · 10–15 surgical iterations (declared budget) → simplify the shot · 65–100 generations per kept shot is a project benchmark, never a stop rule. The earliest tripwire wins [→](#stop-rule-ladder-which-number-governs)
-- Log EVERY confirmed fix to learning memory, and check memory first before troubleshooting [→](#log-the-outcome-always)
-- Vision-grounded diagnosis (stills only): vision proposes the `reject_reason`, the human confirms — advisory until a class clears the agreement gate [→](#vision-grounded-diagnosis-classify-the-rejected-still-dont-guess)
+- Continuation/extension defects: 12-row symptom → cause → single-repair-variable atlas (planned-vs-observed opening, motion-vector drop, prop contradictions, chain-depth drift…) [→](#sequence--continuation-failure-atlas)
+- Retry Ladder: 4 terminating rungs — re-run once verbatim → treat 2nd failure as over-packing → switch model for that shot → stop after 3 paid attempts with named options [→](#retry-ladder--a-failed-take-edits-the-plan-not-just-the-dice)
+- Five stop numbers, one ladder — they count different things: 2 same-flaw re-rolls → rewrite · 3 paid attempts (no declared budget) → named options · 4 v2v batches (ceiling) → prompt/source fault · 10–15 surgical iterations (declared budget) → simplify the shot · 65–100 generations per kept shot is a project benchmark, never a stop rule. The earliest tripwire wins [→](#stop-rule-ladder--which-number-governs)
+- Log EVERY confirmed fix to learning memory, and check memory first before troubleshooting [→](#log-the-outcome--always)
+- Vision-grounded diagnosis (stills only): vision proposes the `reject_reason`, the human confirms — advisory until a class clears the agreement gate [→](#vision-grounded-diagnosis--classify-the-rejected-still-dont-guess)
 
 ## Common Problems & Fixes
 

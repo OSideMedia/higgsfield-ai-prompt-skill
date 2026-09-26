@@ -1,5 +1,95 @@
 # Changelog
 
+## v3.38.0 — 2026-09-26
+
+**The reconciliation pass.** Twelve releases of harvested doctrine (v3.24–v3.35) had been
+merged without an adversarial read, and different files had come to give opposite answers to
+the same question. A 2026-09-26 audit of that delta found two wrong-answer contradictions and
+fourteen more. The repo's own law is that a real tension is **recorded, not silently
+resolved** — so each was classified: a *scope* conflict (both rules right in different regimes)
+is resolved by stating the scope in both places, each citing the other; a *genuinely unmeasured*
+conflict is recorded **OPEN** with both sides, their provenance, and a default only where one
+side is clearly the cheaper failure; a *plain error* is just fixed.
+
+### Added
+
+- **`skills/shared/house-rulings.md`** — the index of every contested question (P1-1, P1-2,
+  P2-1…14, P3-1…6): the question, the ruling or OPEN, the scope, both sides with file and
+  provenance, and the probe that would settle it.
+- **`skills/shared/provenance.md`** — one repo-wide label legend: what `[OFFICIAL]`, `[DEMO]`,
+  `[FIELD]`, `[EMPIRICAL]`, `[HOUSE]` and `[MEASURED]` mean and the evidence each requires
+  (MEASURED needs route, model / mode / resolution, n and date); third-party skill material is
+  EMPIRICAL — judged sound, not measured on our routes. Linked from root `SKILL.md`.
+- **The Stop-Rule Ladder** (`higgsfield-troubleshoot` § Stop-Rule Ladder) — five stop numbers
+  that measure different things, ordered: 2 same-flaw re-rolls → rewrite · 3 paid attempts with
+  no declared budget → named options · 4 v2v batches → a prompt/source fault · 10–15 surgical
+  iterations inside a declared budget → simplify the shot · 65–100 generations per kept shot is a
+  project benchmark, never a stop rule. The earliest tripwire wins; cited from Hell Grind,
+  VFX-PIPELINE, production-benchmarks and the Seedance failure loop.
+- A root dispatcher row and Load Map row for `FAILURE-MODES.md` (which doubled to 15 entries
+  and was barely routed), and a technique row for `templates/seedance/staging-reference.md`
+  (unreachable from the dispatcher).
+- 7 eval cases (stop-ladder ×2, routing to acting and scene-engine, NO BGM outside 2.5's `()`
+  music bracket, the staging reference is not a blocking lock, Seedance 2.0's 15.2 s
+  audio-reference total cap); each passes its golden and fails every wrong-answer mutation.
+
+### Changed — scope-resolved
+
+- **Character description volume (P1-1).** On an I2V start frame the prompt carries motion +
+  camera only; with no reference, the full descriptor goes in verbatim every time. With a
+  character reference attached, the two Higgsfield sources disagree — **OPEN**, no default on
+  volume; both agree the wording is fixed and never contradicts the reference.
+- States vs chained actions (pick by the shot's job), voice on 2.0 vs 2.5, second passes (the
+  identity base never takes a second full pass; a derived look frame may — OPEN whether one Nano
+  Banana 2 pass softens a sheet, default: mask the fix back onto the base), scale (a true,
+  visible body landmark; the Hell Grind giant now cited), the anamorphic bake rule (applies only
+  when a baked plate is on every shot — marked one studio's `[FIELD]` report), negation
+  exceptions (a test plus seven legitimate bans in `negative-constraints.md`), Style Prefix
+  "moving" vs the first-second wide, handles as sentence subjects (2.5 names the character; 2.0
+  leads with the tag), tag versioning, the movement lock vs per-scene rewrite, and a
+  scene-engine ↔ acting term map.
+- **Sheet laws** restated five to six times with drifting shades and mechanisms: `templates/
+  ad-asset-prep.md` is now the single canonical home for the grey background and the
+  one-readable-face law; soul, VFX-PIPELINE, character-design, Hell Grind and 2.5 cite it.
+
+### Recorded OPEN (with named settling probes)
+
+- P1-1 (description volume with a reference attached), P2-4 (film grain on a reference plate —
+  default: drop it; baked grain is inherited by every shot), P2-6 (a Style Prefix that names the
+  lens over baked plates), P2-7 (`NO BGM` vs the field-proven `No music.` — both legal; lead with
+  the positive diegetic list; never inside 2.5's `()` bracket; `higgsfield-audio` 3.9.0's section
+  relabelled EMPIRICAL and its "short form" made actually short).
+
+### Fixed — plain errors
+
+- The staging template shipped Midjourney syntax (`--ar … --stylize … --no photorealism, …`) — on
+  a Higgsfield model the `--no` list ships as positive tokens; removed.
+- The shotlist glossary attached a top-down map, against the top-down-map template's own law —
+  now a front-on staging reference. `FAILURE-MODES` used the staging map as frame one — it is
+  attached last.
+- The walking fix told a prompt to match "the camera speed of shot 9", which it cannot see — the
+  same absolute speed now goes into both prompts.
+- Provenance normalised: six labels for one kind of source collapsed to EMPIRICAL; SD25-PE
+  (OFFICIAL → EMPIRICAL — no authorship record) added to the 2.5 Provenance table; "every
+  template here is [OFFICIAL]" and acting's file-wide header corrected; filler-babble's
+  `[MEASURED]` marked *record incomplete* and its citation of an outside product dropped.
+- Hell Grind residue (references are not "assets only"; the removed `@TAG` age form; 3,000–4,000
+  words is above the register ladder, not its top; parameters are not prompt text), catchlight
+  residue, an anatomically impossible example, three dangling § references, QUICK FACTS pointers
+  for sections that lacked them, README / root counts (19 template files, 15 failure modes, 10
+  Seedance templates, scene-engine listed), Seedream 4.0 → 5.0 in the platform list.
+- `templates/ad-asset-prep.md`'s related-character example named a 13–14-year-old; the technique
+  (derive the relative from the same source face) is kept with role + build, per the age-blind
+  engine rule — the content filter tightens on any minor.
+- `s25-v2v-routes-to-omni-reference` now asserts Duration equals the stated source length;
+  `trap-s25-four-batch-rule` now also rejects "run another four batches".
+
+### Corrections to earlier entries
+
+- v3.33.0's "describe everything, every time" was recorded as settled; it is scope-bound (P1-1).
+- v3.34.0 called the bake case "measured"; it is one studio's field report (P2-6).
+- v3.35.0's scale limitation cited two field reports; there are three (Hell Grind's giant).
+
 ## v3.37.0 — 2026-09-26
 
 **The gates.** The v3.36.0 refresh showed how the platform had moved unseen: the drift

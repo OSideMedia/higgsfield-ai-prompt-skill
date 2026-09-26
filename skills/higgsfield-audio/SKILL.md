@@ -25,7 +25,7 @@ metadata:
 *Routing aids — read the linked sections for the full rules.*
 - Native-joint audio models: Kling 3.0, Seedance 2.0 / 1.5 Pro, Veo 3/3.1, Grok — all others add audio in post [→](#which-models-support-audio)
 - Four layers to consider per prompt: Dialogue / SFX / Ambient / BGM [→](#the-four-audio-layers)
-- Suppressing a score: name the diegetic sound first, then the suppression as plain text; `NO BGM` vs `No music.` is OPEN (house-rulings P2-7) [→](#suppressing-music-no-bgm-is-a-spec-no-music-is-a-preference)
+- Suppressing a score: name the diegetic sound first, then the suppression as plain text; `NO BGM` vs `No music.` is OPEN (house-rulings P2-7) [→](#suppressing-music--no-bgm-is-a-spec-no-music-is-a-preference)
 - Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens; per-language sync-word budgets are FIELD-reported [→](#lip-sync-rules)
 - **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input--seedance-20-audio1)
 - Scope an audio reference like an image one: name the property that rides, the property that must NOT, and where the excluded one comes from instead [→](#scope-an-audio-reference--say-which-property-rides)

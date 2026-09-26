@@ -746,6 +746,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [Audit procedure](skills/higgsfield-scene-engine/SKILL.md#audit-procedure)
     - [Audit output](skills/higgsfield-scene-engine/SKILL.md#audit-output)
   - [Where this sits before prompting](skills/higgsfield-scene-engine/SKILL.md#where-this-sits-before-prompting)
+    - [Same words, different layer — the term map to `higgsfield-acting`](skills/higgsfield-scene-engine/SKILL.md#same-words-different-layer--the-term-map-to-higgsfield-acting)
   - [Related Skills](skills/higgsfield-scene-engine/SKILL.md#related-skills)
 
 ## skills/higgsfield-seedance/SKILL.md
@@ -1042,6 +1043,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [The shot log is the ledger row](skills/higgsfield-troubleshoot/SKILL.md#the-shot-log-is-the-ledger-row)
   - [Sequence & Continuation Failure Atlas](skills/higgsfield-troubleshoot/SKILL.md#sequence--continuation-failure-atlas)
   - [Retry Ladder — a failed take edits the plan, not just the dice](skills/higgsfield-troubleshoot/SKILL.md#retry-ladder--a-failed-take-edits-the-plan-not-just-the-dice)
+  - [Stop-Rule Ladder — which number governs](skills/higgsfield-troubleshoot/SKILL.md#stop-rule-ladder--which-number-governs)
   - [Log the Outcome — Always](skills/higgsfield-troubleshoot/SKILL.md#log-the-outcome--always)
   - [Vision-Grounded Diagnosis — Classify the Rejected Still, Don't Guess](skills/higgsfield-troubleshoot/SKILL.md#vision-grounded-diagnosis--classify-the-rejected-still-dont-guess)
   - [Related skills](skills/higgsfield-troubleshoot/SKILL.md#related-skills)
