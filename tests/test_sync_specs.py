@@ -195,6 +195,50 @@ def test_missing_tombstone_is_stale(tmp_path):
     assert sync_specs.retired_is_stale(tmp_path) is True
 
 
+# ── v3.37.0: a negative duration floor is a sentinel, not a length ───────────
+
+WAN_DESC = ("Duration in seconds (2-30), or -1 to let the model choose the length "
+            "from the prompt and media. Smart duration is billed as 10 seconds.")
+
+
+def _dur_model(desc, lo=-1, hi=30):
+    return {"items": [{"id": "wan3_0", "name": "Wan 3.0", "output_type": "video",
+                       "parameters": [{"name": "duration", "type": "number",
+                                       "min": lo, "max": hi, "default": 5,
+                                       "description": desc}]}]}
+
+
+def test_smart_duration_floor_derived_from_description():
+    m = sync_specs.normalize_models(_dur_model(WAN_DESC), "video")[0]
+    assert m["duration"] == {"min": 2, "max": 30, "smart": -1}
+
+
+@pytest.mark.parametrize("desc", [
+    "Duration in seconds, or -1 for smart duration.",          # no stated range
+    "Duration in seconds (2-15), or -1 for smart duration.",   # range max != declared max
+    "Duration in seconds (2-30).",                             # sentinel never named
+])
+def test_underivable_floor_is_kept_raw_and_reported(desc, capsys):
+    m = sync_specs.normalize_models(_dur_model(desc), "video")[0]
+    assert m["duration"] == {"min": -1, "max": 30}             # never guessed
+    assert "sentinel" in capsys.readouterr().err
+
+
+def test_positive_floor_unchanged():
+    m = sync_specs.normalize_models(_dur_model("Duration in seconds (4-15).", 4, 15), "video")[0]
+    assert m["duration"] == {"min": 4, "max": 15}
+
+
+def test_smart_duration_rendered_and_committed():
+    assert sync_specs._fmt_duration({"min": 2, "max": 30, "smart": -1}) == "2–30s or -1 (smart)"
+    spec = json.loads((REPO / "specs" / "model-specs.json").read_text(encoding="utf-8"))
+    wan = {m["id"]: m["duration"] for m in spec["models"] if m["id"].startswith("wan3")}
+    assert wan == {"wan3_0": {"min": 2, "max": 30, "smart": -1},
+                   "wan3_0_prime": {"min": 2, "max": 30, "smart": -1}}
+    md = (REPO / "specs" / "MODEL-SPECS.md").read_text(encoding="utf-8")
+    assert "| wan3_0 | 2–30s or -1 (smart) |" in md and "-1–30s" not in md
+
+
 def test_committed_tombstones_include_llm_text():
     retired = sync_specs.load_retired()
     assert {"llm_text", "explainer_video", "gpt_image"} <= set(retired)

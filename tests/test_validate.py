@@ -74,6 +74,42 @@ def test_dash_cell_skipped():
     assert results == []
 
 
+# ── v3.37.0: Wan 3.0 smart duration ("2–30s or −1 smart") ───────────────────
+
+SMART_SPEC = {"snapshot_date": "2026-09-26", "models": [
+    {"id": "wan3_0", "name": "Wan 3.0", "aliases": [],
+     "duration": {"min": 2, "max": 30, "smart": -1}},
+    {"id": "kling3_0", "name": "Kling 3.0", "aliases": [],
+     "duration": {"min": 3, "max": 15}},
+]}
+
+
+def _smart(cell, name="Wan 3.0"):
+    return [ok for ok, *_ in validate.check_guide_against_specs(
+        HEADER + f"| {name} | ★★★★☆ | {cell} | long takes |\n", SMART_SPEC)]
+
+
+@pytest.mark.parametrize("cell,expected", [
+    ("2–30s or −1 smart", [True]),        # U+2212 minus, as the models lane writes it
+    ("2–30 or −1 smart", [True]),         # the release-branch cell (no unit) — was skipped
+    ("2–30s, or -1 (smart)", [True]),
+    ("2–30s", [False]),                   # hides the legal -1
+    ("2–15s or −1 smart", [False]),       # wrong range
+    ("2–30s or −2 smart", [False]),       # wrong sentinel
+])
+def test_smart_duration_cell(cell, expected):
+    assert _smart(cell) == expected
+
+
+def test_smart_cell_against_a_plain_range_model_fails():
+    assert _smart("3–15s or −1 smart", "Kling 3.0") == [False]
+
+
+def test_smart_cell_parses_as_smart():
+    assert validate._parse_duration_cell("2–30s or −1 smart") == ("smart", (2, 30, -1))
+    assert validate._parse_duration_cell("3–15s") == ("range", (3, 15))
+
+
 # ── Whole-script exit codes ─────────────────────────────────────────────────
 
 def test_repo_validates_clean():

@@ -491,10 +491,20 @@ def _norm_model_name(s: str) -> str:
 def _parse_duration_cell(cell: str):
     """Parse a guide Duration cell into a comparable shape.
 
-    Returns ("range", (lo, hi)) | ("values", [..]) | ("single", n) | None.
+    Returns ("range", (lo, hi)) | ("smart", (lo, hi, sentinel)) |
+    ("values", [..]) | ("single", n) | None.
     Only these number patterns are ever read, so stars/emoji/notes in other
-    columns can't produce false positives."""
+    columns can't produce false positives.
+
+    "smart" is the Wan 3.0 envelope — "2–30s or −1 smart" (the `s` unit is
+    optional there, and the minus may be U+2212): a real range plus a
+    negative sentinel meaning "model picks the length". Checked FIRST — the
+    plain range pattern would otherwise read it as just "2–30s"."""
     cell = cell.replace("**", "")
+    m = re.search(r"(\d+)\s*[–\-]\s*(\d+)\s*s?\s*,?\s*or\s*`?[−\-](\d+)`?\s*\(?\s*smart",
+                  cell, re.IGNORECASE)
+    if m:
+        return ("smart", (int(m.group(1)), int(m.group(2)), -int(m.group(3))))
     m = re.search(r"(\d+)\s*[–\-]\s*(\d+)\s*s", cell)
     if m:
         return ("range", (int(m.group(1)), int(m.group(2))))
@@ -550,7 +560,14 @@ def check_guide_against_specs(guide_text: str, spec: dict) -> list:
         spec_env = ((d["min"], d["max"]) if "min" in d
                     else (min(d["values"]), max(d["values"])))
         kind, val = parsed
-        if kind == "range":
+        if kind == "smart":
+            # Both halves must hold: the real range AND the sentinel.
+            ok = "min" in d and (val[0], val[1]) == spec_env and d.get("smart") == val[2]
+        elif "smart" in d:
+            # The spec's envelope includes the sentinel; a cell that omits it
+            # hides a legal value (e.g. plain "2–30s" for Wan 3.0).
+            ok = False
+        elif kind == "range":
             if "values" in d:
                 # A discrete enum is only honestly writable as a range when it
                 # is a contiguous integer run — "4–8s" against [4,6,8] invites
@@ -566,6 +583,8 @@ def check_guide_against_specs(guide_text: str, spec: dict) -> list:
             ok = spec_env == (val, val) or d.get("values") == [val]
         spec_fmt = (f"{d['min']}–{d['max']}s" if "min" in d
                     else "/".join(map(str, d["values"])) + "s")
+        if "smart" in d:
+            spec_fmt += f" or {d['smart']} (smart)"
         results.append((
             ok,
             f"model-guide.md: '{cells[0].replace('**', '')}' duration matches specs ({mid})",

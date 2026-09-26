@@ -45,7 +45,7 @@ Image models: see specs/IMAGE-MODEL-SPECS.md (snapshot 2026-09-26); this file co
 | Video Upscale | video_upscale | — | — | — | — | medias: input_video | — |
 | Wan 2.6 Video | wan2_6 | 5/10/15s | — | — | 16:9, 9:16, 1:1 | medias: image_references, video_references, audio_references | — |
 | Wan 2.7 | wan2_7 | 2–15s | 720p, 1080p | — | 16:9, 9:16, 1:1, 4:3, 3:4 | medias: start_image, end_image, audio_references | — |
-| Wan 3.0 | wan3_0 | -1–30s | 480p, 720p, 1080p | — | auto, 16:9, 9:16, 1:1, 4:3, 3:4 | medias: start_image, end_image, image_references, video_references, audio_references | — |
-| Wan 3.0 Prime | wan3_0_prime | -1–30s | 480p, 720p, 1080p | — | auto, 16:9, 9:16, 1:1, 4:3, 3:4 | medias: start_image, end_image, image_references, video_references, audio_references | — |
+| Wan 3.0 | wan3_0 | 2–30s or -1 (smart) | 480p, 720p, 1080p | — | auto, 16:9, 9:16, 1:1, 4:3, 3:4 | medias: start_image, end_image, image_references, video_references, audio_references | — |
+| Wan 3.0 Prime | wan3_0_prime | 2–30s or -1 (smart) | 480p, 720p, 1080p | — | auto, 16:9, 9:16, 1:1, 4:3, 3:4 | medias: start_image, end_image, image_references, video_references, audio_references | — |
 
 Full per-model parameter schemas live in `specs/model-specs.yaml` / `specs/model-specs.json`.

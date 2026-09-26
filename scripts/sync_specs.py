@@ -247,6 +247,30 @@ def extract_constraints(model: dict) -> list[dict]:
     return constraints
 
 
+_DESC_RANGE_RE = re.compile(r"\((\d+)\s*[-–]\s*(\d+)\)")
+
+
+def _duration_envelope(model_id: str, lo, hi, description: str) -> dict:
+    """{"min", "max"} — or, for a NEGATIVE floor (a sentinel, not a length),
+    {"min", "max", "smart"}. wan3_0 ships `min: -1` meaning "the model picks
+    the length (billed as 10s)", legal values -1 or 2–30; `-1–30s` would claim
+    0 and 1 are legal. The real floor is taken ONLY from the description's
+    own "(lo-hi)" range, and only when that range ends at the declared max and
+    the description names the sentinel — otherwise the raw value is kept and
+    the gap is reported, never guessed."""
+    if lo is None or hi is None or lo >= 0:
+        return {"min": lo, "max": hi}
+    desc = description or ""
+    m = _DESC_RANGE_RE.search(desc)
+    names_sentinel = re.search(rf"(?<![\d.]){re.escape(str(lo))}(?!\d)", desc)
+    if m and names_sentinel and int(m.group(2)) == hi and int(m.group(1)) > lo:
+        return {"min": int(m.group(1)), "max": hi, "smart": lo}
+    print(f"  WARN [{model_id}] duration min={lo} is a sentinel but the real floor "
+          f"cannot be derived from its description — kept raw; fix the parser or "
+          f"the snapshot", file=sys.stderr)
+    return {"min": lo, "max": hi}
+
+
 def normalize_models(snapshot: dict, output_type: str = "video") -> list[dict]:
     # A snapshot with no items — or none of the requested type — is a broken
     # dump (truncated file, wrong action, wrong type), never a valid state of
@@ -290,8 +314,9 @@ def normalize_models(snapshot: dict, output_type: str = "video") -> list[dict]:
     for mid in sorted(by_id):
         m = by_id[mid]
         if m.get("duration_range"):
-            duration = {"min": m["duration_range"]["min"],
-                        "max": m["duration_range"]["max"]}
+            duration = _duration_envelope(mid, m["duration_range"]["min"],
+                                          m["duration_range"]["max"],
+                                          m["duration_range"].get("description", ""))
         elif m.get("durations"):
             duration = {"values": sorted(m["durations"])}
         else:
@@ -301,7 +326,8 @@ def normalize_models(snapshot: dict, output_type: str = "video") -> list[dict]:
             dp = next((p for p in m.get("parameters", [])
                        if p.get("name") == "duration"), None)
             if dp and dp.get("min") is not None and dp.get("max") is not None:
-                duration = {"min": dp["min"], "max": dp["max"]}
+                duration = _duration_envelope(mid, dp["min"], dp["max"],
+                                              dp.get("description", ""))
             elif dp and dp.get("options"):
                 duration = {"values": sorted(dp["options"])}
             else:
@@ -428,6 +454,8 @@ def _fmt_duration(d) -> str:
         return "—"
     if "values" in d:
         return "/".join(str(v) for v in d["values"]) + "s"
+    if "smart" in d:
+        return f"{d['min']}–{d['max']}s or {d['smart']} (smart)"
     return f"{d['min']}–{d['max']}s"
 
 

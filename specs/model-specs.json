@@ -2374,7 +2374,8 @@
       "constraints": [],
       "duration": {
         "max": 30,
-        "min": -1
+        "min": 2,
+        "smart": -1
       },
       "id": "wan3_0",
       "media_roles": {
@@ -2446,7 +2447,8 @@
       "constraints": [],
       "duration": {
         "max": 30,
-        "min": -1
+        "min": 2,
+        "smart": -1
       },
       "id": "wan3_0_prime",
       "media_roles": {
