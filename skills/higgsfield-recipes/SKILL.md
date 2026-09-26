@@ -77,7 +77,7 @@ Style: [Cinematic / Super 8MM], [lighting — golden / overcast / practical only
 
 **Example:**
 ```
-A man in his 60s sits alone at a kitchen table. An old letter in his hands.
+A grey-haired man sits alone at a kitchen table. An old letter in his hands.
 He reads slowly, lips barely moving, eyes growing distant.
 Camera: slow Dolly In toward his face.
 He looks up at the empty chair across from him.

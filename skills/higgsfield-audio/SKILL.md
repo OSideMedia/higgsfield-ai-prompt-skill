@@ -717,7 +717,7 @@ Compact worked example:
 ```
 [Scene: rain-soaked night market, closing time]
 Vendor (tired, warm): "Last skewers — half price, take them."
-Girl (excited): "Two! No — three!"
+Customer (excited): "Two! No — three!"
 [sound: rain drumming on tarp canopy, a scooter passing in the distance]
 Vendor (chuckling): "Three it is. Careful, they're hot."
 [sound: coins dropped on a metal tray, charcoal hiss]

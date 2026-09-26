@@ -453,20 +453,20 @@ This is how you get visual continuity across scenes without Soul ID.
 
 ```
 Scene 1 — Establishing:
-"A middle-aged woman, dark hair pulled back, wearing a grey wool coat,
+"A woman, dark hair pulled back, wearing a grey wool coat,
 sitting behind the wheel of a moving car. Camera through windshield —
 focused and tense expression. Sunlight flickering across her face.
 35mm film, shallow depth of field, muted color tones, Roger Deakins style."
 
 Scene 2 — Passenger reaction:
-"An elderly man in a thick knit sweater, seated in the passenger seat,
+"A grey-haired man in a thick knit sweater, seated in the passenger seat,
 gazing out the window with a calm but distant expression.
 Camera slightly off-center, interior car shot.
 Same 35mm film look, muted tones, soft natural light."
 
 Scene 3 — Object insert:
 "Close-up of a weathered wooden photo frame on a kitchen counter.
-Inside: a faded photograph of a young woman and elderly man smiling.
+Inside: a faded photograph of a dark-haired woman and a grey-haired man smiling.
 Warm afternoon light through lace curtains, dust motes in air.
 50mm lens, shallow focus, nostalgic atmosphere, yellow-green tones."
 ```
@@ -490,7 +490,7 @@ Seedream edit prompt structure:
 "[What to change, specifically]. [What to keep the same]."
 
 Example:
-"Make the elderly man look like a zombie — rotten flesh, white milky eyes,
+"Make the grey-haired man look like a zombie — rotten flesh, white milky eyes,
 grey skin tone. Keep all other elements of the image identical."
 ```
 

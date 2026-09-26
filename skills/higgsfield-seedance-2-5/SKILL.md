@@ -452,7 +452,7 @@ Dialogue language + regional variety or accent + delivery style + speaker + {dia
 ```
 
 ```
-Dialogue language: authentic Los Angeles English. The young man says in natural Los Angeles
+Dialogue language: authentic Los Angeles English. The man says in natural Los Angeles
 vernacular: {No way, you actually made it.}
 ```
 

@@ -117,7 +117,7 @@ Lock the look once, then inject it verbatim into every prompt (worksheet: `../..
 - **Palette** — 5–7 hex codes (`#1B3A4B`, `#6FA8A0`, …). Inject the hex, don't describe colors in prose.
 - **Lighting** — the recurring light logic ("flat overcast noon, warm lantern pools after dark").
 - **Materials** — what the world is made of ("wet rope, salt-bleached wood, hammered tin, oilcloth").
-- **Juxtaposition** — one familiar + new pairing that fixes the world's identity ("a child's birthday party on a half-sunk rooftop").
+- **Juxtaposition** — one familiar + new pairing that fixes the world's identity ("a birthday party on a half-sunk rooftop").
 - **Age & proportion** — the build/era language for characters.
 - **Real-life refs** — 2–3 actors / paintings / films for the look (treat as *look* references, not identity to copy).
 
@@ -136,7 +136,7 @@ This skill produces inputs; it does not generate. When the bible is locked, rout
 - **The prompt** → `higgsfield-prompt` (MCSLA structure). Inject the Visual DNA (hex + forbidden list) verbatim, and pull the subject from the character's Silhouette + Contradiction, the action from the relevant Story Spine beat.
 - **The model** → `model-guide.md` / `image-models.md`. For a character who recurs across many shots, train a **Soul ID / Soul Cast** identity (`higgsfield-soul`) rather than re-rolling one-offs; for a single hero image that won't reappear, a one-off generation is fine.
 - **Multi-shot sequences** → `higgsfield-cinema` (Cinema Studio) for shot-by-shot continuity; the Story Spine beats become the shot list.
-- **Generic prompts get generic characters.** A thin prompt ("a young man's portrait, cyberpunk") cannot recover what the sheet would have supplied — the locked sheet is the difference between a function and a person on screen.
+- **Generic prompts get generic characters.** A thin prompt ("a man's portrait, cyberpunk") cannot recover what the sheet would have supplied — the locked sheet is the difference between a function and a person on screen.
 
 ### Ship the bible as a reusable artifact, not a paste
 

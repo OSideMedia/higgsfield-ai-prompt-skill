@@ -402,7 +402,7 @@ Build every prompt in this order. The model weights early words heavily — subj
 **Level 2 example:**
 ```
 @Image1 character identity.
-Young woman in red coat walks along rain-soaked street.
+Woman in red coat walks along rain-soaked street.
 Slow tracking follow, medium shot. Neon reflections on wet pavement.
 Soft rain ambience.
 ```

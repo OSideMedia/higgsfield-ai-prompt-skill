@@ -484,7 +484,7 @@ harvest]` — the model's own instincts, each needing a standing lock:
    with 2+ characters (`"she is 165 cm, he is 178 cm"`) so relative scale
    never floats.
 3. **Scale drift on wide shots.** A human anchor shrinks to a speck across
-   cuts. Lock it: `"the girl stays the calm human-sized anchor — never
+   cuts. Lock it: `"the rider stays the calm human-sized anchor — never
    shrunk to a tiny distant dot."`
 
 ### Cut-format ladder

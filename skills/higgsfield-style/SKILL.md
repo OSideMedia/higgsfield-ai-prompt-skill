@@ -6,8 +6,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
-  version: 3.1.0
-  updated: 2026-07-26
+  version: 3.1.1
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -40,7 +40,7 @@ Shallow depth of field. 16:9.
 **Pair with:** Handheld camera, Wan 2.5, any horror preset
 
 ```
-Example: Teenagers at a house party in 1987.
+Example: Friends at a house party in 1987.
 Style: VHS. Warm, grainy, slightly overexposed. 4:3 ratio.
 ```
 

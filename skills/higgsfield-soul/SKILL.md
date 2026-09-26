@@ -154,7 +154,7 @@ sad brown eyes while autumn leaves drift past his grey coat.
 
 **Identity Block:**
 ```
-The Soul ID character — man in his 60s, deep wrinkles, warm brown eyes,
+The Soul ID character — grey-haired man, deep wrinkles, warm brown eyes,
 wearing a heavy grey wool coat, brown leather gloves.
 ```
 
