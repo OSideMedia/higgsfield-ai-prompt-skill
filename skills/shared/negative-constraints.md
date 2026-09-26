@@ -85,8 +85,8 @@ trailing the prompt as a general plea for realism.
 | `blurry background` | The subject blurs with it | Say which plane stays sharp — see § Depth of field below |
 | `hazy` / `foggy` (unquantified) | Whole-frame fog, subject included | Keep for genuine aerial perspective, quantified and located ("haze ramps 20% → 70% behind the ridge"), with the subject's own sharpness stated |
 
-`[UNPROVEN HERE]` — re-derived from a third-party prompting corpus and **not
-A/B'd on our own material**. The probe that settles it is a two-arm 480p pair on
+`[EMPIRICAL — third-party prompting corpus (not named in this repo), re-derived]` —
+**not A/B'd on our own material**. The probe that settles it is a two-arm 480p pair on
 one identical shot: arm A ends on a bare `film grain, imperfect focus`, arm B on the
 named-look substitute, compared for detail retention on the subject. Until that
 runs this is a drafting preference, not a rule — nothing here blocks a prompt, and
@@ -198,13 +198,32 @@ film's world:
 The model accepted it. A reference is not a contract — you can tell it what is different in
 the shot, and saying so positively beats forbidding what the reference shows.
 
-**Where this collides with a legitimate ban.** Two exceptions already documented elsewhere
-in the repo: a property baked into an asset gets its garbage banned **at the asset stage
-only** and then never mentioned again downstream
-(`../higgsfield-seedance/SKILL.md` § Bake it into the asset), and a default the model
-actively reaches for — slow motion in a fight — is worth naming because the untouched
-default is already the failure (`../higgsfield-seedance/FAILURE-MODES.md` § A fight
-generated as separate clips). Outside those, prefer the positive form.
+### Where a ban is still correct — a test, not a list
+
+The rule above does not make every "no" wrong, and the repo uses several bans on purpose.
+They all pass one test: **is the model's untouched default already the failure?** If yes,
+naming the failure costs nothing the model was not already going to do, and a short,
+specific ban earns its place — written *after* the positive statement of what is true. If
+no, the ban primes something the model was not going to render: write the positive form.
+(`house-rulings.md` P2-8.)
+
+| Legitimate ban | Why it passes the test | Where |
+|---|---|---|
+| A **lock tail** inside a positive declaration — "Consistent lighting, no flicker", "Photorealistic — no 3D render" | Short, attached to the state it protects; field-proven across the harvest corpus | `../higgsfield-seedance/SKILL.md` § No negative prompts in the prompt body |
+| **Slow motion** in a fight | Models reach for it on their own | `../higgsfield-seedance/FAILURE-MODES.md` § A fight generated as separate clips |
+| A **music bed** under a scene that must land silent | Generated video defaults to a bed. The token (`NO BGM` vs `No music.`) is OPEN; the ban itself is not | `../higgsfield-audio/SKILL.md` § Suppressing music · `house-rulings.md` P2-7 |
+| **Duplicates** — a second mannequin, an extra person | Cloning is a default the model reaches for; lead with the count | `../higgsfield-seedance/HELL-GRIND.md` § The character-count header |
+| **Copying the voice** of an audio reference attached for its melody or rhythm | An unscoped audio reference lends every property it carries | `../higgsfield-audio/SKILL.md` § Scope an audio reference |
+| **Resizing the wrong subject** while a size-ref is built by editing | The model solves a proportion by shrinking whatever it can | `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 2 (the no-resize lock) |
+| Garbage that tags along with a **baked** property (flares, streaks) | Banned **at the asset stage only**, then never mentioned downstream | `../higgsfield-seedance/SKILL.md` § Bake it into the asset |
+
+What fails the test: a colour the references leak ("no yellow" — allocate it instead, as
+above), a graphic style you do not want (`../../templates/seedance/staging-reference.md` —
+never name the map's style, not even negated), optics vocabulary once the lens is baked, and
+any freestanding negative list. A word is not suspect merely because it negates: "no",
+"never" and "without" inside a positive declaration are judged by the same test. Prefer the
+positive fact wherever one exists — the law targets negative lists and bare negations, not
+every "no" token.
 
 ## How to Use This File
 
