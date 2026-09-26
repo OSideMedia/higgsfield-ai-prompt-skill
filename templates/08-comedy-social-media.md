@@ -7,7 +7,7 @@ Comedic skits, social media content, reaction videos, meme-style clips, TikTok/R
 User asks for funny content, social video, TikTok, Reel, skit, meme, reaction, or anything designed primarily for social platforms with a comedic or entertaining tone.
 
 ## Recommended model
-**Kling 3.0** for dialogue-driven comedy (native audio, lip-sync). **Minimax Hailuo 2.3** for exaggerated physical comedy (best fluid motion). **Seedance Pro** for fast iteration on multiple comedic concepts.
+**Kling 3.0** for dialogue-driven comedy (native audio, lip-sync). **Minimax Hailuo 2.3** for exaggerated physical comedy (best fluid motion). **Seedance 2.0 Fast** (`seedance_2_0`, `mode=fast`) for fast iteration on multiple comedic concepts — "Seedance Pro" is a legacy UI label with no API id.
 
 ## Example prompt
 

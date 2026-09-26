@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.35.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.36.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--09--26-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
@@ -205,7 +205,7 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 │   ├── 08-comedy-social-media.md
 │   ├── 09-romantic-intimate.md
 │   ├── 10-dance-music-performance.md
-│   ├── seedance/                     ← Seedance technique templates (9)
+│   ├── seedance/                     ← Seedance technique templates (10)
 │   │   ├── multi-character-anchor.md
 │   │   ├── single-character-position.md
 │   │   ├── top-down-map.md
@@ -347,4 +347,4 @@ acting on the tail. A small sample is not evidence a skill is dead.
 
 ---
 
-Built February 2026 · v3.35.0 (updated 2026-08-22) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.36.0 (updated 2026-09-26) · Platform: [higgsfield.ai](https://higgsfield.ai)
