@@ -1,0 +1,270 @@
+{
+  "_doc": "Hand-maintained registry of machine-checkable doctrine claims, linted against the CURRENT generated specs by scripts/claims_lint.py (wired into scripts/validate.py --strict). Each entry: id, finding (the audit finding it came from — required), pattern (Python regex, re.M), optional paths (fnmatch globs) / heading (nearest-heading regex), assert {kind, model, field, value}, polarity asserts|denies. See the claims_lint.py docstring for the assertion kinds. Not under specs/ — specs/ is generated.",
+  "claims": [
+    {
+      "id": "s25-caps-at-720p",
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 resolution is now 480p/720p/1080p (lane B 720p + s25 sweeps list the stale lines)",
+      "pattern": "(?:Seedance\\s+2\\.5|(?<![A-Za-z0-9]\\s)(?<![\\w.])2\\.5)(?![\\d.])[^\\n]{0,80}?\\b(?:caps? at|capped at|tops out at|maxes out at|no lane above|no higher lane than)\\W{0,6}720p",
+      "assert": {
+        "kind": "enum_max",
+        "model": "seedance_2_5",
+        "field": "resolutions",
+        "value": "720p"
+      }
+    },
+    {
+      "id": "s25-720p-ceiling",
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 resolution is now 480p/720p/1080p (lane B 720p + s25 sweeps list the stale lines)",
+      "pattern": "(?:Seedance\\s+2\\.5|(?<![A-Za-z0-9]\\s)(?<![\\w.])2\\.5)(?![\\d.])[^\\n]{0,120}?\\b720p ceiling",
+      "assert": {
+        "kind": "enum_max",
+        "model": "seedance_2_5",
+        "field": "resolutions",
+        "value": "720p"
+      }
+    },
+    {
+      "id": "s25-no-1080p-lane",
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 resolution is now 480p/720p/1080p (lane B 720p + s25 sweeps list the stale lines)",
+      "pattern": "(?i)there is no 1080p or 4K on 2\\.5|\\b2\\.5 has no (?:1080p|higher lane)",
+      "assert": {
+        "kind": "enum_max",
+        "model": "seedance_2_5",
+        "field": "resolutions",
+        "value": "720p"
+      }
+    },
+    {
+      "id": "s25-480p-720p-only",
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 resolution is now 480p/720p/1080p (lane B 720p + s25 sweeps list the stale lines)",
+      "paths": [
+        "skills/higgsfield-seedance-2-5/*"
+      ],
+      "pattern": "(?i)\\b480p/720p only\\b",
+      "assert": {
+        "kind": "enum_max",
+        "model": "seedance_2_5",
+        "field": "resolutions",
+        "value": "720p"
+      }
+    },
+    {
+      "id": "s25-model-guide-row-resolutions",
+      "paths": [
+        "model-guide.md"
+      ],
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 resolution is now 480p/720p/1080p (lane B 720p + s25 sweeps list the stale lines)",
+      "pattern": "^\\|\\s*Seedance 2\\.5\\s*\\|(?:[^|\\n]*\\|){6}\\s*(?P<list>[^|\\n]*?)\\s*\\|",
+      "assert": {
+        "kind": "listed_set_equals",
+        "model": "seedance_2_5",
+        "field": "resolutions"
+      }
+    },
+    {
+      "id": "s25-model-guide-row-no-1080p",
+      "paths": [
+        "model-guide.md"
+      ],
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 resolution is now 480p/720p/1080p (lane B 720p + s25 sweeps list the stale lines)",
+      "pattern": "(?i)^\\|\\s*Seedance 2\\.5\\s*\\|[^\\n]*?\\bNo 1080p",
+      "assert": {
+        "kind": "enum_max",
+        "model": "seedance_2_5",
+        "field": "resolutions",
+        "value": "720p"
+      }
+    },
+    {
+      "id": "s25-1080p-routes-to-2-0",
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 resolution is now 480p/720p/1080p (lane B 720p + s25 sweeps list the stale lines)",
+      "pattern": "(?i)needs 4K/1080p[^\\n]{0,80}?→\\s*`higgsfield-seedance`",
+      "assert": {
+        "kind": "enum_max",
+        "model": "seedance_2_5",
+        "field": "resolutions",
+        "value": "720p"
+      }
+    },
+    {
+      "id": "s25-no-start-end-image-role",
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 media roles now include start_image and end_image (CEL: allowed only in omni_reference) — lane B s25 sweep",
+      "pattern": "(?i)\\bno\\b[\\s>*`]{0,6}`?start_image`?\\s*/\\s*`?end_image`?",
+      "paths": [
+        "skills/higgsfield-seedance-2-5/*",
+        "templates/seedance/*2-5*",
+        "evals/cases/seedance-2-5.json"
+      ],
+      "assert": {
+        "kind": "has",
+        "model": "seedance_2_5",
+        "field": "media_roles",
+        "value": "start_image"
+      },
+      "polarity": "denies"
+    },
+    {
+      "id": "s25-has-no-start-image-role",
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 media roles now include start_image and end_image (CEL: allowed only in omni_reference) — lane B s25 sweep",
+      "pattern": "(?i)\\b2\\.5 has no `?start_image`? role",
+      "assert": {
+        "kind": "has",
+        "model": "seedance_2_5",
+        "field": "media_roles",
+        "value": "start_image"
+      },
+      "polarity": "denies"
+    },
+    {
+      "id": "s25-no-start-end-frame-role",
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 media roles now include start_image and end_image (CEL: allowed only in omni_reference) — lane B s25 sweep",
+      "paths": [
+        "skills/higgsfield-seedance-2-5/*",
+        "templates/seedance/*2-5*"
+      ],
+      "pattern": "(?i)\\bno (?:platform[- ]level )?start/end[- ]frame role",
+      "assert": {
+        "kind": "has",
+        "model": "seedance_2_5",
+        "field": "media_roles",
+        "value": "start_image"
+      },
+      "polarity": "denies"
+    },
+    {
+      "id": "s25-model-guide-row-no-start-end-frame",
+      "paths": [
+        "model-guide.md"
+      ],
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 media roles now include start_image and end_image (CEL: allowed only in omni_reference) — lane B s25 sweep",
+      "pattern": "(?i)^\\|\\s*Seedance 2\\.5\\s*\\|[^\\n]*?\\bno start/end[- ]frame",
+      "assert": {
+        "kind": "has",
+        "model": "seedance_2_5",
+        "field": "media_roles",
+        "value": "start_image"
+      },
+      "polarity": "denies"
+    },
+    {
+      "id": "platform-start-end-frame-is-2-0-only",
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 media roles now include start_image and end_image (CEL: allowed only in omni_reference) — lane B s25 sweep",
+      "pattern": "(?i)\\bplatform(?:[- ]level)? start/end frames?\\b",
+      "assert": {
+        "kind": "has",
+        "model": "seedance_2_5",
+        "field": "media_roles",
+        "value": "start_image"
+      },
+      "polarity": "denies"
+    },
+    {
+      "id": "s20-native-4k",
+      "paths": [
+        "model-guide.md"
+      ],
+      "finding": "Audit 2026-09-26 lane B s25 sweep — the 2.0-vs-2.5 routing lines; 2.0's 4K lane is still TRUE (seedance_2_0 resolutions include 4k). Guard: fails if a refresh removes it",
+      "pattern": "(?i)^\\|\\s*Seedance 2\\.0\\s*\\|[^\\n]*?\\bnative 4K",
+      "assert": {
+        "kind": "has",
+        "model": "seedance_2_0",
+        "field": "resolutions",
+        "value": "4k"
+      }
+    },
+    {
+      "id": "s20-4k-deliverable",
+      "finding": "Audit 2026-09-26 lane B s25 sweep — the 2.0-vs-2.5 routing lines; 2.0's 4K lane is still TRUE (seedance_2_0 resolutions include 4k). Guard: fails if a refresh removes it",
+      "pattern": "(?i)\\b4K\\b[^\\n]{0,40}?(?:is a|→)\\s*\\**Seedance 2\\.0\\**",
+      "assert": {
+        "kind": "has",
+        "model": "seedance_2_0",
+        "field": "resolutions",
+        "value": "4k"
+      }
+    },
+    {
+      "id": "s20-model-guide-row-resolutions",
+      "paths": [
+        "model-guide.md"
+      ],
+      "finding": "Audit 2026-09-26 lane B s25 sweep — the 2.0-vs-2.5 routing lines; 2.0's 4K lane is still TRUE (seedance_2_0 resolutions include 4k). Guard: fails if a refresh removes it",
+      "pattern": "^\\|\\s*Seedance 2\\.0\\s*\\|(?:[^|\\n]*\\|){6}\\s*(?P<list>[^|\\n]*?)\\s*\\|",
+      "assert": {
+        "kind": "listed_set_equals",
+        "model": "seedance_2_0",
+        "field": "resolutions"
+      }
+    },
+    {
+      "id": "s25-no-genre-hint",
+      "finding": "Audit 2026-09-26 lane B s25 sweep — 'genre hint' is 2.0-only (genre param on seedance_2_0 / 2.0 mini, not seedance_2_5). Guard: fails if a refresh changes it",
+      "paths": [
+        "skills/higgsfield-seedance-2-5/*",
+        "model-guide.md",
+        "templates/seedance/*2-5*"
+      ],
+      "pattern": "(?i)\\bno `?genre`? hint",
+      "assert": {
+        "kind": "has",
+        "model": "seedance_2_5",
+        "field": "params",
+        "value": "genre"
+      },
+      "polarity": "denies"
+    },
+    {
+      "id": "s20-genre-hint",
+      "finding": "Audit 2026-09-26 lane B s25 sweep — 'genre hint' is 2.0-only (genre param on seedance_2_0 / 2.0 mini, not seedance_2_5). Guard: fails if a refresh changes it",
+      "pattern": "(?i)`?genre`? hint[^\\n]{0,40}?→\\s*`higgsfield-seedance`|\\b2\\.0\\*{0,2} (?:work|v2v lane)\\b[^\\n]{0,80}?\\bgenre hint",
+      "assert": {
+        "kind": "has",
+        "model": "seedance_2_0",
+        "field": "params",
+        "value": "genre"
+      }
+    },
+    {
+      "id": "kling3-longest-duration-15s",
+      "finding": "Audit 2026-09-26 lane B superlatives sweep — 'Longest clip duration on the platform (up to 15s)' under § Kling 3.0; seedance_2_5 / wan3_0 / flux_3_video now run longer",
+      "heading": "(?i)\\bkling (?:v)?3\\.0\\b",
+      "pattern": "(?i)\\blongest (?:clip )?duration on the platform\\b[^\\n]{0,20}?15\\s*s",
+      "assert": {
+        "kind": "longest_duration",
+        "model": "kling3_0",
+        "value": 15
+      }
+    },
+    {
+      "id": "grok-image-not-on-higgsfield",
+      "finding": "Audit 2026-09-26 catalog facts — grok_image (and new grok_image_2_0) are in the image catalog; MODELS-DEEP-REFERENCE.md § Grok Imagine Image says it is NOT available on Higgsfield",
+      "pattern": "(?i)\\bgrok imagine image\\b[^\\n]{0,160}?\\bNOT\\b[^\\n]{0,20}?available",
+      "assert": {
+        "kind": "model_present",
+        "model": "grok_image",
+        "catalog": "image"
+      },
+      "polarity": "denies"
+    },
+    {
+      "id": "llm-text-utility-in-catalog",
+      "finding": "Audit 2026-09-26 catalog facts § GONE: llm_text left the video catalog; model-guide.md still lists 'LLM text' among the catalog's utility entries",
+      "pattern": "(?i)\\butility/system entries\\b[^\\n]*?\\bLLM text\\b",
+      "assert": {
+        "kind": "model_present",
+        "model": "llm_text",
+        "catalog": "video"
+      }
+    },
+    {
+      "id": "gpt-image-2-aspect-ratios",
+      "finding": "Audit 2026-09-26 catalog facts § CHANGED: gpt_image_2 aspect ratios grew (21:9 in models_explore; CLI also lists 4:5 / 5:4 / auto). Guard for any doctrine enumeration of GPT Image 2 ratios (none found at v3.36.0)",
+      "pattern": "(?i)\\bGPT Image 2(?![.\\d])[^\\n]{0,60}?\\baspect ratios?\\**\\s*:?\\**\\s*(?P<list>(?:auto|\\d+:\\d+)(?:\\s*[,/·]\\s*(?:auto|\\d+:\\d+))+)",
+      "assert": {
+        "kind": "listed_set_equals",
+        "model": "gpt_image_2",
+        "field": "aspect_ratios"
+      }
+    }
+  ]
+}
