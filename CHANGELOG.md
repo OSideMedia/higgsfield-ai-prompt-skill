@@ -102,6 +102,28 @@ for the day it can be tested.
   `cinema-4-0.json`, `voice.json`, `stack-workflows.json`, `ad-multiplier.json` and
   `seedance-2-5.json`; each new case was run against a deliberately wrong golden and failed.
 
+### Independent review (fixed before release)
+
+A fresh Opus reader went through the raw diff against the snapshots, the CLI dumps and live
+free `model get` / `workflow get` calls: no wrong-answer defects; fixed here —
+
+- `generate cost workflow cinematic_studio_video_4_0` and `… workflow voice_change` were taught
+  as preflights; both are rejected ("Unknown workflow", checked 2026-09-26). Cinema Studio 4.0
+  is estimated by model id; `voice_change` by model id with the clip and voice attached (it takes
+  no `duration`).
+- `higgsfield-stack` said this library "never loads `get_workflow_instructions`" while quoting
+  the connector rule that requires it — the agent follows the connector's routing and loads the
+  workflow; this library supplies the inputs.
+- One object swapped in one clip had two primary answers. Tie-break: a reference image of the
+  new object → Genjutsu `hf_mult_replace_object`; a change described in words only → Seedance
+  2.5 `video_edit`. Stated in the dispatcher, § Edit-Lane Chooser and marketing-studio § 14;
+  both goldens aligned.
+- Smaller: repurpose list/status calls no longer called free (their schemas are silent); Seedream
+  5.0 Pro is `is_inpaint` without a `mask` role; the smart-duration rule is stated as an extension
+  of the Fast Path Seedance exception; Alibaba citations point at their URLs; the 2.5 catalog
+  caps are the 30-image and 50-item ones only; a duplicate 4K trap removed; a public eval regex no
+  longer names a private product; the README lists the new sub-skills and Cinema Studio 4.0.
+
 ### Recorded, not resolved
 
 - The MCP `generate_3d` schema says only `sam_3_3d` takes a prompt; CLI `model get` marks

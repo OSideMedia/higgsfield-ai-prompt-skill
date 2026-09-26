@@ -1129,7 +1129,7 @@ Different models perform differently inside Cinema Studio's environment:
 | Sequence but don't need per-shot control | Cinema Studio — Multi-Shot Auto |
 | Don't know shot order yet | Popcorn first → Cinema Studio |
 | Need motion graphics / text animation | Vibe Motion (not Cinema Studio) |
-| Edit existing footage | Kling O1 Video Edit (not Cinema Studio) — or Cinema Studio 4.0 `video_edit` (schema-verified, untested — § Cinema Studio 4.0) |
+| Edit existing footage | `../../model-guide.md` § Edit-Lane Chooser (Seedance 2.5 / Cinema Studio 4.0 `video_edit`, Kling 3.0 Omni Edit, FLUX 3 Video Edit, Genjutsu …) — Kling O1 Video Edit is UI-only legacy |
 | Just need audio added to a clip | Lipsync Studio / Kling 3.0 |
 
 ---
@@ -1621,10 +1621,11 @@ header. Check settings against the table below by hand.
 schema's `cost_params`). In 3.5 and 3.0 only `duration` + `resolution` priced a run — in
 4.0 the **mode and the video references move the price too**, so a `video_edit` or a
 video-referenced run can quote differently from a `t2v` run of the same length. Preflight
-the exact combination: `higgsfield generate cost workflow cinematic_studio_video_4_0
---prompt "…" --mode video_edit --resolution 1080p --duration 8` (the CLI's documented
-`generate cost workflow <name>` form; it estimates without creating a job, but local file
-paths passed to it are auto-uploaded).
+the exact combination **by model id**: `higgsfield generate cost cinematic_studio_video_4_0
+--prompt "…" --mode video_edit --resolution 1080p --duration 8` (verified 2026-09-26: a 480p 5s
+`t2v` estimate returned 15 credits and created no job). The `generate cost workflow <name>` form
+**rejects** this id ("Unknown workflow") although `workflow list` shows it. Local file paths
+passed to the estimate are auto-uploaded.
 
 ### What changed from 3.5 at the API
 

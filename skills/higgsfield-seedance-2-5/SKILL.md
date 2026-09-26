@@ -1,6 +1,6 @@
 ---
 name: higgsfield-seedance-2-5
-description: "Seedance 2.5 prompt director — the omni-reference dialect. Routes the four generation modes (t2v / omni_reference / video_edit / video_extension), writes explicit @Image/@Video/@Audio reference roles with exclusions, stages 30-second videos into end-state beats, and covers video editing, forward/backward extension, first-last-frame and multi-keyframe control, storyboard grids, blockout rendering, and seamless transitions. Use whenever the user asks for a Seedance 2.5 prompt, mentions Seedance 2.5 / Dreamina / Jimeng, wants a clip longer than 15s on Seedance, wants to EDIT or EXTEND an existing video rather than generate a new one, or supplies more than a handful of image/video/audio references. For Seedance 2.0 (4K, `mode=std/fast`, genre hint, or a start/end frame on a clip ≤15s without references) use higgsfield-seedance instead."
+description: "Seedance 2.5 prompt director — the omni-reference dialect. Routes the four generation modes (t2v / omni_reference / video_edit / video_extension), writes explicit @Image/@Video/@Audio reference roles with exclusions, stages 30-second videos into end-state beats, and covers video editing, forward/backward extension, first-last-frame and multi-keyframe control, storyboard grids, blockout rendering, and seamless transitions. Use whenever the user asks for a Seedance 2.5 prompt, mentions Seedance 2.5 / Dreamina / Jimeng, wants a clip longer than 15s on Seedance, wants to EDIT or EXTEND an existing video rather than generate a new one, or supplies more than a handful of image/video/audio references. For Seedance 2.0 (4K, `mode=fast`, or a genre hint) use higgsfield-seedance instead."
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.5, dreamina, jimeng, omni-reference, video-edit, video-extension, multi-reference, long-video, keyframes, storyboard, blockout, transitions]
@@ -253,8 +253,9 @@ Do not carry the garment's cut, the mannequin, or the studio backdrop.
 | Audio | 10 clips, ≤30s combined | only clips directly relevant |
 | Video-edit source | 1 video + reference images | source ≤20s, 1–5 reference images |
 
-50 reference materials total. On Higgsfield the catalog enforces the same caps and counts a
-platform `start_image` / `end_image` against them: image refs + start + end ≤ 30, all
+50 reference materials total. On Higgsfield the catalog enforces the 30-image and 50-item caps
+(no per-type video or audio cap in its rules) and counts a platform `start_image` / `end_image`
+against them: image refs + start + end ≤ 30, all
 materials + start + end ≤ 50 `[OFFICIAL — platform, CLI rules 2026-09-26]`. Above the stable ranges (9–12 subjects in images, 6–10 in
 audio/video, 6–8 edit reference images) generation still works but stability drops and the
 shot may need several attempts — budget for it, or split the scene.

@@ -115,7 +115,7 @@ Is this image or video?
 │   ├── Fast pro-quality / text rendering? → Nano Banana 2
 │   ├── Reference consistency or dense text? → Seedream 4.5
 │   ├── Complex layout / multi-panel? → Seedream 5.0 Lite
-│   ├── Text/logo in image? → GPT Image 2.5 or GPT Image 2 (see higgsfield-gpt-image-2)
+│   ├── Text/logo in image? → GPT Image 2 (or 2.5 — not yet field-rated; see higgsfield-gpt-image-2)
 │   ├── Transparent-background cut-out? → GPT Image 2.5
 │   ├── Extend / crop the canvas per side? → FLUX.2 Pro Outpaint
 │   ├── Masked inpaint? → Nano Banana 2 / 2 Lite (`mask` + `is_inpaint`)
@@ -248,9 +248,9 @@ Catalog-backed rows cite `[OFFICIAL — platform, snapshot 2026-09-26]` (media r
 | Native 4K image series | Kling Image 3.0 |
 | Style presets + Color Transfer | Soul 2.0 (the CLI forbids `style_id` + image references in one Soul 2.0 call — see `../../image-models.md` § Soul 2.0) |
 | Transparent-background image output | GPT Image 2.5 `background: transparent` (the CLI also lists `background` on GPT Image 2 — see `../../image-models.md` § GPT Image 2) |
-| Masked inpaint | Nano Banana 2 / 2 Lite (`mask` + `is_inpaint`) · Seedream 5.0 Pro (`is_inpaint`) · GPT Image 2 (CLI only) |
+| Masked inpaint | Nano Banana 2 / 2 Lite (`mask` + `is_inpaint`) · GPT Image 2 (CLI only). Seedream 5.0 Pro has `is_inpaint` (edit the reference) but **no `mask` role** |
 | Google Search grounding | Nano Banana Pro |
-| Negative prompts | Veo 3/3.1 · Wan 3.0 (Alibaba docs: an in-prompt "Negative prompt list" section, not a separate parameter) |
+| Negative prompts | Veo 3/3.1 · Wan 3.0 (Alibaba docs — URLs in MODELS-DEEP-REFERENCE.md § Wan 3.0: an in-prompt "Negative prompt list" section, not a separate parameter) |
 | Batch of up to 4 takes per call | MiniMax H3 / H3 Max (`batch_size`) |
 | Smart auto-camera planning | Cinema Studio 3.0 (Business/Team) |
 
@@ -332,8 +332,8 @@ Cinema Studio 3.5 sits alongside 2.5 and 3.0 in the model selector — all three
 `models_explore` list, 2026-09-26): the same four modes as Seedance 2.5 (`t2v` / `omni_reference` /
 `video_edit` / `video_extension`), 480p / 720p / 1080p, native audio, plus camera body / lens /
 aperture / genre / era / pacing / light / color-palette params. The CLI schema states no duration
-bounds — verify before promising a long take. Not yet field-rated; not yet documented in
-`higgsfield-cinema`.
+bounds — verify before promising a long take. Not yet field-rated; full surface in
+`higgsfield-cinema` § Cinema Studio 4.0.
 
 ---
 

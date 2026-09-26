@@ -5,12 +5,24 @@
       "id": "stack-character-sheet-handoff",
       "description": "A connector character-sheet request goes to Higgsfield's own character-sheet workflow; this library supplies the character design inputs; nothing routes outside Higgsfield (v3.36.0 coexistence rules)",
       "request": "I'm in claude.ai with the Higgsfield connector. Make me a character sheet for my detective, Mara.",
-      "response": "Routing to higgsfield-stack (§ Coexistence rules for Higgsfield's workflows) + higgsfield-character-design.\n\nA character sheet on the connector is squarely Higgsfield's `character-sheet` workflow — it owns the sheet prompt and its realism engine, and you asked for the sheet explicitly, so the connector will run it. What this library adds is who Mara is before the sheet is drawn: from higgsfield-character-design, her 9-question profile and visual DNA (build, silhouette, wardrobe logic, the one distinguishing mark). Give the workflow those lines as its character description. After the sheet exists, higgsfield-soul locks her identity for the shots that follow.",
+      "response": "Routing to higgsfield-stack (§ Coexistence rules for Higgsfield's workflows) + higgsfield-character-design.\n\nA character sheet on the connector is squarely Higgsfield's `character-sheet` workflow — it owns the sheet prompt and its realism engine, and you asked for the sheet explicitly, so load it through the connector (`get_workflow_instructions`) and follow it. What this library adds is who Mara is before the sheet is drawn: from higgsfield-character-design, her 9-question profile and visual DNA (build, silhouette, wardrobe logic, the one distinguishing mark). Give the workflow those lines as its character description. After the sheet exists, higgsfield-soul locks her identity for the shots that follow.",
       "assertions": [
-        { "type": "regex_present", "pattern": "^Routing to higgsfield-stack" },
-        { "type": "regex_present", "pattern": "`character-sheet` workflow" },
-        { "type": "regex_present", "pattern": "higgsfield-character-design" },
-        { "type": "regex_absent", "pattern": "(?i)\\b(OSIDE|Midjourney|Canva|Runway|Leonardo)\\b" }
+        {
+          "type": "regex_present",
+          "pattern": "^Routing to higgsfield-stack"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "`character-sheet` workflow"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "higgsfield-character-design"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\b(Midjourney|Canva|Runway|Leonardo)\\b|\\b(another|a separate|an outside) (product|app|tool)\\b"
+        }
       ]
     },
     {
@@ -19,11 +31,26 @@
       "request": "Which Higgsfield bundled skills can I install alongside this?",
       "response": "Routing to higgsfield-stack (§ The bundled skills at 0.12.0).\n\n`higgsfield-ai/skills` is at 0.12.0. Its README lists `higgsfield-generate` (image, video, 3D, audio, Marketing Studio, Virality Predictor), `higgsfield-soul-id` (train a Soul Character), `higgsfield-product-photoshoot`, `higgsfield-brandkit`, `higgsfield-marketplace-cards`, `higgsfield-websites`, `higgsfield-video-explainer`, `higgsfield-youtube-thumbnail` and `higgsfield-game-generation`. One caution: the README counts 9 skills but the repo's top-level directories showed 8 on 2026-09-26 — no game-generation folder — so check the repo before relying on that one. Install with `npx skills add higgsfield-ai/skills`.",
       "assertions": [
-        { "type": "regex_present", "pattern": "^Routing to higgsfield-stack" },
-        { "type": "regex_present", "pattern": "0\\.12\\.0" },
-        { "type": "regex_present", "pattern": "higgsfield-soul-id" },
-        { "type": "regex_present", "pattern": "(?i)9 skills.{0,80}8" },
-        { "type": "regex_absent", "pattern": "(?i)\\bthree (bundled )?skills\\b|v0\\.3\\.0" }
+        {
+          "type": "regex_present",
+          "pattern": "^Routing to higgsfield-stack"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "0\\.12\\.0"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "higgsfield-soul-id"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)9 skills.{0,80}8"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\bthree (bundled )?skills\\b|v0\\.3\\.0"
+        }
       ]
     }
   ]

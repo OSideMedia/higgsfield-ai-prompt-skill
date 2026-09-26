@@ -742,6 +742,8 @@ enum-checked before spending: `python3 scripts/seedance_lint.py --model ad_multi
 
 ### Genjutsu — one edit, one clip
 
+**One object swapped in one clip — the tie-break:** a swap driven by a **reference image of the new object** (a product shot) → Genjutsu `hf_mult_replace_object`, the connector's own route for a single swap; a scoped change **described in words only** (no reference image of the replacement — relight, remove, recolour, change BGM or language) → Seedance 2.5 `video_edit`. Neither lane is field-rated. (`../../model-guide.md` § Edit-Lane Chooser)
+
 - **Two catalog models, both named "Genjutsu"** (Higgsfield): `hf_mult_replace_object` —
   "Replace objects in a source video using reference images"; `hf_mult_motion_control` —
   "Transfer motion from a reference video to subjects in reference images". Each exposes

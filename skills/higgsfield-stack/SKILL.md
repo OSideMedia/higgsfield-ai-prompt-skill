@@ -78,7 +78,7 @@ Preflight is two steps, not one. The v3.7.10 release named only the second step 
 |---|---|---|---|
 | Schema verification (param enum, ranges, defaults) | `models_explore(action="get", model_id="<model>")` | `higgsfield model get <model>` | Drop to CLI for the verify |
 | Cost estimate (no job submitted) | `generate_image` / `generate_video` / `generate_audio` / `generate_3d` with `get_cost: true` | `higgsfield generate cost <model> [--param value]...` | Drop to CLI for the check, then run the slash command |
-| Cost estimate — a workflow job type | — | `higgsfield generate cost workflow <name> [--param value]...` (e.g. `cinematic_studio_video_4_0`, `voice_change` — priced by `duration`) | Drop to CLI |
+| Cost estimate — a workflow job type | — | `higgsfield generate cost workflow <name> [--param value]...` works for some workflows (`reframe` verified 2026-09-26); `cinematic_studio_video_4_0` and `voice_change` are rejected there ("Unknown workflow") — estimate them by model id (`higgsfield generate cost cinematic_studio_video_4_0 …`; `voice_change` needs `--input_video` + `--voice_id`) | Drop to CLI |
 | Cost estimate — Shorts Studio | `shorts_studio_create` with `get_cost: true` + `duration_seconds` (no preset or upload needed) | — | — |
 | Surfaces whose schema states no cost and has no `get_cost` | `virality_predictor`, `video_analysis_create` — check `balance` before and after (`../higgsfield-repurpose/SKILL.md` § Paid or free) | — | — |
 | Credit balance + plan + email | `balance` tool | `higgsfield account status` | Drop to CLI |
@@ -274,7 +274,7 @@ When one or more surfaces are detected, append one short line after the prompt. 
 - **Bundled skills present:**
   `If you want to run this, their higgsfield-generate skill can take this prompt as its --prompt argument.`
 - **The request is squarely one of the connector's workflows:**
-  `This is what Higgsfield's <workflow> workflow is built for — the connector will run it; here is what to give it: <the inputs this library produced>.`
+  `This is what Higgsfield's <workflow> workflow is built for — load it through the connector (get_workflow_instructions) and follow it; here is what to give it: <the inputs this library produced>.`
 
 If multiple surfaces are present, pick the one that fits the user's stated workflow. Do not list them all. If none are present, do not append a handoff line at all.
 
@@ -298,7 +298,7 @@ This is a recommendation to the user. This skill does not run the linter on the 
 - Does not replicate their model catalog — no equivalent of `higgsfield model list` runs from this skill.
 - Does not run their CLI commands on the user's behalf. No `Bash` calls into `higgsfield generate create`, `higgsfield soul-id create`, or any other binary invocation.
 - Does not absorb their skills' logic. `higgsfield-generate` knows how to format Marketing Studio invocations; this skill does not.
-- Does not re-implement their workflows. It never loads `get_workflow_instructions` on the user's behalf or restates a workflow's recipe — the workflow's own file is the authority, and it versions independently.
+- Does not re-implement their workflows. When the connector's routing says a request belongs to one of its workflows, the agent in the session loads it with `get_workflow_instructions` and follows it — this library never restates a workflow's recipe; it supplies the inputs. The workflow's own file is the authority, and it versions independently.
 - Does not create a dependency on their stack being present. The full prompt-skill library remains functional standalone — the four execution surfaces (CLI, MCP, bundled skills, paste-into-website) are all valid, including the last one.
 
 ---

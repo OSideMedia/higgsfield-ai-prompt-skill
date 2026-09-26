@@ -774,8 +774,11 @@ the 2026-09-26 snapshot; verify live before quoting pricing or availability.)
   nothing to write; the choice is the voice.
 - **CLI face:** the `voice_change` workflow (`higgsfield workflow get voice_change
   --json`) takes `input_video` + `voice_id` + `voice_type`, and its only cost parameter is
-  **`duration`** — it is priced by length. Preflight: `higgsfield generate cost workflow
-  voice_change --duration <seconds>`.
+  **`duration`** — it is priced by length. Preflight by model id with the real inputs:
+  `higgsfield generate cost voice_change --input_video <clip> --voice_id <id> --voice_type preset`
+  (unverified with media attached). Checked 2026-09-26: the `generate cost workflow voice_change`
+  form is rejected ("Unknown workflow"), and `--duration` is not an accepted param — the length
+  comes from the clip.
 - **Finding voices:** MCP `list_voices` returns built-in presets plus the user's own
   voices, each as a `voice_id` + `voice_type` pair with a `preview_url`; CLI
   `higgsfield voices list` / `higgsfield voices get <voice_id>`.

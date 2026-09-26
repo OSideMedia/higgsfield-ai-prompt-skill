@@ -193,7 +193,7 @@ has. Cells say only what the catalog, the CLI, or Higgsfield's MCP tool text sta
 
 | Lane | How it is called | Billing basis | Source-length limit | What it preserves | Pick it when |
 |---|---|---|---|---|---|
-| **Seedance 2.5 `video_edit`** | `seedance_2_5`, `mode: video_edit`, exactly one video reference; 480p / 720p / 1080p | By the source video's duration (`duration` and `aspect_ratio` are ignored) | Not stated | Not stated; output follows the source | A scoped change inside one master — object, background, BGM, spoken language. Edit-order dialect: `skills/higgsfield-seedance-2-5/SKILL.md` |
+| **Seedance 2.5 `video_edit`** | `seedance_2_5`, `mode: video_edit`, exactly one video reference; 480p / 720p / 1080p | By the source video's duration (`duration` and `aspect_ratio` are ignored) | Not stated by the catalog; ByteDance's guide says source ≤20s (`skills/higgsfield-seedance-2-5/SKILL.md` § Material budget) | Not stated; output follows the source | A scoped change inside one master — object, background, BGM, spoken language. Edit-order dialect: `skills/higgsfield-seedance-2-5/SKILL.md` |
 | **Seedance 2.5 `video_extension`** | `mode: video_extension`, ≥1 video reference, `extension_mode` forward / backward (required) | Not stated | Not stated | The source's aspect ratio (`aspect_ratio` is ignored) | Add footage after — or before — an existing clip |
 | **Cinema Studio 4.0 `video_edit`** | CLI workflow `cinematic_studio_video_4_0` — the same four modes as Seedance 2.5 (`t2v` / `omni_reference` / `video_edit` / `video_extension`); 480p / 720p / 1080p. Not in the MCP `models_explore` list | Not stated; the CLI's cost inputs are `duration`, `mode`, `resolution`, `video_references` | Not stated | Not stated | The edit is part of a Cinema Studio job. The workflow also carries camera / lens / aperture / genre / era / pacing / light / color-palette params; whether they act in `video_edit` is not stated |
 | **Kling 3.0 Omni Edit** | `kling_video_edit` — source video + optional image references, `mode` std / pro / 4k (default pro) | Not stated | Not stated in the catalog (earlier UI doctrine: 3–10s input) | Not stated in the catalog (earlier repo doctrine: motion, camera angles, scene structure) | Instruction edit guided by reference images, with a 4K output tier |
@@ -203,10 +203,12 @@ has. Cells say only what the catalog, the CLI, or Higgsfield's MCP tool text sta
 | **Genjutsu — replace object** | `hf_mult_replace_object` through `generate_video` (Higgsfield MCP's own routing); image + video references; 480p / 720p / 1080p | Not stated | Not stated | Not stated | Swap one object in a source video for the object in a reference image |
 | **Ad Multiplier** | `ad_multiplier` ("powered by Seedance 2.5" — same param surface); the MCP says to call `get_workflow_instructions` with `{ workflow: "ad-multiplier" }` first | Its `video_edit` mode bills by the source video's duration | A supplied 4–30s video (workflow scope) | The workflow scope: motion, framing, cuts, timing, aspect ratio, and audio | **Many** independently edited versions of **one** ad — replace/add/remove people, products, objects, clothing, backgrounds, targeted on-screen text. The workflow says it is not for simple video edits, and the MCP says never to route a single Genjutsu edit through it |
 
+**One object swapped in one clip — the tie-break:** a swap driven by a **reference image of the new object** (a product shot) → Genjutsu `hf_mult_replace_object`, the connector's own route for a single swap; a scoped change **described in words only** (no reference image of the replacement — relight, remove, recolour, change BGM or language) → Seedance 2.5 `video_edit`. Neither lane is field-rated.
+
 **Not edit lanes here:** Grok Imagine Video — the catalog gives `grok_video` only a `start_image`
 role, so xAI's editing mode has no verified Higgsfield route. Wan 3.0 — Alibaba documents
 prompt-intent editing and extension through `reference_video` inputs
-`[OFFICIAL — Alibaba Cloud Model Studio docs]`, but the Higgsfield catalog description of `wan3_0`
+`[OFFICIAL — Alibaba Cloud Model Studio docs — URLs in skills/higgsfield-models/MODELS-DEEP-REFERENCE.md § Wan 3.0]`, but the Higgsfield catalog description of `wan3_0`
 lists no edit mode; treat it as unverified on Higgsfield. A **whole-plate VFX restyle** on
 Seedance 2.0 is a new generation that uses the footage as a video reference, not an edit mode —
 see `skills/higgsfield-seedance-vfx/SKILL.md`.
@@ -224,9 +226,10 @@ For **one clip longer than 15s**. `[OFFICIAL — platform, snapshot 2026-09-26]`
 | **FLUX 3 Video** (`flux_3_video`) | 5–20s | 720p, 1080p | `generate_audio` (default on) | Start/end frames + image/video references; video continuation | Prompting dialect not yet documented here |
 | **Cinema Studio 4.0** (CLI workflow `cinematic_studio_video_4_0`) | **Not stated** in the CLI schema (`duration` integer, default 5) | 480p, 720p, 1080p | `generate_audio` (default on) | The same four modes and reference roles as Seedance 2.5, plus Cinema Studio's camera / genre / light controls | Verify its duration ceiling in the UI or CLI before promising more than 15s |
 
-**Smart duration vs "never default a runtime."** The repo never picks a runtime silently (root
-`SKILL.md` § Fast Path — Seedance exception). Wan 3.0's `duration: -1` hands the length to the
-model, so it is offered **only when the user explicitly asks the model to choose the length** —
+**Smart duration vs "never default a runtime."** Root `SKILL.md` § Fast Path's Seedance
+exception says never to default a Seedance runtime; this extends that exception to Wan 3.0's
+`duration: -1`, which hands the length to the model — it is offered **only when the user
+explicitly asks the model to choose the length** —
 never as a default, and always with the note that it is billed as 10s whatever length comes back.
 
 **Not long-take lanes:** Kling 3.0 Motion Control's output follows a 3–30s motion reference (a

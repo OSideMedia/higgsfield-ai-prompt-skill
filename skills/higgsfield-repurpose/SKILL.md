@@ -14,7 +14,7 @@ metadata:
 ## QUICK FACTS
 *Routing aids — read the linked sections for the full rules. Nothing in this sub-skill is field-tested.*
 - Four surfaces take a video that already exists: Shorts Studio (restyle → shorts), Clipify (YouTube → subtitled clips), Virality Predictor (a score), Video Analysis (a scene breakdown) [→](#what-this-sub-skill-is-for)
-- Paid vs free is per tool — `shorts_studio_create` is **PAID**; its `get_cost` estimate, preset creation and every list / status call are free [→](#paid-or-free-read-this-before-calling-anything)
+- Paid vs free is per tool — `shorts_studio_create` is **PAID**; its `get_cost` estimate and preset creation state they are free; list / status calls state no cost [→](#paid-or-free-read-this-before-calling-anything)
 - Shorts Studio: source 4–120s, output **720p only**, 9:16 default (16:9 optional); preflight with `get_cost: true` + `duration_seconds` — no preset or upload needed for the estimate [→](#shorts-studio)
 - Shorts Studio presets store a STYLE (≤10 media, videos ≤30s, public https URLs) — write the preset prompt as laws, not adjectives [→](#style-presets-free)
 - Clipify: exactly ONE YouTube URL per job; 1–20 clips; 9:16 / 1:1 / 16:9; subtitle font, case, position and highlight colour are parameters [→](#clipify)
@@ -54,11 +54,11 @@ it) — that is `../higgsfield-seedance-2-5/SKILL.md` (video_edit / video_extens
 | `shorts_studio_create` | **PAID** — "reserves credits" | Tool description |
 | `shorts_studio_create` with `get_cost: true` + `duration_seconds` | **Free** — "estimate the credit cost without submitting a job"; no preset or source video needed | Tool description |
 | `shorts_studio_create_preset` | **Free** — "just stores a STYLE — no generation, no credits" | Tool description |
-| `shorts_studio_list_presets` · `shorts_studio_list_sessions` · `shorts_studio_status` | Free reads | Tool descriptions |
+| `shorts_studio_list_presets` · `shorts_studio_list_sessions` · `shorts_studio_status` | **Not stated** — list / status calls that submit nothing; not called free here | Tool descriptions (silent on cost) |
 | `clipify` | **Not stated.** It is a video-catalog model, so it runs through `generate_video` / the CLI and can be preflighted with `get_cost: true` (MCP) or `higgsfield generate cost clipify …` (CLI — confirm the flag form with `higgsfield model get clipify` first) | `[OFFICIAL — platform, 2026-09-26]` snapshot has no price field |
 | `virality_predictor` | **Not stated**, and the tool has no `get_cost` field | Tool schema |
 | `video_analysis_create` | **Not stated**, and the tool has no `get_cost` field | Tool schema |
-| `video_analysis_status` · `video_analysis_jobs` | Free reads | Tool descriptions |
+| `video_analysis_status` · `video_analysis_jobs` | **Not stated** — status / list calls that submit nothing; not called free here | Tool descriptions (silent on cost) |
 
 **Where the schema is silent, do not call it free.** Check the balance before and after
 (`balance` / `transactions` on MCP, `higgsfield account status` on the CLI) the first time

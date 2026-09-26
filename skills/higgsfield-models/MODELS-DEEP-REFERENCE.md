@@ -290,9 +290,9 @@ frames call or a references call; `duration` must be `-1` or ≥2.
 **Prime vs standard:** neither the catalog nor Alibaba's guide states how Prime differs. Do not
 invent a quality, speed, or price gap — present them as two ids with the same surface.
 
-**Smart duration and the runtime rule:** the repo never picks a runtime silently (root
-`SKILL.md` § Fast Path — Seedance exception). Offer `-1` only when the user explicitly asks the
-model to choose the length, and say it bills as 10s.
+**Smart duration and the runtime rule:** root `SKILL.md` § Fast Path's Seedance exception says
+never to default a Seedance runtime; the same rule is extended to Wan 3.0 here. Offer `-1` only
+when the user explicitly asks the model to choose the length, and say it bills as 10s.
 
 **Prompting dialect** `[OFFICIAL — Alibaba Cloud Model Studio docs]` — from
 [Wan3.0 video generation guide](https://www.alibabacloud.com/help/en/model-studio/wan3-video-generation-guide)

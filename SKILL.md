@@ -165,7 +165,7 @@ budget constraints, client work), **confirm before generating:**
 | User mentions Marketing Studio, DTC Ads, `ms_image`, or `marketing_studio_video` model | `higgsfield-marketing-studio` |
 | User wants UGC / Tutorial / Unboxing / Hyper Motion / Product Review / TV Spot / Wild Card / UGC Virtual Try On / Pro Virtual Try On ad video | `higgsfield-marketing-studio` |
 | User mentions hook+setting picklists, preset / custom / text-generated avatars in MS context, or 4–15s ad video constraints | `higgsfield-marketing-studio` |
-| **Ad Multiplier** ("multiply my ad", many independently edited versions of one 4–30s ad) or a one-off **Genjutsu** edit of a finished ad (swap one object / product / garment, transfer motion) | `higgsfield-marketing-studio` (§ 14) |
+| **Ad Multiplier** ("multiply my ad", many independently edited versions of one 4–30s ad) or a one-off **Genjutsu** edit of a finished ad (swap one object / product / garment using a reference image of the new one, transfer motion) | `higgsfield-marketing-studio` (§ 14) — a swap described in words only, with no reference image of the replacement, is Seedance 2.5 `video_edit` (`model-guide.md` § Edit-Lane Chooser) |
 | User wants to run a full campaign pipeline — research → plan → generate → publish → report, "create a campaign", "100 UGC videos", content plan, batch ads, cost-savings report | `higgsfield-content-factory` |
 | User mentions Higgsfield Canvas, a node-based / node-graph workspace, an infinite board, chaining prompts→images→videos into a pipeline, Shared Canvas, or a ComfyUI-style node workflow | `higgsfield-canvas` |
 | Multi-shot workflow, chaining tools, full production pipeline | `higgsfield-pipeline` |

@@ -91,7 +91,7 @@ the pairs share a backend is not stated anywhere — do not claim it.
 | One image, texture + PBR + rig + animation in one job | `image_to_3d` | Optional texturing, PBR, rigging, animation. **`should_texture` defaults OFF** |
 | Same, with a low-poly geometry mode or higher-fidelity geometry | `meshy_v7_image_to_3d` | `model_type` standard / lowpoly; `ultra_mode` ("higher-fidelity geometry and finer surface detail"); **`should_texture` defaults ON** |
 | Face-count control, quads, real-world scale, orientation matched to the photo | `tripo_h3_1_image_to_3d` | `face_limit` 1,000–2,000,000; `quad`; `auto_size`; `orientation: align_image`; `texture_alignment` |
-| Geometry-only or low-poly output, very dense meshes | `hunyuan3d_v3_image_to_3d` | `generate_type` Normal / LowPoly / Geometry; `face_count` 40,000–1,500,000 (default 500,000) |
+| Geometry-only or low-poly output | `hunyuan3d_v3_image_to_3d` | `generate_type` Normal / LowPoly / Geometry; `face_count` 40,000–1,500,000 (default 500,000). The densest ceiling in the catalog is Tripo H3.1's `face_limit` (up to 2,000,000) |
 | **2–4 views** of the same subject | `multi_image_to_3d` | "More views = better geometric accuracy"; same feature set as `image_to_3d` |
 | 2–4 views, Tripo controls | `tripo_h3_1_multiview_to_3d` | "2 to 4 ordered views" — the order convention is **not** in the schema; check the model page before relying on it |
 | Only a description | `meshy_v6_text_to_3d` | `mode` preview (geometry only) / full (textures); lowpoly; can rig + animate |
