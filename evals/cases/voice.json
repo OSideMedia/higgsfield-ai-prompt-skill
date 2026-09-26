@@ -1,0 +1,31 @@
+{
+  "skill": "higgsfield-audio",
+  "cases": [
+    {
+      "id": "audio-voice-change-element-voice",
+      "description": "voice_change takes no prompt; a cloned voice is used as voice_type element only once completed + is_audio_eligible; priced by duration (MCP schema + CLI workflow 2026-09-26)",
+      "request": "Swap the narrator's voice in my finished 20-second clip for the voice I cloned yesterday.",
+      "response": "Routing to higgsfield-audio (§ Voice change and voice cloning).\n\n1. **Check the clone is ready** — `list_voices`: your voice must show `status: completed` and `is_audio_eligible: true`. A clone still `processing` is not usable yet.\n2. **Revoice** — `voice_change` with `video_id` = your clip, `voice_id` = the clone's id, `voice_type: element`. There is nothing to write: the tool takes no text, keeps the original timing and visuals, and takes the output size from the source.\n3. **Cost** — it is priced by length: `higgsfield generate cost workflow voice_change --duration 20`.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-audio" },
+        { "type": "regex_present", "pattern": "voice_type: element" },
+        { "type": "regex_present", "pattern": "is_audio_eligible" },
+        { "type": "regex_present", "pattern": "--duration" },
+        { "type": "regex_absent", "pattern": "(?i)\\bprompt\\s*[:=]" }
+      ]
+    },
+    {
+      "id": "audio-qwen-batch-size",
+      "description": "qwen_audio_tts batch_size (1–4) exists only from the 2026-09-26 audio snapshot on; the golden stays in range",
+      "request": "Give me four takes of this line with the Qwen TTS: 'We were never lost. We were early.'",
+      "response": "Routing to higgsfield-audio (§ Standalone Audio tab — tool catalog, 2026-09-26 snapshot).\n\n`qwen_audio_tts` with `batch_size: 4` — four independent variations in one call (the parameter's range is 1–4, added in the 2026-09-26 snapshot). Voice: your preset or cloned element voice (`voice_type` + `voice_id` together). Instruction: `quiet certainty, a small smile on 'early', no rush between the two sentences`.\n\nLine: We were never lost. We were early.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-audio" },
+        { "type": "regex_present", "pattern": "batch_size: [1-4]\\b" },
+        { "type": "regex_absent", "pattern": "batch_size: ([5-9]|\\d{2,})" },
+        { "type": "preset_names_valid", "source": "specs/models_explore_snapshot_audio_2026-09-26.json",
+          "names": ["qwen_audio_tts", "batch_size", "Number of independent variations to generate."] }
+      ]
+    }
+  ]
+}

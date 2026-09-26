@@ -1,11 +1,11 @@
 ---
 name: higgsfield-cinema
-description: "Guides users through professional filmmaking workflows in Higgsfield Cinema Studio, including creating multi-shot sequences, configuring optical stacks, applying color grading, managing Soul Cast AI actors, and structuring per-scene prompts with Director Panel camera movements. Use when the user mentions Cinema Studio, Cinema Studio 2.5, Cinema Studio 3.0, Soul Cast, color grading, multi-shot video, shot sequences, storyboard workflow, Hero Frame, optical stack, keyframe interpolation, Elements system (@Characters/@Locations/@Props), Speed Ramp, Director Panel, Higgsfield Popcorn, Single Shot / Multi-Shot Auto / Multi-Shot Manual modes, Reference Anchor, Smart shot control, or any professional filmmaking workflow inside Higgsfield."
+description: "Guides users through professional filmmaking workflows in Higgsfield Cinema Studio, including creating multi-shot sequences, configuring optical stacks, applying color grading, managing Soul Cast AI actors, and structuring per-scene prompts with Director Panel camera movements. Use when the user mentions Cinema Studio, Cinema Studio 2.5, Cinema Studio 3.0, Cinema Studio 3.5, Cinema Studio 4.0 (`cinematic_studio_video_4_0` — its four modes, camera/lens/aperture/era/genre/pacing ids, light presets, color palette), Soul Cast, color grading, multi-shot video, shot sequences, storyboard workflow, Hero Frame, optical stack, keyframe interpolation, Elements system (@Characters/@Locations/@Props), Speed Ramp, Director Panel, Higgsfield Popcorn, Single Shot / Multi-Shot Auto / Multi-Shot Manual modes, Reference Anchor, Smart shot control, or any professional filmmaking workflow inside Higgsfield."
 user-invocable: true
 metadata:
-  tags: [higgsfield, cinema-studio, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
-  version: 3.4.0
-  updated: 2026-08-22
+  tags: [higgsfield, cinema-studio, cinema-studio-4, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
+  version: 3.5.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -13,7 +13,9 @@ metadata:
 
 ## QUICK FACTS
 *Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
-- Three Cinema Studio versions coexist (2.5 / 3.0 / 3.5) — user-selected, no auto-routing; always detect the version first [→](#version-detection-ask-first)
+- Four Cinema Studio versions are on the platform (2.5 / 3.0 / 3.5 / 4.0) — user-selected, no auto-routing; always detect the version first [→](#version-detection-ask-first)
+- **Cinema Studio 4.0** (`cinematic_studio_video_4_0`, CLI workflow schema 2026-09-26): the same four modes as `seedance_2_5` (t2v / omni_reference / video_edit / video_extension), 480p–1080p, start/end image + image/video/audio refs; the 3.5 enum pills are GONE — camera / lens / aperture / era / genre / pacing are free `*_id` strings with no published values, so never invent one [→](#cinema-studio-40)
+- 4.0 vs 3.5 at the API: no `multi_shots` / `multi_prompt`, no `genre` enum, no `enhance_prompt`; `prompt` now REQUIRED; audio defaults ON; duration default 5s (range unpublished) [→](#what-changed-from-35-at-the-api)
 - Hard 512-character prompt cap; 2.5 @ Element chips eat ~80–100 hidden chars each [→](#prompt-character-limit-512-characters)
 - Elements System: define @Characters/@Locations/@Props once, call everywhere [→](#elements-system-define-once-call-everywhere)
 - 3.5 main UI = three pills (Genre / Style / Camera), each Auto by default — override only with a creative reason [→](#the-three-pill-main-surface)
@@ -27,6 +29,7 @@ metadata:
 - 480p drafts validate the prompt, NOT the take — no seed param; transfer a look via Hero Frame + start/end-frame pinning [→](#drafts-validate-the-prompt-not-the-take)
 - Resolution matrix has two axes: shot physics × delivery context; 4K-finish pipelines master at model max res in std mode [→](#physics-rendering-resolution-decision-matrix)
 - Seedance fast mode cannot output 1080p — drafting in fast then "switching up" silently changes mode AND res [→](#physics-rendering-resolution-decision-matrix)
+- Big reference blocks live beside this file: 2.5 + 3.0 per-mode output templates in `references/output-formats-2-5-3-0.md`; Motion / Outfit / Palette / Product sheet specs in `references/reference-sheet-types.md` [→](#per-version-delivery-templates)
 
 
 Cinema Studio is Higgsfield's professional filmmaking environment — a full production
@@ -58,6 +61,10 @@ different from single-clip generation: you're building sequences, not individual
 | Aspect ratios | Model-dependent | 6 options | 7 options (+ 21:9 ultrawide) | 7 options (Auto, 16:9, 9:16, 4:3, 3:4, 1:1, 21:9) |
 | Plan requirement | All plans | All plans | **Business/Team plan only** | Plan availability not separately verified in this release — see Higgsfield plan documentation |
 
+> **Cinema Studio 4.0 has no column here on purpose.** Its API parameter surface is
+> verified (§ Cinema Studio 4.0); its UI, plan gating, duration range and output quality
+> are not — a column of "unverified" cells would read as data. Use the 4.0 section.
+
 **Use Cinema Studio when:**
 - You need 2+ shots that must feel like the same film
 - Character geometry must be locked across cuts
@@ -75,14 +82,16 @@ different from single-clip generation: you're building sequences, not individual
 
 **Before generating any Cinema Studio output, always ask the user:**
 
-> Are you working in **Cinema Studio 2.5** or **Cinema Studio 3.0**?
+> Which Cinema Studio are you in — **2.5**, **3.0**, **3.5**, or **4.0**?
 
-If the user has already stated their version (e.g., "I'm using 3.0" or "Cinema Studio 3.0"), remember it and don't ask again. But never assume — 2.5 and 3.0 have fundamentally different feature sets.
+If the user has already stated their version (e.g., "I'm using 3.0" or "Cinema Studio 3.0"), remember it and don't ask again. But never assume — the versions have fundamentally different feature sets.
 
 **Why this matters:**
 - 2.5 has optical physics (camera body + lens stack), color grading, 3D Mode, grid generation
 - 3.0 has **none of those** — outputting them wastes the user's time and causes confusion
 - 3.0 has features 2.5 doesn't: native audio, Smart shot control, 21:9 ultrawide, 15s duration
+- 3.5 brings back a camera panel with its **own** vocabulary, plus named Style presets (§ Cinema Studio 3.5)
+- 4.0 replaces the 3.5 preset enums with opaque `*_id` values and adds editing + extension modes (§ Cinema Studio 4.0) — a 3.5 settings strip is not a 4.0 settings strip
 - Speed Ramp options differ between versions
 - Genre lists differ between versions
 
@@ -671,206 +680,10 @@ Creation) and the Location Reference Sheet above already cover identity and
 architecture. The three sheet types below extend the same pattern to the rest
 of the production:
 
-### Motion / Camera Sheet
-
-A short reference clip — 3–10 seconds is plenty — that captures a camera path
-or motion rhythm you want repeated across multiple shots. The sheet locks the
-movement signature, not the content of any single shot. Treat it as a
-project-wide style anchor pulled into a generation as an @Video reference, the
-way a DP would carry a "look" across an entire film.
-
-Use cases: a music video where the same dolly-in arc punctuates every chorus;
-a fight sequence where a signature whip-pan recurs at every climax beat; a
-brand piece where every product shot starts on the same slow orbit. Distinct
-from a Kling 3.0 Motion Control reference clip — that drives a single
-generation's motion transfer. The Motion / Camera Sheet is reusable across the
-whole project.
-
-### Outfit / Material Sheet
-
-Dedicated wardrobe reference. Locks fabric texture, color values, garment fit,
-fastenings, and how the material moves and folds. Generate it once with even
-lighting and multiple angles, then reuse it any time the costume needs to read
-identically across cuts.
-
-Use cases: a hero costume that appears across 12 scenes; a specific jacket that
-must look the same in close-up and wide shot; a uniform that recurs across an
-ensemble cast. The outfit sheet is **not** the same as a character sheet — the
-character sheet locks identity (face, build, hair, distinguishing marks), while
-the outfit sheet locks what the character is wearing AND how that wardrobe
-behaves in motion. Build both when you have a hero costume on a hero character.
-
-**The piano test — wardrobe complexity has a generation cost.** Every detail of
-wardrobe complexity — buttons, ties, jewelry, scarves, layered garments,
-intricate prints, fastening hardware — costs the model rendering budget. The
-piano test (adapted from the Mr. Core methodology) is the rule: if a wardrobe
-element is as visually demanding for the model to render as a piano in the
-frame, the model will spend its budget rendering that element instead of the
-action. Strip the wardrobe to the simplest silhouette that still reads as the
-character. A trench coat reads as a trench coat without the buttons rendering
-correctly. A uniform reads as a uniform without the rank insignia drifting
-across frames. Design the costume's *signature* — the silhouette and one
-identifying feature — and let the rest go simple. Hero costumes that must
-render under close-up scrutiny earn their complexity; background costumes do
-not.
-
-### Palette / Mood Sheet
-
-A color and tonal anchor for the project. Lock the visual mood across an entire
-sequence: shadow density, key/fill ratio, saturation level, signature accent
-colors, grade direction. Use a single curated still or a small grid of grade
-references — the goal is to give every subsequent generation a consistent
-palette to reach for.
-
-Use cases: a noir piece where every scene shares the same shadow density and
-warm-amber-on-cool-blue grade; a cyberpunk sequence where neon-to-base-light
-ratio stays fixed across 15 cuts; a brand campaign where a signature accent
-color appears in every shot regardless of subject. Pairs naturally with the
-Soul Hex color system and curated moodboards in
-`../higgsfield-moodboard/SKILL.md`.
-
-### Product Reference Sheet
-
-When a product reappears across multiple shots — a hero SKU in a brand
-campaign, a recurring prop in a narrative piece, a single item shot from a
-dozen angles for ecommerce — give it the same asset-first treatment as a
-character or location. Generate the product once as a multi-view reference
-sheet, then call it in subsequent shots. Re-describing the product inside
-each scene prompt is the root cause of "every shot reinterprets the
-product": branding shifts, materials drift, geometry rearranges, and the
-hero stops feeling like a single object.
-
-The Product Reference Sheet uses a 7-part prompt scaffold. Each part fixes
-one axis of the product's identity. Build the parts in order — the locks
-come first, then composition, then surface treatment, then capture
-parameters, then negative space.
-
-**1. Identity Lock** — what the product *is*. Geometry, scale, color
-values, defining proportions, distinguishing physical features. The same
-discipline as a character sheet's identity block, applied to an object.
-
-**2. Branding Lock** — placement, scale, color, and treatment of every
-brand element on the product: logos, wordmarks, tags, stitched labels,
-embossed marks. Specify position relative to product geometry (centered
-front panel, left sleeve, lower right corner) and rendering style
-(embroidered, screen-printed, embossed, foil-stamped).
-
-**3. Layout** — the multi-view grid. Standard Product Reference Sheet
-layout covers eight orthographic views plus macro close-ups:
-
-| View | What it locks |
-|------|---------------|
-| Front | Primary read — branding placement, overall silhouette |
-| Back | Reverse details, secondary branding, construction seams |
-| Left side | Profile geometry, depth on the left |
-| Right side | Profile geometry, depth on the right |
-| Top | Top-down silhouette, crown / lid / opening geometry |
-| Bottom | Underside details, base / sole / footprint |
-| 3-quarter | Hero angle — combines front and side reads |
-| Macro close-ups | Branding detail / material weave / construction join / any product-specific detail that earns its own frame |
-
-Eight views vs. the Five-View Location Sheet's five — products need more
-orthographic angles than locations because the camera is closer and the
-geometry is the subject, not the environment. Macro close-ups are the
-product analogue of the location sheet's close-up environmental-details
-view, scaled up to one per product-specific concern.
-
-**4. Background** — `#DCDCDC` light gray, shadowless lighting, no
-gradients, no reflections. Studio product-photo convention: the
-background contributes zero visual information so the product reads as
-the only subject. Specify all four constraints — `#DCDCDC` alone without
-the shadowless + no-gradients + no-reflections trio still leaves the
-model room to add atmospheric noise.
-
-**5. Realism** — the Material Realism block. Reusable template populated
-per material; six axes that together make a surface read tactile and
-physically grounded rather than rendered-flat:
-
-- **Raised structure** — what stands proud of the base surface and by
-  how much
-- **Tight density** — how packed the surface elements are per unit area
-- **Visible direction** — the directionality of grain, weave, thread, or
-  flow across the surface
-- **Micro shadowing** — the small shadows cast by raised elements into
-  the surface valleys
-- **Surface compression following form** — how the material deforms where
-  it meets seams, edges, or attached elements
-- **Curvature integration** — how the surface and its texture follow the
-  product's overall geometry rather than sitting on top of it
-
-Populate the six axes with material-specific vocabulary. Embroidery,
-leather, knit, satin, brushed metal, and suede each have their own value
-set; the six axes stay constant.
-
-**6. Camera** — default product reference package: **Canon EOS R5 +
-RF 100mm f/2.8L Macro IS USM, f/8, ISO 100**. The 100mm macro lens at
-f/8 holds the whole product in sharp focus from front-most edge to
-back-most edge across all eight views; ISO 100 keeps sensor noise out
-of the gray background. Substitute only when a specific shot needs a
-different read — e.g. shallow depth of field for a hero brand-detail
-macro (f/4), or a wider focal length for an oversized product
-(RF 50mm).
-
-**7. Restrictions** — the content-fidelity block. The Product Reference
-Sheet's job is to capture the actual product, not a stylized or
-reinterpreted version. This block tells the model what NOT to do with
-the source: don't redesign, don't reinterpret branding, don't beautify,
-don't add styling. Frame composition discipline (no environmental
-context, no props) is enforced here as part of the same content-fidelity
-intent; the background/lighting constraints from Section 4 handle their
-own scope and don't repeat here.
-
-- No redesign
-- No stylization
-- No brand reinterpretation
-- No added elements
-- No alternate branding
-- No additional logos
-- No text overlays
-- No props
-- No environment
-- No lighting effects
-- No smoothing or beautification
-- No beauty retouching
-
-The Product Reference Sheet locks the product; narrative use of the
-product happens in downstream scene prompts that call this sheet as a
-reference.
-
-#### Hat — Worked Example
-
-A black baseball cap with an embroidered logo, set up as a Product
-Reference Sheet:
-
-- **Identity Lock** — six-panel baseball cap, black cotton twill, curved
-  brim, adjustable strap closure, pre-curved crown, eyelets on each
-  panel
-- **Branding Lock** — embroidered wordmark centered on the front panel,
-  white thread, 4cm wide, positioned 3cm above the brim seam
-- **Layout** — front / back / left / right / top / bottom / 3-quarter,
-  plus macro close-ups of the embroidered wordmark, the panel seams,
-  and the strap closure
-- **Background** — `#DCDCDC` light gray, shadowless lighting, no
-  gradients, no reflections
-- **Realism (Material Realism populated for embroidery):**
-  - Raised structure — raised thread structure, thread sitting proud of
-    the cotton twill base
-  - Tight density — tight stitch density across each letterform
-  - Visible direction — visible thread direction following each letter's
-    stroke path
-  - Micro shadowing — micro shadowing in the stitch valleys between
-    thread rows
-  - Surface compression following form — fabric compression around the
-    stitching where the thread tension pulls the twill in
-  - Curvature integration — embroidery curvature following the
-    pre-curved front panel rather than sitting flat
-- **Camera** — Canon EOS R5, RF 100mm f/2.8L Macro IS USM, f/8, ISO 100
-- **Restrictions** — no redesign, no stylization, no brand
-  reinterpretation, no added elements, no smoothing or beautification
-
-For leather / knit / satin / brushed metal / suede hero products, swap
-the Material Realism block's embroidery vocabulary for the material's
-own value set on each of the six axes — the scaffold is identical.
+The four sheet types below — **Motion / Camera**, **Outfit / Material**, **Palette /
+Mood**, and **Product** (with the Hat worked example and the Material Realism
+scaffold) — are specified in full in `references/reference-sheet-types.md`. Read it
+before building any of them; the family table below says which property each one locks.
 
 ### The Reference Sheet Family
 
@@ -878,10 +691,10 @@ own value set on each of the six axes — the scaffold is identical.
 |-------|-------|----------|
 | Character | Identity, face, build, distinguishing marks | `../higgsfield-soul/SKILL.md` (Soul ID, character sheet creation) |
 | Location | Architecture, light, color treatment, key environmental details | Location Reference Sheets, above |
-| Motion / Camera | Camera path or motion rhythm reused across shots | This section |
-| Outfit / Material | Wardrobe — fabric, color, fit, motion behavior | This section |
-| Palette / Mood | Color and tonal mood across the whole project | This section + `../higgsfield-moodboard/SKILL.md` |
-| Product | Product geometry, branding placement, material/surface, multi-view layout | This section |
+| Motion / Camera | Camera path or motion rhythm reused across shots | `references/reference-sheet-types.md` |
+| Outfit / Material | Wardrobe — fabric, color, fit, motion behavior | `references/reference-sheet-types.md` |
+| Palette / Mood | Color and tonal mood across the whole project | `references/reference-sheet-types.md` + `../higgsfield-moodboard/SKILL.md` |
+| Product | Product geometry, branding placement, material/surface, multi-view layout | `references/reference-sheet-types.md` |
 
 Build the sheets the project actually needs. A short ad with one character in
 one outfit doesn't need an Outfit Sheet. A 15-shot music video with three
@@ -959,6 +772,11 @@ when the model guesses the transition.
 Cinema Studio can build a **3D version of any generated image** using Gaussian splatting.
 Once active, you can move inside the frame — shift perspective, orbit the scene, and find
 a composition that didn't exist in the original 2D generation.
+
+> **Not the same "3D" as the 3D generation models.** 3D Mode is a Cinema Studio 2.5 view
+> *inside* a generated image. Turning an image or a prompt into a **GLB mesh** (image→3D,
+> multi-view→3D, rigging, remesh, 3D Body) and building Blender scenes (3D Jutsu) are
+> separate surfaces — see `../higgsfield-3d/SKILL.md`.
 
 **How it works:**
 1. Generate an image in Cinema Studio (any model, any optical stack)
@@ -1116,257 +934,23 @@ The prompt field is for scene description only — pure visual storytelling lang
 
 ---
 
-### IMAGE MODE Output Format (Cinema Studio 2.5 only)
+### Per-version delivery templates
 
-```
-━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
-Camera:   [body name]
-Lens:     [lens name]
-Focal:    [focal length]
-Aperture: [aperture]
-↳ Why: [one sentence — what this stack gives the image and why]
+The paste-ready output templates for **2.5** and **3.0** live in
+`references/output-formats-2-5-3-0.md` — read the one matching the detected version
+before delivering (§ Version Detection — Ask First decides which).
 
-━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
-[Scene description only. No camera/lens/aperture language.]
-```
+| Version | Where its delivery shape lives |
+|---|---|
+| Cinema Studio 2.5 | `references/output-formats-2-5-3-0.md` — Image Mode · Single Shot · Multi-Shot Auto · Multi-Shot Manual |
+| Cinema Studio 3.0 | `references/output-formats-2-5-3-0.md` — Image Mode · Single Shot / Smart · Multi-Shot Manual |
+| Cinema Studio 3.5 | § Per-Shot Settings Strip (this file) |
+| Cinema Studio 4.0 | § Cinema Studio 4.0 → Delivery shape (this file) |
 
-**Image Mode example:**
-```
-━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
-Camera:   Grand Format 70mm Film
-Lens:     Classic Anamorphic
-Focal:    50mm
-Aperture: f/1.4
-↳ Why: 70mm grain + anamorphic flare gives instant prestige cinema quality.
-       f/1.4 puts the harbour out of focus, keeping all weight on the detective.
-
-━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
-A weathered detective stands at the edge of a rain-soaked harbour dock at night.
-An old leather briefcase sits at his feet, open, papers scattered by the wind.
-He stares at the horizon, collar turned up against the driving rain.
-Harbour lights fracture on the black water below.
-```
-
----
-
-### SINGLE SHOT Video Output Format (Cinema Studio 2.5)
-
-```
-━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
-Genre:      [genre]
-Movement:   [Director Panel movement]
-Speed Ramp: [mode]
-Duration:   [seconds]
-
-━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
-[Scene description only. No movement, genre, speed ramp, or duration language.]
-```
-
-**Single Shot example:**
-```
-━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
-Genre:      Suspense
-Movement:   Dolly Out
-Speed Ramp: Slow Mo
-Duration:   8s
-
-━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
-A weathered detective stands at the edge of a rain-soaked harbour dock at night.
-An old leather briefcase sits at his feet, open, papers scattered by the wind.
-He stares at the horizon, collar turned up against the driving rain.
-Harbour lights fracture on the black water below.
-He reaches down and slowly closes the briefcase.
-```
-
----
-
-### MULTI-SHOT AUTO Video Output Format (Cinema Studio 2.5)
-
-Same structure as Single Shot — one UI settings block, one prompt. The user describes
-the full scene in the prompt and Cinema Studio breaks it into shots automatically.
-
-```
-━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
-Genre:      [genre]
-Movement:   [Director Panel movement — or Auto if varied]
-Speed Ramp: [mode]
-Duration:   [total seconds]
-
-━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
-[Full scene description. Let Cinema Studio break it into shots.
-No movement, genre, speed ramp, or duration language in here.]
-```
-
-**Multi-Shot Auto example:**
-```
-━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
-Genre:      Suspense
-Movement:   Auto
-Speed Ramp: Linear
-Duration:   15s
-
-━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
-A weathered detective pushes open the door of a rain-soaked bar and steps inside.
-He scans the room — empty except for a bartender polishing glasses at the far end.
-He walks slowly to the bar and sits down. The bartender slides a drink without a word.
-The detective picks it up, stares at his reflection in the mirror behind the bottles.
-He sets it down without drinking.
-```
-
----
-
-### MULTI-SHOT MANUAL Video Output Format (Cinema Studio 2.5)
-
-One UI settings block per scene. One prompt per scene. Six scenes = six pairs.
-Each scene is fully self-contained — the user configures and pastes them one at a time.
-
-```
-━━━ SCENE 1 — [short scene title] ━━━━━━━━━━━━━━━━━━━━━━━
-UI SETTINGS
-  Genre:      [genre]
-  Movement:   [movement]
-  Speed Ramp: [mode]
-  Duration:   [seconds]
-
-PROMPT
-[Scene 1 description only.]
-
-━━━ SCENE 2 — [short scene title] ━━━━━━━━━━━━━━━━━━━━━━━
-UI SETTINGS
-  Genre:      [genre]
-  Movement:   [movement]
-  Speed Ramp: [mode]
-  Duration:   [seconds]
-
-PROMPT
-[Scene 2 description only.]
-
-[...continue for each scene]
-```
-
-**Multi-Shot Manual example — 3 scenes (same pattern scales to 6):**
-
-```
-━━━ SCENE 1 — Arrival ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-UI SETTINGS
-  Genre:      Suspense
-  Movement:   Handheld
-  Speed Ramp: Linear
-  Duration:   5s
-
-PROMPT
-A weathered detective steps through the door of a dimly lit bar.
-Rain drips from his coat. He pauses, eyes adjusting to the dark.
-The bar is nearly empty. A jukebox plays quietly in the corner.
-
-━━━ SCENE 2 — The Walk ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-UI SETTINGS
-  Genre:      Suspense
-  Movement:   Camera Follows
-  Speed Ramp: Linear
-  Duration:   4s
-
-PROMPT
-He walks slowly down the length of the bar, boots on wet floorboards.
-A bartender watches without expression. One other patron doesn't look up.
-He reaches the end stool and sits down deliberately.
-
-━━━ SCENE 3 — The Mirror ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-UI SETTINGS
-  Genre:      Suspense
-  Movement:   Dolly In
-  Speed Ramp: Slow Mo
-  Duration:   6s
-
-PROMPT
-A glass of whiskey sits untouched on the bar in front of him.
-He stares at his own reflection in the mirror behind the bottles.
-His jaw tightens. He picks up the glass, holds it, sets it back down.
-```
-
----
-
-## Cinema Studio 3.0 Output Formats
-
-**3.0 does NOT have:** Camera body, Lens, Focal length, Aperture, Color grading, 3D Mode, Grid generation. Never include these in 3.0 output.
-
-**3.0 has:** Genre (7: General, Action, Horror, Comedy, Noir, Drama, Epic), Director Panel, Speed Ramp (7: Auto, Slow-mo, Ramp Up, Flash In, Flash Out, Bullet Time, Hero Moment), Duration (up to 15s), Audio (On/Off native stereo), Smart shot control, 21:9 ultrawide.
-
-**Version guard — values that do NOT exist in 3.0 (never output these):**
-- Speed Ramp: ~~Linear~~, ~~Slow Mo~~, ~~Speed Up~~, ~~Impact~~, ~~Custom~~
-- Genre: ~~Western~~, ~~Suspense~~, ~~Intimate~~, ~~Spectacle~~
-- UI fields: ~~Camera body~~, ~~Lens~~, ~~Focal length~~, ~~Aperture~~, ~~Color grading~~, ~~3D Mode~~, ~~Grid generation~~
-
----
-
-### IMAGE MODE Output Format (Cinema Studio 3.0)
-
-No optical stack in 3.0. Image output uses Soul Cast modes only.
-
-```
-━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
-Soul Cast Mode: [General / Character / Location]
-Genre:          [genre]
-↳ Why: [one sentence — what this combination gives the image and why]
-
-━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
-[Scene description only. No camera/lens/aperture language — these don't exist in 3.0.]
-```
-
----
-
-### SINGLE SHOT / SMART Video Output Format (Cinema Studio 3.0)
-
-```
-━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
-Genre:      [genre — General, Action, Horror, Comedy, Noir, Drama, or Epic]
-Shot Mode:  [Smart / Custom]
-Movement:   [Director Panel movement — or Smart for auto camera planning]
-Speed Ramp: [Auto / Slow-mo / Ramp Up / Flash In / Flash Out / Bullet Time / Hero Moment]
-Duration:   [up to 15s]
-Audio:      [On / Off]
-
-━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
-[Scene description only. Use @ to reference uploaded images/video/audio.
-No movement, genre, speed ramp, or duration language in here.]
-```
-
-**Single Shot 3.0 example:**
-```
-━━━ UI SETTINGS (select in Higgsfield) ━━━━━━━━━━━━━━━━━━
-Genre:      Action
-Shot Mode:  Smart
-Movement:   Jib Down
-Speed Ramp: Slow-mo
-Duration:   5s
-Audio:      On
-
-━━━ PROMPT (paste into Cinema Studio) ━━━━━━━━━━━━━━━━━━━
-@CypressLookout packed with cars and people at night. @R34GTR parked
-prominently in the center, @240SX and @AE86 visible nearby. Crowd
-gathered between the cars, neon underglow reflecting on wet pavement.
-City skyline glowing across the water in the distance. Engine noise,
-crowd murmur, tension in the air.
-```
-
----
-
-### MULTI-SHOT MANUAL Video Output Format (Cinema Studio 3.0)
-
-Same per-scene structure as 2.5 but with 3.0 options. Up to 6 scenes, 15s max total.
-
-```
-━━━ SCENE 1 — [short scene title] ━━━━━━━━━━━━━━━━━━━━━━━
-UI SETTINGS
-  Genre:      [genre]
-  Movement:   [movement]
-  Speed Ramp: [Auto / Slow-mo / Ramp Up / Flash In / Flash Out / Bullet Time / Hero Moment]
-  Duration:   [seconds]
-  Audio:      [On / Off]
-
-PROMPT
-[Scene 1 description only. Use @ for references.]
-```
+**3.0 version guard** (kept here so it survives a skim): 3.0 has **no** camera body,
+lens, focal length, aperture, color grading, 3D Mode or grid generation — never output
+them for 3.0. Speed Ramp values that do not exist in 3.0: Linear, Slow Mo, Speed Up,
+Impact, Custom. Genres that do not exist in 3.0: Western, Suspense, Intimate, Spectacle.
 
 ---
 
@@ -1545,7 +1129,7 @@ Different models perform differently inside Cinema Studio's environment:
 | Sequence but don't need per-shot control | Cinema Studio — Multi-Shot Auto |
 | Don't know shot order yet | Popcorn first → Cinema Studio |
 | Need motion graphics / text animation | Vibe Motion (not Cinema Studio) |
-| Edit existing footage | Kling O1 Video Edit (not Cinema Studio) |
+| Edit existing footage | Kling O1 Video Edit (not Cinema Studio) — or Cinema Studio 4.0 `video_edit` (schema-verified, untested — § Cinema Studio 4.0) |
 | Just need audio added to a clip | Lipsync Studio / Kling 3.0 |
 
 ---
@@ -1997,6 +1581,109 @@ Cinema Studio 3.5 exposes an **AI director toggle** in the bottom toolbar of the
 
 ---
 
+## Cinema Studio 4.0
+
+`[OFFICIAL — platform CLI 1.1.23, higgsfield workflow get cinematic_studio_video_4_0 --json, 2026-09-26]`
+Display name **Cinema Studio 4.0**, job type `cinematic_studio_video_4_0`, output video.
+Everything in this section is the **parameter schema** — no 4.0 generation has been fired
+from this repo, and the 4.0 UI has not been inspected. Treat every "how to write for it"
+line below as a starting point derived from the schema, not a measured behavior.
+
+**Where it lives.** 4.0 is listed by `higgsfield workflow list` (the CLI's workflow
+catalog, beside `cinematic_studio_video_3_5` and `cinematic_studio_3_0`). It is **not** in
+the `models_explore` video catalog of 2026-09-26 (which carries `cinematic_studio_3_0`,
+`cinematic_studio_video` and `cinematic_studio_video_v2`), so `../../specs/model-specs.json`
+does not know it and `../../scripts/seedance_lint.py --model` cannot enum-check a 4.0
+header. Check settings against the table below by hand.
+
+### Parameter surface
+
+| Param | Type | Default | Values / notes |
+|---|---|---|---|
+| `prompt` | string | — | **Required** (3.5: optional, default empty) |
+| `mode` | string | `t2v` | `t2v` · `omni_reference` · `video_edit` · `video_extension` — the same four values as `seedance_2_5` |
+| `extension_mode` | string \| null | null | `forward` · `backward`. The 4.0 schema publishes no rule; on `seedance_2_5` and `ad_multiplier` the snapshot says it is required for `video_extension` and not allowed otherwise — expect the same, unverified for 4.0 |
+| `duration` | integer | `5` | Range **not published** in the workflow schema (3.5 default was 15) |
+| `resolution` | string | `720p` | `480p` · `720p` · `1080p` (3.0 also had `4k`; 4.0 does not) |
+| `aspect_ratio` | string | `16:9` | `auto` · `21:9` · `16:9` · `4:3` · `1:1` · `3:4` · `9:16` (3.5 default was `auto`) |
+| `generate_audio` | bool | `true` | **On by default** (3.5 default was off) |
+| `bitrate_mode` | string | `standard` | `standard` · `high` |
+| `start_image` · `end_image` | object \| null | null | Start / end frame |
+| `image_references` · `video_references` · `audio_references` | array | null | Reference media; per-role counts not published |
+| `camera_model_id` · `camera_lens_id` · `camera_aperture_id` | string \| null | null | **Opaque ids — no enum published.** No focal-length field exists at the API |
+| `era_id` · `genre_id` · `pacing_id` | string \| null | null | **Opaque ids — no enum published** |
+| `light` | string \| null | null | `preset` · `custom` · `user` |
+| `light_id` | string \| null | null | Enum lists only `custom` |
+| `light_custom` | array \| null | null | Structure not published |
+| `color_palette` | object \| null | null | Structure not published |
+
+**Cost is computed from** `duration`, `mode`, `resolution` and `video_references` (the
+schema's `cost_params`). In 3.5 and 3.0 only `duration` + `resolution` priced a run — in
+4.0 the **mode and the video references move the price too**, so a `video_edit` or a
+video-referenced run can quote differently from a `t2v` run of the same length. Preflight
+the exact combination: `higgsfield generate cost workflow cinematic_studio_video_4_0
+--prompt "…" --mode video_edit --resolution 1080p --duration 8` (the CLI's documented
+`generate cost workflow <name>` form; it estimates without creating a job, but local file
+paths passed to it are auto-uploaded).
+
+### What changed from 3.5 at the API
+
+Diffed field by field against `higgsfield workflow get cinematic_studio_video_3_5 --json`
+(same CLI, same day):
+
+| | Cinema Studio 3.5 (`cinematic_studio_video_3_5`) | Cinema Studio 4.0 (`cinematic_studio_video_4_0`) |
+|---|---|---|
+| Modes | none — one generation type | `t2v` / `omni_reference` / `video_edit` / `video_extension` + `extension_mode` |
+| Camera | `camera_style` enum (the 9 Camera Moveset Styles) | `camera_model_id` / `camera_lens_id` / `camera_aperture_id` — opaque ids |
+| Look | `color_grading` enum (the 8 Color Palettes) | `color_palette` object (structure unpublished) |
+| Light | `light_scheme` enum (the 6 Lighting presets) | `light` = preset / custom / user + `light_id` + `light_custom` |
+| Genre | `genre` enum: auto / action / horror / comedy / noir / drama / epic | `genre_id` — opaque id |
+| New axes | — | `era_id`, `pacing_id` |
+| Multi-shot | `multi_shots`, `multi_shot_mode` (auto / custom), `multi_prompt` | **none** at the API |
+| Prompt helpers | `enhance_prompt`, `prompt_language` (en / zh, default zh), `style_prompt` | **none** |
+| Output | — | `bitrate_mode` (standard / high) |
+| Defaults | AR `auto` · 15s · audio off · prompt optional | AR `16:9` · 5s · **audio on** · **prompt required** |
+
+Two absences worth saying out loud, because the schema cannot answer them: whether 4.0
+cuts between shots inside one generation (there are no multi-shot fields — but Seedance
+2.5's official formula writes cuts into the prompt text itself, see
+`../higgsfield-seedance-2-5/SKILL.md` § The Core Prompt Formula), and whether the 4.0 UI exposes a focal-length control (the
+API has none). **Unverified — check the live UI before promising either.**
+
+### How to write for it (schema-derived, untested)
+
+1. **Never invent an id.** `camera_model_id`, `camera_lens_id`, `camera_aperture_id`,
+   `era_id`, `genre_id` and `pacing_id` have no published values. The 3.5 names (Fine Film,
+   Anamorphic, Noir, Teal Orange Epic …) are **not** 4.0 ids — do not pass them as ids and
+   do not assume they carried over. Name what the user picked in the UI, write `Auto`
+   when nothing was picked, and pass an id through verbatim only when the user reads one
+   to you.
+2. **The UI-vs-prompt rule still holds.** Whatever is set in a 4.0 control stays out of
+   the prompt body (§ Cinema Studio Output Format). A look the user did *not* set in a
+   control goes in the prompt in observable terms — light sources, grade behavior,
+   texture — never as a preset name the engine may not know.
+3. **Modes route like Seedance 2.5's.** Edit a supplied clip → `video_edit`; continue one
+   forward or backward → `video_extension` + `extension_mode`; references without a source
+   clip → `omni_reference`; nothing attached → `t2v`. The closest documented prompt grammar
+   for these modes is `../higgsfield-seedance-2-5/SKILL.md` — whether 4.0 follows it is
+   untested, so the first 4.0 edit or extension of a project is a probe, not a delivery.
+4. **Audio is on unless you turn it off.** State `generate_audio` explicitly on every
+   4.0 delivery — silent-for-scoring shots need `Audio: Off` written, not assumed.
+5. **Lead with the 4.0 strip, not the 3.5 strip.** They are different surfaces; a 3.5
+   strip on a 4.0 shot names controls that do not exist.
+
+### Delivery shape
+
+```
+Cinema Studio 4.0 · Mode: <t2v|omni_reference|video_edit|video_extension> · AR: <ratio> · Resolution: <480p|720p|1080p> · Duration: <N>s · Audio: <On|Off> · Camera: <UI pick|Auto> / <lens|Auto> / <aperture|Auto> · Era: <UI pick|Auto> · Genre: <UI pick|Auto> · Pacing: <UI pick|Auto> · Light: <Auto|preset|custom|user> · Palette: <UI pick|Auto>
+Refs: <start_image / end_image / image_references / video_references / audio_references, each with its role>
+Extension: <forward|backward>   ← only when Mode is video_extension
+
+Prompt box: <scene description only — nothing a control above already sets>
+```
+
+---
+
 ## Physics Rendering — Resolution Decision Matrix
 
 This rule applies to **Seedance 2.0** and **Cinema Studio 3.x** outputs (3.0 and 3.5). Higher resolution is not always better — the right choice depends on what is physical in the scene. Rendering more pixels per frame on rapid motion produces shimmer and artifacting; rendering fewer pixels per frame on fine-detail physics produces muddy or melted small elements. Match the resolution tier to the physics of the shot.
@@ -2031,4 +1718,6 @@ The matrix has **two axes**: the physics of the shot AND the delivery context. R
 - `higgsfield-style` — Visual styles (Cinema Studio has built-in color grading)
 - `higgsfield-models` — Model selection within Cinema Studio
 - `higgsfield-audio` — Audio design for Kling 3.0 sequences
+- `higgsfield-seedance-2-5` — the four-mode grammar (t2v / omni_reference / video_edit / video_extension) that Cinema Studio 4.0's `mode` enum mirrors
+- `higgsfield-3d` — GLB meshes, turnarounds and 3D Jutsu scenes (distinct from 2.5's Gaussian-splat 3D Mode)
 - `templates/` — Genre-specific annotated templates

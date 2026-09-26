@@ -1,0 +1,56 @@
+{
+  "skill": "higgsfield-repurpose",
+  "cases": [
+    {
+      "id": "repurpose-shorts-studio-preflight",
+      "description": "Shorts Studio: create is PAID, the get_cost estimate is free and needs only duration_seconds, output is 720p only (MCP schema 2026-09-26)",
+      "request": "Turn my 90-second product video into vertical shorts with Shorts Studio — what will it cost?",
+      "response": "Routing to higgsfield-repurpose (§ Paid or free, § Shorts Studio).\n\n1. **Estimate first — free:** `shorts_studio_create` with `get_cost: true`, `duration_seconds: 90`. No preset and no upload are needed for the estimate, and no job is submitted.\n2. **Pick a style** — `shorts_studio_list_presets` (free), or store your own with `shorts_studio_create_preset` (free — it only saves a style).\n3. **Upload the source** through the upload widget (type video).\n4. **Create — PAID**, it reserves credits. Output is 9:16 by default and 720p is the only resolution. Then poll `shorts_studio_status`; `completed` means every clip job finished, not that every clip succeeded.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-repurpose" },
+        { "type": "regex_present", "pattern": "duration_seconds" },
+        { "type": "regex_present", "pattern": "PAID" },
+        { "type": "regex_present", "pattern": "720p" },
+        { "type": "regex_absent", "pattern": "(?i)1080p|\\b4k\\b" }
+      ]
+    },
+    {
+      "id": "repurpose-video-analysis-warning",
+      "description": "Video Analysis: the length-accuracy warning is given up front, before submitting (MCP schema requirement)",
+      "request": "Analyze this 40-minute YouTube video scene by scene: https://www.youtube.com/watch?v=example",
+      "response": "Routing to higgsfield-repurpose (§ Video Analysis).\n\nBefore I submit it: the longer the video, the less accurate the scene-by-scene analysis becomes — short clips give the most reliable results. At 40 minutes, trim to the sequence you actually care about, or accept a rougher breakdown.\n\nIf you go ahead: `video_analysis_create` with `youtube_url` set to that link (youtube.com / youtu.be only), then I poll `video_analysis_status` every 30–60 seconds — it typically takes 3–5 minutes. Treat the scene list as notes to check against the video, not ground truth.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-repurpose" },
+        { "type": "regex_present", "pattern": "(?i)longer.{0,40}less accurate" },
+        { "type": "regex_present", "pattern": "youtube_url" },
+        { "type": "regex_present", "pattern": "(?i)trim" },
+        { "type": "regex_present", "pattern": "3–5 minutes" }
+      ]
+    },
+    {
+      "id": "repurpose-clipify-one-url",
+      "description": "Clipify takes exactly one YouTube URL per job; several sources = several jobs (video snapshot 2026-09-26)",
+      "request": "Clip these three YouTube videos into subtitled shorts with Clipify.",
+      "response": "Routing to higgsfield-repurpose (§ Clipify).\n\nClipify takes exactly one URL per job, so this is three Clipify jobs — one per video, each with `urls: [\"<one link>\"]`.\n\nPer job: `clips_num: 10` (1–20), `clip_aspect: 9:16`, `subtitle_font: montserrat`, `subtitle_case: upper`, `subtitle_position: bottom`, `track_face_crop: true`. Preflight each with `get_cost: true` — the snapshot publishes no price. Only clip videos you own or have the rights to.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-repurpose" },
+        { "type": "regex_present", "pattern": "(?i)one URL per job" },
+        { "type": "regex_absent", "pattern": "urls: \\[[^\\]]*,[^\\]]*\\]" },
+        { "type": "preset_names_valid", "source": "specs/models_explore_snapshot_2026-09-26.json",
+          "names": ["clips_num", "clip_aspect", "subtitle_font", "montserrat", "subtitle_case", "track_face_crop"] }
+      ]
+    },
+    {
+      "id": "repurpose-virality-is-a-prediction",
+      "description": "Virality Predictor output is reported as a prediction used to compare variants, never as audience data (v3.36.0)",
+      "request": "Will my ad go viral? Here's the finished cut.",
+      "response": "Routing to higgsfield-repurpose (§ Virality Predictor).\n\n`virality_predictor` with `action: create` and your uploaded video as the `video` media gives a prediction — virality potential, attention, hook strength, retention risk — with a dashboard. It is a prediction, not audience data: nobody has compared its scores with real performance in this library. Its best use is relative — score two hooks or two cuts of the same ad and compare. The schema states no cost, so check your balance before and after the first run.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-repurpose" },
+        { "type": "regex_present", "pattern": "virality_predictor" },
+        { "type": "regex_present", "pattern": "(?i)prediction, not audience data" },
+        { "type": "regex_absent", "pattern": "(?i)\\bwill go viral\\b|\\bguarantee" }
+      ]
+    }
+  ]
+}

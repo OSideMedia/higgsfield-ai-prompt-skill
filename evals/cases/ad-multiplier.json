@@ -1,0 +1,48 @@
+{
+  "skill": "higgsfield-marketing-studio",
+  "cases": [
+    {
+      "id": "ms-ad-multiplier-video-edit-legal",
+      "description": "Ad Multiplier video_edit settings are legal per the 2026-09-26 specs; the connector's ad-multiplier workflow is loaded first (v3.36.0 § 14)",
+      "model": "ad_multiplier",
+      "request": "Multiply my 15-second sneaker ad: same ad, three versions with three different presenters.",
+      "response": "Routing to higgsfield-marketing-studio (§ 14 Ad Multiplier) + higgsfield-stack (§ Coexistence rules for Higgsfield's workflows).\n\nThis is squarely Higgsfield's `ad-multiplier` workflow — the connector loads it before Marketing Studio or direct generation, and it owns the multi-version run. What I add is the per-version edit text and a one-variable plan: only the presenter changes; product, background and on-screen line stay fixed, so the three versions compare cleanly.\n\nMode: video_edit · Resolution: 1080p\n(Duration and aspect ratio follow the source ad in video_edit.)\n\nVersion 1 edit: Replace the presenter with @Presenter1 — same gestures, same timing, same framing and cuts; keep the sneaker, the street background and the audio unchanged.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-marketing-studio" },
+        { "type": "regex_present", "pattern": "`ad-multiplier` workflow" },
+        { "type": "enum_legal", "expect": "legal" }
+      ]
+    },
+    {
+      "id": "ms-ad-multiplier-4k-trap",
+      "description": "Stale-spec trap: Ad Multiplier has no 4k — the checker must flag it",
+      "model": "ad_multiplier",
+      "request": "(trap) Ad Multiplier at 4K",
+      "response": "Mode: omni_reference · Resolution: 4k · Aspect ratio: 9:16 · Duration: 10s\n\nThree presenter variants of the sneaker ad.",
+      "assertions": [
+        { "type": "enum_legal", "expect": "illegal" }
+      ]
+    },
+    {
+      "id": "ms-ad-multiplier-extension-mode-trap",
+      "description": "Trap: video_extension without extension_mode is illegal on ad_multiplier (snapshot: required for video_extension)",
+      "model": "ad_multiplier",
+      "request": "(trap) Ad Multiplier extension with no direction",
+      "response": "Mode: video_extension · Resolution: 1080p · Duration: 8s\n\nContinue the ad past the final product shot.",
+      "assertions": [
+        { "type": "enum_legal", "expect": "illegal" }
+      ]
+    },
+    {
+      "id": "ms-genjutsu-single-swap",
+      "description": "One object swapped in one clip routes to Genjutsu hf_mult_replace_object, never the ad-multiplier workflow (connector routing 2026-09-26)",
+      "request": "Swap the sneaker in my finished ad for our new model — just this one clip, one version.",
+      "response": "Routing to higgsfield-marketing-studio (§ 14 → Genjutsu).\n\nOne object in one clip is a Genjutsu edit, not Ad Multiplier: `generate_video` with model `hf_mult_replace_object`, your ad as the source video and the new sneaker's product shots as the reference images, `resolution: 1080p`. Ad Multiplier is for many independent versions of an ad; Higgsfield's connector says never to use it, or legacy motion control, for a single Genjutsu edit. Preflight with `get_cost: true` first.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-marketing-studio" },
+        { "type": "regex_present", "pattern": "hf_mult_replace_object" },
+        { "type": "regex_absent", "pattern": "(?i)(load|call|use)s? (the )?`?ad-multiplier`? workflow" }
+      ]
+    }
+  ]
+}

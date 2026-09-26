@@ -1,11 +1,11 @@
 ---
 name: higgsfield-marketing-studio
-description: "Use when the user mentions Marketing Studio, DTC Ads, ad video, UGC video, the marketing_studio_video MCP model, or wants to generate one of the 9 Marketing Studio ad presets (UGC, Tutorial, Unboxing, Hyper Motion, Product Review, TV Spot, Wild Card, UGC Virtual Try On, Pro Virtual Try On). Also triggers on hook+setting picklist questions, preset-avatar / custom-avatar / text-generated-avatar handling, 4–15s ad video questions, or any reference to Higgsfield's ad-video product surface. Cross-surface workflow handoffs (GPT Image 2.0 / Soul Cinema / Nano Banana Pro / ms_image image gen → Marketing Studio video) covered in the companion cross-surface-workflow.md."
+description: "Use when the user mentions Marketing Studio, DTC Ads, ad video, UGC video, the marketing_studio_video MCP model, or wants to generate one of the 9 Marketing Studio ad presets (UGC, Tutorial, Unboxing, Hyper Motion, Product Review, TV Spot, Wild Card, UGC Virtual Try On, Pro Virtual Try On). Also triggers on hook+setting picklist questions, preset-avatar / custom-avatar / text-generated-avatar handling, 4–15s ad video questions, or any reference to Higgsfield's ad-video product surface. Cross-surface workflow handoffs (GPT Image 2.0 / Soul Cinema / Nano Banana Pro / ms_image image gen → Marketing Studio video) covered in the companion cross-surface-workflow.md. Also use for Ad Multiplier (`ad_multiplier` — 'multiply my ad', many independently edited versions of one supplied 4–30s ad) and for Genjutsu one-off edits of a finished ad (swap one object / product / garment → `hf_mult_replace_object`; transfer motion → `hf_mult_motion_control`)."
 user-invocable: true
 metadata:
-  tags: [higgsfield, marketing-studio, dtc-ads, marketing, ugc, ad, video, preset, hook, setting, avatar, cross-surface]
-  version: 1.0.0
-  updated: 2026-05-18
+  tags: [higgsfield, marketing-studio, dtc-ads, marketing, ugc, ad, video, preset, hook, setting, avatar, cross-surface, ad-multiplier, genjutsu]
+  version: 1.1.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -24,7 +24,9 @@ metadata:
 - Two-person scenes: primary in `avatars`, secondary as a reference image in `medias` [→](#avatar-field-constraints-consolidated)
 - `avatars` and `medias` are top-level siblings of `params` — NOT nested under `params`; wrong nesting rejects [→](#avatars-is-a-separate-top-level-media-slot-not-a-nested-parameter)
 - `prompt` is optional; `aspect_ratio` enum: auto/21:9/16:9/4:3/1:1/3:4/9:16; `resolution`: 480p/720p/1080p (default 720p) [→](#7-generation-parameters)
-- No `get_cost: true` preflight for MS — verify spend post-hoc via `transactions(limit=200)` [→](#what-is-not-in-the-schema)
+- `get_cost` for MS: the 2026-05 schema said unsupported; the 2026-09-26 `generate_video` schema no longer states that exception — untested either way, so try `get_cost: true` and keep `transactions(limit=200)` as the post-hoc check [→](#what-is-not-in-the-schema)
+- **Ad Multiplier** (`ad_multiplier`, "powered by Seedance 2.5"): many independently edited versions of ONE supplied 4–30s ad; same four modes as Seedance 2.5 incl. 1080p; Higgsfield's connector loads its `ad-multiplier` workflow FIRST [→](#14-ad-multiplier-and-genjutsu-editing-a-finished-ad)
+- One object swapped in one clip is **Genjutsu** (`hf_mult_replace_object`), not Ad Multiplier [→](#genjutsu-one-edit-one-clip)
 - Three MS models exist: `marketing_studio_video` (this skill), `marketing_studio_image`, `ms_image` — call `ms_image` "DTC Ads" with users [→](#three-marketing-studio-models-exist-this-sub-skill-covers-the-video-one)
 - Three avatar types: preset (~40 in library), uploaded, text-generated [→](#three-avatar-types)
 - TV Spot has a default packshot beat — negate explicitly ("ABSOLUTELY NO PACKSHOT") when unwanted [→](#3-the-9-presets)
@@ -286,7 +288,7 @@ Top-level media arrays (separate from `params` — see §6):
 Three notable absences:
 
 - **No `mode` parameter.** Preset routing happens via `show_marketing_studio.mode` (§3), not via `generate_video.mode`.
-- **No `get_cost: true` support.** Marketing Studio models do not support preflight cost estimation [from `generate_video.params.get_cost` MCP tool description — Phase 0 pre-probe finding]. Consistent with the existing `higgsfield-stack` documentation. Verify spend post-hoc via `transactions(limit=200)` (§12).
+- **`get_cost: true` support — unresolved.** At Phase 0 (2026-05) the `generate_video.params.get_cost` MCP description said Marketing Studio models do not support preflight cost estimation. The **2026-09-26** `generate_video` schema no longer carries that exception — its `get_cost` field reads only "return the cost in credits for this generation without submitting any job" `[OFFICIAL — Higgsfield MCP tool schema, 2026-09-26]`. An absent caveat is not proof the preflight now works for `marketing_studio_video`, and it has not been tried. Try `get_cost: true` first; keep post-hoc verification via `transactions(limit=200)` (§12) as the check.
 - **No multi-character avatar slot.** One avatar max — see §5 for the reference-image workaround.
 
 ---
@@ -648,7 +650,7 @@ When the user asks about building a full ad campaign (brand identity → product
 
 ## 12. Pricing characteristics
 
-Marketing Studio pricing is plan-dependent. There's no preflight cost estimation available — `get_cost: true` is explicitly unsupported for Marketing Studio models [Phase 0: pre-probe finding from `generate_video.params.get_cost` description]. You verify spend post-hoc.
+Marketing Studio pricing is plan-dependent. At Phase 0 (2026-05) `get_cost: true` was explicitly unsupported for Marketing Studio models [Phase 0: pre-probe finding from `generate_video.params.get_cost` description]; the 2026-09-26 schema no longer states that exception, and nobody has tried it since (§7 → What is NOT in the schema). Until a preflight is seen to work for `marketing_studio_video`, verify spend post-hoc.
 
 ### Two rate samples — neither canonical
 
@@ -669,9 +671,9 @@ For budget planning conversations, lean on **~$0.06/credit ≈ ~$9 per video** a
 transactions(limit=200)
 ```
 
-Pull recent transaction history after a campaign run. Filter by date range to isolate the campaign's actual spend. Sum credits per preset / per model. This is the only verifiable way to know what a Marketing Studio campaign actually cost — there is no preflight path for MS.
+Pull recent transaction history after a campaign run. Filter by date range to isolate the campaign's actual spend. Sum credits per preset / per model. Even if a `get_cost` preflight turns out to work for MS, this is the only way to know what a campaign *actually* cost — an estimate is not a measurement.
 
-For broader preflight discipline on non-MS models (Kling, Seedance, etc.), see `../higgsfield-stack/SKILL.md` § Preflight discipline. MS is the exception, not the rule.
+For broader preflight discipline on non-MS models (Kling, Seedance, etc.), see `../higgsfield-stack/SKILL.md` § Preflight discipline.
 
 ---
 
@@ -692,3 +694,69 @@ Marketing Studio coverage in this sub-skill is translated from source material b
 Per the v3.7.11 plausibility-over-verification discipline applied recursively to source material — every API claim in this sub-skill cites a Phase 0 live MCP probe verdict; every behavioral claim cites an SRT timestamp or PDF item number. Full verification trail at the v3.7.13 Phase 0 probes notes (internal build notes).
 
 Twelve source-corpus reconciliations applied during translation (5 API-architecture / 4 capability / 2 calibration / 1 cross-surface), grouped and explained in the v3.7.13 CHANGELOG entry. Adil is credited as source throughout; the reconciliations are documentation of source-material truth at translation time, not critique of the source.
+
+---
+
+## 14. Ad Multiplier and Genjutsu — editing a finished ad
+
+**Provenance differs from §§1–13:** this section is not from the Phase 0 probes or Adil's
+corpus. It comes from the 2026-09-26 video catalog snapshot `[OFFICIAL — platform,
+2026-09-26]` and the Higgsfield connector's own routing text `[OFFICIAL — Higgsfield MCP
+server instructions / tool schema, 2026-09-26]`. Nothing here has been fired.
+
+### Ad Multiplier — many versions of one ad
+
+**Model `ad_multiplier`** — "Ad Multiplier video generation powered by Seedance 2.5". Its
+parameter surface in the snapshot is the same as `seedance_2_5`'s:
+
+| Param | Values | Default |
+|---|---|---|
+| `mode` | `t2v` · `omni_reference` · `video_edit` (edits one reference video, billed by that video's duration; `duration` and `aspect_ratio` ignored) · `video_extension` (`aspect_ratio` ignored) | `t2v` |
+| `duration` | 4–30s | 5 |
+| `resolution` | `480p` · `720p` · `1080p` | `720p` |
+| `extension_mode` | `forward` · `backward` — required for `video_extension`, not allowed otherwise | — |
+| `generate_audio` | bool | true |
+| `bitrate_mode` | `standard` · `high` | `standard` |
+| aspect ratios | `auto` · `21:9` · `16:9` · `4:3` · `1:1` · `3:4` · `9:16` | — |
+| media roles | `start_image` · `end_image` · `image_references` · `video_references` · `audio_references` | — |
+
+Because `ad_multiplier` is in `../../specs/model-specs.json`, a settings header can be
+enum-checked before spending: `python3 scripts/seedance_lint.py --model ad_multiplier
+--mode video_edit --resolution 1080p "<prompt>"` (a `4k` there FAILs).
+
+- **Higgsfield routes this through its own workflow first.** The connector's instruction:
+  load workflow `ad-multiplier` "when the user asks to 'multiply my video', 'multiply my
+  ad', create multiple independently edited versions of one supplied 4-30 second video, or
+  regenerate the same ad with different people or products. **Load this workflow before
+  Marketing Studio, model browsing, or direct generation.**" The workflow (v1.4) covers
+  replacing / adding / removing people, products, objects, clothing, backgrounds and
+  targeted on-screen text while preserving motion, framing, cuts, timing, aspect and
+  audio — and says it is **not** for simple video edits.
+- **What this library adds, and what it hands off.** Hand off the orchestration — the
+  `ad-multiplier` workflow owns the multi-version run (`../higgsfield-stack/SKILL.md`
+  § Coexistence rules for Higgsfield's workflows). This library adds the per-version edit
+  text, written in the Seedance 2.5 `video_edit` grammar — what to preserve, what to change
+  (`../higgsfield-seedance-2-5/SKILL.md`) — and a version plan that changes **one variable
+  per version** (person, product, background, on-screen line) so the versions can be
+  compared; `../higgsfield-repurpose/SKILL.md` § Virality Predictor can then rank them.
+
+### Genjutsu — one edit, one clip
+
+- **Two catalog models, both named "Genjutsu"** (Higgsfield): `hf_mult_replace_object` —
+  "Replace objects in a source video using reference images"; `hf_mult_motion_control` —
+  "Transfer motion from a reference video to subjects in reference images". Each exposes
+  only `resolution` (`480p` · `720p` · `1080p`, default `720p`); the edit is specified by
+  the reference media.
+- **The connector's routing, verbatim:** "Higgsfield Genjutsu routes through
+  generate_video: motion transfer -> hf_mult_motion_control; object replacement ->
+  hf_mult_replace_object; **never legacy motion_control or ad-multiplier for one Genjutsu
+  edit**." And from `generate_video`: "reserve ad-multiplier for explicitly requested
+  independent variants."
+- **The split:** one object / product / garment / character swapped in one clip →
+  `hf_mult_replace_object`. Many independent versions of the ad → Ad Multiplier.
+- **Role-name mismatch:** `generate_video` says to pass images with role `image` and
+  exactly one source or driving video with role `video`; the snapshot lists the roles as
+  `image_references` / `video_references`. The server "may auto-coerce when unambiguous" —
+  check `models_explore` for the model before trusting either spelling.
+- The snapshot lists no prompt-related parameter for either Genjutsu model; whether a
+  prompt is read at all is not stated.
