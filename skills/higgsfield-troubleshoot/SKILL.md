@@ -18,7 +18,7 @@ metadata:
 - Face inconsistency, dead camera moves, ignored prompts, static i2v, blocked dark content — the per-problem fix list [→](#common-problems--fixes)
 - Kling 3.0 Motion Control failures are almost always upstream of the prompt: reference clip, character image, or orientation/scene-source settings [→](#motion-control-failures-kling-30)
 - Pre-generation checklist: subject, action, named camera preset, style, grade, aspect, <200 words (short-form regime) [→](#pre-generation-checklist)
-- Seedance/Cinema Studio symptom table + diagnostic flowchart: blurry = overspecified; chaotic camera = One-Move Rule violated; wrong character = prompt re-describes the reference [→](#cinema-studio-30--seedance-20-diagnostic-tree)
+- Seedance/Cinema Studio symptom table + diagnostic flowchart: blurry = overspecified; chaotic camera = One-Move Rule violated; wrong character = prompt text contradicts the reference — delete the contradicting text first; delete ALL appearance text only on a start-frame / I2V shot (P1-1) [→](#cinema-studio-30--seedance-20-diagnostic-tree)
 - Every delivered take gets ONE of five verdicts before anything re-fires: keep / fix-in-post / edit / re-roll / rewrite [→](#take-triage--five-verdicts-for-a-delivered-take)
 - Two takes with the same flaw = rewrite, by rule; different flaws per roll = stochastic → batch-and-cull, not rewrite [→](#take-triage--five-verdicts-for-a-delivered-take)
 - Re-roll = same prompt again, unchanged — no seed parameter on this surface; every roll is a fresh sample [→](#take-triage--five-verdicts-for-a-delivered-take)
@@ -197,7 +197,7 @@ Before generating, verify:
 |---------|-------------|-----|
 | Output blurry, jittery, or morphing | Overspecification — prompt too long or too detailed | Short-form: cut to 30–100 words; use @reference images/videos instead of 50+ words of description. Block-scaffold briefs: don't shorten — tighten structure instead (one axis per clause, HARD RULE 8 regime) |
 | Camera chaotic, spinning, or jittering | Violated the One-Move Rule — multiple camera moves in one shot | Rewrite to ONE primary camera move per shot. Use Cinema Studio 3.0's Smart mode, or split into multi-shot |
-| Character doesn't match reference | Prompt is re-describing the character's appearance | Delete ALL physical descriptions. Describe ONLY action and emotion. The @reference carries identity. *Scope:* certain on a start-frame / I2V shot. In a pipeline that runs a fixed descriptor next to the reference (`../higgsfield-seedance/HELL-GRIND.md`), delete what **contradicts** the reference first — whether a matching descriptor helps or hurts there is OPEN (`../shared/house-rulings.md` P1-1) |
+| Character doesn't match reference | Prompt text contradicts the reference (a colour, a feature, a garment the image does not show), or varies between shots | **Delete the text that contradicts the reference first** — binding in every regime. Then by regime (`../shared/house-rulings.md` P1-1): **start frame / I2V** — the image is frame one; delete ALL appearance text, describe only motion, action and camera. **No identity reference** — keep the full descriptor, word for word; it is the only identity the model gets. **Character reference attached as identity, multi-shot** — whether a *matching* descriptor helps or hurts is **OPEN — unmeasured**, no default on volume (the minimal-text side: `../higgsfield-seedance/SKILL.md` § Tag naming; the full-descriptor side: `../higgsfield-seedance/HELL-GRIND.md`). Whatever you keep is fixed wording from one source, never varied between shots |
 | Action stiff or lacking impact | Missing intent/physics language | Add degree adverbs (`violently`, `gently`, `explosively`) and physics consequences (`dust erupts`, `sparks fly`, `fabric tears`) |
 | Output "not what I wanted" (vague) | Ambiguous prompt with subjective language | Run Anti-Slop Check: replace `beautiful`, `stunning`, `epic`, `amazing`, `dynamic` with observable, measurable details |
 | Audio not matching video | Audio description conflicting with visual description, or uploaded audio being overridden | Use timestamp anchoring for uploaded audio. Remove ambient/SFX tokens when using @Audio references |
@@ -213,8 +213,10 @@ Output bad?
 ├── Camera wrong → How many camera moves specified?
 │   ├── Multiple → Reduce to ONE move (One-Move Rule)
 │   └── One → Try Smart mode instead, or use @Video camera transfer
-├── Character wrong → Does prompt describe character appearance?
-│   ├── Yes → Delete appearance (contradicting text first — P1-1), keep action/emotion
+├── Character wrong → Does prompt text contradict the reference?
+│   ├── Yes → Delete the contradicting text first (every regime — P1-1)
+│   │        start frame / I2V: delete ALL appearance, keep motion/camera
+│   │        reference-attached multi-shot: matching descriptor = OPEN
 │   └── No → Use better reference (frontal + 3/4 + profile shots)
 ├── Action weak → Does prompt have physics language?
 │   ├── No → Add degree adverbs + physical consequences

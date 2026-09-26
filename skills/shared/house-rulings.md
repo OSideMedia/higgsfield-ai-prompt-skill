@@ -30,13 +30,16 @@ directory. All entries dated **2026-09-26** unless marked.
   appearance text. (b) **no reference image** carries identity — the full descriptor, word for
   word, in every prompt; it is the only identity the model gets. (c) a character **reference
   attached as identity**, multi-shot — contested.
-- **Side A — full descriptor, never shortened:** `../higgsfield-seedance/HELL-GRIND.md` § The
-  core problem `[OFFICIAL — Hell Grind brief]`; restated by the Higgsfield Studio breakdowns
-  `[FIELD]`; `negative-constraints.md` § Face / Identity Artifacts (copy-paste the exact description).
+- **Side A — full descriptor beside the reference, never shortened:**
+  `../higgsfield-seedance/HELL-GRIND.md` § The core problem `[OFFICIAL — Hell Grind brief]`.
 - **Side B — minimal text beside the reference:** `../higgsfield-seedance/SKILL.md` § Tag naming +
-  minimal reference text `[OFFICIAL — Higgsfield prompt-writter.skill]`; the repair move in
-  `../higgsfield-troubleshoot/SKILL.md` § Quick Diagnostic; `../higgsfield-soul/SKILL.md`
-  § Prompt economy `[EMPIRICAL — Joey]`.
+  minimal reference text `[OFFICIAL — Higgsfield prompt-writter.skill]`;
+  `../higgsfield-soul/SKILL.md` § Prompt economy `[EMPIRICAL — Joey]`.
+- **Not a side on volume:** the Higgsfield Studio breakdowns `[FIELD]` and `negative-constraints.md`
+  § Face / Identity Artifacts ("copy-paste the exact character description") back **verbatim**
+  wording — which both sides already agree on — not how much of it goes in.
+  `../higgsfield-troubleshoot/SKILL.md` § Quick Diagnostic states all three regimes and takes no
+  side on (c).
 - **Default:** none on *volume* — neither failure is clearly cheaper. Settled on both sides and
   binding everywhere: the identity text is fixed wording from one source, never varied between
   shots, never contradicting the reference; when a character stops matching its reference,
