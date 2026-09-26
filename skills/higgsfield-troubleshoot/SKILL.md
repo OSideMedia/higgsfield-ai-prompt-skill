@@ -6,8 +6,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
-  version: 3.2.1
-  updated: 2026-08-09
+  version: 3.3.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -25,10 +25,11 @@ metadata:
 - Change exactly one variable between takes so causality stays readable [→](#one-variable-per-retake)
 - Declare the take budget AND a written "good enough" bar before take one; half-budget with no progress forces a strategy change [→](#attempt-budget--declared-before-take-one-heuristic)
 - The shot log is the ledger row — one line per take, changed variable in `notes` [→](#the-shot-log-is-the-ledger-row)
-- Continuation/extension defects: 12-row symptom → cause → single-repair-variable atlas (planned-vs-observed opening, motion-vector drop, prop contradictions, chain-depth drift…) [→](#sequence--continuation-failure-atlas)
-- Retry Ladder: 4 terminating rungs — re-run once verbatim → treat 2nd failure as over-packing → switch model for that shot → stop after 3 paid attempts with named options [→](#retry-ladder--a-failed-take-edits-the-plan-not-just-the-dice)
-- Log EVERY confirmed fix to learning memory, and check memory first before troubleshooting [→](#log-the-outcome--always)
-- Vision-grounded diagnosis (stills only): vision proposes the `reject_reason`, the human confirms — advisory until a class clears the agreement gate [→](#vision-grounded-diagnosis--classify-the-rejected-still-dont-guess)
+- Continuation/extension defects: 12-row symptom → cause → single-repair-variable atlas (planned-vs-observed opening, motion-vector drop, prop contradictions, chain-depth drift…) [→](#sequence-continuation-failure-atlas)
+- Retry Ladder: 4 terminating rungs — re-run once verbatim → treat 2nd failure as over-packing → switch model for that shot → stop after 3 paid attempts with named options [→](#retry-ladder-a-failed-take-edits-the-plan-not-just-the-dice)
+- Five stop numbers, one ladder — they count different things: 2 same-flaw re-rolls → rewrite · 3 paid attempts (no declared budget) → named options · 4 v2v batches (ceiling) → prompt/source fault · 10–15 surgical iterations (declared budget) → simplify the shot · 65–100 generations per kept shot is a project benchmark, never a stop rule. The earliest tripwire wins [→](#stop-rule-ladder-which-number-governs)
+- Log EVERY confirmed fix to learning memory, and check memory first before troubleshooting [→](#log-the-outcome-always)
+- Vision-grounded diagnosis (stills only): vision proposes the `reject_reason`, the human confirms — advisory until a class clears the agreement gate [→](#vision-grounded-diagnosis-classify-the-rejected-still-dont-guess)
 
 ## Common Problems & Fixes
 
@@ -196,7 +197,7 @@ Before generating, verify:
 |---------|-------------|-----|
 | Output blurry, jittery, or morphing | Overspecification — prompt too long or too detailed | Short-form: cut to 30–100 words; use @reference images/videos instead of 50+ words of description. Block-scaffold briefs: don't shorten — tighten structure instead (one axis per clause, HARD RULE 8 regime) |
 | Camera chaotic, spinning, or jittering | Violated the One-Move Rule — multiple camera moves in one shot | Rewrite to ONE primary camera move per shot. Use Cinema Studio 3.0's Smart mode, or split into multi-shot |
-| Character doesn't match reference | Prompt is re-describing the character's appearance | Delete ALL physical descriptions. Describe ONLY action and emotion. The @reference carries identity |
+| Character doesn't match reference | Prompt is re-describing the character's appearance | Delete ALL physical descriptions. Describe ONLY action and emotion. The @reference carries identity. *Scope:* certain on a start-frame / I2V shot. In a pipeline that runs a fixed descriptor next to the reference (`../higgsfield-seedance/HELL-GRIND.md`), delete what **contradicts** the reference first — whether a matching descriptor helps or hurts there is OPEN (`../shared/house-rulings.md` P1-1) |
 | Action stiff or lacking impact | Missing intent/physics language | Add degree adverbs (`violently`, `gently`, `explosively`) and physics consequences (`dust erupts`, `sparks fly`, `fabric tears`) |
 | Output "not what I wanted" (vague) | Ambiguous prompt with subjective language | Run Anti-Slop Check: replace `beautiful`, `stunning`, `epic`, `amazing`, `dynamic` with observable, measurable details |
 | Audio not matching video | Audio description conflicting with visual description, or uploaded audio being overridden | Use timestamp anchoring for uploaded audio. Remove ambient/SFX tokens when using @Audio references |
@@ -213,7 +214,7 @@ Output bad?
 │   ├── Multiple → Reduce to ONE move (One-Move Rule)
 │   └── One → Try Smart mode instead, or use @Video camera transfer
 ├── Character wrong → Does prompt describe character appearance?
-│   ├── Yes → Delete appearance, keep only action/emotion
+│   ├── Yes → Delete appearance (contradicting text first — P1-1), keep action/emotion
 │   └── No → Use better reference (frontal + 3/4 + profile shots)
 ├── Action weak → Does prompt have physics language?
 │   ├── No → Add degree adverbs + physical consequences
@@ -231,7 +232,7 @@ Cinema Studio 3.0's generation engine produces ~90% usable output. If outputs ar
 
 ## Take Triage — Five Verdicts for a Delivered Take
 
-`[FIELD — community, Emily2040/seedance-2.0 skill (MIT), re-derived 2026-08-09]`
+`[EMPIRICAL — Emily2040/seedance-2.0 skill (MIT), re-derived 2026-08-09]`
 The sections above repair outright failure. Most real takes land in between —
 partially good — and the expensive habit is treating every flaw as a
 regeneration. Before anything re-fires, every delivered take gets exactly one
@@ -266,7 +267,9 @@ Write two things down before the first fire:
 
 - **A take budget** — a number, sized against the acceptance-rate reality in
   `../../production-benchmarks.md` (draft-tier exploration stretches it —
-  § Drafts Validate the Prompt, Not the Take).
+  `../higgsfield-seedance/SKILL.md` § Drafts Validate the Prompt, Not the Take).
+  A declared budget is what replaces the Retry Ladder's default of three paid
+  attempts (§ Stop-Rule Ladder).
 - **A written "good enough" bar** — the primary thing delivered, secondary
   flaws postable. Without it written down, the bar silently becomes
   "perfect," and no budget survives that.
@@ -290,7 +293,7 @@ re-reading the log beats re-living it.
 
 ## Sequence & Continuation Failure Atlas
 
-`[FIELD — community, Emily2040/seedance-2.0 skill (MIT), re-derived 2026-08-09]`
+`[EMPIRICAL — Emily2040/seedance-2.0 skill (MIT), re-derived 2026-08-09]`
 Symptom → likely cause → single repair variable for chained work:
 continuations, extensions, and start-frame-pinned handoffs. One repair
 variable per retake — the one-variable rule applied to sequences. Handoff
@@ -321,7 +324,7 @@ same wall.
 
 ## Retry Ladder — a failed take edits the plan, not just the dice
 
-`[EMPIRICAL — MiniMax H3 skill corpus, re-derived]` When a take fails or drifts and the
+`[EMPIRICAL — MiniMax H3 skill corpus, re-derived 2026-08-09]` When a take fails or drifts and the
 diagnostic tree confirms the references and mappings were right, escalate in this order.
 Each rung terminates — never loop on one rung:
 
@@ -339,6 +342,39 @@ Each rung terminates — never loop on one rung:
 
 Log the rung that resolved it (§ Log the Outcome) — rung-2 resolutions are shotlist
 authoring lessons, not generation luck.
+
+---
+
+## Stop-Rule Ladder — which number governs
+
+`[HOUSE]` ordering of five sourced numbers (`../shared/house-rulings.md` P1-2). The repo
+carries five "stop" numbers and they do not disagree — **they count different things**. Read
+the unit before the number. **The earliest tripwire that fires wins; every later number is a
+ceiling, never a quota.**
+
+| Rung | What is counted | Where it applies | Tripwire | When it trips | Source |
+|---|---|---|---|---|---|
+| 1 | Re-rolls of one **unchanged** prompt showing the **same** flaw | any shot | **2** | Stop re-rolling; rewrite — diagnose, change one variable. Different flaws per roll → batch-and-cull instead | § Take Triage `[EMPIRICAL — Emily2040/seedance-2.0 skill (MIT), re-derived 2026-08-09]` |
+| 2 | **Paid attempts** on one shot whose references and mapping are verified right, **no budget declared** | the agent's own default ceiling | **3** | Stop; present named options — accept the best take, re-scope, defer, or ship a `placeholder: missing clip` note | § Retry Ladder, rung 4 `[EMPIRICAL — MiniMax H3 skill corpus, re-derived 2026-08-09]` |
+| 3 | **Batches** of one v2v prompt + source showing the same defect | Seedance 2.5 `omni_reference` v2v | **4** (ceiling) | Stop batching — the prompt or the source is at fault; check the plate has an anchor for the action, else fall back to i2v | `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 5 `[FIELD — AI-vs-VFX, 2026-08-08]` |
+| 4 | **Prompt versions** — one surgical line changed each — on one shot, inside a **declared** production budget | feature-film and hero shots | **10–15** (ceiling) | Stop rewording; simplify the *shot* — split it, remove an action, change the angle | `../higgsfield-seedance/HELL-GRIND.md` § The iteration loop `[OFFICIAL — Hell Grind brief]` |
+| — | **Generations per kept shot** across a project | planning only | 65–100 per kept shot; 72 for one iteration-heavy establishing shot | Nothing — a budget benchmark, **never a stop rule** and never a target | `../../production-benchmarks.md` `[FIELD — 13-project harvest]` · Hell Grind disclosure |
+
+How they compose:
+
+- **Rung 1 fires inside every other rung.** Inside a v2v batch run, two takes with the same
+  defect already mean rewrite — four batches is where the field build *learned* the lesson,
+  not a count to reach. Stopping at the first repeat is the cheaper failure: at worst one
+  rewrite of a prompt that was fine, at best the batches you did not buy.
+- **Rung 2 vs rung 4 is decided by § Attempt budget.** With no declared budget the agent stops
+  at three paid attempts and hands the choice back. A user who declared a budget — a feature,
+  a hero shot — has replaced that default; the half-budget tripwire applies, and 10–15
+  surgical iterations is the ceiling before the shot itself is restructured.
+- **Rung 4 counts rewrites, not re-rolls.** Every Hell Grind iteration changes one line, so
+  rung 1 is already satisfied inside it.
+- **The benchmark never licenses spend.** "65–100 per kept shot" describes a finished
+  project's funnel. Quoting it to justify another roll of a shot that tripped rung 1 or 2 is
+  the misuse this ladder exists to stop.
 
 ---
 

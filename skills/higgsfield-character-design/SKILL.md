@@ -4,8 +4,8 @@ description: "Pre-production story-and-character development for Higgsfield proj
 user-invocable: true
 metadata:
   tags: [higgsfield, character-design, story, worldbuilding, character-sheet, story-bible, visual-dna, pre-production, consistency, narrative]
-  version: 1.2.0
-  updated: 2026-08-22
+  version: 1.3.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -23,9 +23,9 @@ The rest of this skill library answers *"how do I prompt this?"* This skill answ
 - The strongest anti-slop tool is the **Forbidden List** in the Style Sheet — naming what the world is NOT is often more useful than the palette [→](#step-5--style-sheet-visual-dna--forbidden-list)
 - Specificity beats adjectives: if *any* character could say it, it's a stereotype; keep asking **"why?"** until the answer surprises you [→](#anti-generic-drills)
 - Fillable worksheets live in `../../templates/character-design/` — hand them to the user or fill them together [→](#templates)
-- Construction laws for the sheet as an artifact: **plain grey background** · creature sheets get **two close-ups (mouth open + closed)** · the **face-lock crop** · a **size-ref frame** for scale between two subjects [FIELD] [→](#sheet-construction-laws)
-- Once the character **looks** right, don't jump to scenes — run a **screen test**: casting read → role options → playable lines → voice triggers → one audition prompt [EMPIRICAL] [→](#screen-test--audition)
-- This skill produces inputs; it does **not** generate. Hand the locked Visual DNA + character sheet to `higgsfield-prompt` [→](#step-6--hand-off-to-generation)
+- Construction laws for the sheet as an artifact: **plain grey background** · creature sheets get **two close-ups (mouth open + closed)** · the **face-lock crop** · a **size-ref frame** for scale at extreme ratios [FIELD] — grey and the one-face law are canonical in `../../templates/ad-asset-prep.md` [→](#sheet-construction-laws)
+- Once the character **looks** right, don't jump to scenes — run a **screen test**: casting read → role options → playable lines → voice triggers → one audition prompt [EMPIRICAL] [→](#screen-test-audition)
+- This skill produces inputs; it does **not** generate. Hand the locked Visual DNA + character sheet to `higgsfield-prompt` [→](#step-6-hand-off-to-generation)
 
 ---
 
@@ -140,7 +140,7 @@ This skill produces inputs; it does not generate. When the bible is locked, rout
 
 ### Ship the bible as a reusable artifact, not a paste
 
-`[DEMO — Joey story-bible-builder, 2026-08-16]` `[UNPROVEN HERE]` A bible that lives in a
+`[EMPIRICAL — Joey story-bible-builder skill (2026-08-16), re-derived 2026-08-22]` A bible that lives in a
 chat transcript gets re-explained every session, drifts a little each time it is retyped,
 and is the reason "the same" character comes back subtly different a week later. **Write it
 out once as a single dense canon document and reuse the file** — one artifact that every
@@ -155,9 +155,14 @@ Two ways it gets used, and they want slightly different shapes:
    retrieval: short labelled sections, one fact per line, no narrative throat-clearing.
 
 Keep it in `workspace/input/` so it is found the way every other supplied document is
-(root `SKILL.md` § Workspace). For anything recurring, give each character a **voice lock**
-and a **movement lock** — one line each, fixed wording, reused verbatim — so speech register
-and physical signature stay pinned the way the Visual DNA pins the look.
+(root `SKILL.md` § Working Folders). For anything recurring, give each character a **voice
+lock** and a **movement lock** — one line each, fixed wording, reused verbatim — so speech
+register and physical signature stay pinned the way the Visual DNA pins the look. The locks
+fix the *words*, not where they go: the movement lock is copied verbatim wherever that
+movement can happen and transformed, not deleted, where it cannot
+(`../higgsfield-acting/SKILL.md` § Scene adaptation, `../shared/house-rulings.md` P3-4); the
+voice lock goes into the audio field each time on Seedance 2.0 and once, into the role
+sentence, on 2.5 (`../higgsfield-acting/SKILL.md` § Voice, P2-2).
 
 **Build it by interview, not by questionnaire dump.** Scope first (how big is this — one
 short, or a series?), then the spine (premise, thesis, timeline, aesthetic), then factions,
@@ -180,7 +185,9 @@ ones you otherwise pay for in every downstream generation that references it.
 
 **Plain grey background, always.** Not a set, not an environment, not a gradient. A sheet
 built on a busy background makes the downstream model decide which pixels are the character
-and which are the world, and that decision costs re-rolls. Grey is the credit-saver.
+and which are the world, and that decision costs re-rolls. Grey is the credit-saver. Shade,
+the one-hex-per-project rule and every source's reason: `../../templates/ad-asset-prep.md`
+§ Design for win rate (the canonical home).
 
 **Creature and non-human sheets carry two head close-ups: mouth open and mouth closed.**
 A creature detailed enough to be interesting is detailed enough to glitch between
@@ -192,11 +199,18 @@ full body, head closed, head open.
 front full-body, back full-body, close-up — and at full-body scale the face is only a few
 dozen pixels, so averaging drags identity toward generic. **Crop the heads out of the
 full-body panels.** The full-body frames keep doing their real job (build, silhouette,
-wardrobe); the close-up becomes the single source of truth for the face.
+wardrobe); the close-up becomes the single source of truth for the face. (The Hell Grind
+sheet removes only the front figure's head — both variants leave one readable face; the
+canonical statement is `../../templates/ad-asset-prep.md` § Design for win rate.)
 
-**Scale between two subjects needs its own asset.** Relative size is the first thing to
-drift and the last thing words can fix — "tiny compared to the enormous creature" returns a
-different size every generation, and worst on wides. Build a **size-ref frame**: merge the
+**Scale between two subjects needs its own asset — at extreme ratios.** Relative size is the
+first thing to drift, and *vague* words do not fix it — "tiny compared to the enormous
+creature" returns a different size every generation, and worst on wides. A true, visible
+body landmark does hold: near-human props take a computed anchor sentence, and one feature
+held a ≥5× giant in prose with the human in frame (`../higgsfield-seedance-2-5/VFX-PIPELINE.md`
+§ Stage 2, `../higgsfield-seedance/HELL-GRIND.md` § Solutions born under deadline). Where
+both are possible, stack the landmark sentence and the size-ref (`../shared/house-rulings.md`
+P2-5). Build a **size-ref frame**: merge the
 two character sheets plus a frame whose scale was right into one image showing them
 together, write the proportion in human-height comparisons ("wingspan as wide as twenty
 humans lying head to toe"), save it as its own named asset, and attach it to every shot
@@ -207,7 +221,9 @@ oversized one reads as fake.
 **Fix a flawed sheet; don't rebuild it.** A warped logo or a colour cast on an otherwise
 good sheet is a one-line edit on the model that holds inputs best (Nano Banana 2), not a
 re-prompt: `change the logo to the one in image two`. Re-prompting re-rolls everything that
-was already right. Model routing per asset class: `../../image-models.md` § Routing by
+was already right. On the character's **identity base**, mask only the changed region back
+onto the untouched original (`../higgsfield-soul/SKILL.md` § The Untouched Base,
+`../shared/house-rulings.md` P2-3). Model routing per asset class: `../../image-models.md` § Routing by
 Asset Class.
 
 ---

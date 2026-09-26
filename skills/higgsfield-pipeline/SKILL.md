@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
-  version: 3.5.1
+  version: 3.6.0
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -39,6 +39,7 @@ metadata:
 - End extension prompts on a camera-angle change so the join reads as coverage; plan transitions ahead (last-channel-on-TV trick) [→](#clean-join-planning)
 - Draw a top-down schema when 2+ characters, a key prop placement, or complex camera geometry — prompt in absolute terms ("A 2m from B") [→](#spatial-blocking--top-down-schema-for-multi-character-scenes)
 - Never animate a "good enough" image; if the character looks wrong in the Hero Frame, Recast is the fix — not the animation prompt [→](#pipeline-pitfalls)
+- [FIELD] The edit is a loop with a declared exit: assembly → rough cut → **generation supervision** (re-generate broken shots here, and only here) → fine cut → picture lock, after which there are no new generations; colour's first job is unifying each generation's baked-in grade [→](#the-edit-five-stages-to-picture-lock)
 
 
 ## The Core Insight
