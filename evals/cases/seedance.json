@@ -221,6 +221,70 @@
           "pattern": "@Image1"
         }
       ]
+    },
+    {
+      "id": "seedance-staging-reference-not-a-blocking-lock",
+      "description": "A staging diagram is sold as what it measured to be — safe, not a blocking lock — attached last, never in the first-frame role, backed by prose blocking (house-rulings P2-11)",
+      "request": "Can I attach a diagram to lock where my three characters stand in a Seedance shot?",
+      "response": "Routing to higgsfield-seedance (§ Spatial Layout Block) + templates/seedance/staging-reference.md.\n\nYou can attach one, but not to lock positions. A staging reference — thin, muted outline figures drawn front-on from the camera's side, no fills, no letters — was measured here: it does not reliably move the blocking (renders tracked the map's orientation 6/12, which is chance), and it is safe (0/18 bleed) when all three anti-bleed layers are in place.\n\nHow to use it:\n\n1. Attach the location and character references first and the staging reference last, as a position reference only.\n2. Never give it the first-frame role — a drawing there becomes frame one.\n3. Never name the map's graphic style in the video prompt, not even negated.\n4. Put the positions that must hold into a written Spatial Layout Block — screen position, depth layer, orientation, contact points for all three — because the prose is what carries the blocking.",
+      "assertions": [
+        {
+          "type": "regex_present",
+          "pattern": "^Routing to higgsfield-seedance"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)(does not|doesn't|won't) reliably (move|hold|pin)"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)\\blast\\b"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)spatial layout block"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\b(pins|locks|guarantees|fixes|holds)\\s+(the\\s+|their\\s+|your\\s+)?(positions|blocking|placement)\\b"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\b(use|attach|set|give)\\s+(it|the (map|diagram|drawing|staging reference))\\s+(as|in)\\s+the\\s+(first|start(ing)?)[- ]frame"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)top[- ]down[^.\\n]{0,40}\\battach"
+        }
+      ]
+    },
+    {
+      "id": "seedance-audio-reference-total-cap",
+      "description": "Three individually-legal 6 s audio references exceed the measured ≤15.2 s TOTAL cap on Seedance 2.0 — and the answer states the measurement is third-party / unverified on Higgsfield",
+      "request": "I want to attach three 6-second MP3 clips as audio references to one Seedance 2.0 generation. Each is under the 15-second limit, so that's fine, right?",
+      "response": "Routing to higgsfield-audio (§ Audio by Model → Seedance 2.0) + higgsfield-seedance.\n\nProbably not. Each clip is legal on its own (per-clip bounds 1.8–15.2 s), but the total across all attached audio clips was measured capped at ≤15.2 s — three 6 s clips come to 18 s, and in that measurement they were rejected with a 400. It is a third-party measurement on the China Ark lane; Higgsfield's own enforcement is unverified, so if the attach fails, the total cap is the first suspect.\n\nKeep the total at or under 15.2 s: trim to three 5 s clips (15 s), or drop one clip. MP3 only — WAV and AAC fail silently.",
+      "assertions": [
+        {
+          "type": "regex_present",
+          "pattern": "15\\.2\\s*s"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)\\btotal\\b"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)(unverified|third[- ]party)"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)^(yes|sure|that'?s fine)\\b"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\b(three|3)\\s*(×|x)?\\s*6\\s*-?\\s*s(ec(ond)?s?)?\\b[^.\\n]{0,60}\\b(fine|ok|okay|legal|works|will work)\\b"
+        }
+      ]
     }
   ]
 }

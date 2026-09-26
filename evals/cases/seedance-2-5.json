@@ -172,7 +172,7 @@
     },
     {
       "id": "s25-v2v-routes-to-omni-reference",
-      "description": "A footage-transformation request (swap the subject, keep every other pixel) routes to omni_reference with the plate as a video reference — NOT video_edit — and duration is matched to the source",
+      "description": "A footage-transformation request (swap the subject, keep every other pixel) routes to omni_reference with the plate as a video reference — NOT video_edit — and duration is matched to the source — and the Duration header equals the stated 4-second source (the harness ignores `request`, so the source length is encoded here)",
       "model": "seedance_2_5",
       "request": "I have a 4-second clip of a guy against a rock wall. Swap him for my character sheet and keep everything else identical.",
       "response": "Routing to higgsfield-seedance-2-5 (§ The Mode Router + VFX-PIPELINE.md § Stage 4).\n\n**Model**: Seedance 2.5\n**Mode**: omni_reference  **Duration**: 4s  **Resolution**: 720p\n\nThis is a footage transformation, not a scoped edit, so it runs in omni_reference with the plate attached as a video reference — that is the lane where duration is settable, and it must be matched to the source. video_edit would ignore duration and bill by the master's full length. Your plate is already at the 4s floor; a shorter clip would need its last frame freeze-framed out to 4s first.\n\n```\nSCENE CONTEXT\nVideo-to-video character replacement. Replace the man in @video1 with the man from @sheet. Everything else stays exactly as in @video1.\n\nACTIVE REFERENCES\n@video1 — source footage: master for camera, framing, focus, motion, expression timing, background, lighting, grain and duration.\n@sheet — replacement character: young man, curly black hair, mustache, charcoal-gray softshell jacket. 100% matches the reference.\n\nEDIT INSTRUCTION\nThe man from @sheet takes the original man's place and inherits his exact performance frame by frame: same body position and posture, same head angle, same expression with identical blink timing, same motion at the exact same frames with matching motion blur. Silhouette scale and screen position match the original at every frame.\n\nSTYLE\nPhotoreal, seamless integration into the source plate: grain, motion blur, focus falloff, compression character and color match @video1 so the replaced man is indistinguishable from originally shot footage.\n\nPOSITIVE LOCKS\nCamera behavior, framing and focus identical to @video1 for the full duration, one continuous shot. Every pixel outside the replaced man remains exactly as in @video1. Duration and all action timing unchanged.\n```",
@@ -187,6 +187,14 @@
         {
           "type": "regex_present",
           "pattern": "(?i)mode\\*?\\*?:\\s*omni_reference"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)\\*\\*Duration\\*\\*:\\s*4\\s*s\\b"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\*\\*Duration\\*\\*:\\s*(?!4\\s*s\\b)\\d+\\s*s"
         },
         {
           "type": "regex_present",
@@ -226,7 +234,42 @@
         },
         {
           "type": "regex_absent",
+          "pattern": "(?i)\\b(run|try|fire|queue|do|launch)\\s+(a\\s+few\\s+|some\\s+|another\\s+|an?\\s+|\\d+\\s+|two\\s+|three\\s+|four\\s+|five\\s+|more\\s+|additional\\s+|extra\\s+|further\\s+)+batch(es)?\\b"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\bkeep (batching|re-?rolling)\\b"
+        },
+        {
+          "type": "regex_absent",
           "pattern": "(?i)has no start_image role"
+        },
+        {
+          "type": "antislop_absent"
+        }
+      ]
+    },
+    {
+      "id": "s25-no-bgm-not-in-music-bracket",
+      "description": "A no-music 2.5 prompt leads with the positive diegetic list and writes the suppression as plain text — never inside the () music bracket (house-rulings P2-7; NO BGM vs No music. is OPEN, both legal)",
+      "model": "seedance_2_5",
+      "request": "Seedance 2.5 prompt from my two reference photos: a woodworker at her bench. It must have no music — only the room.",
+      "response": "Routing to higgsfield-seedance-2-5 (§ Audio and Text — Bracket Syntax + templates/seedance/omni-reference-2-5.md).\n\n**Model**: Seedance 2.5\n**Mode**: omni_reference  **Aspect ratio**: 16:9  **Duration**: 8s  **Resolution**: 720p\n\n```\n[Characters]\n<Woodworker> corresponds to @Image 1. Use only the appearance, hairstyle, and canvas apron.\n\n[Scenes]\n<Workshop Bench> references @Image 2. Use only the spatial layout, timber surfaces, and window light. Do not use the people in the image.\n\n[Stage 1]\nInitial state: <Woodworker> stands at <Workshop Bench>, a walnut board clamped in front of her.\nPrimary event: <Woodworker> pares a long curl of walnut with the chisel.\nEnd state: the curl drops onto the bench; the chisel rests flat beside the board.\n\n[Audio]\nRoom tone, the chisel biting walnut, the curl of wood dropping onto the bench, her slow breath. NO BGM.\n```\n\nThe suppression sits after the positive list and outside the `()` bracket — `()` is the music channel, so a suppression written inside it would read as a music cue. `NO BGM` and `No music.` are both in use here; which holds better is unmeasured.",
+      "assertions": [
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "^Routing to higgsfield-seedance-2-5"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\(\\s*[^)]{0,40}\\b(no (background )?music|no bgm|no score|without music)\\b[^)]{0,40}\\)"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?is)\\[Audio\\][^\\[]*?(room tone|diegetic)[^\\[]*?(NO BGM|No music\\.)"
         },
         {
           "type": "antislop_absent"
