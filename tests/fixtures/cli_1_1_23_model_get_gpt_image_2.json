@@ -1,0 +1,84 @@
+{
+  "display_name": "GPT Image 2",
+  "job_type": "gpt_image_2",
+  "params": [
+    {
+      "name": "aspect_ratio",
+      "type": "string",
+      "default": "1:1",
+      "required": false,
+      "enum": [
+        "auto",
+        "1:1",
+        "4:3",
+        "3:4",
+        "16:9",
+        "21:9",
+        "9:16",
+        "3:2",
+        "2:3",
+        "4:5",
+        "5:4"
+      ]
+    },
+    {
+      "name": "background",
+      "type": "string|null",
+      "default": null,
+      "required": false,
+      "enum": [
+        "auto",
+        "opaque",
+        "transparent"
+      ]
+    },
+    {
+      "name": "image_references",
+      "type": "array",
+      "default": null,
+      "required": false
+    },
+    {
+      "name": "is_inpaint",
+      "type": "boolean",
+      "default": false,
+      "required": false
+    },
+    {
+      "name": "mask",
+      "type": "object|null",
+      "default": null,
+      "required": false
+    },
+    {
+      "name": "prompt",
+      "type": "string",
+      "default": null,
+      "required": true
+    },
+    {
+      "name": "quality",
+      "type": "string",
+      "default": "high",
+      "required": false,
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    {
+      "name": "resolution",
+      "type": "string",
+      "default": "2k",
+      "required": false,
+      "enum": [
+        "1k",
+        "2k",
+        "4k"
+      ]
+    }
+  ],
+  "rules": [],
+  "type": "image"
+}

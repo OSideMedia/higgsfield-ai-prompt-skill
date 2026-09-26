@@ -1,0 +1,151 @@
+{
+  "display_name": "Seedance 2.5",
+  "job_type": "seedance_2_5",
+  "params": [
+    {
+      "name": "aspect_ratio",
+      "type": "string",
+      "default": "16:9",
+      "required": false,
+      "enum": [
+        "auto",
+        "21:9",
+        "16:9",
+        "4:3",
+        "1:1",
+        "3:4",
+        "9:16"
+      ]
+    },
+    {
+      "name": "audio_references",
+      "type": "array",
+      "default": null,
+      "required": false
+    },
+    {
+      "name": "bitrate_mode",
+      "type": "string",
+      "default": "standard",
+      "required": false,
+      "enum": [
+        "standard",
+        "high"
+      ]
+    },
+    {
+      "name": "duration",
+      "type": "integer",
+      "default": 5,
+      "required": false
+    },
+    {
+      "name": "end_image",
+      "type": "object|null",
+      "default": null,
+      "required": false
+    },
+    {
+      "name": "extension_mode",
+      "type": "string|null",
+      "default": null,
+      "required": false,
+      "enum": [
+        "backward",
+        "forward"
+      ]
+    },
+    {
+      "name": "generate_audio",
+      "type": "boolean",
+      "default": true,
+      "required": false
+    },
+    {
+      "name": "image_references",
+      "type": "array",
+      "default": null,
+      "required": false
+    },
+    {
+      "name": "mode",
+      "type": "string",
+      "default": "t2v",
+      "required": false,
+      "enum": [
+        "t2v",
+        "omni_reference",
+        "video_edit",
+        "video_extension"
+      ]
+    },
+    {
+      "name": "prompt",
+      "type": "string",
+      "default": null,
+      "required": true
+    },
+    {
+      "name": "resolution",
+      "type": "string",
+      "default": "720p",
+      "required": false,
+      "enum": [
+        "480p",
+        "720p",
+        "1080p"
+      ]
+    },
+    {
+      "name": "start_image",
+      "type": "object|null",
+      "default": null,
+      "required": false
+    },
+    {
+      "name": "video_references",
+      "type": "array",
+      "default": null,
+      "required": false
+    }
+  ],
+  "rules": [
+    {
+      "cel": "params.mode != \"t2v\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) == 0",
+      "message": "mode 't2v' does not accept reference media"
+    },
+    {
+      "cel": "params.mode != \"omni_reference\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) > 0",
+      "message": "mode 'omni_reference' requires at least one reference media item"
+    },
+    {
+      "cel": "size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) <= 50",
+      "message": "at most 50 reference media items are allowed in total"
+    },
+    {
+      "cel": "params.mode != \"video_edit\" || size(params.video_references) == 1",
+      "message": "mode 'video_edit' requires exactly one video reference"
+    },
+    {
+      "cel": "params.mode != \"video_extension\" || size(params.video_references) >= 1",
+      "message": "mode 'video_extension' requires at least one video reference"
+    },
+    {
+      "cel": "params.mode != \"video_extension\" || !(params.extension_mode == null)",
+      "message": "'extension_mode' is required for mode 'video_extension'"
+    },
+    {
+      "cel": "params.mode == \"video_extension\" || params.extension_mode == null",
+      "message": "'extension_mode' is only allowed for mode 'video_extension'"
+    },
+    {
+      "cel": "size(params.image_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) <= 30",
+      "message": "at most 30 images are allowed (counting start_image and end_image)"
+    },
+    {
+      "cel": "params.mode == \"omni_reference\" || (params.start_image == null && params.end_image == null)",
+      "message": "start_image and end_image are only allowed for mode 'omni_reference'"
+    }
+  ],
+  "type": "video"
+}

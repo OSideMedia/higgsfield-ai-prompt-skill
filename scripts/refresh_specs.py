@@ -14,6 +14,19 @@ WHY THE CLI IS A DETECTOR, NOT A SOURCE OF TRUTH
   CANNOT see a pure cross-constraint prose change when enum membership holds.
   That blind spot is acknowledged and logged, never silently passed.
 
+WHAT THE SELF-DIFF WATCHES (v3.37.0 — before this, only the OLD view's
+params were walked and only enum+default were kept, so a NEW param such as
+seedance_2_5 `start_image`, a range/type change, or a `required` flip exited 0
+"Fresh" — 8 models gained params between the 08-07 baseline and 09-26 unseen):
+  - models added / removed from the catalog
+  - params ADDED (a media role such as `start_image` / `mask` is reported as a
+    media-role change) and params gone
+  - enum options, defaults, `type`, `required`, `min` / `max`
+  - CEL constraint rules (`rules`)
+  Views carry `"view": 2`; a pre-v3.37 baseline (no marker) is still read —
+  type/required/min/max are compared only when BOTH sides carry them, so an
+  old baseline never false-alarms on a channel it never recorded.
+
 TWO-TIER MODEL
   Tier 1 (this script, headless): detect drift → tell you WHEN to refresh.
   Tier 2 (unchanged, interactive): a full `models_explore` dump → sync_specs.py,
@@ -35,25 +48,36 @@ DEFAULT MODE — CLI-baseline self-diff (the trustworthy tripwire)
   `--vs-snapshot` keeps the legacy mode (CLI vs the models_explore snapshot —
   "is my snapshot behind the live CLI?"), which is source-disagreement-prone.
 
+3D MODELS
+  The CLI has NO `model list --3d` flag (1.1.23: --image/--video/--audio/--text
+  only). 3d rows are taken from the UNFILTERED `model list --json` by the row's
+  own `type` field ("3d") — the CLI's classification, not a guess.
+
 Usage:
   python3 scripts/refresh_specs.py --update-baseline   # bootstrap / accept current CLI
   python3 scripts/refresh_specs.py                      # self-diff vs baseline (default)
-  python3 scripts/refresh_specs.py --type video         # one type
+  python3 scripts/refresh_specs.py --type video         # one type (video|image|audio|3d)
   python3 scripts/refresh_specs.py --vs-snapshot        # legacy snapshot-diff
   python3 scripts/refresh_specs.py --json               # machine-readable diff
+  python3 scripts/refresh_specs.py --status-json out.json   # CI: code/kind/line/remedy
 
 Exit codes (the three states must stay distinguishable — a silent failure would
 falsely read as "fresh", which is worse than the reactive WARN we already have):
   0  fresh — no change since baseline
   3  change detected — Tier 2 refresh + audit evals/cases/, then --update-baseline
-  1  pull failed — CLI/auth error (e.g. session expired; run `higgsfield auth login`)
+  1  pull failed — the CLI could not answer. The failure is CLASSIFIED from the
+     CLI's own stderr (kind=auth "Session expired" / kind=workspace "No
+     workspace selected" / kind=missing-cli / kind=no-baseline / kind=other) and
+     the verbatim CLI line is carried through, so CI names the right remedy
+     instead of always blaming the credentials
   2  usage error
   4  CLI output shape changed — the CLI's JSON no longer matches what this script
-     parses (e.g. the 1.0.1 `job_set_type`→`job_type` rename); fix the parser,
-     do NOT re-auth
+     parses (e.g. the 1.0.1 `job_set_type`→`job_type` rename, a `rules: null`, a
+     non-object payload); fix the parser, do NOT re-auth
 """
 import argparse
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -63,6 +87,18 @@ from sync_specs import SPECS_DIR, find_snapshot, snapshot_date
 CLI = "higgsfield"
 # Snapshot top-level fields that the CLI represents as parameters instead.
 _ASPECT_PARAM = "aspect_ratio"
+# Output types this tripwire covers. 3d has no CLI list flag (see module doc).
+TYPES = ("video", "image", "audio", "3d")
+_LIST_FLAG = {"video": "--video", "image": "--image", "audio": "--audio"}
+# Shape marker for views written by this version (extended per-param fields).
+VIEW_VERSION = 2
+# The CLI represents media roles as PARAMS (`start_image`, `image_references`,
+# `mask`, …); models_explore lists them as `medias[].roles`. A param whose name
+# matches is a media role — its arrival/departure is reported as such.
+MEDIA_ROLE_RE = re.compile(
+    r"^(?:mask|image|video|audio|start_image|end_image|input_\w+|\w+_references?)$")
+# Extended per-param fields compared only when both views are VIEW_VERSION 2.
+_EXTENDED_FIELDS = ("type", "required", "min", "max")
 # Committed last-accepted CLI state. The self-diff compares CLI-now against THIS
 # (apples-to-apples, same source), so a persistent CLI↔models_explore
 # disagreement — baked into the baseline once — never cries wolf again.
@@ -70,8 +106,66 @@ BASELINE_PATH = SPECS_DIR / "cli_baseline.json"
 
 
 class PullError(RuntimeError):
-    """The live pull failed (CLI missing, not authenticated, bad JSON). Kept
-    distinct from "drift" so the exit code can stay loud."""
+    """The live pull failed (CLI missing, not authenticated, no workspace, bad
+    JSON). Kept distinct from "drift" so the exit code can stay loud.
+
+    `kind` classifies the failure from the CLI's own words (see
+    classify_cli_failure) and `line` carries the verbatim CLI line, so the
+    remedy printed downstream matches the actual failure — 10 weekly CI runs
+    said "expired session" while the CLI was saying "No workspace selected."."""
+
+    def __init__(self, message: str, kind: str = "other", line: str = ""):
+        super().__init__(message)
+        self.kind = kind
+        self.line = line
+
+
+# Remedy per failure kind — one table, used by the CLI report, the status
+# JSON, and (via --status-json) the spec-drift workflow's ::error:: line.
+REMEDIES = {
+    "auth": "the CLI session expired or is not logged in — run "
+            "`higgsfield auth login` locally, then update the "
+            "HIGGSFIELD_CREDENTIALS repo secret from "
+            "~/.config/higgsfield/credentials.json",
+    "workspace": "the CLI has no workspace selected — run "
+                 "`higgsfield workspace list`, then `higgsfield workspace set "
+                 "<id>` locally; in CI set the HIGGSFIELD_WORKSPACE_ID repo "
+                 "secret so the workflow selects it before the pull",
+    "missing-cli": "install the Higgsfield CLI "
+                   "(brew install higgsfield-ai/tap/higgsfield)",
+    "no-baseline": "bootstrap the baseline: python3 scripts/refresh_specs.py "
+                   "--update-baseline (after a reviewed Tier 2 refresh)",
+    "shape": "the CLI's JSON output shape changed — update the parser in "
+             "scripts/refresh_specs.py (ShapeError sites), verify locally, and "
+             "bump LAST_VERIFIED_CLI in .github/workflows/spec-drift.yml. Do "
+             "NOT rotate credentials",
+    "other": "unrecognized CLI failure — read the verbatim CLI line and fix "
+             "that cause; do not assume an auth problem",
+}
+
+
+def classify_cli_failure(text: str) -> str:
+    """Map the CLI's stderr to a failure kind. Workspace is checked first: its
+    message ("Error: No workspace selected.") carries no auth words, but an
+    auth message may mention a workspace in passing."""
+    t = (text or "").lower()
+    if "no workspace selected" in t or re.search(r"workspace\b.*\b(select|not found|required)", t):
+        return "workspace"
+    if any(s in t for s in ("session expired", "not logged in", "not authenticated",
+                            "unauthorized", "unauthenticated", "auth login",
+                            "token expired", "invalid token", "login required")):
+        return "auth"
+    return "other"
+
+
+def _verbatim_line(text: str) -> str:
+    """The CLI line worth quoting: the first line that says error/expired/
+    workspace, else the first non-empty line."""
+    lines = [l.strip() for l in (text or "").splitlines() if l.strip()]
+    for l in lines:
+        if re.search(r"error|expired|workspace|denied|unauthori", l, re.IGNORECASE):
+            return l
+    return lines[0] if lines else ""
 
 
 class ShapeError(RuntimeError):
@@ -102,10 +196,20 @@ def _opts(values) -> list:
     return sorted(str(v) for v in (values or []))
 
 
+def is_media_role(name: str) -> bool:
+    return bool(MEDIA_ROLE_RE.match(name or ""))
+
+
 def snapshot_view(item: dict) -> dict:
-    """Comparable view of one committed-snapshot model (the tracked shape)."""
+    """Comparable view of one committed-snapshot model (the tracked shape).
+
+    `source: snapshot` — its param set is NOT the CLI's (models_explore keeps
+    aspect ratios and media roles outside `parameters`), so diff_model never
+    counts a CLI-only param as "added" against it; the structural two-way
+    comparison lives in scripts/snapshot_crosscheck.py."""
     return {
         "id": item["id"],
+        "source": "snapshot",
         "output_type": item.get("output_type"),
         "aspect_ratios": _opts(item.get("aspect_ratios")),
         "params": {
@@ -116,29 +220,61 @@ def snapshot_view(item: dict) -> dict:
     }
 
 
-def cli_view(get_json: dict) -> dict:
+def _shape(ok: bool, what: str):
+    if not ok:
+        raise ShapeError(f"model get: {what} — CLI output shape changed; "
+                         f"update refresh_specs.py")
+
+
+def cli_view(get_json) -> dict:
     """Comparable view of one `higgsfield model get` payload. The CLI calls the
     enum list `enum` (snapshot says `options`) and carries aspect ratios as an
-    `aspect_ratio` param rather than a top-level field — normalize both away."""
-    try:
-        params = {p["name"]: p for p in get_json.get("params", [])}
-    except (KeyError, TypeError) as e:
-        raise ShapeError(f"model get params shape changed ({e!r}) — "
-                         f"update refresh_specs.py")
+    `aspect_ratio` param rather than a top-level field — normalize both away.
+
+    Every structural surprise is a ShapeError (exit 4), never a TypeError /
+    AttributeError that the caller would misfile as a failed pull (exit 1):
+    a non-object payload, `params`/`rules` that are not lists (`rules: null`),
+    a param without a name, an `enum` that is not a list."""
+    _shape(isinstance(get_json, dict),
+           f"payload is {type(get_json).__name__}, expected an object")
+    raw_params = get_json.get("params", [])
+    _shape(isinstance(raw_params, list),
+           f"`params` is {type(raw_params).__name__}, expected a list")
+    params = {}
+    for p in raw_params:
+        _shape(isinstance(p, dict) and isinstance(p.get("name"), str),
+               f"param entry {str(p)[:60]!r} is not an object with a name")
+        enum = p.get("enum")
+        _shape(enum is None or isinstance(enum, list),
+               f"param {p['name']!r} enum is {type(enum).__name__}, expected a list")
+        params[p["name"]] = p
+    raw_rules = get_json.get("rules", [])
+    _shape(isinstance(raw_rules, list),
+           f"`rules` is {type(raw_rules).__name__}, expected a list")
+    rules = []
+    for r in raw_rules:
+        _shape(isinstance(r, dict) and (r.get("cel") or r.get("message")),
+               f"rule entry {str(r)[:60]!r} has neither `cel` nor `message`")
+        rules.append(str(r.get("cel") or r.get("message")))
     aspect = params.get(_ASPECT_PARAM, {})
+    view_params = {}
+    for name, p in params.items():
+        vp = {"options": _opts(p.get("enum")), "default": p.get("default"),
+              "type": p.get("type"), "required": p.get("required")}
+        for bound in ("min", "max"):   # absent today; tracked the day they appear
+            if p.get(bound) is not None:
+                vp[bound] = p[bound]
+        view_params[name] = vp
     return {
         "id": _model_id(get_json, "model get"),
+        "view": VIEW_VERSION,
         "output_type": get_json.get("type"),
         "aspect_ratios": _opts(aspect.get("enum")),
-        "params": {
-            name: {"options": _opts(p.get("enum")), "default": p.get("default")}
-            for name, p in params.items()
-        },
+        "params": view_params,
         # CLI 1.0.1 dropped per-param `enum` lists but added machine-readable
         # CEL constraint rules — the cross-constraint prose this tool was
         # historically blind to. Track them as their own comparison channel.
-        "rules": sorted(r.get("cel") or r.get("message") or ""
-                        for r in get_json.get("rules", [])),
+        "rules": sorted(rules),
     }
 
 
@@ -156,7 +292,16 @@ def diff_model(old: dict, new: dict) -> dict:
     signal is the OTHER direction: a value the live CLI has that the snapshot
     LACKS — a new capability shipped (the Seedance-4K staleness case). That is
     DRIFT. Removals / missing things are NOTICE: real-or-artifact, Tier 2 to
-    confirm. Returns {"drift": [...], "notice": [...]}."""
+    confirm. Returns {"drift": [...], "notice": [...]}.
+
+    Params are walked over the UNION of both sides (the pre-v3.37 loop walked
+    only the old side, so a new param was invisible). A param the new side
+    adds is DRIFT — `media_role_added` when it names a media role — but only
+    when both views come from the same source (both CLI): against a
+    models_explore snapshot view the CLI always "adds" aspect_ratio and the
+    media-role params, which is representation, not change. type / required
+    / min / max are compared only when BOTH views are VIEW_VERSION 2, so a
+    pre-v3.37 baseline never false-alarms on a channel it never recorded."""
     drift, notice = [], []
     aspect_added = [a for a in new["aspect_ratios"] if a not in old["aspect_ratios"]]
     aspect_gone = [a for a in old["aspect_ratios"] if a not in new["aspect_ratios"]]
@@ -165,11 +310,29 @@ def diff_model(old: dict, new: dict) -> dict:
     if aspect_gone:
         notice.append({"kind": "aspect_ratios_gone", "removed": aspect_gone})
 
+    same_source = old.get("source", "cli") == new.get("source", "cli")
+    extended = (old.get("view", 1) >= VIEW_VERSION and new.get("view", 1) >= VIEW_VERSION)
+    if same_source:
+        for pname in sorted(set(new["params"]) - set(old["params"])):
+            np = new["params"][pname]
+            entry = {"kind": "media_role_added" if is_media_role(pname) else "param_added",
+                     "param": pname}
+            for k in ("type", "required", "options", "default"):
+                if np.get(k) not in (None, []):
+                    entry[k] = np[k]
+            drift.append(entry)
+
     for pname, op in old["params"].items():
         np = new["params"].get(pname)
         if np is None:
-            notice.append({"kind": "param_missing", "param": pname})
+            notice.append({"kind": "media_role_removed" if (same_source and is_media_role(pname))
+                           else "param_missing", "param": pname})
             continue
+        if extended:
+            for field in _EXTENDED_FIELDS:
+                if op.get(field) != np.get(field):
+                    drift.append({"kind": f"{field}_changed", "param": pname,
+                                  "from": op.get(field), "to": np.get(field)})
         # New option only counts when BOTH sides enumerate (else it's the CLI
         # simply not listing options, not a real membership change).
         if op["options"] and np["options"]:
@@ -229,16 +392,29 @@ def has_drift(diff: dict) -> bool:
 
 def _cli_json(args: list) -> object:
     if shutil.which(CLI) is None:
-        raise PullError(f"`{CLI}` CLI not found on PATH (brew install higgsfield-ai/tap/higgsfield)")
+        raise PullError(f"`{CLI}` CLI not found on PATH (brew install higgsfield-ai/tap/higgsfield)",
+                        kind="missing-cli")
     proc = subprocess.run([CLI, *args, "--json"], capture_output=True, text=True)
     if proc.returncode != 0:
-        err = (proc.stderr or proc.stdout or "").strip().splitlines()
-        hint = err[0] if err else f"exit {proc.returncode}"
-        raise PullError(f"`{CLI} {' '.join(args)}` failed: {hint}")
+        text = "\n".join(x for x in (proc.stderr, proc.stdout) if x)
+        line = _verbatim_line(text) or f"exit {proc.returncode}"
+        raise PullError(f"`{CLI} {' '.join(args)}` failed: {line}",
+                        kind=classify_cli_failure(text), line=line)
     try:
         return json.loads(proc.stdout)
     except json.JSONDecodeError as e:
-        raise PullError(f"`{CLI} {' '.join(args)}` returned non-JSON: {e}")
+        # A non-JSON answer on exit 0 is usually a login/workspace prompt or an
+        # HTML error page — classify it like a failure so the remedy is right.
+        line = _verbatim_line(proc.stdout) or str(e)
+        raise PullError(f"`{CLI} {' '.join(args)}` returned non-JSON: {e}",
+                        kind=classify_cli_failure(proc.stdout), line=line)
+
+
+def _list_args(output_type: str) -> list:
+    """`model list` argv for one type. 3d has no CLI flag — list everything and
+    filter by the row's `type` (see pull_cli_views)."""
+    flag = _LIST_FLAG.get(output_type)
+    return ["model", "list", flag] if flag else ["model", "list"]
 
 
 def pull_cli_views(output_type: str, ids: set = None) -> tuple:
@@ -246,13 +422,24 @@ def pull_cli_views(output_type: str, ids: set = None) -> tuple:
     EVERY catalog model (the baseline self-diff wants the whole live surface);
     an id set restricts to those present (the snapshot-diff only needs tracked
     models). N+1 calls: one `model list`, one `model get` per target."""
-    catalog = _cli_json(["model", "list", f"--{output_type}"])
+    args = _list_args(output_type)
+    ctx = " ".join(args[1:])
+    catalog = _cli_json(args)
     if not isinstance(catalog, list):
-        raise ShapeError(f"model list --{output_type}: expected a JSON array, "
+        raise ShapeError(f"{ctx}: expected a JSON array, "
                          f"got {type(catalog).__name__} — update refresh_specs.py")
+    for m in catalog:
+        if not isinstance(m, dict):
+            raise ShapeError(f"{ctx}: row {str(m)[:60]!r} is not an object — "
+                             f"update refresh_specs.py")
+    if output_type not in _LIST_FLAG:
+        if any("type" not in m for m in catalog):
+            raise ShapeError(f"{ctx}: rows carry no `type` field, so {output_type} "
+                             f"models cannot be selected — update refresh_specs.py")
+        catalog = [m for m in catalog if m.get("type") == output_type]
     catalog_ids = {mid: m.get("display_name", mid)
                    for m in catalog
-                   for mid in (_model_id(m, f"model list --{output_type}"),)}
+                   for mid in (_model_id(m, ctx),)}
     targets = set(catalog_ids) if ids is None else (ids & set(catalog_ids))
     views = {mid: cli_view(_cli_json(["model", "get", mid]))
              for mid in sorted(targets)}
@@ -261,21 +448,47 @@ def pull_cli_views(output_type: str, ids: set = None) -> tuple:
 
 # ── Report + driver ──────────────────────────────────────────────────────────
 
+def describe(mid: str, c: dict) -> list:
+    """Human lines for one change record. Every kind diff_model can emit has a
+    phrasing here, and an unknown kind still prints (as JSON) — a change that
+    flips the exit code must never render as nothing."""
+    k, p = c["kind"], c.get("param", "")
+    if k == "options_added":
+        return [f"{mid}.{p} gained {'/'.join(c['added'])}"]
+    if k == "options_removed":
+        return [f"{mid}.{p} dropped {'/'.join(c['removed'])}"]
+    if k == "options_undetailed":
+        return [f"{mid}.{p} options now undetailed"]
+    if k == "aspect_ratios":
+        return [f"{mid} aspect_ratios gained {'/'.join(c['added'])}"]
+    if k == "aspect_ratios_gone":
+        return [f"{mid} aspect_ratios dropped {'/'.join(c['removed'])}"]
+    if k == "default":
+        return [f"{mid}.{p} default {c['from']!r} → {c['to']!r}"]
+    if k in ("param_added", "media_role_added"):
+        what = "new media role" if k == "media_role_added" else "new param"
+        extra = ", ".join(f"{f}={c[f]!r}" for f in ("type", "required", "options", "default")
+                          if f in c)
+        return [f"{mid} {what}: {p}" + (f" ({extra})" if extra else "")]
+    if k == "param_missing":
+        return [f"{mid}.{p} param gone"]
+    if k == "media_role_removed":
+        return [f"{mid} media role gone: {p}"]
+    if k in ("type_changed", "required_changed", "min_changed", "max_changed"):
+        return [f"{mid}.{p} {k[:-len('_changed')]} {c['from']!r} → {c['to']!r}"]
+    if k == "rules_added":
+        return [f"{mid} new constraint rule: {r}" for r in c["added"]]
+    if k == "rules_removed":
+        return [f"{mid} constraint rule gone: {r}" for r in c["removed"]]
+    return [f"{mid}: {json.dumps(c, ensure_ascii=False)}"]
+
+
 def render(output_type: str, snap_date: str, diff: dict, catalog_ids: dict,
            verbose: bool = False) -> str:
     lines = [f"[{output_type}] snapshot {snap_date} vs live CLI catalog"]
     for mid, d in diff["models_changed"].items():
         for c in d["drift"]:
-            if c["kind"] == "options_added":
-                lines.append(f"  ⚠ DRIFT — {mid}.{c['param']} gained {'/'.join(c['added'])}")
-            elif c["kind"] == "aspect_ratios":
-                lines.append(f"  ⚠ DRIFT — {mid} aspect_ratios gained {'/'.join(c['added'])}")
-            elif c["kind"] == "default":
-                lines.append(f"  ⚠ DRIFT — {mid}.{c['param']} default "
-                             f"{c['from']!r} → {c['to']!r}")
-            elif c["kind"] == "rules_added":
-                for rule in c["added"]:
-                    lines.append(f"  ⚠ DRIFT — {mid} new constraint rule: {rule}")
+            lines.extend(f"  ⚠ DRIFT — {t}" for t in describe(mid, c))
     if not has_drift(diff):
         lines.append("  ✓ no tracked drift (no new live capability the snapshot lacks)")
 
@@ -291,8 +504,7 @@ def render(output_type: str, snap_date: str, diff: dict, catalog_ids: dict,
     if verbose:
         for mid, d in diff["models_changed"].items():
             for c in d["notice"]:
-                notices.append(f"{mid}: {c['kind']} "
-                               f"{c.get('param', '') or '/'.join(c.get('removed', []))}".strip())
+                notices.extend(describe(mid, c))
     elif n_model_notices:
         notices.append(f"{n_model_notices} param-level note(s) (CLI under-detail / "
                        f"removals) — rerun with --verbose to list")
@@ -353,27 +565,7 @@ def render_self_diff(output_type: str, baseline: dict, diff: dict) -> str:
         lines.append(f"  ⚠ CHANGED — model gone from CLI: {mid}")
     for mid, d in diff["models_changed"].items():
         for c in d["drift"] + d["notice"]:
-            if c["kind"] in ("options_added",):
-                lines.append(f"  ⚠ CHANGED — {mid}.{c['param']} gained {'/'.join(c['added'])}")
-            elif c["kind"] == "options_removed":
-                lines.append(f"  ⚠ CHANGED — {mid}.{c['param']} dropped {'/'.join(c['removed'])}")
-            elif c["kind"] == "aspect_ratios":
-                lines.append(f"  ⚠ CHANGED — {mid} aspect_ratios gained {'/'.join(c['added'])}")
-            elif c["kind"] == "aspect_ratios_gone":
-                lines.append(f"  ⚠ CHANGED — {mid} aspect_ratios dropped {'/'.join(c['removed'])}")
-            elif c["kind"] == "default":
-                lines.append(f"  ⚠ CHANGED — {mid}.{c['param']} default "
-                             f"{c['from']!r} → {c['to']!r}")
-            elif c["kind"] == "param_missing":
-                lines.append(f"  ⚠ CHANGED — {mid}.{c['param']} param gone")
-            elif c["kind"] == "options_undetailed":
-                lines.append(f"  ⚠ CHANGED — {mid}.{c['param']} options now undetailed")
-            elif c["kind"] == "rules_added":
-                for rule in c["added"]:
-                    lines.append(f"  ⚠ CHANGED — {mid} new constraint rule: {rule}")
-            elif c["kind"] == "rules_removed":
-                for rule in c["removed"]:
-                    lines.append(f"  ⚠ CHANGED — {mid} constraint rule gone: {rule}")
+            lines.extend(f"  ⚠ CHANGED — {t}" for t in describe(mid, c))
     if not any_change(diff):
         lines.append("  ✓ no change since baseline")
     return "\n".join(lines)
@@ -393,12 +585,22 @@ def check_type_vs_baseline(output_type: str, baseline: dict) -> tuple:
     return render_self_diff(output_type, baseline, diff), diff
 
 
+def _status(code: int, state: str, kind: str = None, output_type: str = None,
+            line: str = "", message: str = "") -> dict:
+    """The machine-readable outcome (--status-json) the spec-drift workflow
+    branches on: it quotes `line` verbatim in its ::error:: and prints
+    `remedy`, so CI can never again blame credentials for a workspace error."""
+    return {"code": code, "state": state, "kind": kind, "type": output_type,
+            "line": line, "message": message,
+            "remedy": REMEDIES.get(kind, "") if kind else ""}
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(
         prog="scripts/refresh_specs.py", description=__doc__.splitlines()[0])
-    p.add_argument("--type", choices=("video", "image", "audio", "both", "all"),
+    p.add_argument("--type", choices=(*TYPES, "both", "all"),
                    default="all",
-                   help="'all' = video+image+audio (default); "
+                   help="'all' = video+image+audio+3d (default); "
                         "'both' = video+image (pre-audio alias)")
     p.add_argument("--json", action="store_true", help="machine-readable diff")
     p.add_argument("--verbose", action="store_true", help="list every param-level notice")
@@ -407,32 +609,54 @@ def main(argv=None) -> int:
     p.add_argument("--vs-snapshot", action="store_true",
                    help="legacy mode: diff CLI vs the models_explore snapshot "
                         "(source-disagreement-prone)")
+    p.add_argument("--status-json", metavar="PATH",
+                   help="also write {code,state,kind,type,line,remedy} to PATH "
+                        "(the spec-drift workflow reads it)")
     args = p.parse_args(argv)
-    types = {"all": ("video", "image", "audio"),
-             "both": ("video", "image")}.get(args.type, (args.type,))
+    types = {"all": TYPES, "both": ("video", "image")}.get(args.type, (args.type,))
+
+    def finish(st: dict) -> int:
+        if args.status_json:
+            from pathlib import Path
+            Path(args.status_json).write_text(
+                json.dumps(st, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        return st["code"]
+
+    def pull_failed(e: PullError, t: str = None) -> int:
+        tag = f" [{t}]" if t else ""
+        print(f"PULL FAILED{tag} kind={e.kind}: {e}", file=sys.stderr)
+        if e.line:
+            print(f"  CLI said: {e.line}", file=sys.stderr)
+        print(f"  → remedy: {REMEDIES[e.kind]}", file=sys.stderr)
+        print("  → not fresh, not changed — the live state is unknown.", file=sys.stderr)
+        return finish(_status(1, "pull-failed", e.kind, t, e.line, str(e)))
+
+    def shape_changed(e: ShapeError, t: str = None) -> int:
+        tag = f" [{t}]" if t else ""
+        print(f"CLI SHAPE CHANGED{tag}: {e}", file=sys.stderr)
+        print("  → not fresh, not changed — the parser is blind until "
+              "refresh_specs.py is updated for the new CLI output.", file=sys.stderr)
+        return finish(_status(4, "shape-changed", "shape", t, "", str(e)))
 
     # --update-baseline: bootstrap / accept the current live surface.
     if args.update_baseline:
         try:
             fresh = capture_baseline(types)
         except ShapeError as e:
-            print(f"CLI SHAPE CHANGED: {e}", file=sys.stderr)
-            return 4
+            return shape_changed(e)
         except PullError as e:
-            print(f"PULL FAILED: {e}\n  → run: higgsfield auth login", file=sys.stderr)
-            return 1
+            return pull_failed(e)
         merged = {**load_baseline(), **fresh}
         BASELINE_PATH.write_text(json.dumps(merged, indent=2, ensure_ascii=False) + "\n",
                                  encoding="utf-8")
         print(f"baseline updated for {', '.join(types)} → {BASELINE_PATH.name} "
               f"(captured {fresh['captured']})")
-        return 0
+        return finish(_status(0, "baseline-updated"))
 
     baseline = {} if args.vs_snapshot else load_baseline()
     if not args.vs_snapshot and not baseline:
-        print(f"no baseline yet — bootstrap it: python3 scripts/refresh_specs.py "
-              f"--update-baseline", file=sys.stderr)
-        return 1
+        return pull_failed(PullError(f"no baseline yet ({BASELINE_PATH.name} missing)",
+                                     kind="no-baseline"))
 
     reports, diffs, changed = [], {}, False
     for t in types:
@@ -444,18 +668,11 @@ def main(argv=None) -> int:
                 text, diff = check_type_vs_baseline(t, baseline)
                 changed = changed or any_change(diff)
         except ShapeError as e:
-            print(f"CLI SHAPE CHANGED [{t}]: {e}", file=sys.stderr)
-            print("  → not fresh, not changed — the parser is blind until "
-                  "refresh_specs.py is updated for the new CLI output.", file=sys.stderr)
-            return 4
+            return shape_changed(e, t)
         except PullError as e:
-            print(f"PULL FAILED [{t}]: {e}", file=sys.stderr)
-            print("  → not fresh, not changed — the live state is unknown. "
-                  "If the session expired, run: higgsfield auth login", file=sys.stderr)
-            return 1
+            return pull_failed(e, t)
         except FileNotFoundError as e:
-            print(f"MISSING [{t}]: {e}", file=sys.stderr)
-            return 1
+            return pull_failed(PullError(str(e), kind="no-baseline"), t)
         reports.append(text)
         diffs[t] = diff
 
@@ -471,7 +688,7 @@ def main(argv=None) -> int:
         else:
             print("\nFresh. (Blind spot: a cross-constraint prose change with no "
                   "enum movement is invisible here — Tier 2 is authoritative.)")
-    return 3 if changed else 0
+    return finish(_status(3, "changed") if changed else _status(0, "fresh"))
 
 
 if __name__ == "__main__":

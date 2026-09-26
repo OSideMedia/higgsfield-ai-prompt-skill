@@ -1,0 +1,27 @@
+[
+  {
+    "display_name": "Meshy 6 Text to 3D",
+    "job_type": "meshy_v6_text_to_3d",
+    "type": "3d"
+  },
+  {
+    "display_name": "Text to 3D",
+    "job_type": "tripo_3d",
+    "type": "3d"
+  },
+  {
+    "display_name": "Speech to Text",
+    "job_type": "speech2text",
+    "type": "data"
+  },
+  {
+    "display_name": "GPT Image 2",
+    "job_type": "gpt_image_2",
+    "type": "image"
+  },
+  {
+    "display_name": "Seedance 2.5",
+    "job_type": "seedance_2_5",
+    "type": "video"
+  }
+]
