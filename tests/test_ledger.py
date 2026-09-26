@@ -131,6 +131,45 @@ def test_validate_ledger_row_rejects(mutation, fragment):
     assert any(fragment in p for p in problems), problems
 
 
+# ── v3.37.0: model ids from EVERY spec type + retired-id tombstones ──────────
+
+@pytest.mark.parametrize("model", [
+    "gpt_image_2",        # image — pre-fix, every image generation was rejected
+    "seed_audio",         # audio
+    "tripo_3d",           # 3d
+    "seedance_2_5",       # video (unchanged)
+])
+def test_ledger_accepts_every_spec_type(model):
+    row = {"id": "_demo-0001", "ts": "2026-09-26T09:00:00Z", "model": model,
+           "shot_tags": ["dialogue-cu"], "outcome": "kept", "draft_tier": False}
+    assert hm.validate_ledger_row(row, "_demo", set(), set(), model_ids()) == []
+
+
+def test_retired_id_keeps_history_valid():
+    """llm_text left the catalog in the 09-26 snapshot; rows logged while it
+    was live must not turn append-only history red after the sync."""
+    row = {"id": "_demo-0001", "ts": "2026-08-01T09:00:00Z", "model": "llm_text",
+           "shot_tags": ["pov"], "outcome": "kept", "draft_tier": False}
+    assert hm.validate_ledger_row(row, "_demo", set(), set(), model_ids()) == []
+
+
+def test_tombstones_alone_never_fake_a_specs_layer(tmp_path, monkeypatch):
+    specs = tmp_path / "specs"
+    specs.mkdir()
+    (specs / "retired-model-ids.json").write_text(
+        json.dumps({"retired": {"llm_text": {}}}), encoding="utf-8")
+    monkeypatch.setattr(hm, "SPECS_ROOT", specs)
+    assert hm.load_specs_models() == {}     # no spec file → "specs missing", not a tiny map
+
+
+def test_log_gen_accepts_an_image_model_end_to_end(tmp_path, monkeypatch):
+    monkeypatch.setattr(hm, "LEDGER_DIR", tmp_path / "ledger")
+    monkeypatch.setattr(hm, "GLOBAL_LEDGER", tmp_path / "ledger" / "_global.json")
+    row = hm.log_gen_row("proj", {"model": "gpt_image_2", "shot_tags": ["insert-prop"],
+                                  "outcome": "kept"})
+    assert row["model"] == "gpt_image_2" and row["id"] == "proj-0001"
+
+
 def test_supersedes_rules():
     base = {"ts": "t", "model": "seedance_2_0", "shot_tags": ["pov"],
             "outcome": "kept", "draft_tier": False}

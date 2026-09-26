@@ -73,6 +73,19 @@ PROJECT_MODE = False
 FILTER_OUTCOMES = {"unknown", "fixed", "workaround", "still-blocked"}
 QUALITY_OUTCOMES = {"unknown", "improved", "still-failing"}
 
+# Entry schemas — the single definition validate.py imports. add-filter /
+# add-quality refuse to write an entry the validator would then reject (an
+# `add-filter '{}'` used to write an entry missing category + error_message).
+FILTER_REQUIRED_FIELDS = {"id", "category", "blocked_terms", "error_message",
+                          "substitution", "fix_confirmed", "substitution_worked", "tags"}
+QUALITY_REQUIRED_FIELDS = {"id", "failure_type", "model_used", "original_prompt",
+                           "failure_description", "outcome", "fix_confirmed",
+                           "improvement_confirmed", "tags"}
+# Content fields no default can supply — the caller must provide a non-empty
+# string (the other required fields get safe defaults on write).
+FILTER_CONTENT_FIELDS = ("category", "error_message")
+QUALITY_CONTENT_FIELDS = ("failure_type", "original_prompt", "failure_description")
+
 # ── Helpers ────────────────────────────────────────────────────────────────────
 
 def load_db(path: Path) -> dict:
@@ -229,22 +242,44 @@ _LEDGER_OPTIONAL = {"mode", "resolution", "aspect", "duration_s", "internal_cuts
                     "vision_reason", "vision_evidence"}
 
 
+# Every generated spec the ledger accepts model ids from, plus the append-only
+# retired-id tombstones (see scripts/sync_specs.py). Until v3.37.0 only the
+# VIDEO specs were read, so every image/audio generation was rejected, and a
+# model leaving the catalog (llm_text, 09-26) would turn append-only history red.
+SPEC_FILES = ("model-specs.json", "image-model-specs.json",
+              "audio-model-specs.json", "3d-model-specs.json")
+RETIRED_FILE = "retired-model-ids.json"
+SPECS_ROOT = REPO_ROOT / "specs"
+
+
 def load_specs_models() -> dict:
-    """{id_or_alias: canonical_id} from specs/model-specs.json.
+    """{id_or_alias: canonical_id} from every specs/*model-specs.json (video,
+    image, audio, 3d) plus specs/retired-model-ids.json.
 
     Ledger rows store CANONICAL ids only (aliases resolved at write time) so
-    per-model credit averages can't fragment across an alias. Returns {} when
-    the specs layer is missing — callers decide whether that's fatal."""
-    path = REPO_ROOT / "specs" / "model-specs.json"
-    try:
-        spec = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return {}
+    per-model credit averages can't fragment across an alias. A retired id
+    maps to itself: rows logged while it was live stay valid history.
+    Returns {} when no spec file is readable — callers decide whether that's
+    fatal (tombstones alone never make an empty specs layer look present)."""
     mapping: dict = {}
-    for m in spec.get("models", []):
-        mapping[m["id"]] = m["id"]
-        for alias in m.get("aliases", []):
-            mapping[alias] = m["id"]
+    for name in SPEC_FILES:
+        try:
+            spec = json.loads((SPECS_ROOT / name).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for m in spec.get("models", []):
+            mapping[m["id"]] = m["id"]
+            for alias in m.get("aliases", []):
+                mapping.setdefault(alias, m["id"])
+    if not mapping:
+        return {}
+    try:
+        retired = json.loads((SPECS_ROOT / RETIRED_FILE).read_text(encoding="utf-8"))
+        retired_ids = retired.get("retired") or {}
+    except (OSError, json.JSONDecodeError, AttributeError):
+        retired_ids = {}
+    for mid in retired_ids:
+        mapping.setdefault(mid, mid)
     return mapping
 
 
@@ -342,7 +377,8 @@ def validate_ledger_row(row: dict, project: str, prior_ids: set,
     model = row.get("model")
     if model_ids:
         if model not in model_ids:
-            problems.append(f"{rid}: model {model!r} not in specs/model-specs.json")
+            problems.append(f"{rid}: model {model!r} not in specs (video/image/audio/3d "
+                            f"*model-specs.json) nor in specs/{RETIRED_FILE}")
         elif model_ids[model] != model:
             problems.append(f"{rid}: model {model!r} is an alias — store the "
                             f"canonical id {model_ids[model]!r}")
@@ -747,9 +783,9 @@ def log_gen_row(project: str, fields: dict) -> dict:
     with the vocabulary printed is what keeps logging at one retry max."""
     model_ids = load_specs_models()
     if not model_ids:
-        raise LedgerError("specs/model-specs.json missing or unreadable — "
+        raise LedgerError("no specs/*model-specs.json readable — "
                           "the ledger validates model ids against the specs "
-                          "layer (run: python3 scripts/sync_specs.py)")
+                          "layer (run: python3 scripts/sync_specs.py --type <t>)")
     path = ledger_path(project)
     db = load_ledger(path)
 
@@ -1266,14 +1302,42 @@ def cmd_routing(argv: list):
 
 # ── Commands ───────────────────────────────────────────────────────────────────
 
-def add_filter(entry_json: str):
-    """Add a content filter block entry."""
-    db = load_db(FILTER_DB)
+def _fail(message: str, **extra):
+    """The CLI error contract: a JSON error line AND a non-zero exit. Before
+    v3.37.0 six paths printed {"status":"error"} and exited 0, so a caller
+    checking the exit code saw success."""
+    print(json.dumps({"status": "error", "message": message, **extra}))
+    sys.exit(1)
+
+
+def _parse_entry(entry_json: str) -> dict:
     try:
         entry = json.loads(entry_json)
     except json.JSONDecodeError as e:
-        print(json.dumps({"status": "error", "message": f"Invalid JSON: {e}"}))
-        return
+        _fail(f"Invalid JSON: {e}")
+    if not isinstance(entry, dict):
+        _fail(f"Entry must be a JSON object, got {type(entry).__name__}")
+    return entry
+
+
+def _check_required(entry: dict, required: set, content_fields: tuple, kind: str):
+    """Refuse a write validate.py would reject: every required field present,
+    and every content field a non-empty string (no default can invent it)."""
+    missing = sorted(required - set(entry))
+    empty = [f for f in content_fields
+             if f in entry and not (isinstance(entry[f], str) and entry[f].strip())]
+    if missing or empty:
+        _fail(f"{kind} entry not written — "
+              + "; ".join(x for x in (
+                  f"missing required field(s): {', '.join(missing)}" if missing else "",
+                  f"must be non-empty strings: {', '.join(empty)}" if empty else "") if x),
+              required=sorted(required))
+
+
+def add_filter(entry_json: str):
+    """Add a content filter block entry."""
+    db = load_db(FILTER_DB)
+    entry = _parse_entry(entry_json)
 
     # Required fields with defaults
     entry.setdefault("id", next_id(db["entries"], "F"))
@@ -1285,6 +1349,7 @@ def add_filter(entry_json: str):
     entry.setdefault("substitution", None)        # what was used instead
     entry.setdefault("substitution_worked", None) # True | False | None (untested)
     entry.setdefault("notes", "")
+    _check_required(entry, FILTER_REQUIRED_FIELDS, FILTER_CONTENT_FIELDS, "filter")
 
     db["entries"].append(entry)
     save_db(FILTER_DB, db)
@@ -1294,11 +1359,7 @@ def add_filter(entry_json: str):
 def add_quality(entry_json: str):
     """Add a quality failure entry."""
     db = load_db(QUALITY_DB)
-    try:
-        entry = json.loads(entry_json)
-    except json.JSONDecodeError as e:
-        print(json.dumps({"status": "error", "message": f"Invalid JSON: {e}"}))
-        return
+    entry = _parse_entry(entry_json)
 
     entry.setdefault("id", next_id(db["entries"], "Q"))
     entry.setdefault("date_added", now_iso())
@@ -1309,6 +1370,7 @@ def add_quality(entry_json: str):
     entry.setdefault("improved_prompt", None)     # the prompt that fixed it
     entry.setdefault("improvement_confirmed", None)
     entry.setdefault("notes", "")
+    _check_required(entry, QUALITY_REQUIRED_FIELDS, QUALITY_CONTENT_FIELDS, "quality")
 
     db["entries"].append(entry)
     save_db(QUALITY_DB, db)
@@ -1356,9 +1418,7 @@ def query_quality(search_terms: str, top_n: int = 5):
 def update_filter(entry_id: str, outcome: str, notes: str = ""):
     """Update the outcome of a filter entry after testing a substitution."""
     if outcome not in FILTER_OUTCOMES:
-        print(json.dumps({"status": "error",
-                          "message": f"Invalid outcome '{outcome}'. Expected one of: {sorted(FILTER_OUTCOMES)}"}))
-        return
+        _fail(f"Invalid outcome '{outcome}'. Expected one of: {sorted(FILTER_OUTCOMES)}")
     db = load_db(FILTER_DB)
     for entry in db["entries"]:
         if entry.get("id") == entry_id:
@@ -1371,15 +1431,13 @@ def update_filter(entry_id: str, outcome: str, notes: str = ""):
             save_db(FILTER_DB, db)
             print(json.dumps({"status": "ok", "id": entry_id, "outcome": outcome}))
             return
-    print(json.dumps({"status": "error", "message": f"Entry {entry_id} not found"}))
+    _fail(f"Entry {entry_id} not found")
 
 
 def update_quality(entry_id: str, outcome: str, improved_prompt: str = "", notes: str = ""):
     """Update the outcome of a quality entry after testing an improved prompt."""
     if outcome not in QUALITY_OUTCOMES:
-        print(json.dumps({"status": "error",
-                          "message": f"Invalid outcome '{outcome}'. Expected one of: {sorted(QUALITY_OUTCOMES)}"}))
-        return
+        _fail(f"Invalid outcome '{outcome}'. Expected one of: {sorted(QUALITY_OUTCOMES)}")
     db = load_db(QUALITY_DB)
     for entry in db["entries"]:
         if entry.get("id") == entry_id:
@@ -1394,7 +1452,7 @@ def update_quality(entry_id: str, outcome: str, improved_prompt: str = "", notes
             save_db(QUALITY_DB, db)
             print(json.dumps({"status": "ok", "id": entry_id, "outcome": outcome}))
             return
-    print(json.dumps({"status": "error", "message": f"Entry {entry_id} not found"}))
+    _fail(f"Entry {entry_id} not found")
 
 
 def stats():
@@ -1540,6 +1598,8 @@ def health():
         "databases": results,
         "issues": issues,
     }, indent=2))
+    if issues:
+        sys.exit(1)   # a health check that finds problems must not exit 0
 
 
 # ── Entry Point ────────────────────────────────────────────────────────────────

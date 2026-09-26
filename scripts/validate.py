@@ -59,11 +59,9 @@ DB_FILES = {
     "filter": ROOT / "db/filter-memory.json",
     "quality": ROOT / "db/quality-memory.json",
 }
-FILTER_REQUIRED_FIELDS = {"id", "category", "blocked_terms", "error_message",
-                           "substitution", "fix_confirmed", "substitution_worked", "tags"}
-QUALITY_REQUIRED_FIELDS = {"id", "failure_type", "model_used", "original_prompt",
-                            "failure_description", "outcome", "fix_confirmed",
-                            "improvement_confirmed", "tags"}
+# Entry schemas live in higgsfield_memory (its add-* commands enforce the same
+# set on write) — one definition, so the writer and this checker cannot drift.
+from higgsfield_memory import FILTER_REQUIRED_FIELDS, QUALITY_REQUIRED_FIELDS  # noqa: E402
 # Supported top-level SKILL.md frontmatter attributes (tags now lives inside metadata)
 FRONTMATTER_REQUIRED = {"name", "description", "user-invocable"}
 # Fields that must live nested under `metadata:` per the CLAUDE.md contract.
