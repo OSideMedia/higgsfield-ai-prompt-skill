@@ -6,9 +6,9 @@ description: >
   Veo 3, Minimax Hailuo, Soul, Nano Banana, or other Higgsfield engines.
 user-invocable: true
 metadata:
-  tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, v2.0.2]
-  version: 3.2.0
-  updated: 2026-08-09
+  tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, GPT-Image-2.5, FLUX-3, Genjutsu, v2.0.2]
+  version: 3.3.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -28,7 +28,7 @@ The Kling lineup in Higgsfield spans two generations (2.x and 3.0) plus the O1 r
 ### Kling 3.0
 **Duration:** 3s–15s · **Resolution:** 720p / 1080p / 4K HDR · **FPS:** 30fps (60fps in some configurations) · **Audio:** Native
 **Best for:** Cinematic realism · character drama · long sequences · multi-shot storytelling · native audio dialogue
-**Strengths:** Longest clip duration on the platform (up to 15s) · native multilingual audio (English, Chinese, Japanese, Korean, Spanish + accents) · superior subject consistency · precise text rendering in video · physics-aware motion (object interactions, hugging, fighting, complex machinery) · AI Director mode understands shot-reverse-shot, cross-cutting, camera blocking from a prompt alone · stylized output engine for anime, Pixar/claymation, felt/fabric textures
+**Strengths:** Up to 15s per clip (longer single clips now live on Seedance 2.5, Wan 3.0 / Prime, and FLUX 3 Video — see `../../model-guide.md` § Long-Take Chooser) · native multilingual audio (English, Chinese, Japanese, Korean, Spanish + accents) · superior subject consistency · precise text rendering in video · physics-aware motion (object interactions, hugging, fighting, complex machinery) · AI Director mode understands shot-reverse-shot, cross-cutting, camera blocking from a prompt alone · stylized output engine for anime, Pixar/claymation, felt/fabric textures
 **Use when:** You need a long cinematic clip with audio, multi-shot narrative, or high-consistency character performance
 
 **Multi-shot generation:** Up to 6 camera cuts in a single generation. Per-shot control over duration, shot size, perspective, narrative content, and camera movement. Describe an entire sequence in one prompt — model generates a coherent multi-shot video with edited camera cuts, not just a single clip.
@@ -92,10 +92,17 @@ and voice → generate a 15s branded ad campaign with your AI double in a studio
 ---
 
 ### Kling 3.0 Omni Edit
-**Duration:** 3s–10s input · **Resolution:** 1080p
+**Duration:** 3s–10s input (earlier UI doctrine — the catalog states no limit) · **Resolution:** 1080p (earlier doctrine)
 **Best for:** Transforming existing video with reference-guided edits at 3.0 quality
 **What it does:** Upload existing footage → describe or show the change → model applies it while preserving original motion, camera angles, and scene structure. 3D spatial awareness means edits respect lighting geometry and don't break scene coherence.
 **Use when:** You have footage you want to restyle, relight, or transform with the power of the 3.0 Omni architecture
+
+**Live API surface** `[OFFICIAL — platform, snapshot 2026-09-26]`: id `kling_video_edit` — "Edit a
+source video with text instructions and optional reference images." Media roles
+`video_references` + `image_references`; one param, `mode` = `std` / `pro` / `4k` (default `pro`,
+described as output quality Standard / Pro / 4K). The catalog states no billing basis and no
+source-length limit. Every other edit lane on the platform, side by side:
+`../../model-guide.md` § Edit-Lane Chooser.
 
 ---
 
@@ -261,13 +268,56 @@ Example use case: A watercolor-style fantasy warrior emerging from mist.
 
 ---
 
-### Seedance 2.0 — Most Advanced Seedance Tier
-**Duration:** 4–15s · **Resolution:** 720p / 1080p / 2K · **Audio:** Native
-**Best for:** Maximum multimodal reference control · complex motion · character consistency across scenes · professional production assets · content requiring audio-visual synchronization
-**Architecture:** Unified multimodal audio-video joint generation — text, image, audio, and video all processed simultaneously in one pass (not layered)
-**Status:** Coming soon to Higgsfield — document is ready for when it ships
+### Wan 3.0 / Wan 3.0 Prime
+**Status:** Live, new in the 2026-09-26 snapshot — **not yet field-rated** (no stars, no quality claims).
 
-> **⚠️ Feb 2026 platform note:** Real person face uploads are blocked. Real-celebrity likenesses, named franchise characters, and named anime/game characters trigger content filters. Use archetype descriptions and @Tag references instead. The Official Volcengine API is delayed. Web platform (Jimeng/Dreamina) is live; Higgsfield integration is incoming.
+**Higgsfield surface** `[OFFICIAL — platform, snapshot 2026-09-26]` (ids `wan3_0`, `wan3_0_prime`;
+identical parameter surfaces):
+
+| Param / role | Values |
+|---|---|
+| `duration` | 2–30 s, or `-1` = **smart duration** (the model picks the length from prompt + media); smart duration is **billed as 10s** |
+| `resolution` | 480p / 720p (default) / 1080p |
+| `aspect_ratio` | auto (CLI default) / 16:9 / 9:16 / 1:1 / 4:3 / 3:4 |
+| `generate_audio` | default `true` — native audio track |
+| `enable_thinking` | default `false` — "Let the model reason about the prompt before generating (slower, better prompt adherence)" |
+| media roles | `start_image`, `end_image`, `image_references`, `video_references`, `audio_references` |
+
+CLI rules (`higgsfield model get wan3_0`, 2026-09-26): `end_image` requires `start_image`;
+**`start_image` / `end_image` cannot be combined with any reference media** — a call is either a
+frames call or a references call; `duration` must be `-1` or ≥2.
+
+**Prime vs standard:** neither the catalog nor Alibaba's guide states how Prime differs. Do not
+invent a quality, speed, or price gap — present them as two ids with the same surface.
+
+**Smart duration and the runtime rule:** the repo never picks a runtime silently (root
+`SKILL.md` § Fast Path — Seedance exception). Offer `-1` only when the user explicitly asks the
+model to choose the length, and say it bills as 10s.
+
+**Prompting dialect** `[OFFICIAL — Alibaba Cloud Model Studio docs]` — from
+[Wan3.0 video generation guide](https://www.alibabacloud.com/help/en/model-studio/wan3-video-generation-guide)
+and [Wan3.0 video generation prompt guide](https://www.alibabacloud.com/help/en/model-studio/wan3-video-generation-prompt-guide)
+(both fetched 2026-09-26). These describe Alibaba's own API; how Higgsfield maps its media arrays
+into Wan's numbering is not stated, so verify reference numbering on a cheap draft first.
+
+- **Formula:** `[Overall description] + [Reference citation: Image N / Video N / Audio N] + [Shot N (start–end s): subject + scene + motion + aesthetic] + [Dialogue: X says: "…"] + [Sound effect / BGM] + [Style / Mood] + [Negative prompt list]` — skip any section you don't need.
+- **Reference citation:** materials are numbered by upload order, **counted separately per type** (Image 1 and Video 1 can coexist); with two or more of a type you must give the number. One material can be cited for several jobs (appearance, motion, voice timbre, scene).
+- **Multi-shot:** `Shot N [start-end s]` (or `(00:00-00:03)`), each shot end-to-end with no gaps or overlaps, 2–5 s per segment; write `Generate single shot` on the first line to stop the model splitting shots; `hard cut` / `dissolve` between segments.
+- **Dialogue:** `X says: "…"`; `Voice timbre references Audio N` once per character; `Lip sync`; write `No dialogue` explicitly, otherwise the model decides.
+- **BGM:** say nothing to let the model choose, name it to control it, or write `No background music.` to suppress it.
+- **Negative prompt list:** an in-prompt section, not a parameter — list only what you do not want; do not pad or repeat the positive prompt.
+- **Vendor-side limits** (Alibaba API — the Higgsfield catalog states none): ≤10 reference images; ≤5 reference videos totalling ≤15 s; ≤5 reference audio totalling ≤15 s; when video input is provided, input + output total ≤30 s.
+- Alibaba also documents prompt-intent **video editing** and **extension** through `reference_video`; the Higgsfield catalog description of `wan3_0` lists no edit mode, so it is not an edit lane in `../../model-guide.md` § Edit-Lane Chooser until verified.
+
+---
+
+### Seedance 2.0
+**Duration:** 4–15s · **Resolution:** 480p / 720p / 1080p / 4k (`mode=fast` forbids 1080p / 4k) · **Audio:** Native
+**Best for:** Multimodal reference control with 4K or the `genre` param · complex motion · character consistency across scenes · professional production assets · content requiring audio-visual synchronization
+**Architecture:** Unified multimodal audio-video joint generation — text, image, audio, and video all processed simultaneously in one pass (not layered)
+**Status:** Live on Higgsfield — `seedance_2_0` (alias `video_standard`): `mode` std / fast, `genre`, `generate_audio`, `bitrate_mode`, start/end frames + image / video / audio references `[OFFICIAL — platform, snapshot 2026-09-26]`. For more than 12 assets, clips past 15s, or `video_edit` / `video_extension` modes, see Seedance 2.5 (`../higgsfield-seedance-2-5/SKILL.md`).
+
+> **⚠️ Feb 2026 platform note (historical — written before the Higgsfield launch):** Real person face uploads are blocked. Real-celebrity likenesses, named franchise characters, and named anime/game characters trigger content filters. Use archetype descriptions and @Tag references instead.
 
 ---
 
@@ -629,26 +679,30 @@ Before every generation, run this check:
 
 ---
 
-#### Platform Parameters (Higgsfield — Coming Soon)
+#### Platform Parameters (Higgsfield — live)
 
 ```
 Duration:      4–15s
-Resolution:    720p / 1080p / 2K
-Aspect ratios: 16:9 · 9:16 · 4:3 · 3:4 · 21:9 · 1:1
-Audio format:  MP3 only
+Resolution:    480p / 720p / 1080p / 4k   (mode=fast: 480p / 720p only)
+Aspect ratios: auto · 16:9 · 9:16 · 4:3 · 3:4 · 1:1 · 21:9
+Modes:         std / fast
+Other params:  genre · generate_audio · bitrate_mode
+Audio format:  MP3 only (vendor doctrine)
 Generation:    Native audio-video joint (single pass)
 ```
 
+`[OFFICIAL — platform, snapshot 2026-09-26]` except the audio-format line.
+
 ```
 Example: Upload reference choreography video + 2 character images + music MP3
-→ 10-second synchronized scene at 2K with matched audio.
+→ 10-second synchronized scene at 1080p with matched audio.
 → Seedance 2.0
 ```
 
 ---
 
 ### Seedance 1.5 Pro
-**Duration:** Up to 10s · **Resolution:** 1080p · **Audio:** Native
+**Duration:** 4 / 8 / 12s · **Resolution:** 480p / 720p / 1080p (`seedance1_5`, snapshot 2026-09-26) · **Audio:** Native
 **Best for:** Native joint audio-video generation · multilingual dialogue and lip-sync · cinematic camera control with audio · character narratives requiring SFX + BGM + speech in one pass
 **Architecture:** Dual-branch Diffusion Transformer — generates audio and video simultaneously in a single pass (not layered on top after the fact). This is the key architectural differentiator — eliminates lip-sync mismatches and produces spatially accurate sound without post-production.
 
@@ -666,7 +720,7 @@ Example: Upload reference choreography video + 2 character images + music MP3
 - Emotional micro-expression continuity across shots — preserves character performance even in dialogue-minimal segments
 - Strong in stylized scenarios: comedy timing, theatrical/opera performance styles, dramatic short dramas
 
-**Use when:** Your content requires synchronized speech, SFX, or BGM in the video output. If audio is critical to the result, this or 2.0 is the correct tier. Pure visual content without audio requirements → use Seedance Pro for speed.
+**Use when:** Your content requires synchronized speech, SFX, or BGM in the video output. If audio is critical to the result, this or 2.0 is the correct tier. Pure visual content without audio requirements → use Seedance 2.0 Fast / Mini with `generate_audio` off ("Seedance Pro" is a legacy UI label, not in the API catalog).
 
 **Prompt note:** Include audio intent in the prompt — specify dialogue content, SFX expected, BGM mood, and language/dialect if non-English.
 
@@ -679,6 +733,8 @@ Cantonese, rain SFX, tense orchestral BGM, orbital camera pull-back.
 ---
 
 ### Seedance Pro
+> **Legacy UI label** — not in the API catalog (still absent from the 2026-09-26 snapshot). For fast, no-audio drafts use Seedance 2.0 Fast (`mode=fast`) or Seedance 2.0 Mini with `generate_audio` off.
+
 **Duration:** Up to 10s · **Resolution:** 1080p (Pro) / 720p (Lite) · **Audio:** ❌ No native audio
 **Best for:** Fast, high-quality multi-shot videos · VFX presets · cinematic camera control · rapid iteration · when audio is not required
 **Versions:** Pro (1080p) and Lite (720p) — same model, different resolution/cost tiers
@@ -694,6 +750,28 @@ iterate quickly before committing to a full 1.5 Pro or 2.0 render with audio.
 
 ---
 
+### Seedance 2.5 and Ad Multiplier
+**Status:** Live — **not yet field-rated**. Full dialect (mode router, material budget, edit orders,
+extension): `../higgsfield-seedance-2-5/SKILL.md`.
+
+**Higgsfield surface** `[OFFICIAL — platform, snapshot 2026-09-26]` (`seedance_2_5`):
+- `mode` `t2v` / `omni_reference` / `video_edit` / `video_extension` (default `t2v`); `duration` 4–30 s;
+  `resolution` 480p / 720p / **1080p** (default 720p); `generate_audio` (default on); `bitrate_mode`
+  standard / high; `extension_mode` forward / backward (required in, and only allowed in, `video_extension`).
+- Media roles: `start_image`, `end_image`, `image_references`, `video_references`, `audio_references`.
+- CLI rules: `t2v` takes **no** media (frames included); `omni_reference` needs ≥1 item (frames count);
+  **`start_image` / `end_image` only in `omni_reference`**; images + start + end ≤ 30; all items ≤ 50;
+  `video_edit` needs exactly one video reference and bills by that video's duration (`duration` and
+  `aspect_ratio` ignored); `video_extension` needs ≥1 video reference and follows its aspect ratio.
+- Not on 2.5: 4K output and the `genre` param — both stay on Seedance 2.0 (`genre` also on 2.0 Mini).
+
+**Ad Multiplier** (`ad_multiplier`): "Ad Multiplier video generation powered by Seedance 2.5" — the
+same parameter surface. Higgsfield's MCP routes **multiple edits of one clip** through its bundled
+`ad-multiplier` workflow (v1.4, 2026-09-26: many independently edited versions of ONE supplied
+4–30 s video — replace/add/remove people, products, objects, clothing, backgrounds, targeted
+on-screen text — preserving motion, framing, cuts, timing, aspect, and audio; "NOT for simple
+video edits") `[OFFICIAL — Higgsfield MCP tool schema, 2026-09-26]`.
+
 ---
 
 ## Google Veo Family
@@ -707,9 +785,16 @@ Four models in Higgsfield, all generating at 1080p with native audio (Veo 3 and 
 **Best for:** Highest-quality Veo output · reference image consistency · first/last frame interpolation · video extension · portrait video · complex dialogue scenes
 **Model code:** `veo-3.1-generate-preview`
 
+> **Higgsfield surface** `[OFFICIAL — platform, snapshot 2026-09-26]`: `veo3_1` exposes `duration`
+> 4 / 6 / 8, `quality` basic / high / ultra, `variant` veo-3-1-preview / veo-3-1-fast, and **only a
+> `start_image` role**. The reference images, last frame, and extension chain described below are
+> Google API capabilities the catalog does not expose — verify them in the UI before promising
+> them. On the catalog, start + end frames live on `veo3_1_lite`; extension lives on Seedance 2.5
+> `video_extension` (`../../model-guide.md` § Edit-Lane Chooser).
+
 **What's new in 3.1 vs Veo 3 — the key additions:**
 
-**Reference images (up to 3, Veo 3.1 exclusive):**
+**Reference images (up to 3; 3.1-only within the Veo family):**
 Upload up to 3 asset images to lock subjects, characters, or products across your video. Each image gets `reference_type: "asset"`. Use it to maintain a character's face, outfit, and prop together in one generation — the model preserves the subject's appearance throughout.
 
 ```
@@ -720,10 +805,10 @@ Reference images example:
 → All three maintained consistently in the output video
 ```
 
-**First + last frame interpolation (Veo 3.1 exclusive):**
+**First + last frame interpolation (3.1-only within the Veo family; on the Higgsfield catalog, `veo3_1_lite` carries the end-frame role):**
 Specify both the opening and closing frame images. The model generates the motion between them. Critical constraint: when using reference images or first/last frames, duration must be 8 seconds and resolution 1080p.
 
-**Video extension (Veo 3.1 exclusive):**
+**Video extension (3.1-only within the Veo family; Google API):**
 Extend any Veo-generated video by 7 seconds, up to 20 times (max 148s total). Input must be 720p (extension is 720p-only — downres before extending if needed). Videos are stored 2 days; the storage timer resets each time a video is referenced for extension. Voice extension only works if audio is present in the last 1 second of the source clip.
 
 **Portrait video (9:16):**
@@ -826,7 +911,7 @@ thunder rolling in, rain beginning to fall on the dark water surface.
 
 ## Grok Imagine (xAI / Aurora)
 
-Grok Imagine on Higgsfield consists of `grok-imagine-video` for video generation and editing. The `grok-imagine-image` model is available via the xAI API directly but is not currently in the Higgsfield platform UI. Both are powered by Aurora — xAI's autoregressive mixture-of-experts architecture that predicts the next token from interleaved text and image data. This is architecturally distinct from diffusion models (Flux, SDXL, etc.) — Aurora generates tokens sequentially, giving it tighter compositional control and stronger multi-element scene understanding.
+Grok on Higgsfield `[OFFICIAL — platform, snapshot 2026-09-26]`: image models **Grok Image** (`grok_image` — `mode` std / quality, 1k / 2k, image references) and **Grok Image 2.0** (`grok_image_2_0` — `quality` low / medium, 1k / 2k, image references), both with aspect ratios 1:1 / auto / 1:2 / 2:1 / 3:2 / 2:3 / 4:3 / 3:4 / 16:9 / 9:16; video models **Grok Video** (`grok_video` — 1–15 s, 16:9 / 9:16 / 1:1, `start_image` only) and **Grok Video 1.5** (`grok_video_v15`). The xAI API sections below describe the vendor API, which is broader than the Higgsfield surface. xAI's models are powered by Aurora — xAI's autoregressive mixture-of-experts architecture that predicts the next token from interleaved text and image data. This is architecturally distinct from diffusion models (Flux, SDXL, etc.) — Aurora generates tokens sequentially, giving it tighter compositional control and stronger multi-element scene understanding.
 
 **Aurora architecture key strengths:**
 - Photorealistic rendering with detailed textures, convincing lighting, sharp compositions
@@ -837,9 +922,9 @@ Grok Imagine on Higgsfield consists of `grok-imagine-video` for video generation
 
 ---
 
-### Grok Imagine Image (`grok-imagine-image`) — NOT available on Higgsfield
+### Grok Imagine Image (`grok-imagine-image`) — on Higgsfield as Grok Image / Grok Image 2.0
 
-> **⚠ Platform notice:** Grok Imagine Image is available via the xAI API directly but is NOT currently available as an image model in the Higgsfield platform UI. The documentation below covers the xAI API capabilities for reference. For image generation on Higgsfield, use Soul 2.0, Nano Banana Pro, Seedream, or other listed image models.
+> **Platform notice (corrected 2026-09-26):** the earlier "NOT available on Higgsfield" notice was wrong — `grok_image` has been in the catalog since at least the 2026-08-01 snapshot, and `grok_image_2_0` joined on 2026-09-26. The documentation below covers the **xAI API** (multi-turn chains, base64 output, up to 3 edit inputs, batch); the Higgsfield surface is the param list above — verify any API-only behaviour in the UI. Neither Higgsfield id is field-rated yet.
 **Type:** Image generation + image editing · **Resolution:** 1k / 2k · **Output:** URL or base64
 **Best for:** Photorealistic images · precise text/logo rendering · multi-person scenes · iterative image editing chains · style transfer · batch generation for A/B testing
 
@@ -945,6 +1030,8 @@ Best use cases:
 **Best for:** Short-form video from text or image · video editing/restyling · adding/removing elements in existing footage · motion-based social content
 **Architecture:** Same Aurora engine as the image model — generation is asynchronous (returns `request_id`, poll for result)
 
+> **Higgsfield surface:** `grok_video` exposes `duration` 1–15 s, 16:9 / 9:16 / 1:1, and **only a `start_image` role** — there is no source-video input, so the **video editing** mode below is an xAI API capability with no verified Higgsfield route. For edits use `../../model-guide.md` § Edit-Lane Chooser.
+
 #### Generation Modes
 
 **Text-to-video:**
@@ -1030,7 +1117,7 @@ Best use cases:
 | Precise text/logo in image | `grok-imagine-image` (Aurora strength) |
 | 10s video with native audio from text | `grok-imagine-video` |
 | Animate a still image | `grok-imagine-video` |
-| Edit existing video footage | `grok-imagine-video` |
+| Edit existing video footage | `grok-imagine-video` (xAI API only — not a verified Higgsfield route) |
 
 ---
 
@@ -1039,6 +1126,65 @@ Best use cases:
 **Strengths:** Exceptional motion smoothness, great for physical performance
 **Weaknesses:** Less strong on subtle facial acting
 **Use when:** The motion itself is the primary visual element
+
+---
+
+## Newer Catalog Video Models — not yet field-rated
+
+New or changed in the 2026-09-26 snapshot. Parameter surfaces only — the prompting dialect for
+these models is **not yet documented here** (no vendor prompting guide has been mined for them),
+and none carries a quality judgment until real generations back it.
+`[OFFICIAL — platform, snapshot 2026-09-26]` unless marked otherwise.
+
+### FLUX 3 Video and FLUX 3 Video Edit (Black Forest Labs)
+- **FLUX 3 Video** (`flux_3_video`) — "Text-to-video, multi-frame image-to-video, and video
+  continuation with synchronized audio." 5–20 s; 720p / 1080p; `generate_audio` (default on);
+  roles `start_image`, `end_image`, `image_references`, `video_references`; aspect ratios auto /
+  21:9 / **2:1** / 16:9 / 4:3 / 1:1 / 3:4 / 9:16 (2:1 appears on no other video model in the snapshot).
+- **FLUX 3 Video Edit** (`flux_3_video_edit`) — "Edit a video with a text prompt. **Uses the first
+  15 seconds at most; costs 1 credit per second of the processed clip.**" One `video_references`
+  role, no resolution or aspect params.
+
+### Gemini Omni Flash 1.1 (Google)
+`gemini_omni_flash_1_1` — "text-to-video, keyframe animation, multimodal reference generation, and
+video editing with native audio." `mode` is **required**: `text-to-video` / `image-to-video` /
+`reference-to-video` / `edit`. `duration` 3–10 s (default 8) — **ignored in `edit`, which uses the
+source video's duration capped at 30 s**. `resolution` 360p / 720p (default) / 1080p / 4k. Aspect
+16:9 / 9:16. Roles `start_image`, `end_image`, `image_references`, `video_references`. Gemini Omni
+Flash 1.0 (`gemini_omni`) remains live alongside it.
+
+### MiniMax H3 and H3 Max
+- **MiniMax H3** (`minimax_h3`) — "Multimodal video generation with keyframes or image/video/audio
+  references." 4–15 s (the floor moved from 5 s to 4 s in this snapshot); `resolution` 2K only;
+  `batch_size` 1–4.
+- **MiniMax H3 Max** (`minimax_h3_max`) — "Fast text-to-video, keyframe, and multimodal-reference
+  video generation." 5–15 s; `resolution` 480p / 768p (default 768p); `batch_size` 1–4; the same
+  five media roles as H3.
+
+### Happy Horse Video
+`happy_horse_video` — "Text-to-video and single start-frame animation." 3–15 s; 720p / 1080p;
+aspect 16:9 / 9:16 / 1:1 / 4:3 / 3:4; one `start_image` role.
+
+### Genjutsu (Higgsfield) — two ids
+- **`hf_mult_motion_control`** — "Transfer motion from a reference video to subjects in reference
+  images." Roles `image_references` + `video_references`; `resolution` 480p / 720p (default) / 1080p.
+- **`hf_mult_replace_object`** — "Replace objects in a source video using reference images." Same
+  roles and resolutions.
+- **Routing** `[OFFICIAL — Higgsfield MCP tool schema, 2026-09-26]`: "Higgsfield Genjutsu routes
+  through generate_video: motion transfer -> hf_mult_motion_control; object replacement ->
+  hf_mult_replace_object; never legacy motion_control or ad-multiplier for one Genjutsu edit."
+- The catalog states no duration bounds or billing basis for either id. Compared with Kling 3.0
+  Motion Control: `../../model-guide.md` § Motion Transfer.
+
+### Cinema Studio 4.0 (CLI workflow)
+`cinematic_studio_video_4_0` ("Cinema Studio 4.0") appears in the CLI workflow list, not in the MCP
+`models_explore` list. CLI params: `mode` `t2v` / `omni_reference` / `video_edit` / `video_extension`;
+`resolution` 480p / 720p / 1080p; aspect auto / 21:9 / 16:9 / 4:3 / 1:1 / 3:4 / 9:16;
+`generate_audio`; `bitrate_mode`; `extension_mode`; start/end frames + image / video / audio
+references; plus `camera_model_id`, `camera_lens_id`, `camera_aperture_id`, `genre_id`, `era_id`,
+`pacing_id`, `light` / `light_id` / `light_custom`, and `color_palette`. `duration` is an integer
+(default 5) with **no bounds stated** in the schema; cost inputs are `duration`, `mode`,
+`resolution`, `video_references`. Verify the duration ceiling before using it as a long-take lane.
 
 ---
 
@@ -1115,6 +1261,23 @@ Best use cases:
 
 ---
 
+### GPT Image 2.5
+**Status:** Live on Higgsfield (`gpt_image_2_5`), new in the 2026-09-26 snapshot — **not yet field-rated**.
+**Higgsfield surface** `[OFFICIAL — platform, snapshot 2026-09-26]`: `variant` flare (default) / sunburst ·
+`quality` low (default) / medium / high / **xhigh / max** · `resolution` 1k (default) / 2k / 4k ·
+**`background` auto / opaque / transparent** (omit to keep the model default) · 15 aspect ratios
+(auto, 1:1, 3:2, 2:3, 4:3, 3:4, 16:9, 9:16, 21:9, 27:16, 16:27, 9:8, 8:9, 4:5, 5:4) · `image_references`.
+**Vendor facts** `[OFFICIAL — OpenAI docs]` ([image generation guide](https://platform.openai.com/docs/guides/image-generation),
+model pages for [Sunburst](https://platform.openai.com/docs/models/gpt-image-2.5-sunburst) and
+[Flare](https://platform.openai.com/docs/models/gpt-image-2.5-flare), fetched 2026-09-26): Sunburst "for
+workflows where editing precision matters most", Flare "for fast, high-quality everyday image
+generation"; `xhigh` / `max` are new — earlier GPT Image models stop at `high`; transparent output
+needs PNG or WebP on the OpenAI API.
+**When to prefer 2.5 vs 2, the CLI↔MCP disagreement on GPT Image 2, and the 2.5 prompting status:**
+`../higgsfield-gpt-image-2/SKILL.md` § GPT Image 2.5 and `../../image-models.md` § GPT Image 2.5.
+
+---
+
 ## Quick Decision Table
 
 | User need | Model |
@@ -1125,29 +1288,31 @@ Best use cases:
 | Transfer motion/choreography from reference video | Kling 3.0 Motion Control |
 | Best human character, shorter clip, no audio needed | Kling 2.6 |
 | Fast iteration on Kling quality | Kling 2.5 Turbo |
-| Long camera-motion sequence (up to 30s) | Kling Motion Control |
+| Motion transfer from a 3–30s reference clip | Kling 3.0 Motion Control or Genjutsu (`../../model-guide.md` § Motion Transfer) |
+| One clip longer than 15s | Seedance 2.5 · Wan 3.0 / Prime · FLUX 3 Video (`../../model-guide.md` § Long-Take Chooser) |
 | Complex multi-reference generation (up to 7 refs) | Kling O1 Video |
 | Precise start-frame to end-frame motion | Kling O1 Video |
-| **Edit existing footage** (relight, restyle, swap, remove) | **Kling O1 Video Edit** |
-| Epic scale / action blockbuster | Sora 2 |
+| **Edit existing footage** (relight, restyle, swap, remove, extend, multiply) | **`../../model-guide.md` § Edit-Lane Chooser** — Seedance 2.5 `video_edit` · Kling 3.0 Omni Edit · FLUX 3 Video Edit · Gemini Omni Flash 1.1 `edit` · Genjutsu · Cinema Studio 4.0 · Ad Multiplier (Kling O1 Video Edit is UI-only legacy) |
+| Epic scale / action blockbuster | Seedance 2.0 (Sora 2 is UI-only — verify in the UI) |
 | Artistic / stylized / fantasy | Wan 2.5/2.6 |
-| Fast iteration / social content (no audio needed) | Seedance Pro |
+| Fast iteration / social content (no audio needed) | Seedance 2.0 Fast / Mini with `generate_audio` off |
 | Native audio + dialogue / lip-sync in video | Seedance 1.5 Pro |
 | 12-asset multimodal / reference video → new scene | Seedance 2.0 (R2V) |
-| Edit/replace elements in existing video | Seedance 2.0 (V2V) |
-| Complex fight / synchronized motion at 2K | Seedance 2.0 |
+| Edit/replace elements in existing video | Seedance 2.5 `video_edit` or Genjutsu replace-object; whole-plate VFX restyle → Seedance 2.0 V2V (`../higgsfield-seedance-vfx/SKILL.md`) |
+| Complex fight / synchronized motion at 1080p / 4K | Seedance 2.0 |
 | Nature / environment / documentary (stable) | Veo 3 |
 | Subject/character consistency across scene (ref images) | Veo 3.1 |
-| Define exact start + end frame | Veo 3.1 |
-| Extend existing Veo video (up to 148s) | Veo 3.1 |
+| Define exact start + end frame | Veo 3.1 Lite (catalog) · Veo 3.1 (Google API — verify) · Seedance 2.5 / Wan 3.0 / FLUX 3 Video |
+| Extend an existing video | Seedance 2.5 `video_extension` (catalog) · Veo 3.1 chain to 148s is Google API only — verify |
 | Fast Veo iteration / volume generation | Veo 3.1 Fast |
 | Fluid physical motion / dance/sports | Minimax Hailuo |
-| Photorealistic image with precise text/logo rendering | GPT Image 2 |
+| Photorealistic image with precise text/logo rendering | GPT Image 2 / GPT Image 2.5 |
+| Transparent-background image | GPT Image 2.5 (`background: transparent`) |
 | Multi-image composite (up to 3 source images) | Multi Reference |
 | Iterative multi-turn image refinement | Flux Kontext |
 | Style transfer on existing image | Flux Kontext |
 | 10s video with native audio (text or image-to-video) | Grok Imagine Video |
-| Edit/restyle existing video footage | Grok Imagine Video |
+| Edit/restyle existing video footage | `../../model-guide.md` § Edit-Lane Chooser (Grok Video has no source-video input on Higgsfield) |
 | Best portrait / fashion image | Soul 2.0 |
 | Sharpest 4K image | Nano Banana Pro |
 | Production-grade character anchoring (many shots, long project) | Soul Cinema → GPT Image 2 (Two-Tool Refinement Pipeline) |

@@ -1,0 +1,45 @@
+{
+  "skill": "higgsfield-gpt-image-2",
+  "cases": [
+    {
+      "id": "gpt25-transparent-background",
+      "description": "A transparent-background cut-out routes to GPT Image 2.5 with background: transparent and the unverified-alpha caveat",
+      "request": "I need a perfume bottle cut-out on a transparent background for my product page.",
+      "response": "Routing to higgsfield-gpt-image-2 (§ GPT Image 2.5 — image-models.md § Inpaint, Mask & Background Parameters).\n\n**Model**: GPT Image 2.5 (`gpt_image_2_5`)\n**Variant**: flare  **Quality**: high  **Resolution**: 2k  **Background**: transparent  **Aspect ratio**: 1:1\n\nGPT Image 2.5 is the catalog's transparent-background route. Higgsfield exposes no output-format parameter, so check that the first download actually carries an alpha channel before building the page on it. The prompt below uses the 2.0 prose format, which has not been validated on 2.5.\n\n```\nA studio product shot of a tall faceted perfume bottle in pale amber glass with a brushed gold cap, standing upright and centered, soft top light with a thin rim highlight along the glass edges, crisp reflections on the facets, isolated object with no surface, no props, and no shadow cast on any backdrop.\n```",
+      "assertions": [
+        {"type": "regex_present", "pattern": "gpt_image_2_5"},
+        {"type": "regex_present", "pattern": "(?i)background\\**\\s*[:：]\\s*\\**\\s*`?transparent"},
+        {"type": "regex_absent", "pattern": "(?i)model\\**\\s*[:：]\\s*\\**\\s*GPT Image 2(?!\\.5)"},
+        {"type": "regex_present", "pattern": "(?i)alpha"},
+        {"type": "regex_present", "pattern": "(?i)not been validated on 2\\.5"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "gpt25-max-quality-is-25-only",
+      "description": "xhigh / max quality exists on GPT Image 2.5, not on GPT Image 2",
+      "request": "Can GPT Image 2 render at max quality?",
+      "response": "Routing to higgsfield-gpt-image-2 (§ GPT Image 2.5 — When to prefer 2.5 vs 2.0).\n\nNot on GPT Image 2: its `quality` enum is low / medium / high. The `xhigh` and `max` tiers are on GPT Image 2.5 only (OpenAI: earlier GPT Image models stop at `high`). GPT Image 2.5 defaults to `low` / `1k`, so set quality and resolution explicitly for a final.",
+      "assertions": [
+        {"type": "regex_present", "pattern": "low / medium / high"},
+        {"type": "regex_present", "pattern": "`xhigh`"},
+        {"type": "regex_present", "pattern": "(?i)2\\.5 only"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "gpt2-cli-mcp-disagreement-no-winner",
+      "description": "GPT Image 2's background param is a recorded CLI-vs-MCP disagreement — the answer must not pick a winner",
+      "request": "Does GPT Image 2 support transparent backgrounds on Higgsfield?",
+      "response": "Routing to higgsfield-gpt-image-2 (§ CLI ↔ MCP disagreement on `gpt_image_2`).\n\nThe two Higgsfield surfaces disagree. The CLI (`higgsfield model get gpt_image_2`) lists a `background` param with a transparent option; the MCP `models_explore` list for the same id does not. Neither is verified against a real generation yet, so I won't promise it on GPT Image 2. For a transparent background use GPT Image 2.5 (`background: transparent`), which both surfaces agree on.",
+      "assertions": [
+        {"type": "regex_present", "pattern": "(?i)surfaces disagree"},
+        {"type": "regex_present", "pattern": "\\bCLI\\b"},
+        {"type": "regex_present", "pattern": "\\bMCP\\b"},
+        {"type": "regex_absent", "pattern": "(?im)^(yes|no)\\b"},
+        {"type": "regex_present", "pattern": "GPT Image 2\\.5"},
+        {"type": "antislop_absent"}
+      ]
+    }
+  ]
+}

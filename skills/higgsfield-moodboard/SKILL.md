@@ -9,8 +9,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, moodboard, style, reference, soul-hex, color, presets, Y2K, editorial]
-  version: 3.0.0
-  updated: 2026-04-06
+  version: 3.1.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -157,6 +157,17 @@ Step 4: Every generation uses:
          → Moodboard: your custom moodboard active
 Step 5: Only the scene description changes post to post
 ```
+
+> **Platform constraint — preset vs reference image (Soul 2.0)** `[OFFICIAL — platform CLI, 2026-09-26]`:
+> `higgsfield model get text2image_soul_v2` rejects **`style_id` combined with `image_references`**
+> and allows at most one image reference. The schema also has a separate `custom_reference_id`
+> param that this rule does not mention. Which UI control maps to which param — Style preset →
+> `style_id`? Soul ID character slot → `custom_reference_id` or `image_references`? — is
+> **unverified**. So this workflow's "Soul ID + preset" pairing is not known to break, while
+> "preset + an uploaded reference image" is the pair the CLI forbids if the preset is `style_id`:
+> if a generation rejects or ignores one of them, drop the preset or the uploaded reference
+> rather than retrying the pair. Detail:
+> `../../image-models.md` § Soul 2.0.
 
 **Per-post prompt template (with all consistency tools active):**
 ```

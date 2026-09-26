@@ -368,6 +368,11 @@ anchors instead of archaeology. Link format: `path#anchor`.
 ## skills/higgsfield-gpt-image-2/SKILL.md
 
 - [Higgsfield GPT Image 2.0](skills/higgsfield-gpt-image-2/SKILL.md#higgsfield-gpt-image-20)
+  - [GPT Image 2.5](skills/higgsfield-gpt-image-2/SKILL.md#gpt-image-25)
+    - [Surface](skills/higgsfield-gpt-image-2/SKILL.md#surface)
+    - [When to prefer 2.5 vs 2.0](skills/higgsfield-gpt-image-2/SKILL.md#when-to-prefer-25-vs-20)
+    - [CLI ↔ MCP disagreement on `gpt_image_2`](skills/higgsfield-gpt-image-2/SKILL.md#cli-mcp-disagreement-on-gpt_image_2)
+    - [Prompting status on 2.5](skills/higgsfield-gpt-image-2/SKILL.md#prompting-status-on-25)
   - [1. What GPT Image 2.0 is](skills/higgsfield-gpt-image-2/SKILL.md#1-what-gpt-image-20-is)
   - [2. Three prompt formats](skills/higgsfield-gpt-image-2/SKILL.md#2-three-prompt-formats)
     - [Tie-break](skills/higgsfield-gpt-image-2/SKILL.md#tie-break)

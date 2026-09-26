@@ -1,0 +1,96 @@
+{
+  "skill": "higgsfield-models",
+  "cases": [
+    {
+      "id": "lanes-long-take-offers-wan3",
+      "description": "A single clip over 15s routes through the Long-Take Chooser and names Wan 3.0 beside Seedance 2.5 (snapshot 2026-09-26)",
+      "model": "wan3_0",
+      "request": "I need one continuous 20-second shot of a lighthouse keeper climbing the spiral stairs. Which model can do that in one generation?",
+      "response": "Routing to higgsfield-models (model-guide.md § Long-Take Chooser — one clip longer than 15s; enums verified against specs/model-specs.yaml, snapshot 2026-09-26).\n\nThree catalog lanes make a 20s clip in one generation:\n\n- **Seedance 2.5** — 4–30s, 480p / 720p / 1080p, native audio; start/end frames only in `omni_reference`.\n- **Wan 3.0 / Wan 3.0 Prime** — 2–30s, 480p / 720p / 1080p, native audio, `enable_thinking` for prompt adherence. Frames or references per call, never both. Smart duration (`-1`) exists but is billed as 10s — I only use it if you ask the model to pick the length.\n- **FLUX 3 Video** — 5–20s, 720p / 1080p, native audio.\n\nNone of the three is field-rated yet, so this is a surface match, not a quality call. Here is the Wan 3.0 header:\n\n**Model**: Wan 3.0\n**Aspect ratio**: 16:9  **Duration**: 20s  **Resolution**: 1080p",
+      "assertions": [
+        {"type": "regex_present", "pattern": "Wan 3\\.0"},
+        {"type": "regex_present", "pattern": "Seedance 2\\.5"},
+        {"type": "regex_present", "pattern": "Long-Take Chooser"},
+        {"type": "regex_present", "pattern": "billed as 10s"},
+        {"type": "regex_absent", "pattern": "(?i)720p (ceiling|cap)"},
+        {"type": "regex_absent", "pattern": "(?i)longest clip"},
+        {"type": "enum_legal"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "trap-wan3-overlong",
+      "description": "STALE-SPEC TRAP — a 45s Wan 3.0 header is past the 30s envelope and must be flagged",
+      "model": "wan3_0",
+      "request": "(trap) Wan 3.0 header past the duration envelope",
+      "response": "**Model**: Wan 3.0\n**Aspect ratio**: 16:9  **Duration**: 45s  **Resolution**: 1080p\n\nA lighthouse keeper climbs a spiral staircase, lamp swinging, the beam sweeping the fog outside.",
+      "assertions": [
+        {"type": "enum_legal", "expect": "illegal"}
+      ]
+    },
+    {
+      "id": "lanes-smart-duration-never-default",
+      "description": "Wan 3.0 with no runtime named: ask, never silently default to smart duration -1",
+      "model": "wan3_0",
+      "request": "Make me a Wan 3.0 clip of a paper lantern festival on a river at night.",
+      "response": "Routing to higgsfield-models (Wan 3.0 surface, snapshot 2026-09-26) → higgsfield-prompt.\n\nHow long should it run? Wan 3.0 takes **2–30s**. It can also pick the length itself (smart duration, `-1`), which is billed as 10s whatever length comes back — say so if you want that. Resolution options are 480p / 720p / 1080p, and native audio is on by default.",
+      "assertions": [
+        {"type": "regex_present", "pattern": "2–30s"},
+        {"type": "regex_present", "pattern": "billed as 10s"},
+        {"type": "regex_absent", "pattern": "(?i)duration\\**\\s*[:：]\\s*\\**\\s*-1"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "lanes-edit-chooser-object-swap",
+      "description": "Swapping one object in existing footage routes through the Edit-Lane Chooser — no Grok, no Ad Multiplier for one edit",
+      "model": "seedance_2_5",
+      "request": "I have a 12-second product clip. Swap the glass bottle for an aluminium can and keep everything else the same. Which lane?",
+      "response": "Routing to higgsfield-models (model-guide.md § Edit-Lane Chooser) → higgsfield-seedance-2-5 for the edit order.\n\nTwo lanes fit a one-object swap in a 12s source:\n\n1. **Seedance 2.5 `video_edit`** — exactly one video reference; billed by the source video's duration (duration and aspect ratio are ignored); 480p / 720p / 1080p.\n2. **Genjutsu replace-object** — `hf_mult_replace_object`, called through `generate_video` with the can as an image reference; 480p / 720p / 1080p. Billing and length limits are not stated in the catalog.\n\nFLUX 3 Video Edit would also take a 12s clip (it processes the first 15s at 1 credit per second) but it edits from text only, with no reference image for the can. Ad Multiplier is for many variants of one ad, not a single swap.\n\n**Model**: Seedance 2.5\n**Mode**: video_edit  **Resolution**: 1080p",
+      "assertions": [
+        {"type": "regex_present", "pattern": "Edit-Lane Chooser"},
+        {"type": "regex_present", "pattern": "hf_mult_replace_object"},
+        {"type": "regex_present", "pattern": "(?i)billed by the source video's duration"},
+        {"type": "regex_absent", "pattern": "(?i)grok imagine video"},
+        {"type": "regex_absent", "pattern": "(?i)→\\s*Kling O1 Video Edit"},
+        {"type": "enum_legal"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "lanes-genjutsu-motion-routing",
+      "description": "A named Genjutsu motion transfer goes through generate_video with hf_mult_motion_control (Higgsfield MCP routing)",
+      "request": "Use Genjutsu to put the dance from my reference video onto my two characters.",
+      "response": "Routing to higgsfield-models (model-guide.md § Motion Transfer).\n\nGenjutsu motion transfer is `hf_mult_motion_control`, called through `generate_video` — the Higgsfield MCP's own routing, which keeps named Genjutsu jobs off the legacy Kling motion tool. Attach the two character images as image references and the dance clip as the video reference; resolution is 480p, 720p, or 1080p. The catalog states no duration limit or billing basis for it, so check the cost preview before running.",
+      "assertions": [
+        {"type": "regex_present", "pattern": "hf_mult_motion_control"},
+        {"type": "regex_present", "pattern": "generate_video"},
+        {"type": "regex_absent", "pattern": "hf_mult_replace_object"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "models-seedance-25-1080p-legal",
+      "description": "Seedance 2.5 gained 1080p in the 2026-09-26 snapshot — a 1080p omni_reference header is legal",
+      "model": "seedance_2_5",
+      "request": "Can Seedance 2.5 render 1080p now?",
+      "response": "Routing to higgsfield-models (specs/model-specs.yaml, snapshot 2026-09-26).\n\nYes — Seedance 2.5's resolution enum is now **480p / 720p / 1080p**. 4K and the `genre` param are still Seedance 2.0-family only. Start and end frames are accepted, but only in `omni_reference` mode.\n\n**Model**: Seedance 2.5\n**Mode**: omni_reference  **Aspect ratio**: 16:9  **Duration**: 12s  **Resolution**: 1080p",
+      "assertions": [
+        {"type": "regex_present", "pattern": "480p / 720p / 1080p"},
+        {"type": "regex_present", "pattern": "only in `omni_reference`"},
+        {"type": "enum_legal"},
+        {"type": "antislop_absent"}
+      ]
+    },
+    {
+      "id": "trap-seedance-25-4k-illegal",
+      "description": "STALE-SPEC TRAP — 4K on Seedance 2.5 must be flagged (4K stays on Seedance 2.0)",
+      "model": "seedance_2_5",
+      "request": "(trap) Seedance 2.5 header asking for 4K",
+      "response": "**Model**: Seedance 2.5\n**Mode**: t2v  **Aspect ratio**: 16:9  **Duration**: 10s  **Resolution**: 4k\n\nA kettle reaches boil on a gas stove, steam pulsing against morning window light. Static close-up.",
+      "assertions": [
+        {"type": "enum_legal", "expect": "illegal"}
+      ]
+    }
+  ]
+}

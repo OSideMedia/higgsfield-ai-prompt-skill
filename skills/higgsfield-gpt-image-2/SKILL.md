@@ -1,11 +1,11 @@
 ---
 name: higgsfield-gpt-image-2
-description: "Use when the user mentions GPT Image 2.0, gpt-image-2, GPT-Image-2 prompts, or wants to generate an image with GPT Image 2.0. Covers the three-format prompt taxonomy (Format A structured JSON for UI mockups and layout-dense images; Format B dense cinematic prose for single-subject scenes; Format C auto-derive meta-prompt for theme-only concepts), per-format craft patterns, output conventions, the 6-item pre-delivery checklist, and cross-surface workflow context (companion static-ads-workflow.md for ad recreation; higgsfield-marketing-studio cross-surface-workflow.md §3 for ms_image / DTC Ads Higgsfield-native alternative)."
+description: "Use when the user mentions GPT Image 2.0 or GPT Image 2.5, gpt-image-2, gpt-image-2.5, gpt_image_2_5, GPT-Image-2 prompts, the Flare / Sunburst variants, a transparent-background image, or wants to generate an image with GPT Image 2.0 or 2.5. Covers when to prefer GPT Image 2.5 over 2.0 (transparent background, xhigh/max quality, extra aspect ratios — from platform and OpenAI facts), the CLI-vs-MCP disagreement on gpt_image_2, the three-format prompt taxonomy (Format A structured JSON for UI mockups and layout-dense images; Format B dense cinematic prose for single-subject scenes; Format C auto-derive meta-prompt for theme-only concepts), per-format craft patterns, output conventions, the 6-item pre-delivery checklist, and cross-surface workflow context (companion static-ads-workflow.md for ad recreation; higgsfield-marketing-studio cross-surface-workflow.md §3 for ms_image / DTC Ads Higgsfield-native alternative)."
 user-invocable: true
 metadata:
-  tags: [higgsfield, gpt-image-2, prompt-director, image, json, prose, meta-prompt, layout, mockup, infographic, character-sheet, ui-mockup, landing-page, static-ads, cross-surface]
-  version: 1.2.0
-  updated: 2026-06-27
+  tags: [higgsfield, gpt-image-2, gpt-image-2.5, flare, sunburst, transparent-background, prompt-director, image, json, prose, meta-prompt, layout, mockup, infographic, character-sheet, ui-mockup, landing-page, static-ads, cross-surface]
+  version: 1.3.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -14,6 +14,87 @@ metadata:
 A prompt director for GPT Image 2.0. Converts plain-text concepts into production-ready prompts that route by output type: structured JSON for layout-dense images (UI mockups, infographics, character sheets, multi-panel posters), dense cinematic prose for single-subject scenes (portraits, photographs, landscapes), or auto-derive meta-prompts for theme-only concepts where the model self-generates the composition.
 
 Translated from Adil Aliyev's `gpt-image-2-director` source corpus per the v3.7.13 / v3.7.15 translation precedent. Two companion satellites extend this sub-skill: `static-ads-workflow.md` covers the ad-recreation workflow that uses GPT Image 2.0 as its generation engine, and `reference-sheet-workflow.md` covers the Automatic Product Reference Sheet + Automatic Prompt Creator workflow (one product image → a multi-view identity-locked reference sheet for high-consistency generation).
+
+Sections 1–11 were written for **GPT Image 2.0**. GPT Image 2.5 — its surface, when to prefer it, and what is and is not documented about prompting it — is the next section.
+
+---
+
+## GPT Image 2.5
+
+New on Higgsfield in the 2026-09-26 catalog as `gpt_image_2_5` — **not yet field-rated**. Facts
+below are `[OFFICIAL — platform, snapshot 2026-09-26]` (MCP and CLI agree on all of them) or
+`[OFFICIAL — OpenAI docs]` from the [image generation guide](https://platform.openai.com/docs/guides/image-generation)
+and the [Sunburst](https://platform.openai.com/docs/models/gpt-image-2.5-sunburst) /
+[Flare](https://platform.openai.com/docs/models/gpt-image-2.5-flare) model pages (fetched 2026-09-26).
+
+### Surface
+
+| Param | Values (default first) |
+|---|---|
+| `variant` | `flare` · `sunburst` |
+| `quality` | `low` · `medium` · `high` · **`xhigh`** · **`max`** |
+| `resolution` | `1k` · `2k` · `4k` |
+| `background` | omit (model default) · `auto` · `opaque` · **`transparent`** |
+| aspect ratio | auto, 1:1, 3:2, 2:3, 4:3, 3:4, 16:9, 9:16, 21:9, 27:16, 16:27, 9:8, 8:9, 4:5, 5:4 |
+| media | `image_references` (generation and editing) |
+
+A bare call is `flare` / `low` / `1k` — draft settings. OpenAI: "Use `quality: "low"` for quick
+drafts. For final assets, compare higher quality settings to find the right balance of detail,
+latency, and cost." State `quality` and `resolution` explicitly in every delivered settings header.
+
+### When to prefer 2.5 vs 2.0
+
+Only platform and vendor facts — neither model has been field-rated against the other here, so no
+quality ranking is claimed.
+
+**Prefer GPT Image 2.5 when:**
+- **The asset needs a transparent background** — `background: transparent`. It is the first
+  transparent-background route in the MCP catalog, and the only one both Higgsfield surfaces
+  agree on. OpenAI's API needs PNG or WebP output for transparency; Higgsfield exposes no
+  output-format parameter, so confirm the downloaded file actually carries alpha before
+  building on it.
+- **A quality tier above `high` is wanted** — `xhigh` / `max`. OpenAI: earlier GPT Image models
+  "support quality settings up to `high`".
+- **The frame needs 27:16, 16:27, 9:8, or 8:9** — 2.5 has them, 2.0 does not (DTC Ads / `ms_image` is the other image model that does).
+- **The job is editing a reference precisely** → `variant: sunburst` ("for workflows where editing
+  precision matters most"). **Fast everyday generation** → `variant: flare` ("fast, high-quality
+  everyday image generation").
+- **It is a new integration** — OpenAI: "For new integrations, use one of the GPT Image 2.5 models."
+
+**Keep GPT Image 2.0 when:**
+- **Continuing work already made on 2.0.** The repo's field evidence — clothing and wardrobe on
+  GPT Image 2 (`../../image-models.md` § Routing by Asset Class) and the Soul Cinema → GPT Image 2
+  refinement pipeline — was gathered on 2.0 and does not transfer to 2.5 automatically.
+- **A Higgsfield workflow names `gpt_image_2`** — e.g. the MCP's bundled thumbnail-generation
+  workflow routes its 3D-logo step to `gpt_image_2`.
+- **You need CLI mask inpainting on 2.0** — `mask` / `is_inpaint` are CLI-listed only (next table).
+
+### CLI ↔ MCP disagreement on `gpt_image_2`
+
+The two official Higgsfield surfaces describe `gpt_image_2` differently on 2026-09-26. Recorded as
+a disagreement — **neither surface is declared the winner**:
+
+| Field | MCP `models_explore` | CLI `higgsfield model get gpt_image_2` |
+|---|---|---|
+| Aspect ratios | 1:1, 4:3, 3:4, 16:9, 21:9, 9:16, 3:2, 2:3 | same **plus auto, 4:5, 5:4** |
+| `resolution` default | 1k | **2k** |
+| `quality` default | low | **high** |
+| `background` | not listed | auto / opaque / transparent |
+| `mask` / `is_inpaint` | not listed | listed |
+
+Until one is verified on a real generation: set `quality` and `resolution` explicitly on 2.0, and
+do not promise `background`, masks, or auto / 4:5 / 5:4 on `gpt_image_2` to an MCP user.
+
+### Prompting status on 2.5
+
+The Format A / B / C taxonomy in §§ 2–9 was built and exercised on GPT Image 2.0. No GPT Image
+2.5 prompting guide was found in OpenAI's image-generation guide or the Sunburst / Flare model
+pages (searched 2026-09-26), and the taxonomy has not been validated on 2.5 — **the 2.5 prompting dialect is not yet
+documented here.** If a user asks for a 2.5 prompt, the §§ 2–5 formats may be used only with an
+explicit note that they are 2.0 craft, unvalidated on 2.5. What OpenAI does state for its GPT Image
+models: complex prompts can take up to 2 minutes; text rendering "can still struggle with precise
+text placement and clarity"; and consistency for recurring characters or brand elements may drift
+across generations.
 
 ---
 
