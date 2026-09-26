@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
-  version: 3.2.0
+  version: 3.2.1
   updated: 2026-08-09
   parent: higgsfield
 ---
@@ -352,7 +352,7 @@ After ANY confirmed fix from this skill, write it to the learning memory
   generation): `python3 scripts/seedance_lint.py --confirmed "<prompt that passed>"`
 - **Quality fix confirmed** (the improved prompt fixed motion / identity /
   blocking / audio): `python3 scripts/higgsfield_memory.py add-quality '<json>'` with
-  `original_prompt`, `failure_description`, `improved_prompt`, `model_used` —
+  `failure_type`, `original_prompt`, `failure_description`, `improved_prompt`, `model_used` —
   then `update-quality <id> improved` once verified.
 - **Outcome learned later** for an entry that already exists:
   `python3 scripts/higgsfield_memory.py update-filter <id> <fixed|workaround|still-blocked>`

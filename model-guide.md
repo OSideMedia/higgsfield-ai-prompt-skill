@@ -17,8 +17,8 @@
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | — | — | ❌ | Fast Kling iteration |
 | Kling 2.1 Master (deprecated) | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 5–10s | — | — | ❌ | Deprecated — removed from platform. Use Kling 2.6 or 3.0 |
 | Sora 2 (UI-only) | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | 4–12s | — | 720p (base), 1080p (Pro/Max tiers) | ✅ | Epic scale, physics, action, multi-shot + sound — **UI-only, confirmed present in the UI 2026-07-06** as a 4-variant family: Sora 2 (720p) / Sora 2 Pro (1080p) / Sora 2 Max / Sora 2 Pro Max (both 1080p, "BY HIGGSFIELD" enhanced tiers), all 4–12s. Not in the API/MCP catalog — UI generations only |
-| Wan 3.0 | — | — | — | — | 2–30 or −1 smart | auto, 16:9, 9:16, 1:1, 4:3, 3:4 | 480p, 720p, 1080p | ✅ | T2V, first/last frame, and multimodal reference (image / video / audio refs) with native audio (`generate_audio`, default on); `enable_thinking` = slower, better prompt adherence (catalog wording); **smart duration `-1` is billed as 10s**. CLI rules: `end_image` needs `start_image`, and frames cannot be combined with reference media. Not yet field-rated |
-| Wan 3.0 Prime | — | — | — | — | 2–30 or −1 smart | auto, 16:9, 9:16, 1:1, 4:3, 3:4 | 480p, 720p, 1080p | ✅ | Identical parameter surface to Wan 3.0. Neither the catalog nor Alibaba's guide says how Prime differs — do not claim a quality gap. Not yet field-rated |
+| Wan 3.0 | — | — | — | — | 2–30s or −1 smart | auto, 16:9, 9:16, 1:1, 4:3, 3:4 | 480p, 720p, 1080p | ✅ | T2V, first/last frame, and multimodal reference (image / video / audio refs) with native audio (`generate_audio`, default on); `enable_thinking` = slower, better prompt adherence (catalog wording); **smart duration `-1` is billed as 10s**. CLI rules: `end_image` needs `start_image`, and frames cannot be combined with reference media. Not yet field-rated |
+| Wan 3.0 Prime | — | — | — | — | 2–30s or −1 smart | auto, 16:9, 9:16, 1:1, 4:3, 3:4 | 480p, 720p, 1080p | ✅ | Identical parameter surface to Wan 3.0. Neither the catalog nor Alibaba's guide says how Prime differs — do not claim a quality gap. Not yet field-rated |
 | Wan 2.7 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★★ | 2–15s | 16:9, 9:16, 1:1, 4:3, 3:4 | 720p, 1080p | ✅ | 60fps, T2V/I2V/R2V/edit, first+last frame |
 | Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5/10/15s | 16:9, 9:16, 1:1 | — | ❌ | Artistic, stylized, improved physics |
 | Wan 2.5 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–10s | — | — | ✅ | Native audio, artistic, fantasy |
@@ -52,7 +52,6 @@
 
 \* **Aspect ratios / Resolutions columns are sourced from the specs layer** (`specs/MODEL-SPECS.md`, `models_explore` snapshot 2026-09-26) — do not hand-edit them. A `—` means the model is legacy/unsnapshotted or the snapshot does not expose that field; verify live before promising values for those rows. Duration cells for snapshot-covered models are cross-checked against the specs by `scripts/validate.py`. A `—` in a star column means **not yet field-rated**: stars are only written from real generations.
 
-<!-- ponytail: the Wan 3.0 / 3.0 Prime Duration cells are written without the "s" unit on purpose. The specs layer encodes smart duration as duration.min = -1, and scripts/validate.py's cross-check cannot express "-1 or 2–30", so a truthful "2–30s" cell would read red and a "-1–30s" cell parses as 1–30. Upgrade path: teach check_guide_against_specs that min == -1 is the smart-duration sentinel (envelope = 2..max per the param description), then restore "2–30s" so the row is checked again. -->
 
 `[OFFICIAL — platform, snapshot 2026-09-26]` for every new row above (ids, enums, roles, and the quoted catalog descriptions); CLI rules are from `higgsfield model get <id>` on the same day.
 

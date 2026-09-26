@@ -28,12 +28,18 @@ scripts/                  ← Python tooling (run from the repo root)
   ├── seedance_lint.py    ← Seedance preflight linter
   ├── sync_specs.py       ← Regenerates specs/ from a models_explore snapshot
   ├── refresh_specs.py    ← Spec-drift tripwire (live CLI vs specs/cli_baseline.json)
+  ├── snapshot_crosscheck.py ← Two-way structural check, snapshot vs live CLI (allowlist:
+  │                         specs/crosscheck_allowlist.json)
+  ├── preflight.py        ← Free platform-constraint preflight for any model (CEL rules, fail-closed)
+  ├── claims_lint.py      ← Doctrine spec-claims vs current specs (registry: evals/spec-claims.json)
+  ├── repo_walk.py        ← Shared repo walk (skips .claude/worktrees and nested repos)
   ├── generate_user_guide.py ← Release PDF generator (+ validate_user_guide.py,
   │                         sub_skill_descriptions.py)
   └── build_index.py      ← Regenerates INDEX.md + checks QUICK FACTS anchors
 specs/                    ← Machine-readable model specs (generated — never hand-edit;
-                            video + image + audio, each generated from a dated
-                            models_explore snapshot)
+                            video + image + audio + 3d, each generated from a dated
+                            models_explore snapshot; retired-model-ids.json keeps
+                            ledger history valid after a model leaves the catalog)
 INDEX.md                  ← Generated heading index of every SKILL.md
 tests/                    ← pytest suite for the Python tooling (CI-run)
 evals/                    ← Behavioral eval cases + run_evals.py (CI-run)
@@ -48,7 +54,7 @@ workspace/                ← Git-ignored working area (input/ → processed/, o
 .claude/
   ├── settings.json       ← Permission rules
   ├── rules/              ← Thin pointers to root reference files (no duplication)
-  └── commands/           ← /validate, /release
+  └── commands/           ← /validate, /refresh-specs, /release
 ```
 
 ## Key Commands
@@ -58,11 +64,16 @@ workspace/                ← Git-ignored working area (input/ → processed/, o
 - `python3 -m pytest tests/ -q` — Python tooling test suite (CI-run)
 - `python3 scripts/validate.py --evals` — behavioral eval cases (evals/cases/)
 - `python3 scripts/build_index.py` — regenerate INDEX.md after any heading change
-- `python3 scripts/sync_specs.py --type video|image|audio` — regenerate specs/ from the newest dated snapshot
+- `python3 scripts/sync_specs.py --type video|image|audio|3d` — regenerate specs/ from the newest dated snapshot; `--changed` lists models that moved since the previous snapshot and the eval cases naming them
+- `python3 scripts/snapshot_crosscheck.py --type all` — two-way structural cross-check of the snapshots against the live CLI (read-only calls)
+- `python3 scripts/preflight.py <model> …` — free preflight of a planned generation against the platform's enums and rules
+- `python3 scripts/claims_lint.py` — doctrine claims vs today's specs (also run by `validate.py --strict`)
+- `python3 scripts/validate.py --snapshot-age` — auth-free snapshot staleness gate (the weekly CI job runs it first)
 - `python3 scripts/refresh_specs.py` — spec-drift tripwire (exit 0 fresh / 3 changed / 1 pull-failed / 4 CLI-shape-changed); `--update-baseline` to accept a reviewed change
 - `python3 scripts/higgsfield_memory.py stats` — memory database statistics
-- `/validate` — run validation via slash command
-- `/release <version>` — guided version bump + tag + GitHub release
+- `/validate` — run validation via slash command (claims release-ready only when all three gates pass)
+- `/refresh-specs` — the whole Tier-2 spec refresh as one guided command
+- `/release <version>` — guided release: branch → PR → merge → tag the merge commit → GitHub release + PDF
 
 ## Rules
 
@@ -73,5 +84,5 @@ workspace/                ← Git-ignored working area (input/ → processed/, o
 - Update `CHANGELOG.md` for every user-facing change
 - Release gate: `python3 scripts/validate.py --strict` + `python3 -m pytest tests/ -q` + `python3 scripts/validate.py --evals` — all three green before any release
 - Version bumps require a git tag + GitHub release, not just a commit. Full ceremony: `.claude/commands/release.md` (main is protected — tag the **merge commit**; the USER-GUIDE PDF is an untracked release artifact: regenerate → refresh MANIFEST → `gh release upload`; delete release branches after merge)
-- Spec refreshes (Tier 2): dump `models_explore` → dated snapshot in `specs/` → `scripts/sync_specs.py` → **audit `evals/cases/` in the same PR** (v3.11.3 lesson) → `scripts/refresh_specs.py --update-baseline`
+- Spec refreshes (Tier 2): `/refresh-specs` — dump `models_explore` (video/image/audio/3d; refuse `has_more: true`) → dated snapshot in `specs/` → `scripts/sync_specs.py` → `scripts/snapshot_crosscheck.py` → **audit `evals/cases/` in the same PR** (v3.11.3 lesson; `sync_specs.py --changed` lists them) → `scripts/refresh_specs.py --update-baseline`
 - Commit format: `feat: vX.Y.Z — description` or `fix: vX.Y.Z — description`

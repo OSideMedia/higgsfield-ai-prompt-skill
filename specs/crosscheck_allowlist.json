@@ -80,6 +80,14 @@
       "seen": "2026-09-26",
       "detail": "snapshot-only=[image] cli-only=[image_references]",
       "note": "Role naming only: MCP `image` = CLI `image_references`."
+    },
+    {
+      "model": "gpt_image_2",
+      "field": "background",
+      "kind": "param_missing_in_snapshot",
+      "seen": "2026-09-26",
+      "detail": "cli enum=[auto, opaque, transparent]",
+      "note": "The MCP surface genuinely lacks it: models_explore list AND get (2026-09-26) expose only resolution/quality, while `model get` lists background plus mask/is_inpaint. The snapshot is faithful to the MCP; the disagreement is recorded in image-models.md (gpt_image_2 CLI↔MCP table). Re-check when either surface changes."
     }
   ]
 }
