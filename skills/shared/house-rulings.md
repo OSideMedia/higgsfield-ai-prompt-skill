@@ -82,15 +82,30 @@ directory. All entries dated **2026-09-26** unless marked.
 
 ### P2-2 · Voice: paste every time, or once?
 
-- **Ruling:** SCOPE — by model.
+- **Ruling:** SCOPE — by model — plus **OPEN** on what "once" means on 2.5, with a default.
 - **Scope:** Seedance **2.0**, or any shot where no reused reference carries the voice → the
   voice-bible line verbatim in the audio field each time the character speaks. **2.5** with the
-  same character-sheet reference reused → the sheet carries the voice; write it once, in the
-  role sentence, still copied from the voice bible.
-- **Sides:** `../higgsfield-acting/SKILL.md` § Voice + `../higgsfield-seedance/HELL-GRIND.md`
+  same character-sheet reference reused → the sheet carries the voice; it goes in the role
+  sentence, not the audio field, still copied from the voice bible.
+- **Sides (by model):** `../higgsfield-acting/SKILL.md` § Voice + `../higgsfield-seedance/HELL-GRIND.md`
   § The voice is not an asset `[OFFICIAL — Hell Grind]` · `../higgsfield-seedance-2-5/VFX-PIPELINE.md`
-  § The voice lock `[FIELD — AI-vs-VFX]` + `[OFFICIAL — prompt-builder 2.5]`.
+  § Direction patterns from the build (the voice lock) `[FIELD — AI-vs-VFX]` +
+  `[OFFICIAL — prompt-builder 2.5]`.
+- **OPEN — "once" per project or per prompt (2.5):** the voice lock says describe it once
+  "rather than re-specifying it in every prompt" — readable as once per *project*. Against
+  that, the Dreamina core formula's Audio slot lists "voice characteristics" per prompt
+  (`../higgsfield-seedance-2-5/SKILL.md` § The Core Prompt Formula `[OFFICIAL — Dreamina]`), and
+  the same build's § Emotion with no video reference writes "how the voice sounds" into the
+  prompt at hand. Nothing here measures it.
+- **Default `[HOUSE]`:** once per **prompt**, in the role sentence. Each generation reads only its
+  own prompt (`../higgsfield-seedance/SKILL.md` § Context isolation); a line pasted from the
+  voice bible is the same words the sheet was built to, so it can only fight the sheet if the
+  bible and the sheet already disagree — a failure the wording discipline forbids anyway —
+  while an omitted line leaves a dialogue shot with no protection if the sheet under-carries
+  the voice, and that costs a re-render.
 - **Unmeasured edge:** whether also repeating the voice in the 2.5 audio field helps or fights.
+- **Settling probe:** one 480p pair on 2.5, same sheet reference, second prompt with vs without
+  the role-sentence voice line, voice match scored against the first.
 
 ### P2-3 · May an identity asset go through a model a second time?
 

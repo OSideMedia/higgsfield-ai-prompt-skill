@@ -119,9 +119,10 @@ Lock every character's voice in pre-production, before any dialogue is written, 
 descriptor: **register, tempo, accent, manner.** It is pasted into the audio field as-is,
 every time that character speaks, and it never changes. (This is the Seedance **2.0** form.
 On **2.5** the reused character-sheet reference carries the voice together with the
-appearance, so the voice line is written once, in the character's role sentence — still
-verbatim from the voice bible: `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § The voice lock,
-`../shared/house-rulings.md` P2-2.)
+appearance, so the voice line goes in the character's role sentence instead of the audio
+field — still verbatim from the voice bible, once per prompt by default (whether "once" means
+per prompt or per project is OPEN): `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Direction
+patterns from the build (the voice lock), `../shared/house-rulings.md` P2-2.)
 
 ```
 Voice: deep, gravelly bass-baritone; slow, calculated pacing; London street accent;

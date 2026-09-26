@@ -169,6 +169,10 @@ Once the chain holds, the scene is worth spending on — and only then:
 | Breaking the settled scene into shots | `../higgsfield-shotlist-director/SKILL.md` |
 | Writing the shot itself | `../higgsfield-seedance/SKILL.md` · `../higgsfield-seedance-2-5/SKILL.md` |
 
+**The most common real failure to hunt for first:** a reversal that turns the plot but does
+not move the audience's verdict. Surface it before anything else — it is the one that
+survives a read-through, generates beautifully, and still lands flat in the cut.
+
 ### Same words, different layer — the term map to `higgsfield-acting`
 
 This engine and `../higgsfield-acting/SKILL.md` § The five pillars share three words and
@@ -183,10 +187,6 @@ audit result into acting through this map, not by assuming the words mean the sa
 | **Obstacle** — a circumstance that *jeopardizes* a stage or the whole goal; name what is at risk and its scale | **Obstacle and stakes** — what prevents the want, external *or internal* (pride, disbelief), plus the cost of failure | The audited jeopardy becomes the stakes; acting adds the internal obstacles a structural audit does not look for |
 | **Tactic** — the plot-level move the threat forces, a reasonable guess under uncertainty whose failure must return information | **Tactics** — moment-to-moment action verbs toward the partner (*press · charm · stall*), changed when one fails | One structural tactic is usually played as several acting tactics; a structural wheel-spin shows up in acting as monotactics |
 | **Reversal** and **Value Shift** — judged at the sequence level, in the audience's verdict | **Beats** — each visible change of tactic; **subtext** | A value shift needs a visible beat change to land on screen; if acting cannot point to the beat, the shift will not render |
-
-**The most common real failure to hunt for first:** a reversal that turns the plot but does
-not move the audience's verdict. Surface it before anything else — it is the one that
-survives a read-through, generates beautifully, and still lands flat in the cut.
 
 ## Related Skills
 

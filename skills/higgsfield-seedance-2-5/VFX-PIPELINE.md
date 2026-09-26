@@ -471,7 +471,12 @@ re-specifying it in every prompt. `[OFFICIAL — prompt-builder 2.5]` states the
 where no reused sheet reference carries the voice, the voice bible is pasted verbatim into the
 audio field every time the character speaks (`../higgsfield-acting/SKILL.md` § Voice). The
 wording discipline is shared — the voice line in the role sentence is still copied from the
-voice bible, never retyped or "improved".
+voice bible, never retyped or "improved". **What "once" means is OPEN** (P2-2): the build's
+wording ("rather than re-specifying it in every prompt") can be read as once per *project*,
+while the Dreamina core formula (`SKILL.md` § The Core Prompt Formula `[OFFICIAL — Dreamina]`)
+and § Emotion with no video reference above both put the voice's description in the prompt
+at hand. Default `[HOUSE]`: once per **prompt**, in the role sentence — each generation reads
+only its own prompt, and a verbatim line cannot drift.
 
 **The high-speed kit.** For chase and fly-by shots, three clauses do most of the work:
 a **180° camera orbit** around the subject, **speed shake** (a constant fine vibration with

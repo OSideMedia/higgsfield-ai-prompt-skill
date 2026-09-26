@@ -37,7 +37,7 @@ prompt. It does not change camera, light, wardrobe, or grade.
 - Every tic carries a **trigger**; every mask carries a **crack** — at least one "However, when X…" clause per profile [→](#the-acting-master-profile)
 - **Eye life is mandatory and never optional** — give the eyes a **task** aimed at the partner, then saccades, blink quality, eyes-lead-thought; catchlights only make the task legible, they never fix a dead stare. Dead eyes are the number-one tell of AI acting [→](#eye-life)
 - Scene adaptation **transforms, never deletes**: a behavior that can't physically happen is displaced into another outlet, not removed [→](#scene-adaptation)
-- The **voice prompt is locked** — one per character, from one voice bible, never adapted per scene; on 2.0 pasted verbatim into the audio field each time they speak, on 2.5 written once in the character's role sentence because the reused sheet carries the voice [→](#voice--fixed-identity-never-adapted)
+- The **voice prompt is locked** — one per character, from one voice bible, never adapted per scene; on 2.0 pasted verbatim into the audio field each time they speak, on 2.5 written in the character's role sentence, not the audio field, because the reused sheet carries the voice (once per prompt by default — what "once" means is OPEN, P2-2) [→](#voice--fixed-identity-never-adapted)
 - **States, not transitions.** Models fail process and nail state: "mid-throw, arm extended", not "reaches in, pulls out, winds up" — for a peak reached through a reversing process; simple same-direction motion that must fill the clip is chained instead [→](#states-not-transitions)
 - Ensemble reactions travel in a **wave, never in sync**; the strong are still and quiet, the weak fidget and shout [→](#ensemble-and-space)
 - 15 named bad-acting symptoms with prompt-level fixes, and a 0–5 self-check scale — **aim every hero shot at 4+** [→](#the-atlas-of-bad-acting)
@@ -385,6 +385,11 @@ never paste it.
    outlet changes.**
 5. **One flowing paragraph.** Fold the adaptation into prose in the character's register — no
    bullet lists, no headers, no "dial" lines inside the prompt.
+6. **Bind the acting to the right person — by model** (`../shared/house-rulings.md` P2-13).
+   On Seedance **2.0**, lead with the character's reference tag
+   (`../higgsfield-seedance/SKILL.md` § Tag naming) — a house convention. On **2.5**, beat
+   prose names the character plus one visible marker, never a handle; the handle stays in the
+   role map (`../higgsfield-seedance-2-5/SKILL.md` § Reference Roles).
 
 > **The movement lock, reconciled** (`../shared/house-rulings.md` P3-4). The
 > story bible's **movement lock** (`../higgsfield-character-design/SKILL.md` § Ship the bible)
@@ -393,8 +398,6 @@ never paste it.
 > happen. It is part of the constant core in rule 2. Where the scene makes the movement
 > physically impossible, rule 4 still applies: the energy is displaced, not deleted. The
 > lock fixes the *words*; this section decides whether the body can do them here.
-6. **Lead with the character's reference tag** so the model binds the acting to the right
-   person (`../higgsfield-seedance/SKILL.md` § Tag naming).
 
 ## Voice — fixed identity, never adapted
 
@@ -405,10 +408,13 @@ never modified. If the character appears but says nothing, omit it.
 > **Scope — 2.0 vs 2.5** (`../shared/house-rulings.md` P2-2). The paste-every-time form above
 > is the Seedance **2.0** form, and the form for any shot where no reference carries the
 > voice. On **2.5**, with the same character-sheet reference reused, the sheet carries the
-> voice together with the appearance (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § The voice
-> lock, `[FIELD]` + `[OFFICIAL — prompt-builder 2.5]`): write the voice **once, in the
-> character's role sentence** — still copied from the voice bible, never retyped. Whether also
-> repeating it in the audio field helps or fights on 2.5 is unmeasured here.
+> voice together with the appearance (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Direction
+> patterns from the build — the voice lock, `[FIELD]` + `[OFFICIAL — prompt-builder 2.5]`): the voice goes in the character's
+> **role sentence**, not repeated in the audio field — still copied from the voice bible, never
+> retyped. Whether "once" there means once per *prompt* or once per *project* is **OPEN**
+> (P2-2); the default is once per prompt, in the role sentence, because each generation reads
+> only its own prompt. Whether also repeating it in the audio field helps or fights on 2.5 is
+> unmeasured here.
 
 > **Not even a synonym.** `[FIELD — Higgsfield Studio, ONEIRIC breakdown, 2026-08-13]`
 > "Verbatim" is stricter than it sounds, and the way it gets broken is not carelessness —
