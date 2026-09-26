@@ -58,11 +58,21 @@ from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
+# The CLI's media-role params (start_image, image_references, mask, …): the
+# same test the tripwire and the cross-check use.
+from refresh_specs import is_media_role as is_cli_media_param
+
 ROOT = Path(__file__).resolve().parent.parent
 SPECS_DIR = ROOT / "specs"
 BASELINE_DEFAULT = SPECS_DIR / "cli_baseline.json"
 SPEC_FILES = {"video": "model-specs.json", "image": "image-model-specs.json",
-              "audio": "audio-model-specs.json"}
+              "audio": "audio-model-specs.json", "3d": "3d-model-specs.json"}
+# models_explore (MCP) and the CLI name one media slot differently: the MCP
+# role `image` is the CLI param `image_references` (specs/crosscheck_allowlist
+# records it on image_auto, soul_cinematic, gpt_image_2 and the 3d image
+# models). A request may use either spelling; checks and platform rules see
+# the CLI name, because the rules are the CLI's.
+MCP_TO_CLI_ROLE = {"image": "image_references"}
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -464,6 +474,43 @@ def _logic(op: str, left, right):
     return not decisive
 
 
+def _re2_anchors(pat: str) -> str:
+    """CEL `.matches()` is RE2: outside multi-line mode `$` matches only at
+    the very end of the text. Python's `$` also matches before a trailing
+    newline ("#A0B0C0\\n" would pass `^#[0-9A-F]{6}$`), so an unescaped `$`
+    outside a character class becomes `\\Z`."""
+    out, i, in_class = [], 0, False
+    while i < len(pat):
+        ch = pat[i]
+        if ch == "\\":
+            out.append(pat[i:i + 2])
+            i += 2
+            continue
+        if in_class:
+            if ch == "]":
+                in_class = False
+        elif ch == "[":
+            in_class = True
+            if pat[i + 1:i + 2] == "^":
+                out.append("[^")
+                i += 2
+                if pat[i:i + 1] == "]":
+                    out.append("]")
+                    i += 1
+                continue
+            if pat[i + 1:i + 2] == "]":
+                out.append("[]")
+                i += 2
+                continue
+        elif ch == "$":
+            out.append(r"\Z")
+            i += 1
+            continue
+        out.append(ch)
+        i += 1
+    return "".join(out)
+
+
 def _eval(node, env: dict):
     kind = node[0]
     if kind == "lit":
@@ -537,9 +584,16 @@ def _eval(node, env: dict):
                 return a * b
             if b == 0:
                 raise CelEvalError("division by zero")
-            if op == "/":
-                return a // b if isinstance(a, int) and isinstance(b, int) else a / b
-            return a % b
+            if isinstance(a, int) and isinstance(b, int):
+                # CEL int `/` truncates toward zero and `%` keeps the sign of
+                # the dividend (-7 / 2 == -3, -7 % 2 == -1); Python's // and %
+                # floor instead (-4 and 1).
+                q = abs(a) // abs(b)
+                q = q if (a >= 0) == (b >= 0) else -q
+                return q if op == "/" else a - b * q
+            if op == "%":
+                raise CelEvalError("'%' on double (CEL defines it for int / uint only)")
+            return a / b
         if op == "+" and type(a) is type(b) and isinstance(a, (str, list)):
             return a + b
         raise CelEvalError(f"'{op}' on {_cel_type(a).name} and {_cel_type(b).name}")
@@ -613,7 +667,7 @@ def _eval(node, env: dict):
         if not (isinstance(s, str) and isinstance(pat, str)):
             raise CelEvalError(".matches() needs strings")
         try:
-            return re.search(pat, s) is not None
+            return re.search(_re2_anchors(pat), s) is not None
         except re.error as e:
             raise CelEvalError(f"bad regex {pat!r}: {e}") from e
     if kind == "macro":
@@ -695,34 +749,55 @@ def load_baseline(path: Path = BASELINE_DEFAULT) -> dict:
     fixed video/image/audio list — so a regenerated baseline that grows a new
     catalog (3D) is covered without an edit here. Rule entries may be plain
     CEL strings (the refresh_specs.py shape) or {"cel", "message"} dicts (the
-    raw `model get --json` shape)."""
+    raw `model get --json` shape).
+
+    A model is "on record" only when its entry CARRIES a `rules` list — an
+    empty list is a model the CLI gives no rules, a missing key is a channel
+    nobody recorded (a renamed key once read as "0/0 rules parse", green).
+    Entries without the key are listed under "no_rules"; a `rules` value that
+    is not a list is malformed. `captured_by_type` (per-section capture
+    dates, v3.37.0) is read when present; `captured` stays the summary."""
     data = json.loads(Path(path).read_text(encoding="utf-8"))
-    out = {"captured": data.get("captured"), "rules": {}, "params": {},
-           "sections": {}, "malformed": []}
+    by_type = data.get("captured_by_type")
+    out = {"captured": data.get("captured"),
+           "captured_by_type": dict(by_type) if isinstance(by_type, dict) else {},
+           "rules": {}, "params": {}, "sections": {}, "malformed": [],
+           "no_rules": []}
     for section, models in data.items():
-        if not isinstance(models, dict):
+        if not isinstance(models, dict) or section == "captured_by_type":
             continue
         for mid, entry in models.items():
             if not isinstance(entry, dict):
                 continue
+            out["params"][mid] = entry.get("params") or {}
+            out["sections"][mid] = section
+            if "rules" not in entry:
+                out["no_rules"].append(mid)
+                continue
+            raw_rules = entry["rules"]
+            if not isinstance(raw_rules, list):
+                out["malformed"].append((mid, raw_rules))
+                continue
             rules = []
-            for raw in entry.get("rules") or []:
+            for raw in raw_rules:
                 rule = _rule_from(raw)
                 if rule is None:
                     out["malformed"].append((mid, raw))
                 else:
                     rules.append(rule)
             out["rules"][mid] = rules
-            out["params"][mid] = entry.get("params") or {}
-            out["sections"][mid] = section
     return out
 
 
 def check_rule_coverage(baseline: dict) -> list[tuple[str, str, str]]:
-    """Every rule in the baseline must parse. Returns [(model, cel, error)]
-    for the ones that do not — the fail-closed coverage gate."""
+    """Every rule in the baseline must parse, and every model entry must
+    carry its rules channel. Returns [(model, cel, error)] for the ones that
+    do not — the fail-closed coverage gate."""
     bad = [(mid, repr(raw), "malformed rule entry (neither a string nor "
             "{'cel': ...})") for mid, raw in baseline.get("malformed", [])]
+    bad += [(mid, "<no `rules` key>", "the baseline entry records no rules "
+             "channel — this model's platform rules are not on record")
+            for mid in sorted(baseline.get("no_rules", []))]
     for mid, rules in sorted(baseline["rules"].items()):
         for rule in rules:
             try:
@@ -911,6 +986,55 @@ def media_roles(spec: dict) -> set[str]:
     return {r for roles in (spec.get("media_roles") or {}).values() for r in roles}
 
 
+def cli_role(role: str) -> str:
+    """The CLI name of a media role (MCP `image` → `image_references`)."""
+    return MCP_TO_CLI_ROLE.get(role, role)
+
+
+def normalize_media(media: dict) -> dict:
+    """Media counts keyed by CLI role name; two spellings of one slot add up."""
+    out: dict[str, int] = {}
+    for role, count in (media or {}).items():
+        key = cli_role(role)
+        out[key] = out.get(key, 0) + int(count or 0)
+    return out
+
+
+def accepted_roles(spec: dict | None, cli_params: dict | None = None) -> set[str]:
+    """CLI names of every media role the model takes: its specs roles (MCP
+    names mapped) plus the CLI baseline's media-role params (gpt_image_2's
+    inpaint `mask` exists only there)."""
+    roles = {cli_role(r) for r in media_roles(spec or {})}
+    roles |= {n for n in (cli_params or {}) if is_cli_media_param(n)}
+    return roles
+
+
+def _is_int(v) -> bool:
+    return (isinstance(v, int) and not isinstance(v, bool)) or \
+        (isinstance(v, float) and v.is_integer())
+
+
+# JSON-schema type words the CLI's `model get` uses ("integer", "string|null").
+_TYPE_OK = {
+    "integer": _is_int,
+    "number": lambda v: _is_num(v),
+    "string": lambda v: isinstance(v, str),
+    "boolean": lambda v: isinstance(v, bool),
+    "array": lambda v: isinstance(v, list),
+    "object": lambda v: isinstance(v, dict),
+    "null": lambda v: v is None,
+}
+
+
+def type_matches(value, cli_type) -> bool | None:
+    """True / False against the CLI's declared type; None when the type word
+    is not one this check knows (never guessed into a pass or a fail)."""
+    alts = [t.strip() for t in str(cli_type or "").split("|") if t.strip()]
+    if not alts or any(t not in _TYPE_OK for t in alts):
+        return None
+    return any(_TYPE_OK[t](value) for t in alts)
+
+
 def is_list_role(role: str) -> bool:
     """image_references / video_references / audio_references / urls are
     repeated; start_image / end_image are single objects."""
@@ -961,65 +1085,92 @@ def coerce_value(raw: str, spec_param: dict | None):
     return raw
 
 
-def spec_surface_checks(spec: dict, params: dict, media: dict) -> list[Check]:
-    """Enum / range / role legality of one request against one spec model."""
+def spec_surface_checks(spec: dict | None, params: dict, media: dict,
+                        cli_params: dict | None = None) -> list[Check]:
+    """Enum / range / type / role legality of one request.
+
+    `spec` is the model's specs/ entry (None when it has none — the caller
+    reports that surface UNCHECKED); `cli_params` is its CLI baseline param
+    map, which adds the CLI's declared type per param (wan3_0 `duration` is
+    an integer: 2.5 is illegal though it sits inside 2–30) and, without a
+    spec entry, the CLI's enum lists. Every declared param yields a line."""
     checks: list[Check] = []
+    spec = spec or {}
+    cli_params = cli_params or {}
+    mid = spec.get("id") or "this model"
     by_name = {p.get("name"): p for p in spec.get("params", [])}
     for name, value in params.items():
         if name == "prompt":
             continue
-        if name == "aspect_ratio":
-            allowed = spec.get("aspect_ratios") or []
-            if allowed and _option_match(value, allowed) is None:
-                checks.append(Check("FAIL", f"aspect_ratio={value}",
-                                    f"{spec['id']} supports: {', '.join(allowed)}"))
-            elif allowed:
-                checks.append(Check("PASS", f"aspect_ratio={value}"))
+        what = f"{name}={value}"
+        cp = cli_params.get(name) if isinstance(cli_params.get(name), dict) else None
+        typed_ok = type_matches(value, cp.get("type")) if cp else None
+        if typed_ok is False:
+            checks.append(Check("FAIL", what, f"the CLI types {name} as {cp['type']}"))
             continue
-        if name == "duration":
-            pol = duration_policy(spec)
-            if pol is not None:
-                status, note = pol.check(value)
-                detail = f"{spec['id']} supports {pol.describe()}"
-                if note:
-                    detail += f" — {note}"
-                checks.append(Check(status, f"duration={value}", detail))
-                continue
+        before = len(checks)
         p = by_name.get(name)
-        if p is None:
-            checks.append(Check("WARN", f"{name}={value}",
-                                f"{spec['id']} has no '{name}' parameter in the specs "
+        if name == "aspect_ratio" and spec.get("aspect_ratios"):
+            allowed = spec["aspect_ratios"]
+            if _option_match(value, allowed) is None:
+                checks.append(Check("FAIL", what, f"{mid} supports: {', '.join(allowed)}"))
+            else:
+                checks.append(Check("PASS", what))
+        elif name == "duration" and spec and duration_policy(spec) is not None:
+            pol = duration_policy(spec)
+            status, note = pol.check(value)
+            detail = f"{mid} supports {pol.describe()}"
+            if note:
+                detail += f" — {note}"
+            checks.append(Check(status, what, detail))
+        elif not spec:                   # no specs entry: the CLI baseline is all we have
+            opts = (cp or {}).get("options") or (cp or {}).get("enum") or []
+            if cp is None:
+                checks.append(Check("WARN", what,
+                                    f"no '{name}' parameter in the CLI baseline — the "
+                                    "platform may reject or ignore it"))
+            elif opts and _option_match(value, opts) is None:
+                checks.append(Check("FAIL", what, f"the CLI baseline enumerates {name}: "
+                                    + ", ".join(map(str, opts))))
+            elif opts:
+                checks.append(Check("PASS", what, "CLI baseline enum"))
+        elif p is None and name != "aspect_ratio":
+            checks.append(Check("WARN", what,
+                                f"{mid} has no '{name}' parameter in the specs "
                                 "snapshot — the platform may reject or ignore it"))
-            continue
-        if p.get("options"):
+        elif p is not None and p.get("options"):
             if _option_match(value, p["options"]) is None:
-                checks.append(Check("FAIL", f"{name}={value}",
-                                    f"{spec['id']} supports {name}: "
+                checks.append(Check("FAIL", what, f"{mid} supports {name}: "
                                     + ", ".join(map(str, p["options"]))))
             else:
-                checks.append(Check("PASS", f"{name}={value}"))
-        elif p.get("min") is not None or p.get("max") is not None:
+                checks.append(Check("PASS", what))
+        elif p is not None and (p.get("min") is not None or p.get("max") is not None):
             if not _is_num(value):
-                checks.append(Check("FAIL", f"{name}={value}", "not a number"))
+                checks.append(Check("FAIL", what, "not a number"))
             elif (p.get("min") is not None and value < p["min"]) or \
                     (p.get("max") is not None and value > p["max"]):
-                checks.append(Check("FAIL", f"{name}={value}",
-                                    f"{spec['id']} range {p.get('min')}–{p.get('max')}"))
+                checks.append(Check("FAIL", what, f"{mid} range {p.get('min')}–{p.get('max')}"))
             else:
-                checks.append(Check("PASS", f"{name}={value}"))
-    accepted = media_roles(spec)
-    for role, count in media.items():
+                checks.append(Check("PASS", what))
+        if len(checks) == before:
+            checks.append(Check("PASS", what, f"type {cp['type']}") if typed_ok else
+                          Check("INFO", what, "no enum, range or type on record — "
+                                "the value is not constrained here"))
+    accepted = accepted_roles(spec, cli_params)
+    for role, count in normalize_media(media).items():
         if not count:
             continue
-        if accepted and role not in accepted:
-            checks.append(Check("FAIL", f"media {role}×{count}",
-                                f"{spec['id']} accepts media roles: "
+        what = f"media {role}×{count}"
+        if not accepted:
+            checks.append(Check("FAIL", what, f"{mid} accepts no media — neither "
+                                "specs/ nor the CLI baseline lists a media role for it"))
+        elif role not in accepted:
+            checks.append(Check("FAIL", what, f"{mid} accepts media roles: "
                                 + ", ".join(sorted(accepted))))
         elif not is_list_role(role) and count > 1:
-            checks.append(Check("FAIL", f"media {role}×{count}",
-                                f"{role} is a single slot — at most 1"))
-        elif accepted:
-            checks.append(Check("PASS", f"media {role}×{count}"))
+            checks.append(Check("FAIL", what, f"{role} is a single slot — at most 1"))
+        else:
+            checks.append(Check("PASS", what))
     return checks
 
 
@@ -1081,14 +1232,19 @@ def run_preflight(model_arg: str, params: dict, media: dict, *,
             baseline = {"captured": None, "rules": {}, "params": {}}
             notes.append(f"CLI baseline unreadable ({e}) — no platform rules checked")
     model_id = spec["id"] if spec else model_arg
-    if spec is None and model_id not in baseline["rules"]:
+    sections = baseline.get("sections", {})
+    if spec is None and model_id not in sections and model_id not in baseline["rules"]:
         raise LookupError(f"unknown model {model_arg!r} — not in specs/ or the CLI baseline")
+    cli_params = baseline.get("params", {}).get(model_id) or {}
+    media = normalize_media(media)
+    if catalog.get("missing"):
+        notes.append("specs files missing or unreadable: "
+                     + ", ".join(catalog["missing"]))
 
     # Canonicalize values against the spec options (case) before rules see them.
     typed = dict(params)
-    checks: list[Check] = []
+    checks = spec_surface_checks(spec, typed, media, cli_params)
     if spec is not None:
-        checks = spec_surface_checks(spec, typed, media)
         by_name = {p.get("name"): p for p in spec.get("params", [])}
         for k, v in list(typed.items()):
             opts = (by_name.get(k) or {}).get("options") or \
@@ -1102,10 +1258,18 @@ def run_preflight(model_arg: str, params: dict, media: dict, *,
                 if p.get("name") not in typed and "default" in p:
                     typed[p["name"]] = p["default"]
     else:
-        notes.append(f"{model_id} is not in the specs snapshot — enum/range "
-                     "surface not checked, platform rules only")
+        # No specs entry: its enum / range / media surface is NOT checked
+        # against specs/ — never a pass (a 3d model once passed
+        # texture_quality=ultra because specs/ had no 3d file loaded).
+        missing = catalog.get("missing") or []
+        checks.insert(0, Check(
+            "UNCHECKED", "spec surface",
+            f"{model_id} has no entry in the specs catalog"
+            + (f" (unreadable: {', '.join(missing)})" if missing else "")
+            + " — its enum/range/duration/media surface was not checked against "
+              "specs/; only the CLI baseline's enums and types were"))
     if fill_defaults:
-        for name, meta in (baseline.get("params", {}).get(model_id) or {}).items():
+        for name, meta in cli_params.items():
             if name not in typed and isinstance(meta, dict) and \
                     meta.get("default") is not None and name not in media:
                 typed[name] = meta["default"]
@@ -1114,15 +1278,20 @@ def run_preflight(model_arg: str, params: dict, media: dict, *,
     values.update(media_param_values(media))
     rules = baseline["rules"].get(model_id)
     rules_on_record = rules is not None
+    section = sections.get(model_id)
+    captured = (baseline.get("captured_by_type") or {}).get(section) \
+        or baseline.get("captured")
     if rules is None:
         rules = []
         notes.append(f"no platform rules on record for {model_id} in the CLI "
-                     f"baseline (captured {baseline.get('captured')}) — its "
+                     f"baseline (captured {captured}) — its "
                      "cross-parameter rules are UNCHECKED")
     results = evaluate_rules(rules, values, missing="null")
 
-    captured = baseline.get("captured")
-    snap = max((d for d in catalog.get("snapshots", {}).values() if d), default=None)
+    snaps = catalog.get("snapshots", {})
+    otype = (spec or {}).get("output_type") or section
+    snap = snaps.get(otype) if otype in snaps else \
+        max((d for d in snaps.values() if d), default=None)
     if captured and snap and captured < snap:
         notes.append(f"CLI baseline rules captured {captured} predate the specs "
                      f"snapshot {snap} — rules may be stale; refresh with "
@@ -1136,13 +1305,16 @@ def render_report(rep: PreflightReport, strict: bool = False) -> str:
     lines = [f"Platform preflight — {rep.model} — {rep.verdict()}", "=" * 44]
     lines.append("── SPEC SURFACE (specs/*.json)")
     if not rep.checks:
+        # Every declared param and non-zero media role yields a line, so an
+        # empty list really means nothing was declared.
         lines.append("  (no params or media declared)")
     for c in rep.checks:
         lines.append(f"  {tag[c.status]} [{c.status}] {c.what}"
                      + (f" — {c.detail}" if c.detail else ""))
     lines.append("── PLATFORM RULES (specs/cli_baseline.json)")
     if not rep.rules:
-        lines.append("  (none on record)")
+        lines.append("  (the CLI records no rules for this model)" if rep.rules_on_record
+                     else "  (none on record)")
     for r in rep.rules:
         label = r.rule.message or r.rule.cel
         lines.append(f"  {tag[r.status]} [{r.status}] {label}")
@@ -1198,25 +1370,52 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         bad = check_rule_coverage(baseline)
         total = sum(len(r) for r in baseline["rules"].values())
+        n_models = len(baseline.get("sections", {}))
+        # A coverage gate over nothing is not a pass: zero models or zero
+        # rules parsed means the subject was never seen (a renamed `rules`
+        # key once printed "0/0 baseline rules parse" and exited 0).
+        vacuous = []
+        if n_models == 0:
+            vacuous.append("the baseline carries no models")
+        elif total == 0:
+            vacuous.append(f"zero rules on record across {n_models} model(s)")
         if args.report_json:
-            print(json.dumps({"total": total, "unchecked": [
-                {"model": m, "rule": c, "error": e} for m, c, e in bad]}, indent=2))
+            print(json.dumps({"total": total, "models": n_models, "vacuous": vacuous,
+                              "unchecked": [{"model": m, "rule": c, "error": e}
+                                            for m, c, e in bad]}, indent=2))
         else:
-            print(f"{total - len(bad)}/{total} baseline rules parse "
+            print(f"{total - len([b for b in bad if not b[1].startswith('<')])}/{total} "
+                  f"baseline rules parse across {n_models} model(s) "
                   f"(baseline captured {baseline.get('captured')})")
             for mid, cel, err in bad:
                 print(f"  ? UNCHECKED {mid}: {cel}\n      {err}")
-        return 1 if (bad and args.strict) else 0
+            for v in vacuous:
+                print(f"  ? UNCHECKED — nothing was checked: {v}")
+        return 1 if ((bad or vacuous) and args.strict) else 0
 
     try:
         if args.json_text or args.input:
             req = json.loads(args.json_text if args.json_text
                              else args.input.read_text(encoding="utf-8"))
+            if not isinstance(req, dict):
+                raise ValueError(f"the request must be a JSON object "
+                                 f'{{"model", "params", "media"}}, not {type(req).__name__}')
             model = req.get("model") or args.model
-            params = dict(req.get("params") or {})
-            media_raw = req.get("media") or {}
-            media = {k: (len(v) if isinstance(v, list) else int(v or 0))
-                     for k, v in media_raw.items()}
+            if model is not None and not isinstance(model, str):
+                raise ValueError(f'"model" must be a string, not {type(model).__name__}')
+            params, media_raw = req.get("params") or {}, req.get("media") or {}
+            for key, val in (("params", params), ("media", media_raw)):
+                if not isinstance(val, dict):
+                    raise ValueError(f'"{key}" must be a JSON object, not {type(val).__name__}')
+            params = dict(params)
+            media = {}
+            for k, v in media_raw.items():
+                if isinstance(v, list):
+                    media[k] = len(v)
+                elif v is None or (isinstance(v, int) and not isinstance(v, bool)):
+                    media[k] = int(v or 0)
+                else:
+                    raise ValueError(f'media "{k}" must be a count or a list, not {v!r}')
         else:
             model = args.model
             params, media = {}, {}

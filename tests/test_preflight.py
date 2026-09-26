@@ -306,3 +306,131 @@ def test_cli_ambiguous_and_unknown_models_exit_2():
     assert amb.returncode == 2 and "cinematic_studio_video_v2" in amb.stderr
     unk = run("--model", "no_such_model_9", "--param", "mode=t2v")
     assert unk.returncode == 2
+
+
+# ── v3.37.0 review: a gate never passes an unchecked subject ────────────────
+
+@pytest.mark.parametrize("model,params", [
+    ("tripo_3d", ["texture_quality=ultra", "face_limit=99999999"]),
+    ("hunyuan3d_v3_1_text_to_3d", ["mode=bogus", "face_count=5"]),
+])
+def test_3d_models_are_checked_against_their_specs(model, params):
+    # specs/3d-model-specs.json was never loaded: every 3d model had "no spec
+    # entry" and illegal enums / ranges exited 0 under --strict.
+    args = ["--model", model, "--strict"]
+    for p in params:
+        args += ["--param", p]
+    r = run(*args)
+    assert r.returncode == 1, r.stdout
+    fails = [l for l in r.stdout.splitlines() if "[FAIL]" in l]
+    assert len(fails) == 2, r.stdout
+
+
+def test_model_without_a_spec_entry_is_unchecked_never_pass(tmp_path):
+    # Legal values, but specs/ unreadable: the enum/range/media surface was
+    # not checked, so the verdict is UNCHECKED (fails --strict), not PASS.
+    empty = tmp_path / "no-specs"
+    empty.mkdir()
+    lenient = run("--model", "seedance_2_0", "--param", "mode=std",
+                  "--specs-dir", str(empty))
+    strict = run("--model", "seedance_2_0", "--param", "mode=std",
+                 "--specs-dir", str(empty), "--strict")
+    assert lenient.returncode == 0 and "— UNCHECKED" in lenient.stdout
+    assert strict.returncode == 1
+    assert "has no entry in the specs catalog" in strict.stdout
+    assert "model-specs.json" in strict.stdout            # the unreadable files are named
+
+
+def test_without_specs_the_cli_baseline_enums_still_fail_illegal_values(tmp_path):
+    r = run("--model", "seedance_2_0", "--param", "mode=warp", "--param", "resolution=8k",
+            "--specs-dir", str(tmp_path), "--strict")
+    assert r.returncode == 1
+    assert "[FAIL] mode=warp" in r.stdout and "[FAIL] resolution=8k" in r.stdout
+
+
+def test_declared_params_are_never_reported_as_undeclared():
+    r = run("--model", "tripo_3d", "--param", "texture=true")
+    assert "(no params or media declared)" not in r.stdout
+    assert "texture=True" in r.stdout
+
+
+@pytest.mark.parametrize("doc", [
+    # `rules` renamed: no entry carries the channel → nothing on record
+    {"captured": "2026-09-26", "video": {"seedance_2_5": {"params": {}, "constraints": [
+        'params.mode != "t2v" || size(params.image_references) == 0']}}},
+    {"captured": "2026-09-26", "video": {}},              # zero models
+    {"captured": "2026-09-26", "video": {"m": {"params": {}, "rules": []}}},  # zero rules
+])
+def test_check_rules_never_passes_a_vacuous_baseline(tmp_path, doc):
+    b = tmp_path / "b.json"
+    b.write_text(json.dumps(doc), encoding="utf-8")
+    r = run("--check-rules", "--strict", "--baseline", str(b))
+    assert r.returncode == 1, r.stdout
+    assert "UNCHECKED" in r.stdout
+
+
+def test_entry_without_rules_key_is_not_rules_on_record(tmp_path):
+    b = tmp_path / "b.json"
+    b.write_text(json.dumps({"captured": "2026-09-26", "video": {
+        "seedance_2_5": {"params": {}}}}), encoding="utf-8")
+    rep = pf.run_preflight("seedance_2_5", {"mode": "t2v"}, {}, baseline=pf.load_baseline(b))
+    assert rep.rules_on_record is False and rep.verdict() == "UNCHECKED"
+
+
+@pytest.mark.parametrize("model", ["z_image", "clipify", "recraft_v4_1", "sonilo_music"])
+def test_media_on_a_model_that_accepts_none_fails(model):
+    r = run("--model", model, "--media", "image_references=5",
+            "--media", "video_references=2", "--strict")
+    assert r.returncode == 1, r.stdout
+    assert "accepts no media" in r.stdout
+
+
+@pytest.mark.parametrize("model,media,expected", [
+    ("gpt_image_2", {"image_references": 1}, "PASS"),   # CLI name — was a false FAIL
+    ("gpt_image_2", {"image": 1}, "PASS"),              # MCP name
+    ("soul_cinematic", {"image": 1}, "PASS"),
+    ("soul_cinematic", {"image": 2}, "FAIL"),           # rule on image_references sees 2
+    ("soul_cinematic", {"image_references": 2}, "FAIL"),
+])
+def test_mcp_and_cli_media_role_names_are_one_slot(model, media, expected):
+    assert pf.run_preflight(model, {}, media).verdict() == expected
+
+
+def test_cli_integer_type_is_enforced():
+    # wan3_0 duration is an `integer` in `model get`: 2.5 sits inside 2–30
+    # but the platform rejects it.
+    assert pf.run_preflight("wan3_0", {"duration": 2.5}, {}).verdict() == "FAIL"
+    assert pf.run_preflight("wan3_0", {"duration": 5}, {}).verdict() == "PASS"
+    r = run("--model", "wan3_0", "--param", "duration=2.5", "--strict")
+    assert r.returncode == 1 and "integer" in r.stdout
+
+
+@pytest.mark.parametrize("payload", ['[1]', '"seedance_2_5"', '{"model": "seedance_2_5", "params": [1]}',
+                                     '{"model": "seedance_2_5", "media": {"start_image": "x"}}'])
+def test_malformed_json_request_is_a_usage_error(payload):
+    r = run("--json", payload)
+    assert r.returncode == 2, r.stdout + r.stderr
+    assert "Traceback" not in r.stderr
+
+
+def test_cel_int_division_truncates_toward_zero():
+    env = {"params": pf.Params({"n": -7})}
+    ev = lambda src: pf._eval(pf.parse_rule(src), env)  # noqa: E731
+    assert (ev("params.n / 2"), ev("params.n % 2")) == (-3, -1)
+    assert (ev("7 / -2"), ev("7 % -2"), ev("7 / 2"), ev("7 % 2")) == (-3, 1, 3, 1)
+
+
+def test_matches_dollar_is_end_of_text_like_re2():
+    rule = [pf.Rule('params.c.matches("^#[0-9A-F]{6}$")')]
+    [nl] = pf.evaluate_rules(rule, {"c": "#A0B0C0\n"})
+    [ok] = pf.evaluate_rules(rule, {"c": "#A0B0C0"})
+    assert (nl.status, ok.status) == ("FAIL", "PASS")
+    assert pf._re2_anchors(r"a\$b[$]$") == r"a\$b[$]\Z"
+
+
+def test_platform_rules_see_the_cli_role_for_an_mcp_spelling():
+    # `--media image=2` on soul_cinematic: the platform rule reads
+    # params.image_references, which the MCP spelling used to leave at 0.
+    rep = pf.run_preflight("soul_cinematic", {}, {"image": 2})
+    assert [r.rule.cel for r in rep.rules if r.status == "FAIL"] == \
+        ["size(params.image_references) <= 1"]
