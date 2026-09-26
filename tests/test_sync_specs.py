@@ -239,6 +239,29 @@ def test_smart_duration_rendered_and_committed():
     assert "| wan3_0 | 2–30s or -1 (smart) |" in md and "-1–30s" not in md
 
 
+# ── v3.37.0: --changed lists moved models + the eval cases that cite them ────
+
+def test_changed_models_and_referencing_evals(tmp_path):
+    specs, cases = tmp_path / "specs", tmp_path / "cases"
+    specs.mkdir()
+    cases.mkdir()
+    _snap(specs / "models_explore_snapshot_2026-08-07.json", ["keep", "move", "gone"])
+    new = json.loads((specs / "models_explore_snapshot_2026-08-07.json").read_text())
+    new["items"] = [m for m in new["items"] if m["id"] != "gone"]
+    next(m for m in new["items"] if m["id"] == "move")["parameters"] = [{"name": "r"}]
+    new["items"].append({"id": "fresh", "name": "Fresh Model", "output_type": "video",
+                         "parameters": []})
+    (specs / "models_explore_snapshot_2026-09-26.json").write_text(json.dumps(new))
+    ch = sync_specs.changed_models("video", specs)
+    assert (ch["added"], ch["removed"], ch["changed"]) == (["fresh"], ["gone"], ["move"])
+    (cases / "a.json").write_text(json.dumps({"cases": [
+        {"id": "c1", "response": "uses `move` here"},
+        {"id": "c2", "response": "the Fresh Model by display name"},
+        {"id": "c3", "response": "mentions move_v2 and keep only"}]}))
+    refs = sync_specs.evals_referencing(["move", "fresh", "gone"], ch["names"], cases)
+    assert refs == {"move": ["a.json:c1"], "fresh": ["a.json:c2"], "gone": []}
+
+
 def test_committed_tombstones_include_llm_text():
     retired = sync_specs.load_retired()
     assert {"llm_text", "explainer_video", "gpt_image"} <= set(retired)

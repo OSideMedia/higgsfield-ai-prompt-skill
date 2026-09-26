@@ -1,0 +1,85 @@
+{
+  "_doc": "Known, adjudicated CLI <-> models_explore (MCP) disagreements for scripts/snapshot_crosscheck.py. Hand-maintained, reviewed in PRs. Every entry names the model, field, kind, the date it was SEEN, and the exact observed detail: an allowlisted disagreement is still printed, fails again if its detail changes, and is reported stale once the sources agree. Add an entry only after deciding the snapshot is right (or the difference is representation); if the snapshot is wrong, re-dump models_explore instead.",
+  "entries": [
+    {
+      "model": "gpt_image_2",
+      "field": "resolution",
+      "kind": "default",
+      "seen": "2026-09-26",
+      "detail": "snapshot='1k' cli='2k'",
+      "note": "Standing CLI/MCP default disagreement (refresh_specs.py module doc: the CLI reports gpt_image_2=2k/high where models_explore says 1k/low). Specs follow models_explore."
+    },
+    {
+      "model": "gpt_image_2",
+      "field": "quality",
+      "kind": "default",
+      "seen": "2026-09-26",
+      "detail": "snapshot='low' cli='high'",
+      "note": "Same standing default disagreement as resolution."
+    },
+    {
+      "model": "gpt_image_2",
+      "field": "aspect_ratios",
+      "kind": "aspect_ratios",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[] cli-only=[4:5, 5:4, auto]",
+      "note": "CLI aspect_ratio enum is wider than the MCP list (the CLI gained 21:9/4:5/5:4/auto after 08-07; the 09-26 MCP dump has 21:9 but not 4:5/5:4/auto)."
+    },
+    {
+      "model": "gpt_image_2",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references, mask]",
+      "note": "Role naming (MCP `image` vs CLI `image_references`) plus the CLI-only inpaint `mask` role."
+    },
+    {
+      "model": "image_auto",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references]",
+      "note": "Role naming only: MCP `image` = CLI `image_references`."
+    },
+    {
+      "model": "soul_cinematic",
+      "field": "soul_id",
+      "kind": "param_missing_in_cli",
+      "seen": "2026-09-26",
+      "detail": "in snapshot, absent from `model get`",
+      "note": "MCP lists a soul_id param the CLI does not expose."
+    },
+    {
+      "model": "soul_cinematic",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references]",
+      "note": "Role naming only: MCP `image` = CLI `image_references`."
+    },
+    {
+      "model": "image_to_3d",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references]",
+      "note": "Role naming only: MCP `image` = CLI `image_references`."
+    },
+    {
+      "model": "multi_image_to_3d",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references]",
+      "note": "Role naming only: MCP `image` = CLI `image_references`."
+    },
+    {
+      "model": "sam_3_3d",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references]",
+      "note": "Role naming only: MCP `image` = CLI `image_references`."
+    }
+  ]
+}

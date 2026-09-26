@@ -599,8 +599,67 @@ def retired_is_stale(specs_dir: Path = None) -> bool:
             or rp.read_text(encoding="utf-8") != emit_retired(merged_retired(specs_dir)))
 
 
+def _snapshots_of_type(specs_dir: Path, output_type: str) -> list:
+    pattern = ("models_explore_snapshot_*.json" if output_type == "video"
+               else f"models_explore_snapshot_{output_type}_*.json")
+    files = sorted(specs_dir.glob(pattern), key=lambda p: (snapshot_date(p), p.name))
+    if output_type == "video":
+        files = [f for f in files
+                 if re.fullmatch(r"models_explore_snapshot_\d{4}-\d{2}-\d{2}\.json", f.name)]
+    return files
+
+
+def changed_models(output_type: str, specs_dir: Path = None) -> dict:
+    """Models added / removed / changed between the PREVIOUS and the NEWEST
+    snapshot of one type (a model "changed" when its dumped record differs in
+    any field). Feeds the Tier-2 evals audit (v3.11.3 lesson)."""
+    specs_dir = specs_dir or SPECS_DIR
+    files = _snapshots_of_type(specs_dir, output_type)
+    if not files:
+        raise FileNotFoundError(f"no {output_type} snapshot in {specs_dir}")
+    load = lambda p: {m["id"]: m for m in json.loads(p.read_text(encoding="utf-8")).get("items") or []  # noqa: E731
+                      if isinstance(m, dict) and m.get("id")}
+    new = load(files[-1])
+    old = load(files[-2]) if len(files) > 1 else {}
+    same = sorted(set(new) & set(old))
+    return {
+        "previous": files[-2].name if len(files) > 1 else None,
+        "newest": files[-1].name,
+        "added": sorted(set(new) - set(old)),
+        "removed": sorted(set(old) - set(new)),
+        "changed": [m for m in same if json.dumps(new[m], sort_keys=True)
+                    != json.dumps(old[m], sort_keys=True)],
+        "names": {m: (new.get(m) or old.get(m) or {}).get("name", m)
+                  for m in set(new) | set(old)},
+    }
+
+
+def evals_referencing(model_ids, names: dict = None, cases_dir: Path = None) -> dict:
+    """{model_id: [eval case ids]} — cases whose JSON mentions the id (whole
+    token: `seedance_2_5` never matches `seedance_2_5_mini`) or the model's
+    display name (case-insensitive)."""
+    cases_dir = cases_dir or ROOT / "evals" / "cases"
+    names = names or {}
+    hits = {m: [] for m in model_ids}
+    for path in sorted(cases_dir.glob("*.json")):
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        for case in doc.get("cases", []):
+            text = json.dumps(case, ensure_ascii=False)
+            for m in model_ids:
+                needles = [rf"(?<![\w]){re.escape(m)}(?![\w])"]
+                if names.get(m) and names[m] != m:
+                    needles.append(rf"(?<![\w]){re.escape(names[m])}(?![\w])")
+                if any(re.search(n, text, re.IGNORECASE) for n in needles):
+                    hits[m].append(f"{path.name}:{case.get('id', '?')}")
+    return hits
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[2])
+    parser.add_argument("--changed", action="store_true",
+                        help="list models added/removed/changed between the previous "
+                             "and newest snapshot of --type, and the evals/cases/ "
+                             "entries that reference them; write nothing")
     parser.add_argument("--check", action="store_true",
                         help="verify generated files match the snapshot; write nothing")
     parser.add_argument("--snapshot", type=Path, default=None,
@@ -611,6 +670,23 @@ def main() -> int:
                              "<type>_<date>.json dump — nothing is fabricated "
                              "without one)")
     args = parser.parse_args()
+
+    if args.changed:
+        try:
+            ch = changed_models(args.type)
+        except FileNotFoundError as e:
+            print(f"ERROR: {e}", file=sys.stderr)
+            return 1
+        print(f"[{args.type}] {ch['previous'] or '(no previous snapshot)'} → {ch['newest']}")
+        for label in ("added", "removed", "changed"):
+            print(f"  {label}: {', '.join(ch[label]) or '—'}")
+        touched = ch["added"] + ch["removed"] + ch["changed"]
+        refs = evals_referencing(touched, ch["names"])
+        cited = {m: c for m, c in refs.items() if c}
+        print(f"  evals/cases/ entries referencing them: {sum(len(c) for c in cited.values())}")
+        for m, cases in sorted(cited.items()):
+            print(f"    {m}: {', '.join(cases)}")
+        return 0
 
     try:
         snapshot_path = args.snapshot or find_snapshot(output_type=args.type)
