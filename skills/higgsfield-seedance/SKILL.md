@@ -4,8 +4,8 @@ description: "Rewrites scene descriptions using professional cinematography lang
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, content-filter, prompt, director, flagged]
-  version: 1.14.0
-  updated: 2026-08-22
+  version: 1.15.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -23,7 +23,7 @@ metadata:
 - [FIELD] Three "helpful-instinct" drift sources, each with a standing lock: environment invention (#1, above character drift), character-height equalization, scale drift on wides [→](#positive-locks)
 - Build-safe construction for crowds/destruction/creatures: evacuated cities, contained fights ("stays at the sea surface"), the safe benchmark scene [→](#build-safe-construction-crowds-destruction-creatures)
 - Extend an existing clip: attach it as a video reference + open with "The scene continues." — match source resolution AND duration; chain cap ~2 (hard 3), then re-anchor from ORIGINAL references [→](#extension-prompting-video-reference-continuation)
-- **This file is Seedance 2.0.** For **2.5** — four modes incl. `video_edit` / `video_extension`, 4–30s, 30/10/10 references, in-prompt first-last frames, 720p ceiling — use `../higgsfield-seedance-2-5/SKILL.md`
+- **This file is Seedance 2.0.** For **2.5** — four modes incl. `video_edit` / `video_extension`, 4–30s, 30/10/10 references, first-last frames in `omni_reference`, up to 1080p (no 4K, no genre) — use `../higgsfield-seedance-2-5/SKILL.md`
 - Tutorial-demonstrated patterns (reference-role vocabulary incl. VARIETY reference, SCREEN REALISM + duration-match composites, 60:30:10 grade, red-arrow prop annotation): `PRODUCTION-PATTERNS.md` in this directory
 - [OFFICIAL] Feature-film pipeline (asset construction, per-scene GEO SPATIAL LAYOUT, the position-fixing first second, dialogue construction, ban dictionary, the 10–15 iteration rule, crowds / giants / thresholds): `HELL-GRIND.md` in this directory
 - Performance — objective, obstacle, tactics, beats, subtext, eye life, the acting master profile: `../higgsfield-acting/SKILL.md`
@@ -1984,10 +1984,11 @@ before reaching for it.
 
 - `../higgsfield-seedance-2-5/SKILL.md` — **Seedance 2.5**, the omni-reference
   dialect: four modes (`t2v` / `omni_reference` / `video_edit` /
-  `video_extension`), 4–30s, 30/10/10 reference materials, in-prompt first-last
-  frames, video editing and forward/backward extension. Caps at 720p — route
-  there when the job is long, edit-shaped, or reference-heavy; stay here when it
-  needs 4K, a start/end-frame role, or a genre hint
+  `video_extension`), 4–30s, 30/10/10 reference materials, first-last frames in
+  `omni_reference` (platform `start_image`/`end_image` or in-prompt), video editing and
+  forward/backward extension. Caps at 1080p — route there when the job is long,
+  edit-shaped, or reference-heavy; stay here when it needs 4K, `mode=fast`, or a
+  genre hint
 - `../higgsfield-acting/SKILL.md` — the performance layer that fills the
   PERFORMANCE / CHARACTER ACTING block: objective, obstacle, tactics, beats,
   subtext, status, mandatory eye life, the acting master profile

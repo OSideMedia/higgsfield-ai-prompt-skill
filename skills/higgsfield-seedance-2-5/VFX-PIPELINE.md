@@ -40,7 +40,7 @@ that build.
 |---|---|
 | `[FIELD — AI-vs-VFX, 2026-08-08]` | Higgsfield's *AI vs VFX: Can Seedance 2.5 Beat VFX?* build — blog write-up + the 25-minute production video, host Adil, plate footage by VFX artist Erik. Every shot in it was generated on Seedance 2.5. |
 | `[OFFICIAL — prompt-builder 2.5]` | `prompt-builder-2-5.skill`, the prompt skill Higgsfield published alongside that build. |
-| `[OFFICIAL — platform]` | Higgsfield's live `models_explore` catalog, snapshot **2026-08-07** (`../../specs/model-specs.json`). |
+| `[OFFICIAL — platform]` | Higgsfield's live `models_explore` catalog, snapshot **2026-09-26** (`../../specs/model-specs.json`). |
 
 Where the field build and the platform snapshot disagree about what is *settable*, the
 snapshot wins (HARD RULE 3). The field build is authoritative about what **works**, not
@@ -290,7 +290,7 @@ unchanged."*
 | Swap a subject / add an element while inheriting the plate's performance frame-for-frame, plate ≥ 4 s | `omni_reference` + video reference, duration = source |
 | Change one scoped thing inside a master whose timeline must survive untouched (a wall's light colour from 4–7 s, remove the music) | `video_edit` — `MODE-PLAYBOOKS.md` § Video editing |
 | Rebuild the shot from the ground up, old clip as motion guidance only | `omni_reference` — `SKILL.md` § The Mode Router, rule 2 |
-| Plate is Seedance **2.0** work (4K needed, platform start/end frame, genre hint) | `../higgsfield-seedance-vfx/SKILL.md` |
+| Plate is Seedance **2.0** work (4K needed, genre hint, or `mode=fast`) | `../higgsfield-seedance-vfx/SKILL.md` |
 
 ### The performance-inheritance clause
 
@@ -330,7 +330,8 @@ every time. No amount of re-rolling creates an anchor that was never filmed.
 **The fallback is image-to-video, and it is a downgrade in continuity, not in quality:**
 
 1. Screenshot a frame of the location out of the plate.
-2. Use it as the **starting frame** — declared in the prompt, not as a mode
+2. Use it as the **starting frame** in `omni_reference` — either the platform `start_image`
+   role or an in-prompt first-frame declaration, never as a separate mode
    (`SKILL.md` § First-Last Frame and Multi-Keyframe Control).
 3. Write the action from scratch, since nothing is being inherited any more.
 4. Stitch the i2v shot to the v2v shot in the edit.

@@ -32,7 +32,7 @@ runtime.
 
 On the Higgsfield surface, `video_edit` additionally **bills by the source video's
 duration** and ignores the `duration` and `aspect_ratio` parameters entirely
-(`../../specs/model-specs.json`, snapshot 2026-08-07).
+(`../../specs/model-specs.json`, snapshot 2026-09-26).
 
 ---
 
