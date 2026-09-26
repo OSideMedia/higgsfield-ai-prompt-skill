@@ -149,7 +149,7 @@
     {
       "id": "platform-start-end-frame-is-2-0-only",
       "finding": "Audit 2026-09-26 catalog facts § CHANGED on existing models: seedance_2_5 media roles now include start_image and end_image (CEL: allowed only in omni_reference) — lane B s25 sweep",
-      "pattern": "(?i)\\bplatform(?:[- ]level)? start/end frames?\\b",
+      "pattern": "(?i)\\bgenre\\b[^\\n]{0,60}\\bplatform(?:[- ]level)? start/end frames?\\b|\\bplatform(?:[- ]level)? start/end frames?\\b[^\\n]{0,40}\\bgenre\\b",
       "assert": {
         "kind": "has",
         "model": "seedance_2_5",
@@ -249,7 +249,7 @@
     {
       "id": "llm-text-utility-in-catalog",
       "finding": "Audit 2026-09-26 catalog facts § GONE: llm_text left the video catalog; model-guide.md still lists 'LLM text' among the catalog's utility entries",
-      "pattern": "(?i)\\butility/system entries\\b[^\\n]*?\\bLLM text\\b",
+      "pattern": "(?i)\\butility/system entries\\b[^\\n]*?\\bLLM text\\b(?! left)",
       "assert": {
         "kind": "model_present",
         "model": "llm_text",

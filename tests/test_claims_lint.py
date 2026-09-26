@@ -269,3 +269,25 @@ def test_empty_registry_is_an_error(tmp_path):
     reg.write_text(json.dumps({"claims": []}), encoding="utf-8")
     with pytest.raises(cl.RegistryError):
         cl.load_registry(reg)
+
+
+def test_v3_36_0_true_phrasings_do_not_fire_but_the_old_ones_still_do(tmp_path, claims):
+    # v3.36.0 wrote these TRUE sentences; the first registry patterns flagged them (false
+    # positives found at integration). The old v3.35.0 phrasing must keep failing.
+    true_text = (
+        "Both do 1080p and platform start/end frames (2.5 only in `omni_reference`); 2.5 caps at 1080p\n"
+        "> up to 1080p, up to 30 s, many references, platform start/end frames in `omni_reference` —\n"
+        "> utility/system entries — AutoSprite, upscalers. (**LLM text left the video catalog in the 2026-09-26 snapshot.**)\n"
+    )
+    old_text = (
+        "needs 4K/1080p, a platform start/end frame, or a `genre` hint → `higgsfield-seedance`\n"
+        "> needs 4K, a genre hint, or platform-level start/end frame pinning, it is a Seedance 2.0 job\n"
+        "> The catalog also lists utility/system entries — AutoSprite, MS Image, LLM text, upscalers\n"
+    )
+    ids = {"platform-start-end-frame-is-2-0-only", "llm-text-utility-in-catalog"}
+    specs = _specs(tmp_path, roles=("start_image", "end_image", "image_references"))
+    good = [h for h in cl.lint(_doc(tmp_path, "new.md", true_text), specs, claims) if h.claim.id in ids]
+    assert all(h.ok for h in good), [(h.claim.id, h.line) for h in good if not h.ok]
+    bad_tree = _doc(tmp_path / "old", "old.md", old_text)
+    bad = [h for h in cl.lint(bad_tree, specs, claims) if h.claim.id in ids and not h.ok]
+    assert {h.claim.id for h in bad} == ids and len(bad) == 3
