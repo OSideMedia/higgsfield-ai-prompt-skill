@@ -434,6 +434,43 @@ def check_evals():
               summary + ("; " + "; ".join(failing[:3]) if failing else ""))
 
 
+# ── Prompt-side gates (v3.37.0) — self-contained; one call site in main() ──
+def check_prompt_gates():
+    """Run the three prompt-side gates as subprocesses (a crash in one must
+    not take this report down):
+      * preflight.py --check-rules --strict — every CLI-baseline CEL rule
+        parses (fail-closed coverage; always a hard check);
+      * claims_lint.py — doctrine claims vs the current specs;
+      * validate_user_guide.py --check-content — the guide's derived content
+        reflects the root version.
+    The last two judge doctrine state: FAIL under --strict, WARN otherwise."""
+    gates = [
+        ("platform-rule coverage (preflight.py --check-rules)",
+         ["preflight.py", "--check-rules", "--strict"], True),
+        ("doctrine claims vs specs (claims_lint.py)", ["claims_lint.py"], False),
+        ("USER-GUIDE derived content (validate_user_guide.py --check-content)",
+         ["validate_user_guide.py", "--check-content"], False),
+    ]
+    for label, argv, hard in gates:
+        try:
+            r = subprocess.run([sys.executable, str(ROOT / "scripts" / argv[0]), *argv[1:]],
+                               capture_output=True, text=True, timeout=120)
+        except subprocess.TimeoutExpired:
+            check(False, label, "timeout after 120s")
+            continue
+        lines = [l.strip() for l in (r.stdout or "").splitlines() if l.strip()]
+        bad = [l for l in lines if l.startswith(("✗", "?"))] or lines[1:4]
+        detail = (lines[0] if lines else (r.stderr or "").strip()[:150]) + (
+            "; " + "; ".join(bad[:3]) if r.returncode and bad else "")
+        if r.returncode == 0:
+            check(True, label, lines[0] if lines else "exit 0")
+        elif hard or STRICT or r.returncode == 2:
+            check(False, label, f"exit {r.returncode}: {detail}")
+        else:
+            warn(label, f"exit {r.returncode} (fails under --strict): {detail}")
+# ── end prompt-side gates ──────────────────────────────────────────────────
+
+
 def _norm_model_name(s: str) -> str:
     s = re.sub(r"\*\*", "", s)
     s = re.sub(r"\([^)]*\)", "", s)  # strip qualifiers like "(legacy)"
@@ -1009,6 +1046,9 @@ def main():
                 "generate_user_guide.py --dry-run",
                 f"exit {result.returncode}; stderr: {stderr_excerpt[:150]}",
             )
+
+    print("\n[ PROMPT GATES ]")
+    check_prompt_gates()
 
     # ── 6. Eval harness (opt-in) ────────────────────────────────────────────
     if args.evals:
