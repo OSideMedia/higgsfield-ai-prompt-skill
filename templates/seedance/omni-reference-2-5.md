@@ -15,8 +15,8 @@ Doctrine: `../../skills/higgsfield-seedance-2-5/SKILL.md`. Long-form mode templa
 - Any 2.5 job that is *not* plain `t2v` and *not* an edit/extension order
 
 For a single-subject clip with one reference and one continuous action, skip the structure and
-use the core formula in `SKILL.md` § The Core Prompt Formula — this template is for the case
-where material mapping is the risk.
+use the core formula in `../../skills/higgsfield-seedance-2-5/SKILL.md` § The Core Prompt
+Formula — this template is for the case where material mapping is the risk.
 
 ## Platform settings (not prompt text)
 
@@ -93,6 +93,8 @@ End state: <final visible state>.
 [Audio]
 <Ambience and action SFX>. (music, only if the project wants it) <specific sound effect>
 Dialogue language: <language and regional variety>. <Character A> says: {the line}
+<No score? The positive diegetic list first, then the suppression as plain text — NO BGM or
+No music. — never inside the () music bracket.>
 
 [Maintain Consistency]
 Keep <character identity, number of characters, clothing, prop ownership, spatial direction,
@@ -135,10 +137,11 @@ End state: <Florist> holds the bouquet in the left hand; the scissors are back o
 side of the workbench.
 
 [Stage 2]
-Continue from the previous stage: both characters keep the same identities and clothing, and
-<Florist> still holds the bouquet.
-Primary event: <Assistant> unfolds the wrapping paper; <Florist> places the bouquet inside and
-ties it with the ribbon.
+Continue from the previous stage: both characters keep the same identities and clothing,
+<Florist> still holds the bouquet, and <Assistant> already holds the wrapping paper open flat
+on the workbench.
+Primary event: <Florist> wraps the bouquet in the paper and ties it with the ribbon — the
+bouquet goes from loose to wrapped.
 End state: <Wrapped Bouquet> lies flat in the center of the workbench, ribbon bow facing camera.
 
 [Stage 3]
@@ -157,7 +160,7 @@ shelf in Stage 3. 47° diagonal field of view throughout, no drift mid-segment.
 
 [Audio]
 Room tone, scissor snips, paper rustle, the ribbon pulling tight. <A shop bell rings once,
-distant> (no music)
+distant> NO BGM.
 
 [Maintain Consistency]
 Keep <Florist> and <Assistant>'s identities and clothing, the workbench orientation, the
@@ -171,11 +174,14 @@ scissors' position, and bouquet ownership consistent throughout.
 - [ ] Every material has a role **and** an exclusion
 - [ ] No `@Images 1 through N define N characters` — one line per subject
 - [ ] Every prop belongs to exactly one character
-- [ ] Each stage has **one** primary change and an explicit end state
+- [ ] Each stage has **one** primary change and an explicit end state — a second character's
+      action is either the primary change or an already-true state, never a second event
 - [ ] Stage count matches the runtime you set (three stages do not fit in 5 seconds)
 - [ ] No age words anywhere (`../../skills/higgsfield-seedance/ENGINE-RULES.md` rule 1)
 - [ ] Positive phrasing only — no `negative:` list, no bare negation stack
 - [ ] Dialogue lives in the `[Audio]` block, in `{}`, and nowhere else
+- [ ] No music suppression inside the `()` music bracket — the positive diegetic list, then
+      `NO BGM` or `No music.` as plain text (token choice OPEN: `../../skills/shared/house-rulings.md` P2-7)
 - [ ] Resolution is 480p, 720p or 1080p — 2.5 has no 4K lane
 - [ ] `seedance_lint.py --preflight --model seedance_2_5` clean
 

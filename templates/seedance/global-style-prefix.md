@@ -33,7 +33,7 @@ Lighting: [Natural light only — soft, even morning daylight, gentle atmospheri
 Color: [60:30:10] — dominant / secondary / accent.
 Camera: Physical cine lens. 180° shutter motion blur.
 Skin: Pore-level realism — vellus hair, asymmetric moles, capillary flush, pore-shadow matching on-set light.
-Acting: Hollywood — micro-pauses before reactions, precise eye-line, living eyes with catch-lights, chest rise from breathing. Characters never standing, always reacting.
+Acting: Hollywood — micro-pauses before reactions, precise eye-line, eyes always working on someone or something, chest rise from breathing. Characters never standing, always reacting.
 Physics: Gravity and inertia respected — mass has real weight, correct contact shadows. No floating props.
 Composition: Rule of thirds + golden ratio. Every person moving from frame one.
 Continuity: Characters, props, environment identical across every cut. No identity drift.
@@ -51,7 +51,23 @@ Notes on the fields:
   colours in the per-scene Scene block, not here.
 - **Audio: diegetic-only** — the prompt body names only real-world SFX; layer any
   score in post. See `../../skills/higgsfield-audio/SKILL.md` § Seedance 2.0 and
-  the diegetic-only convention.
+  the diegetic-only convention. The positive list comes first — that part is
+  settled. Whether the closing token should be `No music.` (this default, the form
+  12 of 13 harvested projects shipped) or `NO BGM` (a third-party skill's claim that
+  a production term reads as a harder spec) is **OPEN — unmeasured here**
+  (`../../skills/shared/house-rulings.md` P2-7); either is legal, and neither goes
+  inside a 2.5 `()` bracket.
+- **Acting / Composition lines mean life, not action** — "always reacting" and
+  "every person moving from frame one" are satisfied by breath, eyes, weight shifts
+  and micro-reactions. They do not forbid the one-second position-fixing wide that
+  opens a Hell Grind scene with no action beat and no camera move
+  (`../../skills/higgsfield-seedance/HELL-GRIND.md` § The first second is always a
+  wide; `../../skills/shared/house-rulings.md` P2-9). If a scene needs that wide and
+  the model reads the line as action, override the Composition line for that one
+  prompt (§ Per-scene override below).
+- **Eye life is a task, not a catchlight** — the Acting line asks for eyes that work
+  on a target; a catchlight only makes that legible
+  (`../../skills/higgsfield-acting/SKILL.md` § Eye life).
 - **Texture lines are look declarations, not quality pleas** — "180° shutter
   motion blur" in the Camera line and any grain named in Color are *declared
   registers of the film*, which is the legal form. The degradation case is the
@@ -75,7 +91,10 @@ project runs a prefix of exactly this shape: **one axis per clause, each a
 hard positive rule, always ending on continuity/no-drift + audio policy.**
 Axes observed across the corpus (pick what the project needs):
 
-- **Format** — "4K anamorphic widescreen" / "8K cinematic photoreal"
+- **Format** — "4K anamorphic widescreen" / "8K cinematic photoreal" (when the
+  project's location plates already carry a baked lens, whether the prefix should
+  still name it is OPEN — `../../skills/higgsfield-seedance/SKILL.md` § Bake it into
+  the asset, `../../skills/shared/house-rulings.md` P2-6)
 - **Medium negative** — "photoreal live-action — no 3D render, no game
   engine, no animated-film aesthetic"
 - **Camera language, per world/scene when it varies** — "adventure-film
