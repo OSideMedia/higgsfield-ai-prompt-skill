@@ -271,6 +271,15 @@
           "name": "seed",
           "required": "optional",
           "type": "number"
+        },
+        {
+          "default": 1,
+          "description": "Number of independent variations to generate.",
+          "max": 4,
+          "min": 1,
+          "name": "batch_size",
+          "required": "optional",
+          "type": "number"
         }
       ],
       "provider": "Alibaba Cloud",
@@ -433,7 +442,7 @@
       "resolutions": []
     }
   ],
-  "snapshot_date": "2026-08-01",
-  "snapshot_file": "models_explore_snapshot_audio_2026-08-01.json",
-  "snapshot_sha256": "ef2dcdb6eafd4d2ec9717c9e5b70d2e460a1dd66a1053ca231c663c3b1c200c5"
+  "snapshot_date": "2026-09-26",
+  "snapshot_file": "models_explore_snapshot_audio_2026-09-26.json",
+  "snapshot_sha256": "c39034ba35839b986f70f2d9d7676f6bc523e7dbd45e7b18db00528ea9bafbbb"
 }

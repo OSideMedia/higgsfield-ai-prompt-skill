@@ -1,7 +1,112 @@
 {
   "generator_version": 1,
-  "image_models": "see specs/IMAGE-MODEL-SPECS.md (snapshot 2026-08-01); this file covers video models only.",
+  "image_models": "see specs/IMAGE-MODEL-SPECS.md (snapshot 2026-09-26); this file covers video models only.",
   "models": [
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "auto",
+        "21:9",
+        "16:9",
+        "4:3",
+        "1:1",
+        "3:4",
+        "9:16"
+      ],
+      "constraints": [],
+      "duration": {
+        "max": 30,
+        "min": 4
+      },
+      "id": "ad_multiplier",
+      "media_roles": {
+        "medias": [
+          "start_image",
+          "end_image",
+          "image_references",
+          "video_references",
+          "audio_references"
+        ]
+      },
+      "modes": [
+        "t2v",
+        "omni_reference",
+        "video_edit",
+        "video_extension"
+      ],
+      "name": "Ad Multiplier",
+      "output_type": "video",
+      "params": [
+        {
+          "default": "t2v",
+          "description": "Generation mode: 't2v' for prompt-only generation, 'omni_reference' for image, video, or audio references, 'video_edit' to edit one reference video (billed by that video's duration; 'duration' and 'aspect_ratio' are ignored), or 'video_extension' to extend a reference video ('aspect_ratio' is ignored — the output follows the extended video).",
+          "name": "mode",
+          "options": [
+            "t2v",
+            "omni_reference",
+            "video_edit",
+            "video_extension"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": 5,
+          "description": "Duration in seconds (4-30).",
+          "max": 30,
+          "min": 4,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "720p",
+          "description": "Output resolution: 480p, 720p, or 1080p.",
+          "name": "resolution",
+          "options": [
+            "480p",
+            "720p",
+            "1080p"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "description": "Generate audio for the output video.",
+          "name": "generate_audio",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": "standard",
+          "description": "'standard' = normal output bitrate; 'high' = higher bitrate output.",
+          "name": "bitrate_mode",
+          "options": [
+            "standard",
+            "high"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Extension direction; required for mode 'video_extension' and not allowed otherwise.",
+          "name": "extension_mode",
+          "options": [
+            "backward",
+            "forward"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Higgsfield",
+      "resolutions": [
+        "480p",
+        "720p",
+        "1080p"
+      ]
+    },
     {
       "aliases": [],
       "aspect_ratios": [],
@@ -301,7 +406,7 @@
           "type": "number"
         },
         {
-          "description": "Preset id from presets_show.",
+          "description": "Existing legacy preset ID. Do not pass get_presets catalog IDs here.",
           "name": "preset_id",
           "required": "optional",
           "type": "string"
@@ -318,12 +423,11 @@
       "id": "clipify",
       "media_roles": {},
       "modes": [],
-      "name": "Personal Clipper",
+      "name": "Clipify",
       "output_type": "video",
       "params": [
         {
-          "description": "Exactly one YouTube URL. For multiple source videos, submit one Clipify job per URL.",
-          "max": 1,
+          "description": "YouTube video URLs. Provide exactly one URL; submit one Clipify job per source video.",
           "name": "urls",
           "required": "required",
           "type": "string_array"
@@ -370,7 +474,7 @@
         },
         {
           "default": "notosans",
-          "description": "Subtitle font id.",
+          "description": "Subtitle font.",
           "name": "subtitle_font",
           "options": [
             "notosans",
@@ -498,6 +602,31 @@
     },
     {
       "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "flux_3_video_edit",
+      "media_roles": {
+        "medias": [
+          "video_references"
+        ]
+      },
+      "modes": [],
+      "name": "FLUX 3 Video Edit",
+      "output_type": "video",
+      "params": [
+        {
+          "description": "Optional folder to place the generated output in.",
+          "name": "folder_id",
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Black Forest Labs",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
       "aspect_ratios": [
         "16:9",
         "9:16"
@@ -541,6 +670,78 @@
       "provider": "Google",
       "resolutions": [
         "720p"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "constraints": [],
+      "duration": {
+        "max": 10,
+        "min": 3
+      },
+      "id": "gemini_omni_flash_1_1",
+      "media_roles": {
+        "medias": [
+          "start_image",
+          "end_image",
+          "image_references",
+          "video_references"
+        ]
+      },
+      "modes": [
+        "text-to-video",
+        "image-to-video",
+        "reference-to-video",
+        "edit"
+      ],
+      "name": "Gemini Omni Flash 1.1",
+      "output_type": "video",
+      "params": [
+        {
+          "description": "Generation mode.",
+          "name": "mode",
+          "options": [
+            "text-to-video",
+            "image-to-video",
+            "reference-to-video",
+            "edit"
+          ],
+          "required": "required",
+          "type": "string"
+        },
+        {
+          "default": 8,
+          "description": "Output duration in seconds (3-10). Ignored in edit mode, which uses the source video duration capped at 30 seconds.",
+          "max": 10,
+          "min": 3,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "720p",
+          "description": "Output resolution: 360p, 720p, 1080p, or 4K.",
+          "name": "resolution",
+          "options": [
+            "360p",
+            "720p",
+            "1080p",
+            "4k"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Google",
+      "resolutions": [
+        "360p",
+        "720p",
+        "1080p",
+        "4k"
       ]
     },
     {
@@ -680,6 +881,78 @@
     },
     {
       "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "hf_mult_motion_control",
+      "media_roles": {
+        "medias": [
+          "image_references",
+          "video_references"
+        ]
+      },
+      "modes": [],
+      "name": "Genjutsu",
+      "output_type": "video",
+      "params": [
+        {
+          "default": "720p",
+          "description": "Output resolution: 480p, 720p, or 1080p.",
+          "name": "resolution",
+          "options": [
+            "480p",
+            "720p",
+            "1080p"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Higgsfield",
+      "resolutions": [
+        "480p",
+        "720p",
+        "1080p"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "hf_mult_replace_object",
+      "media_roles": {
+        "medias": [
+          "image_references",
+          "video_references"
+        ]
+      },
+      "modes": [],
+      "name": "Genjutsu",
+      "output_type": "video",
+      "params": [
+        {
+          "default": "720p",
+          "description": "Output resolution: 480p, 720p, or 1080p.",
+          "name": "resolution",
+          "options": [
+            "480p",
+            "720p",
+            "1080p"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Higgsfield",
+      "resolutions": [
+        "480p",
+        "720p",
+        "1080p"
+      ]
+    },
+    {
+      "aliases": [],
       "aspect_ratios": [
         "16:9",
         "9:16",
@@ -698,7 +971,7 @@
       "output_type": "video",
       "params": [
         {
-          "description": "Preset id from presets_show.",
+          "description": "Existing legacy preset ID from a prior selection or recommendation. Do not pass get_presets catalog IDs here.",
           "name": "preset_id",
           "required": "required",
           "type": "string"
@@ -870,45 +1143,35 @@
       "aspect_ratios": [],
       "constraints": [],
       "duration": null,
-      "id": "llm_text",
+      "id": "kling_video_edit",
       "media_roles": {
         "medias": [
-          "input_images"
+          "video_references",
+          "image_references"
         ]
       },
-      "modes": [],
-      "name": "LLM Generation",
+      "modes": [
+        "std",
+        "pro",
+        "4k"
+      ],
+      "name": "Kling 3.0 Omni Edit",
       "output_type": "video",
       "params": [
         {
-          "name": "model",
-          "required": "required",
-          "type": "string"
-        },
-        {
-          "default": "",
-          "name": "user_prompt",
-          "required": "optional",
-          "type": "string"
-        },
-        {
-          "default": "",
-          "name": "system_prompt",
-          "required": "optional",
-          "type": "string"
-        },
-        {
-          "name": "reasoning_effort",
+          "default": "pro",
+          "description": "Output quality: Standard, Pro, or 4K.",
+          "name": "mode",
           "options": [
-            "low",
-            "medium",
-            "high"
+            "std",
+            "pro",
+            "4k"
           ],
           "required": "optional",
           "type": "string"
         }
       ],
-      "provider": "",
+      "provider": "Kling",
       "resolutions": []
     },
     {
@@ -1042,7 +1305,7 @@
       "constraints": [],
       "duration": {
         "max": 15,
-        "min": 5
+        "min": 4
       },
       "id": "minimax_h3",
       "media_roles": {
@@ -1060,9 +1323,9 @@
       "params": [
         {
           "default": 5,
-          "description": "Duration in seconds (5-15).",
+          "description": "Duration in seconds (4-15).",
           "max": 15,
-          "min": 5,
+          "min": 4,
           "name": "duration",
           "required": "optional",
           "type": "number"
@@ -1096,6 +1359,78 @@
       "provider": "MiniMax",
       "resolutions": [
         "2K"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "auto",
+        "21:9",
+        "16:9",
+        "4:3",
+        "1:1",
+        "3:4",
+        "9:16"
+      ],
+      "constraints": [],
+      "duration": {
+        "max": 15,
+        "min": 5
+      },
+      "id": "minimax_h3_max",
+      "media_roles": {
+        "medias": [
+          "start_image",
+          "end_image",
+          "image_references",
+          "video_references",
+          "audio_references"
+        ]
+      },
+      "modes": [],
+      "name": "MiniMax H3 Max",
+      "output_type": "video",
+      "params": [
+        {
+          "default": 5,
+          "description": "Duration in seconds (5-15).",
+          "max": 15,
+          "min": 5,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "768p",
+          "description": "Output resolution.",
+          "name": "resolution",
+          "options": [
+            "480p",
+            "768p"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": 1,
+          "description": "Number of videos to generate (1-4).",
+          "max": 4,
+          "min": 1,
+          "name": "batch_size",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Optional folder to place the generated video in.",
+          "name": "folder_id",
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "MiniMax",
+      "resolutions": [
+        "480p",
+        "768p"
       ]
     },
     {
@@ -1500,6 +1835,8 @@
       "id": "seedance_2_5",
       "media_roles": {
         "medias": [
+          "start_image",
+          "end_image",
           "image_references",
           "video_references",
           "audio_references"
@@ -1516,7 +1853,7 @@
       "params": [
         {
           "default": "t2v",
-          "description": "Generation mode: 't2v' for prompt-only generation, 'omni_reference' for image, video, or audio references, 'video_edit' to edit one reference video (billed by that video's duration; 'duration' and 'aspect_ratio' are ignored), or 'video_extension' to extend a reference video ('aspect_ratio' follows the extended video).",
+          "description": "Generation mode: 't2v' for prompt-only generation, 'omni_reference' for image, video, or audio references, 'video_edit' to edit one reference video (billed by that video's duration; 'duration' and 'aspect_ratio' are ignored), or 'video_extension' to extend a reference video ('aspect_ratio' is ignored — the output follows the extended video).",
           "name": "mode",
           "options": [
             "t2v",
@@ -1538,11 +1875,12 @@
         },
         {
           "default": "720p",
-          "description": "Output resolution: 480p or 720p.",
+          "description": "Output resolution: 480p, 720p, or 1080p.",
           "name": "resolution",
           "options": [
             "480p",
-            "720p"
+            "720p",
+            "1080p"
           ],
           "required": "optional",
           "type": "string"
@@ -1553,6 +1891,17 @@
           "name": "generate_audio",
           "required": "optional",
           "type": "bool"
+        },
+        {
+          "default": "standard",
+          "description": "'standard' = normal output bitrate; 'high' = higher bitrate output.",
+          "name": "bitrate_mode",
+          "options": [
+            "standard",
+            "high"
+          ],
+          "required": "optional",
+          "type": "string"
         },
         {
           "description": "Extension direction; required for mode 'video_extension' and not allowed otherwise.",
@@ -1568,7 +1917,8 @@
       "provider": "Bytedance",
       "resolutions": [
         "480p",
-        "720p"
+        "720p",
+        "1080p"
       ]
     },
     {
@@ -1800,7 +2150,7 @@
         },
         {
           "default": false,
-          "description": "Generate native audio for the video. Enabling it increases credit cost.",
+          "description": "Generate native audio for the video.",
           "name": "generate_audio",
           "required": "optional",
           "type": "bool"
@@ -1997,9 +2347,153 @@
         "720p",
         "1080p"
       ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "auto",
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:3",
+        "3:4"
+      ],
+      "constraints": [],
+      "duration": {
+        "max": 30,
+        "min": -1
+      },
+      "id": "wan3_0",
+      "media_roles": {
+        "medias": [
+          "start_image",
+          "end_image",
+          "image_references",
+          "video_references",
+          "audio_references"
+        ]
+      },
+      "modes": [],
+      "name": "Wan 3.0",
+      "output_type": "video",
+      "params": [
+        {
+          "default": 5,
+          "description": "Duration in seconds (2-30), or -1 to let the model choose the length from the prompt and media. Smart duration is billed as 10 seconds.",
+          "max": 30,
+          "min": -1,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "720p",
+          "description": "Output resolution: 480p, 720p, or 1080p.",
+          "name": "resolution",
+          "options": [
+            "480p",
+            "720p",
+            "1080p"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "description": "Generate a native audio track for the output video.",
+          "name": "generate_audio",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Let the model reason about the prompt before generating (slower, better prompt adherence).",
+          "name": "enable_thinking",
+          "required": "optional",
+          "type": "bool"
+        }
+      ],
+      "provider": "Wan",
+      "resolutions": [
+        "480p",
+        "720p",
+        "1080p"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "auto",
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:3",
+        "3:4"
+      ],
+      "constraints": [],
+      "duration": {
+        "max": 30,
+        "min": -1
+      },
+      "id": "wan3_0_prime",
+      "media_roles": {
+        "medias": [
+          "start_image",
+          "end_image",
+          "image_references",
+          "video_references",
+          "audio_references"
+        ]
+      },
+      "modes": [],
+      "name": "Wan 3.0 Prime",
+      "output_type": "video",
+      "params": [
+        {
+          "default": 5,
+          "description": "Duration in seconds (2-30), or -1 to let the model choose the length from the prompt and media. Smart duration is billed as 10 seconds.",
+          "max": 30,
+          "min": -1,
+          "name": "duration",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "720p",
+          "description": "Output resolution: 480p, 720p, or 1080p.",
+          "name": "resolution",
+          "options": [
+            "480p",
+            "720p",
+            "1080p"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "description": "Generate a native audio track for the output video.",
+          "name": "generate_audio",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Let the model reason about the prompt before generating (slower, better prompt adherence).",
+          "name": "enable_thinking",
+          "required": "optional",
+          "type": "bool"
+        }
+      ],
+      "provider": "Wan",
+      "resolutions": [
+        "480p",
+        "720p",
+        "1080p"
+      ]
     }
   ],
-  "snapshot_date": "2026-08-07",
-  "snapshot_file": "models_explore_snapshot_2026-08-07.json",
-  "snapshot_sha256": "4b9a4f9efa66e48d8a7c4676087d266eac5d487d783b5e46746e4b0f6d4a32a7"
+  "snapshot_date": "2026-09-26",
+  "snapshot_file": "models_explore_snapshot_2026-09-26.json",
+  "snapshot_sha256": "d0dea5ae66a7ecec17ef1bc08bcafe93e567369e99deb3b1d191e72fb530bc9a"
 }
