@@ -194,7 +194,7 @@
         },
         {
           "type": "regex_absent",
-          "pattern": "(?i)\\*\\*Duration\\*\\*:\\s*(?!4\\s*s\\b)\\d+\\s*s"
+          "pattern": "(?i)\\bDuration\\b\\**:\\s*(?!4\\s*s\\b)\\d+\\s*s"
         },
         {
           "type": "regex_present",
@@ -249,6 +249,10 @@
           "pattern": "(?i)has no start_image role"
         },
         {
+          "type": "regex_absent",
+          "pattern": "(?i)\\b(re-?batch|batch (it |this |the shot )?again)\\b|\\bnew seed\\b"
+        },
+        {
           "type": "antislop_absent"
         }
       ]
@@ -273,7 +277,7 @@
         },
         {
           "type": "regex_present",
-          "pattern": "(?is)\\[Audio\\][^\\[]*?(room tone|diegetic)[^\\[]*?(NO BGM|No music\\.)"
+          "pattern": "(?is)\\[Audio\\][^\\[`]*?(room tone|diegetic)[^\\[`]*?(NO BGM|No music\\.)"
         },
         {
           "type": "antislop_absent"
