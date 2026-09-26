@@ -142,13 +142,19 @@ directory. All entries dated **2026-09-26** unless marked.
 
 ### P2-4 · Film grain on a character sheet?
 
-- **Ruling:** **OPEN — unmeasured**, with a default.
+- **Ruling:** **OPEN — unmeasured**, no default. (A default — drop the grain — was given earlier
+  in this release and withdrawn: it rested on "a grain-free plate costs at most some
+  uniformity", which weighs one side's risk only.)
 - **Sides:** `../higgsfield-soul/SKILL.md` § The Reference Plate — the capture phrase keeps *soft
-  natural film grain* `[EMPIRICAL — Joey]` · `../higgsfield-seedance/HELL-GRIND.md` § The
-  character sheet — grain baked into the sheet travels into every scene `[OFFICIAL — Hell Grind]`.
-- **Default:** drop the grain clause on an identity base or any plate read as a reference. Baked
-  grain is inherited by every shot and cannot be removed per shot; a grain-free plate costs at
-  most some uniformity the scene's declared look can add back.
+  natural film grain* as the anti-AI-uniformity signal `[EMPIRICAL — Joey]` ·
+  `../higgsfield-seedance/HELL-GRIND.md` § The character sheet — grain baked into the sheet
+  travels into every scene and the character stops reacting to new light `[OFFICIAL — Hell
+  Grind]`.
+- **Why no default:** both failures are inherited by every shot that reads the plate — baked
+  grain cannot be removed per shot; an AI-uniform plate (plastic skin) softens every shot alike
+  (`../higgsfield-soul/SKILL.md` § The Untouched Base guards that texture). Neither is clearly
+  cheaper. Shared by both sides: Axis-1 skin detail fully on ("real skin with visible pores, no
+  retouch"). Decide per project, pin it once, never vary it across one character's plates.
 - **Settling probe:** one sheet with and without the clause, same scene prompt, grain read on the
   video.
 

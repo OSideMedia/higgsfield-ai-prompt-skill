@@ -79,7 +79,7 @@ film grain and a cinematic lens into the sheet and the character carries that lo
 scene and stops reacting to new light. (The grey-background and one-readable-face laws are
 stated once, with every source's shade and mechanism, in `../../templates/ad-asset-prep.md`
 § Design for win rate. `../higgsfield-soul/SKILL.md` § The Reference Plate's capture phrase
-adds *soft natural film grain* to a plate; that disagreement is OPEN, with a default, in
+adds *soft natural film grain* to a plate; that disagreement is OPEN, with no default, in
 `../shared/house-rulings.md` P2-4.)
 
 **Sheets read best with a large portrait in 3/4 view** — face turned slightly, not straight-on.

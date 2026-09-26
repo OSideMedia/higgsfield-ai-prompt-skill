@@ -318,21 +318,23 @@ scene prompt does all the lighting later.**
 > what poisons a reference. The subject should look like a real person, rendered flat,
 > against nothing.
 
-The one capture phrase that survives: `Photographed on a 50mm prime, even sharpness, soft
-natural film grain. Photographed not generated.` — the focal length is named in plain words
+The one capture phrase that survives: `Photographed on a 50mm prime, even sharpness[, soft
+natural film grain]. Photographed not generated.` — the focal length is named in plain words
 with no aperture, no bokeh and no falloff attached, so it buys the anti-AI-uniformity signal
-without switching on capture behaviour.
+without switching on capture behaviour. **The bracketed grain clause is an open question, not
+part of the settled phrase** — see the box below.
 
-> **The grain clause is contested — OPEN, with a default** (`../shared/house-rulings.md`
-> P2-4). `../higgsfield-seedance/HELL-GRIND.md` § The character sheet `[OFFICIAL — Hell Grind
-> brief]` reports the opposite: bake film grain into the sheet and the character carries that
-> look into every scene and stops reacting to new light. Nothing here measures it. **Default
-> for an identity base or any plate that will be read as a reference: drop `soft natural film
-> grain`** and keep the rest of the phrase. Grain baked into a reference is inherited by every
-> shot and cannot be removed per shot, while a grain-free plate costs at most a little
-> uniformity that the scene's look can add back as a declared register
-> (`../shared/negative-constraints.md` § Whole-Frame Degradation) — and dropping it is also
-> this section's own Axis-2 logic.
+> **The grain clause is contested — OPEN, no default** (`../shared/house-rulings.md` P2-4).
+> This source keeps *soft natural film grain* as part of the anti-uniformity signal.
+> `../higgsfield-seedance/HELL-GRIND.md` § The character sheet `[OFFICIAL — Hell Grind brief]`
+> reports the opposite: bake film grain into the sheet and the character carries that look
+> into every scene and stops reacting to new light. Both failures are inherited by every shot
+> that reads the plate — baked grain cannot be removed per shot; a plate that reads
+> AI-uniform, plastic skin included, softens every shot the same way (§ The Untouched Base
+> guards the same texture) — so neither is clearly the cheaper failure, and nothing here
+> measures it. What both sides share: Axis-1 skin detail stays fully on (Hell Grind's own
+> sheet asks for "real skin with visible pores, no retouch"). Decide per project, pin the
+> choice once, and never vary it across one character's plates.
 
 ### The background is a FIELD, not a ROOM
 
