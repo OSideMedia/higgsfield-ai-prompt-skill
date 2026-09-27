@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
-  version: 3.6.1
+  version: 3.6.2
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -28,7 +28,7 @@ metadata:
 - Seedream edits the image, not the video — always edit the Hero Frame before animating, never after [→](#stage-2--image-editing-with-seedream)
 - Model by scene type: Seedance 2.0 / Minimax Hailuo 2.3 for stunts/epic ("one continuous shot, no cuts"), Kling 2.6 portraits, Seedance quiet interiors [→](#stage-3--animate-by-scene-type)
 - Recast swaps identity while preserving motion, camera, and lighting; the "prompt" is the reference image you upload [→](#stage-4--recast-character-swap)
-- Audio routing: existing video + speech → Lipsync Studio; new content with audio → Kling 3.0; talking head → Kling Avatars 2.0 [→](#stage-5--lipsync--audio)
+- Audio routing: existing video + speech → Lipsync Studio; new content with audio → Kling 3.0; talking head → Seedance 1.5 Pro (start image + native audio) or Kling Avatars 2.0 (not in the API catalog, 2026-09-26 — verify in the live UI) [→](#stage-5--lipsync--audio)
 - Higgsfield has no native timeline editor — assemble in DaVinci Resolve / Premiere / CapCut [→](#stage-8--assembly)
 - Pipeline E hard rules: 15-second cap per scene, one generation per style, feed the previous scene's video as continuity reference [→](#stage-5--seedance-20-with-keyframe--previous-video)
 - Soul Cinema keyframes: deliberately short 5–15 word prompts with enhancer ON — long prompts starve the enhancer [→](#stage-1--soul-cinema-keyframe-style-first-enhancer-on)
@@ -585,13 +585,13 @@ Add speech or audio performance to any video clip:
 
 **Lipsync Studio:** Upload video + audio → lips sync to the audio
 **Kling 3.0:** Generate video with native audio already embedded (most seamless)
-**Kling Avatars 2.0:** Create a talking avatar from a single image
+**Kling Avatars 2.0:** Create a talking avatar from a single image — not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending. Catalog route: **Seedance 1.5 Pro** from one start image with native audio (`seedance1_5`: `start_image`, `generate_audio`; the best-lip-sync pick in `higgsfield-models` § Video Models — Comparison)
 
 ```
 When to use each:
 - You have existing video + want to add speech → Lipsync Studio
 - You're generating new content + need audio → Kling 3.0 (generate with audio from start)
-- You want a consistent talking head character → Kling Avatars 2.0
+- You want a consistent talking head character → Seedance 1.5 Pro (start image + audio) or Kling Avatars 2.0 (verify in the UI)
 ```
 
 **Lipsync prompt:** Not really a text prompt — upload the video clip and the audio.

@@ -49,7 +49,7 @@ Style: Cinematic, natural grade, no artificial treatment. 16:9.
 - **Mountain sunrise**: Timelapse Landscape, "first light crests the ridge, fog burns off the valley below"
 - **Urban establishing**: Hyperlapse down a boulevard, "city wakes up from dawn to rush hour"
 - **Aerial/drone**: FPV Drone or Crane Up, sweeping terrain reveal
-- **Fantasy landscape**: Wan 2.5, add "jewel tones, volumetric light rays through ancient forest canopy"
+- **Fantasy landscape**: Wan 2.6 or Wan 2.5 (2.5 is not in the API catalog, 2026-09-26 — verify in the live UI), add "jewel tones, volumetric light rays through ancient forest canopy"
 - **Post-apocalyptic**: Desaturated orange and brown, dust haze, "ruined skyline, no movement except wind"
 
 ## Cinema Studio 3.0 (Business/Team Plan)

@@ -397,7 +397,7 @@ Apply Horror Face preset in the mirror reflection.
 
 ### The Sound Below
 ```
-Model: Wan 2.5
+Model: Wan 2.5 — not in the API catalog as of the 2026-09-26 snapshot (may be UI-only; verify in the live UI). Written for Wan 2.5; the catalog's stylized Wan is Wan 2.6.
 Aspect: 16:9 | Duration: 8s | Style: Cinematic
 
 A man stands at the top of a dark basement staircase, holding a flashlight.
@@ -582,7 +582,7 @@ Apply Cyborg preset for the transformation sequence.
 
 ### Into the Wild
 ```
-Model: Wan 2.5
+Model: Wan 2.5 — not in the API catalog as of the 2026-09-26 snapshot (may be UI-only; verify in the live UI). Written for Wan 2.5; the catalog's stylized Wan is Wan 2.6.
 Aspect: 16:9 | Duration: 8s | Style: Abstract
 
 A man stands at the edge of a forest at night, arms outstretched.

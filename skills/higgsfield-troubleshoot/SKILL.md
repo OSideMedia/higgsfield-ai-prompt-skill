@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
-  version: 3.3.0
+  version: 3.3.1
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -96,7 +96,7 @@ metadata:
 **Cause:** Wrong model for the preset, or prompt style conflicts with effect
 **Fix:**
 - For grounded presets (Explosion, Freezing): use Kling 3.0 or 2.6 for realism
-- For stylized presets (Animalization, Multiverse): use Wan 2.5 — leans into the style
+- For stylized presets (Animalization, Multiverse): use Wan 2.6, or Wan 2.5 — leans into the style, but is not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending
 - Add "photorealistic", "physically accurate", "cinematic quality" to the prompt
 
 ---

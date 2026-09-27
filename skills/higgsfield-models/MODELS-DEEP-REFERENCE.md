@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, GPT-Image-2.5, FLUX-3, Genjutsu, v2.0.2]
-  version: 3.3.1
+  version: 3.3.2
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -66,6 +66,7 @@ noise, turns to camera. Two cuts. Footsteps, rain ambiance, tense score.
 ---
 
 ### Kling 3.0 Omni
+**Catalog:** not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending — only its edit model, Kling 3.0 Omni Edit (`kling_video_edit`), is in the catalog.
 **Duration:** 3s–15s · **Resolution:** 4K · **FPS:** 60fps · **Audio:** Native
 **Best for:** Reference-driven generation · video-based character cloning · custom multi-shot storyboards · maximum consistency workflows
 **vs Kling 3.0:** Same generation quality. Omni = more control knobs. 3.0 = AI auto-directs from prompt alone. Omni = you control per-shot.
@@ -137,6 +138,7 @@ character in a neon-lit cityscape. Reference video drives all motion; prompt set
 ---
 
 ### Kling O1 Video (Legacy)
+**Catalog:** not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending. Catalog routes for its two jobs: start/end frame → Kling 3.0 (`start_image` + `end_image`); multi-reference → Seedance 2.0 (12 assets) or Seedance 2.5 (30 images).
 **Duration:** 5s–10s · **Resolution:** 1080p
 **Best for:** Reference-based generation · character-consistent multi-shot sequences · start/end frame controlled motion · up to 7 simultaneous reference inputs
 **Strengths:** Chain-of-Thought (CoT) reasoning — model "thinks" before rendering, breaking the prompt into scene elements, motion paths, lighting plan, then executing. Handles complex multi-element prompts reliably. Up to 7 reference inputs simultaneously (characters, props, environments).
@@ -198,6 +200,7 @@ natural lighting, emotional authenticity needed.
 ---
 
 ### Kling 2.5 Turbo
+**Catalog:** not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending. The catalog's fast Kling is Kling 3.0 Turbo (`kling3_0_turbo` — "Fast text-to-video and single start-frame animation").
 **Duration:** 5s–10s · **Resolution:** 1080p
 **Best for:** Fast iteration on Kling-quality output · when speed matters more than maximum quality
 **vs 2.6:** Same duration, faster generation, slightly lower quality ceiling
@@ -265,6 +268,7 @@ debris, crowd fleeing.
 ---
 
 ### Wan 2.5 / Wan 2.6
+**Catalog:** Wan 2.6 is `wan2_6`. Wan 2.5 is not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending.
 **Best for:** Stylized / artistic output · fantasy · surreal · creative experimentation
 **Strengths:** Excellent at non-photorealistic aesthetics, painterly looks, unusual styles
 **Weaknesses:** Less photorealistic than Kling for human faces
@@ -273,7 +277,7 @@ debris, crowd fleeing.
 
 ```text
 Example use case: A watercolor-style fantasy warrior emerging from mist.
-→ Wan 2.5
+→ Wan 2.6 (or Wan 2.5 — verify it in the UI first)
 ```
 
 ---
@@ -863,6 +867,7 @@ Best use cases:
 ---
 
 ### Veo 3.1 Fast
+**Higgsfield surface:** the `veo-3-1-fast` variant of `veo3_1` — the catalog default (`veo-3-1-preview` is its "best quality" variant) `[OFFICIAL — platform, snapshot 2026-09-26]`.
 **Duration:** 4s–8s · **Resolution:** 1080p · **Audio:** ✅ Native · **Aspect:** 16:9 / 9:16
 **Best for:** Rapid iteration · A/B testing · social media volume · speed-over-quality workflows
 **Model code:** `veo-3.1-fast-generate-preview`
@@ -892,6 +897,7 @@ thunder rolling in, rain beginning to fall on the dark water surface.
 ---
 
 ### Veo 3 Fast
+**Higgsfield surface:** the `veo-3-fast` variant of `veo3` — the catalog default (`veo-3-preview` = "best quality") `[OFFICIAL — platform, snapshot 2026-09-26]`.
 **Duration:** 8s · **Resolution:** 1080p · **Audio:** ✅ Native · **Aspect:** 16:9 / 9:16
 **Best for:** Fast, good-quality video with audio · volume content · rapid prototyping
 **Stable model**, optimized for speed. Same audio capabilities as Veo 3. Use when Veo 3 quality is sufficient and generation speed matters.
@@ -1035,7 +1041,7 @@ Best use cases:
 
 ---
 
-### Grok Imagine Video (`grok-imagine-video`)
+### Grok Imagine Video (`grok-imagine-video`) — on Higgsfield as Grok Video / Grok Video 1.5
 **Duration:** 1–15s (generation) · **Resolution:** 720p · **Audio:** ✅ Native · **Aspect:** 16:9 / 4:3 / 1:1 / 9:16 / 3:4 / 3:2 / 2:3
 **Best for:** Short-form video from text or image · video editing/restyling · adding/removing elements in existing footage · motion-based social content
 **Architecture:** Same Aurora engine as the image model — generation is asynchronous (returns `request_id`, poll for result)
@@ -1132,6 +1138,7 @@ Best use cases:
 ---
 
 ### Minimax Hailuo 02
+**Catalog:** no catalog variant is named 02 — `minimax_hailuo` offers `minimax`, `minimax-fast`, `minimax-2.3` (default) and `minimax-2.3-fast`, and nothing states which, if any, is 02 (2026-09-26). Verify in the live UI before recommending; the catalog-named pick for dance / sports is Minimax Hailuo 2.3 (`../../model-guide.md` § Model + Motion Preset Compatibility — Dance / Motion glow).
 **Best for:** Fluid motion · dynamic action · sports · dance
 **Strengths:** Exceptional motion smoothness, great for physical performance
 **Weaknesses:** Less strong on subtle facial acting
@@ -1245,7 +1252,7 @@ references; plus `camera_model_id`, `camera_lens_id`, `camera_aperture_id`, `gen
 **Use when not to use:**
 - High-volume batch generation on OpenAI API Tier 1-2 (5 IPM rate limit on Tier 1; scales to 250 IPM at Tier 5)
 - Latency-sensitive workflows (O-series reasoning adds variable response time)
-- Simple single-subject prompts (GPT Image 1.5 is faster and cheaper for these)
+- Simple single-subject prompts (GPT Image 1.5 is faster and cheaper for these at the OpenAI API; on Higgsfield it left the API catalog after 2026-06-22)
 
 **OpenAI API specs:**
 - Model ID: `gpt-image-2` (snapshot `gpt-image-2-2026-04-21`)
@@ -1293,18 +1300,18 @@ needs PNG or WebP on the OpenAI API.
 | User need | Model |
 |-----------|-------|
 | Best cinematic video, long sequence, with audio | Kling 3.0 |
-| Clone a character from reference video footage | Kling 3.0 Omni |
-| Per-shot storyboard control + reference video | Kling 3.0 Omni |
+| Clone a character from reference video footage | Kling 3.0 Omni (not in the API catalog, 2026-09-26 — verify in the live UI) |
+| Per-shot storyboard control + reference video | Kling 3.0 (multi-shot storyboard format) · Kling 3.0 Omni for the reference video (not in the API catalog, 2026-09-26 — verify in the live UI) |
 | Transfer motion/choreography from reference video | Kling 3.0 Motion Control |
 | Best human character, shorter clip, no audio needed | Kling 2.6 |
-| Fast iteration on Kling quality | Kling 2.5 Turbo |
+| Fast iteration on Kling quality | Kling 3.0 Turbo (Kling 2.5 Turbo: not in the API catalog, 2026-09-26 — verify in the live UI) |
 | Motion transfer from a 3–30s reference clip | Kling 3.0 Motion Control or Genjutsu (`../../model-guide.md` § Motion Transfer) |
 | One clip longer than 15s | Seedance 2.5 · Wan 3.0 / Prime · FLUX 3 Video (`../../model-guide.md` § Long-Take Chooser) |
-| Complex multi-reference generation (up to 7 refs) | Kling O1 Video |
-| Precise start-frame to end-frame motion | Kling O1 Video |
+| Complex multi-reference generation | Seedance 2.0 (12 assets) / 2.5 (30 images) · Kling O1 Video (7 refs; not in the API catalog, 2026-09-26 — verify in the live UI) |
+| Precise start-frame to end-frame motion | Kling 3.0 (`start_image` + `end_image`) · Kling O1 Video (not in the API catalog, 2026-09-26 — verify in the live UI) |
 | **Edit existing footage** (relight, restyle, swap, remove, extend, multiply) | **`../../model-guide.md` § Edit-Lane Chooser** — Seedance 2.5 `video_edit` · Kling 3.0 Omni Edit · FLUX 3 Video Edit · Gemini Omni Flash 1.1 `edit` · Genjutsu · Cinema Studio 4.0 · Ad Multiplier (Kling O1 Video Edit is UI-only legacy) |
 | Epic scale / action blockbuster | Seedance 2.0 (Sora 2 is retired — see its entry above) |
-| Artistic / stylized / fantasy | Wan 2.5/2.6 |
+| Artistic / stylized / fantasy | Wan 2.6 (Wan 2.5: not in the API catalog, 2026-09-26 — verify in the live UI) |
 | Fast iteration / social content (no audio needed) | Seedance 2.0 Fast / Mini with `generate_audio` off |
 | Native audio + dialogue / lip-sync in video | Seedance 1.5 Pro |
 | 12-asset multimodal / reference video → new scene | Seedance 2.0 (R2V) |
@@ -1314,14 +1321,14 @@ needs PNG or WebP on the OpenAI API.
 | Subject/character consistency across scene (ref images) | Veo 3.1 |
 | Define exact start + end frame | Veo 3.1 Lite (catalog) · Veo 3.1 (Google API — verify) · Seedance 2.5 / Wan 3.0 / FLUX 3 Video |
 | Extend an existing video | Seedance 2.5 `video_extension` (catalog) · Veo 3.1 chain to 148s is Google API only — verify |
-| Fast Veo iteration / volume generation | Veo 3.1 Fast |
+| Fast Veo iteration / volume generation | Veo 3.1 Fast (`variant: veo-3-1-fast`) |
 | Fluid physical motion / dance/sports | Minimax Hailuo |
 | Photorealistic image with precise text/logo rendering | GPT Image 2 / GPT Image 2.5 |
 | Transparent-background image | GPT Image 2.5 (`background: transparent`) |
-| Multi-image composite (up to 3 source images) | Multi Reference |
+| Multi-image composite | Nano Banana Pro (14 refs) · Multi Reference (up to 3 source images; not in the API catalog, 2026-09-26 — verify in the live UI) |
 | Iterative multi-turn image refinement | Flux Kontext |
 | Style transfer on existing image | Flux Kontext |
-| 10s video with native audio (text or image-to-video) | Grok Imagine Video |
+| 10s video with native audio (text or image-to-video) | Grok Video (`grok_video`) |
 | Edit/restyle existing video footage | `../../model-guide.md` § Edit-Lane Chooser (Grok Video has no source-video input on Higgsfield) |
 | Best portrait / fashion image | Soul 2.0 |
 | Sharpest 4K image | Nano Banana Pro |

@@ -37,7 +37,6 @@ GUIDE_NAME_OVERRIDES = {
     "veo31": "veo3_1",
     "veo31lite": "veo3_1_lite",
     "veo3": "veo3",
-    "grokimaginevideo": "grok_video",
     # Hailuo variants share one snapshot entry (variant = a `model` param)
     "minimaxhailuo23": "minimax_hailuo",
     "minimaxhailuo23fast": "minimax_hailuo",

@@ -13,7 +13,7 @@ metadata:
   references:
     - MODELS-DEEP-REFERENCE.md
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, GPT-Image-2.5, FLUX-3, Genjutsu, edit-lanes, long-take]
-  version: 3.3.2
+  version: 3.3.3
   updated: 2026-09-26
   parent: higgsfield
 
@@ -47,15 +47,15 @@ Fast lookup — for detailed comparisons see the full tables below.
 | Motion transfer from a reference video | Kling 3.0 Motion Control or Genjutsu → `model-guide.md` § Motion Transfer | — |
 | Fast video iteration | Seedance 2.0 Fast / Mini | Mid |
 | VFX / fluid motion | Minimax Hailuo 2.3 | Mid |
-| Budget-friendly video | Kling 2.5 Turbo / Higgsfield DoP Lite | Free–Low |
+| Budget-friendly video | Kling 3.0 Turbo — the catalog's budget Kling (Kling 2.5 Turbo / Higgsfield DoP Lite: not in the API catalog, 2026-09-26 — verify in the live UI) | Mid |
 | Fashion / aesthetic images | Soul 2.0 | Free |
 | Photorealistic sharp images | Nano Banana Pro | Low |
 | AI actor generation | Soul Cast | Low |
-| Native 4K images | Kling Image 3.0 | Mid |
+| Native 4K images | Nano Banana Pro (`resolution` to 4k) — Kling Image 3.0 is not in the API catalog, 2026-09-26 — verify in the live UI | Low |
 | Transparent-background image | GPT Image 2.5 (`background: transparent`) | — |
 | Photo style transformation | Photodump (29 presets) | Low |
 
-**Pricing tiers:** Free (Soul 2.0, DoP Lite) · Low (0.1–2 credits) · Mid (2–10 credits) · Premium (10+ credits). See the Credit Cost Reference below for exact per-model costs.
+**Pricing tiers:** Free (Soul 2.0; DoP Lite — not in the API catalog, verify in the UI) · Low (0.1–2 credits) · Mid (2–10 credits) · Premium (10+ credits). See the Credit Cost Reference below for exact per-model costs.
 
 ---
 
@@ -64,21 +64,21 @@ Fast lookup — for detailed comparisons see the full tables below.
 | Model | Realism | Character | Motion | Style | Duration | Audio | Best for |
 |-------|---------|-----------|--------|-------|----------|-------|----------|
 | Kling 3.0 | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 3–15s | ✅ | Cinematic, long, audio, multi-shot |
-| Kling 3.0 Omni | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 3–15s | ✅ | Video clone, storyboard control |
+| Kling 3.0 Omni | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 3–15s | ✅ | Video clone, storyboard control — not in the API catalog, 2026-09-26 — verify in the live UI (only its edit model `kling_video_edit` is). Storyboards: Kling 3.0 |
 | Kling 3.0 Omni Edit | ★★★★★ | ★★★★★ | — | ★★★★☆ | 3–10s in (UI doctrine) | ✅ | Edit footage at 3.0 quality — `kling_video_edit`, `mode` std / pro / 4k, source video + optional image refs |
-| Kling O1 Video (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Multi-ref (7), start/end frame |
+| Kling O1 Video (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Multi-ref (7), start/end frame — not in the API catalog, 2026-09-26 — verify in the live UI. Start/end frame: Kling 3.0; many refs: Seedance 2.0 / 2.5 |
 | Kling O1 Video Edit (legacy) | ★★★★☆ | ★★★★★ | — | ★★★★★ | 3–10s | ❌ | Relight, restyle, swap, remove — UI-only, not in the API catalog |
 | Kling 3.0 Motion Control | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★☆☆ | 3–30s | Optional | Motion transfer from reference video |
 | Genjutsu — motion transfer | — | — | — | — | — | — | `hf_mult_motion_control`: motion from a reference video onto subjects in reference images; 480p–1080p. Not yet field-rated |
 | Genjutsu — replace object | — | — | — | — | — | — | `hf_mult_replace_object`: replace objects in a source video from reference images; 480p–1080p. Not yet field-rated |
 | Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5/10s | ✅ | Character drama, realism; native audio via `sound` toggle (default on) |
-| Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration |
+| Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration — not in the API catalog, 2026-09-26 — verify in the live UI. Catalog: Kling 3.0 Turbo |
 | Sora 2 (retired) | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | 4–12s | ✅ | **Retired — do not recommend.** OpenAI shut the Sora 2 API down on 2026-09-24; Higgsfield UI availability is unconfirmed. Scale / physics → Seedance 2.0 or Minimax Hailuo 2.3 (`../../model-guide.md`). Was: epic scale, physics, action — UI-only |
 | Wan 3.0 | — | — | — | — | 2–30s or −1 smart (billed as 10s) | ✅ | T2V, first/last frame, multimodal reference (image/video/audio), `enable_thinking`; frames and references never combined. Not yet field-rated |
 | Wan 3.0 Prime | — | — | — | — | 2–30s or −1 smart (billed as 10s) | ✅ | Same parameter surface as Wan 3.0; how Prime differs is not stated. Not yet field-rated |
 | Wan 2.7 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★★ | 2–15s | ✅ | 60fps, T2V/I2V/R2V/edit, first+last frame |
 | Wan 2.6 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5/10/15s | ❌ | Artistic, stylized, improved physics |
-| Wan 2.5 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–10s | ✅ | Native audio, artistic, fantasy |
+| Wan 2.5 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★★ | 5–10s | ✅ | Native audio, artistic, fantasy — not in the API catalog, 2026-09-26 — verify in the live UI. Catalog: Wan 2.6 (stylized) / Wan 2.7 (native audio) |
 | Seedance 2.5 | — | — | — | — | 4–30s | ✅ | Omni-reference (≤30 images incl. start/end, ≤50 items), `video_edit`, `video_extension`; 480p / 720p / **1080p**; start/end frames only in `omni_reference`; no 4K, no `genre`. Not yet field-rated |
 | Ad Multiplier | — | — | — | — | 4–30s | ✅ | "Powered by Seedance 2.5" — many edited variants of one 4–30s ad via Higgsfield's `ad-multiplier` workflow. Not yet field-rated |
 | Seedance 2.0 | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | 4–15s | ✅ | 12-asset multimodal, complex motion, native 4K (`mode=std`), `genre` |
@@ -91,15 +91,15 @@ Fast lookup — for detailed comparisons see the full tables below.
 | Veo 3 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 4–8s | ✅ | Nature, environment, stable model |
 | Gemini Omni Flash | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 4–10s | ✅ | Reference-driven video (image + video refs), native audio, 720p |
 | Gemini Omni Flash 1.1 | — | — | — | — | 3–10s | ✅ | Required `mode` (t2v / i2v / reference / **edit** — source ≤30s); start/end frames; 360p–4K. Not yet field-rated |
-| Grok Imagine Video | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★☆ | 1–15s | ✅ | Animate images, social clips (the catalog exposes no source-video input — editing unverified on Higgsfield) |
+| Grok Video | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★☆ | 1–15s | ✅ | Animate images, social clips (`grok_video`, named Grok Imagine until the 2026-06-22 snapshot; the catalog exposes no source-video input — editing unverified on Higgsfield) |
 | Minimax Hailuo 2.3 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★☆ | 6/10s | ❌ | VFX, fluid motion, anime, physics |
-| Minimax Hailuo 02 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | 6/10s | ❌ | Dance, sports, fluid motion |
+| Minimax Hailuo 02 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | 6/10s | ❌ | Dance, sports, fluid motion — no catalog variant is named 02 (`minimax_hailuo`: minimax, minimax-fast, minimax-2.3, minimax-2.3-fast); verify in the live UI |
 | MiniMax H3 | — | — | — | — | 4–15s | — | Keyframes or image/video/audio refs, 2K, `batch_size` 1–4. Not yet field-rated |
 | MiniMax H3 Max | — | — | — | — | 5–15s | — | "Fast" variant, 480p / 768p, same roles, `batch_size` 1–4. Not yet field-rated |
 | Happy Horse Video | — | — | — | — | 3–15s | — | T2V + single start frame, 720p / 1080p. Not yet field-rated |
 | FLUX 3 Video | — | — | — | — | 5–20s | ✅ | T2V, multi-frame I2V, continuation; native 2:1. Not yet field-rated |
 | FLUX 3 Video Edit | — | — | — | — | first 15s of source | — | Text edit of one video, 1 credit per processed second. Not yet field-rated |
-| Higgsfield DoP (Lite/Standard/Turbo) | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 3–5s | ❌ | I2V specialist, 50+ presets, optical physics |
+| Higgsfield DoP (Lite/Standard/Turbo) | ★★★☆☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 3–5s | ❌ | I2V specialist, 50+ presets, optical physics — not in the API catalog, 2026-09-26 — verify in the live UI |
 
 ---
 
@@ -109,8 +109,9 @@ Fast lookup — for detailed comparisons see the full tables below.
 Is this image or video?
 ├── IMAGE
 │   ├── Person / portrait? → Soul 2.0
-│   ├── Cinematic keyframe for I2V pipeline? → Soul Cinema Preview
-│   ├── Native 4K / image series / storyboarding? → Kling Image 3.0
+│   ├── Cinematic keyframe for I2V pipeline? → Soul Cinema
+│   ├── Native 4K? → Nano Banana Pro · image series / storyboarding? → Kling
+│   │   Image 3.0 (not in the API catalog, 2026-09-26 — verify in the live UI)
 │   ├── Maximum sharpness / 4K? → Nano Banana Pro
 │   ├── Fast pro-quality / text rendering? → Nano Banana 2
 │   ├── Reference consistency or dense text? → Seedream 4.5
@@ -131,40 +132,45 @@ Is this image or video?
     │
     ├── Is a human character the focus?
     │   ├── Need audio, up to 15s, multi-shot → Kling 3.0
-    │   ├── Need to clone from reference video → Kling 3.0 Omni
+    │   ├── Need to clone from reference video → Kling 3.0 Omni (not in the API
+    │   │   catalog, 2026-09-26 — verify in the live UI; no catalog model on record)
     │   ├── Best lip-sync + multilingual → Seedance 1.5 Pro
     │   ├── Legacy-tier great character (audio togglable via `sound`) → Kling 2.6
-    │   └── Fast iteration → Kling 2.5 Turbo
+    │   └── Fast iteration → Kling 3.0 Turbo (Kling 2.5 Turbo: not in the API catalog)
     │
     ├── Need motion transfer from reference video?
     │   └── → Kling 3.0 Motion Control or Genjutsu (model-guide.md § Motion Transfer)
     │
     ├── Animate a still image with cinematic camera?
-    │   └── → Higgsfield DoP (Lite/Standard/Turbo)
+    │   └── → Kling 3.0 (`start_image`); Higgsfield DoP (Lite/Standard/Turbo) is
+    │       not in the API catalog, 2026-09-26 — verify in the live UI
     │
     ├── Is the environment/phenomenon the hero?
     │   ├── Nature, documentary, stable → Veo 3
     │   ├── Need ref image consistency → Veo 3.1 (verify refs in the UI)
     │   ├── Budget Veo 3.1 quality / volume → Veo 3.1 Lite
     │   ├── 60fps, first+last frame, ref images → Wan 2.7
-    │   └── Artistic, painterly, fantasy → Wan 2.5/2.6
+    │   └── Artistic, painterly, fantasy → Wan 2.6 (Wan 2.5: not in the API catalog)
     │
     ├── Is it action/spectacle?
     │   ├── Epic scale, crowds, physics → Seedance 2.0 (Sora 2 is retired)
     │   ├── VFX, anime, fluid motion → Minimax Hailuo 2.3
-    │   └── Dance, sports, budget motion → Minimax Hailuo 02
+    │   └── Dance, sports, budget motion → Minimax Hailuo 2.3 (02: no catalog
+    │       variant by that name — verify in the live UI)
     │
     ├── Need maximum reference control?
     │   ├── Up to 30 images / 50 items (images + video + audio) → Seedance 2.5
     │   ├── Up to 12 assets with 4K or `genre` → Seedance 2.0
-    │   ├── Up to 7 image refs → Kling O1 Video
+    │   ├── Up to 7 image refs → Kling O1 Video (not in the API catalog — verify;
+    │   │   the two Seedance rows above take more)
     │   └── Image + video refs with native audio → Gemini Omni Flash / 1.1
     │
     └── Speed/cost priority?
-        ├── Fastest Kling → Kling 2.5 Turbo
+        ├── Fastest Kling → Kling 3.0 Turbo (Kling 2.5 Turbo: not in the API catalog)
         ├── Seedance drafts → Seedance 2.0 Fast / Mini
         ├── Up to 4 takes per call → MiniMax H3 / H3 Max (`batch_size`)
-        └── Fastest Veo → Veo 3.1 Fast or Veo 3 Fast
+        └── Fastest Veo → Veo 3.1 Fast or Veo 3 Fast (`variant: veo-3-1-fast` /
+            `veo-3-fast` — the catalog defaults)
 ```
 
 ---
@@ -174,24 +180,24 @@ Is this image or video?
 | Need | Model | Credits |
 |------|-------|---------|
 | Fashion / cultural portrait | Soul 2.0 | Free |
-| Cinematic keyframe for I2V | Soul Cinema Preview | Low |
+| Cinematic keyframe for I2V | Soul Cinema | Low |
 | Consistent character identity (16:9) | Soul Cast | `budget` 10–500 |
 | Environment / location plate | Soul Location | — |
 | Cheapest generation | Z-Image | 0.15 |
-| Low-cost portrait | Higgsfield Soul | 0.5 |
-| Low-cost 2K square | Kling O1 | 0.5 |
-| Native 4K / image series | Kling Image 3.0 | — |
-| 4K + advanced editing | Kling Image 3.0 Omni | — |
+| Low-cost portrait | Soul 2.0 · Higgsfield Soul (not in the API catalog, 2026-09-26 — verify in the live UI) | Free · 0.5 |
+| Low-cost 2K square | Kling O1 Image (`kling_omni_image`) | 0.5 |
+| Native 4K / image series | Nano Banana Pro (4K) · Kling Image 3.0 (series; not in the API catalog, 2026-09-26 — verify in the live UI) | 2 · — |
+| 4K + advanced editing | Nano Banana 2 (edits, to 4k) · Kling Image 3.0 Omni (not in the API catalog, 2026-09-26 — verify in the live UI) | 1.5 · — |
 | Fast versatile 2K | Seedream 5.0 Lite | 1 |
 | Fast generation + instruction editing up to 2K | Seedream 5.0 Flash (not yet field-rated) | — |
 | 4K versatile | Seedream 4.5 | 1 |
 | Sketch-to-image (Draw) | Nano Banana | 1 |
-| Artistic / stylized | Wan 2.2 | 1 |
-| Blend multiple references | Multi Reference | 1.5 |
+| Artistic / stylized | Seedream 5.0 Pro (stylized-2D) · Wan 2.2 (not in the API catalog, 2026-09-26 — verify in the live UI) | — · 1 |
+| Blend multiple references | Nano Banana Pro (14 refs) · Multi Reference (not in the API catalog, 2026-09-26 — verify in the live UI) | 2 · 1.5 |
 | Fast pro-quality + text rendering | Nano Banana 2 | 1.5 |
 | Budget NB2 (1k only, `thinking` MINIMAL/HIGH) | Nano Banana 2 Lite | — |
 | Transparent background · quality to `max` · 15 aspect ratios | GPT Image 2.5 (not yet field-rated) | — |
-| Complex prompts / text in image | GPT Image 1.5 | 2 |
+| Complex prompts / text in image | GPT Image 2 · GPT Image 1.5 (left the API catalog after 2026-06-22 — verify in the live UI) | — · 2 |
 | Reference-based editing + best text rendering | OpenAI Hazel | — |
 | Max fidelity / Thinking mode / 14 refs | Nano Banana Pro | 2 |
 | xAI generation + editing | Grok Image / Grok Image 2.0 (not yet field-rated) | — |
@@ -208,12 +214,12 @@ Full Photodump preset library (29 named styles) → `../../photodump-presets.md`
 
 **Image models — by credit cost:**
 - **Free / near-free:** Soul 2.0 (5K gens) · Z-Image (0.15) · Face Swap (2 free)
-- **Budget (0.5–1):** Higgsfield Soul · Kling O1 · Seedream family · Nano Banana · Wan 2.2 · Reve
-- **Mid (1.5–2):** Nano Banana 2 · Multi Reference · FLUX.2 Pro · Flux Kontext Max · GPT Image · NB Pro · Character Swap
+- **Budget (0.5–1):** Kling O1 Image · Seedream family · Nano Banana · Higgsfield Soul, Wan 2.2, Reve (these three: not in the API catalog, 2026-09-26 — verify in the live UI)
+- **Mid (1.5–2):** Nano Banana 2 · FLUX.2 Pro · Flux Kontext (was Flux Kontext Max) · NB Pro · Character Swap · Multi Reference, GPT Image (not in the API catalog, 2026-09-26 — verify in the live UI)
 - **Premium (5–6):** FLUX.2 Flex · FLUX.2 Max
 
 **General pricing tiers (video + image, approximate):**
-- **Free:** Soul 2.0 · DoP Lite (limited)
+- **Free:** Soul 2.0 · DoP Lite (limited; not in the API catalog, 2026-09-26 — verify in the live UI)
 - **Low:** 0.1–2 credits per generation
 - **Mid:** 2–10 credits per generation
 - **Premium:** 10+ credits per generation
@@ -229,23 +235,23 @@ Catalog-backed rows cite `[OFFICIAL — platform, snapshot 2026-09-26]` (media r
 
 | Feature | Available on |
 |---------|-------------|
-| Native audio (dialogue, SFX, ambient) | Kling 3.0/Omni/2.6 · Seedance 2.5/2.0/2.0 Mini/1.5 Pro · Ad Multiplier · Wan 3.0/Prime · FLUX 3 Video · Gemini Omni Flash / 1.1 · Veo 3/3.1/3.1 Lite · Wan 2.5/2.7 · Grok Video · Cinema Studio 3.0 / 4.0 |
-| Soul ID character slot | Soul 2.0 · GPT Image · Higgsfield Soul |
+| Native audio (dialogue, SFX, ambient) | Kling 3.0/2.6 · Seedance 2.5/2.0/2.0 Mini/1.5 Pro · Ad Multiplier · Wan 3.0/Prime · FLUX 3 Video · Gemini Omni Flash / 1.1 · Veo 3/3.1/3.1 Lite · Wan 2.7 · Grok Video · Cinema Studio 3.0 / 4.0 · (Kling 3.0 Omni, Wan 2.5 — not in the API catalog, 2026-09-26 — verify in the live UI) |
+| Soul ID character slot | Soul 2.0 · GPT Image, Higgsfield Soul (not in the API catalog, 2026-09-26 — verify in the live UI) |
 | @ Elements syntax | Seedream 4.5/5.0 Lite · Nano Banana Pro · Cinema Studio |
 | Draw (sketch-to-image) | Nano Banana · Nano Banana Pro |
 | Video editing (existing footage) | Seedance 2.5 `video_edit` · Cinema Studio 4.0 `video_edit` · Kling 3.0 Omni Edit · FLUX 3 Video Edit · Gemini Omni Flash 1.1 `edit` · Genjutsu replace-object · Ad Multiplier (many variants) · Kling O1 Video Edit (UI-only legacy) → `../../model-guide.md` § Edit-Lane Chooser |
-| Multi-image reference blend | Seedance 2.5 (≤30 images) · Multi Reference · Nano Banana Pro (14 refs) · Kling O1 Video (7 refs) |
-| Start/end frame control | Seedance 2.5 (`omni_reference` only) / 2.0 / 2.0 Mini / 1.5 Pro · Kling 3.0 · Wan 3.0/Prime (not with references) · Wan 2.7 · FLUX 3 Video · Gemini Omni Flash 1.1 · MiniMax H3 / H3 Max · Minimax Hailuo · Veo 3.1 Lite · Cinema Studio 3.0 / 4.0 · Marketing Studio · Ad Multiplier · Kling O1 Video (UI legacy) |
+| Multi-image reference blend | Seedance 2.5 (≤30 images) · Nano Banana Pro (14 refs) · Multi Reference, Kling O1 Video (7 refs) — not in the API catalog, 2026-09-26 — verify in the live UI |
+| Start/end frame control | Seedance 2.5 (`omni_reference` only) / 2.0 / 2.0 Mini / 1.5 Pro · Kling 3.0 · Wan 3.0/Prime (not with references) · Wan 2.7 · FLUX 3 Video · Gemini Omni Flash 1.1 · MiniMax H3 / H3 Max · Minimax Hailuo · Veo 3.1 Lite · Cinema Studio 3.0 / 4.0 · Marketing Studio · Ad Multiplier · Kling O1 Video (legacy — not in the API catalog) |
 | Video extension | Seedance 2.5 / Ad Multiplier / Cinema Studio 4.0 `video_extension` (forward / backward) · FLUX 3 Video (continuation) · Veo 3.1 (Google API chain to 148s — the catalog's `veo3_1` takes no video input; verify) |
 | One clip longer than 15s | Seedance 2.5 (30s) · Wan 3.0/Prime (30s) · FLUX 3 Video (20s) → `../../model-guide.md` § Long-Take Chooser |
-| Performance cloning from video | Kling 3.0 Omni |
+| Performance cloning from video | Kling 3.0 Omni — not in the API catalog, 2026-09-26 — verify in the live UI; no catalog model is on record for likeness + voice cloning |
 | Motion transfer from a reference video | Kling 3.0 Motion Control (3–30s reference) · Genjutsu `hf_mult_motion_control` |
 | Soul Cast AI actors | Cinema Studio 2.5 · standalone `soul_cast` image model (16:9, `budget` 10–500) |
 | Soul Cast AI actors (General 2K / Character 4K / Location 4K) | Cinema Studio 3.0 (Business/Team) |
 | Built-in color grading | Cinema Studio 2.5 (full grading suite) · Cinema Studio 3.5 (Color Palette axis in Style Settings — 8 named palettes) |
-| Native dual-channel stereo audio | Cinema Studio 3.0 (Business/Team) · Kling 3.0/Omni · Seedance 2.0/1.5 Pro · Veo 3/3.1 · Wan 2.5/2.7 |
-| Soul HEX color matching | Soul 2.0 · Soul Cinema Preview · Cinema Studio 2.5 |
-| Native 4K image series | Kling Image 3.0 |
+| Native dual-channel stereo audio | Cinema Studio 3.0 (Business/Team) · Kling 3.0 · Seedance 2.0/1.5 Pro · Veo 3/3.1 · Wan 2.7 · (Kling 3.0 Omni, Wan 2.5 — not in the API catalog) |
+| Soul HEX color matching | Soul 2.0 · Soul Cinema · Cinema Studio 2.5 |
+| Native 4K image series | Kling Image 3.0 — not in the API catalog, 2026-09-26 — verify in the live UI (native 4K alone: Nano Banana Pro) |
 | Style presets + Color Transfer | Soul 2.0 (the CLI forbids `style_id` + image references in one Soul 2.0 call — see `../../image-models.md` § Soul 2.0) |
 | Transparent-background image output | GPT Image 2.5 `background: transparent` (the CLI also lists `background` on GPT Image 2 — see `../../image-models.md` § GPT Image 2) |
 | Masked inpaint | Nano Banana 2 / 2 Lite (`mask` + `is_inpaint`) · GPT Image 2 (CLI only). Seedream 5.0 Pro has `is_inpaint` (edit the reference) but **no `mask` role** |
@@ -264,7 +270,9 @@ use 3.0 for all new work unless cost is the primary constraint.
 
 **Kling V3 vs O3:** Use V3 for prompt-driven cinematic work (text-to-video, image-to-video).
 Use O3 when you have reference media (video or image+audio) to anchor character identity —
-O3's reference-based consistency is its defining advantage.
+O3's reference-based consistency is its defining advantage. O3 (Kling 3.0 Omni) is not in the API
+catalog as of the 2026-09-26 snapshot — only its edit model, `kling_video_edit`, is; verify it in the
+live UI before recommending.
 
 **Kling 3.0 Motion Control:** Upload a 3–30s reference clip to transfer full-body motion,
 hand gestures, facial expressions. Image Orientation for camera/talking head; Video
@@ -291,9 +299,9 @@ consistency, 3.1 Lite for volume, 3 for pure environment/nature.
 
 **Wan 2.7:** Major upgrade — native 60fps (vs 24fps in 2.6), up to 15s duration, first+last frame anchoring, up to 5 reference images, 4-model suite (T2V/I2V/R2V/video edit), Flow-Matching architecture. 40% better physics consistency over 2.6.
 
-**Wan 2.5:** First Wan version with native audio — joint text/audio/video generation. Supports audio-driven video (upload audio to drive visuals). 1080p, 5–10s.
+**Wan 2.5:** First Wan version with native audio — joint text/audio/video generation. Supports audio-driven video (upload audio to drive visuals). 1080p, 5–10s. Not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending (catalog Wan with native audio: Wan 2.7).
 
-**Minimax Hailuo 2.3 vs 02:** 2.3 is a major upgrade — improved physics, anime/illustration styles, facial micro-expressions, better prompt adherence. Fast variant now at 1080p (02 Fast was 512p). 02 remains available for budget motion work.
+**Minimax Hailuo 2.3 vs 02:** 2.3 is a major upgrade — improved physics, anime/illustration styles, facial micro-expressions, better prompt adherence. Fast variant now at 1080p (02 Fast was 512p). 02 was kept for budget motion work, but no catalog variant is named 02 (2026-09-26: `minimax_hailuo` offers minimax, minimax-fast, minimax-2.3, minimax-2.3-fast) — verify in the live UI before recommending it.
 
 **Grok Imagine:** Aurora architecture (autoregressive, not diffusion) — excels at text/logo
 rendering and multi-image compositing. On Higgsfield: **Grok Image** (`grok_image`) and
