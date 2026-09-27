@@ -132,3 +132,17 @@ def test_stats_counts(tmp_db):
     stats = json.loads(out)
     assert stats["filter_memory"]["total_entries"] == 1
     assert stats["quality_memory"]["total_entries"] == 0
+
+
+# ── v3.37.0 review: add-* validates the outcome enum like update-* does ──────
+
+@pytest.mark.parametrize("cmd,entry,db_name", [
+    ("add-quality", {"failure_type": "t", "original_prompt": "p",
+                     "failure_description": "d", "outcome": "garbage"}, "quality-memory.json"),
+    ("add-filter", {"category": "c", "error_message": "e", "outcome": "fixedd"},
+     "filter-memory.json"),
+])
+def test_add_refuses_an_outcome_outside_the_enum(tmp_db, cmd, entry, db_name):
+    code, out = run(tmp_db, cmd, json.dumps(entry))
+    assert code == 1 and json.loads(out)["status"] == "error"
+    assert json.loads((tmp_db / db_name).read_text(encoding="utf-8"))["entries"] == []

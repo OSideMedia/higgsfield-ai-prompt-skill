@@ -647,10 +647,13 @@ def check_specs_regeneration(sync_specs) -> bool:
         all_ok &= check(not stale, f"{t} specs match regeneration from newest snapshot "
                                    f"({snap.name})", detail)
     retired_stale = sync_specs.retired_is_stale(SPECS_DIR)
+    problems = sync_specs.retired_problems(SPECS_DIR) if retired_stale else []
     all_ok &= check(not retired_stale,
-                    f"specs/{sync_specs.RETIRED_FILE} tombstones every retired model id",
+                    f"specs/{sync_specs.RETIRED_FILE} tombstones every retired model id, "
+                    "each proven by the snapshot history",
                     "" if not retired_stale else
-                    "rerun python3 scripts/sync_specs.py (append-only; never delete entries)")
+                    "; ".join(problems[:4]) + " — rerun python3 scripts/sync_specs.py "
+                    "(it keeps every proven entry and drops unproven ones)")
     return all_ok
 
 

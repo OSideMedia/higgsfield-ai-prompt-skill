@@ -1,5 +1,5 @@
 {
-  "_doc": "GENERATED + APPEND-ONLY by scripts/sync_specs.py — never delete an entry. Every model id that some committed models_explore snapshot carried and no type's NEWEST snapshot (nor any alias) carries. Generation-ledger rows written under a since-retired id stay valid history through this list (scripts/higgsfield_memory.py load_specs_models).",
+  "_doc": "GENERATED + APPEND-ONLY by scripts/sync_specs.py — never edit by hand. Every model id that some committed models_explore snapshot carried and no type's NEWEST snapshot (nor any alias) carries. Generation-ledger rows written under a since-retired id stay valid history through this list (scripts/higgsfield_memory.py load_specs_models); new rows may not use a retired id. Each entry must be PROVEN by the snapshot history: an id no committed snapshot carried, or one live again in a newest snapshot, is dropped by the generator and fails validate.py until regenerated.",
   "retired": {
     "explainer_video": {
       "last_seen": "2026-08-01",

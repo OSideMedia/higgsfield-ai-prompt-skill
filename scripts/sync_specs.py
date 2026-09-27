@@ -281,13 +281,16 @@ def normalize_models(snapshot: dict, output_type: str = "video") -> list[dict]:
             "snapshot has no 'items' list — not a models_explore dump "
             "(truncated file or wrong payload); refusing to generate specs")
     # A paginated dump that stopped on page 1 looks valid (items present) but
-    # silently drops every later model. Only an explicit `has_more: false` (or
-    # its absence, as in hand-trimmed test fixtures) is a complete catalog.
-    if snapshot.get("has_more", False) is not False:
+    # silently drops every later model. Only an explicit `has_more: false` is
+    # a complete catalog: every committed models_explore dump carries the key,
+    # so a dump WITHOUT it is hand-trimmed or not a list response — refused
+    # like a partial one (an absent key used to pass as "complete").
+    if "has_more" not in snapshot or snapshot["has_more"] is not False:
         raise ValueError(
-            f"snapshot is a PARTIAL paginated dump (has_more: "
-            f"{snapshot.get('has_more')!r}) — fetch every page of `models_explore` "
-            "(action=list) and dump the complete list; refusing to generate specs")
+            f"snapshot is not a complete models_explore list (has_more: "
+            f"{snapshot.get('has_more', '<absent>')!r}) — fetch every page of "
+            "`models_explore` (action=list) and dump the complete list verbatim "
+            "(it ends with has_more: false); refusing to generate specs")
     items = [m for m in snapshot["items"]
              if m.get("output_type") == output_type]
     if not items:
@@ -508,11 +511,14 @@ def render_outputs(spec: dict, output_type: str, specs_dir: Path = None) -> dict
 # ── Retired-id tombstones (append-only) ─────────────────────────────────────
 
 _RETIRED_DOC = (
-    "GENERATED + APPEND-ONLY by scripts/sync_specs.py — never delete an entry. "
+    "GENERATED + APPEND-ONLY by scripts/sync_specs.py — never edit by hand. "
     "Every model id that some committed models_explore snapshot carried and no "
     "type's NEWEST snapshot (nor any alias) carries. Generation-ledger rows "
     "written under a since-retired id stay valid history through this list "
-    "(scripts/higgsfield_memory.py load_specs_models).")
+    "(scripts/higgsfield_memory.py load_specs_models); new rows may not use "
+    "a retired id. Each entry must be PROVEN by the snapshot history: an id "
+    "no committed snapshot carried, or one live again in a newest snapshot, "
+    "is dropped by the generator and fails validate.py until regenerated.")
 
 
 def _snapshot_files(specs_dir: Path) -> list:
@@ -562,13 +568,66 @@ def load_retired(specs_dir: Path = None) -> dict:
     return dict(json.loads(p.read_text(encoding="utf-8")).get("retired") or {})
 
 
+def snapshot_history_ids(specs_dir: Path = None) -> set:
+    """Every model id any committed models_explore snapshot carried."""
+    ids = set()
+    for p in _snapshot_files(specs_dir or SPECS_DIR):
+        ids.update(m["id"] for m in json.loads(p.read_text(encoding="utf-8")).get("items") or []
+                   if isinstance(m, dict) and m.get("id"))
+    return ids
+
+
+def unproven_tombstones(specs_dir: Path = None) -> dict:
+    """{id: why} for committed tombstones the snapshot history does not
+    prove. A tombstone whitelists its id in the ledger, so it must be
+    EARNED: the id appeared in some committed snapshot AND no type's newest
+    snapshot (nor an alias) carries it. A hand-added id used to pass every
+    gate, because the staleness check started from the committed file."""
+    committed = load_retired(specs_dir)
+    if not committed:
+        return {}
+    history = snapshot_history_ids(specs_dir)
+    current = current_model_ids(specs_dir)
+    out = {}
+    for mid in sorted(committed):
+        if mid not in history:
+            out[mid] = "no committed models_explore snapshot ever carried it"
+        elif mid in current:
+            out[mid] = "it is live in a newest snapshot (or an alias) — not retired"
+    return out
+
+
 def merged_retired(specs_dir: Path = None) -> dict:
-    """Committed tombstones ∪ newly derived ones. Existing entries are never
-    removed or rewritten — the file only grows, like the ledger it protects."""
-    merged = load_retired(specs_dir)
+    """Proven committed tombstones ∪ newly derived ones. Proven entries are
+    never removed or rewritten — the file only grows, like the ledger it
+    protects; an unproven entry is never carried forward."""
+    unproven = unproven_tombstones(specs_dir)
+    merged = {k: v for k, v in load_retired(specs_dir).items() if k not in unproven}
     for mid, info in compute_retired(specs_dir).items():
         merged.setdefault(mid, info)
     return merged
+
+
+def proven_retired(specs_dir: Path = None) -> dict:
+    """The committed tombstones that the snapshot history proves — what the
+    ledger may trust (a hand-added id is not in it)."""
+    unproven = unproven_tombstones(specs_dir)
+    return {k: v for k, v in load_retired(specs_dir).items() if k not in unproven}
+
+
+def retired_problems(specs_dir: Path = None) -> list:
+    """Human reasons the committed tombstone file is not what sync_specs
+    would write: unproven entries, missing ids, a non-canonical file."""
+    rp = (specs_dir or SPECS_DIR) / RETIRED_FILE
+    if not rp.exists():
+        return [f"{RETIRED_FILE} is missing"]
+    probs = [f"unproven tombstone {mid!r}: {why}"
+             for mid, why in unproven_tombstones(specs_dir).items()]
+    missing = sorted(set(compute_retired(specs_dir)) - set(load_retired(specs_dir)))
+    probs += [f"retired id {mid!r} is not tombstoned" for mid in missing]
+    if not probs and rp.read_text(encoding="utf-8") != emit_retired(merged_retired(specs_dir)):
+        probs.append(f"{RETIRED_FILE} is not in canonical generated form")
+    return probs
 
 
 def emit_retired(retired: dict) -> str:

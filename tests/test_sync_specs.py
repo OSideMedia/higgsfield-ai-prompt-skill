@@ -67,8 +67,8 @@ def test_empty_snapshot_rejected():
 
 
 def test_wrong_type_snapshot_rejected():
-    snap = {"items": [{"id": "m1", "name": "M1", "output_type": "image",
-                       "parameters": []}]}
+    snap = {"has_more": False, "items": [{"id": "m1", "name": "M1", "output_type": "image",
+                                          "parameters": []}]}
     with pytest.raises(ValueError, match="output_type='video'"):
         sync_specs.normalize_models(snap, "video")
 
@@ -111,8 +111,22 @@ def test_all_four_types_are_wired():
 def test_partial_paginated_dump_refused(has_more):
     snap = json.loads(MINI_SNAPSHOT.read_text(encoding="utf-8"))
     snap["has_more"] = has_more
-    with pytest.raises(ValueError, match="PARTIAL paginated dump"):
+    with pytest.raises(ValueError, match="has_more"):
         sync_specs.normalize_models(snap, "video")
+
+
+def test_dump_without_has_more_key_is_refused():
+    # Every models_explore list response carries has_more; a dump without
+    # the key is hand-trimmed or not a list response — it used to pass.
+    snap = json.loads(MINI_SNAPSHOT.read_text(encoding="utf-8"))
+    del snap["has_more"]
+    with pytest.raises(ValueError, match="<absent>"):
+        sync_specs.normalize_models(snap, "video")
+
+
+def test_every_committed_snapshot_carries_has_more_false():
+    for p in sorted((REPO / "specs").glob("models_explore_snapshot_*.json")):
+        assert json.loads(p.read_text(encoding="utf-8")).get("has_more", "absent") is False, p.name
 
 
 def test_complete_dump_accepted():
@@ -133,7 +147,7 @@ def test_partial_dump_refused_end_to_end(tmp_path):
 # ── v3.37.0: `nullable` is carried; unknown keys still are not ───────────────
 
 def test_nullable_carried_but_keys_not_widened():
-    snap = {"items": [{"id": "m", "name": "M", "output_type": "3d", "parameters": [
+    snap = {"has_more": False, "items": [{"id": "m", "name": "M", "output_type": "3d", "parameters": [
         {"name": "seed", "type": "number", "required": "optional", "nullable": True,
          "format": "int32", "pattern": "^x$"}]}]}
     p = sync_specs.normalize_models(snap, "3d")[0]["params"][0]
@@ -180,13 +194,37 @@ def test_aliases_are_never_tombstoned(tmp_path):
 
 
 def test_tombstones_are_append_only(tmp_path):
-    (tmp_path / sync_specs.RETIRED_FILE).write_text(sync_specs.emit_retired(
-        {"old_gone": {"type": "video", "last_seen": "2026-01-01", "last_snapshot": "x"}}),
-        encoding="utf-8")
+    # A proven tombstone is never rewritten or dropped as history grows —
+    # even with a hand-edited last_seen, the committed entry is kept as is.
+    _snap(tmp_path / "models_explore_snapshot_2026-08-07.json", ["a", "old_gone"])
     _snap(tmp_path / "models_explore_snapshot_2026-09-26.json", ["a"])
-    merged = sync_specs.merged_retired(tmp_path)
-    assert "old_gone" in merged          # history pruned, tombstone survives
+    entry = {"type": "video", "last_seen": "2026-08-07",
+             "last_snapshot": "models_explore_snapshot_2026-08-07.json"}
+    (tmp_path / sync_specs.RETIRED_FILE).write_text(
+        sync_specs.emit_retired({"old_gone": entry}), encoding="utf-8")
+    _snap(tmp_path / "models_explore_snapshot_2026-10-10.json", ["a", "b"])
+    assert sync_specs.merged_retired(tmp_path) == {"old_gone": entry}
     assert sync_specs.retired_is_stale(tmp_path) is False
+
+
+@pytest.mark.parametrize("fake,why", [
+    ("totally_made_up_model", "no committed models_explore snapshot ever carried it"),
+    ("a", "live in a newest snapshot"),
+])
+def test_a_hand_added_tombstone_is_unproven_and_stale(tmp_path, fake, why):
+    # A tombstone whitelists its id in the ledger; a hand-added one used to
+    # pass --strict because the stale check started from the committed file.
+    _snap(tmp_path / "models_explore_snapshot_2026-08-07.json", ["a", "gone"])
+    _snap(tmp_path / "models_explore_snapshot_2026-09-26.json", ["a"])
+    good = sync_specs.compute_retired(tmp_path)
+    (tmp_path / sync_specs.RETIRED_FILE).write_text(sync_specs.emit_retired(
+        {**good, fake: {"type": "video", "last_seen": "2026-08-07",
+                        "last_snapshot": "models_explore_snapshot_2026-08-07.json"}}),
+        encoding="utf-8")
+    assert sync_specs.retired_is_stale(tmp_path) is True
+    assert fake not in sync_specs.merged_retired(tmp_path)
+    assert fake not in sync_specs.proven_retired(tmp_path)
+    assert any(fake in p and why in p for p in sync_specs.retired_problems(tmp_path))
 
 
 def test_missing_tombstone_is_stale(tmp_path):
@@ -202,7 +240,7 @@ WAN_DESC = ("Duration in seconds (2-30), or -1 to let the model choose the lengt
 
 
 def _dur_model(desc, lo=-1, hi=30):
-    return {"items": [{"id": "wan3_0", "name": "Wan 3.0", "output_type": "video",
+    return {"has_more": False, "items": [{"id": "wan3_0", "name": "Wan 3.0", "output_type": "video",
                        "parameters": [{"name": "duration", "type": "number",
                                        "min": lo, "max": hi, "default": 5,
                                        "description": desc}]}]}

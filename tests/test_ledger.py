@@ -477,3 +477,48 @@ def test_agreement_cli_renders():
     rows = [_diag(i, "physics", "physics") for i in range(8)]
     text = hm.render_agreement("_demo", hm.compute_vision_agreement(rows))
     assert "physics" in text and "100%" in text and "yes" in text
+
+
+# ── v3.37.0 review: tombstones must be proven; retired ids take no new rows ──
+
+def test_a_hand_added_tombstone_is_not_trusted(tmp_path, monkeypatch):
+    import shutil
+    import sync_specs
+    specs = tmp_path / "specs"
+    shutil.copytree(REPO / "specs", specs)
+    doc = json.loads((specs / "retired-model-ids.json").read_text(encoding="utf-8"))
+    doc["retired"]["totally_made_up_model"] = {
+        "type": "video", "last_seen": "2026-08-07",
+        "last_snapshot": "models_explore_snapshot_2026-08-07.json"}
+    (specs / "retired-model-ids.json").write_text(json.dumps(doc), encoding="utf-8")
+    monkeypatch.setattr(hm, "SPECS_ROOT", specs)
+    row = {"id": "_demo-0001", "ts": "2026-09-26T09:00:00Z",
+           "model": "totally_made_up_model", "shot_tags": ["pov"],
+           "outcome": "kept", "draft_tier": False}
+    problems = hm.validate_ledger_row(row, "_demo", set(), set(), hm.load_specs_models())
+    assert any("not in specs" in p for p in problems), problems
+    assert sync_specs.retired_is_stale(specs) is True          # validate --strict goes red
+    # the proven tombstones still keep history valid
+    assert "llm_text" in hm.load_specs_models()
+
+
+def _ledger_env(tmp_path, monkeypatch):
+    monkeypatch.setattr(hm, "LEDGER_DIR", tmp_path / "ledger")
+    monkeypatch.setattr(hm, "GLOBAL_LEDGER", tmp_path / "ledger" / "_global.json")
+
+
+def test_log_gen_refuses_a_new_row_for_a_retired_id(tmp_path, monkeypatch):
+    _ledger_env(tmp_path, monkeypatch)
+    with pytest.raises(hm.LedgerError, match="retired"):
+        hm.log_gen_row("proj", {"model": "llm_text", "shot_tags": ["pov"], "outcome": "kept"})
+
+
+def test_an_amendment_of_a_retired_id_row_is_still_allowed(tmp_path, monkeypatch):
+    _ledger_env(tmp_path, monkeypatch)
+    (tmp_path / "ledger").mkdir()
+    (tmp_path / "ledger" / "proj.json").write_text(json.dumps({"project": "proj", "rows": [
+        {"id": "proj-0001", "ts": "2026-08-01T09:00:00Z", "model": "llm_text",
+         "shot_tags": ["pov"], "outcome": "kept", "draft_tier": False}]}))
+    row = hm.log_gen_row("proj", {"model": "llm_text", "shot_tags": ["pov"],
+                                  "outcome": "flagged", "supersedes": "proj-0001"})
+    assert row["supersedes"] == "proj-0001"

@@ -273,14 +273,36 @@ def load_specs_models() -> dict:
                 mapping.setdefault(alias, m["id"])
     if not mapping:
         return {}
-    try:
-        retired = json.loads((SPECS_ROOT / RETIRED_FILE).read_text(encoding="utf-8"))
-        retired_ids = retired.get("retired") or {}
-    except (OSError, json.JSONDecodeError, AttributeError):
-        retired_ids = {}
-    for mid in retired_ids:
+    for mid in load_retired_ids():
         mapping.setdefault(mid, mid)
     return mapping
+
+
+def _current_spec_ids() -> set:
+    """Ids (and aliases) the generated specs carry right now."""
+    ids = set()
+    for name in SPEC_FILES:
+        try:
+            spec = json.loads((SPECS_ROOT / name).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for m in spec.get("models", []):
+            ids.add(m["id"])
+            ids.update(m.get("aliases", []))
+    return ids
+
+
+def load_retired_ids() -> set:
+    """The PROVEN retired-id tombstones (sync_specs.proven_retired): an id a
+    committed snapshot carried and no newest snapshot does. A hand-added
+    tombstone is not trusted — it used to whitelist any id in the ledger.
+    Fails closed: an unreadable tombstone file or snapshot history yields
+    no retired ids (history rows then turn red loudly, never silently green)."""
+    try:
+        import sync_specs
+        return set(sync_specs.proven_retired(SPECS_ROOT))
+    except (OSError, ValueError, AttributeError, ImportError):
+        return set()
 
 
 def ledger_path(project: str) -> Path:
@@ -790,6 +812,14 @@ def log_gen_row(project: str, fields: dict) -> dict:
     db = load_ledger(path)
 
     row = {k: v for k, v in fields.items() if v is not None}
+    # A retired id keeps HISTORY valid (validate_ledger_row accepts it), but a
+    # NEW generation cannot use a model that left the catalog. An amendment
+    # (supersedes) corrects a historical row, so it keeps the row's model.
+    if row.get("model") in load_retired_ids() and not row.get("supersedes") \
+            and row["model"] not in _current_spec_ids():
+        raise LedgerError(f"model {row['model']!r} is retired (specs/{RETIRED_FILE}) — rows "
+                          "logged while it was live stay valid history, but a new "
+                          "generation cannot use it; log the model you actually ran")
     row.setdefault("id", next_gen_id(project, db["rows"]))
     row.setdefault("ts", now_iso())
     row.setdefault("shot_tags", [])
@@ -1334,6 +1364,14 @@ def _check_required(entry: dict, required: set, content_fields: tuple, kind: str
               required=sorted(required))
 
 
+def _check_outcome(entry: dict, allowed: set, kind: str):
+    """add-* validates `outcome` like update-* does: a typo ("garbage",
+    "fixedd") would otherwise be written and flip every derived boolean."""
+    if entry.get("outcome") not in allowed:
+        _fail(f"{kind} entry not written — outcome {entry.get('outcome')!r} is not one "
+              f"of {sorted(allowed)}", allowed=sorted(allowed))
+
+
 def add_filter(entry_json: str):
     """Add a content filter block entry."""
     db = load_db(FILTER_DB)
@@ -1350,6 +1388,7 @@ def add_filter(entry_json: str):
     entry.setdefault("substitution_worked", None) # True | False | None (untested)
     entry.setdefault("notes", "")
     _check_required(entry, FILTER_REQUIRED_FIELDS, FILTER_CONTENT_FIELDS, "filter")
+    _check_outcome(entry, FILTER_OUTCOMES, "filter")
 
     db["entries"].append(entry)
     save_db(FILTER_DB, db)
@@ -1371,6 +1410,7 @@ def add_quality(entry_json: str):
     entry.setdefault("improvement_confirmed", None)
     entry.setdefault("notes", "")
     _check_required(entry, QUALITY_REQUIRED_FIELDS, QUALITY_CONTENT_FIELDS, "quality")
+    _check_outcome(entry, QUALITY_OUTCOMES, "quality")
 
     db["entries"].append(entry)
     save_db(QUALITY_DB, db)
