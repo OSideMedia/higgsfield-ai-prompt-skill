@@ -164,7 +164,7 @@
       "kind": "snapshot-only",
       "type": "image",
       "seen": "2026-09-26",
-      "note": "MCP-listed studio model the CLI list hides: absent from `model list --image`, but `model get` answers (type image, 'Nano Banana Pro'). Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+      "note": "Absent from `model list --image`. `model get nano_banana_2` answers, but as 'Nano Banana Pro' — a different model than the MCP's 'Nano Banana 2', which matches the CLI's nano_banana_flash param-for-param (see the nano_banana_2 structural entries). Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
     },
     {
       "model": "soul_2",
@@ -249,6 +249,206 @@
       "type": "video",
       "seen": "2026-09-26",
       "note": "CLI-only utility id (display 'FPS Boost'; params fps, variant, video_references) — absent from the models_explore dump. Verified 2026-09-26 with CLI 1.1.23 (read-only `model list` / `model get`)."
+    },
+    {
+      "model": "cinematic_studio_3_0",
+      "field": "multi_shot_mode",
+      "kind": "param_missing_in_snapshot",
+      "seen": "2026-09-26",
+      "detail": "cli enum=[auto, custom]",
+      "note": "A CLI enum param the MCP surface does not expose (same class as gpt_image_2 background). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "cinematic_studio_3_0",
+      "field": "prompt_language",
+      "kind": "param_missing_in_snapshot",
+      "seen": "2026-09-26",
+      "detail": "cli enum=[en, zh]",
+      "note": "A CLI enum param the MCP surface does not expose (same class as gpt_image_2 background). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "cinematic_studio_3_0",
+      "field": "speedramp",
+      "kind": "param_missing_in_snapshot",
+      "seen": "2026-09-26",
+      "detail": "cli enum=[auto, fast_to_slowmo, impact, linear, slowmo, slowmo_to_fast, speedup, super_slowmo]",
+      "note": "A CLI enum param the MCP surface does not expose (same class as gpt_image_2 background). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "cinematic_studio_3_0",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[audio_references, image_references, video_references]",
+      "note": "Role naming (MCP `image` = CLI `image_references`) plus CLI-only audio_references / video_references slots the MCP surface does not list. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "cinematic_studio_video",
+      "field": "duration",
+      "kind": "param_missing_in_snapshot",
+      "seen": "2026-09-26",
+      "detail": "cli enum=[10, 5]",
+      "note": "Representation: models_explore carries the durations top-level (`durations: [5, 10]`); the CLI carries them as a `duration` enum. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "cinematic_studio_video",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[]",
+      "note": "The MCP lists an extra `image` role; the CLI takes only start_image / end_image (no image_references). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "cinematic_studio_video_v2",
+      "field": "aspect_ratios",
+      "kind": "aspect_ratios",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[3:4, 4:3] cli-only=[]",
+      "note": "The two surfaces enumerate different aspect ratios for this list-hidden model. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "cinematic_studio_video_v2",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references]",
+      "note": "Role naming only: MCP `image` = CLI `image_references`. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "marketing_studio_video",
+      "field": "assets",
+      "kind": "param_missing_in_cli",
+      "seen": "2026-09-26",
+      "detail": "in snapshot, absent from `model get`",
+      "note": "An MCP-only param the CLI's `model get` does not list (same class as soul_cinematic soul_id). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "marketing_studio_video",
+      "field": "folder_id",
+      "kind": "param_missing_in_cli",
+      "seen": "2026-09-26",
+      "detail": "in snapshot, absent from `model get`",
+      "note": "An MCP-only param the CLI's `model get` does not list (same class as soul_cinematic soul_id). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "marketing_studio_video",
+      "field": "generate_audio",
+      "kind": "default",
+      "seen": "2026-09-26",
+      "detail": "snapshot=True cli=False",
+      "note": "A standing CLI/MCP default disagreement (same class as gpt_image_2); specs follow models_explore. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "marketing_studio_video",
+      "field": "height",
+      "kind": "param_missing_in_cli",
+      "seen": "2026-09-26",
+      "detail": "in snapshot, absent from `model get`",
+      "note": "An MCP-only param the CLI's `model get` does not list (same class as soul_cinematic soul_id). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "marketing_studio_video",
+      "field": "width",
+      "kind": "param_missing_in_cli",
+      "seen": "2026-09-26",
+      "detail": "in snapshot, absent from `model get`",
+      "note": "An MCP-only param the CLI's `model get` does not list (same class as soul_cinematic soul_id). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "marketing_studio_video",
+      "field": "specific_mode",
+      "kind": "param_missing_in_snapshot",
+      "seen": "2026-09-26",
+      "detail": "cli enum=[default, from_storyboard, web_product]",
+      "note": "A CLI enum param the MCP surface does not expose (same class as gpt_image_2 background). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "marketing_studio_video",
+      "field": "web_product_type",
+      "kind": "param_missing_in_snapshot",
+      "seen": "2026-09-26",
+      "detail": "cli enum=[desktop, mobile]",
+      "note": "A CLI enum param the MCP surface does not expose (same class as gpt_image_2 background). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "marketing_studio_video",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references]",
+      "note": "Role naming only: MCP `image` = CLI `image_references`. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "cinematic_studio_2_5",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references]",
+      "note": "Role naming only: MCP `image` = CLI `image_references`. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "marketing_studio_image",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references]",
+      "note": "Role naming only: MCP `image` = CLI `image_references`. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "ms_image",
+      "field": "batch_size",
+      "kind": "param_missing_in_cli",
+      "seen": "2026-09-26",
+      "detail": "in snapshot, absent from `model get`",
+      "note": "An MCP-only param the CLI's `model get` does not list (same class as soul_cinematic soul_id). First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "ms_image",
+      "field": "aspect_ratios",
+      "kind": "aspect_ratios",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[16:27, 27:16, 4:9, 8:9, 9:4, 9:8] cli-only=[4:5, 5:4]",
+      "note": "The two surfaces enumerate different aspect ratios for this list-hidden model. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "ms_image",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[image] cli-only=[image_references]",
+      "note": "Role naming only: MCP `image` = CLI `image_references`. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "nano_banana_2",
+      "field": "is_inpaint",
+      "kind": "param_missing_in_cli",
+      "seen": "2026-09-26",
+      "detail": "in snapshot, absent from `model get`",
+      "note": "The CLI job type nano_banana_2 is a DIFFERENT model: `model get nano_banana_2` answers 'Nano Banana Pro' (resolution default 2k, no auto aspect, no mask). The MCP's nano_banana_2 ('Nano Banana 2': default 1k, auto aspect, mask + is_inpaint) matches the CLI's nano_banana_flash param-for-param — an id-mapping difference, not a param change. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "nano_banana_2",
+      "field": "resolution",
+      "kind": "default",
+      "seen": "2026-09-26",
+      "detail": "snapshot='1k' cli='2k'",
+      "note": "The CLI job type nano_banana_2 is a DIFFERENT model: `model get nano_banana_2` answers 'Nano Banana Pro' (resolution default 2k, no auto aspect, no mask). The MCP's nano_banana_2 ('Nano Banana 2': default 1k, auto aspect, mask + is_inpaint) matches the CLI's nano_banana_flash param-for-param — an id-mapping difference, not a param change. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "nano_banana_2",
+      "field": "aspect_ratios",
+      "kind": "aspect_ratios",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[auto] cli-only=[]",
+      "note": "The CLI job type nano_banana_2 is a DIFFERENT model: `model get nano_banana_2` answers 'Nano Banana Pro' (resolution default 2k, no auto aspect, no mask). The MCP's nano_banana_2 ('Nano Banana 2': default 1k, auto aspect, mask + is_inpaint) matches the CLI's nano_banana_flash param-for-param — an id-mapping difference, not a param change. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
+    },
+    {
+      "model": "nano_banana_2",
+      "field": "media_roles",
+      "kind": "media_roles",
+      "seen": "2026-09-26",
+      "detail": "snapshot-only=[mask] cli-only=[]",
+      "note": "The CLI job type nano_banana_2 is a DIFFERENT model: `model get nano_banana_2` answers 'Nano Banana Pro' (resolution default 2k, no auto aspect, no mask). The MCP's nano_banana_2 ('Nano Banana 2': default 1k, auto aspect, mask + is_inpaint) matches the CLI's nano_banana_flash param-for-param — an id-mapping difference, not a param change. First compared 2026-09-26, when list-hidden models joined the structural check: CLI side read live (CLI 1.1.23 `model get`), MCP side is the verbatim 2026-09-26 models_explore dump (not re-read in this pass — no MCP calls)."
     }
   ]
 }

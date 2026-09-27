@@ -35,7 +35,8 @@ Steps — stop at the first failure and report it:
    default with `higgsfield model get --json`, every CLI enum with the
    snapshot, aspect ratios, and media roles — and, per type, catalog
    membership (a model only one source lists: `snapshot-only` / `cli-only`).
-   For each `✗ DISAGREE` decide:
+   A snapshot-only model that `model list` hides but `model get` answers is
+   compared structurally too. For each `✗ DISAGREE` decide:
    - the snapshot is wrong or incomplete → re-dump (step 1), or
    - it is a known representation difference → add an entry to
      `specs/crosscheck_allowlist.json` naming `model`, `field`, `kind`, the
@@ -44,9 +45,10 @@ Steps — stop at the first failure and report it:
      (`higgsfield model get <id> --json`) and add `model`, `kind`
      (`snapshot-only` | `cli-only`), `type`, `seen` and a `note` saying why
      (MCP-only id, list-hidden studio model, CLI-only variant or utility).
-   Remove every entry reported as `STALE`. The check must exit 0 before you
-   continue: exit 3 (`UNCHECKED` — a type with no snapshot or zero models
-   in both sources, or a CLI pull/shape failure) is never a pass. Known
+   Remove every entry reported as `STALE` (a stale entry fails the run).
+   The check must exit 0 before you continue: exit 3 (`UNCHECKED` — a type
+   with no snapshot or zero models in both sources, or a CLI pull/shape
+   failure) is never a pass. Known
    CLI↔MCP disagreements already allowlisted (seen 2026-09-26): gpt_image_2
    defaults (resolution 1k vs 2k, quality low vs high), aspect ratios (CLI
    adds 4:5/5:4/auto) and media roles (`mask`); soul_cinematic `soul_id`

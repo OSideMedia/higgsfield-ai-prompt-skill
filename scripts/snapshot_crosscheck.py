@@ -31,7 +31,11 @@ detail; a membership entry names the model, kind (snapshot-only | cli-only),
 type, seen date and a note saying why. An allowlisted disagreement is still
 PRINTED; if its detail changes it fails again (the allowlist accepts one
 observed fact, not a class of future ones); an entry that no longer disagrees
-— or whose model was never compared — is reported as stale.
+— or whose model was never compared — is STALE and fails the run until removed.
+
+A snapshot-only model that `model list` hides but `model get` answers (the
+list-hidden studio models) is compared structurally through `model get`; its
+list absence stays a membership difference.
 
 NOTHING COMPARED IS NOT AGREEMENT. A type with no snapshot, or with zero
 models present in both sources (an empty `model list`, 3d rows without a
@@ -44,7 +48,8 @@ Usage:
   python3 scripts/snapshot_crosscheck.py --cli-dir DIR      # recorded payloads:
         DIR/list_all.json (unfiltered `model list --json`) + DIR/get_<id>.json
 
-Exit codes: 0 agree (allowlisted items printed), 1 disagreement,
+Exit codes: 0 agree (allowlisted items printed), 1 disagreement or a STALE
+            allowlist entry (it would pre-authorize a future disagreement),
             2 usage / bad allowlist, 3 could not compare (CLI pull or shape,
             a type with no snapshot or zero shared models).
 """
@@ -138,11 +143,26 @@ def crosscheck(snapshot: dict, output_type: str, catalog: list, get_payload) -> 
         problems.extend(compare_model(snap[mid], get_payload(mid)))
     snapshot_only = sorted(set(snap) - cli_ids)
     cli_only = sorted(cli_ids - set(snap))
+    # A snapshot-only model the CLI LIST hides may still answer `model get`
+    # (the Cinema / Marketing Studio models): compare it structurally too. Its
+    # list absence stays a membership difference; only "No model with
+    # job_type" (kind=not-found) means the CLI does not know it at all.
+    hidden = []
+    for mid in snapshot_only:
+        try:
+            payload = get_payload(mid)
+        except rs.PullError as e:
+            if e.kind == "not-found":
+                continue
+            raise
+        problems.extend(compare_model(snap[mid], payload))
+        hidden.append(mid)
     for kind, ids in (("snapshot-only", snapshot_only), ("cli-only", cli_only)):
         for mid in ids:
             problems.append({"model": mid, "field": "membership", "kind": kind,
                              "type": output_type, "detail": _MEMBERSHIP_DETAIL[kind]})
-    return {"type": output_type, "checked": shared, "snapshot_only": snapshot_only,
+    return {"type": output_type, "checked": sorted(shared + hidden), "shared": shared,
+            "list_hidden": hidden, "snapshot_only": snapshot_only,
             "cli_only": cli_only, "known": sorted(set(snap) | cli_ids),
             "problems": problems}
 
@@ -261,7 +281,13 @@ def _live_source(output_type: str):
 def _recorded_source(cli_dir: Path, output_type: str):
     rows = json.loads((cli_dir / "list_all.json").read_text(encoding="utf-8"))
     rows = _rows_of_type(rows, output_type, "list_all.json")
-    return rows, lambda mid: json.loads((cli_dir / f"get_{mid}.json").read_text(encoding="utf-8"))
+
+    def get(mid):
+        path = cli_dir / f"get_{mid}.json"
+        if not path.exists():          # recorded: no payload = the CLI does not know it
+            raise rs.PullError(f"no recorded `model get {mid}`", kind="not-found")
+        return json.loads(path.read_text(encoding="utf-8"))
+    return rows, get
 
 
 def main(argv=None) -> int:
@@ -309,8 +335,11 @@ def main(argv=None) -> int:
                                                    set(result["checked"]))
         stale += stale_membership(entries, result)
         source = f"recorded CLI ({args.cli_dir})" if args.cli_dir else "live CLI"
-        print(f"[{t}] {snap_path.name} vs {source}: {len(result['checked'])} shared model(s); "
-              f"snapshot-only {result['snapshot_only'] or '—'}; cli-only {result['cli_only'] or '—'}")
+        hidden = (f" + {len(result['list_hidden'])} list-hidden via `model get` "
+                  f"{result['list_hidden']}" if result["list_hidden"] else "")
+        print(f"[{t}] {snap_path.name} vs {source}: {len(result['shared'])} shared model(s)"
+              f"{hidden}; snapshot-only {result['snapshot_only'] or '—'}; "
+              f"cli-only {result['cli_only'] or '—'}")
         if not result["checked"]:
             print(f"  ? UNCHECKED — zero models are in both sources, so nothing "
                   f"structural was compared for {t}")
@@ -344,6 +373,13 @@ def main(argv=None) -> int:
               "allowlist entry (model, field, kind, seen, detail — or, for catalog "
               "membership, model, kind, type, seen, note) if it is a known "
               "representation difference.")
+        return 1
+    if all_stale:
+        # A stale entry is not harmless: a snapshot-only entry for a model now
+        # in both sources would silently pre-authorize its next disappearance.
+        print(f"\n{len(all_stale)} STALE allowlist entr(y/ies) — remove them from "
+              "specs/crosscheck_allowlist.json; an entry must describe a disagreement "
+              "that exists today.")
         return 1
     if unchecked:
         print(f"\nUNCHECKED — nothing was compared for: {'; '.join(unchecked)}. "

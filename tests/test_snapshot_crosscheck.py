@@ -101,9 +101,11 @@ def test_allowlist_pins_the_detail_a_changed_disagreement_fails_again(tmp_path, 
     assert "allowlisted detail was" in capsys.readouterr().out
 
 
-def test_stale_allowlist_entry_is_reported(tmp_path, capsys):
+def test_stale_allowlist_entry_is_reported_and_fails(tmp_path, capsys):
+    # A stale entry used to print and exit 0 — it silently pre-authorizes the
+    # disagreement coming back. It fails until it is removed.
     argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"), allow=[_entry()])
-    assert xc.main(argv) == 0
+    assert xc.main(argv) == 1
     assert "STALE allowlist entry" in capsys.readouterr().out
 
 
@@ -156,6 +158,7 @@ def test_zero_shared_models_is_unchecked_never_agree(tmp_path, capsys):
     argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"),
                   allow=[_member("m1", "snapshot-only")])
     (tmp_path / "cli" / "list_all.json").write_text("[]")
+    (tmp_path / "cli" / "get_m1.json").unlink()      # and `model get` does not know it
     assert xc.main(argv) == 3
     out = capsys.readouterr().out
     assert "UNCHECKED" in out and "agree" not in out.split("UNCHECKED")[-1]
@@ -229,3 +232,46 @@ def test_committed_membership_entries_carry_type_and_reason():
             ("nano_banana_flash", "cli-only", "image")} <= got
     for e in members:
         assert len(e["note"]) > 40 and "Verified" in e["note"], e
+
+
+
+def test_stale_snapshot_only_entry_for_a_model_now_listed_fails(tmp_path, capsys):
+    # m1 is in both sources; an old "snapshot-only" entry for it would let a
+    # future disappearance of m1 from `model list` through unexamined.
+    argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"),
+                  allow=[_member("m1", "snapshot-only")])
+    assert xc.main(argv) == 1
+    assert "STALE allowlist entry — no longer disagrees, remove it: m1 [snapshot-only]" \
+        in capsys.readouterr().out
+
+
+def _hidden_model(tmp_path, cli_opts, allow):
+    """m1 is shared; m_hidden is in the snapshot, absent from `model list`, but
+    `model get` answers for it (a list-hidden studio model)."""
+    argv = _write(tmp_path, RES_SNAP, _cli_res("1k", "2k"), allow=allow)
+    snap_path = tmp_path / "models_explore_snapshot_image_2026-09-26.json"
+    snap = json.loads(snap_path.read_text())
+    hidden = json.loads(json.dumps(snap["items"][0]))
+    hidden.update(id="m_hidden", name="Hidden Studio")
+    snap["items"].append(hidden)
+    snap_path.write_text(json.dumps(snap))
+    (tmp_path / "cli" / "get_m_hidden.json").write_text(json.dumps(
+        {"job_type": "m_hidden", "type": "image", "rules": [],
+         "params": _cli_res(*cli_opts) + [{"name": "aspect_ratio", "type": "string",
+                                            "enum": ["1:1"], "default": "1:1"}]}))
+    return argv
+
+
+def test_list_hidden_model_is_compared_through_model_get(tmp_path, capsys):
+    member = _member("m_hidden", "snapshot-only")
+    argv = _hidden_model(tmp_path, ("1k", "2k", "4k"), allow=[member])
+    assert xc.main(argv) == 1          # its `model get` has a 4k the snapshot lacks
+    out = capsys.readouterr().out
+    assert "m_hidden.resolution [options] snapshot-only=[] cli-only=[4k]" in out
+    assert "1 list-hidden via `model get`" in out
+
+
+def test_list_hidden_model_that_agrees_passes_with_its_membership_entry(tmp_path, capsys):
+    argv = _hidden_model(tmp_path, ("1k", "2k"), allow=[_member("m_hidden", "snapshot-only")])
+    assert xc.main(argv) == 0
+    assert "2 model(s) compared" in capsys.readouterr().out
