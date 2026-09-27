@@ -445,3 +445,41 @@ def test_rules_staleness_uses_the_models_own_capture_date(tmp_path):
                              "video": {"wan3_0": {"params": {}, "rules": []}}}))
     rep = pf.run_preflight("wan3_0", {}, {}, baseline=pf.load_baseline(b))
     assert any("captured 2026-08-07 predate" in n for n in rep.notes), rep.notes
+
+
+@pytest.mark.parametrize("pat,expected", [
+    ("(?m)^a$", "(?m)^a$"),                      # multi-line on: $ is end-of-line in both
+    ("(?im)^a$", "(?im)^a$"),
+    ("(?m:^a$)b$", r"(?m:^a$)b\Z"),              # only the scoped part keeps its $
+    ("(?i)x$", r"(?i)x\Z"),                      # other flags: still end-of-text
+    ("^#[0-9A-F]{6}$", r"^#[0-9A-F]{6}\Z"),
+])
+def test_re2_anchor_rewrite_respects_multiline(pat, expected):
+    assert pf._re2_anchors(pat) == expected
+
+
+def test_multiline_matches_keeps_line_semantics():
+    [r] = pf.evaluate_rules([pf.Rule('params.c.matches("(?m)^ok$")')], {"c": "ok\nnext"})
+    assert r.status == "PASS"                    # RE2 (?m): $ matches before \n
+
+
+# ── v3.37.0 review 2: a spec entry no longer hides the CLI's params/enums ────
+
+@pytest.mark.parametrize("model,params,expected,fragment", [
+    ("gpt_image_2", {"background": "bogus"}, "FAIL", "CLI baseline enumerates background"),
+    ("seedance_2_0", {"resolutoin": "8k", "mode": "std"}, "FAIL", "unknown to both sources"),
+    ("gpt_image_2", {"aspect_ratio": "4:5"}, "PASS", "the sources disagree"),   # CLI ⊃ MCP
+    ("gpt_image_2", {"background": "transparent"}, "PASS", "known to the CLI baseline only"),
+    ("seedance_2_0", {"resolution": "8k"}, "FAIL", "supports resolution"),       # both say no
+])
+def test_both_sources_are_consulted(model, params, expected, fragment):
+    rep = pf.run_preflight(model, params, {})
+    assert rep.verdict() == expected, [(c.status, c.what, c.detail) for c in rep.checks]
+    assert any(fragment in c.detail for c in rep.checks), [c.detail for c in rep.checks]
+
+
+def test_unknown_param_without_a_cli_entry_is_a_warning_not_a_fail():
+    # cinematic_studio_3_0 has a specs entry but no CLI baseline entry: there
+    # is no second source to say "unknown to both".
+    rep = pf.run_preflight("cinematic_studio_3_0", {"no_such_param": "x"}, {})
+    assert [c.status for c in rep.checks if c.what.startswith("no_such_param")] == ["WARN"]

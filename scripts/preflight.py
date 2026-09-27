@@ -474,12 +474,18 @@ def _logic(op: str, left, right):
     return not decisive
 
 
+_FLAG_GROUP_RE = re.compile(r"\(\?([a-zA-Z]*)(?:-([a-zA-Z]*))?([:)])")
+
+
 def _re2_anchors(pat: str) -> str:
     """CEL `.matches()` is RE2: outside multi-line mode `$` matches only at
     the very end of the text. Python's `$` also matches before a trailing
     newline ("#A0B0C0\\n" would pass `^#[0-9A-F]{6}$`), so an unescaped `$`
-    outside a character class becomes `\\Z`."""
+    outside a character class becomes `\\Z` — but ONLY where multi-line mode
+    is off: under `(?m)` (global) or inside a `(?m:…)` group both engines
+    agree that `$` is end-of-line, and it is left alone."""
     out, i, in_class = [], 0, False
+    multiline = [False]          # scope stack: one entry per open group
     while i < len(pat):
         ch = pat[i]
         if ch == "\\":
@@ -489,20 +495,40 @@ def _re2_anchors(pat: str) -> str:
         if in_class:
             if ch == "]":
                 in_class = False
-        elif ch == "[":
+            out.append(ch)
+            i += 1
+            continue
+        if ch == "[":
             in_class = True
-            if pat[i + 1:i + 2] == "^":
-                out.append("[^")
-                i += 2
-                if pat[i:i + 1] == "]":
-                    out.append("]")
-                    i += 1
+            j = i + 1 + (pat[i + 1:i + 2] == "^")
+            if pat[j:j + 1] == "]":          # a literal ] first in the class
+                j += 1
+            out.append(pat[i:j])
+            i = j
+            continue
+        if ch == "(":
+            m = _FLAG_GROUP_RE.match(pat, i)
+            state = multiline[-1]
+            if m:
+                on, off, end = m.group(1), m.group(2) or "", m.group(3)
+                if "m" in on:
+                    state = True
+                if "m" in off:
+                    state = False
+                if end == ")":               # (?m) — sets the flag for the rest of the scope
+                    multiline[-1] = state
+                    out.append(m.group(0))
+                    i = m.end()
+                    continue
+                multiline.append(state)      # (?m:…) — scoped
+                out.append(m.group(0))
+                i = m.end()
                 continue
-            if pat[i + 1:i + 2] == "]":
-                out.append("[]")
-                i += 2
-                continue
-        elif ch == "$":
+            multiline.append(state)
+        elif ch == ")":
+            if len(multiline) > 1:
+                multiline.pop()
+        elif ch == "$" and not multiline[-1]:
             out.append(r"\Z")
             i += 1
             continue
@@ -1108,53 +1134,64 @@ def spec_surface_checks(spec: dict | None, params: dict, media: dict,
         if typed_ok is False:
             checks.append(Check("FAIL", what, f"the CLI types {name} as {cp['type']}"))
             continue
-        before = len(checks)
         p = by_name.get(name)
-        if name == "aspect_ratio" and spec.get("aspect_ratios"):
-            allowed = spec["aspect_ratios"]
-            if _option_match(value, allowed) is None:
-                checks.append(Check("FAIL", what, f"{mid} supports: {', '.join(allowed)}"))
-            else:
-                checks.append(Check("PASS", what))
-        elif name == "duration" and spec and duration_policy(spec) is not None:
+        # Two sources, each consulted on its own: specs/ (models_explore) and
+        # the CLI baseline. A spec entry no longer hides the CLI's param set
+        # or enums (gpt_image_2 background=bogus passed; a misspelled
+        # `resolutoin` on seedance_2_0 passed).
+        spec_opts = spec.get("aspect_ratios") if name == "aspect_ratio" else (p or {}).get("options")
+        known_spec = p is not None or (name == "aspect_ratio" and bool(spec.get("aspect_ratios")))
+        spec_status, spec_detail = None, ""
+        if name == "duration" and spec and duration_policy(spec) is not None:
             pol = duration_policy(spec)
-            status, note = pol.check(value)
-            detail = f"{mid} supports {pol.describe()}"
-            if note:
-                detail += f" — {note}"
-            checks.append(Check(status, what, detail))
-        elif not spec:                   # no specs entry: the CLI baseline is all we have
-            opts = (cp or {}).get("options") or (cp or {}).get("enum") or []
-            if cp is None:
-                checks.append(Check("WARN", what,
-                                    f"no '{name}' parameter in the CLI baseline — the "
-                                    "platform may reject or ignore it"))
-            elif opts and _option_match(value, opts) is None:
-                checks.append(Check("FAIL", what, f"the CLI baseline enumerates {name}: "
-                                    + ", ".join(map(str, opts))))
-            elif opts:
-                checks.append(Check("PASS", what, "CLI baseline enum"))
-        elif p is None and name != "aspect_ratio":
-            checks.append(Check("WARN", what,
-                                f"{mid} has no '{name}' parameter in the specs "
-                                "snapshot — the platform may reject or ignore it"))
-        elif p is not None and p.get("options"):
-            if _option_match(value, p["options"]) is None:
-                checks.append(Check("FAIL", what, f"{mid} supports {name}: "
-                                    + ", ".join(map(str, p["options"]))))
-            else:
-                checks.append(Check("PASS", what))
+            spec_status, note = pol.check(value)
+            spec_detail = f"{mid} supports {pol.describe()}" + (f" — {note}" if note else "")
+        elif spec_opts:
+            ok = _option_match(value, spec_opts) is not None
+            spec_status = "PASS" if ok else "FAIL"
+            spec_detail = f"specs: {mid} supports {name}: " + ", ".join(map(str, spec_opts))
         elif p is not None and (p.get("min") is not None or p.get("max") is not None):
-            if not _is_num(value):
-                checks.append(Check("FAIL", what, "not a number"))
-            elif (p.get("min") is not None and value < p["min"]) or \
-                    (p.get("max") is not None and value > p["max"]):
-                checks.append(Check("FAIL", what, f"{mid} range {p.get('min')}–{p.get('max')}"))
+            ok = _is_num(value) and not (
+                (p.get("min") is not None and value < p["min"]) or
+                (p.get("max") is not None and value > p["max"]))
+            spec_status = "PASS" if ok else "FAIL"
+            spec_detail = (f"specs: {mid} range {p.get('min')}–{p.get('max')}" if _is_num(value)
+                           else "not a number")
+        cli_opts = (cp or {}).get("options") or (cp or {}).get("enum") or []
+        cli_status, cli_detail = None, ""
+        if cli_opts:
+            cli_status = "PASS" if _option_match(value, cli_opts) is not None else "FAIL"
+            cli_detail = f"CLI baseline enumerates {name}: " + ", ".join(map(str, cli_opts))
+
+        if not known_spec and cp is None:
+            if cli_params:
+                checks.append(Check("FAIL", what, f"no '{name}' parameter in specs/ nor in "
+                                    f"the CLI baseline — unknown to both sources"))
             else:
-                checks.append(Check("PASS", what))
-        if len(checks) == before:
-            checks.append(Check("PASS", what, f"type {cp['type']}") if typed_ok else
-                          Check("INFO", what, "no enum, range or type on record — "
+                checks.append(Check("WARN", what, f"no '{name}' parameter in specs/, and no "
+                                    "CLI baseline entry to consult — the platform may "
+                                    "reject or ignore it"))
+            continue
+        if spec_status and cli_status and spec_status != cli_status \
+                and spec_status != "UNCHECKED":
+            legal, illegal = ("specs/", "the CLI baseline") if spec_status == "PASS" \
+                else ("the CLI baseline", "specs/")
+            checks.append(Check("PASS", what, f"legal per {legal}, not per {illegal} — the "
+                                f"sources disagree ({spec_detail}; {cli_detail})"))
+            continue
+        status = cli_status if spec_status in (None, "UNCHECKED") and cli_status \
+            else spec_status
+        detail = "; ".join(d for d in (spec_detail, cli_detail) if d)
+        if spec and not known_spec and cp is not None:
+            detail = (detail + "; " if detail else "") + "not in specs/ — known to the CLI baseline only"
+        elif known_spec and cp is None and cli_params:
+            detail = (detail + "; " if detail else "") + "not in the CLI baseline — known to specs/ only"
+        if status:
+            checks.append(Check(status, what, detail))
+        else:
+            checks.append(Check("PASS", what, f"type {cp['type']}"
+                                + (f"; {detail}" if detail else "")) if typed_ok else
+                          Check("INFO", what, detail or "no enum, range or type on record — "
                                 "the value is not constrained here"))
     accepted = accepted_roles(spec, cli_params)
     for role, count in normalize_media(media).items():
@@ -1247,8 +1284,10 @@ def run_preflight(model_arg: str, params: dict, media: dict, *,
     if spec is not None:
         by_name = {p.get("name"): p for p in spec.get("params", [])}
         for k, v in list(typed.items()):
+            cp_k = cli_params.get(k) if isinstance(cli_params.get(k), dict) else {}
             opts = (by_name.get(k) or {}).get("options") or \
-                (spec.get("aspect_ratios") if k == "aspect_ratio" else None)
+                (spec.get("aspect_ratios") if k == "aspect_ratio" else None) or \
+                cp_k.get("options") or cp_k.get("enum")
             if opts:
                 canon = _option_match(v, opts)
                 if canon is not None:
