@@ -4,7 +4,7 @@ description: "Use when the user mentions the Higgsfield CLI (binaries `higgsfiel
 user-invocable: true
 metadata:
   tags: [higgsfield, stack, cli, mcp, official-skills, bundled-workflows, coexistence, handoff, environment]
-  version: 1.3.0
+  version: 1.3.1
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -53,7 +53,7 @@ directory. Check the repo before telling a user that skill is installable.
 
 ## Preflight discipline — check cost and balance before generating
 
-Every Higgsfield generation costs credits, and production-grade AI cinema runs at roughly 1.0% image and 1.5% video acceptance rates (`production-benchmarks.md`). On Veo, Kling, Sora-2, and Seedance-class video, a single un-checked job can swallow hours of budget. The preflight pattern is part of the Tier 1 *Lock-before-generate* discipline (`DISCIPLINE.md`) — lock the cost estimate alongside the prompt, before submission, on whichever surface the user is on.
+Every Higgsfield generation costs credits, and production-grade AI cinema runs at roughly 1.0% image and 1.5% video acceptance rates (`production-benchmarks.md`). On Veo, Kling, and Seedance-class video, a single un-checked job can swallow hours of budget. The preflight pattern is part of the Tier 1 *Lock-before-generate* discipline (`DISCIPLINE.md`) — lock the cost estimate alongside the prompt, before submission, on whichever surface the user is on.
 
 This skill never invokes the preflight itself; it names the pattern. The execution layer owns the calls. Both MCP and CLI expose dedicated preflight surfaces — same underlying API, different invocation shapes.
 
@@ -109,7 +109,7 @@ When a free-tier user reports MCP timeouts or queue stalls, the answer is plan t
 Add a preflight line to the output block whenever:
 
 - The user has signaled they are about to execute (CLI / MCP / bundled skills mentioned).
-- The model is video-class (Veo, Kling, Sora-2, Seedance, Hailuo, DoP) OR a high-cost image model (Nano Banana Pro at higher resolutions, GPT Image 2 at 4K).
+- The model is video-class (Veo, Kling, Seedance, Hailuo, DoP) OR a high-cost image model (Nano Banana Pro at higher resolutions, GPT Image 2 at 4K).
 - The user has named a budget constraint or credit-optimization concern.
 - The work is iteration-heavy by structure (Cinema Studio multi-shot, Two-Tool Refinement Pipeline, multi-character anchor template).
 

@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, recipes, templates, genre, action, horror, romance, ad, sci-fi]
-  version: 3.1.0
+  version: 3.1.1
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -31,7 +31,7 @@ with your specific details. All examples are compliant — no real names or IPs.
 ## Recipe 1: Action / Chase
 
 **Core pattern:** Establish → Pursuit → Obstacle → Climax
-**Best models:** Kling 2.6, Sora 2
+**Best models:** Kling 2.6
 **Camera:** Action Run, FPV Drone, Crash Zoom In, Bullet Time
 **Style:** Cinematic or Anamorphic
 
@@ -121,7 +121,7 @@ Sound: gentle liquid pour, soft ceramic texture.
 ## Recipe 4: Sci-Fi / Futuristic
 
 **Core pattern:** World establish → Reveal tech/threat → Action beat
-**Best models:** Sora 2, Wan 2.5, Kling 2.6
+**Best models:** Wan 2.5, Kling 2.6
 **Camera:** Crane Up, FPV Drone, Super Dolly Out, Dutch Angle
 **Style:** Cinematic or Anamorphic
 **Motion presets:** Cyborg, Plasma Explosion, Glitch, Wireframe, Portal

@@ -610,7 +610,7 @@ def build_pdf(dry_run: bool = False):
         pdf.table_row(["What you're making", "Best model"], w, bold=True, fill=True)
         rows = [
             ("Character-driven drama, dialogue", "Kling 3.0"),
-            ("Epic scale, big environments", "Sora 2"),
+            ("Epic scale, big environments", "Seedance 2.0 / Minimax Hailuo 2.3"),
             ("Lip-sync, multilingual dialogue", "Seedance 1.5 Pro"),
             ("Complex choreography, reference-based", "Seedance 2.0"),
             ("Up to 30s in one take, video edit / extension", "Seedance 2.5"),

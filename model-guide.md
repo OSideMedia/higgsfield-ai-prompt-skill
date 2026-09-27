@@ -16,7 +16,7 @@
 | Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5/10s | 16:9, 9:16, 1:1 | — | ✅ | Character drama, realism; native audio via `sound` toggle (default on) |
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | — | — | ❌ | Fast Kling iteration |
 | Kling 2.1 Master (deprecated) | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 5–10s | — | — | ❌ | Deprecated — removed from platform. Use Kling 2.6 or 3.0 |
-| Sora 2 (UI-only) | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | 4–12s | — | 720p (base), 1080p (Pro/Max tiers) | ✅ | Epic scale, physics, action, multi-shot + sound — **UI-only, confirmed present in the UI 2026-07-06** as a 4-variant family: Sora 2 (720p) / Sora 2 Pro (1080p) / Sora 2 Max / Sora 2 Pro Max (both 1080p, "BY HIGGSFIELD" enhanced tiers), all 4–12s. Not in the API/MCP catalog — UI generations only |
+| Sora 2 (retired) | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | 4–12s | — | 720p (base), 1080p (Pro/Max tiers) | ✅ | **Retired — do not recommend.** OpenAI shut the Sora 2 API down on 2026-09-24 (notified 2026-03-24; no recommended replacement) `[OFFICIAL — OpenAI deprecations page, read 2026-09-26]`. Higgsfield never exposed it in its API/MCP catalog, and whether its web UI still offers it after 09-24 is **unconfirmed** (2026-09-26: higgsfield.ai/sora-2 still up, no shutdown notice). Scale / physics shots → Seedance 2.0 or Minimax Hailuo 2.3 (§ Model + Camera Control Compatibility). *Reference only:* was a UI-only 4-variant family — Sora 2 (720p) / Sora 2 Pro (1080p) / Sora 2 Max / Sora 2 Pro Max (both 1080p, "BY HIGGSFIELD" enhanced tiers), all 4–12s, multi-shot + sound, confirmed in the UI 2026-07-06 |
 | Wan 3.0 | — | — | — | — | 2–30s or −1 smart | auto, 16:9, 9:16, 1:1, 4:3, 3:4 | 480p, 720p, 1080p | ✅ | T2V, first/last frame, and multimodal reference (image / video / audio refs) with native audio (`generate_audio`, default on); `enable_thinking` = slower, better prompt adherence (catalog wording); **smart duration `-1` is billed as 10s**. CLI rules: `end_image` needs `start_image`, and frames cannot be combined with reference media. Not yet field-rated |
 | Wan 3.0 Prime | — | — | — | — | 2–30s or −1 smart | auto, 16:9, 9:16, 1:1, 4:3, 3:4 | 480p, 720p, 1080p | ✅ | Identical parameter surface to Wan 3.0. Neither the catalog nor Alibaba's guide says how Prime differs — do not claim a quality gap. Not yet field-rated |
 | Wan 2.7 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★★ | 2–15s | 16:9, 9:16, 1:1, 4:3, 3:4 | 720p, 1080p | ✅ | 60fps, T2V/I2V/R2V/edit, first+last frame |
@@ -146,8 +146,8 @@ Is this image or video?
     │
     ├── Is scale / spectacle the focus?
     │   └── Explosions, crowds, physics, epic landscapes? → Seedance 2.0 or
-    │       Minimax Hailuo 2.3 (Sora 2 is UI-only — not in the API catalog
-    │       as of the 2026-09-26 snapshot; verify in the live UI)
+    │       Minimax Hailuo 2.3 (Sora 2 is retired — OpenAI shut its API down
+    │       2026-09-24; see the video table)
     │
     ├── Is artistic style the priority?
     │   ├── 60fps, first+last frame, reference images? → Wan 2.7
@@ -287,19 +287,19 @@ Some camera controls perform better on certain models:
 | Camera Control | Best model |
 |----------------|-----------|
 | Dolly In (emotional close-up) | Kling 2.6 / 3.0 |
-| FPV Drone (kinetic chase) | Kling 2.6, Sora 2† |
+| FPV Drone (kinetic chase) | Kling 2.6 |
 | 360 Orbit (character isolation) | Kling 2.6 / 3.0 |
-| Crane Up (epic reveal) | Sora 2† |
+| Crane Up (epic reveal) | Seedance 2.0, Minimax Hailuo 2.3† |
 | Timelapse Landscape | Veo 3 |
-| Hyperlapse | Veo 3, Sora 2† |
+| Hyperlapse | Veo 3 |
 | Handheld (documentary feel) | Kling 2.6, Veo 3 |
 | Action Run (physical chase) | Minimax Hailuo 2.3, Kling 2.6 |
-| Super Dolly Out (scale reveal) | Sora 2† |
+| Super Dolly Out (scale reveal) | Seedance 2.0, Minimax Hailuo 2.3† |
 | Dutch Angle (horror/tension) | Wan 2.5, Kling 2.6 |
 | Long camera motion path | Kling 3.0 Motion Control |
 | Motion transfer from reference | Kling 3.0 Motion Control |
 
-† Sora 2 is UI-only — not in the API catalog as of the 2026-09-26 snapshot; verify in the live UI before recommending. Catalog-verified fallbacks for scale/physics shots: Seedance 2.0, Minimax Hailuo 2.3.
+† Sora 2 held these two rows (and shared FPV Drone and Hyperlapse) until its retirement: OpenAI shut the Sora 2 API down on 2026-09-24, and whether Higgsfield's UI still offers it is unconfirmed — do not recommend it. Catalog-verified fallbacks for scale/physics shots: Seedance 2.0, Minimax Hailuo 2.3. They are the repo's scale fallbacks, not a per-control field rating.
 
 ---
 
@@ -308,16 +308,16 @@ Some camera controls perform better on certain models:
 | Preset type | Best model |
 |-------------|-----------|
 | Transformation (Werewolf, Cyborg, Animalization) | Wan 2.5, Kling 2.6 |
-| Elemental (Fire, Water, Earth, Air) | Wan 2.5, Sora 2† |
-| Explosion / Destruction | Sora 2†, Seedance 2.0 |
+| Elemental (Fire, Water, Earth, Air) | Wan 2.5 |
+| Explosion / Destruction | Seedance 2.0 |
 | Surreal / Glitch / Multiverse | Wan 2.5 |
 | Horror presets | Kling 2.6, Wan 2.5 |
 | Dance / Motion glow | Minimax Hailuo 2.3 |
 | Nature effects (Sakura, Bloom, Northern Lights) | Veo 3, Wan 2.5 |
-| Bullet Time / Slow motion | Kling 2.6, Sora 2† |
+| Bullet Time / Slow motion | Kling 2.6 |
 | Stylized (Anime, Pixar, Claymation) | Kling 3.0, Wan 2.5 |
 
-† Sora 2 is UI-only — not in the API catalog as of the 2026-09-26 snapshot; verify in the live UI before recommending (see the Camera Control note above).
+Sora 2 was dropped from the Elemental, Explosion / Destruction and Bullet Time rows at its retirement (see the Camera Control note above); the picks that remain were already in those rows.
 
 ---
 
@@ -331,7 +331,7 @@ Some camera controls perform better on certain models:
 | Minimax Hailuo 2.3 | Medium |
 | Minimax Hailuo 02 | Medium |
 | Kling 2.6 | Medium |
-| Sora 2 (UI-only — verify live) | Medium–High |
+| Sora 2 (retired — see the video table) | — (was Medium–High) |
 | Kling O1 Video Edit | ~9 credits |
 | Kling 3.0 | ~10 credits |
 | Kling 3.0 Motion Control | Medium–High |

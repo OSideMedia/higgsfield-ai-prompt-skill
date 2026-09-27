@@ -1078,6 +1078,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Cinema Studio](skills/higgsfield-workspaces/SKILL.md#cinema-studio)
     - [Lipsync Studio](skills/higgsfield-workspaces/SKILL.md#lipsync-studio)
     - [Draw to Video / Sketch to Video](skills/higgsfield-workspaces/SKILL.md#draw-to-video--sketch-to-video)
+    - [Viral Hub presets](skills/higgsfield-workspaces/SKILL.md#viral-hub-presets)
     - [Sora 2 Trends](skills/higgsfield-workspaces/SKILL.md#sora-2-trends)
     - [Click to Ad](skills/higgsfield-workspaces/SKILL.md#click-to-ad)
     - [Higgsfield Audio](skills/higgsfield-workspaces/SKILL.md#higgsfield-audio)

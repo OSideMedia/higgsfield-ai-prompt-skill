@@ -2,12 +2,12 @@
 name: higgsfield-models
 description: >
   Use when the user asks which model to use, wants to compare models,
-  or needs guidance on selecting between Kling, Sora 2, Wan, Seedance,
+  or needs guidance on selecting between Kling, Wan, Seedance,
   Veo 3, Minimax Hailuo, Soul, Nano Banana, or other Higgsfield engines.
 user-invocable: true
 metadata:
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, GPT-Image-2.5, FLUX-3, Genjutsu, v2.0.2]
-  version: 3.3.0
+  version: 3.3.1
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -239,7 +239,17 @@ Shot 4 ([Xs]): [Resolution]. Camera: tracking / pull back.
 
 ---
 
-### Sora 2
+### Sora 2 (retired)
+**⚠ Retired — do not recommend.** OpenAI shut the Sora 2 API down on 2026-09-24 (developers notified 2026-03-24;
+no recommended replacement) `[OFFICIAL — OpenAI deprecations page, read 2026-09-26]`.
+Higgsfield never exposed Sora 2 in its API/MCP catalog (UI-only, confirmed in the UI
+2026-07-06); whether the Higgsfield web UI still offers it after 09-24 is **unconfirmed** —
+on 2026-09-26 higgsfield.ai/sora-2 was still up with no shutdown notice. For scale / physics
+shots use the catalog-verified fallbacks **Seedance 2.0** or **Minimax Hailuo 2.3**
+(`../../model-guide.md` § Model + Camera Control Compatibility).
+
+*Reference only — the entry as it stood before the retirement:*
+
 **Best for:** Epic scale · long sequences · complex physics · action blockbuster feel
 **Strengths:** Strongest at large-scale events — crowds, explosions, environment scale
 **Weaknesses:** Characters can lose fine facial consistency over long clips
@@ -1293,7 +1303,7 @@ needs PNG or WebP on the OpenAI API.
 | Complex multi-reference generation (up to 7 refs) | Kling O1 Video |
 | Precise start-frame to end-frame motion | Kling O1 Video |
 | **Edit existing footage** (relight, restyle, swap, remove, extend, multiply) | **`../../model-guide.md` § Edit-Lane Chooser** — Seedance 2.5 `video_edit` · Kling 3.0 Omni Edit · FLUX 3 Video Edit · Gemini Omni Flash 1.1 `edit` · Genjutsu · Cinema Studio 4.0 · Ad Multiplier (Kling O1 Video Edit is UI-only legacy) |
-| Epic scale / action blockbuster | Seedance 2.0 (Sora 2 is UI-only — verify in the UI) |
+| Epic scale / action blockbuster | Seedance 2.0 (Sora 2 is retired — see its entry above) |
 | Artistic / stylized / fantasy | Wan 2.5/2.6 |
 | Fast iteration / social content (no audio needed) | Seedance 2.0 Fast / Mini with `generate_audio` off |
 | Native audio + dialogue / lip-sync in video | Seedance 1.5 Pro |

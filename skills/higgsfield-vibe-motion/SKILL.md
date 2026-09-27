@@ -12,8 +12,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, vibe-motion, motion-graphics, typography, brand, animation, code, Remotion]
-  version: 3.0.1
-  updated: 2026-06-22
+  version: 3.0.2
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -58,7 +58,7 @@ rather than cinematic storytelling.
 - Launch campaign motion assets
 
 ❌ **Wrong tool for:**
-- Cinematic scenes with characters (use Kling/Sora/Cinema Studio)
+- Cinematic scenes with characters (use Kling/Cinema Studio)
 - Photorealistic video (use standard video generation)
 - Nature/environment footage (use Veo 3)
 - Anything requiring actor performance (use Kling + Lipsync)

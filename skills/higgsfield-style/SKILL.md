@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
-  version: 3.1.1
+  version: 3.1.2
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -22,7 +22,7 @@ These five styles are Higgsfield's named presets. Reference them by exact name.
 **Best for:** Drama, action, narrative films, commercials, any professional content
 **Color tendency:** Rich, saturated, clean
 **Prompt phrase:** "Style: Cinematic"
-**Pair with:** Kling 2.6/3.0, Sora 2, Dolly In, Arc, Crane Up
+**Pair with:** Kling 2.6/3.0, Dolly In, Arc, Crane Up
 
 ```
 Example: A detective walks through a night market.
@@ -66,7 +66,7 @@ epic scale — classic Hollywood widescreen
 **Best for:** Action, epic fantasy, war films, sweeping landscapes, high drama
 **Color tendency:** High contrast, deep blacks, rich highlights
 **Prompt phrase:** "Style: Anamorphic" or "Style: Anamorphic, 2.35:1 widescreen"
-**Pair with:** Crane Up, 360 Orbit, Super Dolly Out, Sora 2
+**Pair with:** Crane Up, 360 Orbit, Super Dolly Out, Seedance 2.0 / Minimax Hailuo 2.3
 
 ```
 Example: An army marches across a frozen plain at dawn.
