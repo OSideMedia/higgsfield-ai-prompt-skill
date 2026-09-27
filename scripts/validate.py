@@ -855,6 +855,7 @@ def check_ledger():
         return
     model_ids = hm.load_specs_models()
     check(bool(model_ids), "specs model ids available for ledger validation")
+    retired_ids = hm.load_retired_ids()
 
     for path in sorted(ledger_dir.glob("*.json")):
         if path.name == "_global.json":
@@ -880,8 +881,13 @@ def check_ledger():
             if row.get("supersedes"):
                 superseded.add(row["supersedes"])
             prior.add(row.get("id"))
+        retired_rows = sum(1 for r in rows if isinstance(r, dict)
+                           and r.get("model") in retired_ids)
+        honest = (f"{retired_rows} row(s) use a retired model id — accepted as history; "
+                  "this check cannot tell history from a hand-appended row") \
+            if retired_rows else ""
         check(not problems, f"{rel}: {len(rows)} row(s) schema-valid",
-              "" if not problems else "; ".join(problems[:3])
+              honest if not problems else "; ".join(problems[:3])
               + (f" (+{len(problems) - 3} more)" if len(problems) > 3 else ""))
 
     # _global.json is a generated view — regenerate on drift.

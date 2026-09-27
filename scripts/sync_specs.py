@@ -526,6 +526,85 @@ def _snapshot_files(specs_dir: Path) -> list:
                   key=lambda p: (snapshot_date(p), p.name))
 
 
+# The fewest items a COMPLETE models_explore list dump of each type has ever
+# had is far above these (video 18, image 23, audio 5, 3d 17 in the committed
+# history); a "snapshot" below them is a fragment, not a catalog.
+MIN_PROOF_ITEMS = {"video": 10, "image": 10, "audio": 3, "3d": 5}
+_SNAPSHOT_NAME_RE = re.compile(
+    r"^models_explore_snapshot_(?:(?P<type>[a-z0-9]+)_)?\d{4}-\d{2}-\d{2}\.json$")
+
+
+def snapshot_type(path: Path) -> str | None:
+    """The output type a snapshot filename declares (None: not a snapshot name)."""
+    m = _SNAPSHOT_NAME_RE.match(Path(path).name)
+    if not m:
+        return None
+    t = m.group("type") or "video"
+    return t if t in TYPES else None
+
+
+def dump_problem(path: Path) -> str | None:
+    """Why a committed snapshot file is NOT a well-formed models_explore list
+    dump of its type (None when it is). Only well-formed dumps count as
+    history — they alone may derive or prove a retired-id tombstone.
+
+    ponytail: the trust boundary is the committed, reviewed snapshot set —
+    this checks a proving snapshot's SHAPE (a complete, typed list dump), not
+    its provenance: CI checks out shallow, so git history cannot vouch for
+    when a file was dumped, and a carefully forged full-size dump would pass.
+    Upgrade path: a reviewed manifest of snapshot sha256s (or requiring the
+    proving snapshot's commit to predate the tombstone) once CI fetches
+    history."""
+    otype = snapshot_type(path)
+    if otype is None:
+        return "filename is not models_explore_snapshot_[<type>_]<YYYY-MM-DD>.json"
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        return f"unreadable: {e}"
+    if not isinstance(data, dict):
+        return f"root is {type(data).__name__}, not a models_explore list response"
+    if "has_more" not in data or data["has_more"] is not False:
+        return f"has_more is {data.get('has_more', '<absent>')!r}, not false — not a complete list"
+    items = data.get("items")
+    if not isinstance(items, list) or not items:
+        return "no items list"
+    for i, m in enumerate(items):
+        if not (isinstance(m, dict) and isinstance(m.get("id"), str) and m["id"]
+                and isinstance(m.get("name"), str)):
+            return f"item {i} is not a model record with an id and a name"
+        if m.get("output_type") != otype:
+            return (f"item {m['id']!r} has output_type {m.get('output_type')!r} in a "
+                    f"{otype} snapshot")
+        params = m.get("parameters", [])
+        if not isinstance(params, list) or any(
+                not (isinstance(q, dict) and isinstance(q.get("name"), str)) for q in params):
+            return f"item {m['id']!r} has malformed parameters"
+    ids = [m["id"] for m in items]
+    if len(set(ids)) != len(ids):
+        return "duplicate model ids"
+    if len(items) < MIN_PROOF_ITEMS[otype]:
+        return (f"{len(items)} {otype} item(s) — below the {MIN_PROOF_ITEMS[otype]} a "
+                f"complete {otype} catalog dump has; a fragment is not history")
+    return None
+
+
+def malformed_snapshots(specs_dir: Path = None) -> dict:
+    """{snapshot name: problem} for committed snapshots that are not
+    well-formed dumps (they prove nothing, and validate.py fails on them)."""
+    out = {}
+    for p in _snapshot_files(specs_dir or SPECS_DIR):
+        why = dump_problem(p)
+        if why:
+            out[p.name] = why
+    return out
+
+
+def _history_snapshots(specs_dir: Path) -> list:
+    """The committed snapshots that count as history: well-formed dumps only."""
+    return [p for p in _snapshot_files(specs_dir) if dump_problem(p) is None]
+
+
 def current_model_ids(specs_dir: Path = None) -> set:
     """Ids live NOW: every item of each type's NEWEST snapshot, plus every
     alias (ALIAS_MAP, HISTORICAL_IDS). Derived from the snapshots, never from
@@ -551,7 +630,7 @@ def compute_retired(specs_dir: Path = None) -> dict:
     specs_dir = specs_dir or SPECS_DIR
     current = current_model_ids(specs_dir)
     seen = {}
-    for p in _snapshot_files(specs_dir):
+    for p in _history_snapshots(specs_dir):
         for m in json.loads(p.read_text(encoding="utf-8")).get("items") or []:
             if isinstance(m, dict) and m.get("id"):
                 seen[m["id"]] = {"type": m.get("output_type"),
@@ -569,9 +648,10 @@ def load_retired(specs_dir: Path = None) -> dict:
 
 
 def snapshot_history_ids(specs_dir: Path = None) -> set:
-    """Every model id any committed models_explore snapshot carried."""
+    """Every model id a committed, WELL-FORMED models_explore dump carried
+    (a one-line fake "snapshot" proves nothing — see dump_problem)."""
     ids = set()
-    for p in _snapshot_files(specs_dir or SPECS_DIR):
+    for p in _history_snapshots(specs_dir or SPECS_DIR):
         ids.update(m["id"] for m in json.loads(p.read_text(encoding="utf-8")).get("items") or []
                    if isinstance(m, dict) and m.get("id"))
     return ids
@@ -591,7 +671,7 @@ def unproven_tombstones(specs_dir: Path = None) -> dict:
     out = {}
     for mid in sorted(committed):
         if mid not in history:
-            out[mid] = "no committed models_explore snapshot ever carried it"
+            out[mid] = "no committed, well-formed models_explore snapshot ever carried it"
         elif mid in current:
             out[mid] = "it is live in a newest snapshot (or an alias) — not retired"
     return out
@@ -623,6 +703,8 @@ def retired_problems(specs_dir: Path = None) -> list:
         return [f"{RETIRED_FILE} is missing"]
     probs = [f"unproven tombstone {mid!r}: {why}"
              for mid, why in unproven_tombstones(specs_dir).items()]
+    probs += [f"snapshot {name} proves nothing: {why}"
+              for name, why in malformed_snapshots(specs_dir).items()]
     missing = sorted(set(compute_retired(specs_dir)) - set(load_retired(specs_dir)))
     probs += [f"retired id {mid!r} is not tombstoned" for mid in missing]
     if not probs and rp.read_text(encoding="utf-8") != emit_retired(merged_retired(specs_dir)):
@@ -652,9 +734,12 @@ def stale_outputs(output_type: str, specs_dir: Path = None,
 
 def retired_is_stale(specs_dir: Path = None) -> bool:
     """True when the committed tombstone file is missing an id the snapshot
-    history says is retired (or is absent / not in canonical form)."""
+    history says is retired, carries an unproven one, is absent / not in
+    canonical form — or when a committed snapshot is not a well-formed dump
+    (the history the tombstones rest on is then in doubt)."""
     rp = (specs_dir or SPECS_DIR) / RETIRED_FILE
     return (not rp.exists()
+            or bool(malformed_snapshots(specs_dir))
             or rp.read_text(encoding="utf-8") != emit_retired(merged_retired(specs_dir)))
 
 

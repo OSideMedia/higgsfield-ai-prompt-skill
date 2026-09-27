@@ -397,6 +397,13 @@ def validate_ledger_row(row: dict, project: str, prior_ids: set,
             problems.append(f"{rid}: shot_tags needs {lo}..3 entries, got {len(tags)}")
 
     model = row.get("model")
+    # ponytail: a retired id is accepted on ANY row here — this validator
+    # cannot tell a row logged while the model was live from one appended by
+    # hand later (`ts` is caller-supplied, the file is plain JSON). Only the
+    # write path (log_gen_row) refuses new retired-id rows. Upgrade path:
+    # reject rows whose ts is later than the first snapshot that no longer
+    # carries the id (sync_specs tombstone + snapshot dates), or have
+    # log_gen_row sign rows so a hand-appended row is detectable.
     if model_ids:
         if model not in model_ids:
             problems.append(f"{rid}: model {model!r} not in specs (video/image/audio/3d "
@@ -813,13 +820,21 @@ def log_gen_row(project: str, fields: dict) -> dict:
 
     row = {k: v for k, v in fields.items() if v is not None}
     # A retired id keeps HISTORY valid (validate_ledger_row accepts it), but a
-    # NEW generation cannot use a model that left the catalog. An amendment
-    # (supersedes) corrects a historical row, so it keeps the row's model.
-    if row.get("model") in load_retired_ids() and not row.get("supersedes") \
-            and row["model"] not in _current_spec_ids():
-        raise LedgerError(f"model {row['model']!r} is retired (specs/{RETIRED_FILE}) — rows "
-                          "logged while it was live stay valid history, but a new "
-                          "generation cannot use it; log the model you actually ran")
+    # NEW generation cannot use a model that left the catalog. The one write
+    # allowed is an amendment of an existing row that ALREADY carries that id
+    # (the correction keeps the historical row's model) — a `supersedes`
+    # pointing at another model's row, or at nothing, is a new generation.
+    if row.get("model") in load_retired_ids() and row["model"] not in _current_spec_ids():
+        target = next((r for r in db["rows"] if r.get("id") == row.get("supersedes")), None)
+        if target is None or target.get("model") != row["model"]:
+            why = ("supersedes nothing" if not row.get("supersedes") else
+                   f"supersedes {row['supersedes']!r}, which is not a {row['model']} row"
+                   if target is not None else
+                   f"supersedes {row['supersedes']!r}, which is not in this ledger")
+            raise LedgerError(f"model {row['model']!r} is retired (specs/{RETIRED_FILE}) and "
+                              f"this row {why} — rows logged while it was live stay valid "
+                              "history, and may be amended, but a new generation cannot "
+                              "use it; log the model you actually ran")
     row.setdefault("id", next_gen_id(project, db["rows"]))
     row.setdefault("ts", now_iso())
     row.setdefault("shot_tags", [])

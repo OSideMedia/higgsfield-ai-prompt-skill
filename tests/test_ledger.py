@@ -522,3 +522,37 @@ def test_an_amendment_of_a_retired_id_row_is_still_allowed(tmp_path, monkeypatch
     row = hm.log_gen_row("proj", {"model": "llm_text", "shot_tags": ["pov"],
                                   "outcome": "flagged", "supersedes": "proj-0001"})
     assert row["supersedes"] == "proj-0001"
+
+
+@pytest.mark.parametrize("supersedes,existing_model", [
+    ("proj-0001", "seedance_2_0"),     # another model's row: a new generation in disguise
+    ("proj-0099", None),               # a row that does not exist
+])
+def test_supersedes_cannot_smuggle_a_retired_id(tmp_path, monkeypatch, supersedes, existing_model):
+    _ledger_env(tmp_path, monkeypatch)
+    (tmp_path / "ledger").mkdir()
+    rows = [] if existing_model is None else [
+        {"id": "proj-0001", "ts": "2026-09-20T09:00:00Z", "model": existing_model,
+         "shot_tags": ["pov"], "outcome": "kept", "draft_tier": False}]
+    (tmp_path / "ledger" / "proj.json").write_text(json.dumps({"project": "proj", "rows": rows}))
+    with pytest.raises(hm.LedgerError, match="retired"):
+        hm.log_gen_row("proj", {"model": "llm_text", "shot_tags": ["pov"], "outcome": "kept",
+                                "supersedes": supersedes})
+
+
+def test_validate_says_what_the_ledger_gate_cannot_tell(tmp_path, monkeypatch, capsys):
+    import validate
+    ledger = tmp_path / "db" / "ledger"
+    ledger.mkdir(parents=True)
+    (ledger / "proj.json").write_text(json.dumps({"project": "proj", "rows": [
+        {"id": "proj-0001", "ts": "2026-08-01T09:00:00Z", "model": "llm_text",
+         "shot_tags": ["pov"], "outcome": "kept", "draft_tier": False}]}))
+    monkeypatch.setattr(validate, "ROOT", tmp_path)
+    monkeypatch.setattr(validate, "issues", [])
+    monkeypatch.setattr(validate, "warnings", [])
+    monkeypatch.setattr(hm, "build_global", lambda: None)
+    monkeypatch.setattr(hm, "write_global", lambda: None)
+    validate.check_ledger()
+    out = capsys.readouterr().out
+    assert "1 row(s) use a retired model id" in out
+    assert "cannot tell history from a hand-appended row" in out

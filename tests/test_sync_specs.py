@@ -165,9 +165,12 @@ def test_committed_specs_carry_nullable():
 # ── v3.37.0: retired-id tombstones (append-only, order-independent) ──────────
 
 def _snap(path, ids, otype="video"):
+    """A well-formed dump: the named ids plus stable filler models, so it has
+    the item count of a real catalog (fragments prove nothing — dump_problem)."""
+    filler = [f"filler_{otype}_{n}" for n in range(sync_specs.MIN_PROOF_ITEMS[otype])]
     path.write_text(json.dumps({"has_more": False, "items": [
-        {"id": i, "name": i, "output_type": otype, "parameters": []} for i in ids]}),
-        encoding="utf-8")
+        {"id": i, "name": i, "output_type": otype, "parameters": []}
+        for i in [*ids, *filler]]}), encoding="utf-8")
 
 
 def test_retired_id_is_tombstoned_from_snapshot_history(tmp_path):
@@ -208,7 +211,7 @@ def test_tombstones_are_append_only(tmp_path):
 
 
 @pytest.mark.parametrize("fake,why", [
-    ("totally_made_up_model", "no committed models_explore snapshot ever carried it"),
+    ("totally_made_up_model", "well-formed models_explore snapshot ever carried it"),
     ("a", "live in a newest snapshot"),
 ])
 def test_a_hand_added_tombstone_is_unproven_and_stale(tmp_path, fake, why):
@@ -304,3 +307,36 @@ def test_committed_tombstones_include_llm_text():
     retired = sync_specs.load_retired()
     assert {"llm_text", "explainer_video", "gpt_image"} <= set(retired)
     assert sync_specs.retired_is_stale() is False
+
+
+@pytest.mark.parametrize("fake", [
+    {"has_more": False, "items": [{"id": "totally_made_up_model", "name": "x",
+                                   "output_type": "video", "parameters": []}]},   # 1 line
+    {"items": [{"id": "totally_made_up_model", "name": "x", "output_type": "video"}] * 12},
+    {"has_more": False, "items": [{"id": f"m{i}", "name": "m", "output_type": "image"}
+                                  for i in range(11)] + [{"id": "totally_made_up_model",
+                                                          "name": "x", "output_type": "image"}]},
+])
+def test_a_fake_snapshot_cannot_prove_a_tombstone(tmp_path, fake):
+    # A 1-line "models_explore_snapshot_2020-01-01.json" used to prove a
+    # hand-added tombstone (and let sync_specs derive one). A proving snapshot
+    # must be a well-formed, complete dump of the type its name declares.
+    import shutil
+    specs = tmp_path / "specs"
+    shutil.copytree(REPO / "specs", specs)
+    (specs / "models_explore_snapshot_2020-01-01.json").write_text(json.dumps(fake))
+    assert "totally_made_up_model" not in sync_specs.compute_retired(specs)
+    doc = json.loads((specs / sync_specs.RETIRED_FILE).read_text(encoding="utf-8"))
+    doc["retired"]["totally_made_up_model"] = {
+        "type": "video", "last_seen": "2020-01-01",
+        "last_snapshot": "models_explore_snapshot_2020-01-01.json"}
+    (specs / sync_specs.RETIRED_FILE).write_text(sync_specs.emit_retired(doc["retired"]))
+    assert "totally_made_up_model" in sync_specs.unproven_tombstones(specs)
+    assert "totally_made_up_model" not in sync_specs.proven_retired(specs)
+    assert sync_specs.retired_is_stale(specs) is True
+    assert any("models_explore_snapshot_2020-01-01.json proves nothing" in p
+               for p in sync_specs.retired_problems(specs))
+
+
+def test_every_committed_snapshot_is_a_well_formed_dump():
+    assert sync_specs.malformed_snapshots() == {}
