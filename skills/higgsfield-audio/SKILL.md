@@ -4,7 +4,7 @@ description: >
   Use when the user asks about audio in Higgsfield videos, needs to add dialogue
   or lip-sync, wants sound effects or ambient sound in generated video, asks about
   music or BGM in output, or is using any audio-capable model (Kling 3.0, Seedance
-  1.5 Pro, Seedance 2.0, Veo 3/3.1, Grok Imagine Video). Also use when the user's
+  1.5 Pro, Seedance 2.0, Veo 3/3.1, Grok Video / Grok Imagine). Also use when the user's
   prompt would benefit from audio direction but they haven't mentioned it.
   Also use when the user wants standalone audio — a soundtrack, ambience bed,
   multi-speaker scene audio (Seed Audio 1.0), or text-to-speech voiceover.
@@ -14,7 +14,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS, voice-change, voice-clone]
-  version: 3.9.0
+  version: 3.9.1
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -39,11 +39,11 @@ metadata:
 
 | Model | Audio type | Dialogue | SFX | Ambient | BGM | Lip-sync |
 |-------|-----------|----------|-----|---------|-----|----------|
-| Kling 3.0 / Omni | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Multi-language |
+| Kling 3.0 / Omni (Omni: not in the API catalog) | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Multi-language |
 | Seedance 2.0 | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Multi-language |
 | Seedance 1.5 Pro | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ Best lip-sync |
 | Veo 3 / 3.1 | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ English best |
-| Grok Imagine Video | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Grok Video (Grok Imagine) | Native joint | ✅ | ✅ | ✅ | ✅ | ✅ |
 | All other models | ❌ | — | — | — | — | — |
 
 **"Native joint"** means audio and video are generated simultaneously in one pass —
@@ -492,6 +492,7 @@ built around it — changes the output at a structural level, not subtly.)
 - Voice Binding: lock specific voice profiles to specific characters across shots
 - O3 adds Voice Extraction from static images: upload audio clip (min 3s) + image to build a voice profile
 - O3 adds Performance Cloning: act out a scene on camera → AI re-renders preserving likeness and voice
+- O3 (Kling 3.0 Omni) is not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending; V3 is `kling3_0`
 - Include dialogue, ambient, and SFX naturally in the prompt
 - Prompt like a script: action + camera + mood + dialogue cues together
 
@@ -551,7 +552,8 @@ Background ambient: [environment description].
 - SFX explicitly: `tires screeching loudly`
 - Ambient as environment soundscape descriptions
 
-### Grok Imagine Video
+### Grok Video (xAI Grok Imagine)
+- Catalog: `grok_video` / `grok_video_v15` — Grok Video / Grok Video 1.5, named Grok Imagine / Grok Imagine 1.5 through the 2026-06-22 snapshot
 - Improved audio as of Video Imagine 1.0 (Feb 2026)
 - Include audio intent directly in prompt — same inline style as other models
 - Best for: social clips where audio adds polish but isn't the hero

@@ -1,5 +1,92 @@
 # Changelog
 
+## v3.40.0 — 2026-09-26
+
+**Model-catalog drift: every recommended model name checked against the live catalog.** On
+2026-09-26 every model name the skill recommends was checked against `higgsfield model list`
+(94 models) and `higgsfield workflow list` (22 workflows) from CLI 1.1.23. Both were re-run and
+matched the earlier dump exactly. Names were also checked against each model's name history in
+every committed `models_explore` snapshot (2026-06-11 → 2026-09-26). The policy is **annotate,
+don't retire**: none of these models has a shutdown notice, and some are probably still in
+Higgsfield's web UI but not in its API catalog, which is where Sora 2 stood before its shutdown.
+Each absent model now carries the July-era wording ("not in the API catalog as of the 2026-09-26
+snapshot; may be UI-only — verify in the live UI before recommending"). Where it shared a
+recommendation, the catalog model now comes first. Where it was the only pick, a catalog
+alternative from the repo's own doctrine or specs now sits beside it. No entry was deleted, and
+no new quality claim was written.
+
+### Changed
+
+- **Not in the API catalog, annotated with a catalog alternative:**
+  - **Wan 2.5**. Stylized, surreal, painterly and fantasy work goes to **Wan 2.6** (its own row:
+    "artistic, stylized"; the decision tree's existing "Wan 2.5 / 2.6" pick), and native audio to
+    **Wan 2.7**. Updated in the camera and motion-preset tables, recipes 4/5/9, troubleshoot,
+    `negative-constraints.md`, style (VHS, Abstract), assist and templates 03/05/07. The two
+    `prompt-examples.md` Wan 2.5 examples keep their prompts and are labelled to rerun on Wan 2.7:
+    they are 8s and one leans on audio, and Wan 2.6 takes only 5 / 10 / 15s.
+  - **Soul Cinema Preview** (no catalog model by that name) → **Soul Cinema** (`soul_cinematic`;
+    § Routing by Asset Class: "most cinematic frames"). The two are *not* treated as one model:
+    `higgsfield-soul` documents the Cinema Studio "Soul Cinema" as distinct from the standalone
+    Preview, and nothing proves `soul_cinematic` is the Preview's release. The USER-GUIDE row now
+    reads Soul Cinema.
+  - **Kling 2.5 Turbo** → **Kling 3.0 Turbo** (`kling3_0_turbo`: "Fast text-to-video and single
+    start-frame animation"; its row already says "budget Kling 3.0").
+  - **Kling O1 Video** → start/end frame on **Kling 3.0** (`start_image` + `end_image`), many
+    references on **Seedance 2.0 / 2.5**.
+  - **Kling 3.0 Omni** (O3 generation; only its edit model `kling_video_edit` is in the catalog)
+    → per-shot storyboards on **Kling 3.0**, per the V3/O3 multi-shot storyboard format.
+  - **Higgsfield DoP** → animate a still on **Kling 3.0** (`start_image`, its Dolly In / 360
+    Orbit pick), and budget video on Kling 3.0 Turbo.
+  - **Kling Avatars 2.0** → a talking head on **Seedance 1.5 Pro** (start image plus native
+    audio; the repo's best-lip-sync pick).
+  - Image models: **Kling Image 3.0** → Nano Banana Pro for native 4K. **Kling Image 3.0 Omni** →
+    Nano Banana 2 for edits. **Wan 2.2** → Seedream 5.0 Pro. **Multi Reference** → Nano Banana
+    Pro (14 references). **Higgsfield Soul** → Soul 2.0.
+  - **GPT Image 1.5** → GPT Image 2. The retired catalog id `gpt_image` was named *GPT Image 1.5*
+    in its only snapshot (2026-06-22). v3.19.0 had attributed that exit to the original
+    "GPT Image" and told users to prefer 1.5, which is now corrected.
+- **Not in the API catalog, annotated only (no justified alternative):** Wan 2.5 Fast, Reve,
+  Seedream 4.0, Kling 3.0 Omni's performance cloning (likeness + voice), Kling Image 3.0's Image
+  Series Mode, and the Elemental preset row. No repo line routes elemental presets to any model
+  but Wan 2.5, so that row keeps it alone. Where a 4K pick replaces a Kling Image one, its credit
+  cell now says the listed price is for 1K.
+- **Minimax Hailuo 02 / 02 Fast: unconfirmed, not absent.** `minimax_hailuo` offers `minimax`,
+  `minimax-fast`, `minimax-2.3` (default) and `minimax-2.3-fast`, and nothing says the
+  unversioned pair is 02. The rows are annotated, and "dance, sports" now routes to Minimax
+  Hailuo 2.3 (the Dance / Motion glow preset pick).
+- **Renamed to the catalog's name:** Grok Imagine Video → **Grok Video** (`grok_video`, renamed
+  in the 2026-07-05 snapshot). Grok Imagine 1.5 → **Grok Video 1.5**, whose row now matches the
+  specs: image and audio references, and 480p / 720p / 1080p. Kling O1 (image) → **Kling O1
+  Image** (`kling_omni_image`). Flux Kontext Max: the API id `flux_kontext` carried that name on
+  2026-06-22 and has been **Flux Kontext** since 2026-07-05. The Max entry and its UI price stay,
+  annotated, because a separate UI Max tier is unverified. Nano Banana Flash in
+  `production-benchmarks.md` is glossed as Nano Banana 2.
+- **Present, now labelled:** Veo 3.1 Fast and Veo 3 Fast are the `veo-3-1-fast` / `veo-3-fast`
+  variants of `veo3_1` / `veo3`, and both are the catalog **defaults**.
+- `model-guide.md` gains a one-paragraph catalog check under the video table, root `SKILL.md`
+  gains a short catalog note inside its existing platform paragraph (the dispatcher stays under
+  the 400-line QUICK FACTS threshold), and `image-models.md` gains a catalog-check preamble. **Kling 3.0 Motion
+  Control** was confirmed as the CLI **workflow** `kling3_0_motion_control`. No line claimed it
+  was absent or called it a model id.
+- Version bumps: `higgsfield-models` 3.3.3 (+ `MODELS-DEEP-REFERENCE.md` 3.3.2),
+  `higgsfield-recipes` 3.1.2, `higgsfield-troubleshoot` 3.3.1, `higgsfield-style` 3.1.3,
+  `higgsfield-assist` 3.1.3, `higgsfield-cinema` 3.5.3, `higgsfield-audio` 3.9.1 (the Grok
+  heading is renamed; INDEX.md is rebuilt), `higgsfield-pipeline` 3.6.2 and `higgsfield-prompt`
+  3.7.2. The USER-GUIDE model table now reads Kling 3.0 Turbo, Minimax Hailuo 2.3 and Soul
+  Cinema. It is a one-line summary, so it names the catalog pick outright; the absent model and
+  its annotation live in `model-guide.md`.
+- `scripts/validate.py`: the `grokimaginevideo` guide-name override was dropped. The row is now
+  "Grok Video" and resolves by name, and the duration cross-check now also covers Grok Video 1.5.
+
+### Not changed
+
+- `specs/` (generated), CHANGELOG history, `db/`, `docs/archive/` and `tests/` fixtures. No
+  `evals/cases/` response names an affected model as a recommendation. `model-lanes.json` already
+  asserts "grok imagine video" and "→ Kling O1 Video Edit" are absent from its answer, and
+  `evals/spec-claims.json` has no entry for these names.
+- UI tools and apps that are not model names (Lipsync Studio, Popcorn, Recast, Photodump, Face /
+  Character Swap) are out of scope.
+
 ## v3.39.0 — 2026-09-26
 
 **Sora 2 retired from the recommendations.** OpenAI's deprecations page ("2026-03-24: Sora 2

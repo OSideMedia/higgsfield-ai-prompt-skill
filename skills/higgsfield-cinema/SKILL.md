@@ -4,7 +4,7 @@ description: "Guides users through professional filmmaking workflows in Higgsfie
 user-invocable: true
 metadata:
   tags: [higgsfield, cinema-studio, cinema-studio-4, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
-  version: 3.5.2
+  version: 3.5.3
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -1111,11 +1111,11 @@ Different models perform differently inside Cinema Studio's environment:
 | Use case | Recommended model |
 |----------|------------------|
 | Character-driven drama sequence | Kling 3.0 |
-| Clone character from reference footage | Kling 3.0 Omni |
+| Clone character from reference footage | Kling 3.0 Omni (not in the API catalog, 2026-09-26 — verify in the live UI) |
 | Epic scale / action multi-shot | Seedance 2.0 / Minimax Hailuo 2.3 (scale/physics fallbacks — Sora 2 retired 2026-09-24) |
 | Artistic / stylized sequence | Wan 2.6 |
 | Nature / environment sequence | Veo 3 / Veo 3.1 |
-| Fast iteration on sequence | Kling 2.5 Turbo |
+| Fast iteration on sequence | Kling 3.0 Turbo (Kling 2.5 Turbo: not in the API catalog, 2026-09-26 — verify in the live UI) |
 | Hero Frame image generation | Soul 2.0 / Nano Banana 2 |
 
 ---

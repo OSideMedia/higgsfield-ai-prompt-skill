@@ -140,7 +140,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Seedance 1.5 Pro](skills/higgsfield-audio/SKILL.md#seedance-15-pro)
     - [Seedance 2.0](skills/higgsfield-audio/SKILL.md#seedance-20)
     - [Veo 3 / 3.1](skills/higgsfield-audio/SKILL.md#veo-3--31)
-    - [Grok Imagine Video](skills/higgsfield-audio/SKILL.md#grok-imagine-video)
+    - [Grok Video (xAI Grok Imagine)](skills/higgsfield-audio/SKILL.md#grok-video-xai-grok-imagine)
   - [Common Audio Failures and Fixes](skills/higgsfield-audio/SKILL.md#common-audio-failures-and-fixes)
   - [When to Skip Audio](skills/higgsfield-audio/SKILL.md#when-to-skip-audio)
   - [Cinema Studio 3.0 Audio (Business/Team Plan)](skills/higgsfield-audio/SKILL.md#cinema-studio-30-audio-businessteam-plan)

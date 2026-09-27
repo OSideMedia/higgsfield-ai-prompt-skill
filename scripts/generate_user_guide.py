@@ -619,9 +619,9 @@ def build_pdf(dry_run: bool = False):
             ("Motion transfer from reference video", "Kling 3.0 Motion Control"),
             ("60fps, first+last frame, reference images", "Wan 2.7"),
             ("Budget Veo 3.1 quality at volume", "Veo 3.1 Lite"),
-            ("Quick iteration, drafts", "Kling 2.5 Turbo"),
+            ("Quick iteration, drafts", "Kling 3.0 Turbo"),
             ("Nature, documentary", "Veo 3 / Veo 3.1"),
-            ("Dance, fluid body motion", "Minimax Hailuo 02"),
+            ("Dance, fluid body motion", "Minimax Hailuo 2.3"),
             ("Cinema Studio 3.0 workflow", "Business/Team plan"),
         ]
         for r in rows:
@@ -637,7 +637,7 @@ def build_pdf(dry_run: bool = False):
             ("Text/logo rendering", "GPT Image 2"),
             ("Reference editing", "Seedream 4.5"),
             ("Anime / manga sheets", "Seedream 5.0 Pro"),
-            ("Cinematic keyframes for I2V", "Soul Cinema Preview"),
+            ("Cinematic keyframes for I2V", "Soul Cinema"),
         ]
         for r in irows:
             pdf.table_row(list(r), w)

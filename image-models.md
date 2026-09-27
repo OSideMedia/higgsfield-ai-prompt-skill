@@ -12,6 +12,10 @@ All image models available in the Higgsfield Image tab.
 ⚠ = Third-party/external model (warning triangle shown in UI)
 G = Google-powered model
 
+**Catalog check (2026-09-26):** an entry marked *not in the API catalog* is absent from
+`higgsfield model list` / `workflow list` (CLI 1.1.23) and from the 2026-09-26 `models_explore`
+image snapshot. It may be UI-only — verify in the live UI before recommending it.
+
 ---
 
 ## Routing by Asset Class
@@ -82,13 +86,14 @@ combine.
 ---
 
 ### Soul Cinema Preview
+**Catalog:** no catalog model by this name as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending. The catalog's `soul_cinematic` is *Soul Cinema*, which the repo documents as a distinct model (`skills/higgsfield-soul/SKILL.md` § Soul Cinema); it is named *Soul Cinema* in every image snapshot since 2026-06-22 (the CLI lists it as "Soul Cinematic"; `quality` 1.5k / 2k, `soul_id`). Do not treat the two as one model. Catalog pick for cinematic stills: Soul Cinema (§ Routing by Asset Class — "most cinematic frames").
 **Credits:** Low (cheaper per generation than most models)
 **Best for:** Cinematic-grade image generation — rich textures, natural compositions, "spontaneous look," deep depth of field, film grain aesthetics
 **Excels at:** Close-up shots specifically
 **Unique:** No preset selection panel — unlike Soul 2.0, it's **purely prompt-driven**
 **Key workflow:** Generate cinematic keyframe with Soul Cinema Preview → feed into video model (e.g., Kling 3.0 I2V) for best results
 **Works with:** Soul ID (character consistency) and Soul HEX (precise color control)
-**Status:** Preview version — full Soul Cinema coming soon
+**Status:** Preview version — full Soul Cinema coming soon (the 2026-03 wording; see Catalog above)
 
 **Soul HEX** — Extracts color palettes from reference photos for brand-consistent, color-matched visuals. Works across Soul 2.0, Soul Cinema Preview, and Cinema Studio 2.5.
 
@@ -113,6 +118,7 @@ combine.
 ---
 
 ### Higgsfield Soul (Legacy)
+**Catalog:** not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending (the catalog's Soul image models are Soul 2.0, Soul Cinema, Soul Cast and Soul Location).
 **Credits:** 0.5 per generation
 **UI:** Higgsfield Soul · 1:1 · 2K · Style On/Off · 1/4 · Unlimited · Character slot
 **Prompt field:** "Upload image as a prompt or Describe the scene you imagine"
@@ -131,7 +137,8 @@ combine.
 
 ---
 
-### Kling O1
+### Kling O1 Image
+**Model id:** `kling_omni_image` — catalog name *Kling O1 Image* (`resolution` 1k / 2k) `[OFFICIAL — platform, snapshot 2026-09-26]`
 **Credits:** 0.5 per generation
 **UI:** Kling O1 · 1:1 · 2K · 1/4 · Unlimited
 **Best for:** Clean, high-quality 2K images at low cost · square format social content
@@ -142,6 +149,7 @@ combine.
 ---
 
 ### Kling Image 3.0
+**Catalog:** not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending. Catalog pick for native 4K stills: Nano Banana Pro (`resolution` 1k / 2k / 4k — the `model-guide.md` decision tree's "maximum sharpness / 4K" pick). No catalog model is on record for Image Series Mode.
 **Credits:** TBD
 **UI:** Kling Image 3.0 · 16:9 · 4K
 **Best for:** Native 4K stills (up to 3840×2160) · Image Series Mode for storyboarding · multi-reference workflows
@@ -159,6 +167,7 @@ combine.
 ---
 
 ### Kling Image 3.0 Omni
+**Catalog:** not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending. Catalog pick for edits at up to 4K: Nano Banana 2 (§ Routing by Asset Class — small corrective edits; `resolution` 1k / 2k / 4k).
 **Credits:** TBD
 **UI:** Kling Image 3.0 Omni · 16:9 · 4K
 **Best for:** Advanced editing · refining styles and subjects · strongest prompt fidelity
@@ -168,6 +177,7 @@ combine.
 ---
 
 ### Wan 2.2
+**Catalog:** not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending (no Wan image model is listed). Catalog pick for stylized images: Seedream 5.0 Pro (§ Seedream 5.0 Pro — stylized-2D work).
 **Credits:** 1 per generation
 **UI:** Wan 2.2 · 3:4 · Style On/Off · 1 generation
 **Best for:** Stylized / artistic image output · non-photorealistic aesthetics
@@ -177,6 +187,7 @@ combine.
 ---
 
 ### Multi Reference
+**Catalog:** not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending. Catalog pick for a multi-reference blend: Nano Banana Pro (14 references — `skills/higgsfield-models/SKILL.md` § Unique Feature Matrix).
 **Credits:** 1.5 per generation
 **UI:** Multi Reference · 3:4 · Style On/Off · 1/4 · Unlimited
 **Best for:** Compositing elements from multiple reference images into one generation
@@ -187,6 +198,7 @@ combine.
 ---
 
 ### Reve
+**Catalog:** not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending.
 **Credits:** 1 per generation
 **UI:** Reve · 3:4 · Standard quality · 1/4 · Unlimited
 **Best for:** General-purpose image generation
@@ -238,6 +250,7 @@ combine.
 ---
 
 ### Seedream 4.0
+**Catalog:** not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending (Seedream 4.5 and 5.0 Pro / Lite / Flash are in it).
 **Credits:** 1 per generation
 **UI:** Seedream 4.0 · Basic quality · 3:4 · 1/4 · Unlimited
 **Best for:** Legacy/baseline generation · portrait orientation (3:4 default)
@@ -416,11 +429,12 @@ NBP is the strongest single image model on the platform for sharpness, multi-ele
 **Character slot:** Supports Soul ID character reference (GENERAL shown by default)
 **Default aspect:** 1:1 square
 **Note:** Model selector shows "ChatGPT" branding — OpenAI's GPT-Image model
-**Status:** No longer present in the models catalog (still absent from the 2026-09-26 snapshot) — verify in the UI before recommending; prefer GPT Image 2.5 / 2 / 1.5 or OpenAI Hazel
+**Status:** Not in the API catalog (2026-09-26) — verify in the UI before recommending; prefer GPT Image 2.5 / 2 or OpenAI Hazel. The catalog id that left, `gpt_image`, was named *GPT Image 1.5* in its only snapshot (§ GPT Image 1.5)
 
 ---
 
 ### GPT Image 1.5
+**Catalog:** left the API catalog — its id `gpt_image` was named *GPT Image 1.5* in the 2026-06-22 image snapshot and has been absent since 2026-07-05 (`specs/retired-model-ids.json`). May be UI-only — verify in the live UI before recommending. Catalog pick for text in images: GPT Image 2 (§ GPT Image 2).
 **Credits:** 2 per generation
 **UI:** GPT Image 1.5 · 1:1 · Low quality · 1/4
 **Best for:** Complex prompts · text-in-image · precise instruction following
@@ -558,6 +572,7 @@ All FLUX models show a warning triangle (⚠) in the UI — third-party external
 ---
 
 ### Flux Kontext Max
+**Catalog:** the same id as Flux Kontext — `flux_kontext` was named *Flux Kontext Max* in the 2026-06-22 image snapshot and *Flux Kontext* since 2026-07-05. Recommend it as Flux Kontext; whether the UI still shows a separate Max tier is unverified.
 **Credits:** 1.5 per generation
 **UI:** ⚠ Flux Kontext Max · 3:4 · Style On/Off · 1/4 · Unlimited
 **Best for:** Higher-quality version of Flux Kontext editing
@@ -649,32 +664,32 @@ These are upload-based transformation tools, not text-to-image generators.
 | Model | Credits | Resolution | Notes |
 |-------|---------|-----------|-------|
 | Z-Image | 0.15 | — | Cheapest |
-| Higgsfield Soul | 0.5 | 2K | Legacy, image-as-prompt |
-| Kling O1 | 0.5 | 2K | Square default |
-| Seedream 4.0 | 1 | Basic | Older tier |
+| Higgsfield Soul | 0.5 | 2K | Legacy, image-as-prompt · not in API catalog |
+| Kling O1 Image | 0.5 | 2K | Square default · `kling_omni_image` |
+| Seedream 4.0 | 1 | Basic | Older tier · not in API catalog |
 | Seedream 5.0 Lite | 1 | 2K | Fast |
 | Seedream 4.5 | 1 | 4K | High-res, `quality` basic/high (~6K) |
 | Nano Banana | 1 | — | Draw, portrait |
-| Wan 2.2 | 1 | — | Artistic |
-| Reve | 1 | — | New |
+| Wan 2.2 | 1 | — | Artistic · not in API catalog |
+| Reve | 1 | — | New (2026-03) · not in API catalog |
 | Soul 2.0 | Free | 2K | 5K free gens |
-| Soul Cinema Preview | Low | — | Cinematic keyframes |
+| Soul Cinema Preview | Low | — | Cinematic keyframes · no catalog model by this name |
 | Soul Cast | TBD | — | Character identity, 16:9, `budget` 10–500 |
 | Soul Location | TBD | — | Environments, 9 aspect ratios |
-| Kling Image 3.0 | TBD | 4K | Native 4K, series mode |
-| Kling Image 3.0 Omni | TBD | 4K | Advanced editing |
+| Kling Image 3.0 | TBD | 4K | Native 4K, series mode · not in API catalog |
+| Kling Image 3.0 Omni | TBD | 4K | Advanced editing · not in API catalog |
 | Nano Banana 2 | 1.5 | 1K | Pro quality at Flash speed |
 | Nano Banana 2 Lite | TBD | 1K only | Budget NB2, `thinking` MINIMAL/HIGH |
 | FLUX.2 Pro | 1.5 | 2K | ⚠ External |
-| Flux Kontext Max | 1.5 | — | ⚠ Edit |
-| Multi Reference | 1.5 | — | Multi-image blend |
+| Flux Kontext Max | 1.5 | — | ⚠ Edit · UI price; the API id `flux_kontext` carried this name on 2026-06-22 |
+| Multi Reference | 1.5 | — | Multi-image blend · not in API catalog |
 | Recraft 4.1 | varies | 1K/2K | ⚠ External · standard/vector/utility/utility_vector · hex palettes |
-| GPT Image | 2 | — | Character slot · gone from catalog (still absent 2026-09-26) |
+| GPT Image | 2 | — | Character slot · not in API catalog |
 | GPT Image 2.5 | TBD | 1K–4K | Transparent background, quality to `max` · not yet field-rated |
 | Grok Image / Grok Image 2.0 | TBD | 1K / 2K | xAI · not yet field-rated |
 | Seedream 5.0 Flash | TBD | up to 2K | Fast + instruction editing · not yet field-rated |
 | FLUX.2 Pro Outpaint | TBD (all-crop requests free per the catalog) | — | ⚠ External · per-side expand/crop |
-| GPT Image 1.5 | 2 | — | Text-in-image |
+| GPT Image 1.5 | 2 | — | Text-in-image · left the catalog after 2026-06-22 |
 | OpenAI Hazel | TBD | — | Editing, best text rendering |
 | Character Swap | 2 | — | Body swap |
 | Nano Banana Pro | 2 | 1K | Draw, landscape |

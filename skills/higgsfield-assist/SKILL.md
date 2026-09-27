@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, assist, GPT-5, copilot, credits, pricing, optimization, efficiency]
-  version: 3.1.2
+  version: 3.1.3
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -91,7 +91,7 @@ for final in-platform prompt refinement and quick generation.
 *Model roster reviewed against the 2026-07-05 catalog snapshot; tier placements are hand-maintained — verify live before quoting.*
 
 **Low cost:** Seedance 2.0 Fast / Mini, standard image generation, Nano Banana 2 Lite
-**Medium cost:** Kling 2.6 (legacy), Kling 3.0 Turbo, Wan 2.5/2.6/2.7, Minimax Hailuo 2.3, standard I2V
+**Medium cost:** Kling 2.6 (legacy), Kling 3.0 Turbo, Wan 2.6/2.7 (and 2.5 — not in the API catalog, 2026-09-26 — verify in the live UI), Minimax Hailuo 2.3, standard I2V
 **High cost:** Kling 3.0 (pro/4K modes), Seedance 2.0 at 1080p/4K, Veo 3 / 3.1, Cinema Studio
 **Apps:** Vary widely — one-click apps are generally efficient
 
@@ -180,7 +180,7 @@ The credit math almost always favors this approach.
 - Strategy: Use Apps heavily — they're credit-efficient for their use cases
 
 **Mid budget (Pro plan — 700 credits):**
-- Primary models: Kling 3.0 Turbo, Kling 2.6 (legacy), Wan 2.5/2.7, Minimax Hailuo 2.3
+- Primary models: Kling 3.0 Turbo, Kling 2.6 (legacy), Wan 2.7, Minimax Hailuo 2.3 (Wan 2.5: not in the API catalog, 2026-09-26 — verify in the live UI)
 - Reserve Kling 3.0 (pro/4K) / Seedance 2.0 4K for hero shots only
   (Sora 2 is retired — OpenAI shut its API down 2026-09-24; don't budget for it)
 - Use Cinema Studio for your two or three most important scenes

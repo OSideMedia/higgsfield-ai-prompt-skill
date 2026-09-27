@@ -4,7 +4,7 @@ description: "Use when building, writing, refining, or structuring a Higgsfield 
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 3.7.1
+  version: 3.7.2
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -394,7 +394,7 @@ decision point; don't iterate against a `batch+sel` tag.
 
 When the verdict is stochastic, the move is **variance-harvesting**: hold the
 **same locked prompt** constant, roll N at once (grid generation / Batch Size in
-Cinema Studio, DoP Lite for cheap rolls), and cull to the keeper. This is the
+Cinema Studio; DoP Lite for cheap rolls — not in the API catalog, 2026-09-26 — verify in the live UI), and cull to the keeper. This is the
 opposite of the stylistic-fan-out exception in the next section — that varies N
 *different looks*; this rolls N *identical* attempts because the prompt is right
 and only the dice are the problem. They read alike and are economically

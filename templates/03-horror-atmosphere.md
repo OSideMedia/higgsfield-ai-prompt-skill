@@ -7,7 +7,7 @@ Horror scenes, supernatural tension, psychological dread, jump-scare setups, unc
 User asks for horror, scary, creepy, unsettling, supernatural, haunted, psychological thriller, or anything where the mood is dread rather than action.
 
 ## Recommended model
-**Kling 3.0** for character horror (face control matters). **Wan 2.5** for stylized/supernatural horror (leans into surreal aesthetic). Use **VHS** or **Cinematic low key** style.
+**Kling 3.0** for character horror (face control matters). **Wan 2.6** (the catalog's stylized Wan) or **Wan 2.5** for stylized/supernatural horror (Wan 2.5 leans into surreal aesthetic, but is not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending). Use **VHS** or **Cinematic low key** style.
 
 ## Example prompt
 

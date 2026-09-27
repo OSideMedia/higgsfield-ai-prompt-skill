@@ -7,7 +7,7 @@ Character reveals, protagonist introductions, talking-head setups, emotional clo
 User asks for a character intro, portrait, close-up, emotional moment, reaction shot, or any prompt centered on a single person's face and presence.
 
 ## Recommended model
-**Kling 3.0** for video (best character consistency + native audio for dialogue). **Soul 2.0** or **Nano Banana Pro** for the reference image. **Soul Cinema Preview** for cinematic keyframes.
+**Kling 3.0** for video (best character consistency + native audio for dialogue). **Soul 2.0** or **Nano Banana Pro** for the reference image. **Soul Cinema** (`soul_cinematic`) or **Soul Cinema Preview** (no catalog model by that name, 2026-09-26 — verify in the live UI) for cinematic keyframes.
 
 ## Example prompt
 

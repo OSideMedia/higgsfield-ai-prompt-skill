@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, style, VHS, cinematic, anamorphic, color, aesthetic]
-  version: 3.1.2
+  version: 3.1.3
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -37,7 +37,7 @@ Shallow depth of field. 16:9.
 **Best for:** 80s/90s nostalgia, horror, thriller, retro music videos, flashbacks
 **Color tendency:** Slightly washed out, warm yellows and reds, low contrast
 **Prompt phrase:** "Style: VHS"
-**Pair with:** Handheld camera, Wan 2.5, any horror preset
+**Pair with:** Handheld camera, Wan 2.6 or Wan 2.5 (2.5 is not in the API catalog, 2026-09-26 — verify in the live UI), any horror preset
 
 ```
 Example: Friends at a house party in 1987.
@@ -80,7 +80,7 @@ Style: Anamorphic, 2.35:1. Deep blue-grey tones. Lens flare on the rising sun.
 **Best for:** Music videos, conceptual art, dream sequences, experimental content
 **Color tendency:** Vivid, unexpected, driven by concept not realism
 **Prompt phrase:** "Style: Abstract"
-**Pair with:** Wan 2.5, Portal, Multiverse, Glitch presets
+**Pair with:** Wan 2.6 or Wan 2.5 (2.5 is not in the API catalog, 2026-09-26 — verify in the live UI), Portal, Multiverse, Glitch presets
 
 ```
 Example: Fractured geometric shapes pulse to music in a void.

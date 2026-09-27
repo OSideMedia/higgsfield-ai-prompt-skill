@@ -7,7 +7,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, recipes, templates, genre, action, horror, romance, ad, sci-fi]
-  version: 3.1.1
+  version: 3.1.2
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -121,7 +121,7 @@ Sound: gentle liquid pour, soft ceramic texture.
 ## Recipe 4: Sci-Fi / Futuristic
 
 **Core pattern:** World establish → Reveal tech/threat → Action beat
-**Best models:** Wan 2.5, Kling 2.6
+**Best models:** Kling 2.6, Wan 2.5 (not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending)
 **Camera:** Crane Up, FPV Drone, Super Dolly Out, Dutch Angle
 **Style:** Cinematic or Anamorphic
 **Motion presets:** Cyborg, Plasma Explosion, Glitch, Wireframe, Portal
@@ -153,7 +153,7 @@ Apply Plasma Explosion preset at the moment of detonation.
 ## Recipe 5: Horror / Supernatural
 
 **Core pattern:** False calm → Wrong detail → Escalation → Reveal
-**Best models:** Kling 2.6, Wan 2.5
+**Best models:** Kling 2.6, Wan 2.5 (not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending)
 **Camera:** Dolly In, Dutch Angle, Handheld, Crash Zoom In
 **Style:** VHS or Cinematic (low key)
 **Motion presets:** Horror Face, Raven Transition, Shadow Smoke, Storm Creature
@@ -276,7 +276,7 @@ Apply Glow Trace preset — her movement leaves a trail of white light.
 ## Recipe 9: Transformation / Before & After
 
 **Core pattern:** Before state → Trigger → Transformation → After state
-**Best models:** Kling 2.6, Wan 2.5
+**Best models:** Kling 2.6, Wan 2.5 (not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending)
 **Camera:** Dolly In to trigger, single continuous shot where possible
 **Style:** Varies by tone
 **Motion presets:** Animalization, Werewolf, Cyborg, Flame On, Turning Metal, Freezing
