@@ -19,8 +19,8 @@ spatial geometry before any Seedance generation begins.
 >
 > **The showing side is `staging-reference.md`** — the front-on, colour-coded outline
 > drawing that IS attached to the generation, with the three-layer anti-bleed
-> architecture that makes it safe to attach. Read its measured caveat before promising
-> anyone it will pin positions.
+> architecture under which one house run (record incomplete — a direction, not a rate)
+> saw no bleed. Read its measured caveat before promising anyone it will pin positions.
 
 ## When to use this template
 

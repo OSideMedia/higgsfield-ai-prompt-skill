@@ -4,15 +4,18 @@ description: "Writes the character-performance layer of a video prompt as behavi
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, acting, performance, character, behavior, emotion, subtext, beats, eye-life, voice, ensemble, master-profile]
-  version: 1.2.0
-  updated: 2026-08-22
+  version: 1.3.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
 # Higgsfield Acting Director
 
 `[OFFICIAL — Higgsfield "Hell Grind" open-source brief]` — the performance system behind
-Higgsfield's 95-minute AI feature film, adapted to this repo's prompt surfaces.
+Higgsfield's 95-minute AI feature film, adapted to this repo's prompt surfaces. That tag
+covers the **untagged** text only: § The layer above the pillars, the silent-listener task,
+the eye-task paragraph and the voice-bible note each carry their own tag and are not from
+the brief (label legend: `../shared/provenance.md`).
 
 **The core axiom of the entire system: acting is BEHAVIOR under pressure, not a display of
 emotion.** A character wants something, something is in the way, and they act to get it.
@@ -32,10 +35,10 @@ prompt. It does not change camera, light, wardrobe, or grade.
 - **Distance is drama**; a change of distance *is* a beat change. Status is what you DO, and status **breaks** are the most interesting thing in a performance [→](#the-body)
 - The **master profile** is 150–220 words, one paragraph, fixed block order, written once per character and then rewritten per scene — never pasted [→](#the-acting-master-profile)
 - Every tic carries a **trigger**; every mask carries a **crack** — at least one "However, when X…" clause per profile [→](#the-acting-master-profile)
-- **Eye life is mandatory and never optional** — saccades, blink quality, live catchlights, eyes-lead-thought. Dead eyes are the number-one tell of AI acting [→](#eye-life)
+- **Eye life is mandatory and never optional** — give the eyes a **task** aimed at the partner, then saccades, blink quality, eyes-lead-thought; catchlights only make the task legible, they never fix a dead stare. Dead eyes are the number-one tell of AI acting [→](#eye-life)
 - Scene adaptation **transforms, never deletes**: a behavior that can't physically happen is displaced into another outlet, not removed [→](#scene-adaptation)
-- The **voice prompt is locked** — one per character, pasted verbatim into the audio field, never adapted per scene [→](#voice--fixed-identity-never-adapted)
-- **States, not transitions.** Models fail process and nail state: "mid-throw, arm extended", not "reaches in, pulls out, winds up" [→](#states-not-transitions)
+- The **voice prompt is locked** — one per character, from one voice bible, never adapted per scene; on 2.0 pasted verbatim into the audio field each time they speak, on 2.5 written in the character's role sentence, not the audio field, because the reused sheet carries the voice (once per prompt or once per project is OPEN, no default — P2-2) [→](#voice--fixed-identity-never-adapted)
+- **States, not transitions.** Models fail process and nail state: "mid-throw, arm extended", not "reaches in, pulls out, winds up" — for a peak reached through a reversing process; simple same-direction motion that must fill the clip is chained instead [→](#states-not-transitions)
 - Ensemble reactions travel in a **wave, never in sync**; the strong are still and quiet, the weak fidget and shout [→](#ensemble-and-space)
 - 15 named bad-acting symptoms with prompt-level fixes, and a 0–5 self-check scale — **aim every hero shot at 4+** [→](#the-atlas-of-bad-acting)
 
@@ -50,6 +53,7 @@ prompt. It does not change camera, light, wardrobe, or grade.
 | Named expressions | `../higgsfield-soul/SKILL.md` § Micro-Expressions | expression vocabulary for identity work |
 | Production form | `../higgsfield-seedance/HELL-GRIND.md` § Two extra blocks | the CHARACTER ACTING block this output fills |
 | Backstory | `../higgsfield-character-design/SKILL.md` | who the character is before any scene exists |
+| Structure | `../higgsfield-scene-engine/SKILL.md` | whether the scene earns its credits — it uses *goal*, *obstacle* and *tactic* at the plot level; the term map is in its § Where this sits before prompting |
 
 Use this skill to decide **what the body does**; use FACS to specify **which muscles** do it
 in a close-up. They compose — a FACS beat schedule inside a paragraph written by these rules
@@ -109,7 +113,7 @@ jokes at the wrong moment (a shield against vulnerability) · answers that are t
 
 ## The layer above the pillars — one direction, different fuel
 
-`[DEMO — Tigran (tig-acting-task), 2026-07-10]` `[UNPROVEN HERE]` The five pillars are
+`[EMPIRICAL — Tigran's tig-acting-task skill (2026-07-10), re-derived 2026-08-22]` The five pillars are
 per-character. They do not say what holds an ensemble together, and that is why scenes
 built from them alone can read as several good performances that are not in the same
 scene. One layer sits above them.
@@ -204,7 +208,8 @@ Performance lives not in the lines but **between** them. Four observable markers
    answered either with a counter-shout or with pointed quiet — but *answered*, not continued
    over.
 
-**A silent listener still gets a task, not just markers.** The four markers above describe
+**A silent listener still gets a task, not just markers.** `[EMPIRICAL — v3.33.0 source drop,
+re-derived 2026-08-22; source file not recorded]` The four markers above describe
 how a reaction *reads*; they do not give the listener anything to be doing between them,
 and a listener with no task is where the dead face comes back in a two-shot. Name the work:
 *decide whether he is serious · wait for the opening · protect the mood · catch him in the
@@ -290,8 +295,9 @@ biography]. [The psychological engine in one clause — the inner drive that exp
 physicality]. Vocal profile: [pitch/timbre, accent/origin, pace and delivery manner, and how
 the voice breaks or shifts under emotion]. Key physical habits and tics: [signature tic with
 its trigger; stress tic with its trigger; concealment behavior — what they do to hide what
-they feel; the facial mask and the exact condition under which it cracks]. Eye life: [blink
-quality and rate, scanning pattern, gaze-before-head, catchlights]. Walking style: [the gait
+they feel; the facial mask and the exact condition under which it cracks]. Eye life: [the
+eyes' standing task toward others, blink quality and rate, scanning pattern, gaze-before-head].
+Walking style: [the gait
 as characterization — named and specific, with weight, rhythm, and foot placement]. However,
 when [emotional trigger], [the transformation — how the posture, gait, and face change].
 [Optional: the softening target — the one person or thing that makes the face genuinely soften].
@@ -339,7 +345,8 @@ naturalistic ocular life, in the profile *and* in every scene.
 - **Realistic blink rate and quality**, tied to state: rapid blink-bursts under stress; slow
   calm lids in control; a blink-and-glaze on a moment of dissociation.
 - **Live catchlights** — the eyes must read as wet, lit, and alive. But a catchlight is a
-  *render* property, not a cure: **dead eyes are not fixed by lighting tricks, they are
+  *render* property, not a cure `[EMPIRICAL — v3.33.0 source drop, re-derived 2026-08-22;
+  source file not recorded]`: **dead eyes are not fixed by lighting tricks, they are
   fixed by giving the eyes a task.** A glassy stare with a beautiful catchlight is still a
   glassy stare. Write the eye-work as purposeful action aimed at the partner — *checking
   both of their eyes for a sparkle of trust · registering after each point whether it
@@ -378,14 +385,36 @@ never paste it.
    outlet changes.**
 5. **One flowing paragraph.** Fold the adaptation into prose in the character's register — no
    bullet lists, no headers, no "dial" lines inside the prompt.
-6. **Lead with the character's reference tag** so the model binds the acting to the right
-   person (`../higgsfield-seedance/SKILL.md` § Tag naming).
+6. **Bind the acting to the right person — by model** (`../shared/house-rulings.md` P2-13).
+   On Seedance **2.0**, lead with the character's reference tag
+   (`../higgsfield-seedance/SKILL.md` § Tag naming) — a house convention. On **2.5**, beat
+   prose names the character plus one visible marker, never a handle; the handle stays in the
+   role map (`../higgsfield-seedance-2-5/SKILL.md` § Reference Roles).
+
+> **The movement lock, reconciled** (`../shared/house-rulings.md` P3-4). The
+> story bible's **movement lock** (`../higgsfield-character-design/SKILL.md` § Ship the bible)
+> is one fixed line — the coined name of the signature ("an old boxer's walk") and its core
+> mechanics — and it is copied verbatim, never paraphrased, wherever that movement can
+> happen. It is part of the constant core in rule 2. Where the scene makes the movement
+> physically impossible, rule 4 still applies: the energy is displaced, not deleted. The
+> lock fixes the *words*; this section decides whether the body can do them here.
 
 ## Voice — fixed identity, never adapted
 
 Acting is rewritten per scene; **voice is locked.** Each character gets one Voice prompt — a
 permanent vocal identity pasted **verbatim** into the audio field every time they speak, and
 never modified. If the character appears but says nothing, omit it.
+
+> **Scope — 2.0 vs 2.5** (`../shared/house-rulings.md` P2-2). The paste-every-time form above
+> is the Seedance **2.0** form, and the form for any shot where no reference carries the
+> voice. On **2.5**, with the same character-sheet reference reused, the sheet carries the
+> voice together with the appearance (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Direction
+> patterns from the build — the voice lock, `[FIELD]` + `[OFFICIAL — prompt-builder 2.5]`): the voice goes in the character's
+> **role sentence**, not repeated in the audio field — still copied from the voice bible, never
+> retyped. Whether "once" there means once per *prompt* or once per *project* is **OPEN, no
+> default** (P2-2): re-stating it may fight the sheet, leaving it out may leave a later shot
+> unprotected, and neither is measured. Whether also repeating it in the audio field helps or
+> fights on 2.5 is unmeasured here.
 
 > **Not even a synonym.** `[FIELD — Higgsfield Studio, ONEIRIC breakdown, 2026-08-13]`
 > "Verbatim" is stricter than it sounds, and the way it gets broken is not carelessness —
@@ -419,6 +448,16 @@ there.
 Chain states beat by beat instead of narrating continuous processes. The production form of
 this rule: complex action **opens** the prompt, and the approach becomes a separate shot
 (`../higgsfield-seedance/HELL-GRIND.md` § Solutions born under deadline).
+
+> **Scope** (`../shared/house-rulings.md` P2-1). The ❌ example is a process that reverses
+> direction on its way to a peak — in, out, back. That is what collapses. Simple motion in
+> **one** direction whose job is to fill the clip is the other case: chain 2–3 connected
+> same-vector actions, or the model spends the leftover seconds reversing them
+> (`../higgsfield-seedance/SKILL.md` § Motion-prompt laws). And when an object must visibly
+> change under the hands, the change itself is the point — write the causal chain in
+> `../higgsfield-seedance/FAILURE-MODES.md` § Mimed manipulation. Pick by what the shot is for:
+> a result → start in the state; a filled clip → a same-direction chain; a manipulation → the
+> mechanism.
 
 ## Ensemble and space
 
@@ -499,7 +538,7 @@ it ships.
 - [ ] Distances change, the changes are motivated, and they are written in metres
 - [ ] Status is in the body, not just the words
 - [ ] All tics carry triggers; the mask has its crack ("However, when X…")
-- [ ] Eye life written explicitly: saccades, blink quality, catchlights, eyes-lead-thought
+- [ ] Eye life written explicitly: an eye task aimed at the partner, saccades, blink quality, eyes-lead-thought (catchlights only make it legible)
 - [ ] Voice prompt pasted verbatim if the character speaks; omitted if silent
 - [ ] States, not transitions
 - [ ] No wardrobe, camera, or color inside the acting paragraph

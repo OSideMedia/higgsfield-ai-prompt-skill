@@ -4,7 +4,7 @@ description: "Use when the user mentions GPT Image 2.0 or GPT Image 2.5, gpt-ima
 user-invocable: true
 metadata:
   tags: [higgsfield, gpt-image-2, gpt-image-2.5, flare, sunburst, transparent-background, prompt-director, image, json, prose, meta-prompt, layout, mockup, infographic, character-sheet, ui-mockup, landing-page, static-ads, cross-surface]
-  version: 1.3.0
+  version: 1.3.1
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -222,7 +222,12 @@ Write one continuous paragraph. Order the information roughly as: image type / m
 
 ### Worked example
 
-> A cinematic, moody photograph of a young Asian woman looking back over her shoulder at the viewer on a rainy night in a bustling street. She has wet, stringy black hair plastered to her face and a melancholic expression, wearing a loose, oversized greyish-green jacket. The street is wet, reflecting the blurred, glowing neon signs and traffic lights of the city. Parked on the wet asphalt to her left is a white vintage Toyota Levin hatchback with its red taillights illuminated. On the top left side of the image, elegant vertical Japanese text reads "都会の夜に溶けていく" in a large serif font. The overall aesthetic is atmospheric and cinematic, 35mm film texture, muted warm palette, capturing a quiet introspective moment amidst urban chaos.
+> A cinematic, moody photograph of an Asian woman looking back over her shoulder at the viewer on a rainy night in a bustling street. She has wet, stringy black hair plastered to her face and a melancholic expression, wearing a loose, oversized greyish-green jacket. The street is wet, reflecting the blurred, glowing neon signs and traffic lights of the city. Parked on the wet asphalt to her left is a white vintage Toyota Levin hatchback with its red taillights illuminated. On the top left side of the image, elegant vertical Japanese text reads "都会の夜に溶けていく" in a large serif font. The overall aesthetic is atmospheric and cinematic, 35mm film texture, muted warm palette, capturing a quiet introspective moment amidst urban chaos.
+
+*Adapted: this example is otherwise preserved verbatim from the source corpus (Adil's
+gpt-image-2-director source, not held in this repo); one age word before "Asian woman" is removed. The Seedance
+engine rule does not govern GPT Image 2 — this repo keeps age words out of every example
+it ships `[HOUSE]` (`../higgsfield-seedance/ENGINE-RULES.md` rule 1 states the reason).*
 
 What this example demonstrates: cinematic-medium opening ("A cinematic, moody photograph"), specific subject detail (wet stringy hair, oversized jacket), concrete prop (white vintage Toyota Levin hatchback with red taillights), embedded text in original CJK script with size + font direction ("elegant vertical Japanese text reads … in a large serif font"), film-stock language ("35mm film texture"), mood closing line. The CJK text rendering is the simplest demonstration of § 1's text-rendering capability — preserve or substitute embedded text as appropriate to the user's concept.
 
@@ -312,11 +317,14 @@ Six paired examples showing the routing decision in practice.
 | User concept | Format | Reasoning |
 |---|---|---|
 | "make me a landing page for a matcha tea startup called Kori, emphasis on clean Japanese minimalism" | **A (JSON)** | Landing page has discrete regions (header, hero, product grid, footer) — Format A's primary use case. |
-| "a teenage girl sitting alone at a bus stop at dusk, 90s vibe" | **B (prose)** | Single scene, no layout. |
+| "a woman sitting alone at a bus stop at dusk, 90s vibe" | **B (prose)** | Single scene, no layout. |
 | "make a poster about the history of the samurai" | **C (meta-prompt)** | Theme only; no specifics on layout. |
 | "a character reference sheet for a cyberpunk bounty hunter named Iris, show front/side/back views and 4 expressions" | **A (JSON)** | Explicit layout regions ("front/side/back views and 4 expressions"). The 'character sheet' label is a strong Format A signal. |
-| "photo of an old man fixing a vintage arcade machine, lit by the machine's screen" | **B (prose)** | One framed photograph. |
+| "photo of a grey-bearded man fixing a vintage arcade machine, lit by the machine's screen" | **B (prose)** | One framed photograph. |
 | "infographic about the types of clouds, make it look like a vintage encyclopedia page" | **A or C** | If the user lists the cloud types and what to show for each → A. If they just say "types of clouds" and expect you to fill it in → C. |
+
+Two user concepts (the bus stop, the arcade machine) are adapted from this table's earlier
+wording to keep age words out of examples `[HOUSE]`.
 
 ---
 

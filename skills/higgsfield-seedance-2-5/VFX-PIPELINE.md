@@ -17,16 +17,16 @@ that build.
 > unchanged. Do not restate them here — read them there.
 
 ## QUICK FACTS
-*Generated-checked block (scripts/build_index.py verifies anchors). Routing aids — read the linked sections for the rules themselves.*
+*Hand-maintained block — `scripts/build_index.py` checks QUICK FACTS anchors in `SKILL.md` files only, not in this file; the anchors below use GitHub's heading-slug form. Routing aids — read the linked sections for the rules themselves.*
 - The pipeline is **images first, then video**, always — a shot is only as good as the still it was built from [→](#the-pipeline-images-first-then-video)
 - One model per **asset class**, not one model for the project: faces + fixes → Nano Banana 2 · creatures → Seedream 5.0 · clothing → GPT Image 2 · locations → Soul Cinema [→](#stage-1--assets-one-model-per-asset-class)
-- Character sheets go on a **plain grey background**; creature sheets carry **two close-ups, mouth open and mouth closed** [→](#stage-1--assets-one-model-per-asset-class)
+- Character sheets go on a **plain grey background** (canonical shade + mechanism: `../../templates/ad-asset-prep.md`); creature sheets carry **two close-ups, mouth open and mouth closed** [→](#stage-1--assets-one-model-per-asset-class)
 - The **face-lock crop**: crop the head out of the full-body frames so the model has exactly one place to pull the face from [→](#the-face-lock-crop)
-- Scale does not survive on words — build a **size-ref frame**, save it as its own asset, attach it to every scene, and lock "if scale is uncertain, render smaller" [→](#stage-2--the-scale-law-a-size-ref-frame)
+- Vague scale words do not hold ("tiny compared to the enormous dragon") — at an extreme ratio no true body landmark can express, build a **size-ref frame**, save it as its own asset, attach it to every scene, and lock "if scale is uncertain, render smaller"; a computed **body landmark** sentence holds near-human props [→](#stage-2--the-scale-law-a-size-ref-frame)
 - Locations are **batched cheap and selected by light** — bad light in the still is why the video comes out as slop [→](#stage-3--locations-batch-cheap-select-by-light)
 - Field v2v runs in **`omni_reference` with a video reference, not `video_edit`** — which is why duration is settable, and must equal the source [→](#stage-4--footage-transformation-the-omni_reference-v2v-lane)
 - Source clip **≥ 4 s** (the model's own duration floor); pad a shorter one by freeze-framing its last frame [→](#stage-4--footage-transformation-the-omni_reference-v2v-lane)
-- **The four-batch rule**: the same defect in all four batches is a prompt or source fault — more batching only burns credits [→](#stage-5--when-v2v-fails-the-four-batch-rule)
+- **The four-batch rule**: the same defect in all four batches is a prompt or source fault — more batching only burns credits; four is a **ceiling**; the rewrite rule's two counts the same runs — OPEN, default: stop at the first repeat (troubleshoot § Stop-Rule Ladder) [→](#stage-5--when-v2v-fails-the-four-batch-rule)
 - v2v cannot invent an action the plate has no anchor for; fall back to **i2v from a location screenshot** and write a deliberate **empty-frame pause** as the stitch point [→](#stage-5--when-v2v-fails-the-four-batch-rule)
 - "Make it more natural" does nothing — the fix is a **physical picture** of the movement [→](#the-slop-catalog)
 - The tells that give a shot away — the CG-double fall, the origami wing, the warped logo — and what each one is asking you to write [→](#the-slop-catalog)
@@ -43,8 +43,9 @@ that build.
 | `[OFFICIAL — platform]` | Higgsfield's live `models_explore` catalog, snapshot **2026-09-26** (`../../specs/model-specs.json`). |
 
 Where the field build and the platform snapshot disagree about what is *settable*, the
-snapshot wins (HARD RULE 3). The field build is authoritative about what **works**, not
-about what the API accepts.
+snapshot wins (HARD RULE 3). The field build is authoritative about what **works** in that
+build — one production's practice, not measured here — not about what the API accepts.
+Label meanings: `../shared/provenance.md`; contested questions: `../shared/house-rulings.md`.
 
 ---
 
@@ -80,8 +81,8 @@ and switching between them mid-project is the normal case, not a fallback.
 |---|---|---|
 | Human character sheet, face matching | **Nano Banana 2** | Strongest face match on the platform |
 | Small corrective edits to an existing sheet | **Nano Banana 2** | Holds its input images best — the model to switch *to* when something needs fixing rather than rebuilding |
-| Fantasy creature / non-human character sheet | **Seedream 5.0** | Best at fantasy creatures |
-| Clothing, wardrobe changes, branded garments | **GPT Image 2** | Handles clothing best |
+| Fantasy creature / non-human character sheet | **Seedream 5.0** (the build does not say Lite or Pro) | Best at fantasy creatures |
+| Clothing, wardrobe changes, branded garments | **GPT Image 2** | Handles clothing best. (`[HOUSE]` note, not the build's words: another single production picked Seedream 5.0 Pro for costume texture and wear on a from-scratch sheet — `../higgsfield-soul/SKILL.md` § Pick the Sheet Model per JOB; one reading splits the two as edits vs from-scratch — an inference, not a default; P3-2 is OPEN — `../shared/house-rulings.md` P3-2) |
 | Locations and environment stills | **Soul Cinema** | Most cinematic frames; GPT skews yellow, Nano Banana makes locations too clean and too symmetrical |
 
 Full specs, pricing and UI controls for each of these live in `../../image-models.md`;
@@ -92,7 +93,9 @@ Three construction laws come with the table:
 **Character sheets go on a plain grey background.** Not a set, not an environment, not a
 gradient — plain grey. Sheets built on a busy background cost credits in re-rolls
 downstream, because the video model has to decide which parts of the sheet are the
-character and which are the world. `[FIELD — AI-vs-VFX, 2026-08-08]`
+character and which are the world. `[FIELD — AI-vs-VFX, 2026-08-08]` The law, its shades
+and its three stated mechanisms live once in `../../templates/ad-asset-prep.md` § Design for
+win rate.
 
 **Creature sheets carry two close-ups: mouth open and mouth closed.** A creature detailed
 enough to be interesting is detailed enough to glitch between expressions — a jaw that
@@ -105,7 +108,11 @@ canonical sheet is three panels: full body in flight, head closed, head open.
 back with a warped logo or a color cast, do not rewrite the generation prompt — attach the
 flawed sheet plus the correct asset to Nano Banana 2 and write the single sentence:
 `change the logo to the one in image two`. Re-prompting the whole sheet re-rolls
-everything that was already right. `[FIELD — AI-vs-VFX, 2026-08-08]`
+everything that was already right. `[FIELD — AI-vs-VFX, 2026-08-08]` On a character's
+**identity base**, bring only the changed region back onto the untouched original through a
+mask: `../higgsfield-seedance/HELL-GRIND.md` and `../higgsfield-soul/SKILL.md` § The Untouched
+Base both forbid a second full pass on the base, and adding the mask costs minutes where a
+softened face is paid for in every downstream shot (`../shared/house-rulings.md` P2-3).
 
 ### The face-lock crop
 
@@ -120,17 +127,21 @@ resolved.
 
 This composes with, and does not replace, the reference-role discipline in `SKILL.md` —
 the crop reduces what the model *can* misread; the role sentence tells it what to read.
+The one-readable-face law is stated once, across every source's version of it, in
+`../../templates/ad-asset-prep.md` § Design for win rate.
 
 ---
 
 ## Stage 2 — The scale law: a size-ref frame
 
 `[FIELD — AI-vs-VFX, 2026-08-08]` Relative scale between two subjects is the first thing
-to drift and the last thing words can fix. A rider written as "tiny compared to the
+to drift, and **vague** scale words do not fix it. A rider written as "tiny compared to the
 enormous dragon" comes back a different size in every generation, and the drift is worst
 on wides — which is exactly where scale is the whole point of the shot.
 
-The fix is an image, not a sentence. **Build a size-ref frame:**
+At an extreme ratio with **no true, visible landmark** to anchor it — a rider on a dragon's
+shoulders, where no body part of one lines up with the other — the fix is an image, not a
+sentence. (Where a true landmark exists, see the box below.) **Build a size-ref frame:**
 
 1. Take the creature sheet, the character sheet, and a screenshot from a generation whose
    scale was right.
@@ -153,11 +164,12 @@ lighting and grade.
 
 > ### Where a sentence DOES hold — the size gap decides the instrument
 >
-> `[FIELD — Higgsfield Studio, RED FLAG breakdown, 2026-08-19]` "The last thing words can
-> fix" is true of the case above — an extreme ratio, a rider against a dragon at 12×. It is
-> **not** true of ordinary set geometry, and reading it that way sends people to build a
-> size-ref frame for a handrail. On a near-human prop a written ruler holds, and it holds
-> because it is **converted into a body landmark** rather than left as a number:
+> `[FIELD — Higgsfield Studio, RED FLAG breakdown, 2026-08-19]` The size-ref frame is the
+> instrument for the case above — an extreme ratio, a rider against a dragon at 12×, with no
+> landmark to hang it on. It is **not** the instrument for ordinary set geometry, and reading
+> it that way sends people to build a size-ref frame for a handrail. On a near-human prop a
+> written ruler holds, and it holds because it is **converted into a body landmark** rather
+> than left as a number:
 >
 > ```
 > the railing is 110 cm; on a 185 cm man the top rail lands just above his belt
@@ -175,6 +187,19 @@ lighting and grade.
 > So: **near-human props → a computed anchor sentence. Extreme ratios → the size-ref
 > image.** Reach for the image when the gap is large enough that no single body landmark
 > can express it.
+>
+> **A third report moves that boundary.** `[OFFICIAL — Hell Grind brief]` gives, as its
+> solution for giants, a prose anchor in every prompt — a thirty-metre guardian, about 16× a
+> human, with a visible body landmark (*"ROCO at his foot reaches just above the ankle"*), a
+> human in frame, a written floor of "at least FIVE TIMES the height of the human figure",
+> and a stated failure condition (`../higgsfield-seedance/HELL-GRIND.md` § Solutions born
+> under deadline). The brief does not say whether a size-ref image was attached as well, so
+> it shows a landmark sentence working at an extreme ratio — not that prose alone did it.
+> The deciding question is whether a **true, visible** landmark exists, not the ratio alone. Which
+> instrument holds better where both are possible is unmeasured here; the default when a
+> reference slot is free is to **stack them** — the landmark sentence costs nothing and the
+> size-ref costs one image, while lost scale is paid in every wide
+> (`../shared/house-rulings.md` P2-5).
 
 Two locks earn their place next to it:
 
@@ -198,8 +223,9 @@ Two locks earn their place next to it:
 pipeline to iterate and the most expensive place to get wrong.
 
 **The economics drive the method.** Seven credits buys one GPT Image 2 generation, or
-**56 Soul Cinema variations**. At that ratio the correct behaviour is not to write a
-better prompt — it is to batch wide, then judge.
+**56 Soul Cinema variations** — the build's figures; credit prices move, so verify live
+before quoting them. At that ratio the correct behaviour is not to write a better prompt —
+it is to batch wide, then judge.
 
 **Judge on light, before anything else.** The rejection reasons from the build, in the
 order they came up:
@@ -322,6 +348,14 @@ The lesson generalises into the most credit-saving rule in the build:
 > **If the same defect shows up across all four batches, the fault is the prompt or the
 > source. Batching further is burning credits for nothing.**
 
+Four is where the build *learned* the lesson — a **ceiling**, not a count to reach. Here the
+rewrite rule counts the same thing — same-defect runs of an unchanged prompt — and says two,
+so the two rules genuinely disagree; that is recorded **OPEN** with a default: stop at the
+first repeat, the cheaper failure (at worst one rewrite of a prompt that was fine, against
+batches bought on a defect that was already systematic). The full ordering of the repo's stop
+numbers is `../higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder
+(`../shared/house-rulings.md` P1-2).
+
 The diagnostic that follows is about **anchors**: v2v inherits motion from the plate, so it
 can only render an action the plate has an anchor for. There was no jump moment in the
 source footage — so a prompt asking for a jump had nothing to inherit and turned to slop
@@ -344,8 +378,12 @@ at the point you intend to cut** — 1 to 1.5 seconds of location and nothing el
 ```
 … falling fast with real gravity, disappearing below the ledge. Then a pause: for about
 1.5 seconds the frame stays completely empty, only the waterfall and drifting mist.
-Suddenly @dragon-v3 bursts up from the abyss …
+Suddenly the dragon — the ridge of neck spikes first — bursts up from the abyss …
 ```
+
+(The build's prompt made the handle `@dragon-v3` the subject of that sentence. On 2.5 a beat
+line names the character and one visible marker; the handle stays in the role map —
+`SKILL.md` § Reference Roles, `../shared/house-rulings.md` P2-13.)
 
 An empty frame is a clean cut point: no subject to match across the join, no continuity to
 hold. Planning it into the generation is cheaper than hunting for one in the timeline
@@ -414,7 +452,9 @@ the way you would judge an actor.
 
 **Open mid-action.** A generated opening frame wants to be an establishing beat, and an
 establishing beat is dead air. For a shot that starts on an event, put the event in the
-first second and say so: *"the veil is already bulging in frame one and the dragon breaks
+first second and say so (scope: a shot whose job is an **event** — a scene-opening wide whose
+job is positional lock is the other case, `../higgsfield-seedance/HELL-GRIND.md` § The first
+second is always a wide; `../shared/house-rulings.md` P2-9): *"the veil is already bulging in frame one and the dragon breaks
 through within the first second — no long empty establishing beat, no cave interior, no
 approach shot."* The first frame carries state, not setup.
 
@@ -436,6 +476,16 @@ sprint. Beat-level acting direction lives in `../higgsfield-acting/SKILL.md`; th
 character sheet. Reuse the same sheet reference across generations and the voice stays
 consistent — so describe the voice once, in the character's role sentence, rather than
 re-specifying it in every prompt. `[OFFICIAL — prompt-builder 2.5]` states the same rule.
+**Scope** (`../shared/house-rulings.md` P2-2): this is the 2.5 rule. On 2.0, and on any shot
+where no reused sheet reference carries the voice, the voice bible is pasted verbatim into the
+audio field every time the character speaks (`../higgsfield-acting/SKILL.md` § Voice). The
+wording discipline is shared — the voice line in the role sentence is still copied from the
+voice bible, never retyped or "improved". **What "once" means is OPEN** (P2-2): the build's
+wording ("rather than re-specifying it in every prompt") can be read as once per *project*,
+while the Dreamina core formula (`SKILL.md` § The Core Prompt Formula `[OFFICIAL — Dreamina]`)
+and **Emotion with no video reference** above both put the voice's description in the prompt
+at hand. No default: re-stating the voice may fight the sheet (unmeasured), and leaving it out
+of later prompts leaves them unprotected if the sheet under-carries it.
 
 **The high-speed kit.** For chase and fly-by shots, three clauses do most of the work:
 a **180° camera orbit** around the subject, **speed shake** (a constant fine vibration with

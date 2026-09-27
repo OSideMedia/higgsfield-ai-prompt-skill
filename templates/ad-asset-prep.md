@@ -16,22 +16,68 @@ asset-design face of the acceptance-rate discipline in
 idea, applied upstream at sheet-creation time instead of downstream at take-
 selection time.
 
-- **Grey background wins more often** — nothing in frame competes with the
-  subject, so the model has less to get wrong. The Seedance-4K film tutorial
-  states this as tested: "after tons of testing, grey performs way better than
-  white or black" [DEMO — Seedance-4K film tutorial, 2026-07]. Any neutral
-  grey works — light-grey cyclorama for people, medium grey for props,
-  `#7f7f7f` for creature sheets. Field confirmation of the same practice,
-  with a second pinned value: harvested production **human**-sheet prompts
-  run "flat solid neutral grey background (#8a8a8a), seamless, no gradient,
-  only a soft contact shadow" — with both views "matched in scale, lighting,
-  and style for consistency" [FIELD — 13-project harvest, 2026-07-18]. Any
-  mid-grey works; what matters is pinning ONE exact hex per project so every
-  sheet matches (`#7f7f7f` creature / `#8a8a8a` human are both proven picks). (Anime/manga sheets are the exception:
-  they run white seamless — see `../image-models.md` § Seedream 5.0 Pro.) This bullet is the canonical home of the
-  grey rule; the sheet workflows in
-  `../skills/higgsfield-gpt-image-2/reference-sheet-workflow.md` and
-  `../skills/higgsfield-soul/SKILL.md` § Character Sheet Creation point here.
+- **Grey background wins more often — the canonical statement of the grey
+  law.** Every sheet surface in the repo points here rather than restating it.
+  The Seedance-4K film tutorial states it as tested: "after tons of testing,
+  grey performs way better than white or black" [DEMO — Seedance-4K film
+  tutorial, 2026-07]; the AI-vs-VFX build, the Hell Grind brief and the
+  13-project harvest all ship it.
+  - **Shade.** Any neutral grey from light to mid: light-grey cyclorama for
+    people (the tutorial; the Higgsfield Seedance 2.5 deck's "neutral
+    light-grey ground"), medium grey for props, `#7f7f7f` for creature
+    sheets, `#8a8a8a` in harvested production **human**-sheet prompts ("flat
+    solid neutral grey background (#8a8a8a), seamless, no gradient", both
+    views "matched in scale, lighting, and style for consistency" [FIELD —
+    13-project harvest, 2026-07-18]). The sources name different shades and
+    agree on the rule that matters: **pin ONE exact hex per project** so every
+    sheet matches. Never white or black (anime/manga sheets are the exception:
+    they run white seamless — see `../image-models.md` § Seedream 5.0 Pro);
+    keep the field neutral, never warm-shifted, and never let it cool the
+    subject — skin and wardrobe render at their true tone.
+  - **Why — three stated reasons, compatible with each other.** (1) Nothing
+    competes with the subject, so the downstream model does not have to decide
+    which pixels are the character and which are the world [DEMO — tutorial ·
+    FIELD — AI-vs-VFX, 2026-08-08]. (2) White and black maximise
+    subject-to-background contrast, and models amplify errors hardest at
+    high-contrast edges — halo, edge breathing, contour instability — so a
+    grey ground gives cleaner edges when the still is later read as a
+    reference [EMPIRICAL — Joey character-builder skill (2026-08-16),
+    re-derived 2026-08-22]. (3) A boring sheet keeps the cinema look in the
+    locations and the video prompts, so the character still reacts to each
+    scene's light [OFFICIAL — Hell Grind brief].
+  - **One disagreement, recorded.** The harvested human-sheet prompts keep
+    "only a soft contact shadow" [FIELD]; the reference-plate doctrine wants
+    a flat field with no floor and no contact shadow
+    (`../skills/higgsfield-soul/SKILL.md` § The Reference Plate [EMPIRICAL]).
+    Unmeasured here (`../skills/shared/house-rulings.md` P3-1). A contact
+    shadow is baked lighting that every downstream shot inherits, so for a
+    plate that will be **read as a reference** the flat field is the
+    lower-risk default; a sheet only a person looks at can keep the shadow.
+
+  This bullet is the canonical home of the grey rule; the sheet workflows in
+  `../skills/higgsfield-gpt-image-2/reference-sheet-workflow.md`,
+  `../skills/higgsfield-soul/SKILL.md` § Character Sheet Creation,
+  `../skills/higgsfield-character-design/SKILL.md` § Sheet Construction Laws,
+  `../skills/higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1 and
+  `../skills/higgsfield-seedance/HELL-GRIND.md` point here.
+- **One readable face per sheet — the headless figure.** Everything the video
+  model reads identity from should offer exactly **one** face, at close-up
+  resolution. On wides the model otherwise sources the face from the tiny,
+  blurry full-body figure [OFFICIAL — Hell Grind brief], or averages the
+  sheet's faces toward generic [FIELD — AI-vs-VFX, 2026-08-08]. So **remove
+  the head from every full-body panel whose face is visible** — crop it or
+  erase it — and let the close-up be the only source. Two field variants,
+  both leaving one face: the Hell Grind sheet removes only the **front**
+  figure's head (a back view shows no face, and its head still carries the
+  hair from behind); the AI-vs-VFX build crops the heads from **every**
+  full-body panel. No source reports a difference between them; keep the back
+  head when the hair matters. Casting a real person: erase the body panels'
+  heads and paste the photograph into the portrait panel
+  (`../skills/higgsfield-soul/SKILL.md` § The Hybrid Sheet). This bullet is
+  the canonical home; `../skills/higgsfield-seedance/HELL-GRIND.md`,
+  `../skills/higgsfield-seedance-2-5/VFX-PIPELINE.md` § The face-lock crop and
+  `../skills/higgsfield-character-design/SKILL.md` § Sheet Construction Laws
+  point here.
 - **3/4-angle locations beat flat head-on** — they give the camera depth to move
   through, so motion tests survive more often. See § Location plates below for
   the empty-plate rule.
@@ -63,14 +109,20 @@ See `../skills/higgsfield-soul/SKILL.md` § Character Sheet Creation.
 
 A character sheet with **multiple faces** makes the video model "not know which
 face to grab," so it drifts. Bring the sheet into GPT Image 2 and erase the
-extras, leaving one face to lock onto:
+extras, leaving one face to lock onto (the law and its variants: § Design for
+win rate → one readable face):
 
 ```
 (in GPT Image 2, on the character sheet)
 Erase the face from the full-body shot on the right panel.
 ```
 
-One face left → the video model stops drifting between faces.
+One face left → the video model stops drifting between faces. The erase is a
+GPT Image 2 pass over the sheet, and every such pass softens skin: if this
+sheet is the character's **identity base**, mask only the erased region back
+onto the untouched original (§ 5 below;
+`../skills/higgsfield-soul/SKILL.md` § The Untouched Base;
+`../skills/shared/house-rulings.md` P2-3).
 
 ### 4. Outfit design loop — 10 ideas → mix and recolor
 
@@ -105,11 +157,15 @@ makes it improvise and "the face drips off of him."
 
 [FIELD — 13-project harvest] For siblings/relatives, don't describe family
 resemblance independently — **generate the relative from the same face**:
-"the 13–14-year-old younger sister of the man in the reference, his spitting
-image: take the exact face from the reference and translate it onto a
-naturally younger teenage girl — same eyes, brows, nose, lips, same moles
-and freckles in matching positions." Resemblance generated from one source
-face holds across shots; two independently-described faces drift apart.
+"his sister, a woman of slighter build and his spitting image — take the
+exact face from the man in the reference and translate it onto her: same eyes,
+brows, nose, lips, same moles and freckles in matching positions."
+Resemblance generated from one source face holds across shots; two
+independently-described faces drift apart. (The harvested prompt named a
+teenager; rewritten to role + build per the age-blind rule —
+`../skills/higgsfield-seedance/ENGINE-RULES.md` rule 1, which bans describing a
+character by age at all, so neither *younger* nor *adult* stays — because the
+content filter tightens sharply on any minor.)
 
 The same production's 3-frame character sheet is a strong human-sheet shape:
 Frame 1 face portrait · Frame 2 **ghost-mannequin outfit display** ("garments

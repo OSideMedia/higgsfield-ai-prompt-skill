@@ -213,7 +213,7 @@ Apply Bullet Time preset at the moment of the throw.
 Model: Seedance 2.0 (Reference-Based mode)
 Aspect: 16:9 | Duration: 8s | Style: Cinematic
 
-[Reference image: hero character — woman, late 20s, charcoal track jacket,
+[Reference image: hero character — athletic woman, charcoal track jacket,
 short cropped hair — as the main character]
 
 Style & Mood: cold sodium-vapor underground, deep shadows under concrete pillars,
@@ -251,7 +251,7 @@ reference; action and environment travel in the prompt.
 Model: Kling 2.6
 Aspect: 16:9 | Duration: 8s | Style: Cinematic
 
-A man in his 40s walks slowly down a hospital corridor. Fluorescent lights flicker above him.
+A man in a rumpled grey suit walks slowly down a hospital corridor. Fluorescent lights flicker above him.
 He stops at a door. Hand on the handle. He doesn't open it.
 Camera: slow Dolly In from behind, stopping just over his shoulder as he stands still.
 His head drops slightly. A long exhale.
@@ -263,7 +263,7 @@ Style: Cinematic. Desaturated, cool blue-white light. 16:9.
 Model: Kling 2.6
 Aspect: 16:9 | Duration: 8s | Style: Super 8MM
 
-Arrivals hall. Crowds moving. A woman in her 30s scans faces, clutching a small sign.
+Arrivals hall. Crowds moving. A woman in a travel-creased coat scans faces, clutching a small sign.
 Then — she sees. The sign drops. She moves forward through the crowd.
 Camera: slow Arc around the moment they embrace, world blurring behind them.
 Style: Super 8MM. Warm grain, soft vignette, lifted shadows. 16:9.
@@ -278,7 +278,7 @@ Aspect: 21:9 | Duration: 6s | Style: Naturalistic
 Continuing from the prior clip — the husband framed at the bedside, head
 bowed, his hand on hers, the heart monitor's rhythm filling the silence.
 
-[Identity block verbatim: man in his late 40s, lined face, three-day stubble,
+[Identity block verbatim: man with a lined face, grey at the temples, three-day stubble,
 grey sweater frayed at the cuffs, wedding ring loose on his finger, exhausted
 but composed.]
 
@@ -429,7 +429,7 @@ Style: Cinematic. Golden hour warm tones, shallow depth of field. 16:9.
 Model: Kling 2.6
 Aspect: 16:9 | Duration: 8s | Style: Super 8MM
 
-A young woman sits alone in a train compartment, reading a letter.
+A woman sits alone in a train compartment, reading a letter.
 Rain runs down the window beside her. The passing countryside blurs.
 She smiles — just slightly — at something on the page.
 Camera: Focus Change from the rain on the window to her face.

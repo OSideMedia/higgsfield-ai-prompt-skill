@@ -4,7 +4,7 @@ description: "Guides users through professional filmmaking workflows in Higgsfie
 user-invocable: true
 metadata:
   tags: [higgsfield, cinema-studio, cinema-studio-4, multi-shot, storyboard, popcorn, hero-frame, optical, elements, director-panel, speed-ramp, soul-cast, color-grading]
-  version: 3.5.0
+  version: 3.5.1
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -602,7 +602,7 @@ world stops feeling like a single place.
 ### Plant visual anchors before you shoot the space
 
 `[FIELD — Higgsfield Studio, ADILIADA breakdown, 2026-08-14]` A location sheet stops the
-room being *reinvented*; it does not by itself stop people **moving around inside it**.
+room being *reinvented*; it does not by itself stop people **moving around inside it**. The Hell Grind brief states the same rule — leave an anchor in every location and tie the staging to it (`../higgsfield-seedance/HELL-GRIND.md` § Location sheets `[OFFICIAL]`).
 The cheap addition is to deliberately plant a few fixed, distinctive objects and then stage
 against them: the chair a character sits in, the window two of them talk by, the beaded
 curtain a body goes through. They give the model something nameable to hold position

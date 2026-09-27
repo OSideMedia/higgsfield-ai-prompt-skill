@@ -24,18 +24,19 @@ normal case. This table is the routing; the per-model sections below are the ref
 |---|---|---|
 | Human character sheet, face matching | **Nano Banana 2** | Strongest face match on the platform |
 | Small corrective edits to an existing asset | **Nano Banana 2** | Holds its input images best — switch *to* it for a one-line fix instead of re-prompting the whole sheet |
-| Fantasy creature / non-human character sheet | **Seedream 5.0** | Best at fantasy creatures |
-| Clothing, wardrobe changes, branded garments | **GPT Image 2** | Handles clothing best |
+| Fantasy creature / non-human character sheet | **Seedream 5.0** (the build does not say Lite or Pro) | Best at fantasy creatures |
+| Clothing, wardrobe changes, branded garments | **GPT Image 2** | Handles clothing best. (`[HOUSE]` note, not the build's words: for costume texture on a from-scratch sheet one other production picked Seedream 5.0 Pro — `skills/higgsfield-soul/SKILL.md` § Pick the Sheet Model per JOB; the edits-vs-from-scratch split is one reading, not a default — OPEN, `skills/shared/house-rulings.md` P3-2; compare 2–3 models per sheet) |
 | Locations and environment stills | **Soul Cinema** | Most cinematic frames; GPT skews yellow, Nano Banana makes locations too clean and too symmetrical |
 
 Two economics notes that follow from it:
 
-- **Location work batches.** Seven credits buys one GPT Image 2 generation or ~56 Soul
+- **Location work batches.** Seven credits (the build's figure — verify live) buys one GPT Image 2 generation or ~56 Soul
   Cinema variations — so on locations, batch wide and select rather than prompt-tuning.
   Select on **light**: bad light in the still is the most common cause of a slop video.
 - **Fix, don't rebuild.** A warped logo or a colour cast on an otherwise-good sheet is a
   Nano Banana 2 one-liner (`change the logo to the one in image two`). Re-prompting the
-  sheet re-rolls everything that was already right.
+  sheet re-rolls everything that was already right. On an **identity base**, mask the changed
+  region back onto the untouched original afterwards (`skills/shared/house-rulings.md` P2-3).
 
 **Routing by parameter** `[OFFICIAL — platform, snapshot 2026-09-26]` — these are catalog
 capabilities, not field-rated quality calls:
@@ -51,7 +52,8 @@ capabilities, not field-rated quality calls:
 
 Sheet-construction laws (grey background, the two-close-up creature sheet, the face-lock
 crop, the size-ref frame) live in `skills/higgsfield-character-design/SKILL.md`
-§ Sheet Construction Laws; the full production pipeline is
+§ Sheet Construction Laws; the grey-background and one-readable-face laws are canonical in
+`templates/ad-asset-prep.md` § Design for win rate; the full production pipeline is
 `skills/higgsfield-seedance-2-5/VFX-PIPELINE.md`.
 
 ---

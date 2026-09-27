@@ -12,7 +12,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.37.0
+  version: 3.38.0
   updated: 2026-09-26
   author: O-Side Media
   license: MIT
@@ -42,7 +42,7 @@ These rules apply to every Higgsfield response. They are written as a pre-delive
 
 6. **Preflight surfaced when applicable.** If execution intent is signaled (CLI / MCP / bundled-skills mentioned) AND a video-class or high-cost model is named OR a budget concern is named, surface the two-step preflight (`model get` / `models_explore` for schema, then cost estimate). See `skills/higgsfield-stack/SKILL.md` § Preflight discipline.
 
-7. **Aspect ratio is an enum, not a free-form value.** Check the model's allowed ratios against `specs/model-specs.yaml` before writing them into the header; if the snapshot is stale (>30 days), verify live via schema (`models_explore` / `model get`). Example of why this matters: Seedance 2.0 supports native 21:9, Kling 3.0 does not. Anamorphic / 2.35:1 / 2.39:1 are *style register* vocabulary for the Look line, not output ratios. See `vocab.md` § Aspect Ratio: output spec vs. style register.
+7. **Aspect ratio is an enum, not a free-form value.** Check the model's allowed ratios against `specs/model-specs.yaml` before writing them into the header; if the snapshot is stale (>30 days), verify live via schema (`models_explore` / `model get`). Example of why this matters: Seedance 2.0 supports native 21:9, Kling 3.0 does not. Anamorphic / 2.35:1 / 2.39:1 are *style register* vocabulary for the Look line, not output ratios. See `vocab.md` § Aspect Ratio: output spec vs. style register. In a multi-shot Seedance sequence whose location plates carry a baked lens, whether the optics words still belong in the video prompt (Style Prefix included) is OPEN — one studio drops them, Hell Grind keeps the look in both (`skills/higgsfield-seedance/SKILL.md` § Bake it into the asset; `skills/shared/house-rulings.md` P2-6).
 
 8. **Prompt under 200 words — short-form regime only.** Soft cap from MCSLA section. Going over is a signal you're padding rather than locking — tighten. **Regime exception:** block-scaffold production prompts (`skills/higgsfield-seedance/SKILL.md` § Official Prompt Architecture) replace the word cap with structural lint — harvested production Seedance briefs run 218–2,059-word medians depending on register `[FIELD — 13-project community harvest, 2026-07-18]`. The cap governs single-shot MCSLA prompts; a block-scaffold prompt over 200 words is not a rule-8 violation.
 
@@ -56,7 +56,7 @@ Higgsfield is a cinematic AI video and image generation platform built for filmm
 creators. Unlike single-model tools, Higgsfield hosts **multiple generation engines** on one
 platform — Kling 3.0/3.0 Omni/3.0 Motion Control, Sora 2 incl. Pro/Max/Pro Max tiers (UI-only — confirmed in the UI 2026-07-06, absent from the API/MCP catalog), Google Veo 3.1/3.1 Lite, Wan 2.7/2.6/2.5,
 Seedance 2.5/2.0/Pro, FLUX 3 Video, Minimax Hailuo 2.3/02, Higgsfield DoP (Lite/Standard/Turbo) for video; Soul 2.0, Soul Cinema Preview,
-Soul Cast, Nano Banana Pro/2, Kling Image 3.0/Omni, Seedream 4.0, GPT Image 2.0,
+Soul Cast, Nano Banana Pro/2, Kling Image 3.0/Omni, Seedream 5.0 Pro/Lite/Flash + 4.5, GPT Image 2.0 / 2.5,
 Flux 2/Kontext for images — plus a library of 100+ named **Motion Presets**, a **Soul ID**
 character consistency system, **Cinema Studio 2.5**, **Cinema Studio 3.0** (Business/Team plan), and **Cinema Studio 3.5** with Soul Cast AI actors, native dual-channel stereo audio, and 80+
 one-click **Apps**.
@@ -148,6 +148,7 @@ budget constraints, client work), **confirm before generating:**
 | One-click App workflow | `higgsfield-apps` |
 | Genre recipe (action, horror, ad, etc.) | `higgsfield-recipes` |
 | Fix a failing generation | `higgsfield-troubleshoot` |
+| A Seedance take came back wrong (not flagged) — reversal, babble, a third hand, gliding walk, choppy fight | `higgsfield-seedance` (`skills/higgsfield-seedance/FAILURE-MODES.md`) + `higgsfield-troubleshoot` (§ Stop-Rule Ladder) |
 | Moodboard, style direction, Soul Hex color | `higgsfield-moodboard` |
 | Visual consistency across a project | `higgsfield-moodboard` |
 | Mixed Media presets (Noir, Sketch, Particles, etc.) | `higgsfield-mixed-media` |
@@ -211,6 +212,7 @@ The routing table says *where*; this says *how much*. Loads are cumulative — e
 | Multi-scene / sequence / script breakdown | + `higgsfield-shotlist-director` + `higgsfield-pipeline` |
 | Model choice unclear or contested | + `higgsfield-models` + `specs/` (the generated spec for the output type) |
 | User reports a generation result | + `higgsfield-recall` (ledger write) |
+| A Seedance render failed (not filtered) | + `skills/higgsfield-seedance/FAILURE-MODES.md` + `skills/higgsfield-troubleshoot/SKILL.md` |
 | Budget / credits / plan question | + `higgsfield-assist` |
 | Anything else | one routing-table row → that sub-skill; resist loading more than the row names |
 
@@ -249,6 +251,7 @@ prompts where the user request is technique-shaped rather than genre-shaped:
 | Anime / stylized-2D animation — layered formula + style block + character turnaround | `templates/seedance/anime-animation.md` |
 | Close-up facial acting via FACS Action Unit codes — beat-synced expression schedule | `templates/seedance/facs-expression-beats.md` |
 | Seedance **2.5** multi-reference brief — role map + staged beats with end states | `templates/seedance/omni-reference-2-5.md` |
+| Show the model WHERE figures stand — a front-on outline position reference attached LAST (one incomplete-record run: no bleed, NOT reliable at moving blocking) | `templates/seedance/staging-reference.md` |
 
 **Text-overlay templates** (`templates/text-overlays/`) — paste-ready text-rendering
 prompts for slogan / subtitle / speech-bubble overlays:
@@ -338,10 +341,12 @@ Result. Ratios and budgeting: `skills/higgsfield-assist/SKILL.md`.
 | Resource | What it contains | When to use |
 |----------|-----------------|-------------|
 | `skills/shared/negative-constraints.md` | All generation artifacts + prevention phrases, by category | Check before every prompt — append relevant constraints |
+| `skills/shared/provenance.md` | Repo-wide provenance legend — what [OFFICIAL]/[DEMO]/[FIELD]/[EMPIRICAL]/[HOUSE]/[MEASURED] mean and the evidence each requires | Before leaning on a tagged claim |
+| `skills/shared/house-rulings.md` | Every contested doctrine question — ruling or OPEN, scope, both sides | When two skill files seem to disagree |
 | `templates/` | 10 annotated genre templates with examples, models, annotations, variations | When user request matches a common genre — use as starting point |
 | `templates/ad-asset-prep.md` | Ad asset preparation: product sheets, hero-character sheets, location plates — generate-many → test-in-motion → lock-the-winner | When an ad/product request needs reference assets built before video |
 | `templates/character-design/` | 6 character-design worksheets (9-question sheet, story bible, visual DNA) | With `higgsfield-character-design` when developing characters before prompting |
-| `templates/seedance/` | 9 Seedance technique templates: top-down-map, multi-character-anchor, single-character-position, worked-example-two-character, anime-animation, facs-expression-beats, footage-vfx-transform, global-style-prefix, omni-reference-2-5 | When Seedance request is technique-shaped (spatial blocking, multi-character anchoring, anime/stylized-2D, FACS acting, footage VFX, style prefix, 2.5 multi-reference) |
+| `templates/seedance/` | 10 Seedance technique templates: top-down-map, multi-character-anchor, single-character-position, worked-example-two-character, anime-animation, facs-expression-beats, footage-vfx-transform, global-style-prefix, omni-reference-2-5, staging-reference | When Seedance request is technique-shaped (spatial blocking, position references, multi-character anchoring, anime/stylized-2D, FACS acting, footage VFX, style prefix, 2.5 multi-reference) |
 | `templates/text-overlays/` | 3 text-rendering templates: slogan, subtitle, speech-bubble | When user request includes on-screen text rendering |
 
 ---

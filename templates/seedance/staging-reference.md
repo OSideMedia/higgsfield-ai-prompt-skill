@@ -1,6 +1,6 @@
 # Template: Staging Reference (front-on blocking map)
 
-`[DEMO — Tigran (tig-blocking-map v2), 2026-07-24]` A **staging reference** is a
+`[EMPIRICAL — Tigran's tig-blocking-map v2 skill (2026-07-24), re-derived 2026-08-22]` A **staging reference** is a
 deliberately schematic, colour-coded outline drawing attached to the generation alongside
 the real location and character references. It tells the model **who is where** — nothing
 else.
@@ -12,15 +12,28 @@ side**, because video models think in frames, not floor plans.
 
 > ## Read this before reaching for it — what it is measured to do
 >
-> - **It does NOT reliably move the blocking.** Measured across 24 cells: a first pass
->   came back inconclusive because the model's own compositional prior dominated 11 of 12
->   cells regardless of arm; a second, **counterbalanced** pass — two mirrored maps, so the
+> `[MEASURED — house A/B, two passes of 12 cells each; record incomplete: route, model and
+> date not recorded in this repo]` (label legend: `../../skills/shared/provenance.md`)
+>
+> - **It does NOT reliably move the blocking.** Two passes, 12 cells each: the first came
+>   back inconclusive because the model's own compositional prior dominated 11 of 12
+>   cells regardless of arm; the second, **counterbalanced** — two mirrored maps, so the
 >   prior is identical in both arms and cancels — had renders tracking the map's
 >   orientation **6/12, which is chance**. Do not promise a user that this pins positions.
-> - **It IS safe.** **0/18 bleed** across both passes: with the three-layer architecture
->   below in place, the map's graphic look did not enter the shot.
+> - **It showed no bleed.** **0/18 bleed** across both passes: with the three-layer architecture
+>   below in place, the map's graphic look did not enter the shot. The bleed count (18)
+>   and the orientation count (24) differ and the record does not say why — read the
+>   bleed figure as a direction, not a rate.
 >
-> So: the anti-bleed architecture is settled and reusable, and the blocking claim is not.
+> **The field claim, recorded beside it.** The Higgsfield Studio breakdowns that supplied
+> § Revising a diagram claim a staging diagram raises staging-accurate win rate
+> "dramatically" `[FIELD — Higgsfield Studio breakdowns, 2026-08]`. Our measurement
+> disagrees on blocking (and, separately, found no bleed from the map). Both stand; what
+> you **promise a user** follows the measurement — as a direction, since its record is
+> incomplete — `../../skills/shared/house-rulings.md`
+> P2-11.
+>
+> So: the anti-bleed architecture is the best-supported part — reusable, one incomplete-record run behind it — and the blocking claim is not.
 > Reach for this when you want a shared, unambiguous *authoring* artifact for a complex
 > multi-character frame — and when a position genuinely must hold, back it with the prose
 > blocking locks in `../../skills/higgsfield-seedance/SKILL.md`, not with the map alone.
@@ -54,7 +67,12 @@ The drawing carries **only** coloured outline figures — no letters, no labels,
 typography. Rendered text is unreliable and a rendered letter can bleed into the shot.
 Letters `A`, `B`, `C` exist only in the prompt text, bound to figures through colour
 (*"@A = the BLUE figure"*). This keeps the full value of letters — stable, non-visual
-handles you can use throughout the prompt (*"@A jerks his head"*) — at zero render risk.
+handles — at zero render risk. **Where the handle may stand depends on the model**
+(`../../skills/shared/house-rulings.md` P2-13): on Seedance 2.0 a handle can lead an action
+line (*"@A jerks his head"*), the house convention of leading with the tag; on **2.5** beat
+prose names the character and one visible marker instead (*"the soldier — blue scarf —
+jerks his head"*), and the letter lives only in the legend
+(`../../skills/higgsfield-seedance-2-5/SKILL.md` § Reference Roles).
 
 One muted, maximally distinct colour per figure — muted blue, orange, yellow, purple, red,
 green. **Colour is the identity of the letter only, never wardrobe.**
@@ -89,10 +107,15 @@ furniture, open background."]
 
 Nothing else — no ground line, no extra props, no extra figures. Simple, readable,
 diagrammatic — flat 2D line drawing, minimal detail, only who is where.
---ar [match source frame] --style raw --stylize 30
---no photorealism, photo texture, realistic lighting, realistic faces, shading, solid color
-fills, color blocks, text, letters, labels, typography
 ```
+
+**Settings, not prompt text.** Set the aspect ratio on the image model's own `aspect_ratio`
+parameter, matched to the source frame (the model's enum: `../../specs/image-model-specs.json`).
+The template carries no Midjourney-style flags (`--ar`, `--style`, `--stylize`, `--no`): none
+of them is a parameter of any image model in the platform catalog, and a model that does not
+parse them reads the words after `--no` as **positive** tokens — the exact photoreal look the
+line was trying to keep out (HARD RULE 3: parameters come from the specs, not from habit). The
+exclusions already live in the prompt body as statements of what the drawing is.
 
 Deliver with it: the `@staging_` tag to assign to the **result**, the `@loc_` tag for the
 source frame, and a one-line colour key (*"BLUE = the captive soldier, centre-foreground"*).
@@ -136,8 +159,11 @@ their scripted action.
 
 `@loc_[PROJECT]_[name]_[scene]_[version]` and `@staging_[PROJECT]_[scene]_[version]`.
 `[PROJECT]` in caps. Pair the staging name with its location name visibly so the two read
-as belonging together. Bump `_v2`, `_v3` on every retake and reference only the active
-version per shot — a stale tag causes ghost blocking.
+as belonging together. **Bump the version of the tag whose image changed** — the staging
+tag on every re-drawn diagram, the `@loc_` tag only when its source frame was regenerated —
+and reference only the active version per shot; a stale tag causes ghost blocking. This is
+the same rule as `../../skills/higgsfield-seedance/SKILL.md` § Tag naming: a changed asset is
+a new name, never an overwrite.
 
 ## Revising a diagram
 
@@ -175,7 +201,7 @@ video prompt is built from; the drawing only has to agree with them.
 |---|---|---|
 | Map look enters the shot | Any of the three feeds — colour-block fills, graphic vocabulary in the video prompt (**including as negations**), or the map attached before the photo references | Fix at all three layers, then bump the version tag |
 | Colour → wardrobe bleed (blue figure → blue tunic) | Filled figures, saturated palette, identity not routed to a character reference | Outlines not fills, muted palette, legend routes identity to the character tag whose own reference owns wardrobe |
-| Model invents what isn't in the frame | Missing guard lines | "Do NOT add anything that is not in the attached image" + "do NOT complete cropped bodies"; put the invented item in `--no` once it has appeared |
+| Model invents what isn't in the frame | Missing guard lines | "Do NOT add anything that is not in the attached image" + "do NOT complete cropped bodies"; once an item has appeared, name what occupies that spot instead ("the floor at frame-right is bare") in the drawing prompt |
 | Prop drifts (sword throat → chest) | Prop not pinned to anatomy | Pin with a positive **and** a contrast |
 
 ## QA checklist

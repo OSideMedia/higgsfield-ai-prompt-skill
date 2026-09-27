@@ -9,7 +9,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
-  version: 3.5.1
+  version: 3.6.0
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -39,6 +39,7 @@ metadata:
 - End extension prompts on a camera-angle change so the join reads as coverage; plan transitions ahead (last-channel-on-TV trick) [→](#clean-join-planning)
 - Draw a top-down schema when 2+ characters, a key prop placement, or complex camera geometry — prompt in absolute terms ("A 2m from B") [→](#spatial-blocking--top-down-schema-for-multi-character-scenes)
 - Never animate a "good enough" image; if the character looks wrong in the Hero Frame, Recast is the fix — not the animation prompt [→](#pipeline-pitfalls)
+- [FIELD] The edit is a loop with a declared exit: assembly → rough cut → **generation supervision** (re-generate broken shots here, and only here) → fine cut → picture lock, after which there are no new generations; colour's first job is unifying each generation's baked-in grade [→](#the-edit--five-stages-to-picture-lock)
 
 
 ## The Core Insight
@@ -452,20 +453,20 @@ This is how you get visual continuity across scenes without Soul ID.
 
 ```
 Scene 1 — Establishing:
-"A middle-aged woman, dark hair pulled back, wearing a grey wool coat,
+"A woman, dark hair pulled back, wearing a grey wool coat,
 sitting behind the wheel of a moving car. Camera through windshield —
 focused and tense expression. Sunlight flickering across her face.
 35mm film, shallow depth of field, muted color tones, Roger Deakins style."
 
 Scene 2 — Passenger reaction:
-"An elderly man in a thick knit sweater, seated in the passenger seat,
+"A grey-haired man in a thick knit sweater, seated in the passenger seat,
 gazing out the window with a calm but distant expression.
 Camera slightly off-center, interior car shot.
 Same 35mm film look, muted tones, soft natural light."
 
 Scene 3 — Object insert:
 "Close-up of a weathered wooden photo frame on a kitchen counter.
-Inside: a faded photograph of a young woman and elderly man smiling.
+Inside: a faded photograph of a dark-haired woman and a grey-haired man smiling.
 Warm afternoon light through lace curtains, dust motes in air.
 50mm lens, shallow focus, nostalgic atmosphere, yellow-green tones."
 ```
@@ -489,7 +490,7 @@ Seedream edit prompt structure:
 "[What to change, specifically]. [What to keep the same]."
 
 Example:
-"Make the elderly man look like a zombie — rotten flesh, white milky eyes,
+"Make the grey-haired man look like a zombie — rotten flesh, white milky eyes,
 grey skin tone. Keep all other elements of the image identical."
 ```
 
@@ -947,7 +948,7 @@ The extension workflow:
 
 ### Chain management — depth caps and re-anchoring
 
-[FIELD — community, seedance-2.0 repo v6.6.0] Quality degrades over
+[EMPIRICAL — community seedance-2.0 repo v6.6.0, imported 2026-07-05] Quality degrades over
 chained extensions: each generation re-ingests the previous
 generation's artifacts, and drift is expected by the ~4th–5th
 generation in a chain. Manage the chain, don't ride it:

@@ -115,7 +115,9 @@ gradients, no reflections. Studio product-photo convention: the
 background contributes zero visual information so the product reads as
 the only subject. Specify all four constraints — `#DCDCDC` alone without
 the shadowless + no-gradients + no-reflections trio still leaves the
-model room to add atmospheric noise.
+model room to add atmospheric noise. `#DCDCDC` is one shade inside the repo's
+grey law (light-to-mid neutral grey, one pinned hex per project), stated once
+in `../../../templates/ad-asset-prep.md` § Design for win rate.
 
 **5. Realism** — the Material Realism block. Reusable template populated
 per material; six axes that together make a surface read tactile and

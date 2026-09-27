@@ -4,8 +4,8 @@ description: "Use when building, writing, refining, or structuring a Higgsfield 
 user-invocable: true
 metadata:
   tags: [higgsfield, prompt, MCSLA, formula, text-to-video, image-to-video]
-  version: 3.7.0
-  updated: 2026-08-09
+  version: 3.7.1
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -97,8 +97,11 @@ Style: Cinematic, warm afternoon light, shallow depth of field.
 
 **Key rule for I2V:** Do NOT re-describe what is already in the image. Only describe
 what should *change* or *animate*. Over-describing the static elements confuses the model.
-This applies equally to @ Image references in Seedance/Cinema Studio 3.0 — describe
-ONLY motion and camera movement, never what's already visible.
+This applies equally to an @Image used **as the starting frame** in Seedance/Cinema Studio
+3.0 — describe ONLY motion and camera movement, never what's already visible. An @Image
+attached as an identity **reference** (not frame one) is a different regime: never write text
+that contradicts it; how much matching identity text may ride beside it is OPEN
+(`../shared/house-rulings.md` P1-1).
 
 ---
 
@@ -375,7 +378,10 @@ prompt:
 - **Are they failing in varied ways, with the occasional near-hit?**
   (performance flat on one roll, camera off on another, physics odd on a third)
   → **stochastic.** The prompt is right; the roll wasn't. **Stop touching the
-  prompt. Lock it, fire a batch, and cull.**
+  prompt. Lock it, fire a batch, and cull.** (When only two takes exist and both
+  failed, the troubleshoot Retry Ladder reads a second failure as over-packing
+  instead — OPEN, no default: `../higgsfield-troubleshoot/SKILL.md` § Stop-Rule
+  Ladder, `../shared/house-rulings.md` P1-2.)
 
 You don't have to eyeball this. The ledger already classifies every reject as
 structural or stochastic, and `ratio <project>` prints a **verdict** per shot

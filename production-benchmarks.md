@@ -68,6 +68,8 @@ Adil's framing of this single shot is instructive: the 72-generation cost for a 
 
 Use the 72-generations-per-10-seconds anchor as an upper-bound planning point for a single iteration-heavy establishing shot, not as a per-shot average.
 
+> **A planning number is not a stop rule.** Neither this anchor nor the 65–100-per-kept-shot corpus ratio below says how long to keep firing at a failing shot — that is the job of `skills/higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder (2 same-flaw re-rolls → rewrite; 3 paid attempts with no declared budget → named options; half a declared budget with no progress → change strategy; 4 v2v batches → prompt/source fault; 10–15 surgical iterations inside a declared budget → simplify the shot). These figures describe a finished project's funnel after the fact (`skills/shared/house-rulings.md` P1-2).
+
 ---
 
 ## Production-schedule discipline
@@ -119,7 +121,7 @@ When framing your own AI-cinema work, write down the success criteria first. The
 **When to apply:**
 
 - **Budget planning** — use the rate anchors (1.0% image / 1.5% video acceptance; ~800 iterations per anchor character; 72 generations for an iteration-heavy single shot) to estimate credit consumption for a planned scope.
-- **Expectation calibration** — when a single shot consumes more iterations than expected, the per-shot anchor is the reference point for what's normal, not a signal of failure.
+- **Expectation calibration** — when a single shot consumes more iterations than expected, the per-shot anchor is the reference point for what's normal, not a signal of failure. It is not a reason to keep re-rolling one unchanged prompt: the stop rules are `skills/higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder.
 - **Stakeholder framing** — when explaining AI-cinema cost to non-AI stakeholders, the 1%-of-traditional anchor is the order-of-magnitude reference; the $5–20M traditional bracket is the upper-bound framing.
 - **Quality-gate design** — adopt or adapt the five-criterion falsifiable success rubric before starting a project, so success is checkable rather than rationalized.
 

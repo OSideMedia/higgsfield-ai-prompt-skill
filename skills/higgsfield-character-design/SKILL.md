@@ -4,8 +4,8 @@ description: "Pre-production story-and-character development for Higgsfield proj
 user-invocable: true
 metadata:
   tags: [higgsfield, character-design, story, worldbuilding, character-sheet, story-bible, visual-dna, pre-production, consistency, narrative]
-  version: 1.2.0
-  updated: 2026-08-22
+  version: 1.3.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -23,7 +23,7 @@ The rest of this skill library answers *"how do I prompt this?"* This skill answ
 - The strongest anti-slop tool is the **Forbidden List** in the Style Sheet — naming what the world is NOT is often more useful than the palette [→](#step-5--style-sheet-visual-dna--forbidden-list)
 - Specificity beats adjectives: if *any* character could say it, it's a stereotype; keep asking **"why?"** until the answer surprises you [→](#anti-generic-drills)
 - Fillable worksheets live in `../../templates/character-design/` — hand them to the user or fill them together [→](#templates)
-- Construction laws for the sheet as an artifact: **plain grey background** · creature sheets get **two close-ups (mouth open + closed)** · the **face-lock crop** · a **size-ref frame** for scale between two subjects [FIELD] [→](#sheet-construction-laws)
+- Construction laws for the sheet as an artifact: **plain grey background** · creature sheets get **two close-ups (mouth open + closed)** · the **face-lock crop** · a **size-ref frame** for scale at extreme ratios no true landmark can express [FIELD] — grey and the one-face law are canonical in `../../templates/ad-asset-prep.md` [→](#sheet-construction-laws)
 - Once the character **looks** right, don't jump to scenes — run a **screen test**: casting read → role options → playable lines → voice triggers → one audition prompt [EMPIRICAL] [→](#screen-test--audition)
 - This skill produces inputs; it does **not** generate. Hand the locked Visual DNA + character sheet to `higgsfield-prompt` [→](#step-6--hand-off-to-generation)
 
@@ -117,7 +117,7 @@ Lock the look once, then inject it verbatim into every prompt (worksheet: `../..
 - **Palette** — 5–7 hex codes (`#1B3A4B`, `#6FA8A0`, …). Inject the hex, don't describe colors in prose.
 - **Lighting** — the recurring light logic ("flat overcast noon, warm lantern pools after dark").
 - **Materials** — what the world is made of ("wet rope, salt-bleached wood, hammered tin, oilcloth").
-- **Juxtaposition** — one familiar + new pairing that fixes the world's identity ("a child's birthday party on a half-sunk rooftop").
+- **Juxtaposition** — one familiar + new pairing that fixes the world's identity ("a birthday party on a half-sunk rooftop").
 - **Age & proportion** — the build/era language for characters.
 - **Real-life refs** — 2–3 actors / paintings / films for the look (treat as *look* references, not identity to copy).
 
@@ -136,11 +136,11 @@ This skill produces inputs; it does not generate. When the bible is locked, rout
 - **The prompt** → `higgsfield-prompt` (MCSLA structure). Inject the Visual DNA (hex + forbidden list) verbatim, and pull the subject from the character's Silhouette + Contradiction, the action from the relevant Story Spine beat.
 - **The model** → `model-guide.md` / `image-models.md`. For a character who recurs across many shots, train a **Soul ID / Soul Cast** identity (`higgsfield-soul`) rather than re-rolling one-offs; for a single hero image that won't reappear, a one-off generation is fine.
 - **Multi-shot sequences** → `higgsfield-cinema` (Cinema Studio) for shot-by-shot continuity; the Story Spine beats become the shot list.
-- **Generic prompts get generic characters.** A thin prompt ("a young man's portrait, cyberpunk") cannot recover what the sheet would have supplied — the locked sheet is the difference between a function and a person on screen.
+- **Generic prompts get generic characters.** A thin prompt ("a man's portrait, cyberpunk") cannot recover what the sheet would have supplied — the locked sheet is the difference between a function and a person on screen.
 
 ### Ship the bible as a reusable artifact, not a paste
 
-`[DEMO — Joey story-bible-builder, 2026-08-16]` `[UNPROVEN HERE]` A bible that lives in a
+`[EMPIRICAL — Joey story-bible-builder skill (2026-08-16), re-derived 2026-08-22]` A bible that lives in a
 chat transcript gets re-explained every session, drifts a little each time it is retyped,
 and is the reason "the same" character comes back subtly different a week later. **Write it
 out once as a single dense canon document and reuse the file** — one artifact that every
@@ -155,9 +155,15 @@ Two ways it gets used, and they want slightly different shapes:
    retrieval: short labelled sections, one fact per line, no narrative throat-clearing.
 
 Keep it in `workspace/input/` so it is found the way every other supplied document is
-(root `SKILL.md` § Workspace). For anything recurring, give each character a **voice lock**
-and a **movement lock** — one line each, fixed wording, reused verbatim — so speech register
-and physical signature stay pinned the way the Visual DNA pins the look.
+(root `../../SKILL.md` § Working Folders). For anything recurring, give each character a **voice
+lock** and a **movement lock** — one line each, fixed wording, reused verbatim — so speech
+register and physical signature stay pinned the way the Visual DNA pins the look. The locks
+fix the *words*, not where they go: the movement lock is copied verbatim wherever that
+movement can happen and transformed, not deleted, where it cannot
+(`../higgsfield-acting/SKILL.md` § Scene adaptation, `../shared/house-rulings.md` P3-4); the
+voice lock goes into the audio field each time on Seedance 2.0 and into the role sentence on
+2.5 — whether once per prompt or once per project is OPEN (`../higgsfield-acting/SKILL.md`
+§ Voice, `../shared/house-rulings.md` P2-2).
 
 **Build it by interview, not by questionnaire dump.** Scope first (how big is this — one
 short, or a series?), then the spine (premise, thesis, timeline, aesthetic), then factions,
@@ -180,7 +186,9 @@ ones you otherwise pay for in every downstream generation that references it.
 
 **Plain grey background, always.** Not a set, not an environment, not a gradient. A sheet
 built on a busy background makes the downstream model decide which pixels are the character
-and which are the world, and that decision costs re-rolls. Grey is the credit-saver.
+and which are the world, and that decision costs re-rolls. Grey is the credit-saver. Shade,
+the one-hex-per-project rule and every source's reason: `../../templates/ad-asset-prep.md`
+§ Design for win rate (the canonical home).
 
 **Creature and non-human sheets carry two head close-ups: mouth open and mouth closed.**
 A creature detailed enough to be interesting is detailed enough to glitch between
@@ -192,11 +200,20 @@ full body, head closed, head open.
 front full-body, back full-body, close-up — and at full-body scale the face is only a few
 dozen pixels, so averaging drags identity toward generic. **Crop the heads out of the
 full-body panels.** The full-body frames keep doing their real job (build, silhouette,
-wardrobe); the close-up becomes the single source of truth for the face.
+wardrobe); the close-up becomes the single source of truth for the face. (The Hell Grind
+sheet removes only the front figure's head — both variants leave one readable face; the
+canonical statement is `../../templates/ad-asset-prep.md` § Design for win rate.)
 
-**Scale between two subjects needs its own asset.** Relative size is the first thing to
-drift and the last thing words can fix — "tiny compared to the enormous creature" returns a
-different size every generation, and worst on wides. Build a **size-ref frame**: merge the
+**Scale between two subjects — a landmark sentence, a size-ref asset, or both.** Relative
+size is the first thing to drift, and *vague* words do not fix it — "tiny compared to the
+enormous creature" returns a different size every generation, and worst on wides. A true,
+visible body landmark does hold: near-human props take a computed anchor sentence, and one
+feature anchored a thirty-metre giant (about 16× a human) with a landmark sentence and the
+human in frame (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 2,
+`../higgsfield-seedance/HELL-GRIND.md` § Solutions born under deadline). An extreme ratio
+**no true landmark can express** needs its own asset; where both are possible, stack the
+landmark sentence and the size-ref (`../shared/house-rulings.md` P2-5). Build a **size-ref
+frame**: merge the
 two character sheets plus a frame whose scale was right into one image showing them
 together, write the proportion in human-height comparisons ("wingspan as wide as twenty
 humans lying head to toe"), save it as its own named asset, and attach it to every shot
@@ -207,7 +224,9 @@ oversized one reads as fake.
 **Fix a flawed sheet; don't rebuild it.** A warped logo or a colour cast on an otherwise
 good sheet is a one-line edit on the model that holds inputs best (Nano Banana 2), not a
 re-prompt: `change the logo to the one in image two`. Re-prompting re-rolls everything that
-was already right. Model routing per asset class: `../../image-models.md` § Routing by
+was already right. On the character's **identity base**, mask only the changed region back
+onto the untouched original (`../higgsfield-soul/SKILL.md` § The Untouched Base,
+`../shared/house-rulings.md` P2-3). Model routing per asset class: `../../image-models.md` § Routing by
 Asset Class.
 
 ---
@@ -220,7 +239,7 @@ The bible tells you who the character *is*; the generated stills tell you they *
 
 Six steps, in order — the user chooses at step 5; never skip ahead to the final prompt:
 
-1. **Casting read.** Interpret the locked character sheet as casting material, not lore: presence, playable age range, status, inner wound, external mask, likely voice, likely movement. Pull straight from the 9 questions — Silhouette and Contradiction do most of the work here.
+1. **Casting read.** Interpret the locked character sheet as casting material, not lore: presence, how weathered the character reads on screen, status, inner wound, external mask, likely voice, likely movement. The casting read is analysis for you; the audition prompt never states an age (`../higgsfield-seedance/ENGINE-RULES.md` rule 1 — describe by role, build and visible markers). Pull straight from the 9 questions — Silhouette and Contradiction do most of the work here.
 2. **Role options (3–6).** Offer contrasting role types the character could be cast as — lead, antagonist, mentor, tragic hero, villain-with-restraint, silent presence… Each option must state **what the audition has to prove** ("can he menace without raising his voice?"). An option with nothing to prove is not an option.
 3. **Three audition lines.** Real scene dialogue with subtext, implying an off-camera reader, each playable more than one way. **Not trailer narration, not lore recitation** — if it sounds like a voice-over, it cannot be *acted*.
 4. **Three voice triggers.** Each is **≤3 comma-separated qualities** ("authoritative, grief, controlled") — a *how*, never the spoken line itself. The three must contrast with each other, not be synonyms.
@@ -238,7 +257,7 @@ Six steps, in order — the user chooses at step 5; never skip ahead to the fina
 
 ### Worked mini-example (the tide-city fixer from Step 3)
 
-- **Casting read:** late 20s reading older; low status wearing borrowed confidence; mask of the indispensable broker over a wound of being kept only while useful; voice quick and transactional, dropping register when cornered; moves like his Silhouette — half-crouched at doorways, weight on the back foot.
+- **Casting read:** reads more worn than his build suggests; low status wearing borrowed confidence; mask of the indispensable broker over a wound of being kept only while useful; voice quick and transactional, dropping register when cornered; moves like his Silhouette — half-crouched at doorways, weight on the back foot.
 - **Role option — villain-with-restraint.** Must prove: he can threaten someone *while doing them a favor*, without ever raising his voice.
 - **Audition line:** *"You've still got both your water jars. That's not luck — that's me. So sit down, and let me tell you the second half of the favor."* (Playable warm or menacing; the off-camera reader is whoever owes him.)
 - **Voice trigger:** `quiet, transactional, barely controlled`.

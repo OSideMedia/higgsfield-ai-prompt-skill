@@ -14,7 +14,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS, voice-change, voice-clone]
-  version: 3.8.0
+  version: 3.9.0
   updated: 2026-09-26
   parent: higgsfield
 ---
@@ -25,7 +25,8 @@ metadata:
 *Routing aids — read the linked sections for the full rules.*
 - Native-joint audio models: Kling 3.0, Seedance 2.0 / 1.5 Pro, Veo 3/3.1, Grok — all others add audio in post [→](#which-models-support-audio)
 - Four layers to consider per prompt: Dialogue / SFX / Ambient / BGM [→](#the-four-audio-layers)
-- Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens; per-language sync-word budgets are FIELD-reported [→](#lip-sync-rules)
+- Suppressing a score: name the diegetic sound first, then the suppression as plain text; `NO BGM` vs `No music.` is OPEN (house-rulings P2-7) [→](#suppressing-music--no-bgm-is-a-spec-no-music-is-a-preference)
+- Lip-sync is the most failure-prone feature: 3–8s clips, MCU framing, one speaking face, locked camera, no head-motion tokens; per-language sync-word budgets come from a third-party skill (EMPIRICAL, unmeasured here) [→](#lip-sync-rules)
 - **Seedance 2.0 `@Audio1` is a conditioning INPUT** — beat sync, the `[AUDIO: Xs]` script block, and the first-15s extraction trap [→](#audio-as-a-conditioning-input--seedance-20-audio1)
 - Scope an audio reference like an image one: name the property that rides, the property that must NOT, and where the excluded one comes from instead [→](#scope-an-audio-reference--say-which-property-rides)
 - Multi-clip assembly: one master track · cuts land on musical punctuation, never inside a sung vowel (ECU mouth-match is the one exception) · unified grain + LUT masks batch color drift [→](#cutting-to-music--assembling-separately-generated-clips-on-one-track)
@@ -121,10 +122,17 @@ BGM: lo-fi hip-hop beat, warm vinyl crackle, relaxed.
 
 ### Suppressing music — `NO BGM` is a spec, `no music` is a preference
 
-`[DEMO — Joey cinema-director-v3, 2026-08-16]` `[UNPROVEN HERE]` When a piece must
-carry no score, the phrase matters. **`no music` reads as a weak stylistic preference**
-and loses to the model's strong prior that generated video wants a bed under it.
-**`NO BGM` reads as a production term** — a hard spec — and is the form to write.
+`[EMPIRICAL — Joey cinema-director-v3 skill (2026-08-16), re-derived 2026-08-22]`
+**Contested — OPEN, unmeasured here** (`../shared/house-rulings.md` P2-7): `No music.` is the
+form 12 of 13 harvested projects shipped (`../../templates/seedance/global-style-prefix.md`
+[FIELD]); this section is one practitioner skill's argument. Both forms are legal; lead with
+the positive list either way, and never write the suppression inside Seedance 2.5's `()` music
+bracket.
+
+The source's argument: when a piece must carry no score, the phrase matters. **`no music` reads as a
+weak stylistic preference** and loses to the model's strong prior that generated video wants a
+bed under it; **`NO BGM` reads as a production term** — a hard spec — and is, in its view, the
+form to write. (Unmeasured here — see the OPEN note above.)
 Expand it once on first use so the abbreviation is unambiguous, then let it carry.
 
 **Lead positive, then negate.** Name what the audio *is* before naming what it is not —
@@ -134,14 +142,20 @@ it decides in favour of a pad.
 
 ```
 Audio: diegetic sound only — footsteps on wet stone, fabric shift, breath, room tone.
-NO BGM — no background music of any kind. No score, no soundtrack, no instrumental,
-no underscore, no ambient musical pad, no drone, no tone bed. Nothing musical at any point.
+NO BGM.
 ```
+
+The escalation, only once a short form has failed on this shot: "NO BGM — no background
+music of any kind. No score, no soundtrack, no instrumental, no underscore, no ambient musical
+pad, no drone, no tone bed." 
 
 **Promote it to the top on a scene that must land silent.** Audio instructions carry
 more weight early; by the time the model reaches a closing audio block it has already
-decided what the piece sounds like. State `NO BGM` in the header alongside shot count
-and cut policy, then restate it as the closing audio clause.
+decided what the piece sounds like. Promote the **whole** audio policy to the header,
+alongside shot count and cut policy — the positive diegetic list first, the suppression
+after it (`Audio: diegetic only — footsteps, room tone. NO BGM.`), never the suppression on
+its own — then restate it as the closing audio clause. The positive-first order is the
+settled part of `../shared/house-rulings.md` P2-7 and holds in the header too.
 
 > **Enumerate with care — this cuts against the house rule on negation.**
 > `../shared/negative-constraints.md` and the repo's staging-reference doctrine both
@@ -229,9 +243,9 @@ The production workaround:
 2. Composite in CapCut/Premiere using picture-in-picture + linear mask (15% feather)
 3. Static image for the listening character; generated video for the speaking character
 
-### Per-language dialogue-sync budgets [FIELD — community, seedance-2.0 repo v6.6.0]
+### Per-language dialogue-sync budgets [EMPIRICAL — community seedance-2.0 repo v6.6.0, imported 2026-07-05]
 
-Field-observed word budgets for **reliable lip-sync** in a ~15s in-video Seedance
+A third-party skill's word budgets for **reliable lip-sync** in a ~15s in-video Seedance
 dialogue clip — not official limits, and not the same as how many words the model
 can *voice*. The **acoustic budget ≠ reliable-sync budget**: the model will happily
 speak more words than it can keep synced to the mouth.
@@ -243,15 +257,24 @@ speak more words than it can keep synced to the mouth.
 | Russian | ~10–15 words | Weak — budget conservatively |
 | Japanese / Korean | Under-tested | No reliable field numbers yet |
 
+This is a ceiling for reliable sync across a clip; the floor for one short shot is
+`../higgsfield-seedance/FAILURE-MODES.md` § Filler-babble on a short dialogue line. **How to
+read this budget is OPEN** (`../shared/house-rulings.md` P3-6). As a **per-clip total with a
+per-line cap** (5–10 words a line), the floor and the ceiling meet at one 8–10-word line in a
+4 s shot. As a **rate** (~1.1–1.3 words/s), an 8-word line in a 4 s shot (2 w/s) is already
+over it. Nothing here measures lip-sync at that density — the filler-babble run graded
+transcripts only. Scripting the silence (FAILURE-MODES counter 2) or cutting the shot down to
+the line satisfies both readings.
+
 Cross-language sizing unit: **"one short sentence ≈ one breath."** Write dialogue
 in breath-sized sentences and count breaths, not seconds.
 
-### Voice-reference lip-sync path [FIELD — community, seedance-2.0 repo v6.6.0]
+### Voice-reference lip-sync path [EMPIRICAL — community seedance-2.0 repo v6.6.0, imported 2026-07-05]
 
 On surfaces that accept a spoken-voice reference, an attached **rights-cleared
 voice recording drives lip-sync directly** — the model syncs the mouth to your
-recording instead of synthesizing a voice first. This is the most reliable
-field-reported path for **non-English dialogue** (it sidesteps the weak-language
+recording instead of synthesizing a voice first. The source reports it as the most
+reliable path for **non-English dialogue** (it sidesteps the weak-language
 sync budgets above). **Rights-sensitive:** only use recordings you have clear
 rights to — cloned or scraped voices are out.
 
@@ -379,7 +402,7 @@ that can coexist. (Sibling of `../higgsfield-seedance/SKILL.md` § Reference Rol
 
 ### Cutting to music — assembling separately-generated clips on one track
 
-`[EMPIRICAL — MiniMax H3 skill corpus, re-derived; cross-model editing craft]`
+`[EMPIRICAL — MiniMax H3 skill corpus, re-derived 2026-08-09; cross-model editing craft]`
 Beat sync governs what happens *inside* a clip; these three laws govern the
 timeline the clips land on:
 
@@ -703,7 +726,7 @@ Compact worked example:
 ```
 [Scene: rain-soaked night market, closing time]
 Vendor (tired, warm): "Last skewers — half price, take them."
-Girl (excited): "Two! No — three!"
+Customer (excited): "Two! No — three!"
 [sound: rain drumming on tarp canopy, a scooter passing in the distance]
 Vendor (chuckling): "Three it is. Careful, they're hot."
 [sound: coins dropped on a metal tray, charcoal hiss]

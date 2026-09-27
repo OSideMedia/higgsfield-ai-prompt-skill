@@ -127,8 +127,8 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Do:](skills/higgsfield-audio/SKILL.md#do)
     - [Don't:](skills/higgsfield-audio/SKILL.md#dont)
     - [Multi-character dialogue workaround:](skills/higgsfield-audio/SKILL.md#multi-character-dialogue-workaround)
-    - [Per-language dialogue-sync budgets [FIELD — community, seedance-2.0 repo v6.6.0]](skills/higgsfield-audio/SKILL.md#per-language-dialogue-sync-budgets-field--community-seedance-20-repo-v660)
-    - [Voice-reference lip-sync path [FIELD — community, seedance-2.0 repo v6.6.0]](skills/higgsfield-audio/SKILL.md#voice-reference-lip-sync-path-field--community-seedance-20-repo-v660)
+    - [Per-language dialogue-sync budgets [EMPIRICAL — community seedance-2.0 repo v6.6.0, imported 2026-07-05]](skills/higgsfield-audio/SKILL.md#per-language-dialogue-sync-budgets-empirical--community-seedance-20-repo-v660-imported-2026-07-05)
+    - [Voice-reference lip-sync path [EMPIRICAL — community seedance-2.0 repo v6.6.0, imported 2026-07-05]](skills/higgsfield-audio/SKILL.md#voice-reference-lip-sync-path-empirical--community-seedance-20-repo-v660-imported-2026-07-05)
   - [Audio as a Conditioning Input — Seedance 2.0 (`@Audio1`)](skills/higgsfield-audio/SKILL.md#audio-as-a-conditioning-input--seedance-20-audio1)
     - [Scope an audio reference — say which property rides](skills/higgsfield-audio/SKILL.md#scope-an-audio-reference--say-which-property-rides)
     - [Beat sync — the audio choreographs the visuals](skills/higgsfield-audio/SKILL.md#beat-sync--the-audio-choreographs-the-visuals)
@@ -746,6 +746,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [Audit procedure](skills/higgsfield-scene-engine/SKILL.md#audit-procedure)
     - [Audit output](skills/higgsfield-scene-engine/SKILL.md#audit-output)
   - [Where this sits before prompting](skills/higgsfield-scene-engine/SKILL.md#where-this-sits-before-prompting)
+    - [Same words, different layer — the term map to `higgsfield-acting`](skills/higgsfield-scene-engine/SKILL.md#same-words-different-layer--the-term-map-to-higgsfield-acting)
   - [Related Skills](skills/higgsfield-scene-engine/SKILL.md#related-skills)
 
 ## skills/higgsfield-seedance/SKILL.md
@@ -1042,6 +1043,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [The shot log is the ledger row](skills/higgsfield-troubleshoot/SKILL.md#the-shot-log-is-the-ledger-row)
   - [Sequence & Continuation Failure Atlas](skills/higgsfield-troubleshoot/SKILL.md#sequence--continuation-failure-atlas)
   - [Retry Ladder — a failed take edits the plan, not just the dice](skills/higgsfield-troubleshoot/SKILL.md#retry-ladder--a-failed-take-edits-the-plan-not-just-the-dice)
+  - [Stop-Rule Ladder — which number governs](skills/higgsfield-troubleshoot/SKILL.md#stop-rule-ladder--which-number-governs)
   - [Log the Outcome — Always](skills/higgsfield-troubleshoot/SKILL.md#log-the-outcome--always)
   - [Vision-Grounded Diagnosis — Classify the Rejected Still, Don't Guess](skills/higgsfield-troubleshoot/SKILL.md#vision-grounded-diagnosis--classify-the-rejected-still-dont-guess)
   - [Related skills](skills/higgsfield-troubleshoot/SKILL.md#related-skills)

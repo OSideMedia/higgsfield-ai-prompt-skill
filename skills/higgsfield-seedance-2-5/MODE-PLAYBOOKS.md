@@ -1,9 +1,12 @@
 # Seedance 2.5 — Mode Playbooks
 
-The long-form templates for the modes and techniques that `SKILL.md` routes to. Every
-template here is `[OFFICIAL — Dreamina]` (ByteDance's *Seedance 2.5 Prompt Guide* and
-*User Guide*), normalized to this repo's house conventions: positive phrasing, no age
-words, reference roles always paired with exclusions.
+The long-form templates for the modes and techniques that `SKILL.md` routes to. The
+templates are `[OFFICIAL — Dreamina]` (ByteDance's *Seedance 2.5 Prompt Guide* and
+*User Guide*) **unless a section carries its own tag** — three do: the anti-monochrome
+sentence (`[EMPIRICAL]`), the panel-to-timestamp mapping (`[MEASURED]`, one pair on Ark) and
+§ Give the bridge a deadline (`[EMPIRICAL]`). All are normalized to this repo's house
+conventions: positive phrasing, no age words, reference roles always paired with
+exclusions. Label legend: `../shared/provenance.md`.
 
 Read only the section the task needs.
 
@@ -265,12 +268,12 @@ When the board is monochrome and the film is not, say so in its own sentence: *"
 render in pencil, ink, or monochrome — the board's drawing style is not the film's
 style."* The generic exclusion covers borders and labels; it does not stop the board's
 *medium* from being read as the film's look, and the failure is unmistakable — the render
-comes back gray and sketchy. `[EMPIRICAL — third-party Seedance 2.5 field skill,
-2026-08-09 evaluation; vendor-consistent]`
+comes back gray and sketchy. `[EMPIRICAL — third-party Seedance 2.5 storyboard skill,
+re-derived 2026-08-09; vendor-consistent]`
 
 ### Panel-to-timestamp mapping — the optional adherence raiser
 
-`[MEASURED — 2026-08-09 A/B, (2.5, Ark), 480p, one pair]` Adding an explicit
+`[MEASURED — Ark, Seedance 2.5 · 480p, n=1 pair, 2026-08-09; record incomplete: mode not recorded]` Adding an explicit
 panel→time mapping to the grid's role line changes *when* the cuts land, not whether
 the shots come in order:
 
@@ -293,7 +296,8 @@ points). When true per-panel strictness is required, that is the **multi-keyfram
 channel** (`SKILL.md` § First/last frame and multi-keyframe control), not a grid.
 Slot position, by contrast, is not worth fighting over: the same A/B day measured
 board-first vs board-last with identical order adherence — upload order is a
-tie-breaker, not semantics (SD25-PE confirmed).
+tie-breaker, not semantics — which agrees with the `sd25-pe` skill's mapping-priority
+claim (`[EMPIRICAL — sd25-pe]`, `SKILL.md` § Provenance).
 
 ---
 
@@ -470,9 +474,8 @@ not a pixel-identical edit splice of both sources.
 
 ### Give the bridge a deadline
 
-`[HOUSE — re-derived from the nutllwhy/seedance-tvc-director evaluation, MIT, 2026-08-09.
-UNPROVEN HERE: the durations below are that source's practitioner figures, not measured on
-our material.]`
+`[EMPIRICAL — nutllwhy/seedance-tvc-director skill (MIT), re-derived 2026-08-09]` — the
+durations below are that source's practitioner figures, not measured on our material.
 
 A transition written without an arrival keeps going. The vocabulary above is safe because
 every entry names a finish; the failure is in the freehand wording around it — **"drifts

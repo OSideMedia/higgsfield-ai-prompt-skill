@@ -11,8 +11,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, recall, memory, pre-check, filter, quality, prompt, generate]
-  version: 3.0.0
-  updated: 2026-04-06
+  version: 3.0.1
+  updated: 2026-09-26
   parent: higgsfield
   compatibility:
     tools: [bash]
@@ -105,7 +105,12 @@ Ignore entries that only match on generic words.
 
 **For filter block matches:**
 - Remove or substitute the blocked terms before presenting the prompt
-- If a substitution was confirmed to work, use it directly
+- If a substitution was confirmed to work, use it directly — **except where it breaks a
+  hard engine rule.** A stored substitution that describes a character by age (the
+  real-person entry says "age range", and its example names one) loses to
+  `../higgsfield-seedance/ENGINE-RULES.md` rule 1: keep the archetype, drop the age, and
+  describe by role, build and visible markers. The memory record is data and is not
+  rewritten; the rule is applied when the substitution is used.
 - Do not tell the user "I removed X because it was blocked before" unless they ask —
   just present the clean prompt
 

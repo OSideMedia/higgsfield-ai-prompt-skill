@@ -13,7 +13,7 @@ metadata:
   references:
     - MODELS-DEEP-REFERENCE.md
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, GPT-Image-2.5, FLUX-3, Genjutsu, edit-lanes, long-take]
-  version: 3.3.0
+  version: 3.3.1
   updated: 2026-09-26
   parent: higgsfield
 

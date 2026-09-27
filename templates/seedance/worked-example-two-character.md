@@ -72,6 +72,12 @@ Final frame: Roco one step closer, Lulu's back touching the fence,
   rule + § Negative space
 - One dominant camera motion (slow dolly-in) — no compound moves per
   § Multi-motion camera overload in FAILURE-MODES.md
+- "anamorphic optical character" in the Camera line is a single-shot
+  Look choice. Across a sequence that must hold the lens, bake it into the
+  location plate and drop the optics words from the video prompt
+  (`../../skills/higgsfield-seedance/SKILL.md` § Bake it into the asset;
+  whether the Style Prefix still names the lens over baked plates is OPEN —
+  `../../skills/shared/house-rulings.md` P2-6)
 - Continuity locks explicit + Soul ID handles (`@Image1`, `@Image2`)
   match upload-order convention — see § Per-Image Role Convention +
   § Multi-Form State Tracking + § Physics-state-anchor for the

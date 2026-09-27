@@ -4,8 +4,8 @@ description: "Creates and manages reusable character profiles (Soul IDs) for con
 user-invocable: true
 metadata:
   tags: [higgsfield, soul, character, consistency, Soul ID, identity]
-  version: 3.10.0
-  updated: 2026-08-22
+  version: 3.11.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -18,7 +18,9 @@ metadata:
 - Reference image rules: front or 3/4 angle, even lighting, neutral-to-slight expression, no blur, solo subject [→](#creating-a-strong-soul-id-reference)
 - Reference generators: Soul 2.0 (fashion-forward), Nano Banana Pro (max sharpness), Seedream 4.5 (style range) [→](#creating-a-strong-soul-id-reference)
 - Character sheet angles: front face, 3/4, side profile, optional full body + optional embedded prop sheets [→](#character-sheet-creation)
-- Two-image floor per character: one clear face + one full body, on neutral grey — never a single image [→](#character-sheet-creation)
+- Two-image floor per character: one clear face + one full body, on neutral grey — never a single image; the grey law's shade and mechanism live once in `../../templates/ad-asset-prep.md` [→](#character-sheet-creation)
+- **The Untouched Base**: face pass in close-up, then a looks pass; the base close-up is never run through a model again — changes go on with masks, and a new state is a new named asset [→](#the-untouched-base--build-a-character-in-two-passes)
+- **Reference plates**: biological realism ON, photographic capture behaviour OFF (no key direction, cast shadow, bokeh, flare); the background is a field, not a room; lean prompts once a reference carries identity [→](#the-reference-plate--the-two-axes)
 - Prefer the single-prompt 3×2 six-panel sheet (one 16:9 generation) — identity locks better than multi-step assembly [→](#single-prompt-6-panel-character-sheet-32-grid)
 - Outfit change without identity drift: split-panel sheet — ghost-mannequin outfit LEFT + "face matches input 100%" close-up RIGHT [→](#split-panel-outfit-change-sheet-ghost-mannequin--identity-panel)
 - Crowds: a single-character reference makes a clone army — build a multi-character lineup and declare it a "VARIETY reference" [→](#variety-sheets--crowds-without-clones)
@@ -30,7 +32,7 @@ metadata:
 - Soul Cast specs: up to 4K (Character/Location modes) / 2K (General); batch 1 or 10; 0.125 credits per image [→](#30-soul-cast-specs)
 - Use 2–3 reference shots (frontal, 3/4, side); if features drift, use the character sheet as @Image1 [→](#character-consistency-best-practices)
 - Soul Cinema is the default CS 3.0/3.5 image-mode model — single-step, ~0.125 credits/image [→](#soul-cinema-as-the-cs-3035-default-image-model)
-- Studio-feeling output is an intermediate, not a final — re-pass through Soul Cinema with grade, directional lighting, lens character [→](#studio-look-vs-cinematic-look--soul-cinema-as-the-re-pass)
+- Studio-feeling output is an intermediate, not a final — re-pass through Soul Cinema with grade, directional lighting, lens character; the result is a derived look frame, never the identity base or a reference plate [→](#studio-look-vs-cinematic-look--soul-cinema-as-the-re-pass)
 - Skip Soul ID for single shots or when you want maximum creative variation [→](#when-to-use-soul-id)
 - Plasticky face in wide shots: crop the face from a closer-shot panel and replace it in post [→](#face-from-wide-shot-workaround)
 - Casting a REAL person: the sheet alone returns a lookalike — erase the head on the body panels and paste their actual photo into the portrait panel [→](#the-hybrid-sheet--casting-a-real-person)
@@ -152,7 +154,7 @@ sad brown eyes while autumn leaves drift past his grey coat.
 
 **Identity Block:**
 ```
-The Soul ID character — man in his 60s, deep wrinkles, warm brown eyes,
+The Soul ID character — grey-haired man, deep wrinkles, warm brown eyes,
 wearing a heavy grey wool coat, brown leather gloves.
 ```
 
@@ -268,6 +270,14 @@ that carries it survive every later version of the character. This is the struct
 to the drift documented in § Two-Tool Refinement Pipeline, where each successive model pass
 softens texture toward plastic — the base never takes another pass, so it never softens.
 
+> **How the one-line model fix composes with it** (`../shared/house-rulings.md` P2-3). The
+> field fix for a flawed sheet — attach it to Nano Banana 2 with one sentence
+> (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1) — is a legal way to *make* the
+> point edit. On the base, what it returns is a donor: mask the changed region back onto the
+> untouched original, as `../higgsfield-seedance/HELL-GRIND.md` also requires. Whether one
+> full pass alone measurably softens a sheet is unmeasured here; the mask is the default
+> because it costs minutes, while a softened base is paid for in every shot that reads it.
+
 ### Hold the face, change everything else
 
 The same rule scales to alternate versions of one character — a different era, a different
@@ -283,7 +293,7 @@ character in a hospital bed are two assets of one man.
 
 ## The Reference Plate — the two axes
 
-`[DEMO — Joey character-builder / banana-pro-director 3.0, 2026-08-16]` `[UNPROVEN HERE]`
+`[EMPIRICAL — Joey character-builder / banana-pro-director 3.0 skills (2026-08-16), re-derived 2026-08-22]`
 Photoreal character work runs two things that sound like one thing and are not. Separating
 them is the single most useful idea in plate building, because "photorealistic" sounds like
 it means both and only one of them belongs on a reference.
@@ -308,10 +318,23 @@ scene prompt does all the lighting later.**
 > what poisons a reference. The subject should look like a real person, rendered flat,
 > against nothing.
 
-The one capture phrase that survives: `Photographed on a 50mm prime, even sharpness, soft
-natural film grain. Photographed not generated.` — the focal length is named in plain words
+The one capture phrase that survives: `Photographed on a 50mm prime, even sharpness[, soft
+natural film grain]. Photographed not generated.` — the focal length is named in plain words
 with no aperture, no bokeh and no falloff attached, so it buys the anti-AI-uniformity signal
-without switching on capture behaviour.
+without switching on capture behaviour. **The bracketed grain clause is an open question, not
+part of the settled phrase** — see the box below.
+
+> **The grain clause is contested — OPEN, no default** (`../shared/house-rulings.md` P2-4).
+> This source keeps *soft natural film grain* as part of the anti-uniformity signal.
+> `../higgsfield-seedance/HELL-GRIND.md` § The character sheet `[OFFICIAL — Hell Grind brief]`
+> reports the opposite: bake film grain into the sheet and the character carries that look
+> into every scene and stops reacting to new light. Both failures are inherited by every shot
+> that reads the plate — baked grain cannot be removed per shot; a plate that reads
+> AI-uniform, plastic skin included, softens every shot the same way (§ The Untouched Base
+> guards the same texture) — so neither is clearly the cheaper failure, and nothing here
+> measures it. What both sides share: Axis-1 skin detail stays fully on (Hell Grind's own
+> sheet asks for "real skin with visible pores, no retouch"). Decide per project, pin the
+> choice once, and never vary it across one character's plates.
 
 ### The background is a FIELD, not a ROOM
 
@@ -357,6 +380,12 @@ When two or more references are attached, **say what each one carries** so the m
 not average them: *"face, bone structure and skin tone come from the character reference;
 wardrobe and accessories come from the look reference."*
 
+> Lean prompts next to a reference are one side of an **open** question for *video*
+> (`../shared/house-rulings.md` P1-1): Higgsfield's feature-film pipeline pastes the full
+> descriptor, word for word, beside the reference (`../higgsfield-seedance/HELL-GRIND.md`
+> § The core problem). For image plates this section's rule stands; for a multi-shot video
+> pipeline, read the ruling first.
+
 ---
 
 ## Character Sheet Creation
@@ -370,20 +399,11 @@ never hand a video model a character on a single image. The minimum is **one
 clear face view + one full body** — in the tutorial's words, "so Seedance
 doesn't have to guess." Everything below builds upward from that floor.
 
-**Background:** put sheets on **neutral grey**, not white or black — the
-tutorial states this as tested (light-grey cyclorama for people, `#7f7f7f`
-for creature sheets). Canonical statement of the grey rule:
-`../../templates/ad-asset-prep.md` § Design for win rate.
-
-*Why grey works* `[DEMO — Joey character-builder, 2026-08-16]` `[UNPROVEN HERE]`: pure
-white and pure black create **maximum subject-to-background contrast**, and image and video
-models amplify errors hardest at high-contrast edges — that is where halo, edge breathing
-and contour instability get baked in. A neutral mid-grey ground lowers that contrast, giving
-cleaner edge extraction and far less inherited contrast when the still is later read as a
-reference frame. Since virtually every character plate eventually seeds video work, grey is
-the correct standing default rather than a stylistic preference. Keep the *field* neutral
-and never warm-shifted, but do not let it cool the subject — skin and wardrobe render at
-their true tone, as under neutral daylight. See § The Reference Plate — the two axes.
+**Background:** put sheets on **neutral grey**, not white or black. The law is stated once —
+the shade range, one pinned hex per project, the three reasons sources give for it, and the
+contact-shadow disagreement — in `../../templates/ad-asset-prep.md` § Design for win rate.
+For a plate that will be read as a reference, the grey is a flat *field*, not a lit
+seamless (§ The Reference Plate — the two axes).
 
 **How to create a character sheet:**
 1. Generate your character in Cinema Studio using your preferred optical stack
@@ -435,7 +455,9 @@ pixels come from a camera.
 1. Generate the sheet normally. Keep it for what it is genuinely good at —
    costume texture, wear, silhouette, body, the panel geometry.
 2. **Erase the head on the full-body panels.** Leave them headless. The
-   generated face is the part that was wrong; deleting it stops it competing.
+   generated face is the part that was wrong; deleting it stops it competing
+   (the one-readable-face law: `../../templates/ad-asset-prep.md` § Design for
+   win rate).
 3. **Paste the person's real photograph into the portrait panel.** That panel
    is now photographic, not generated.
 4. Ride the composite as the character reference.
@@ -465,6 +487,13 @@ Nano Banana:
 |---|---|
 | Seedream 5.0 Pro | costume **texture and wear**, and consistency of the costume across all three panels |
 | GPT Image 2 | **curly hair** — full, natural, and identical from every angle; the others could not hold it |
+
+The AI-vs-VFX build routes "clothing, wardrobe changes, branded garments" to GPT Image 2
+(`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1); this comparison picked Seedream 5.0
+Pro for costume texture on a sheet generated from scratch. The build does not split by job —
+reading the two as *edits on an existing sheet* vs *texture from scratch* is a `[HOUSE]`
+inference that would let both stand — not a default. Two productions, no measurement here;
+OPEN (`../shared/house-rulings.md` P3-2), and the method below decides per character.
 
 [UNPROVEN HERE] — one production's comparison, on two characters. Treat the
 *method* as the finding, not the table: **run the same sheet prompt through
@@ -528,7 +557,8 @@ tutorial used it to put its lead into a new Y2K outfit:
   same identity, features, hair, skin, no drift. This panel owns the face;
   wardrobe appears only as the upper edge of the LEFT panel's outfit.
 - **Clear vertical divide, neutral grey studio backdrop, even soft light**
-  across both panels.
+  across both panels. (The grey law — shade range, one pinned hex per project —
+  is stated once in `../../templates/ad-asset-prep.md` § Design for win rate.)
 
 The split gives the video model one panel to read for *what they wear* and
 one for *who they are*, so the outfit change can't pull the face with it.
@@ -654,6 +684,13 @@ The split is by task:
   with state variations. Better preservation of the face under edit
   pressure.
 
+**Scope** (`../shared/house-rulings.md` P2-3). An edit pass is a second full pass. On the
+character's **identity base** — the close-up face plate every shot reads — make the edit, then
+**mask only the changed region back onto the untouched original** (§ Anti-"slop" realism
+composite below; § The Untouched Base). A whole-frame edit such as *adjust lighting* has no
+region to mask back, and lighting baked into a reference plate is what § The Reference Plate
+keeps off: it belongs on a derived look frame, never on the identity base.
+
 When to reach for both tools: the character will appear in tens of
 shots and is worth front-loading iteration cost into. A planning
 anchor from a Higgsfield-team production — the lead character of
@@ -686,7 +723,10 @@ face untouched:
 
 Use the Re-Pass when you want one clean re-generated sheet; use the
 layer-mask composite when you must preserve the exact original face and
-only graft in the edited region. Complements the "generate individually +
+only graft in the edited region. On a character's **identity base** only the
+composite is legal — the base close-up never takes another pass (§ The
+Untouched Base); the Re-Pass is for derived sheets whose own base stays
+untouched. Complements the "generate individually +
 Photoshop composite" note in `../../image-models.md`. Cross-linked from
 `../../templates/ad-asset-prep.md` § Preserve realism after an edit.
 
@@ -988,6 +1028,13 @@ looks like a product photograph rather than a film still.
 The studio look is a stop on the path, not the destination. Plan for the
 re-pass as part of the workflow; don't treat the first generation as the
 final.
+
+> **Scope** (`../shared/house-rulings.md` P2-3). The re-pass adds exactly what
+> § The Reference Plate switches off — grade, directional light, lens
+> character — so its output is a **derived look frame**: a final still, or a
+> start frame whose look *is* the shot. It is never the identity base and never
+> a plate that downstream generations read as a reference. Run it on a copy;
+> the base close-up does not take the pass (§ The Untouched Base).
 
 ---
 

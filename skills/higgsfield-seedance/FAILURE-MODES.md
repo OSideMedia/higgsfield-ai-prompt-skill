@@ -1,18 +1,21 @@
 ---
 name: higgsfield-seedance
 description: >
-  Failure-mode reference for Seedance 2.0 / Seedance Pro. Catalog of
-  named output failures (FPS drift, NSFW false-positive, keyframe-
-  invention, physics-state drift, action-reversal fill, filler-babble on
-  short dialogue lines, truncated action, mimed manipulation, orphan
-  limbs in a group shot, multi-motion overload, spatial-awareness failures)
-  with symptom + mechanism + counter for each. Consulted when a Seedance
-  generation lands in a recognizable failure pattern.
+  Failure-mode reference for Seedance 2.0 / Seedance Pro. Catalog of 15
+  named output failures (FPS drift, frame-level review, failed-generation
+  salvage, NSFW false-positive, keyframe-invention, physics-state drift,
+  action-reversal fill, filler-babble on short dialogue lines, truncated
+  action, mimed manipulation, orphan limbs incl. the solo third hand,
+  multi-motion overload, spatial-awareness failures, walking / locomotion
+  and cross-shot camera speed, fights generated as separate clips) with
+  symptom + mechanism + counter for each, plus a self-repair checklist.
+  Consulted when a Seedance generation lands in a recognizable failure
+  pattern.
 user-invocable: false
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, seedance-pro, failure-modes, recovery, prompt]
-  version: 1.5.0
-  updated: 2026-08-22
+  version: 1.6.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -209,6 +212,13 @@ camera moves, name the endpoint — state what the frame shows when the
 move finishes. Full treatment: `SKILL.md` § Prompt-Craft Laws →
 Motion-prompt laws.
 
+**Scope** (`../shared/house-rulings.md` P2-1). The chain is for **simple
+same-direction motion** whose job is to fill the clip. A **result** reached
+through a reversing process (reaches in, pulls out, winds up) is the other
+case — start *in* the state (`../higgsfield-acting/SKILL.md` § States, not
+transitions); an **object that must visibly change** under the hands takes
+the causal chain in § Mimed manipulation below. Pick by what the shot is for.
+
 ---
 
 ## Filler-babble on a short dialogue line
@@ -223,16 +233,28 @@ the rig below and is not claimed here.
 reversal fill spends leftover motion time. A line that ends well before
 the clip does leaves a silent window, and the cheapest continuation
 consistent with the shot is more speech-shaped sound in the same voice.
-`[MEASURED — sync-budget ladder, 2026-08-09, EN × 4s × 480p × Seedance
-2.0]`: every take at ≤6 words carried it; 8- and 12-word lines came back
-4/4 clean. The risk direction is the **short** line, not the long one —
-no truncation was observed up to 12 words (≈3 words per second).
+`[MEASURED — sync-budget ladder, Seedance 2.0, EN, 4 s, 480p, 2026-08-09;
+record incomplete: route not recorded, mode not recorded, take count at ≤6
+words not recorded, record held outside this repo]`: every take at ≤6 words carried it; 8- and
+12-word lines came back 4/4 free of filler-babble each (transcript-graded). Read it as a **direction**, not a rate
+(`../shared/provenance.md` § Modifiers): the risk sits with the **short**
+line, not the long one — no truncation was observed up to 12 words (≈3 words
+per second).
 
 **Counter.** Give the dead air a job instead of leaving the choice to
 the model, and state the mouth state of every face that is visible:
 
 1. **Fill the window.** Extend the line to roughly 8+ words in a
-   4-second shot, or cut the shot down to the line.
+   4-second shot, or cut the shot down to the line — inside the English
+   reliable-sync budget (5–10 words per line, ~16–20 per ~15 s clip:
+   `../higgsfield-audio/SKILL.md` § Per-language dialogue-sync budgets).
+   The two numbers sit on different axes — this one is a floor against dead
+   air in one short shot, that one a ceiling for reliable lip-sync across a
+   clip. Whether they meet at one 8–10-word line in a 4 s shot depends on
+   reading the budget as a per-clip total (they do) or as a rate (~1.1–1.3
+   w/s, and an 8-word 4 s line is over it) — OPEN, `../shared/house-rulings.md`
+   P3-6. The run above graded transcripts, not lip-sync, so it does not settle
+   that. Counter 2, or cutting the shot to the line, holds under both.
 2. **Script the silence.** If the line has to stay short, write what
    occupies the rest of the window — a named pause beat, an ambient or
    SFX event, action prose covering the gap before and after the line.
@@ -245,10 +267,13 @@ the model, and state the mouth state of every face that is visible:
    unmarked mouth in frame is a mouth the model may decide is talking.
    State the rest state as something that *is* true — "lips at rest",
    "jaw closed, breath lifting the chest", "eyes on the speaker, mouth
-   still" — never as a negation (`SKILL.md` § Prompt-Craft Laws → No
-   negative prompts in the prompt body). Note that "listens without
-   speaking" reads positive but carries *without*, so it trips the same
-   law; prefer the forms above.
+   still" — as a fact that is true, not as a negation. Prefer these over
+   "listens without speaking": that phrase names *speaking*, the very thing
+   being kept off the mouth. This is a preference inside the positive-form
+   law, not a ban on the word "without" — the law targets negative lists and
+   bare negations, not every "no" token (`SKILL.md` § Prompt-Craft Laws → No
+   negative prompts in the prompt body; `../shared/negative-constraints.md`
+   § Where a ban is still correct).
 
 **Worked example.** A 4-second two-shot carrying one scripted line:
 
@@ -281,9 +306,8 @@ most, and it survives review because each individual shot looks correct.
 to *finish* inside them, so the model spends the runtime on the approach
 and the completion falls past the boundary. Nothing in the prompt says
 which state must be visible before the shot may end, so any frame is as
-good a stopping point as any other. `[HOUSE — technique re-derived from
-the nutllwhy/seedance-tvc-director evaluation, MIT, 2026-08-09.
-UNPROVEN HERE: not A/B'd on our material.]`
+good a stopping point as any other. `[EMPIRICAL — nutllwhy/seedance-tvc-director
+skill (MIT), re-derived 2026-08-09]`
 
 **Counter.** Name the completion state as a visible fact and let it
 settle before anything else happens — *the lid seats flush and stays
@@ -294,9 +318,11 @@ already dark) so the sequence inherits what the cut skipped. The source
 holds the completion for roughly 0.15–0.35s before cutting; treat that
 as the direction to lean, not as a measured figure.
 
-The audio twin of this law is already in this repo — a spoken line pinned
-early so the cut inherits a tail (§ Filler-babble, and OSIDE's
-`dialogue-no-handle`). This is the same law for picture.
+The dialogue form of the second move is already doctrine here: open each new
+generation on the line that closed the previous one, so the emotion crosses the
+seam together with the text (`HELL-GRIND.md` § Dialogue construction, the seam
+tricks). This is the same move for picture — the next shot inherits what the
+cut skipped.
 
 ---
 
@@ -310,8 +336,8 @@ never creases. Reads as an actor rehearsing without a prop.
 **Mechanism.** The manipulation was written as its verb — *tears it open
 cleanly*, *twists the cap off* — which gives the model a gesture and no
 mechanism. With no structure, no anchor and no material response stated,
-the gesture is the only part it can render. `[HOUSE — re-derived from the
-same evaluation. UNPROVEN HERE.]`
+the gesture is the only part it can render. `[EMPIRICAL —
+nutllwhy/seedance-tvc-director skill (MIT), re-derived 2026-08-09]`
 
 **Counter.** Write the causal chain, in order:
 
@@ -351,8 +377,8 @@ trade places between the wide and the close-up.
 **Mechanism.** With no order lock, the model re-derives the group on
 every cut rather than carrying one forward. Reaching is the moment it
 shows, because a hand is the smallest thing in frame that has to belong
-to somebody. `[HOUSE — re-derived from the same evaluation. UNPROVEN
-HERE.]`
+to somebody. `[EMPIRICAL — nutllwhy/seedance-tvc-director skill (MIT),
+re-derived 2026-08-09]`
 
 **Counter.** Lock the group before the action: the exact headcount, the
 left-to-right screen order, who sits next to whom — held in every
@@ -375,12 +401,15 @@ not apply, because there is no order. **Anatomy needs an explicit headcount
 even at one character.** Carry it in every close-up on hands:
 
 ```
-There are only two hands in the frame, both belonging to the same person,
-entering from the same sleeve.
+There are only two hands in the frame, both belonging to the same person: the
+left hand enters from the left sleeve, the right hand from the right sleeve,
+both from the bottom of frame.
 ```
 
-Note the shape — it states the count, the ownership, **and the entry point**.
-Count alone still lets a correctly-numbered pair arrive from two directions.
+Note the shape — it states the count, the ownership, **and each hand's entry
+point**. Count alone still lets a correctly-numbered pair arrive from two
+directions, and an entry point the body cannot produce (both hands "from the
+same sleeve") is itself a request for the defect.
 
 ---
 
@@ -470,10 +499,14 @@ heel lands first, strict left-right alternation, one foot always on the ground
 
 **Matching cuts expose a sneakier one — camera speed.** Two tracking shots of the same walk
 came back at different speeds ("fast feet, slow backs"), which no per-shot description
-catches because each shot is individually fine. Fix it across the pair by stating the
-relation: `the camera speed of shot 9 equals shot 10, exactly.` Anything that must match
-between two shots has to be written as a relation in both, since neither prompt can see the
-other (§ Context isolation in `SKILL.md`).
+catches because each shot is individually fine. The field fix was phrased as a relation —
+"the camera speed of shot 9 equals shot 10" — but between two separately generated shots
+that sentence asks for something neither generation can see, and a shot number is exactly
+what § Context isolation in `SKILL.md` keeps out of a prompt. Write the **same absolute value
+into both prompts**, word for word, so each carries the whole instruction on its own:
+`the camera tracks alongside at a steady 5 km/h, matching their walking pace, 2 m from them`
+(speeds in km/h: `SKILL.md` § Measurable-language rules). Anything that must match between
+two shots is a shared absolute, repeated — never a cross-reference.
 
 ---
 
@@ -503,8 +536,11 @@ and the body lands somewhere different every time. Write the vector into the mov
 
 **When full-body continuity is too expensive, cut into the body.** Quick inserts of hands,
 waist and feet hide transitions and add impact — and **a close-up of feet is far harder to
-break than a wide shot of two bodies**. Fight keyframes can also carry their own stick-figure
-blocking maps as first-frame geometry (`../../templates/seedance/staging-reference.md`).
+break than a wide shot of two bodies**. A fight shot can also carry a staging reference
+(`../../templates/seedance/staging-reference.md`) — thin outline figures attached **last**, as
+a position reference only, **never** in the first-frame role (a drawing given that role becomes
+frame one). Read its measured caveat first: it does not reliably move blocking, so the
+positions still need prose locks.
 
 Related: § Truncated action (the cut landing before the result) and § Orphan limbs in a
 group shot are the two failures most likely to co-occur with this one.

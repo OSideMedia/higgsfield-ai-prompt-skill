@@ -402,7 +402,7 @@ Build every prompt in this order. The model weights early words heavily — subj
 **Level 2 example:**
 ```
 @Image1 character identity.
-Young woman in red coat walks along rain-soaked street.
+Woman in red coat walks along rain-soaked street.
 Slow tracking follow, medium shot. Neon reflections on wet pavement.
 Soft rain ambience.
 ```
@@ -556,7 +556,7 @@ The Jimeng platform hosts two separate tools. Seedance 2.0 is the **Video Genera
 
 **Character card format** — write once, reuse across all prompts:
 ```
-[Name]: [age range], [build], [skin tone], [hair style/color],
+[Name]: [role], [build], [skin tone], [hair style/color],
 [defining features], [wardrobe], [emotional energy].
 ```
 

@@ -257,7 +257,7 @@ The scene-physics framing replaces stylistic adjectives (`moody`, `dramatic`, `c
 
 ### The night register
 
-`[DEMO — Joey banana-pro-director 3.0, 2026-08-16]` `[UNPROVEN HERE]` "Night" prompted
+`[EMPIRICAL — Joey banana-pro-director 3.0 skill (2026-08-16), re-derived 2026-08-22]` "Night" prompted
 plainly comes back as **bright-night** — an evenly lit scene with a blue-teal wash over it,
 which is the look of a day plate graded cool, not the look of night. Theatrical night
 cinema is **mostly dark, with hard punchy practicals cutting through it**. The register

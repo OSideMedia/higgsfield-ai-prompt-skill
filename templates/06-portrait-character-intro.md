@@ -13,7 +13,7 @@ User asks for a character intro, portrait, close-up, emotional moment, reaction 
 
 ### Identity Block
 ```
-The Soul ID character — a man in his late 40s, weathered skin, deep-set eyes,
+The Soul ID character — a broad-shouldered man, weathered skin, deep-set eyes,
 salt-and-pepper stubble, wearing a worn leather jacket over a dark henley.
 A thin scar across the left eyebrow.
 ```
@@ -32,7 +32,7 @@ cold blue fill. 2.35:1 anamorphic.
 Model: Kling 3.0
 Aspect: 16:9 | Duration: 8s | Style: Cinematic
 
-A weathered man in his late 40s stands at the edge of a rain-soaked harbour dock at night.
+A weathered, broad-shouldered man stands at the edge of a rain-soaked harbour dock at night.
 Salt-and-pepper stubble, worn leather jacket, collar turned up against the driving rain.
 An old leather briefcase sits at his feet, open, papers scattered by the wind.
 He stares at the horizon.
@@ -45,7 +45,7 @@ cold blue fill. 2.35:1 anamorphic.
 
 | Prompt element | Why it works |
 |---------------|-------------|
-| "late 40s, weathered skin, deep-set eyes" | Observable physical traits — not "handsome" or "attractive" |
+| "broad-shouldered, weathered skin, deep-set eyes" | Observable physical traits — not "handsome" or "attractive", and not an age (build and skin carry what an age number would) |
 | "salt-and-pepper stubble" | Texture detail the model renders well at close range |
 | "thin scar across the left eyebrow" | Distinguishing mark — helps Soul ID lock identity |
 | "rain-soaked harbour dock at night" | Specific environment with atmospheric conditions |
