@@ -285,28 +285,30 @@ _SETTINGS_PATTERNS = {
         r"\bextension[\s_-]*mode\**\s*[:：]\s*\**\s*(forward|backward)", re.I),
 }
 
-# Duration: the label, then the VALUE is parsed by _parse_duration. A length
-# needs its `s`; the smart-duration sentinel is `-1` (optional `s`) or the
-# word `smart` standing alone ("smart", "smart duration", "smart (model
-# picks)") — "smart pacing, 8s" is a pacing note and an 8s length, not the
-# sentinel. The sentinel is only LEGAL on models whose spec documents it —
+# Duration: the label, then ONLY its leading value is parsed — up to the
+# first separator (`,` `;` `(` `|` `**` or 2+ spaces). A length needs its `s`
+# ("8s", "8 s", "8 seconds"); the smart-duration sentinel is `-1` (optional
+# `s`) or `smart` / `smart duration`. Anything else in the leading value
+# ("auto", "TBD", "smart pacing", "5-10s") declares no checkable duration —
+# later numbers on the line ("beats at 2s and 5s", "(was 10s)") are prose.
+# The sentinel is only LEGAL on models whose spec documents it —
 # structural_lint decides that, not the parser.
 _DURATION_LABEL_RE = re.compile(r"\bduration\**[ \t]*[:：][ \t]*(?P<val>[^\n]*)", re.I)
-_SMART_RE = re.compile(r"smart(?:[ \t]+duration)?(?=[ \t]*(?:$|[,;(|*]|[ \t]{2,}))", re.I)
-_LENGTH_RE = re.compile(r"(?<![\d.\-–])(\d+)[ \t]*s(?:ec(?:ond)?s?)?\b(?![ \t]*[-–][ \t]*\d)", re.I)
+_LEADING_VALUE_RE = re.compile(r"^[*\s]*(?P<v>.*?)(?=[,;(|]|\*\*|[ \t]{2,}|$)")
+_SENTINEL_VALUE_RE = re.compile(r"^(?:-1(?:[ \t]*s)?|smart(?:[ \t]+duration)?)$", re.I)
+_LENGTH_VALUE_RE = re.compile(r"^(\d+)[ \t]*s(?:ec(?:ond)?s?)?$", re.I)
 
 
 def _parse_duration(text: str) -> int | None:
     for m in _DURATION_LABEL_RE.finditer(text):
-        val = m.group("val").lstrip("* \t")
-        if re.match(r"-1(?![\d.])", val):
+        lead = _LEADING_VALUE_RE.match(m.group("val")).group("v").strip().rstrip(".")
+        if _SENTINEL_VALUE_RE.match(lead):
             return -1
-        if _SMART_RE.match(val):
-            return -1
-        length = _LENGTH_RE.search(val)
+        length = _LENGTH_VALUE_RE.match(lead)
         if length:
             return int(length.group(1))
     return None
+
 
 # The model-mode label. Mode ids keep their hyphens (gemini_omni_flash_1_1:
 # text-to-video / image-to-video / reference-to-video). The key may carry a
@@ -319,6 +321,24 @@ _MODE_RE = re.compile(
 
 
 _LIST_MARKER_RE = re.compile(r"^[ \t>]*(?:[-*+•]|\d{1,3}[.)])$")
+# Words that, right before `mode` / `references` / `start frame`, make the key
+# the tail of a DIFFERENT label ("extension mode", "failure mode", "style
+# references") — decided by the word itself, not by what precedes it, so
+# "Tip: extension mode: forward" is not the model mode.
+# ponytail: a hand-kept qualifier word list — a prose word missing here after
+# a `Label:` reads as the mode (a loud mode-not-supported FAIL, never a silent
+# pass). Upgrade path: a label grammar (the known header keys) instead of
+# excluding qualifiers.
+_QUALIFIER_WORDS = {
+    "extension", "failure", "format", "shot", "image", "video", "audio", "camera",
+    "motion", "render", "rendering", "edit", "editing", "color", "colour", "blend",
+    "blending", "fallback", "safe", "safety", "debug", "test", "playback", "display",
+    "dark", "light", "lighting", "game", "burst", "portrait", "night", "scene", "style",
+    "character", "voice", "pose", "outfit", "face", "error", "privacy", "draft",
+    "preview", "multi", "single", "split", "loop", "photo", "focus", "exposure", "flash",
+    "macro", "manual", "sync", "lip", "legacy", "compatibility", "batch", "story",
+    "storyboard", "physics", "sound", "music", "prompt", "reference", "blocking",
+}
 
 
 def _label_starts_here(text: str, start: int) -> bool:
@@ -346,8 +366,12 @@ def _label_starts_here(text: str, start: int) -> bool:
         return True                          # "1080p, mode:" / "fast; mode:"
     if token in ("-", "–", "—") or re.search(r"[\d:：]", token):
         return True                          # "16:9 Mode:", "1080p Mode:", " - Mode:"
-    # A plain word: the value of a preceding `Label:` opens a new label;
-    # any other word qualifies the key ("FORMAT MODE", "Shot Mode").
+    # A plain word right before the key: a known qualifier makes it a
+    # different label ("Tip: extension mode:", "**Watch**: failure mode:");
+    # otherwise the value of a preceding `Label:` opens a new label ("Aspect:
+    # auto Mode: fast"), and any other word qualifies the key ("FORMAT MODE").
+    if token.lower() in _QUALIFIER_WORDS:
+        return False
     return tail[:len(tail) - len(token)].rstrip(" \t*").endswith((":", "："))
 
 
@@ -396,18 +420,22 @@ def _parse_media(text: str) -> tuple[dict | None, str | None]:
         for role, n in kv:
             media[role.lower()] = max(media[role.lower()], int(n))
         # "2 images (@Image 1, @Image 2)" names the SAME two images twice:
-        # per role, the stated count and the distinct handles are two views
-        # of one set — take the larger, never the sum.
+        # per role, the stated count, the distinct handles and the highest
+        # handle index (`@Image 3` implies three) are views of one set — take
+        # the largest, never the sum.
         stated: dict[str, int] = {}
         named: dict[str, int] = {}
+        highest: dict[str, int] = {}
         for n, kind in counts:
             role = _KIND_ROLE[kind.lower()]
             stated[role] = stated.get(role, 0) + int(n)
-        for kind, _ in handles:
+        for kind, idx in handles:
             role = _KIND_ROLE[kind]
             named[role] = named.get(role, 0) + 1
+            highest[role] = max(highest.get(role, 0), idx)
         for role in set(stated) | set(named):
-            media[role] += max(stated.get(role, 0), named.get(role, 0))
+            media[role] += max(stated.get(role, 0), named.get(role, 0),
+                               highest.get(role, 0))
     return media, ("; ".join(errors) or None)
 
 

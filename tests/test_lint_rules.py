@@ -540,7 +540,7 @@ def test_stated_count_and_handles_are_one_set(line, n):
 
 
 @pytest.mark.parametrize("header,duration", [
-    ("**Duration**: smart pacing, 8s", 8),                  # was read as -1
+    ("**Duration**: smart pacing, 8s", None),               # was -1; only the leading value counts
     ("**Duration**: smart", -1),
     ("Duration: smart duration", -1),
     ("Duration: smart (the model picks)", -1),
@@ -560,3 +560,47 @@ def test_duration_unverified_when_the_floor_is_unknown():
     findings = sl.structural_lint(CLEAN, sl.Settings(duration=5), spec, baseline=NO_RULES)
     assert "duration-unverified" in warns(findings)
     assert "duration-out-of-range" not in fails(findings)
+
+
+# ── v3.37.0 review 2: the word before the key decides, not an earlier colon ──
+
+@pytest.mark.parametrize("line", [
+    "Tip: extension mode: forward",          # v3.36.0 got this right too
+    "Note: failure mode: drift",
+    "**Watch**: failure mode: face drift",
+    "Camera: dolly — Shot Mode: close",
+])
+def test_qualified_mode_after_a_label_is_not_the_mode(line):
+    assert sl.parse_settings_header(line + "\n" + CLEAN).mode is None
+
+
+def test_qualified_mode_after_a_label_does_not_fail_the_lint():
+    text = "Tip: extension mode: forward\n\n" + CLEAN
+    r = subprocess.run([sys.executable, str(LINT), "--model", "seedance_2_0", text],
+                       capture_output=True, text=True)
+    assert "mode-not-supported" not in r.stdout and r.returncode == 0, r.stdout
+
+
+def test_qualified_references_after_a_label_are_not_media():
+    assert sl.parse_settings_header("Note: style references: 2 images\n" + CLEAN).media is None
+    assert sl.parse_settings_header("Aspect: auto Mode: fast\n" + CLEAN).mode == "fast"
+
+
+@pytest.mark.parametrize("header,duration", [
+    ("**Duration**: auto, beats at 2s and 5s", None),       # was 2 → FAIL at 2s
+    ("**Duration**: TBD (was 10s)", None),                  # was 10
+    ("**Duration**: 12s (3 beats of 4s)", 12),
+    ("**Duration**: 8s", 8),
+    ("**Duration**: -1s", -1),
+])
+def test_only_the_leading_duration_value_counts(header, duration):
+    assert sl.parse_settings_header(header + "\n" + CLEAN).duration == duration
+
+
+@pytest.mark.parametrize("line,n", [
+    ("**References**: 2 images, @Image 3", 3),              # was 2: @Image 3 implies three
+    ("**References**: @Image 1, @Image 4", 4),
+    ("**References**: 5 images, @Image 2", 5),
+])
+def test_highest_handle_index_counts(line, n):
+    assert sl.parse_settings_header(line + "\n" + CLEAN).media["image_references"] == n
