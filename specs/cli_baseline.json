@@ -1,6 +1,107 @@
 {
-  "captured": "2026-08-07",
+  "captured": "2026-09-26",
   "video": {
+    "ad_multiplier": {
+      "id": "ad_multiplier",
+      "output_type": "video",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "21:9",
+        "3:4",
+        "4:3",
+        "9:16",
+        "auto"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "21:9",
+            "3:4",
+            "4:3",
+            "9:16",
+            "auto"
+          ],
+          "default": "16:9"
+        },
+        "audio_references": {
+          "options": [],
+          "default": null
+        },
+        "bitrate_mode": {
+          "options": [
+            "high",
+            "standard"
+          ],
+          "default": "standard"
+        },
+        "duration": {
+          "options": [],
+          "default": 5
+        },
+        "end_image": {
+          "options": [],
+          "default": null
+        },
+        "extension_mode": {
+          "options": [
+            "backward",
+            "forward"
+          ],
+          "default": null
+        },
+        "generate_audio": {
+          "options": [],
+          "default": true
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "mode": {
+          "options": [
+            "omni_reference",
+            "t2v",
+            "video_edit",
+            "video_extension"
+          ],
+          "default": "t2v"
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1080p",
+            "480p",
+            "720p"
+          ],
+          "default": "720p"
+        },
+        "start_image": {
+          "options": [],
+          "default": null
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "params.mode != \"omni_reference\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) > 0",
+        "params.mode != \"t2v\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) == 0",
+        "params.mode != \"video_edit\" || size(params.video_references) == 1",
+        "params.mode != \"video_extension\" || !(params.extension_mode == null)",
+        "params.mode != \"video_extension\" || size(params.video_references) >= 1",
+        "params.mode == \"omni_reference\" || (params.start_image == null && params.end_image == null)",
+        "params.mode == \"video_extension\" || params.extension_mode == null",
+        "size(params.image_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) <= 30",
+        "size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) <= 50"
+      ]
+    },
     "bytedance_video_upscale": {
       "id": "bytedance_video_upscale",
       "output_type": "video",
@@ -119,6 +220,54 @@
         "size(params.urls) == 1"
       ]
     },
+    "depth_anything_video": {
+      "id": "depth_anything_video",
+      "output_type": "video",
+      "aspect_ratios": [],
+      "params": {
+        "colormap": {
+          "options": [
+            "grayscale",
+            "inferno",
+            "magma",
+            "turbo",
+            "viridis"
+          ],
+          "default": "grayscale"
+        },
+        "max_frames": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1080p",
+            "360p",
+            "480p",
+            "720p",
+            "auto"
+          ],
+          "default": "auto"
+        },
+        "side_by_side": {
+          "options": [],
+          "default": false
+        },
+        "variant": {
+          "options": [
+            "VDA-Base",
+            "VDA-Large",
+            "VDA-Small"
+          ],
+          "default": "VDA-Large"
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": []
+    },
     "flux_3_video": {
       "id": "flux_3_video",
       "output_type": "video",
@@ -188,6 +337,51 @@
         "size(params.video_references) == 0 || (size(params.image_references) == 0 && params.start_image == null && params.end_image == null)"
       ]
     },
+    "flux_3_video_edit": {
+      "id": "flux_3_video_edit",
+      "output_type": "video",
+      "aspect_ratios": [],
+      "params": {
+        "folder_id": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": []
+    },
+    "fps_boost": {
+      "id": "fps_boost",
+      "output_type": "video",
+      "aspect_ratios": [],
+      "params": {
+        "fps": {
+          "options": [],
+          "default": null
+        },
+        "variant": {
+          "options": [
+            "bytedance",
+            "topaz"
+          ],
+          "default": null
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "params.variant != \"bytedance\" || params.fps >= 24"
+      ]
+    },
     "gemini_omni": {
       "id": "gemini_omni",
       "output_type": "video",
@@ -230,6 +424,73 @@
         "size(params.video_references) <= 1",
         "size(params.video_references) == 0 || size(params.image_references) <= 5",
         "size(params.video_references) > 0 || size(params.image_references) <= 7"
+      ]
+    },
+    "gemini_omni_flash_1_1": {
+      "id": "gemini_omni_flash_1_1",
+      "output_type": "video",
+      "aspect_ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "9:16"
+          ],
+          "default": "16:9"
+        },
+        "duration": {
+          "options": [],
+          "default": 8
+        },
+        "end_image": {
+          "options": [],
+          "default": null
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "mode": {
+          "options": [
+            "edit",
+            "image-to-video",
+            "reference-to-video",
+            "text-to-video"
+          ],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1080p",
+            "360p",
+            "4k",
+            "720p"
+          ],
+          "default": "720p"
+        },
+        "start_image": {
+          "options": [],
+          "default": null
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "(params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) + size(params.image_references) + size(params.video_references) <= 8",
+        "params.mode != \"edit\" || ((params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) == 0 && size(params.image_references) == 0 && size(params.video_references) == 1)",
+        "params.mode != \"image-to-video\" || (!(params.start_image == null) && size(params.image_references) == 0 && size(params.video_references) == 0)",
+        "params.mode != \"reference-to-video\" || ((params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) == 0 && size(params.image_references) + size(params.video_references) > 0)",
+        "params.mode != \"text-to-video\" || (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) + size(params.image_references) + size(params.video_references) == 0",
+        "size(params.video_references) == 0 || size(params.image_references) <= 5"
       ]
     },
     "grok_video": {
@@ -346,6 +607,68 @@
         }
       },
       "rules": []
+    },
+    "hf_mult_motion_control": {
+      "id": "hf_mult_motion_control",
+      "output_type": "video",
+      "aspect_ratios": [],
+      "params": {
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1080p",
+            "480p",
+            "720p"
+          ],
+          "default": "720p"
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "size(params.image_references) >= 1",
+        "size(params.video_references) == 1"
+      ]
+    },
+    "hf_mult_replace_object": {
+      "id": "hf_mult_replace_object",
+      "output_type": "video",
+      "aspect_ratios": [],
+      "params": {
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1080p",
+            "480p",
+            "720p"
+          ],
+          "default": "720p"
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "size(params.image_references) >= 1",
+        "size(params.video_references) == 1"
+      ]
     },
     "kling2_6": {
       "id": "kling2_6",
@@ -476,34 +799,30 @@
       },
       "rules": []
     },
-    "llm_text": {
-      "id": "llm_text",
+    "kling_video_edit": {
+      "id": "kling_video_edit",
       "output_type": "video",
       "aspect_ratios": [],
       "params": {
-        "input_images": {
+        "image_references": {
           "options": [],
           "default": null
         },
-        "model": {
-          "options": [],
-          "default": null
-        },
-        "reasoning_effort": {
+        "mode": {
           "options": [
-            "high",
-            "low",
-            "medium"
+            "4k",
+            "pro",
+            "std"
           ],
+          "default": "pro"
+        },
+        "prompt": {
+          "options": [],
           "default": null
         },
-        "system_prompt": {
+        "video_references": {
           "options": [],
-          "default": ""
-        },
-        "user_prompt": {
-          "options": [],
-          "default": ""
+          "default": null
         }
       },
       "rules": []
@@ -580,6 +899,82 @@
         "(params.start_image == null && params.end_image == null) || (size(params.image_references) == 0 && size(params.video_references) == 0 && size(params.audio_references) == 0)",
         "params.end_image == null || !(params.start_image == null)",
         "size(params.audio_references) == 0 || size(params.image_references) > 0 || size(params.video_references) > 0"
+      ]
+    },
+    "minimax_h3_max": {
+      "id": "minimax_h3_max",
+      "output_type": "video",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "21:9",
+        "3:4",
+        "4:3",
+        "9:16",
+        "auto"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "21:9",
+            "3:4",
+            "4:3",
+            "9:16",
+            "auto"
+          ],
+          "default": "auto"
+        },
+        "audio_references": {
+          "options": [],
+          "default": null
+        },
+        "batch_size": {
+          "options": [],
+          "default": 1
+        },
+        "duration": {
+          "options": [],
+          "default": 5
+        },
+        "end_image": {
+          "options": [],
+          "default": null
+        },
+        "folder_id": {
+          "options": [],
+          "default": null
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "480p",
+            "768p"
+          ],
+          "default": "768p"
+        },
+        "start_image": {
+          "options": [],
+          "default": null
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "params.end_image == null || !(params.start_image == null)",
+        "size(params.audio_references) == 0 || size(params.image_references) + size(params.video_references) > 0",
+        "size(params.image_references) + size(params.video_references) + size(params.audio_references) <= 12",
+        "size(params.image_references) + size(params.video_references) + size(params.audio_references) == 0 || (params.start_image == null && params.end_image == null)"
       ]
     },
     "minimax_hailuo": {
@@ -943,9 +1338,20 @@
           "options": [],
           "default": null
         },
+        "bitrate_mode": {
+          "options": [
+            "high",
+            "standard"
+          ],
+          "default": "standard"
+        },
         "duration": {
           "options": [],
           "default": 5
+        },
+        "end_image": {
+          "options": [],
+          "default": null
         },
         "extension_mode": {
           "options": [
@@ -977,10 +1383,15 @@
         },
         "resolution": {
           "options": [
+            "1080p",
             "480p",
             "720p"
           ],
           "default": "720p"
+        },
+        "start_image": {
+          "options": [],
+          "default": null
         },
         "video_references": {
           "options": [],
@@ -988,13 +1399,15 @@
         }
       },
       "rules": [
-        "params.mode != \"omni_reference\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) > 0",
-        "params.mode != \"t2v\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) == 0",
+        "params.mode != \"omni_reference\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) > 0",
+        "params.mode != \"t2v\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) == 0",
         "params.mode != \"video_edit\" || size(params.video_references) == 1",
         "params.mode != \"video_extension\" || !(params.extension_mode == null)",
         "params.mode != \"video_extension\" || size(params.video_references) >= 1",
+        "params.mode == \"omni_reference\" || (params.start_image == null && params.end_image == null)",
         "params.mode == \"video_extension\" || params.extension_mode == null",
-        "size(params.image_references) + size(params.video_references) + size(params.audio_references) <= 50"
+        "size(params.image_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) <= 30",
+        "size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) <= 50"
       ]
     },
     "topaz_video": {
@@ -1332,6 +1745,154 @@
         "params.end_image == null || !(params.start_image == null)",
         "size(params.audio_references) <= 1"
       ]
+    },
+    "wan3_0": {
+      "id": "wan3_0",
+      "output_type": "video",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "3:4",
+        "4:3",
+        "9:16",
+        "auto"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "3:4",
+            "4:3",
+            "9:16",
+            "auto"
+          ],
+          "default": "auto"
+        },
+        "audio_references": {
+          "options": [],
+          "default": null
+        },
+        "duration": {
+          "options": [],
+          "default": 5
+        },
+        "enable_thinking": {
+          "options": [],
+          "default": false
+        },
+        "end_image": {
+          "options": [],
+          "default": null
+        },
+        "generate_audio": {
+          "options": [],
+          "default": true
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1080p",
+            "480p",
+            "720p"
+          ],
+          "default": "720p"
+        },
+        "start_image": {
+          "options": [],
+          "default": null
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "(params.start_image == null && params.end_image == null) || size(params.image_references) + size(params.video_references) + size(params.audio_references) == 0",
+        "params.duration == -1 || params.duration >= 2",
+        "params.end_image == null || !(params.start_image == null)"
+      ]
+    },
+    "wan3_0_prime": {
+      "id": "wan3_0_prime",
+      "output_type": "video",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "3:4",
+        "4:3",
+        "9:16",
+        "auto"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "3:4",
+            "4:3",
+            "9:16",
+            "auto"
+          ],
+          "default": "auto"
+        },
+        "audio_references": {
+          "options": [],
+          "default": null
+        },
+        "duration": {
+          "options": [],
+          "default": 5
+        },
+        "enable_thinking": {
+          "options": [],
+          "default": false
+        },
+        "end_image": {
+          "options": [],
+          "default": null
+        },
+        "generate_audio": {
+          "options": [],
+          "default": true
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1080p",
+            "480p",
+            "720p"
+          ],
+          "default": "720p"
+        },
+        "start_image": {
+          "options": [],
+          "default": null
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "(params.start_image == null && params.end_image == null) || size(params.image_references) + size(params.video_references) + size(params.audio_references) == 0",
+        "params.duration == -1 || params.duration >= 2",
+        "params.end_image == null || !(params.start_image == null)"
+      ]
     }
   },
   "image": {
@@ -1343,6 +1904,10 @@
         "image_references": {
           "options": [],
           "default": null
+        },
+        "remove_bg": {
+          "options": [],
+          "default": false
         },
         "resolution": {
           "options": [
@@ -1403,6 +1968,41 @@
       },
       "rules": []
     },
+    "flux_2_pro_outpaint": {
+      "id": "flux_2_pro_outpaint",
+      "output_type": "image",
+      "aspect_ratios": [],
+      "params": {
+        "expand_bottom": {
+          "options": [],
+          "default": 0
+        },
+        "expand_left": {
+          "options": [],
+          "default": 0
+        },
+        "expand_right": {
+          "options": [],
+          "default": 0
+        },
+        "expand_top": {
+          "options": [],
+          "default": 0
+        },
+        "folder_id": {
+          "options": [],
+          "default": null
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "params.expand_top != 0 || params.expand_bottom != 0 || params.expand_left != 0 || params.expand_right != 0",
+        "size(params.image_references) == 1"
+      ]
+    },
     "flux_kontext": {
       "id": "flux_kontext",
       "output_type": "image",
@@ -1443,26 +2043,50 @@
       "aspect_ratios": [
         "16:9",
         "1:1",
+        "21:9",
         "2:3",
         "3:2",
         "3:4",
         "4:3",
-        "9:16"
+        "4:5",
+        "5:4",
+        "9:16",
+        "auto"
       ],
       "params": {
         "aspect_ratio": {
           "options": [
             "16:9",
             "1:1",
+            "21:9",
             "2:3",
             "3:2",
             "3:4",
             "4:3",
-            "9:16"
+            "4:5",
+            "5:4",
+            "9:16",
+            "auto"
           ],
           "default": "1:1"
         },
+        "background": {
+          "options": [
+            "auto",
+            "opaque",
+            "transparent"
+          ],
+          "default": null
+        },
         "image_references": {
+          "options": [],
+          "default": null
+        },
+        "is_inpaint": {
+          "options": [],
+          "default": false
+        },
+        "mask": {
           "options": [],
           "default": null
         },
@@ -1485,6 +2109,91 @@
             "4k"
           ],
           "default": "2k"
+        }
+      },
+      "rules": []
+    },
+    "gpt_image_2_5": {
+      "id": "gpt_image_2_5",
+      "output_type": "image",
+      "aspect_ratios": [
+        "16:27",
+        "16:9",
+        "1:1",
+        "21:9",
+        "27:16",
+        "2:3",
+        "3:2",
+        "3:4",
+        "4:3",
+        "4:5",
+        "5:4",
+        "8:9",
+        "9:16",
+        "9:8",
+        "auto"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:27",
+            "16:9",
+            "1:1",
+            "21:9",
+            "27:16",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:3",
+            "4:5",
+            "5:4",
+            "8:9",
+            "9:16",
+            "9:8",
+            "auto"
+          ],
+          "default": "1:1"
+        },
+        "background": {
+          "options": [
+            "auto",
+            "opaque",
+            "transparent"
+          ],
+          "default": null
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "quality": {
+          "options": [
+            "high",
+            "low",
+            "max",
+            "medium",
+            "xhigh"
+          ],
+          "default": "low"
+        },
+        "resolution": {
+          "options": [
+            "1k",
+            "2k",
+            "4k"
+          ],
+          "default": "1k"
+        },
+        "variant": {
+          "options": [
+            "flare",
+            "sunburst"
+          ],
+          "default": "flare"
         }
       },
       "rules": []
@@ -1534,6 +2243,62 @@
         "prompt": {
           "options": [],
           "default": null
+        },
+        "resolution": {
+          "options": [
+            "1k",
+            "2k"
+          ],
+          "default": "1k"
+        }
+      },
+      "rules": []
+    },
+    "grok_image_2_0": {
+      "id": "grok_image_2_0",
+      "output_type": "image",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "1:2",
+        "2:1",
+        "2:3",
+        "3:2",
+        "3:4",
+        "4:3",
+        "9:16",
+        "auto"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "1:2",
+            "2:1",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:3",
+            "9:16",
+            "auto"
+          ],
+          "default": "1:1"
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "quality": {
+          "options": [
+            "low",
+            "medium"
+          ],
+          "default": "medium"
         },
         "resolution": {
           "options": [
@@ -1758,6 +2523,14 @@
           "options": [],
           "default": null
         },
+        "is_inpaint": {
+          "options": [],
+          "default": false
+        },
+        "mask": {
+          "options": [],
+          "default": null
+        },
         "prompt": {
           "options": [],
           "default": null
@@ -1781,6 +2554,69 @@
         "params.prompt != \"\" || size(params.image_references) > 0",
         "size(params.image_references) <= 14"
       ]
+    },
+    "nano_banana_2_relight": {
+      "id": "nano_banana_2_relight",
+      "output_type": "image",
+      "aspect_ratios": [],
+      "params": {
+        "brightness": {
+          "options": [],
+          "default": null
+        },
+        "color": {
+          "options": [],
+          "default": null
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "light_quality": {
+          "options": [
+            "hard",
+            "sharp",
+            "soft"
+          ],
+          "default": null
+        },
+        "light_source": {
+          "options": [
+            "bdl",
+            "bdm",
+            "bdr",
+            "bml",
+            "bmm",
+            "bmr",
+            "bul",
+            "bum",
+            "bur",
+            "fdl",
+            "fdm",
+            "fdr",
+            "fml",
+            "fmm",
+            "fmr",
+            "ful",
+            "fum",
+            "fur",
+            "mdl",
+            "mdm",
+            "mdr",
+            "mml",
+            "mmr",
+            "mul",
+            "mum",
+            "mur"
+          ],
+          "default": null
+        },
+        "remove_bg": {
+          "options": [],
+          "default": false
+        }
+      },
+      "rules": []
     },
     "nano_banana_2_shots": {
       "id": "nano_banana_2_shots",
@@ -1840,6 +2676,10 @@
         "preset_id": {
           "options": [],
           "default": null
+        },
+        "remove_bg": {
+          "options": [],
+          "default": false
         }
       },
       "rules": []
@@ -1857,7 +2697,8 @@
         "4:3",
         "4:5",
         "5:4",
-        "9:16"
+        "9:16",
+        "auto"
       ],
       "params": {
         "aspect_ratio": {
@@ -1871,11 +2712,20 @@
             "4:3",
             "4:5",
             "5:4",
-            "9:16"
+            "9:16",
+            "auto"
           ],
           "default": "1:1"
         },
         "image_references": {
+          "options": [],
+          "default": null
+        },
+        "is_inpaint": {
+          "options": [],
+          "default": false
+        },
+        "mask": {
           "options": [],
           "default": null
         },
@@ -2097,6 +2947,64 @@
         "!has(params.colors) || params.colors.all(color, color.matches(\"^#[0-9A-Fa-f]{6}$\"))"
       ]
     },
+    "seedream_5_0_flash": {
+      "id": "seedream_5_0_flash",
+      "output_type": "image",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "21:9",
+        "2:3",
+        "3:2",
+        "3:4",
+        "4:3",
+        "9:16",
+        "auto"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "21:9",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:3",
+            "9:16",
+            "auto"
+          ],
+          "default": "4:3"
+        },
+        "height": {
+          "options": [],
+          "default": null
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "1.5k",
+            "1k",
+            "2k"
+          ],
+          "default": "2k"
+        },
+        "width": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "size(params.image_references) <= 10"
+      ]
+    },
     "seedream_v4_5": {
       "id": "seedream_v4_5",
       "output_type": "image",
@@ -2212,13 +3120,25 @@
           ],
           "default": "1:1"
         },
+        "height": {
+          "options": [],
+          "default": null
+        },
         "image_references": {
           "options": [],
           "default": null
         },
+        "is_inpaint": {
+          "options": [],
+          "default": false
+        },
         "prompt": {
           "options": [],
           "default": null
+        },
+        "remove_bg": {
+          "options": [],
+          "default": false
         },
         "resolution": {
           "options": [
@@ -2227,6 +3147,10 @@
             "2k"
           ],
           "default": "2k"
+        },
+        "width": {
+          "options": [],
+          "default": null
         }
       },
       "rules": [
@@ -2387,9 +3311,18 @@
             "2k"
           ],
           "default": "2k"
+        },
+        "seed": {
+          "options": [],
+          "default": null
+        },
+        "style_id": {
+          "options": [],
+          "default": null
         }
       },
       "rules": [
+        "params.style_id == null || size(params.image_references) == 0",
         "size(params.image_references) <= 1"
       ]
     },

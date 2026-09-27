@@ -1,6 +1,6 @@
 # Higgsfield Image Models — Complete Reference
 
-> **Specs snapshot: 2026-08-01** — machine-readable image-model facts (resolution
+> **Specs snapshot: 2026-09-26** — machine-readable image-model facts (resolution
 > enums, model_type/quality options, aspect ratios) are generated from a
 > `type=image` `models_explore` snapshot into `specs/image-model-specs.yaml` /
 > `.json` and `specs/IMAGE-MODEL-SPECS.md` (regenerate via `python3 scripts/sync_specs.py
@@ -37,6 +37,18 @@ Two economics notes that follow from it:
   Nano Banana 2 one-liner (`change the logo to the one in image two`). Re-prompting the
   sheet re-rolls everything that was already right.
 
+**Routing by parameter** `[OFFICIAL — platform, snapshot 2026-09-26]` — these are catalog
+capabilities, not field-rated quality calls:
+
+| Need | Model | Parameter |
+|---|---|---|
+| Transparent-background cut-out | **GPT Image 2.5** | `background: transparent` (§ GPT Image 2.5) |
+| Quality above `high` | **GPT Image 2.5** | `quality` xhigh / max |
+| Masked inpaint of one region | **Nano Banana 2** / **Nano Banana 2 Lite** | `mask` role + `is_inpaint` (§ Inpaint, Mask & Background Parameters) |
+| Inpaint/edit of a reference instead of a fresh image | **Seedream 5.0 Pro** | `is_inpaint` |
+| Extend the canvas (or crop) side by side | **FLUX.2 Pro Outpaint** | `expand_top` / `expand_bottom` / `expand_left` / `expand_right` |
+| Relight an existing image (CLI only) | **`nano_banana_2_relight`** | light source / quality / colour / brightness (§ Nano Banana relight) |
+
 Sheet-construction laws (grey background, the two-close-up creature sheet, the face-lock
 crop, the size-ref frame) live in `skills/higgsfield-character-design/SKILL.md`
 § Sheet Construction Laws; the full production pipeline is
@@ -54,6 +66,16 @@ crop, the size-ref frame) live in `skills/higgsfield-character-design/SKILL.md`
 **Strengths:** Built-in cultural fluency — understands subcultures, fashion aesthetics, contemporary visual trends
 **Prompt tip:** Describe subject + scene + mood only. Apply style via presets, not text.
 → See `higgsfield-soul` skill for full detail on presets, Color Transfer, and Soul ID
+
+**Platform constraint — style preset vs reference image** `[OFFICIAL — platform CLI, 2026-09-26]`:
+`higgsfield model get text2image_soul_v2` carries two rules — **`style_id` cannot be combined with
+`image_references`**, and at most **one** image reference is allowed. The same CLI schema has a
+separate `custom_reference_id` param that the rule does not mention, and the MCP catalog's Soul 2.0
+ids (`soul_2`, `soul_v2`) expose only `quality` and `soul_id`. Which UI control maps to which param
+— Style preset → `style_id`? Character slot / Soul ID → `custom_reference_id`, `soul_id`, or
+`image_references`? — is **unverified**. Until it is: if a style preset plus an uploaded reference
+image is rejected or ignored, drop one of them; do not promise that a preset and a reference image
+combine.
 
 ---
 
@@ -73,7 +95,7 @@ crop, the size-ref frame) live in `skills/higgsfield-character-design/SKILL.md`
 ### Soul Cast
 **Model id:** `soul_cast` · **Provider:** Higgsfield
 **Best for:** Consistent cinematic character identity — the same face/character held across many generations
-**Aspect ratio:** 16:9 only (per the 2026-08-01 specs snapshot)
+**Aspect ratio:** 16:9 only (per the specs snapshot, still true 2026-09-26)
 **Unique control — `budget` (10–500, default 50):** generation budget dial — higher budget spends more compute on the identity
 **Note:** Previously exposed only inside Cinema Studio (2.5/3.0 "Soul Cast AI actors"); now a standalone model in the image catalog. For per-shot character work at other aspect ratios, generate the identity here and carry it into other models via references.
 
@@ -82,7 +104,7 @@ crop, the size-ref frame) live in `skills/higgsfield-character-design/SKILL.md`
 ### Soul Location
 **Model id:** `soul_location` · **Provider:** Higgsfield
 **Best for:** Environment and location generation — establishing plates, backdrops, location references for I2V and multi-shot pipelines
-**Aspect ratios:** 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, 21:9, 9:21 — widest ratio spread of the Soul family (only model with 9:21 vertical ultrawide)
+**Aspect ratios:** 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, 21:9, 9:21 — widest ratio spread of the Soul family (the only image model with 9:21 vertical ultrawide in the 2026-09-26 snapshot)
 **Controls:** No extra parameters — purely prompt-driven
 **Pairs with:** Soul Cast (character) + Soul Location (environment) as reference inputs for reference-driven video models
 
@@ -174,11 +196,21 @@ crop, the size-ref frame) live in `skills/higgsfield-character-design/SKILL.md`
 ## Seedream Family
 
 ### Seedream 5.0 Pro
-**Model id:** `seedream_v5_pro` — in the 2026-08-01 spec snapshot (resolution `1k`/`1.5k`/`2k`, default 2k; aspect ratios incl. 21:9). `[FIELD provenance: first observed on 161 harvested community jobs, 2026-07-18]`
+**Model id:** `seedream_v5_pro` — in the spec snapshot since 2026-08-01 (resolution `1k`/`1.5k`/`2k`, default 2k; aspect ratios incl. 21:9). `[FIELD provenance: first observed on 161 harvested community jobs, 2026-07-18]`
+**Edit / background params** `[OFFICIAL — platform, snapshot 2026-09-26]`: `is_inpaint` (default false — "Treat the request as an inpaint/edit of the reference image(s) instead of a fresh generation") and `remove_bg` (default false — "Remove the background from the generated image"). No `mask` role.
 **Best for:** Anime / manga / stylized-2D image work — character sheets with clean linework, flat cel color fills, multi-panel manga page layouts with screentones and readable panel geometry
 **Field-proven dialects:** split-screen anime character sheets (full-body action pose left, chest-up portrait right, identical character, white seamless background, ~190w median) · black-and-white manga page spreads (panels laid out by position + size + content, refs as Image0/1/2, ink linework, screentones, no color)
 **Style anchoring:** use an **art-era anchor** ("early 2000s retro anime, soft painted cel-shading, vintage proportions") — the stylized-image equivalent of the photoreal director/DP anchor
 **vs 5.0 Lite / 4.5:** the pick when line + flat color + text/panel layout matter more than photoreal texture; photoreal sheet work stays on Soul / GPT Image 2 / Nano Banana Pro
+
+---
+
+### Seedream 5.0 Flash
+**Model id:** `seedream_5_0_flash` · **Provider:** Bytedance · new in the 2026-09-26 snapshot — **not yet field-rated**
+**Catalog description:** "Fast image generation and instruction-based editing, up to 2K" `[OFFICIAL — platform, snapshot 2026-09-26]`
+**Resolution:** `1k` / `1.5k` / `2k` (default 2k) · **Aspect ratios:** auto, 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, 21:9 · **Reference input:** image references
+**Note:** optional `width` / `height` are "stored in generation metadata; not sent to the provider" — they do not size the output.
+**vs 5.0 Pro:** same resolution ladder; Flash has no `is_inpaint` or `remove_bg`. Prompting dialect not yet documented here. Credits: verify in the UI.
 
 ---
 
@@ -342,6 +374,15 @@ NBP is the strongest single image model on the platform for sharpness, multi-ele
 
 **SynthID + C2PA:** All Nano Banana family outputs include an invisible SynthID watermark and C2PA Content Credentials for AI provenance verification
 
+**Masked inpaint** `[OFFICIAL — platform, snapshot 2026-09-26]`: `nano_banana_2` takes a `mask` media role plus `is_inpaint` (default false — "Whether to restrict the edit to the supplied mask"); resolution 1k / 2k / 4k. See § Inpaint, Mask & Background Parameters.
+
+> **Same id, different model on the CLI** `[OFFICIAL — platform, checked 2026-09-26]`: the MCP's
+> `nano_banana_2` ("Nano Banana 2": default 1k, `auto` aspect, `mask` + `is_inpaint`) matches the
+> CLI's **`nano_banana_flash`** parameter for parameter, while `higgsfield model get nano_banana_2`
+> answers as **Nano Banana Pro** (default 2k, no `auto` aspect, no mask). On the CLI, use
+> `nano_banana_flash` for this model; `--model nano_banana_2` there most likely runs Nano Banana Pro.
+> Recorded in `specs/crosscheck_allowlist.json`; re-check when either surface changes.
+
 ---
 
 ### Nano Banana 2 Lite
@@ -352,6 +393,14 @@ NBP is the strongest single image model on the platform for sharpness, multi-ele
 **Aspect ratios:** auto, 1:1, 3:2, 2:3, 4:3, 3:4, 4:5, 5:4, 9:16, 16:9, 21:9
 **Reference input:** image references supported
 **vs Nano Banana 2:** Lite trades the 2K/4K resolution ladder for a cheaper tier and an explicit thinking-depth dial; same aspect-ratio spread plus auto
+**Masked inpaint** `[OFFICIAL — platform, snapshot 2026-09-26]`: the same `mask` role + `is_inpaint` pair as Nano Banana 2.
+
+---
+
+### Nano Banana relight (CLI only)
+**Job type:** `nano_banana_2_relight` — listed by the `higgsfield` CLI (`model get`, 2026-09-26) but **not in the MCP `models_explore` list**; the CLI's display name for it is "Nano Banana Pro". `[OFFICIAL — platform CLI, 2026-09-26]`
+**What it takes:** an existing image (`image_references`, required) — there is **no prompt param**. Required: `brightness` (integer; range not stated), `color` (string; format not stated), `light_quality` hard / sharp / soft, and `light_source` — one of 26 three-letter position codes (`fml`, `bur`, `mdm`, …). The schema does not define the codes; do not guess their meaning — read them off the UI control. Optional `remove_bg` (default false).
+**Status:** not yet field-rated; credits not stated.
 
 ---
 
@@ -365,7 +414,7 @@ NBP is the strongest single image model on the platform for sharpness, multi-ele
 **Character slot:** Supports Soul ID character reference (GENERAL shown by default)
 **Default aspect:** 1:1 square
 **Note:** Model selector shows "ChatGPT" branding — OpenAI's GPT-Image model
-**Status:** No longer present in the models catalog (2026-08-01 snapshot) — verify in the UI before recommending; prefer GPT Image 1.5/2 or OpenAI Hazel
+**Status:** No longer present in the models catalog (still absent from the 2026-09-26 snapshot) — verify in the UI before recommending; prefer GPT Image 2.5 / 2 / 1.5 or OpenAI Hazel
 
 ---
 
@@ -392,6 +441,61 @@ NBP is the strongest single image model on the platform for sharpness, multi-ele
 **Multilingual text rendering:** >95% accuracy across Japanese, Korean, Chinese, Hindi, Bengali — first OpenAI image model to handle non-Latin scripts at production-grade fidelity
 **vs GPT Image 1.5:** Photorealism leap, text-rendering leap, native 4K (up from 1536×1024), ~2× speed on standard mode, plus O-series reasoning capability for complex multi-element prompts that previously required Nano Banana Pro Thinking mode
 **Note:** First image model with O-series reasoning capabilities — complex multi-element compositions resolve more reliably than on prior GPT Image generations. For full API specs, rate limits, and deep-reference comparison to siblings, see `skills/higgsfield-models/MODELS-DEEP-REFERENCE.md` § GPT Image 2.
+
+**CLI ↔ MCP disagreement on `gpt_image_2` (2026-09-26) — recorded, not resolved.** The two
+official Higgsfield surfaces describe different parameter sets for the same id:
+
+| Field | MCP `models_explore` (image snapshot 2026-09-26) | CLI `higgsfield model get gpt_image_2` (2026-09-26) |
+|---|---|---|
+| Aspect ratios | 1:1, 4:3, 3:4, 16:9, 21:9, 9:16, 3:2, 2:3 | the same **plus auto, 4:5, 5:4** (default 1:1) |
+| `resolution` default | 1k | **2k** |
+| `quality` default | low | **high** |
+| `background` | not listed | auto / opaque / transparent (default null) |
+| `mask` / `is_inpaint` | not listed | `mask` (object) + `is_inpaint` (default false) |
+| Media role | `image` | `image_references` |
+
+Neither surface is declared the winner here. Until one is verified against a real generation:
+set `quality` and `resolution` explicitly instead of relying on either default, and treat
+`background`, `mask` / `is_inpaint`, and the auto / 4:5 / 5:4 ratios on `gpt_image_2` as
+CLI-listed but MCP-unlisted. For a transparent background, GPT Image 2.5 is the route both
+surfaces agree on.
+
+---
+
+### GPT Image 2.5
+**Model id:** `gpt_image_2_5` · **Provider:** OpenAI · new in the 2026-09-26 snapshot — **not yet field-rated**
+**Catalog description:** "GPT Image 2.5 generation and editing with Flare and Sunburst variants" `[OFFICIAL — platform, snapshot 2026-09-26]` (MCP and CLI agree on every field below)
+**Params:**
+- `variant` — `flare` (default) / `sunburst`
+- `quality` — `low` (default) / `medium` / `high` / **`xhigh`** / **`max`**
+- `resolution` — `1k` (default) / `2k` / `4k`
+- **`background` — `auto` / `opaque` / `transparent`** (omit to keep the model default)
+- Aspect ratios (15) — auto, 1:1, 3:2, 2:3, 4:3, 3:4, 16:9, 9:16, 21:9, 27:16, 16:27, 9:8, 8:9, 4:5, 5:4 (CLI default 1:1)
+- `image_references` — generation and editing from reference images
+
+**Transparent background — the first transparent-background route in the MCP catalog.** No other
+image model in the 2026-09-26 MCP snapshot offers a transparent option (the CLI also lists
+`background` on `gpt_image_2` — see § GPT Image 2). OpenAI's API needs PNG or WebP output for
+transparency `[OFFICIAL — OpenAI docs]`; Higgsfield exposes no output-format parameter, so whether
+the delivered file carries an alpha channel is **unverified** — check the first download before
+building a cut-out pipeline on it.
+
+**Variant choice** `[OFFICIAL — OpenAI docs]`: Sunburst "for workflows where editing precision
+matters most"; Flare "for fast, high-quality everyday image generation". The Higgsfield `variant`
+values are matched to OpenAI's `gpt-image-2.5-sunburst` / `gpt-image-2.5-flare` by name.
+
+**Defaults are draft settings.** A bare call runs `flare` / `low` / `1k`. OpenAI: "Use
+`quality: "low"` for quick drafts. For final assets, compare higher quality settings to find the
+right balance of detail, latency, and cost." Set `quality` and `resolution` explicitly for finals.
+
+**Credits:** not stated in the catalog — verify in the UI. (OpenAI's API bills 2.5 at the same
+per-token rates as GPT Image 2, with token counts that differ by model and quality — that says
+nothing about Higgsfield credits.)
+
+Sources: [OpenAI image generation guide](https://platform.openai.com/docs/guides/image-generation),
+[gpt-image-2.5-sunburst](https://platform.openai.com/docs/models/gpt-image-2.5-sunburst),
+[gpt-image-2.5-flare](https://platform.openai.com/docs/models/gpt-image-2.5-flare) (fetched 2026-09-26).
+Prompting and "when to prefer 2.5 vs 2": `skills/higgsfield-gpt-image-2/SKILL.md` § GPT Image 2.5.
 
 ---
 
@@ -434,6 +538,14 @@ All FLUX models show a warning triangle (⚠) in the UI — third-party external
 
 ---
 
+### FLUX.2 Pro Outpaint
+**Model id:** `flux_2_pro_outpaint` · **Provider:** Black Forest Labs · new in the 2026-09-26 snapshot — **not yet field-rated**
+**Catalog description:** "Expands an image beyond its borders with FLUX.2 [pro]: per-side pixel expansion painted as a coherent, seamless scene extension. Negative values crop that side instead; an all-crop request is served locally for free without the model." `[OFFICIAL — platform, snapshot 2026-09-26]`
+**Params:** `expand_top` / `expand_bottom` / `expand_left` / `expand_right` — pixels, −8192 to 2048, default 0; a **negative value crops** that side. One image via `image_references`.
+**Use when:** a still needs more canvas on specific sides (a 16:9 plate widened for 21:9, headroom for a title) — or an exact per-side crop, which the catalog says costs nothing when every side is negative.
+
+---
+
 ### Flux Kontext
 **Credits:** varies
 **UI:** ⚠ Flux Kontext · (editing interface)
@@ -471,6 +583,46 @@ All FLUX models show a warning triangle (⚠) in the UI — third-party external
 
 ---
 
+## Grok Family (xAI)
+
+`[OFFICIAL — platform, snapshot 2026-09-26]` — both **not yet field-rated**. The xAI API
+documentation mined in `skills/higgsfield-models/MODELS-DEEP-REFERENCE.md` § Grok Imagine describes
+the vendor API, which is broader than these Higgsfield params.
+
+### Grok Image
+**Model id:** `grok_image` · live since at least the 2026-08-01 snapshot (the old "not available on Higgsfield" notice was wrong)
+**Catalog description:** "Expressive, high-contrast generation and editing"
+**Params:** `mode` std (default) / quality ("higher-fidelity"); `resolution` 1k / 2k · **Aspect ratios:** 1:1, auto, 1:2, 2:1, 3:2, 2:3, 4:3, 3:4, 16:9, 9:16 · image references
+
+### Grok Image 2.0
+**Model id:** `grok_image_2_0` · new in the 2026-09-26 snapshot
+**Catalog description:** "Next-generation image creation and editing from xAI"
+**Params:** `quality` low / medium (default medium); `resolution` 1k / 2k · same 10 aspect ratios as Grok Image · image references
+Prompting dialect not yet documented here; credits: verify in the UI.
+
+---
+
+## Inpaint, Mask & Background Parameters
+
+`[OFFICIAL — platform, snapshot 2026-09-26]` (MCP catalog) unless marked CLI.
+
+| Model | Parameter | What the platform says |
+|---|---|---|
+| Nano Banana 2 (`nano_banana_2`) | `mask` media role + `is_inpaint` (default false) | "Whether to restrict the edit to the supplied mask." |
+| Nano Banana 2 Lite (`nano_banana_2_lite`) | `mask` media role + `is_inpaint` (default false) | Same as Nano Banana 2 |
+| Seedream 5.0 Pro (`seedream_v5_pro`) | `is_inpaint` (default false), no `mask` role | "Treat the request as an inpaint/edit of the reference image(s) instead of a fresh generation." |
+| Seedream 5.0 Pro (`seedream_v5_pro`) | `remove_bg` (default false) | "Remove the background from the generated image." |
+| Bytedance Image Upscale (`bytedance_image_upscale`) | `remove_bg` (default false); `resolution` 2k / 4k (default 4k) | "Remove the background from the upscaled image." |
+| GPT Image 2.5 (`gpt_image_2_5`) | `background` auto / opaque / transparent | § GPT Image 2.5 |
+| GPT Image 2 (`gpt_image_2`) — **CLI only** | `mask`, `is_inpaint`, `background` | Not in the MCP list — § GPT Image 2 disagreement table |
+| Nano Banana relight (`nano_banana_2_relight`) — **CLI only** | `remove_bg` | § Nano Banana relight |
+| FLUX.2 Pro Outpaint (`flux_2_pro_outpaint`) | `expand_*` (negative = crop) | § FLUX.2 Pro Outpaint |
+
+`remove_bg` removes a background; the catalog does not say its output is a transparent PNG, so do
+not treat it as the same thing as GPT Image 2.5's `background: transparent`.
+
+---
+
 ## Swap Tools (Not Generation Models)
 
 These are upload-based transformation tools, not text-to-image generators.
@@ -486,7 +638,7 @@ These are upload-based transformation tools, not text-to-image generators.
 **How it works:** Full character body swap — replaces an entire person in a target image with your uploaded character
 **vs Face Swap:** Face Swap = face only. Character Swap = full body/character replacement.
 
-> The image catalog also carries utility/system entries — AutoSprite (animate a character image into a game-ready sprite sheet), MS Image (Marketing Studio ad images), image_auto (auto model selection), upscalers (Topaz, Bytedance), background remover, and outpaint. These are pipeline tools rather than prompt-crafted generation models and are out of scope for this reference.
+> The image catalog also carries utility/system entries — AutoSprite (animate a character image into a game-ready sprite sheet), MS Image (Marketing Studio ad images), image_auto (auto model selection), upscalers (Topaz, Bytedance), background remover, and the generic `outpaint` tool. These are pipeline tools rather than prompt-crafted generation models and are out of scope for this reference; FLUX.2 Pro Outpaint and the inpaint/background params are covered above because they change how an asset is planned.
 
 ---
 
@@ -515,7 +667,11 @@ These are upload-based transformation tools, not text-to-image generators.
 | Flux Kontext Max | 1.5 | — | ⚠ Edit |
 | Multi Reference | 1.5 | — | Multi-image blend |
 | Recraft 4.1 | varies | 1K/2K | ⚠ External · standard/vector/utility/utility_vector · hex palettes |
-| GPT Image | 2 | — | Character slot · gone from catalog (still absent 2026-08-01) |
+| GPT Image | 2 | — | Character slot · gone from catalog (still absent 2026-09-26) |
+| GPT Image 2.5 | TBD | 1K–4K | Transparent background, quality to `max` · not yet field-rated |
+| Grok Image / Grok Image 2.0 | TBD | 1K / 2K | xAI · not yet field-rated |
+| Seedream 5.0 Flash | TBD | up to 2K | Fast + instruction editing · not yet field-rated |
+| FLUX.2 Pro Outpaint | TBD (all-crop requests free per the catalog) | — | ⚠ External · per-side expand/crop |
 | GPT Image 1.5 | 2 | — | Text-in-image |
 | OpenAI Hazel | TBD | — | Editing, best text rendering |
 | Character Swap | 2 | — | Body swap |

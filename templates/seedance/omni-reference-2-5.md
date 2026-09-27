@@ -20,15 +20,16 @@ where material mapping is the risk.
 
 ## Platform settings (not prompt text)
 
-`[OFFICIAL — platform, snapshot 2026-08-07]` Set these in the UI / API, never in the prose:
+`[OFFICIAL — platform, snapshot 2026-09-26]` Set these in the UI / API, never in the prose:
 
 | Setting | Value |
 |---|---|
 | `mode` | `omni_reference` |
 | `duration` | 4–30 s |
-| `resolution` | `480p` (drafts) or `720p` (2.5 has no 1080p/4K lane) |
+| `resolution` | `480p` (drafts), `720p`, or `1080p` (not yet field-rated) — 2.5 has no 4K lane |
 | aspect ratio | `auto` · `21:9` · `16:9` · `4:3` · `1:1` · `3:4` · `9:16` |
 | `generate_audio` | `true` unless the deliverable is silent |
+| `start_image` / `end_image` | optional — `omni_reference` only; counts toward the 30-image / 50-material caps. Or declare the frames in prose (`../../skills/higgsfield-seedance-2-5/SKILL.md` § First-Last Frame and Multi-Keyframe Control) — one route per image |
 
 Preflight before spending: `python3 scripts/seedance_lint.py --preflight --model seedance_2_5 "<prompt>"`
 
@@ -175,7 +176,7 @@ scissors' position, and bouquet ownership consistent throughout.
 - [ ] No age words anywhere (`../../skills/higgsfield-seedance/ENGINE-RULES.md` rule 1)
 - [ ] Positive phrasing only — no `negative:` list, no bare negation stack
 - [ ] Dialogue lives in the `[Audio]` block, in `{}`, and nowhere else
-- [ ] Resolution is 480p or 720p — 2.5 has no higher lane
+- [ ] Resolution is 480p, 720p or 1080p — 2.5 has no 4K lane
 - [ ] `seedance_lint.py --preflight --model seedance_2_5` clean
 
 ## Related

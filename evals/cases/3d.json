@@ -1,0 +1,48 @@
+{
+  "skill": "higgsfield-3d",
+  "cases": [
+    {
+      "id": "3d-edit-image-first",
+      "description": "A prop missing from the source image is added by editing the IMAGE first, then converting — never promised from the mesh side (v3.36.0, generate_3d schema law)",
+      "request": "Make a 3D model of my knight holding a sword — the reference photos show her empty-handed, front and back.",
+      "response": "Routing to higgsfield-3d (§ The source-image law, § Multi-view beats single-view).\n\nThe mesh reproduces only what is in the source image, so the sword has to exist in the pictures before anything is lifted.\n\n1. **Edit the image first** — with `generate_image`, add the sword to BOTH views (same sword, same hand, same grip), so the two views still show the same subject.\n2. **Then convert** — `multi_image_to_3d` with the two edited views (role `image`), `should_texture: true` (it defaults off and returns a white mesh otherwise).\n3. **Preflight** — run it once with `get_cost: true`; texturing costs more credits, and nothing is spent until you confirm.\n\nNot measured here: how well the knight's face survives the mesh. If her face must hold across shots, keep Soul ID as the identity route and use the mesh for the armour and sword.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-3d" },
+        { "type": "regex_present", "pattern": "(?i)edit the image first" },
+        { "type": "regex_present", "pattern": "(?s)generate_image.*(multi_image_to_3d|image_to_3d)" },
+        { "type": "regex_present", "pattern": "should_texture: true" },
+        { "type": "regex_present", "pattern": "get_cost" },
+        { "type": "preset_names_valid", "source": "specs/models_explore_snapshot_3d_2026-09-26.json",
+          "names": ["multi_image_to_3d", "should_texture", "More views = better geometric accuracy"] }
+      ]
+    },
+    {
+      "id": "3d-hunyuan-std-rules",
+      "description": "Hunyuan 3.1 text-to-3D: PBR requires mode=pro; std caps the prompt at 200 characters (CLI rules 2026-09-26)",
+      "request": "Quick Hunyuan text-to-3D draft of a brass oil lantern, with PBR materials.",
+      "response": "Routing to higgsfield-3d (§ Parameter rules the server enforces).\n\nPBR is pro-only on Hunyuan 3.1 — the server rejects `enable_pbr` in `std`. Two honest options:\n\n- **Fast draft, no PBR:** `hunyuan3d_v3_1_text_to_3d`, `mode: std`, prompt kept under 200 characters: `A brass oil lantern with a glass chimney, riveted frame and a ring handle, worn patina on the edges.`\n- **With PBR:** same model, `mode: pro`, `enable_pbr: true` (optionally `face_count` 40,000–1,500,000).\n\nPreflight either with `get_cost: true` first.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-3d" },
+        { "type": "regex_present", "pattern": "mode: pro`, `enable_pbr: true" },
+        { "type": "regex_present", "pattern": "200 characters" },
+        { "type": "regex_absent", "pattern": "mode: std`[^\\n]*enable_pbr: true" },
+        { "type": "preset_names_valid", "source": "specs/models_explore_snapshot_3d_2026-09-26.json",
+          "names": ["hunyuan3d_v3_1_text_to_3d", "available only in pro mode"] }
+      ]
+    },
+    {
+      "id": "3d-jutsu-staging-blockout",
+      "description": "3D Jutsu staging: generated GLBs cannot be imported (catalog only); the front-on render is the SOURCE FRAME for the staging template; the chance-level caveat is kept (v3.36.0)",
+      "request": "Put my generated GLB characters into a 3D Jutsu scene and use it as the staging reference for my Seedance shot.",
+      "response": "Routing to higgsfield-3d (§ What 3D Jutsu cannot take in, § Film use 2) + templates/seedance/staging-reference.md.\n\nOne correction first: 3D Jutsu's importer accepts **curated catalog assets only** in this version, so your generated GLBs have no documented way into the scene. Block the shot with stand-ins instead — `bpy` primitives or catalog assets — at metre scale, with one delivery camera where the shot's camera is.\n\n1. Render **front-on through that camera** with `scene_builder_3d_query_python` (a preview render, no committed revision) and fetch it with `scene_builder_3d_get_artifact`.\n2. That render is the **source frame** for Step 1 of the staging template, which turns it into thin muted outlines — a shaded render attached as-is would break the outlines-never-fills layer.\n3. Read each figure's position and facing off the scene data for the Step 1 words.\n\nUnmeasured: nothing about a 3D-derived staging reference has been fired, and the staging reference itself tracked the map's orientation 6/12 — chance. Hold must-hold positions with prose blocking locks.",
+      "assertions": [
+        { "type": "regex_present", "pattern": "^Routing to higgsfield-3d" },
+        { "type": "regex_present", "pattern": "(?i)catalog assets only" },
+        { "type": "regex_present", "pattern": "(?i)front-on" },
+        { "type": "regex_present", "pattern": "(?i)source frame" },
+        { "type": "regex_present", "pattern": "6/12" },
+        { "type": "regex_absent", "pattern": "(?i)import_asset[^\\n]*(job_id|https?://|\\.glb)" }
+      ]
+    }
+  ]
+}

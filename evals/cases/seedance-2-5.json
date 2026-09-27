@@ -83,14 +83,18 @@
       "description": "A 4K request is routed back to Seedance 2.0 instead of promising a resolution 2.5 does not have",
       "model": "seedance_2_0",
       "request": "Give me a Seedance 2.5 prompt at 4K.",
-      "response": "Routing to higgsfield-seedance-2-5 (§ Choosing 2.0 vs 2.5) → higgsfield-seedance.\n\nSeedance 2.5 caps at **720p** — there is no 1080p or 4K lane on it (specs/model-specs.yaml, snapshot 2026-08-07). A 4K deliverable is a **Seedance 2.0** job.\n\n**Model**: Seedance 2.0\n**Aspect ratio**: 16:9  **Duration**: 8s  **Resolution**: 4k  **Mode**: std\n\n4K requires `mode=std`; `fast` caps at 480p/720p. If you also need something 2.5-only — a clip over 15s, video editing, or forward/backward extension — structure it on 2.5 at 720p and finish the hero shots on 2.0.",
+      "response": "Routing to higgsfield-seedance-2-5 (§ Choosing 2.0 vs 2.5) → higgsfield-seedance.\n\nSeedance 2.5 stops at **1080p** — there is no 4K lane on it (specs/model-specs.yaml, snapshot 2026-09-26). A 4K deliverable is a **Seedance 2.0** job.\n\n**Model**: Seedance 2.0\n**Aspect ratio**: 16:9  **Duration**: 8s  **Resolution**: 4k  **Mode**: std\n\n4K requires `mode=std`; `fast` caps at 480p/720p. If you also need something 2.5-only — a clip over 15s, video editing, or forward/backward extension — structure it on 2.5 (up to 1080p) and finish the hero shots on 2.0 at 4K.",
       "assertions": [
         {
           "type": "enum_legal"
         },
         {
           "type": "regex_present",
-          "pattern": "(?i)caps at \\*\\*720p\\*\\*"
+          "pattern": "(?i)no 4K lane"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)caps at \\*\\*720p\\*\\*|no 1080p|720p ceiling"
         },
         {
           "type": "regex_present",
@@ -138,15 +142,31 @@
       ]
     },
     {
-      "id": "trap-s25-1080p",
-      "description": "STALE-SPEC TRAP — 1080p on Seedance 2.5 must be flagged (2.0's lane, not 2.5's)",
+      "id": "trap-s25-4k",
+      "description": "STALE-SPEC TRAP — 4K on Seedance 2.5 must be flagged (2.0's lane; 2.5 stops at 1080p since the 2026-09-26 snapshot)",
       "model": "seedance_2_5",
       "request": "(trap) header promising a resolution 2.5 does not expose",
-      "response": "**Model**: Seedance 2.5\n**Mode**: t2v  **Aspect ratio**: 16:9  **Duration**: 10s  **Resolution**: 1080p\n\nA kettle reaches boil on a gas stove, steam pulsing against morning window light. Static close-up.",
+      "response": "**Model**: Seedance 2.5\n**Mode**: t2v  **Aspect ratio**: 16:9  **Duration**: 10s  **Resolution**: 4k\n\nA kettle reaches boil on a gas stove, steam pulsing against morning window light. Static close-up.",
       "assertions": [
         {
           "type": "enum_legal",
           "expect": "illegal"
+        }
+      ]
+    },
+    {
+      "id": "s25-1080p-legal",
+      "description": "1080p is a legal Seedance 2.5 resolution since the 2026-09-26 snapshot — the header must pass preflight (guards the old stale-720p doctrine from creeping back into goldens)",
+      "model": "seedance_2_5",
+      "request": "Seedance 2.5 t2v at 1080p, 10 seconds.",
+      "response": "**Model**: Seedance 2.5\n**Mode**: t2v  **Aspect ratio**: 16:9  **Duration**: 10s  **Resolution**: 1080p\n\nA kettle reaches boil on a gas stove, steam pulsing against morning window light. Static close-up.",
+      "assertions": [
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)no 1080p|720p ceiling|caps at 720p"
         }
       ]
     },
@@ -186,7 +206,7 @@
       "description": "Repeated identical failures across batches must stop the batching and diagnose prompt/source, not recommend more re-rolls",
       "model": "seedance_2_5",
       "request": "My v2v shot of me jumping onto a dragon has failed the same way in all four batches. Should I run more batches?",
-      "response": "Routing to higgsfield-seedance-2-5 (VFX-PIPELINE.md § Stage 5).\n\nNo — stop batching. The same defect across all four batches is a prompt or source fault, and further batching only burns credits.\n\nThe likely cause is an anchor problem: video-to-video inherits motion from the plate, so it can only render an action the plate has an anchor for. If there is no actual jump moment in your source footage, no re-roll will produce one.\n\nThe fallback is image-to-video:\n\n1. Screenshot a frame of the location out of the plate.\n2. Declare it as the starting frame in the prompt (2.5 has no start_image role — the anchor is a reference whose role sentence says it is the first frame).\n3. Write the action from scratch, since nothing is being inherited any more.\n4. Write a deliberate empty-frame pause of about 1.5 seconds where you intend to cut — an empty frame is a clean stitch point, and it doubles as a tension beat.",
+      "response": "Routing to higgsfield-seedance-2-5 (VFX-PIPELINE.md § Stage 5).\n\nNo — stop batching. The same defect across all four batches is a prompt or source fault, and further batching only burns credits.\n\nThe likely cause is an anchor problem: video-to-video inherits motion from the plate, so it can only render an action the plate has an anchor for. If there is no actual jump moment in your source footage, no re-roll will produce one.\n\nThe fallback is image-to-video:\n\n1. Screenshot a frame of the location out of the plate.\n2. Use it as the starting frame in `omni_reference` — the platform `start_image` role, or a reference whose role sentence says it is the first frame (one route, not both).\n3. Write the action from scratch, since nothing is being inherited any more.\n4. Write a deliberate empty-frame pause of about 1.5 seconds where you intend to cut — an empty frame is a clean stitch point, and it doubles as a tension beat.",
       "assertions": [
         {
           "type": "regex_present",
@@ -203,6 +223,10 @@
         {
           "type": "regex_absent",
           "pattern": "(?i)(run|try) (a few |some )?more batches"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)has no start_image role"
         },
         {
           "type": "antislop_absent"

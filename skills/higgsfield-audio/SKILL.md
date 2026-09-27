@@ -8,11 +8,14 @@ description: >
   prompt would benefit from audio direction but they haven't mentioned it.
   Also use when the user wants standalone audio — a soundtrack, ambience bed,
   multi-speaker scene audio (Seed Audio 1.0), or text-to-speech voiceover.
+  Also use to swap or revoice the speaker in an existing video (voice_change),
+  or to clone / create a reusable voice (create_voice → a voice_type 'element'
+  voice usable in TTS and voice change).
 user-invocable: true
 metadata:
-  tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS]
-  version: 3.7.0
-  updated: 2026-08-22
+  tags: [higgsfield, audio, dialogue, lip-sync, SFX, ambient, sound, BGM, music, voice, seed-audio, scene-audio, TTS, voice-change, voice-clone]
+  version: 3.8.0
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -28,7 +31,8 @@ metadata:
 - Multi-clip assembly: one master track · cuts land on musical punctuation, never inside a sung vowel (ECU mouth-match is the one exception) · unified grain + LUT masks batch color drift [→](#cutting-to-music-assembling-separately-generated-clips-on-one-track)
 - Cinema Studio 3.0 native joint audio (SCELA): describe audio as a separate section; specific foley beats generic moods [→](#cinema-studio-30-audio-businessteam-plan)
 - **Seed Audio 1.0** (`seed_audio`, standalone) = whole-scene audio in ONE pass — multi-speaker dialogue + music + SFX + ambience mixed [→](#scene-audio-generation-seed-audio-10)
-- Standalone Audio catalog (2026-08-01 snapshot): `seed_audio`, `qwen_audio_tts` (NEW — Qwen 3.0 TTS Flash, expressive instructions + cloned voices), `text2speech_v2` (5 engines incl. cozy_voice), plus 3 game-pipeline-only tools — distinct from in-video joint audio [→](#standalone-audio-tab-tool-catalog-2026-08-01-snapshot)
+- Standalone Audio catalog (2026-09-26 snapshot): `seed_audio`, `qwen_audio_tts` (Qwen 3.0 TTS Flash — gained `batch_size` 1–4 on 2026-09-26, the only audio change since 08-01), `text2speech_v2` (5 engines incl. cozy_voice), plus 3 game-pipeline-only tools — distinct from in-video joint audio [→](#standalone-audio-tab-tool-catalog-2026-09-26-snapshot)
+- **Voice change** (`voice_change`) swaps the speaker in a finished video, keeping timing and visuals — no prompt; priced by duration. **Voice cloning** (`create_voice`) makes a reusable `voice_type: 'element'` voice — usable only once `completed` + `is_audio_eligible` [→](#voice-change-and-voice-cloning)
 
 ## Which Models Support Audio?
 
@@ -708,20 +712,23 @@ Music: a lonely muted trumpet fades in under the rain, wistful but hopeful.
 
 ---
 
-## Standalone Audio tab — tool catalog (2026-08-01 snapshot)
+## Standalone Audio tab — tool catalog (2026-09-26 snapshot)
 
 The live standalone-audio catalog, reconciled against the models_explore
-snapshot of **2026-08-01** (`../../specs/models_explore_snapshot_audio_2026-08-01.json`;
+snapshot of **2026-09-26** (`../../specs/models_explore_snapshot_audio_2026-09-26.json`;
 generated table: `../../specs/AUDIO-MODEL-SPECS.md`, machine twin
 `../../specs/audio-model-specs.json` — regenerate with `python3 scripts/sync_specs.py --type audio`).
+The 2026-09-26 pull carries the same six models as 2026-08-01; the **only** change is
+`qwen_audio_tts` gaining `batch_size` (1–4, default 1 — "Number of independent
+variations to generate") `[OFFICIAL — platform, 2026-09-26]`.
 The Audio tab's UI tools — **Voiceover** (text → speech), **Change Voice** (swap a
-voice in any video), **Translation** (translate speech in any video) — sit on top
-of these models:
+voice in any video — the `voice_change` tool, § Voice change and voice cloning below),
+**Translation** (translate speech in any video) — sit on top of these models:
 
 | Model id | Name | What it does | Availability |
 |----------|------|--------------|--------------|
 | `seed_audio` | Seed Audio 1.0 (ByteDance) | One-pass whole-scene audio: dialogue + music + SFX + ambience (§ above) | General |
-| `qwen_audio_tts` | Qwen Audio 3.0 TTS Flash (Alibaba) | Expressive TTS: natural-language `instruction` for emotion/dialect/speed, preset or cloned reference-element voices, 13 language hints | General *(NEW 2026-08-01)* |
+| `qwen_audio_tts` | Qwen Audio 3.0 TTS Flash (Alibaba) | Expressive TTS: natural-language `instruction` for emotion/dialect/speed, preset or cloned reference-element voices, 13 language hints; `batch_size` 1–4 variations per call | General *(added 2026-08-01; `batch_size` added 2026-09-26)* |
 | `text2speech_v2` | Text to Speech V2 | Single-voice TTS; engine via `variant`: `elevenlabs`, `minimax`, `seed_speech`, `vibe_voice`, **`cozy_voice`** *(NEW)*; preset or reference-element voices (`voice_type` + `voice_id`) | General |
 | `sonilo_music` | Sonilo Music (FAL) | Text-to-music with controllable duration | **Game pipeline only** |
 | `mirelo_text_to_audio` | Mirelo Text to Audio (FAL) | Text-to-audio SFX with controllable duration | **Game pipeline only** |
@@ -732,7 +739,85 @@ multilingual voiceover/narration; **elevenlabs** (Eleven v3) when fine
 emotional/tone control matters; **vibe_voice** for long-form narration. These
 are standalone audio generators — distinct from the native joint audio baked
 into Kling 3.0 / Seedance 2.0 / Veo during video generation. (Catalog reflects
-the 2026-08-01 snapshot; verify live before quoting pricing or availability.)
+the 2026-09-26 snapshot; verify live before quoting pricing or availability.)
+
+> **Framing conflict to know about.** The 2026-09-26 MCP `generate_audio` tool
+> description calls itself speech-only — *"This tool only generates speech: it cannot
+> generate music or sound effects for general use, and there is no standalone music/SFX
+> model here — decline general music or sound-effect requests"* — and names `seed_audio`
+> as its default speech model `[OFFICIAL — Higgsfield MCP tool schema, 2026-09-26]`. The
+> § Scene-Audio Generation section above documents Seed Audio 1.0 as one-pass scene audio
+> *including* music and SFX (ByteDance's launch framing, script format EMPIRICAL). The two
+> have not been reconciled by a run. Through the MCP connector, follow the connector's
+> instruction; treat music-and-SFX-in-one-pass as the model's documented capability, not
+> as something the connector will agree to do.
+
+---
+
+## Voice change and voice cloning
+
+`[OFFICIAL — Higgsfield MCP tool schema, 2026-09-26]` + `[OFFICIAL — platform CLI 1.1.23,
+2026-09-26]`. Nothing in this section has been run from this repo.
+
+### `voice_change` — revoice a finished video
+
+> "Replace the spoken voice in a video with a different voice while keeping the original
+> timing and visuals, then re-merge the new audio onto the video."
+
+| Param | Values | Notes |
+|---|---|---|
+| `video_id` | uuid | A confirmed uploaded video `media_id` **or** a completed video generation `job_id` |
+| `voice_id` | string | A preset voice id, or a reference-element id |
+| `voice_type` | `preset` (default) · `element` | Must match what `voice_id` is |
+
+- **No prompt, no count** — output dimensions come from the source video. There is
+  nothing to write; the choice is the voice.
+- **CLI face:** the `voice_change` workflow (`higgsfield workflow get voice_change
+  --json`) takes `input_video` + `voice_id` + `voice_type`, and its only cost parameter is
+  **`duration`** — it is priced by length. Preflight by model id with the real inputs:
+  `higgsfield generate cost voice_change --input_video <clip> --voice_id <id> --voice_type preset`
+  (unverified with media attached). Checked 2026-09-26: the `generate cost workflow voice_change`
+  form is rejected ("Unknown workflow"), and `--duration` is not an accepted param — the length
+  comes from the clip.
+- **Finding voices:** MCP `list_voices` returns built-in presets plus the user's own
+  voices, each as a `voice_id` + `voice_type` pair with a `preview_url`; CLI
+  `higgsfield voices list` / `higgsfield voices get <voice_id>`.
+
+### `create_voice` — clone a reusable voice
+
+- **`create_voice`** opens Higgsfield's Create Voice widget (record or upload tab); the
+  widget collects the name and audio, confirms the upload, and **creates the voice
+  end-to-end** — and shows the plans / credits UI itself when the user is out of credits.
+  A file the user attached in chat still goes through the widget's Upload tab: remote tools
+  cannot read chat attachments.
+- **`create_voice_from_confirmed_audio`** is the backend path, only when a confirmed
+  `audio_media_id` (uploaded with `type='audio'`) and a name already exist. Source audio:
+  **clear speech, roughly 10 seconds to 3 minutes**. The **voice-clone credit cost is
+  charged on successful creation**.
+- **Cloning is asynchronous.** A fresh clone usually comes back `processing`. It becomes a
+  usable `voice_type: 'element'` voice only when `status='completed'` **and**
+  `is_audio_eligible=true` — re-check with `list_voices` before generating with it.
+  `voice_clone_failed` / `failed` means it did not work.
+- **Where an element voice works:** `generate_audio` with `seed_audio` or
+  `text2speech_v2` (`voice_type` + `voice_id` travel together — § Scene-Audio Generation),
+  and `voice_change`.
+- A second, one-off path exists: `seed_audio` "can clone a voice from an audio_references
+  media item" per the `generate_audio` description — that conditions one generation; it
+  does not create a reusable voice.
+- Clone only voices you have the speaker's consent to use.
+
+### Uses in this repo `[HYPOTHESIS — UNMEASURED]`
+
+- **One narrator across a series.** An element voice is the platform-side version of a
+  locked voice: the same `voice_id` in every `seed_audio` / `text2speech_v2` call, instead of
+  re-describing the voice in each prompt.
+- **Voice drift across generated clips.** If clips generated with native audio (§ Which
+  Models Support Audio?) render different voices for the same character, `voice_change`
+  every clip to the **same** element voice — the tool's contract is that it keeps the
+  original timing, so lip-sync timing should survive the swap. Whether it does is untested;
+  check the first clip before batching.
+- Post-production voice replacement belongs with the other finished-video surfaces —
+  `../higgsfield-repurpose/SKILL.md` § Where the neighbouring jobs live.
 
 ### Post-generation voice-over — Supercomputer workflow [DEMO]
 
@@ -751,3 +836,4 @@ already locked and only narration is missing.
 - `higgsfield-troubleshoot` — Audio failure diagnosis
 - `higgsfield-cinema` — Cinema Studio audio workflow with Kling 3.0
 - `higgsfield-vibe-motion` — Motion graphics with audio (different from AI-generated audio)
+- `higgsfield-repurpose` — other surfaces that take a finished video in (Shorts Studio, Clipify, Virality Predictor, Video Analysis)

@@ -141,6 +141,13 @@
           ],
           "required": "optional",
           "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Remove the background from the upscaled image.",
+          "name": "remove_bg",
+          "required": "optional",
+          "type": "bool"
         }
       ],
       "provider": "",
@@ -248,6 +255,67 @@
     },
     {
       "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "flux_2_pro_outpaint",
+      "media_roles": {
+        "medias": [
+          "image_references"
+        ]
+      },
+      "modes": [],
+      "name": "FLUX.2 Pro Outpaint",
+      "output_type": "image",
+      "params": [
+        {
+          "default": 0,
+          "description": "Pixels to expand at the top of the image; a negative value crops the top by that many pixels instead.",
+          "max": 2048,
+          "min": -8192,
+          "name": "expand_top",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 0,
+          "description": "Pixels to expand at the bottom of the image; a negative value crops the bottom by that many pixels instead.",
+          "max": 2048,
+          "min": -8192,
+          "name": "expand_bottom",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 0,
+          "description": "Pixels to expand on the left of the image; a negative value crops the left by that many pixels instead.",
+          "max": 2048,
+          "min": -8192,
+          "name": "expand_left",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": 0,
+          "description": "Pixels to expand on the right of the image; a negative value crops the right by that many pixels instead.",
+          "max": 2048,
+          "min": -8192,
+          "name": "expand_right",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Optional folder placement for the generated image.",
+          "name": "folder_id",
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Black Forest Labs",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
       "aspect_ratios": [
         "1:1",
         "4:3",
@@ -277,6 +345,7 @@
         "4:3",
         "3:4",
         "16:9",
+        "21:9",
         "9:16",
         "3:2",
         "2:3"
@@ -313,6 +382,93 @@
             "low",
             "medium",
             "high"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "OpenAI",
+      "resolutions": [
+        "1k",
+        "2k",
+        "4k"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "auto",
+        "1:1",
+        "3:2",
+        "2:3",
+        "4:3",
+        "3:4",
+        "16:9",
+        "9:16",
+        "21:9",
+        "27:16",
+        "16:27",
+        "9:8",
+        "8:9",
+        "4:5",
+        "5:4"
+      ],
+      "constraints": [],
+      "duration": null,
+      "id": "gpt_image_2_5",
+      "media_roles": {
+        "medias": [
+          "image_references"
+        ]
+      },
+      "modes": [],
+      "name": "GPT Image 2.5",
+      "output_type": "image",
+      "params": [
+        {
+          "default": "flare",
+          "description": "Model variant.",
+          "name": "variant",
+          "options": [
+            "flare",
+            "sunburst"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "low",
+          "description": "Rendering quality.",
+          "name": "quality",
+          "options": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "1k",
+          "description": "Output resolution.",
+          "name": "resolution",
+          "options": [
+            "1k",
+            "2k",
+            "4k"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Background handling. Omit to keep the model default.",
+          "name": "background",
+          "options": [
+            "auto",
+            "opaque",
+            "transparent"
           ],
           "required": "optional",
           "type": "string"
@@ -372,6 +528,61 @@
           "options": [
             "std",
             "quality"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "xAI",
+      "resolutions": [
+        "1k",
+        "2k"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
+        "1:1",
+        "auto",
+        "1:2",
+        "2:1",
+        "3:2",
+        "2:3",
+        "4:3",
+        "3:4",
+        "16:9",
+        "9:16"
+      ],
+      "constraints": [],
+      "duration": null,
+      "id": "grok_image_2_0",
+      "media_roles": {
+        "medias": [
+          "image_references"
+        ]
+      },
+      "modes": [],
+      "name": "Grok Image 2.0",
+      "output_type": "image",
+      "params": [
+        {
+          "default": "1k",
+          "description": "Output resolution.",
+          "name": "resolution",
+          "options": [
+            "1k",
+            "2k"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "medium",
+          "description": "Generation quality level.",
+          "name": "quality",
+          "options": [
+            "low",
+            "medium"
           ],
           "required": "optional",
           "type": "string"
@@ -644,6 +855,7 @@
     {
       "aliases": [],
       "aspect_ratios": [
+        "auto",
         "1:1",
         "3:2",
         "2:3",
@@ -660,7 +872,8 @@
       "id": "nano_banana_2",
       "media_roles": {
         "medias": [
-          "image"
+          "image_references",
+          "mask"
         ]
       },
       "modes": [],
@@ -669,7 +882,7 @@
       "params": [
         {
           "default": "1k",
-          "description": "Output resolution",
+          "description": "Output resolution.",
           "name": "resolution",
           "options": [
             "1k",
@@ -678,6 +891,13 @@
           ],
           "required": "optional",
           "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Whether to restrict the edit to the supplied mask.",
+          "name": "is_inpaint",
+          "required": "optional",
+          "type": "bool"
         }
       ],
       "provider": "Google",
@@ -707,7 +927,8 @@
       "id": "nano_banana_2_lite",
       "media_roles": {
         "medias": [
-          "image_references"
+          "image_references",
+          "mask"
         ]
       },
       "modes": [],
@@ -734,6 +955,13 @@
           ],
           "required": "optional",
           "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Whether to restrict the edit to the supplied mask.",
+          "name": "is_inpaint",
+          "required": "optional",
+          "type": "bool"
         }
       ],
       "provider": "Google",
@@ -790,7 +1018,7 @@
       "id": "nano_banana_pro",
       "media_roles": {
         "medias": [
-          "image"
+          "image_references"
         ]
       },
       "modes": [],
@@ -798,8 +1026,8 @@
       "output_type": "image",
       "params": [
         {
-          "default": "1k",
-          "description": "Output resolution",
+          "default": "2k",
+          "description": "Output resolution.",
           "name": "resolution",
           "options": [
             "1k",
@@ -959,6 +1187,65 @@
     {
       "aliases": [],
       "aspect_ratios": [
+        "auto",
+        "1:1",
+        "4:3",
+        "3:4",
+        "16:9",
+        "9:16",
+        "3:2",
+        "2:3",
+        "21:9"
+      ],
+      "constraints": [],
+      "duration": null,
+      "id": "seedream_5_0_flash",
+      "media_roles": {
+        "medias": [
+          "image_references"
+        ]
+      },
+      "modes": [],
+      "name": "Seedream 5.0 Flash",
+      "output_type": "image",
+      "params": [
+        {
+          "default": "2k",
+          "description": "Output resolution tier.",
+          "name": "resolution",
+          "options": [
+            "1k",
+            "1.5k",
+            "2k"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Optional width stored in generation metadata; not sent to the provider.",
+          "min": 1,
+          "name": "width",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Optional height stored in generation metadata; not sent to the provider.",
+          "min": 1,
+          "name": "height",
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "Bytedance",
+      "resolutions": [
+        "1k",
+        "1.5k",
+        "2k"
+      ]
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [
         "1:1",
         "4:3",
         "16:9",
@@ -1067,6 +1354,34 @@
           ],
           "required": "optional",
           "type": "string"
+        },
+        {
+          "description": "Optional output width stored with the generation.",
+          "min": 1,
+          "name": "width",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Optional output height stored with the generation.",
+          "min": 1,
+          "name": "height",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": false,
+          "description": "Remove the background from the generated image.",
+          "name": "remove_bg",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Treat the request as an inpaint/edit of the reference image(s) instead of a fresh generation.",
+          "name": "is_inpaint",
+          "required": "optional",
+          "type": "bool"
         }
       ],
       "provider": "Bytedance",
@@ -1488,7 +1803,7 @@
       "resolutions": []
     }
   ],
-  "snapshot_date": "2026-08-01",
-  "snapshot_file": "models_explore_snapshot_image_2026-08-01.json",
-  "snapshot_sha256": "d0ccad6f606393c2534addbc32a76e268745452ca8fbbcf2aaf1516c0e763555"
+  "snapshot_date": "2026-09-26",
+  "snapshot_file": "models_explore_snapshot_image_2026-09-26.json",
+  "snapshot_sha256": "4200e98c91bd2d32fc45ade5dfe2b93262e046bab080f454abaf2a05a4eae57e"
 }

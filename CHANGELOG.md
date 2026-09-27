@@ -1,5 +1,141 @@
 # Changelog
 
+## v3.36.0 — 2026-09-26
+
+**The catalog refresh.** The specs were 50–56 days stale and the weekly drift tripwire had
+been failing on auth for ten weeks, so the platform moved underneath the doctrine unseen.
+This release re-snapshots the live catalog, corrects what the move falsified, and gives every
+new model and tool a route. Nothing here is field-tested — the account had 0 credits — so every
+new model carries "Not yet field-rated" and no stars; `docs/field-test-queue.md` is the plan
+for the day it can be tested.
+
+### Specs
+
+- **Tier-2 refresh to the 2026-09-26 `models_explore` snapshot** — video (41 models), image
+  (35), audio (6), and the **first 3D snapshot** (17 models, committed as source; `sync_specs.py`
+  has no 3d type yet). The snapshots were transcribed from the live MCP output and verified
+  three ways: every field that changed against the previous snapshot was re-checked against a
+  fresh `models_explore get`; a two-way structural cross-check against raw `higgsfield model get`
+  found no disagreement on 35 video and 28 image models; and that cross-check was shown to go
+  red on the stale 2026-08-07 file. Known CLI↔MCP disagreements are recorded, not resolved
+  (`gpt_image_2` defaults / aspect ratios / mask; `soul_cinematic.soul_id`; `image` vs
+  `image_references` role naming).
+- New since 2026-08-07: video `ad_multiplier`, `flux_3_video_edit`, `gemini_omni_flash_1_1`,
+  `hf_mult_motion_control` + `hf_mult_replace_object` (Genjutsu), `kling_video_edit` (the API id
+  of Kling 3.0 Omni Edit), `minimax_h3_max`, `wan3_0`, `wan3_0_prime`; image `gpt_image_2_5`,
+  `grok_image_2_0`, `seedream_5_0_flash`, `flux_2_pro_outpaint`. Gone: `llm_text`. New params on
+  existing models: `seedance_2_5` 1080p + `start_image`/`end_image` + `bitrate_mode`;
+  `minimax_h3` duration floor 5 → 4; inpaint/`mask` on `nano_banana_2` and `nano_banana_2_lite`;
+  `is_inpaint` / `remove_bg` / width / height on `seedream_v5_pro`; `remove_bg` on
+  `bytedance_image_upscale`; `qwen_audio_tts` `batch_size` 1–4.
+
+### Fixed
+
+- **Seedance 2.5 is 1080p and takes platform start/end frames** — in `omni_reference` only,
+  with new CLI rules (t2v takes zero references; image refs + start + end ≤ 30; all + start +
+  end ≤ 50; omni_reference needs ≥ 1). About 25 lines said "720p cap, no start/end-frame role",
+  including the dispatcher's 2.0-vs-2.5 row, which sent 1080p and start-frame jobs to the wrong
+  model. Corrected across `higgsfield-seedance-2-5` (1.4.0 → 1.5.0) and its MODE-PLAYBOOKS /
+  VFX-PIPELINE, `higgsfield-seedance` (1.14.0 → 1.15.0), `higgsfield-seedance-vfx` (1.0.0 →
+  1.1.0 — also the bump it missed in v3.26), `templates/seedance/omni-reference-2-5.md`, README,
+  `model-guide.md`, and the root dispatcher. Only 4K, `mode=fast` and `genre` now discriminate
+  2.0 from 2.5. The in-prompt first-frame declaration stays as the alternative route; which of
+  the two holds the boundary better is recorded as **unmeasured**.
+- Evals that certified the stale surface: `trap-s25-1080p` → `trap-s25-4k` (4K stays illegal);
+  new `s25-1080p-legal`; `s25-routes-4k-back-to-2-0`'s golden and regex no longer require the
+  false "caps at 720p" text; `trap-s25-four-batch-rule`'s golden no longer says 2.5 has no
+  start_image role.
+- The dispatcher's "extend a clip" row sent every extension to 2.0 while the 2.5 row claimed
+  forward/backward extension — split between 2.5 `video_extension`, 2.0 continuation, and
+  cross-generation chaining.
+- `skills/higgsfield-models/` (3.2.0 → 3.3.0, incl. MODELS-DEEP-REFERENCE) had no Seedance 2.5
+  at all and still said Seedance 2.0 was "Coming soon", that Grok Image is "NOT available on
+  Higgsfield" (`grok_image` is live), and that Kling 3.0 has the platform's longest clip (15s).
+  Brought into line with `model-guide.md` and the catalog; the Unique Feature Matrix rows for
+  editing, start/end frames, extension, motion transfer, native audio, transparent background
+  and masked inpaint rebuilt.
+- `model-guide.md` answered "edit existing footage?" twice with different models — replaced by
+  one **Edit-Lane Chooser**. "Seedance Pro" (a legacy UI label with no API id) replaced by
+  Seedance 2.0 Fast in `templates/08-comedy-social-media.md` and `higgsfield-pipeline`
+  (3.5.0 → 3.5.1).
+- `higgsfield-cinema` pushed its Physics Rendering matrix past line 2,000 — beyond a default
+  read, while two QUICK FACTS lines pointed at it. The 2.5/3.0 per-mode output templates and
+  the reference-sheet specs moved verbatim to `references/`; the file is 1,723 lines.
+
+### Added
+
+- `model-guide.md` — rows for every new model (no stars, "Not yet field-rated"), an
+  **Edit-Lane Chooser** (Seedance 2.5 / Cinema Studio 4.0 `video_edit`, Kling 3.0 Omni Edit,
+  Kling O1 Edit, FLUX 3 Video Edit, Gemini Omni Flash 1.1 `edit`, Genjutsu, Ad Multiplier — each
+  with billing basis, source-length limit and what it preserves, as far as the platform states
+  it), a **Long-Take Chooser** for clips over 15s (Seedance 2.5, Wan 3.0 / Prime incl. smart
+  duration only on explicit request, FLUX 3 Video, Cinema Studio 4.0), and a **Motion Transfer**
+  table (Genjutsu vs Kling 3.0 Motion Control).
+- `image-models.md` + `higgsfield-gpt-image-2` (1.2.0 → 1.3.0) — **GPT Image 2.5** (Flare /
+  Sunburst, quality to `max`, the catalog's first `background: transparent` route — alpha in the
+  downloaded file unverified), Grok Image 2.0, Seedream 5.0 Flash, FLUX.2 Pro Outpaint, the
+  inpaint / mask / `remove_bg` parameter table, `nano_banana_2_relight` (CLI-only). Vendor
+  prompting guidance only where the vendor documents it (OpenAI for GPT Image 2.5, Alibaba
+  Model Studio for Wan 3.0); everything else is surface + routing.
+- `higgsfield-moodboard` (3.0.0 → 3.1.0) — Soul 2.0's `style_id` and image references are
+  mutually exclusive on the platform (UI mapping unverified).
+- **NEW `higgsfield-3d`** — the 17 3D models (image / multi-view / text → GLB, rigging and the
+  678-clip animation library, remesh, retexture, 3D Body), 3D Jutsu scene projects, the
+  source-image law ("edit the image first"), `get_cost` preflight, and two film uses marked
+  unmeasured: a mesh turnaround as a multi-angle reference and a front-on 3D blockout feeding
+  `templates/seedance/staging-reference.md`.
+- **NEW `higgsfield-repurpose`** — Shorts Studio, Clipify, Virality Predictor, Video Analysis,
+  with the paid / free split (Shorts Studio is paid but has a free cost estimate; the other two
+  state no cost and are not called free).
+- `higgsfield-cinema` (3.4.0 → 3.5.0) — **Cinema Studio 4.0** (`cinematic_studio_video_4_0`):
+  the Seedance-2.5 four-mode surface plus camera body / lens / aperture / era / genre / pacing
+  ids and light / palette controls, diffed field-by-field against 3.5. Its `*_id` values and
+  duration bounds are unpublished in the CLI schema — stated as unknowns.
+- `higgsfield-stack` (1.2.1 → 1.3.0) — Higgsfield's bundled skills are at 0.12.0 (eight skill
+  folders, not three), and the connector now ships its own workflow catalog; a coexistence
+  table says what this library adds vs hands off for each one.
+- `higgsfield-audio` (3.7.0 → 3.8.0) — `voice_change` and `create_voice`; catalog restamped.
+- `higgsfield-marketing-studio` (1.0.0 → 1.1.0) — § 14 Ad Multiplier and Genjutsu.
+- `docs/field-test-queue.md` — the cheapest config that answers each open question, with
+  per-model credit estimates from `higgsfield generate cost` (verified to create no job).
+- 29 eval cases across `model-lanes.json`, `gpt-image-2.json`, `3d.json`, `repurpose.json`,
+  `cinema-4-0.json`, `voice.json`, `stack-workflows.json`, `ad-multiplier.json` and
+  `seedance-2-5.json`; each new case was run against a deliberately wrong golden and failed.
+
+### Independent review (fixed before release)
+
+A fresh Opus reader went through the raw diff against the snapshots, the CLI dumps and live
+free `model get` / `workflow get` calls: no wrong-answer defects; fixed here —
+
+- `generate cost workflow cinematic_studio_video_4_0` and `… workflow voice_change` were taught
+  as preflights; both are rejected ("Unknown workflow", checked 2026-09-26). Cinema Studio 4.0
+  is estimated by model id with its source clip attached (`--video_references`, which moves the
+  price); `voice_change` by model id with the clip, the voice and its `--voice_type` attached (it
+  takes no `duration`). Only a prompt-only 480p `t2v` estimate is verified; the forms with media
+  attached are not. A second reader of this fix found the first rewrite still omitted the clip and
+  the voice type, and that two eval assertions could not go red — fixed and proven on mutants.
+- `higgsfield-stack` said this library "never loads `get_workflow_instructions`" while quoting
+  the connector rule that requires it — the agent follows the connector's routing and loads the
+  workflow; this library supplies the inputs.
+- One object swapped in one clip had two primary answers. Tie-break: a reference image of the
+  new object → Genjutsu `hf_mult_replace_object`; a change described in words only → Seedance
+  2.5 `video_edit`. Stated in the dispatcher, § Edit-Lane Chooser and marketing-studio § 14;
+  both goldens aligned.
+- Smaller: repurpose list/status calls no longer called free (their schemas are silent); Seedream
+  5.0 Pro is `is_inpaint` without a `mask` role; the smart-duration rule is stated as an extension
+  of the Fast Path Seedance exception; Alibaba citations point at their URLs; the 2.5 catalog
+  caps are the 30-image and 50-item ones only; a duplicate 4K trap removed; a public eval regex no
+  longer names a private product; the README lists the new sub-skills and Cinema Studio 4.0.
+
+### Recorded, not resolved
+
+- The MCP `generate_3d` schema says only `sam_3_3d` takes a prompt; CLI `model get` marks
+  `prompt` required on the text→3D models. 3D Jutsu's importer takes catalog assets only, so a
+  generated GLB has no documented way into a scene.
+- The MCP `generate_audio` description calls itself speech-only; this library documents Seed
+  Audio music + SFX in one pass.
+- `shorts_studio_status` points callers at a `job_status` tool the connector doesn't expose.
+
 ## v3.35.0 — 2026-08-22
 
 **The reconciliation pass on five picks deferred from v3.34.0.** Each of these overlapped

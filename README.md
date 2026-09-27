@@ -1,5 +1,5 @@
-[![Version](https://img.shields.io/badge/version-3.35.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
-[![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--08--07-informational)](specs/MODEL-SPECS.md)
+[![Version](https://img.shields.io/badge/version-3.36.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--09--26-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 
@@ -19,9 +19,12 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 - Troubleshooting for failed or poor generations
 - **Cinema Studio 2.5** advanced features: Soul Cast AI actors, built-in color grading, 3D Mode (Gaussian Splatting), Grid Generation, Resolution Settings, Frame Extraction Loop, Object & Person Insertion, Per-Character Emotions, Clustering, Five-View Location Reference Sheet, Reference Sheet Types (Motion / Outfit / Palette), Elements System with library surface (5 source tabs × 6 element categories)
 - **Cinema Studio 3.0** (Business/Team plan): native dual-channel stereo audio, Smart shot control, 15s max duration, 7 genres, @ reference patterns, Soul Cast 3.0
+- **Cinema Studio 4.0** (`cinematic_studio_video_4_0`, CLI workflow): the Seedance 2.5 four-mode surface (t2v / omni_reference / video_edit / video_extension) plus camera body / lens / aperture / era / genre / pacing and light / palette controls — schema-documented, not yet field-rated
+- **3D** (`higgsfield-3d`): image / multi-view / text → GLB meshes, rigging + a 678-clip animation library, remesh / retexture, 3D Jutsu scene projects, 3D turnarounds and staging blockouts
+- **Repurposing** (`higgsfield-repurpose`): Shorts Studio, Clipify, Virality Predictor, Video Analysis — with the paid / free split
 - **Cinema Studio 3.5**: three-pill main UI (Genre / Style / Camera), Style Settings panel (8 Color Palette / 6 Lighting / 9 Camera Moveset Style + Manual Style mode), Camera Settings four-axis panel (3 Camera Body / 5 Lens / 5 Focal Length including new 75mm / 3 Aperture), Image Mode with four Cinematic models picker (Soul Cinema default, Cinematic Characters, Cinematic Locations, Cinematic Cameras with 2.5 vocabulary)
 - **Seedance 2.0 prompting best practices** — Intent over Precision, Genre Router, I2V Gate, Anti-Slop, Physics Language, SCELA audio, Reference-Based / Continuation / Expand Shot / Edit Shot / Transformation prompt modes, Continuation Prompt Formula, the Iteration Rule
-- **Seedance 2.5 omni-reference director** — the four generation modes (`t2v` / `omni_reference` / `video_edit` / `video_extension`), explicit `@Image` / `@Video` / `@Audio` reference roles with exclusions, the five-step multi-reference workflow, 30-second staging with end states, timestamp pacing, bracket syntax for music / SFX / dialogue / subtitles, in-prompt first-last-frame and multi-keyframe control, storyboard grids, coarse-vs-fine blockout rendering, one-click video, seamless transitions, and a 2.0-vs-2.5 routing table
+- **Seedance 2.5 omni-reference director** — the four generation modes (`t2v` / `omni_reference` / `video_edit` / `video_extension`), explicit `@Image` / `@Video` / `@Audio` reference roles with exclusions, the five-step multi-reference workflow, 30-second staging with end states, timestamp pacing, bracket syntax for music / SFX / dialogue / subtitles, first-last-frame control (platform `start_image`/`end_image` in `omni_reference`, or declared in-prompt) and multi-keyframe control, storyboard grids, coarse-vs-fine blockout rendering, one-click video, seamless transitions, and a 2.0-vs-2.5 routing table
 - **Hell Grind feature-film pipeline** — Higgsfield's open-sourced 95-minute-feature system: headless character sheets, mask-composited point edits, location sheets with anchors and one light logic, the per-scene GEO SPATIAL LAYOUT block, the position-fixing first second, dialogue construction, the ban dictionary, the 10–15 iteration rule, and the crowd / giant / threshold solutions
 - **AI-VFX pipeline** — the production layer under Seedance 2.5, from Higgsfield's AI-vs-VFX challenge build: model routing per asset class (faces / creatures / clothing / locations), the plain-grey sheet law, two-close-up creature sheets, the face-lock crop, the size-ref frame for scale between two subjects, location batching selected on light, the `omni_reference` video-to-video lane (source ≥4s, duration = source) with its performance-inheritance clause, the four-batch stop rule and the i2v fallback with a deliberate empty-frame stitch point, and a slop catalog of the tells that give a shot away
 - **Acting director** — performance as behavior under pressure: objective / obstacle / tactics / beats / subtext, listening markers, body + status + proxemics, mandatory eye life, the 150–220-word acting master profile and its per-scene rewrite, the locked voice prompt, a 15-symptom atlas of bad acting, and a 0–5 performance scale
@@ -205,7 +208,7 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 │   ├── 08-comedy-social-media.md
 │   ├── 09-romantic-intimate.md
 │   ├── 10-dance-music-performance.md
-│   ├── seedance/                     ← Seedance technique templates (9)
+│   ├── seedance/                     ← Seedance technique templates (10)
 │   │   ├── multi-character-anchor.md
 │   │   ├── single-character-position.md
 │   │   ├── top-down-map.md
@@ -247,7 +250,9 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
     │   ├── SKILL.md                      ← Marketing Studio: 9 ad presets + 4–15s ad video
     │   └── cross-surface-workflow.md     ← ms_image / DTC Ads cross-surface workflow
     ├── higgsfield-recall/SKILL.md        ← Recall + regeneration patterns
-    ├── higgsfield-cinema/SKILL.md        ← Cinema Studio 2.5 + 3.0 + 3.5 (Soul Cast, Color Grading, 3D Mode, Smart Mode, @ References, Native Audio, three-pill UI, Image Mode, Cinematic models picker)
+    ├── higgsfield-3d/SKILL.md            ← 3D meshes (image / multi-view / text → GLB), rigging, 3D Jutsu scenes
+    ├── higgsfield-repurpose/SKILL.md     ← Finished video in: Shorts Studio, Clipify, Virality Predictor, Video Analysis
+    ├── higgsfield-cinema/SKILL.md        ← Cinema Studio 2.5 + 3.0 + 3.5 + 4.0 (Soul Cast, Color Grading, 3D Mode, Smart Mode, @ References, Native Audio, three-pill UI, Image Mode, Cinematic models picker)
     ├── higgsfield-seedance/
     │   ├── SKILL.md                      ← Seedance 2.0 prompt director + content-filter preflight
     │   ├── ENGINE-RULES.md               ← Hard rendering constraints shared across the Seedance family
@@ -347,4 +352,4 @@ acting on the tail. A small sample is not evidence a skill is dead.
 
 ---
 
-Built February 2026 · v3.35.0 (updated 2026-08-22) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.36.0 (updated 2026-09-26) · Platform: [higgsfield.ai](https://higgsfield.ai)

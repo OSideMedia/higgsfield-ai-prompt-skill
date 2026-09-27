@@ -24,6 +24,26 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [Shared Resources](SKILL.md#shared-resources)
   - [Sub-Skills (auto-loaded as needed)](SKILL.md#sub-skills-auto-loaded-as-needed)
 
+## skills/higgsfield-3d/SKILL.md
+
+- [Higgsfield 3D — Meshes, Rigs, and 3D Jutsu Scenes](skills/higgsfield-3d/SKILL.md#higgsfield-3d-meshes-rigs-and-3d-jutsu-scenes)
+  - [QUICK FACTS](skills/higgsfield-3d/SKILL.md#quick-facts)
+  - [What this sub-skill is for](skills/higgsfield-3d/SKILL.md#what-this-sub-skill-is-for)
+  - [The catalog — 17 models, six jobs](skills/higgsfield-3d/SKILL.md#the-catalog-17-models-six-jobs)
+    - [Picking a model](skills/higgsfield-3d/SKILL.md#picking-a-model)
+  - [The source-image law](skills/higgsfield-3d/SKILL.md#the-source-image-law)
+  - [Multi-view beats single-view](skills/higgsfield-3d/SKILL.md#multi-view-beats-single-view)
+  - [The prompt field — two surfaces disagree](skills/higgsfield-3d/SKILL.md#the-prompt-field-two-surfaces-disagree)
+  - [Parameter rules the server enforces](skills/higgsfield-3d/SKILL.md#parameter-rules-the-server-enforces)
+  - [Rigging and animation](skills/higgsfield-3d/SKILL.md#rigging-and-animation)
+  - [Cost and submission discipline](skills/higgsfield-3d/SKILL.md#cost-and-submission-discipline)
+  - [3D Jutsu (Scene Builder 3D)](skills/higgsfield-3d/SKILL.md#3d-jutsu-scene-builder-3d)
+    - [What 3D Jutsu cannot take in](skills/higgsfield-3d/SKILL.md#what-3d-jutsu-cannot-take-in)
+  - [Film use 1 — a 3D turnaround as a multi-angle reference](skills/higgsfield-3d/SKILL.md#film-use-1-a-3d-turnaround-as-a-multi-angle-reference)
+  - [Film use 2 — a 3D blockout as a staging reference](skills/higgsfield-3d/SKILL.md#film-use-2-a-3d-blockout-as-a-staging-reference)
+  - [Provenance and what is not known](skills/higgsfield-3d/SKILL.md#provenance-and-what-is-not-known)
+  - [Related skills](skills/higgsfield-3d/SKILL.md#related-skills)
+
 ## skills/higgsfield-acting/SKILL.md
 
 - [Higgsfield Acting Director](skills/higgsfield-acting/SKILL.md#higgsfield-acting-director)
@@ -136,7 +156,11 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [When to choose it — decision table](skills/higgsfield-audio/SKILL.md#when-to-choose-it-decision-table)
     - [Verified surface [OFFICIAL — model spec 2026-08-01]](skills/higgsfield-audio/SKILL.md#verified-surface-official-model-spec-2026-08-01)
     - [Script-format prompting [EMPIRICAL — community guides, NOT official docs]](skills/higgsfield-audio/SKILL.md#script-format-prompting-empirical-community-guides-not-official-docs)
-  - [Standalone Audio tab — tool catalog (2026-08-01 snapshot)](skills/higgsfield-audio/SKILL.md#standalone-audio-tab-tool-catalog-2026-08-01-snapshot)
+  - [Standalone Audio tab — tool catalog (2026-09-26 snapshot)](skills/higgsfield-audio/SKILL.md#standalone-audio-tab-tool-catalog-2026-09-26-snapshot)
+  - [Voice change and voice cloning](skills/higgsfield-audio/SKILL.md#voice-change-and-voice-cloning)
+    - [`voice_change` — revoice a finished video](skills/higgsfield-audio/SKILL.md#voice_change-revoice-a-finished-video)
+    - [`create_voice` — clone a reusable voice](skills/higgsfield-audio/SKILL.md#create_voice-clone-a-reusable-voice)
+    - [Uses in this repo `[HYPOTHESIS — UNMEASURED]`](skills/higgsfield-audio/SKILL.md#uses-in-this-repo-hypothesis-unmeasured)
     - [Post-generation voice-over — Supercomputer workflow [DEMO]](skills/higgsfield-audio/SKILL.md#post-generation-voice-over-supercomputer-workflow-demo)
   - [Related skills](skills/higgsfield-audio/SKILL.md#related-skills)
 
@@ -254,10 +278,6 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [What to Preserve on Reuse](skills/higgsfield-cinema/SKILL.md#what-to-preserve-on-reuse)
     - [Failure Mode This Prevents](skills/higgsfield-cinema/SKILL.md#failure-mode-this-prevents)
   - [Reference Sheet Types — Beyond Characters and Locations](skills/higgsfield-cinema/SKILL.md#reference-sheet-types-beyond-characters-and-locations)
-    - [Motion / Camera Sheet](skills/higgsfield-cinema/SKILL.md#motion-camera-sheet)
-    - [Outfit / Material Sheet](skills/higgsfield-cinema/SKILL.md#outfit-material-sheet)
-    - [Palette / Mood Sheet](skills/higgsfield-cinema/SKILL.md#palette-mood-sheet)
-    - [Product Reference Sheet](skills/higgsfield-cinema/SKILL.md#product-reference-sheet)
     - [The Reference Sheet Family](skills/higgsfield-cinema/SKILL.md#the-reference-sheet-family)
   - [Hero Frame](skills/higgsfield-cinema/SKILL.md#hero-frame)
   - [Higgsfield Popcorn — Storyboard Integration](skills/higgsfield-cinema/SKILL.md#higgsfield-popcorn-storyboard-integration)
@@ -270,14 +290,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [Clustering — Automatic Generation Grouping](skills/higgsfield-cinema/SKILL.md#clustering-automatic-generation-grouping)
   - [Cinema Studio Output Format](skills/higgsfield-cinema/SKILL.md#cinema-studio-output-format)
     - [What goes where](skills/higgsfield-cinema/SKILL.md#what-goes-where)
-    - [IMAGE MODE Output Format (Cinema Studio 2.5 only)](skills/higgsfield-cinema/SKILL.md#image-mode-output-format-cinema-studio-25-only)
-    - [SINGLE SHOT Video Output Format (Cinema Studio 2.5)](skills/higgsfield-cinema/SKILL.md#single-shot-video-output-format-cinema-studio-25)
-    - [MULTI-SHOT AUTO Video Output Format (Cinema Studio 2.5)](skills/higgsfield-cinema/SKILL.md#multi-shot-auto-video-output-format-cinema-studio-25)
-    - [MULTI-SHOT MANUAL Video Output Format (Cinema Studio 2.5)](skills/higgsfield-cinema/SKILL.md#multi-shot-manual-video-output-format-cinema-studio-25)
-  - [Cinema Studio 3.0 Output Formats](skills/higgsfield-cinema/SKILL.md#cinema-studio-30-output-formats)
-    - [IMAGE MODE Output Format (Cinema Studio 3.0)](skills/higgsfield-cinema/SKILL.md#image-mode-output-format-cinema-studio-30)
-    - [SINGLE SHOT / SMART Video Output Format (Cinema Studio 3.0)](skills/higgsfield-cinema/SKILL.md#single-shot-smart-video-output-format-cinema-studio-30)
-    - [MULTI-SHOT MANUAL Video Output Format (Cinema Studio 3.0)](skills/higgsfield-cinema/SKILL.md#multi-shot-manual-video-output-format-cinema-studio-30)
+    - [Per-version delivery templates](skills/higgsfield-cinema/SKILL.md#per-version-delivery-templates)
   - [⚠ Prompt Character Limit — 512 Characters](skills/higgsfield-cinema/SKILL.md#prompt-character-limit-512-characters)
     - [Cinema Studio 2.5 Character Budget](skills/higgsfield-cinema/SKILL.md#cinema-studio-25-character-budget)
     - [Cinema Studio 3.0 Character Budget](skills/higgsfield-cinema/SKILL.md#cinema-studio-30-character-budget)
@@ -309,6 +322,11 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Image Mode](skills/higgsfield-cinema/SKILL.md#image-mode)
     - [AI Director Toggle](skills/higgsfield-cinema/SKILL.md#ai-director-toggle)
     - [See also](skills/higgsfield-cinema/SKILL.md#see-also-1)
+  - [Cinema Studio 4.0](skills/higgsfield-cinema/SKILL.md#cinema-studio-40)
+    - [Parameter surface](skills/higgsfield-cinema/SKILL.md#parameter-surface)
+    - [What changed from 3.5 at the API](skills/higgsfield-cinema/SKILL.md#what-changed-from-35-at-the-api)
+    - [How to write for it (schema-derived, untested)](skills/higgsfield-cinema/SKILL.md#how-to-write-for-it-schema-derived-untested)
+    - [Delivery shape](skills/higgsfield-cinema/SKILL.md#delivery-shape)
   - [Physics Rendering — Resolution Decision Matrix](skills/higgsfield-cinema/SKILL.md#physics-rendering-resolution-decision-matrix)
   - [Related skills](skills/higgsfield-cinema/SKILL.md#related-skills)
 
@@ -368,6 +386,11 @@ anchors instead of archaeology. Link format: `path#anchor`.
 ## skills/higgsfield-gpt-image-2/SKILL.md
 
 - [Higgsfield GPT Image 2.0](skills/higgsfield-gpt-image-2/SKILL.md#higgsfield-gpt-image-20)
+  - [GPT Image 2.5](skills/higgsfield-gpt-image-2/SKILL.md#gpt-image-25)
+    - [Surface](skills/higgsfield-gpt-image-2/SKILL.md#surface)
+    - [When to prefer 2.5 vs 2.0](skills/higgsfield-gpt-image-2/SKILL.md#when-to-prefer-25-vs-20)
+    - [CLI ↔ MCP disagreement on `gpt_image_2`](skills/higgsfield-gpt-image-2/SKILL.md#cli-mcp-disagreement-on-gpt_image_2)
+    - [Prompting status on 2.5](skills/higgsfield-gpt-image-2/SKILL.md#prompting-status-on-25)
   - [1. What GPT Image 2.0 is](skills/higgsfield-gpt-image-2/SKILL.md#1-what-gpt-image-20-is)
   - [2. Three prompt formats](skills/higgsfield-gpt-image-2/SKILL.md#2-three-prompt-formats)
     - [Tie-break](skills/higgsfield-gpt-image-2/SKILL.md#tie-break)
@@ -471,6 +494,9 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Post-hoc verification](skills/higgsfield-marketing-studio/SKILL.md#post-hoc-verification)
   - [13. Source acknowledgment](skills/higgsfield-marketing-studio/SKILL.md#13-source-acknowledgment)
     - [Verification pass](skills/higgsfield-marketing-studio/SKILL.md#verification-pass)
+  - [14. Ad Multiplier and Genjutsu — editing a finished ad](skills/higgsfield-marketing-studio/SKILL.md#14-ad-multiplier-and-genjutsu-editing-a-finished-ad)
+    - [Ad Multiplier — many versions of one ad](skills/higgsfield-marketing-studio/SKILL.md#ad-multiplier-many-versions-of-one-ad)
+    - [Genjutsu — one edit, one clip](skills/higgsfield-marketing-studio/SKILL.md#genjutsu-one-edit-one-clip)
 
 ## skills/higgsfield-mixed-media/SKILL.md
 
@@ -691,6 +717,21 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [Recipe 8: Dance / Music Video](skills/higgsfield-recipes/SKILL.md#recipe-8-dance-music-video)
   - [Recipe 9: Transformation / Before & After](skills/higgsfield-recipes/SKILL.md#recipe-9-transformation-before-after)
   - [Related skills](skills/higgsfield-recipes/SKILL.md#related-skills)
+
+## skills/higgsfield-repurpose/SKILL.md
+
+- [Higgsfield Repurpose — Shorts, Clips, and Analysis of Finished Video](skills/higgsfield-repurpose/SKILL.md#higgsfield-repurpose-shorts-clips-and-analysis-of-finished-video)
+  - [QUICK FACTS](skills/higgsfield-repurpose/SKILL.md#quick-facts)
+  - [What this sub-skill is for](skills/higgsfield-repurpose/SKILL.md#what-this-sub-skill-is-for)
+  - [Paid or free — read this before calling anything](skills/higgsfield-repurpose/SKILL.md#paid-or-free-read-this-before-calling-anything)
+  - [Shorts Studio](skills/higgsfield-repurpose/SKILL.md#shorts-studio)
+    - [Style presets (free)](skills/higgsfield-repurpose/SKILL.md#style-presets-free)
+  - [Clipify](skills/higgsfield-repurpose/SKILL.md#clipify)
+  - [Virality Predictor](skills/higgsfield-repurpose/SKILL.md#virality-predictor)
+  - [Video Analysis](skills/higgsfield-repurpose/SKILL.md#video-analysis)
+  - [Where the neighbouring jobs live](skills/higgsfield-repurpose/SKILL.md#where-the-neighbouring-jobs-live)
+  - [Provenance](skills/higgsfield-repurpose/SKILL.md#provenance)
+  - [Related skills](skills/higgsfield-repurpose/SKILL.md#related-skills)
 
 ## skills/higgsfield-scene-engine/SKILL.md
 
@@ -932,6 +973,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
 - [Higgsfield Stack — Coexistence With Official Tooling](skills/higgsfield-stack/SKILL.md#higgsfield-stack-coexistence-with-official-tooling)
   - [What this sub-skill is for](skills/higgsfield-stack/SKILL.md#what-this-sub-skill-is-for)
   - [The three official surfaces](skills/higgsfield-stack/SKILL.md#the-three-official-surfaces)
+    - [The bundled skills at 0.12.0](skills/higgsfield-stack/SKILL.md#the-bundled-skills-at-0120)
   - [Preflight discipline — check cost and balance before generating](skills/higgsfield-stack/SKILL.md#preflight-discipline-check-cost-and-balance-before-generating)
     - [Two-step preflight](skills/higgsfield-stack/SKILL.md#two-step-preflight)
     - [Verified preflight surfaces](skills/higgsfield-stack/SKILL.md#verified-preflight-surfaces)
@@ -940,7 +982,9 @@ anchors instead of archaeology. Link format: `path#anchor`.
     - [Iteration-budget projection (production-benchmarks tie-in)](skills/higgsfield-stack/SKILL.md#iteration-budget-projection-production-benchmarks-tie-in)
   - [How our skill fits in](skills/higgsfield-stack/SKILL.md#how-our-skill-fits-in)
   - [Coexistence rules](skills/higgsfield-stack/SKILL.md#coexistence-rules)
-  - [Naming collision — `higgsfield-soul` (theirs) vs `higgsfield-soul` (ours)](skills/higgsfield-stack/SKILL.md#naming-collision-higgsfield-soul-theirs-vs-higgsfield-soul-ours)
+  - [Higgsfield's bundled workflows](skills/higgsfield-stack/SKILL.md#higgsfields-bundled-workflows)
+    - [Coexistence rules for Higgsfield's workflows](skills/higgsfield-stack/SKILL.md#coexistence-rules-for-higgsfields-workflows)
+  - [Naming overlap — `higgsfield-soul-id` (theirs) vs `higgsfield-soul` (ours)](skills/higgsfield-stack/SKILL.md#naming-overlap-higgsfield-soul-id-theirs-vs-higgsfield-soul-ours)
   - [Detection guidance](skills/higgsfield-stack/SKILL.md#detection-guidance)
   - [Handoff templates](skills/higgsfield-stack/SKILL.md#handoff-templates)
   - [Seedance preflight integration](skills/higgsfield-stack/SKILL.md#seedance-preflight-integration)

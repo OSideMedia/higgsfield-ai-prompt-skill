@@ -9,8 +9,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, pipeline, workflow, chain, production, multi-shot, short-film, popcorn, recast]
-  version: 3.5.0
-  updated: 2026-08-22
+  version: 3.5.1
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -712,7 +712,7 @@ Style: Commercial quality, [clean/warm/dramatic]. [Ratio].
 **Credits required:** Low (Basic/Pro)
 
 ```
-[1] SEEDANCE PRO     → Generate 5 fast test clips (one prompt each)
+[1] SEEDANCE 2.0 FAST → Generate 5 fast test clips (one prompt each)
 [2] PICK BEST        → Select 1–2 that work
 [3] KLING 2.6        → Upgrade the winners to premium quality
 [4] VIBE MOTION      → Add captions/CTAs
