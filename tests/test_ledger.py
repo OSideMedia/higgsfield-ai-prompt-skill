@@ -131,6 +131,45 @@ def test_validate_ledger_row_rejects(mutation, fragment):
     assert any(fragment in p for p in problems), problems
 
 
+# ── v3.37.0: model ids from EVERY spec type + retired-id tombstones ──────────
+
+@pytest.mark.parametrize("model", [
+    "gpt_image_2",        # image — pre-fix, every image generation was rejected
+    "seed_audio",         # audio
+    "tripo_3d",           # 3d
+    "seedance_2_5",       # video (unchanged)
+])
+def test_ledger_accepts_every_spec_type(model):
+    row = {"id": "_demo-0001", "ts": "2026-09-26T09:00:00Z", "model": model,
+           "shot_tags": ["dialogue-cu"], "outcome": "kept", "draft_tier": False}
+    assert hm.validate_ledger_row(row, "_demo", set(), set(), model_ids()) == []
+
+
+def test_retired_id_keeps_history_valid():
+    """llm_text left the catalog in the 09-26 snapshot; rows logged while it
+    was live must not turn append-only history red after the sync."""
+    row = {"id": "_demo-0001", "ts": "2026-08-01T09:00:00Z", "model": "llm_text",
+           "shot_tags": ["pov"], "outcome": "kept", "draft_tier": False}
+    assert hm.validate_ledger_row(row, "_demo", set(), set(), model_ids()) == []
+
+
+def test_tombstones_alone_never_fake_a_specs_layer(tmp_path, monkeypatch):
+    specs = tmp_path / "specs"
+    specs.mkdir()
+    (specs / "retired-model-ids.json").write_text(
+        json.dumps({"retired": {"llm_text": {}}}), encoding="utf-8")
+    monkeypatch.setattr(hm, "SPECS_ROOT", specs)
+    assert hm.load_specs_models() == {}     # no spec file → "specs missing", not a tiny map
+
+
+def test_log_gen_accepts_an_image_model_end_to_end(tmp_path, monkeypatch):
+    monkeypatch.setattr(hm, "LEDGER_DIR", tmp_path / "ledger")
+    monkeypatch.setattr(hm, "GLOBAL_LEDGER", tmp_path / "ledger" / "_global.json")
+    row = hm.log_gen_row("proj", {"model": "gpt_image_2", "shot_tags": ["insert-prop"],
+                                  "outcome": "kept"})
+    assert row["model"] == "gpt_image_2" and row["id"] == "proj-0001"
+
+
 def test_supersedes_rules():
     base = {"ts": "t", "model": "seedance_2_0", "shot_tags": ["pov"],
             "outcome": "kept", "draft_tier": False}
@@ -438,3 +477,82 @@ def test_agreement_cli_renders():
     rows = [_diag(i, "physics", "physics") for i in range(8)]
     text = hm.render_agreement("_demo", hm.compute_vision_agreement(rows))
     assert "physics" in text and "100%" in text and "yes" in text
+
+
+# ── v3.37.0 review: tombstones must be proven; retired ids take no new rows ──
+
+def test_a_hand_added_tombstone_is_not_trusted(tmp_path, monkeypatch):
+    import shutil
+    import sync_specs
+    specs = tmp_path / "specs"
+    shutil.copytree(REPO / "specs", specs)
+    doc = json.loads((specs / "retired-model-ids.json").read_text(encoding="utf-8"))
+    doc["retired"]["totally_made_up_model"] = {
+        "type": "video", "last_seen": "2026-08-07",
+        "last_snapshot": "models_explore_snapshot_2026-08-07.json"}
+    (specs / "retired-model-ids.json").write_text(json.dumps(doc), encoding="utf-8")
+    monkeypatch.setattr(hm, "SPECS_ROOT", specs)
+    row = {"id": "_demo-0001", "ts": "2026-09-26T09:00:00Z",
+           "model": "totally_made_up_model", "shot_tags": ["pov"],
+           "outcome": "kept", "draft_tier": False}
+    problems = hm.validate_ledger_row(row, "_demo", set(), set(), hm.load_specs_models())
+    assert any("not in specs" in p for p in problems), problems
+    assert sync_specs.retired_is_stale(specs) is True          # validate --strict goes red
+    # the proven tombstones still keep history valid
+    assert "llm_text" in hm.load_specs_models()
+
+
+def _ledger_env(tmp_path, monkeypatch):
+    monkeypatch.setattr(hm, "LEDGER_DIR", tmp_path / "ledger")
+    monkeypatch.setattr(hm, "GLOBAL_LEDGER", tmp_path / "ledger" / "_global.json")
+
+
+def test_log_gen_refuses_a_new_row_for_a_retired_id(tmp_path, monkeypatch):
+    _ledger_env(tmp_path, monkeypatch)
+    with pytest.raises(hm.LedgerError, match="retired"):
+        hm.log_gen_row("proj", {"model": "llm_text", "shot_tags": ["pov"], "outcome": "kept"})
+
+
+def test_an_amendment_of_a_retired_id_row_is_still_allowed(tmp_path, monkeypatch):
+    _ledger_env(tmp_path, monkeypatch)
+    (tmp_path / "ledger").mkdir()
+    (tmp_path / "ledger" / "proj.json").write_text(json.dumps({"project": "proj", "rows": [
+        {"id": "proj-0001", "ts": "2026-08-01T09:00:00Z", "model": "llm_text",
+         "shot_tags": ["pov"], "outcome": "kept", "draft_tier": False}]}))
+    row = hm.log_gen_row("proj", {"model": "llm_text", "shot_tags": ["pov"],
+                                  "outcome": "flagged", "supersedes": "proj-0001"})
+    assert row["supersedes"] == "proj-0001"
+
+
+@pytest.mark.parametrize("supersedes,existing_model", [
+    ("proj-0001", "seedance_2_0"),     # another model's row: a new generation in disguise
+    ("proj-0099", None),               # a row that does not exist
+])
+def test_supersedes_cannot_smuggle_a_retired_id(tmp_path, monkeypatch, supersedes, existing_model):
+    _ledger_env(tmp_path, monkeypatch)
+    (tmp_path / "ledger").mkdir()
+    rows = [] if existing_model is None else [
+        {"id": "proj-0001", "ts": "2026-09-20T09:00:00Z", "model": existing_model,
+         "shot_tags": ["pov"], "outcome": "kept", "draft_tier": False}]
+    (tmp_path / "ledger" / "proj.json").write_text(json.dumps({"project": "proj", "rows": rows}))
+    with pytest.raises(hm.LedgerError, match="retired"):
+        hm.log_gen_row("proj", {"model": "llm_text", "shot_tags": ["pov"], "outcome": "kept",
+                                "supersedes": supersedes})
+
+
+def test_validate_says_what_the_ledger_gate_cannot_tell(tmp_path, monkeypatch, capsys):
+    import validate
+    ledger = tmp_path / "db" / "ledger"
+    ledger.mkdir(parents=True)
+    (ledger / "proj.json").write_text(json.dumps({"project": "proj", "rows": [
+        {"id": "proj-0001", "ts": "2026-08-01T09:00:00Z", "model": "llm_text",
+         "shot_tags": ["pov"], "outcome": "kept", "draft_tier": False}]}))
+    monkeypatch.setattr(validate, "ROOT", tmp_path)
+    monkeypatch.setattr(validate, "issues", [])
+    monkeypatch.setattr(validate, "warnings", [])
+    monkeypatch.setattr(hm, "build_global", lambda: None)
+    monkeypatch.setattr(hm, "write_global", lambda: None)
+    validate.check_ledger()
+    out = capsys.readouterr().out
+    assert "1 row(s) use a retired model id" in out
+    assert "cannot tell history from a hand-appended row" in out

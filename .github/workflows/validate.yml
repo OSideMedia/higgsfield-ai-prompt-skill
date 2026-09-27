@@ -12,6 +12,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read   # the spec-drift schedule-state check reads workflow state
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -34,39 +38,53 @@ jobs:
 
       - name: Seedance lint self-check
         # The linter is the repo's safety net; assert both directions of its
-        # exit-code contract against specs-driven rules.
+        # exit-code contract against specs-driven rules. A known-FAIL must be
+        # the linter's FAIL exit (1) AND name the expected rule id — before
+        # v3.37.0 any non-zero exit passed, so an unknown-model exit 2 or a
+        # traceback read as "the linter caught it".
         run: |
-          set -e
+          set -u   # the runner's default shell is `bash -e`, hence `|| code=$?`
+          PROMPT="Style: noir. Slow dolly-in on a figure in a wool coat. Interior warehouse at dusk."
+          expect_fail() {  # expect_fail <rule-id> <linter args...>
+            rule="$1"; shift
+            code=0
+            out=$(python3 scripts/seedance_lint.py "$@" "$PROMPT" 2>&1) || code=$?
+            if [ "$code" -ne 1 ]; then
+              echo "expected FAIL exit 1 with [FAIL] $rule, got exit $code:"; echo "$out"; exit 1
+            fi
+            if ! printf '%s\n' "$out" | grep -q -F "[FAIL] $rule"; then
+              echo "expected rule '$rule' in the FAIL output, got:"; echo "$out"; exit 1
+            fi
+          }
           # Known-FAIL: fast mode cannot output 1080p (specs constraint)
-          if python3 scripts/seedance_lint.py --model seedance_2_0 --mode fast --resolution 1080p \
-              "Style: noir. Slow dolly-in on a figure in a wool coat. Interior warehouse at dusk." >/dev/null; then
-            echo "expected FAIL (fast+1080p) but linter passed"; exit 1
-          fi
+          expect_fail mode-constraint --model seedance_2_0 --mode fast --resolution 1080p
           # Known-FAIL: Kling 3.0 has no native 21:9 (specs enum)
-          if python3 scripts/seedance_lint.py --model kling3_0 --ar 21:9 \
-              "Style: noir. Slow dolly-in on a figure in a wool coat. Interior warehouse at dusk." >/dev/null; then
-            echo "expected FAIL (kling 21:9) but linter passed"; exit 1
-          fi
+          expect_fail ar-not-supported --model kling3_0 --ar 21:9
           # Known-PASS: clean six-slot prompt with legal settings
           python3 scripts/seedance_lint.py --model seedance_2_0 --mode std --resolution 1080p \
-            "Style: noir. Slow dolly-in on a figure in a wool coat. Interior warehouse at dusk." >/dev/null
+            "$PROMPT" >/dev/null || { echo "expected PASS but linter exited $?"; exit 1; }
           echo "lint self-check OK"
 
       - name: Run pytest suite
-        # Conditional until tests/ lands (Brief #2 item 6) — then it's load-bearing.
         run: |
-          if [ -d tests ]; then
-            pip install pytest
-            python3 -m pytest -q
-          else
-            echo "no tests/ directory yet — skipping"
-          fi
+          pip install pytest
+          python3 -m pytest -q
 
       - name: Run eval harness
-        # Conditional until evals/ lands (Brief #1 item 9).
+        run: python3 scripts/validate.py --evals
+
+      - name: Scheduled spec-drift tripwire still enabled?
+        # GitHub docs: "In a public repository, scheduled workflows are
+        # automatically disabled when no repository activity has occurred in
+        # 60 days." The first push after such a gap lands here — warn loudly
+        # (never fail: a disabled schedule is not a defect in this change).
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          if [ -d evals ]; then
-            python3 scripts/validate.py --evals
-          else
-            echo "no evals/ directory yet — skipping"
-          fi
+          STATE=$(gh api "repos/${{ github.repository }}/actions/workflows/spec-drift.yml" --jq .state 2>/dev/null || echo unknown)
+          case "$STATE" in
+            active) echo "spec-drift.yml schedule is active" ;;
+            unknown) echo "::notice::could not read spec-drift.yml state (token scope?) — check Actions → spec-drift manually" ;;
+            *) echo "::warning::spec-drift.yml is '$STATE' — the weekly tripwire is not running. Re-enable: gh workflow enable spec-drift.yml (or Actions → spec-drift → Enable workflow)." ;;
+          esac

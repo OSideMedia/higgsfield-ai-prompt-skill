@@ -1,0 +1,142 @@
+{
+  "captured": "2026-08-07",
+  "video": {
+    "seedance_2_5": {
+      "id": "seedance_2_5",
+      "output_type": "video",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "21:9",
+        "3:4",
+        "4:3",
+        "9:16",
+        "auto"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "21:9",
+            "3:4",
+            "4:3",
+            "9:16",
+            "auto"
+          ],
+          "default": "16:9"
+        },
+        "audio_references": {
+          "options": [],
+          "default": null
+        },
+        "duration": {
+          "options": [],
+          "default": 5
+        },
+        "extension_mode": {
+          "options": [
+            "backward",
+            "forward"
+          ],
+          "default": null
+        },
+        "generate_audio": {
+          "options": [],
+          "default": true
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "mode": {
+          "options": [
+            "omni_reference",
+            "t2v",
+            "video_edit",
+            "video_extension"
+          ],
+          "default": "t2v"
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "resolution": {
+          "options": [
+            "480p",
+            "720p"
+          ],
+          "default": "720p"
+        },
+        "video_references": {
+          "options": [],
+          "default": null
+        }
+      },
+      "rules": [
+        "params.mode != \"omni_reference\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) > 0",
+        "params.mode != \"t2v\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) == 0",
+        "params.mode != \"video_edit\" || size(params.video_references) == 1",
+        "params.mode != \"video_extension\" || !(params.extension_mode == null)",
+        "params.mode != \"video_extension\" || size(params.video_references) >= 1",
+        "params.mode == \"video_extension\" || params.extension_mode == null",
+        "size(params.image_references) + size(params.video_references) + size(params.audio_references) <= 50"
+      ]
+    }
+  },
+  "image": {
+    "gpt_image_2": {
+      "id": "gpt_image_2",
+      "output_type": "image",
+      "aspect_ratios": [
+        "16:9",
+        "1:1",
+        "2:3",
+        "3:2",
+        "3:4",
+        "4:3",
+        "9:16"
+      ],
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "1:1",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:3",
+            "9:16"
+          ],
+          "default": "1:1"
+        },
+        "image_references": {
+          "options": [],
+          "default": null
+        },
+        "prompt": {
+          "options": [],
+          "default": null
+        },
+        "quality": {
+          "options": [
+            "high",
+            "low",
+            "medium"
+          ],
+          "default": "high"
+        },
+        "resolution": {
+          "options": [
+            "1k",
+            "2k",
+            "4k"
+          ],
+          "default": "2k"
+        }
+      },
+      "rules": []
+    }
+  }
+}

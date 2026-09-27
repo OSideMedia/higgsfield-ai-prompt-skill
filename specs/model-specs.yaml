@@ -85,6 +85,7 @@ models:
         options:
           - backward
           - forward
+        nullable: true
     constraints: []
   - id: bytedance_video_upscale
     aliases: []
@@ -480,6 +481,7 @@ models:
         required: optional
         type: string
         description: Optional folder to place the generated output in.
+        nullable: true
     constraints: []
   - id: gemini_omni
     aliases: []
@@ -1025,6 +1027,7 @@ models:
         required: optional
         type: string
         description: Optional folder to place the generated video in.
+        nullable: true
     constraints: []
   - id: minimax_h3_max
     aliases: []
@@ -1080,6 +1083,7 @@ models:
         required: optional
         type: string
         description: Optional folder to place the generated video in.
+        nullable: true
     constraints: []
   - id: minimax_hailuo
     aliases: []
@@ -1152,6 +1156,7 @@ models:
         type: number
         description: Number of frames to process. Defaults to the full clip when omitted.
         min: 1
+        nullable: true
     constraints: []
   - id: seedance1_5
     aliases:
@@ -1447,6 +1452,7 @@ models:
         options:
           - backward
           - forward
+        nullable: true
     constraints: []
   - id: sync_so
     aliases: []
@@ -1477,6 +1483,7 @@ models:
         required: optional
         type: string
         description: Optional folder to place the generated output in.
+        nullable: true
     constraints: []
   - id: topaz_video
     aliases: []
@@ -1512,10 +1519,12 @@ models:
         required: optional
         type: string
         description: "Enhancement settings (omit to use Topaz defaults)."
+        nullable: true
       - name: frame_interpolation
         required: optional
         type: string
         description: "Frame interpolation (omit to disable)."
+        nullable: true
     constraints: []
   - id: veo3
     aliases: []
@@ -1655,10 +1664,12 @@ models:
         type: number
         description: Optional duration of the output video in seconds.
         min: 0
+        nullable: true
       - name: folder_id
         required: optional
         type: string
         description: Optional folder to place the generated output in.
+        nullable: true
     constraints: []
   - id: video_upscale
     aliases: []
@@ -1678,10 +1689,12 @@ models:
         type: number
         description: "Duration of the source video in seconds. Optional; derived from the video metadata when omitted."
         min: 0
+        nullable: true
       - name: folder_id
         required: optional
         type: string
         description: Optional folder to place the generated output in.
+        nullable: true
     constraints: []
   - id: wan2_6
     aliases: []
@@ -1781,8 +1794,9 @@ models:
       - "4:3"
       - "3:4"
     duration:
-      min: -1
+      min: 2
       max: 30
+      smart: -1
     media_roles:
       medias:
         - start_image
@@ -1836,8 +1850,9 @@ models:
       - "4:3"
       - "3:4"
     duration:
-      min: -1
+      min: 2
       max: 30
+      smart: -1
     media_roles:
       medias:
         - start_image

@@ -7,6 +7,16 @@ Per-sub-skill description text remains hardcoded in SUB_SKILL_DESCRIPTIONS
 below to preserve the PDF's editorial voice (entries refreshed at v3.7.12
 to add higgsfield-stack and update higgsfield-soul + higgsfield-seedance).
 
+Derived content (v3.37.0+): counts and inventories that used to be
+hard-coded -- and drifted for twelve releases -- are read from disk at build
+time via the dependency-free user_guide_content.py: the What's New section
+(top CHANGELOG entries), template tables and counts (templates/), the
+failure-mode count and names (FAILURE-MODES.md), and the model catalog
+tables (specs/). Editorial prose (routing advice, tips, FAQ answers) stays
+hand-written. `validate_user_guide.py --check-content` (run by
+validate.py) fails when the root version is newer than the newest CHANGELOG
+entry the What's New derives from.
+
 Exit codes (v3.7.16+):
   0 = success
   1 = unknown / uncaught error (catch-all)
@@ -15,9 +25,11 @@ Exit codes (v3.7.16+):
   4 = font registration error (missing or malformed TTF)
   5 = rendering error (e.g., FPDFUnicodeEncodingException)
   6 = output write error (disk full, permission denied, path missing)
+  7 = derived-content error (a disk source the guide derives from is
+      missing or unparseable -- v3.37.0+)
 
 Exit code 1 is the unenumerated catch-all for failures not anticipated by
-codes 2-6. If you see exit 1, the failure surfaced from a path the matrix
+codes 2-7. If you see exit 1, the failure surfaced from a path the matrix
 didn't enumerate -- file an issue with the stderr message.
 """
 
@@ -43,6 +55,7 @@ EXIT_DICT_PARITY = 3
 EXIT_FONT = 4
 EXIT_RENDER = 5
 EXIT_OUTPUT = 6
+EXIT_CONTENT = 7
 
 
 # -- Named exception classes (v3.7.16+) -------------------------------------
@@ -137,6 +150,75 @@ def discover_sub_skills():
 # that only needs the data (validate_user_guide.py Layer 0) can import them
 # without the fpdf stack. Re-exported here for backwards compatibility.
 from sub_skill_descriptions import SUB_SKILL_DESCRIPTIONS
+import user_guide_content as ugc
+from user_guide_content import ContentError
+
+
+def derive_content(root=REPO_ROOT):
+    """Everything the guide reads from disk, gathered once. Raises
+    ContentError (exit 7) when a source is missing, so a broken derivation
+    can never silently render an empty table."""
+    problems = ugc.check_content(root)
+    # A root version ahead of CHANGELOG is a release-gate failure
+    # (validate_user_guide.py --check-content), not a render failure: the
+    # guide still builds, with the newest entries CHANGELOG has.
+    blocking = [p for p in problems if not p.startswith("root version")]
+    if blocking:
+        raise ContentError("; ".join(blocking))
+    return {
+        "whats_new": ugc.changelog_entries(root),
+        "templates": ugc.templates(root),
+        "failure_modes": ugc.failure_modes(root),
+        "catalog": ugc.catalog(root),
+    }
+
+
+# Editorial one-liners for the failure-mode table, keyed by the heading's
+# lower-cased prefix in FAILURE-MODES.md. Modes without an entry are still
+# named in the guide (derived list), so a new mode can't go missing.
+FAILURE_MODE_ROWS = {
+    "fps drift": ("FPS drift / dupe frames", "Choppy playback, duplicate frames",
+                  "State frame rate in body: '24 fps, no frame repeated'"),
+    "frame-level review": ("Frame-level review mandatory",
+                           "Clip fine at speed; one bad frame in scrub",
+                           "Scrub frame-by-frame before approving any take"),
+    "failed-generation salvage": ("Failed-generation salvage",
+                                  "Take rejected; instinct: discard",
+                                  "Mark and bank the 1-3 usable seconds first"),
+    "nsfw false-positive": ("NSFW false-positive",
+                            "Clean prompt rejected by NSFW classifier",
+                            "Rephrase body-anatomy + sensual-register tokens"),
+    "keyframe-consistency": ("Keyframe forces invention",
+                             "Required element placed wrong (not in source frame)",
+                             "State the absence explicitly in prompt"),
+    "physics-state-anchor": ("Physics-state-anchor", "Adjacent object moves with target",
+                             "Name the invariant: 'X stays attached'"),
+    "multi-motion": ("Multi-motion overload", "Stacked moves render as instability",
+                     "ONE dominant motion per shot; split compounds"),
+    "spatial-awareness": ("Spatial-awareness failure",
+                          "Door-entry / hallway-direction shots fail",
+                          "Lock geometry with Spatial Layout Block (Section 12) first"),
+}
+
+# Editorial columns for the genre-template table, keyed by file number.
+GENRE_TEMPLATE_ROWS = {
+    "01": ("Cinematic Action Chase", "Action", "60-100 words"),
+    "02": ("Product / UGC Showcase", "General", "30-50 words"),
+    "03": ("Horror / Atmospheric Dread", "Horror", "60-100 words"),
+    "04": ("Fashion / Editorial", "Drama/General", "40-60 words"),
+    "05": ("Sci-Fi / VFX Spectacle", "Epic/Action", "50-90 words"),
+    "06": ("Portrait / Character Intro", "Drama", "60-100 words"),
+    "07": ("Landscape / Establishing", "Epic/General", "30-60 words"),
+    "08": ("Comedy / Social Media", "Comedy", "40-60 words"),
+    "09": ("Romantic / Intimate", "Drama", "60-100 words"),
+    "10": ("Dance / Music Performance", "Action/Drama", "50-80 words"),
+}
+
+TEXT_OVERLAY_ROWS = {
+    "slogan.md": "Display text + entrance animation (brand callout, opening title)",
+    "subtitle.md": "Dialogue-synchronized subtitles",
+    "speech-bubble.md": "Character-attributed in-frame dialogue",
+}
 
 
 class UserGuidePDF(FPDF):
@@ -261,6 +343,7 @@ META = read_root_metadata()
 
 
 def build_pdf(dry_run: bool = False):
+    content = derive_content()
     try:
         pdf = UserGuidePDF()
         pdf.alias_nb_pages()
@@ -304,6 +387,7 @@ def build_pdf(dry_run: bool = False):
         pdf.add_page()
         pdf.section_title("Table of Contents")
         toc = [
+            "What's New -- the latest releases (from CHANGELOG.md)  NEW",
             "1. What Is This?",
             "2. What Can It Do?",
             "3. How to Install",
@@ -340,6 +424,20 @@ def build_pdf(dry_run: bool = False):
                 pdf.set_font("Body", "", 11)
                 pdf.set_text_color(40, 40, 40)
                 pdf.cell(0, 7, item, new_x="LMARGIN", new_y="NEXT")
+
+        # --- WHAT'S NEW (derived from CHANGELOG.md, v3.37.0+) ---
+        # Unnumbered so it never renumbers the sections below. This is the
+        # section that makes each release's guide carry that release: the
+        # v3.22.0 lesson was a manifest hash blessed over a PDF with zero new
+        # content (validate_user_guide.py --check-content guards the version).
+        pdf.add_page()
+        pdf.section_title("What's New")
+        pdf.body_text(
+            f"The {len(content['whats_new'])} most recent releases, newest first, "
+            "summarized from CHANGELOG.md (the full notes live there).")
+        for entry in content["whats_new"]:
+            pdf.bold_text(f"v{entry['version']} -- {entry['date']}")
+            pdf.body_text(entry["summary"] or "(no summary line in CHANGELOG.md)")
 
         # --- 1. WHAT IS THIS? ---
         pdf.add_page()
@@ -515,6 +613,8 @@ def build_pdf(dry_run: bool = False):
             ("Epic scale, big environments", "Sora 2"),
             ("Lip-sync, multilingual dialogue", "Seedance 1.5 Pro"),
             ("Complex choreography, reference-based", "Seedance 2.0"),
+            ("Up to 30s in one take, video edit / extension", "Seedance 2.5"),
+            ("Multi-frame I2V + continuation with audio", "FLUX 3 Video"),
             ("Long takes, camera control", "Kling Motion Control"),
             ("Motion transfer from reference video", "Kling 3.0 Motion Control"),
             ("60fps, first+last frame, reference images", "Wan 2.7"),
@@ -541,6 +641,28 @@ def build_pdf(dry_run: bool = False):
         ]
         for r in irows:
             pdf.table_row(list(r), w)
+
+        # Derived from specs/ (v3.37.0+): every generative model in the
+        # current catalog, so a new model can't be missing from the guide.
+        cat = content["catalog"]
+        pdf.ln(3)
+        pdf.subsection_title(
+            f"Every video model in the catalog (specs snapshot {cat['video_snapshot']})")
+        pdf.body_text(
+            "Generated from specs/model-specs.json at build time. Duration and "
+            "resolution are the platform's settable ranges -- the recommendation "
+            "tables above say which to reach for.")
+        wv = [52, 52, 26, 40]
+        pdf.table_row(["Model", "id", "Duration", "Resolutions"], wv, bold=True, fill=True)
+        for name, mid, dur, res in cat["video"]:
+            pdf.table_row([name, mid, dur, res], wv)
+        pdf.ln(3)
+        pdf.subsection_title(
+            f"Every image model in the catalog (specs snapshot {cat['image_snapshot']})")
+        wi = [52, 52, 36, 30]
+        pdf.table_row(["Model", "id", "Resolutions", "Aspect"], wi, bold=True, fill=True)
+        for name, mid, res, ars in cat["image"]:
+            pdf.table_row([name, mid, res, ars], wi)
 
         # --- 8. GENERATION TYPES ---
         pdf.add_page()
@@ -1019,39 +1141,40 @@ def build_pdf(dry_run: bool = False):
         # --- 17. GENRE TEMPLATES ---
         pdf.add_page()
         pdf.section_title("17. Genre Templates")
-        pdf.body_text("10 deeply annotated prompt templates in the templates/ folder. Each includes: "
-            "when to use, recommended model, full example prompt, line-by-line annotation, "
-            "negative constraints, common mistakes, variations, Identity/Motion blocks, "
-            "and Cinema Studio 3.0 genre mappings with prompt length targets.")
+        # Template inventory is derived from templates/ (v3.37.0+); the
+        # genre table keeps its editorial columns where a row exists and
+        # falls back to the file's own title for a new template.
+        inv = content["templates"]
+        genre = inv["genre"]
+        pdf.body_text(f"{len(genre)} deeply annotated prompt templates in the templates/ folder. "
+            "Each includes: when to use, recommended model, full example prompt, line-by-line "
+            "annotation, negative constraints, common mistakes, variations, Identity/Motion "
+            "blocks, and Cinema Studio 3.0 genre mappings with prompt length targets.")
         w9 = [10, 60, 50, 50]
         pdf.table_row(["#", "Template", "CS 3.0 Genre", "Prompt Length"], w9, bold=True, fill=True)
-        tmpl = [
-            ("01", "Cinematic Action Chase", "Action", "60-100 words"),
-            ("02", "Product / UGC Showcase", "General", "30-50 words"),
-            ("03", "Horror / Atmospheric Dread", "Horror", "60-100 words"),
-            ("04", "Fashion / Editorial", "Drama/General", "40-60 words"),
-            ("05", "Sci-Fi / VFX Spectacle", "Epic/Action", "50-90 words"),
-            ("06", "Portrait / Character Intro", "Drama", "60-100 words"),
-            ("07", "Landscape / Establishing", "Epic/General", "30-60 words"),
-            ("08", "Comedy / Social Media", "Comedy", "40-60 words"),
-            ("09", "Romantic / Intimate", "Drama", "60-100 words"),
-            ("10", "Dance / Music Performance", "Action/Drama", "50-80 words"),
-        ]
-        for t in tmpl:
-            pdf.table_row(list(t), w9)
+        for fname, title in genre:
+            num = fname[:2]
+            row = GENRE_TEMPLATE_ROWS.get(num, (title, "--", "--"))
+            pdf.table_row([num, *row], w9)
 
         pdf.ln(3)
-        pdf.subsection_title("Technique templates (Seedance multi-character coordination)")
+        seedance_t = inv["seedance"]
+        pdf.subsection_title("Technique templates (templates/seedance/)")
         pdf.body_text(
-            "When the request is technique-shaped rather than genre-shaped, four templates in "
-            "`templates/seedance/` provide the structural scaffolding. Use these alongside (not "
-            "instead of) the genre templates above.")
+            f"When the request is technique-shaped rather than genre-shaped, "
+            f"{ugc.number_word(len(seedance_t))} templates in `templates/seedance/` provide the "
+            "structural scaffolding. Use these alongside (not instead of) the genre templates above.")
         w_tech = [70, 100]
         pdf.table_row(["Template", "What it is"], w_tech, bold=True, fill=True)
-        pdf.table_row(["top-down-map.md", "Claude meta-prompt template for top-down spatial map pre-visualization"], w_tech)
-        pdf.table_row(["multi-character-anchor.md", "Paste-ready Seedance multi-character anchor block template"], w_tech)
-        pdf.table_row(["single-character-position.md", "Single-character shot with position + pose + contact-point locks"], w_tech)
-        pdf.table_row(["worked-example-two-character.md", "End-to-end fill of the multi-character anchor (Roco + Lulu neo-noir alley)"], w_tech)
+        for fname, title in seedance_t:
+            pdf.table_row([fname, title], w_tech)
+
+        if inv["character-design"]:
+            pdf.ln(3)
+            pdf.subsection_title("Character-design templates (templates/character-design/)")
+            pdf.table_row(["Template", "What it is"], w_tech, bold=True, fill=True)
+            for fname, title in inv["character-design"]:
+                pdf.table_row([fname, title], w_tech)
 
         pdf.ln(3)
         pdf.subsection_title("Text-overlay templates")
@@ -1059,9 +1182,8 @@ def build_pdf(dry_run: bool = False):
             "Paste-ready prompts for on-screen text rendering, in `templates/text-overlays/`.")
         w_text = [55, 115]
         pdf.table_row(["Type", "When to use"], w_text, bold=True, fill=True)
-        pdf.table_row(["slogan.md", "Display text + entrance animation (brand callout, opening title)"], w_text)
-        pdf.table_row(["subtitle.md", "Dialogue-synchronized subtitles"], w_text)
-        pdf.table_row(["speech-bubble.md", "Character-attributed in-frame dialogue"], w_text)
+        for fname, title in inv["text-overlays"]:
+            pdf.table_row([fname, TEXT_OVERLAY_ROWS.get(fname, title)], w_text)
 
         # --- 18. CINEMATIC IMAGE PROMPTS ---
         pdf.ln(5)
@@ -1115,55 +1237,30 @@ def build_pdf(dry_run: bool = False):
 
         pdf.ln(3)
         pdf.subsection_title("Seedance Failure Modes -- Named Catalog")
+        # Count and names derived from FAILURE-MODES.md (v3.37.0+); the
+        # table keeps its editorial one-liners and every other mode is named.
+        modes = content["failure_modes"]
         pdf.body_text(
             "When a Seedance generation lands in a recognizable failure pattern, the named catalog "
-            "in `skills/higgsfield-seedance/FAILURE-MODES.md` is faster than guessing. Eight named "
-            "modes, each with a symptom, a mechanism, a prompt-side counter, and a worked example.")
+            "in `skills/higgsfield-seedance/FAILURE-MODES.md` is faster than guessing. "
+            f"{ugc.number_word(len(modes)).capitalize()} named modes, each with what you see, "
+            "why it happens, and the prompt-side counter.")
         w_fm = [55, 60, 55]
         pdf.table_row(["Failure mode", "What you see", "Counter"], w_fm, bold=True, fill=True)
-        pdf.table_row(
-            ["FPS drift / dupe frames",
-             "Choppy playback, duplicate frames",
-             "State frame rate in body: '24 fps, no frame repeated'"],
-            w_fm)
-        pdf.table_row(
-            ["Frame-level review mandatory",
-             "Clip fine at speed; one bad frame in scrub",
-             "Scrub frame-by-frame before approving any take"],
-            w_fm)
-        pdf.table_row(
-            ["Failed-generation salvage",
-             "Take rejected; instinct: discard",
-             "Mark and bank the 1-3 usable seconds first"],
-            w_fm)
-        pdf.table_row(
-            ["NSFW false-positive",
-             "Clean prompt rejected by NSFW classifier",
-             "Rephrase body-anatomy + sensual-register tokens"],
-            w_fm)
-        pdf.table_row(
-            ["Keyframe forces invention",
-             "Required element placed wrong (not in source frame)",
-             "State the absence explicitly in prompt"],
-            w_fm)
-        pdf.table_row(
-            ["Physics-state-anchor",
-             "Adjacent object moves with target",
-             "Name the invariant: 'X stays attached'"],
-            w_fm)
-        pdf.table_row(
-            ["Multi-motion overload",
-             "Stacked moves render as instability",
-             "ONE dominant motion per shot; split compounds"],
-            w_fm)
-        pdf.table_row(
-            ["Spatial-awareness failure",
-             "Door-entry / hallway-direction shots fail",
-             "Lock geometry with Spatial Layout Block (Section 12) first"],
-            w_fm)
+        tabled, rest = set(), []
+        for mode in modes:
+            key = next((k for k in FAILURE_MODE_ROWS if mode.lower().startswith(k)), None)
+            if key and key not in tabled:
+                tabled.add(key)
+                pdf.table_row(list(FAILURE_MODE_ROWS[key]), w_fm)
+            else:
+                rest.append(mode)
+        if rest:
+            pdf.ln(2)
+            pdf.body_text("Also in the catalog: " + "; ".join(rest) + ".")
         pdf.ln(3)
         pdf.callout(
-            "All eight failure modes include worked before/after examples in the sub-skill file -- "
+            f"All {len(modes)} failure modes are written up in the sub-skill file -- "
             "consult that for the deep dive, this catalog for fast pattern-matching.")
 
         # --- 21. TOP TIPS ---
@@ -1324,7 +1421,11 @@ def build_pdf(dry_run: bool = False):
              "Later eras -- the v3.9-v3.15 template/memory arcs, the v3.16-v3.21 spec-layer + "
              "Seedance-doctrine arcs, and the v3.22 thirteen-project community-harvest wave "
              "(word-length ladder by register, FOV anchors, drift locks, Style Recipes) -- are "
-             "summarized per-release in CHANGELOG.md."),
+             "summarized per-release in CHANGELOG.md. "
+             + (f"The newest {len(content['whats_new'])} releases "
+                f"(v{content['whats_new'][-1]['version']} to v{content['whats_new'][0]['version']}) "
+                "are summarized under What's New at the front of this guide."
+                if content["whats_new"] else "")),
         ]
         for q, a in faqs:
             pdf.bold_text(f"Q: {q}")
@@ -1376,6 +1477,9 @@ if __name__ == "__main__":
     except DictParityError as e:
         print(f"DICT-PARITY ERROR: {e}", file=sys.stderr)
         sys.exit(EXIT_DICT_PARITY)
+    except ContentError as e:
+        print(f"CONTENT ERROR: {e}", file=sys.stderr)
+        sys.exit(EXIT_CONTENT)
     except FontError as e:
         print(f"FONT ERROR: {e}", file=sys.stderr)
         sys.exit(EXIT_FONT)

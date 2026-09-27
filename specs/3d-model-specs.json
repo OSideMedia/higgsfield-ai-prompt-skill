@@ -1,0 +1,1546 @@
+{
+  "generator_version": 1,
+  "models": [
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "3d_rigging",
+      "media_roles": {},
+      "modes": [],
+      "name": "3D Rigging",
+      "output_type": "3d",
+      "params": [
+        {
+          "description": "Public HTTPS URL without embedded credentials of an existing 3D model (GLB) to rig. Pass the output URL of a previous 3D generation (e.g. from image_to_3d, multi_image_to_3d, sam_3_3d) or a publicly-hosted GLB.",
+          "name": "model_url",
+          "required": "required",
+          "type": "string"
+        },
+        {
+          "description": "Approximate real-world height of the rigged figure in meters (default 1.7). Used to scale the skeleton.",
+          "min": 0,
+          "name": "height_meters",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": false,
+          "description": "Apply a pre-canned animation clip to the rigged model. Pick the clip via animation_action_id.",
+          "name": "enable_animation",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Animation clip id (integer, 0-696) for the rig. Required when enable_animation=true. Common picks - idle: 0; walk: 30 (Casual_Walk); run: 16 (RunFast); jump: 466 (Regular_Jump); wave: 28 (Big_Wave_Hello); dance: 64 (All_Night_Dance). For anything else, call the animation_actions tool to search the full 678-action library by name or category.",
+          "max": 696,
+          "min": 0,
+          "name": "animation_action_id",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Run NSFW safety check on output.",
+          "name": "enable_safety_checker",
+          "required": "optional",
+          "type": "bool"
+        }
+      ],
+      "provider": "Meshy",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "hunyuan3d_v3_1_text_to_3d",
+      "media_roles": {},
+      "modes": [
+        "std",
+        "pro"
+      ],
+      "name": "Hunyuan 3D v3.1 Text to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "default": "std",
+          "description": "'std' uses the rapid model; 'pro' uses the higher-quality model.",
+          "name": "mode",
+          "options": [
+            "std",
+            "pro"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Generate PBR material maps; available only in pro mode.",
+          "name": "enable_pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Pro-only generation type. Leave unset for the provider default.",
+          "name": "generate_type",
+          "nullable": true,
+          "options": [
+            "Normal",
+            "Geometry"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Pro-only custom face count. Leave unset for 500000.",
+          "max": 1500000,
+          "min": 40000,
+          "name": "face_count",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "Tencent",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "hunyuan3d_v3_image_to_3d",
+      "media_roles": {
+        "medias": [
+          "image_references"
+        ]
+      },
+      "modes": [],
+      "name": "Hunyuan3D v3 Image to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "default": false,
+          "description": "Generate PBR material maps.",
+          "name": "enable_pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": 500000,
+          "description": "Target mesh face count.",
+          "max": 1500000,
+          "min": 40000,
+          "name": "face_count",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "Normal",
+          "description": "Normal textured, LowPoly reduced, or Geometry-only generation.",
+          "name": "generate_type",
+          "options": [
+            "Normal",
+            "LowPoly",
+            "Geometry"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "triangle",
+          "description": "LowPoly topology. Quadrilateral requires generate_type=LowPoly.",
+          "name": "polygon_type",
+          "options": [
+            "triangle",
+            "quadrilateral"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Tencent",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "image_to_3d",
+      "media_roles": {
+        "medias": [
+          "image"
+        ]
+      },
+      "modes": [],
+      "name": "Image to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "default": false,
+          "description": "Apply surface textures to the mesh. Costs more credits but produces a textured GLB.",
+          "name": "should_texture",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Auto-rig the resulting mesh with a humanoid skeleton. Works best on humanoid/character subjects; non-bipeds (animals, objects) may rig poorly. Adds cost.",
+          "name": "enable_rigging",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Apply a pre-canned animation clip to the rig. Requires enable_rigging=true. Pick the clip via animation_action_id. Adds cost.",
+          "name": "enable_animation",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Re-topologize the mesh (default true). When false, returns the raw triangular mesh and topology/target_polycount are ignored.",
+          "name": "should_remesh",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Text prompt to guide texturing. Requires should_texture=true.",
+          "name": "texture_prompt",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Reference image URL for texture style transfer. Requires should_texture=true.",
+          "name": "texture_image_url",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Target triangle count, 100-300000 (default 30000). Higher = more detail, larger file.",
+          "max": 300000,
+          "min": 100,
+          "name": "target_polycount",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Mesh topology: 'quad' for smooth/editable surfaces, 'triangle' (default) for detailed geometry.",
+          "name": "topology",
+          "options": [
+            "quad",
+            "triangle"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Symmetry during generation: 'auto' (default) detects it, 'on' enforces it, 'off' disables it.",
+          "name": "symmetry_mode",
+          "options": [
+            "off",
+            "auto",
+            "on"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Generate PBR material maps (metallic, roughness, normal) in addition to base color. Requires should_texture=true.",
+          "name": "enable_pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Generate the character in a canonical rig-friendly pose ('a-pose' or 't-pose'). Omit for no specific pose. Recommended with enable_rigging for cleaner skeletons.",
+          "name": "pose_mode",
+          "options": [
+            "a-pose",
+            "t-pose"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Approximate real-world character height in meters (default 1.7). Only used when enable_rigging=true.",
+          "min": 0,
+          "name": "rigging_height_meters",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Animation clip id (integer, 0-696) for the rig. Required when enable_animation=true. Common picks - idle: 0; walk: 30 (Casual_Walk); run: 16 (RunFast); jump: 466 (Regular_Jump); wave: 28 (Big_Wave_Hello); dance: 64 (All_Night_Dance). For anything else, call the animation_actions tool to search the full 678-action library by name or category.",
+          "max": 696,
+          "min": 0,
+          "name": "animation_action_id",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Run NSFW safety check on output.",
+          "name": "enable_safety_checker",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Random seed for reproducibility.",
+          "name": "seed",
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "Meshy",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "meshy_image_to_3d",
+      "media_roles": {
+        "medias": [
+          "image"
+        ]
+      },
+      "modes": [],
+      "name": "Image to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "default": false,
+          "description": "Apply surface textures to the mesh. Costs more credits but produces a textured GLB.",
+          "name": "should_texture",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Auto-rig the resulting mesh with a humanoid skeleton. Works best on humanoid/character subjects; non-bipeds (animals, objects) may rig poorly. Adds cost.",
+          "name": "enable_rigging",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Apply a pre-canned animation clip to the rig. Requires enable_rigging=true. Pick the clip via animation_action_id. Adds cost.",
+          "name": "enable_animation",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Re-topologize the mesh (default true). When false, returns the raw triangular mesh and topology/target_polycount are ignored.",
+          "name": "should_remesh",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Text prompt to guide texturing. Requires should_texture=true.",
+          "name": "texture_prompt",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Reference image URL for texture style transfer. Requires should_texture=true.",
+          "name": "texture_image_url",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Target triangle count, 100-300000 (default 30000). Higher = more detail, larger file.",
+          "max": 300000,
+          "min": 100,
+          "name": "target_polycount",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Mesh topology: 'quad' for smooth/editable surfaces, 'triangle' (default) for detailed geometry.",
+          "name": "topology",
+          "options": [
+            "quad",
+            "triangle"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Symmetry during generation: 'auto' (default) detects it, 'on' enforces it, 'off' disables it.",
+          "name": "symmetry_mode",
+          "options": [
+            "off",
+            "auto",
+            "on"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Generate PBR material maps (metallic, roughness, normal) in addition to base color. Requires should_texture=true.",
+          "name": "enable_pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Generate the character in a canonical rig-friendly pose ('a-pose' or 't-pose'). Omit for no specific pose. Recommended with enable_rigging for cleaner skeletons.",
+          "name": "pose_mode",
+          "options": [
+            "a-pose",
+            "t-pose"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Approximate real-world character height in meters (default 1.7). Only used when enable_rigging=true.",
+          "min": 0,
+          "name": "rigging_height_meters",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Animation clip id (integer, 0-696) for the rig. Required when enable_animation=true. Common picks - idle: 0; walk: 30 (Casual_Walk); run: 16 (RunFast); jump: 466 (Regular_Jump); wave: 28 (Big_Wave_Hello); dance: 64 (All_Night_Dance). For anything else, call the animation_actions tool to search the full 678-action library by name or category.",
+          "max": 696,
+          "min": 0,
+          "name": "animation_action_id",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Run NSFW safety check on output.",
+          "name": "enable_safety_checker",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Random seed for reproducibility.",
+          "name": "seed",
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "Meshy",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "meshy_multi_image_to_3d",
+      "media_roles": {
+        "medias": [
+          "image"
+        ]
+      },
+      "modes": [],
+      "name": "Multi-Image to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "default": false,
+          "description": "Apply surface textures to the mesh. Costs more credits but produces a textured GLB.",
+          "name": "should_texture",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Auto-rig the resulting mesh with a humanoid skeleton. Works best on humanoid/character subjects; non-bipeds (animals, objects) may rig poorly. Adds cost.",
+          "name": "enable_rigging",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Apply a pre-canned animation clip to the rig. Requires enable_rigging=true. Pick the clip via animation_action_id. Adds cost.",
+          "name": "enable_animation",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Re-topologize the mesh (default true). When false, returns the raw triangular mesh and topology/target_polycount are ignored.",
+          "name": "should_remesh",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Text prompt to guide texturing. Requires should_texture=true.",
+          "name": "texture_prompt",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Reference image URL for texture style transfer. Requires should_texture=true.",
+          "name": "texture_image_url",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Target triangle count, 100-300000 (default 30000). Higher = more detail, larger file.",
+          "max": 300000,
+          "min": 100,
+          "name": "target_polycount",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Mesh topology: 'quad' for smooth/editable surfaces, 'triangle' (default) for detailed geometry.",
+          "name": "topology",
+          "options": [
+            "quad",
+            "triangle"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Symmetry during generation: 'auto' (default) detects it, 'on' enforces it, 'off' disables it.",
+          "name": "symmetry_mode",
+          "options": [
+            "off",
+            "auto",
+            "on"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Generate PBR material maps (metallic, roughness, normal) in addition to base color. Requires should_texture=true.",
+          "name": "enable_pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Generate the character in a canonical rig-friendly pose ('a-pose' or 't-pose'). Omit for no specific pose. Recommended with enable_rigging for cleaner skeletons.",
+          "name": "pose_mode",
+          "options": [
+            "a-pose",
+            "t-pose"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Approximate real-world character height in meters (default 1.7). Only used when enable_rigging=true.",
+          "min": 0,
+          "name": "rigging_height_meters",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Animation clip id (integer, 0-696) for the rig. Required when enable_animation=true. Common picks - idle: 0; walk: 30 (Casual_Walk); run: 16 (RunFast); jump: 466 (Regular_Jump); wave: 28 (Big_Wave_Hello); dance: 64 (All_Night_Dance). For anything else, call the animation_actions tool to search the full 678-action library by name or category.",
+          "max": 696,
+          "min": 0,
+          "name": "animation_action_id",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Run NSFW safety check on output.",
+          "name": "enable_safety_checker",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Random seed for reproducibility.",
+          "name": "seed",
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "Meshy",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "meshy_rigging",
+      "media_roles": {},
+      "modes": [],
+      "name": "3D Rigging",
+      "output_type": "3d",
+      "params": [
+        {
+          "description": "Public HTTPS URL without embedded credentials of an existing 3D model (GLB) to rig. Pass the output URL of a previous 3D generation (e.g. from image_to_3d, multi_image_to_3d, sam_3_3d) or a publicly-hosted GLB.",
+          "name": "model_url",
+          "required": "required",
+          "type": "string"
+        },
+        {
+          "description": "Approximate real-world height of the rigged figure in meters (default 1.7). Used to scale the skeleton.",
+          "min": 0,
+          "name": "height_meters",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": false,
+          "description": "Apply a pre-canned animation clip to the rigged model. Pick the clip via animation_action_id.",
+          "name": "enable_animation",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Animation clip id (integer, 0-696) for the rig. Required when enable_animation=true. Common picks - idle: 0; walk: 30 (Casual_Walk); run: 16 (RunFast); jump: 466 (Regular_Jump); wave: 28 (Big_Wave_Hello); dance: 64 (All_Night_Dance). For anything else, call the animation_actions tool to search the full 678-action library by name or category.",
+          "max": 696,
+          "min": 0,
+          "name": "animation_action_id",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Run NSFW safety check on output.",
+          "name": "enable_safety_checker",
+          "required": "optional",
+          "type": "bool"
+        }
+      ],
+      "provider": "Meshy",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "meshy_v5_remesh",
+      "media_roles": {},
+      "modes": [],
+      "name": "Meshy 5 Remesh",
+      "output_type": "3d",
+      "params": [
+        {
+          "description": "Public URL of an existing 3D model. Upload a GLB through the media API with type=file and pass the returned URL here.",
+          "name": "model_url",
+          "required": "required",
+          "type": "string"
+        },
+        {
+          "description": "Optional output mesh topology.",
+          "name": "topology",
+          "nullable": true,
+          "options": [
+            "triangle",
+            "quad"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Target polygon count for the remeshed model.",
+          "max": 300000,
+          "min": 100,
+          "name": "target_polycount",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Optional target model height.",
+          "min": 0,
+          "name": "resize_height",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Optional vertical origin placement.",
+          "name": "origin_at",
+          "nullable": true,
+          "options": [
+            "bottom",
+            "center"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Meshy",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "meshy_v5_retexture",
+      "media_roles": {},
+      "modes": [],
+      "name": "Meshy 5 Retexture",
+      "output_type": "3d",
+      "params": [
+        {
+          "description": "Public URL of an existing 3D model. Upload a supported model through the media API with type=file and pass the returned URL here.",
+          "name": "model_url",
+          "required": "required",
+          "type": "string"
+        },
+        {
+          "description": "Texture style prompt; required when image_style_url is omitted.",
+          "name": "text_style_prompt",
+          "nullable": true,
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Public style image URL. Takes precedence when text_style_prompt is also set.",
+          "name": "image_style_url",
+          "nullable": true,
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "description": "Reuse the source model UV mapping when available.",
+          "name": "enable_original_uv",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Generate PBR texture maps.",
+          "name": "enable_pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": true,
+          "description": "Run the input safety checker.",
+          "name": "enable_safety_checker",
+          "required": "optional",
+          "type": "bool"
+        }
+      ],
+      "provider": "Meshy",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "meshy_v6_text_to_3d",
+      "media_roles": {},
+      "modes": [
+        "preview",
+        "full"
+      ],
+      "name": "Meshy 6 Text to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "default": "full",
+          "description": "'preview' generates geometry only; 'full' adds textures.",
+          "name": "mode",
+          "options": [
+            "preview",
+            "full"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Random seed for reproducibility.",
+          "name": "seed",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "standard",
+          "description": "Standard high-detail or low-poly mesh generation.",
+          "name": "model_type",
+          "options": [
+            "standard",
+            "lowpoly"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "triangle",
+          "description": "Topology used when remeshing a standard model.",
+          "name": "topology",
+          "options": [
+            "triangle",
+            "quad"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": 30000,
+          "description": "Target polygon count for remeshing.",
+          "max": 300000,
+          "min": 100,
+          "name": "target_polycount",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": true,
+          "description": "Remesh the generated geometry.",
+          "name": "should_remesh",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": "auto",
+          "description": "Symmetry enforcement for the generated mesh.",
+          "name": "symmetry_mode",
+          "options": [
+            "off",
+            "auto",
+            "on"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Generate PBR material maps; requires mode=full.",
+          "name": "enable_pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": "",
+          "description": "Optional canonical pose for character models.",
+          "name": "pose_mode",
+          "options": [
+            "",
+            "a-pose",
+            "t-pose"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Expand the prompt before generation.",
+          "name": "enable_prompt_expansion",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Text guidance for texture generation; requires mode=full.",
+          "name": "texture_prompt",
+          "nullable": true,
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Reference image URL for textures; requires mode=full.",
+          "name": "texture_image_url",
+          "nullable": true,
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Generate a rigged character.",
+          "name": "enable_rigging",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Character height in meters; requires enable_rigging=true.",
+          "name": "rigging_height_meters",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": false,
+          "description": "Generate an animation; requires enable_rigging=true.",
+          "name": "enable_animation",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Animation action id; required when enable_animation=true.",
+          "max": 696,
+          "min": 0,
+          "name": "animation_action_id",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": true,
+          "description": "Run the provider safety checker.",
+          "name": "enable_safety_checker",
+          "required": "optional",
+          "type": "bool"
+        }
+      ],
+      "provider": "Meshy",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "meshy_v7_image_to_3d",
+      "media_roles": {
+        "medias": [
+          "image_references"
+        ]
+      },
+      "modes": [],
+      "name": "Meshy 7 Image to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "default": "standard",
+          "description": "Geometry mode: standard or lowpoly.",
+          "name": "model_type",
+          "options": [
+            "standard",
+            "lowpoly"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "triangle",
+          "description": "Output mesh topology.",
+          "name": "topology",
+          "options": [
+            "quad",
+            "triangle"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": 30000,
+          "description": "Target polygon count.",
+          "max": 300000,
+          "min": 100,
+          "name": "target_polycount",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "auto",
+          "description": "Symmetry enforcement during reconstruction.",
+          "name": "symmetry_mode",
+          "options": [
+            "off",
+            "auto",
+            "on"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "description": "Remesh the generated geometry.",
+          "name": "should_remesh",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": true,
+          "description": "Generate textures.",
+          "name": "should_texture",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Generate PBR maps; requires should_texture=true.",
+          "name": "enable_pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Optional canonical pose for the reconstructed model.",
+          "name": "pose_mode",
+          "nullable": true,
+          "options": [
+            "a-pose",
+            "t-pose"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Text prompt guiding texture generation.",
+          "name": "texture_prompt",
+          "nullable": true,
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Reference image URL guiding texture generation.",
+          "name": "texture_image_url",
+          "nullable": true,
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Generate a rig for the mesh.",
+          "name": "enable_rigging",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": 1.7,
+          "description": "Real-world height in meters used for rigging.",
+          "name": "rigging_height_meters",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": false,
+          "description": "Apply an animation; requires enable_rigging=true.",
+          "name": "enable_animation",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": 92,
+          "description": "Animation action id.",
+          "max": 696,
+          "min": 0,
+          "name": "animation_action_id",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": true,
+          "description": "Run the input safety checker.",
+          "name": "enable_safety_checker",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Generate higher-fidelity geometry and finer surface detail.",
+          "name": "ultra_mode",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Destination folder id.",
+          "name": "folder_id",
+          "nullable": true,
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Meshy",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "multi_image_to_3d",
+      "media_roles": {
+        "medias": [
+          "image"
+        ]
+      },
+      "modes": [],
+      "name": "Multi-Image to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "default": false,
+          "description": "Apply surface textures to the mesh. Costs more credits but produces a textured GLB.",
+          "name": "should_texture",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Auto-rig the resulting mesh with a humanoid skeleton. Works best on humanoid/character subjects; non-bipeds (animals, objects) may rig poorly. Adds cost.",
+          "name": "enable_rigging",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": false,
+          "description": "Apply a pre-canned animation clip to the rig. Requires enable_rigging=true. Pick the clip via animation_action_id. Adds cost.",
+          "name": "enable_animation",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Re-topologize the mesh (default true). When false, returns the raw triangular mesh and topology/target_polycount are ignored.",
+          "name": "should_remesh",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Text prompt to guide texturing. Requires should_texture=true.",
+          "name": "texture_prompt",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Reference image URL for texture style transfer. Requires should_texture=true.",
+          "name": "texture_image_url",
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Target triangle count, 100-300000 (default 30000). Higher = more detail, larger file.",
+          "max": 300000,
+          "min": 100,
+          "name": "target_polycount",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Mesh topology: 'quad' for smooth/editable surfaces, 'triangle' (default) for detailed geometry.",
+          "name": "topology",
+          "options": [
+            "quad",
+            "triangle"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Symmetry during generation: 'auto' (default) detects it, 'on' enforces it, 'off' disables it.",
+          "name": "symmetry_mode",
+          "options": [
+            "off",
+            "auto",
+            "on"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Generate PBR material maps (metallic, roughness, normal) in addition to base color. Requires should_texture=true.",
+          "name": "enable_pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Generate the character in a canonical rig-friendly pose ('a-pose' or 't-pose'). Omit for no specific pose. Recommended with enable_rigging for cleaner skeletons.",
+          "name": "pose_mode",
+          "options": [
+            "a-pose",
+            "t-pose"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "description": "Approximate real-world character height in meters (default 1.7). Only used when enable_rigging=true.",
+          "min": 0,
+          "name": "rigging_height_meters",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Animation clip id (integer, 0-696) for the rig. Required when enable_animation=true. Common picks - idle: 0; walk: 30 (Casual_Walk); run: 16 (RunFast); jump: 466 (Regular_Jump); wave: 28 (Big_Wave_Hello); dance: 64 (All_Night_Dance). For anything else, call the animation_actions tool to search the full 678-action library by name or category.",
+          "max": 696,
+          "min": 0,
+          "name": "animation_action_id",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "description": "Run NSFW safety check on output.",
+          "name": "enable_safety_checker",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Random seed for reproducibility.",
+          "name": "seed",
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "Meshy",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "sam_3_3d",
+      "media_roles": {
+        "medias": [
+          "image"
+        ]
+      },
+      "modes": [],
+      "name": "SAM 3 3D Objects",
+      "output_type": "3d",
+      "params": [
+        {
+          "description": "Detection sensitivity 0.0-1.0. Higher = stricter object detection.",
+          "max": 1,
+          "min": 0,
+          "name": "detection_threshold",
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": true,
+          "description": "Whether to bake textures into the output GLB. Set false for white/untextured mesh.",
+          "name": "export_textured_glb",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Random seed for reproducible output.",
+          "name": "seed",
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "Meta",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "sam_3_3d_body",
+      "media_roles": {
+        "medias": [
+          "image_references"
+        ]
+      },
+      "modes": [],
+      "name": "3D Body",
+      "output_type": "3d",
+      "params": [
+        {
+          "default": true,
+          "description": "Ask the provider to export individual PLY meshes for detected people.",
+          "name": "export_meshes",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": true,
+          "description": "Include 3D keypoint markers in the returned GLB model.",
+          "name": "include_3d_keypoints",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": true,
+          "description": "Ask the provider to calculate full Meta Human Representation metadata.",
+          "name": "include_mhr_params",
+          "required": "optional",
+          "type": "bool"
+        }
+      ],
+      "provider": "Meta",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "tripo_3d",
+      "media_roles": {},
+      "modes": [],
+      "name": "Text to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "description": "Text describing what to avoid in the generated 3D model.",
+          "name": "negative_prompt",
+          "nullable": true,
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": true,
+          "description": "Generate surface textures. Set false for an untextured mesh.",
+          "name": "texture",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": true,
+          "description": "Generate physically based rendering (PBR) material maps.",
+          "name": "pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": "standard",
+          "description": "Texture detail level. 'detailed' yields higher-resolution textures.",
+          "name": "texture_quality",
+          "options": [
+            "standard",
+            "detailed"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "standard",
+          "description": "Mesh geometry detail. 'detailed' yields a denser, more refined mesh.",
+          "name": "geometry_quality",
+          "options": [
+            "standard",
+            "detailed"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Automatically scale the generated model to real-world dimensions.",
+          "name": "auto_size",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Maximum number of mesh faces. Leave unset for the model default.",
+          "max": 2000000,
+          "min": 1000,
+          "name": "face_limit",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        }
+      ],
+      "provider": "",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "tripo_h3_1_image_to_3d",
+      "media_roles": {
+        "medias": [
+          "image_references"
+        ]
+      },
+      "modes": [],
+      "name": "Tripo H3.1 Image to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "description": "Target number of mesh faces. Leave unset for adaptive geometry.",
+          "max": 2000000,
+          "min": 1000,
+          "name": "face_limit",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": true,
+          "description": "Generate textures for the model.",
+          "name": "texture",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": true,
+          "description": "Generate PBR materials. Enabling PBR also enables textures.",
+          "name": "pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Random seed for texture generation.",
+          "name": "texture_seed",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "standard",
+          "description": "Texture detail level.",
+          "name": "texture_quality",
+          "options": [
+            "standard",
+            "detailed"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "standard",
+          "description": "Geometry detail level.",
+          "name": "geometry_quality",
+          "options": [
+            "standard",
+            "detailed"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Generate a quad mesh.",
+          "name": "quad",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": "original_image",
+          "description": "Align textures to the source image or generated geometry.",
+          "name": "texture_alignment",
+          "options": [
+            "original_image",
+            "geometry"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Scale the model to real-world dimensions.",
+          "name": "auto_size",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": "default",
+          "description": "Keep the default orientation or align it to the source image.",
+          "name": "orientation",
+          "options": [
+            "default",
+            "align_image"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Tripo",
+      "resolutions": []
+    },
+    {
+      "aliases": [],
+      "aspect_ratios": [],
+      "constraints": [],
+      "duration": null,
+      "id": "tripo_h3_1_multiview_to_3d",
+      "media_roles": {
+        "medias": [
+          "image_references"
+        ]
+      },
+      "modes": [],
+      "name": "Tripo H3.1 Multiview to 3D",
+      "output_type": "3d",
+      "params": [
+        {
+          "description": "Target number of mesh faces. Leave unset for adaptive geometry.",
+          "max": 2000000,
+          "min": 1000,
+          "name": "face_limit",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": true,
+          "description": "Generate textures for the model.",
+          "name": "texture",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": true,
+          "description": "Generate PBR materials. Enabling PBR also enables textures.",
+          "name": "pbr",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "description": "Random seed for texture generation.",
+          "name": "texture_seed",
+          "nullable": true,
+          "required": "optional",
+          "type": "number"
+        },
+        {
+          "default": "standard",
+          "description": "Texture detail level.",
+          "name": "texture_quality",
+          "options": [
+            "standard",
+            "detailed"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": "standard",
+          "description": "Geometry detail level.",
+          "name": "geometry_quality",
+          "options": [
+            "standard",
+            "detailed"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Generate a quad mesh.",
+          "name": "quad",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": "original_image",
+          "description": "Align textures to the source image or generated geometry.",
+          "name": "texture_alignment",
+          "options": [
+            "original_image",
+            "geometry"
+          ],
+          "required": "optional",
+          "type": "string"
+        },
+        {
+          "default": false,
+          "description": "Scale the model to real-world dimensions.",
+          "name": "auto_size",
+          "required": "optional",
+          "type": "bool"
+        },
+        {
+          "default": "default",
+          "description": "Keep the default orientation or align it to the source image.",
+          "name": "orientation",
+          "options": [
+            "default",
+            "align_image"
+          ],
+          "required": "optional",
+          "type": "string"
+        }
+      ],
+      "provider": "Tripo",
+      "resolutions": []
+    }
+  ],
+  "snapshot_date": "2026-09-26",
+  "snapshot_file": "models_explore_snapshot_3d_2026-09-26.json",
+  "snapshot_sha256": "5846207f1d3c9c30595ceb6c68965aaa65b125ed8a878dec43fb6a4551f191fc"
+}

@@ -1,5 +1,130 @@
 # Changelog
 
+## v3.37.0 — 2026-09-26
+
+**The gates.** The v3.36.0 refresh showed how the platform had moved unseen: the drift
+tripwire could not see a new parameter at all and had been failing on auth for ten weeks with
+the wrong diagnosis, and nothing tied a doctrine sentence like "2.5 caps at 720p" to the specs
+it restates. This release makes each of those failures loud, and every fix carries a test that
+was run red against the pre-fix code.
+
+### Fixed
+
+- **The tripwire was blind to new parameters.** `refresh_specs.py` walked only the baseline's
+  own params and kept only enum + default, so a new param, a type or `required` change,
+  or a new media role exited 0 "Fresh" — 8 existing models gained params after 2026-08-07 and
+  none were reported. It now diffs both sides (min/max are compared too, but CLI 1.1.23's `model get` reports no bounds — no baseline param carries min/max — so a range change is not yet visible), reports media-role changes as such, and files
+  CLI shape surprises as exit 4 (fix the parser) instead of exit 1 (re-auth). Baseline
+  re-captured in the new format, with a 3D section.
+- **The weekly spec-drift job gave the wrong diagnosis.** Since 2026-08-31 the CLI has said
+  "No workspace selected.", not "Session expired". The job now classifies the CLI's own
+  stderr (auth / workspace / not-found / missing CLI / no baseline / other), names the matching
+  remedy, quotes the CLI line only after an allowlist redaction, handles every exit code (unknown codes used to go green), opens a "tripwire BLIND
+  since <date>" issue on a blind run and closes it on the next sighted one, runs the auth-free
+  snapshot-age gate first, and can select a workspace from an optional
+  `HIGGSFIELD_WORKSPACE_ID` secret. GitHub disables scheduled workflows in a public repo after
+  60 days without activity (confirmed in GitHub's docs); `validate.yml` now warns on each push
+  if spec-drift is not active.
+- `validate.yml`'s lint self-checks accepted any non-zero exit (a crash counted as the expected
+  FAIL); they now require exit 1 and the named rule.
+- `validate.py` regenerated only video specs, and from the snapshot the JSON named itself —
+  image / audio hand-edits passed. All four types are now checked against their newest
+  snapshot; `--strict` fails on a stale committed memory summary or global ledger instead of
+  regenerating it silently; the fpdf2 skip test now runs everywhere.
+- `sync_specs.py` accepted a paginated partial dump; it refuses `has_more: true`, gains a `3d`
+  type (`specs/3d-model-specs.*`, `3D-MODEL-SPECS.md`), carries `nullable`, and encodes Wan
+  3.0's smart duration as `{min: 2, max: 30, smart: -1}` — the old `min: -1` let 0 s and 1 s
+  headers through the linter and printed "-1–30s". The Wan rows in `model-guide.md` are checked
+  again ("2–30s or −1 smart").
+- The generation ledger rejected every image and audio model id; it now accepts ids from all
+  spec types plus `specs/retired-model-ids.json` (append-only tombstones), so a model leaving the
+  catalog does not turn history red. The memory CLI exits non-zero on errors and refuses to write
+  an entry missing required fields (`higgsfield-troubleshoot` 3.2.1 lists `failure_type`).
+- **INDEX and QUICK FACTS anchors now use GitHub's slug algorithm** — the old slugger was
+  self-consistent, so validate certified ~300 INDEX anchors and ~110 QUICK FACTS links that did
+  not resolve on GitHub. Links were remapped heading-by-heading; INDEX regenerated.
+- `validate.py` and `build_index.py` walked Claude Code's `.claude/worktrees/` (now skipped via
+  `scripts/repo_walk.py`, and git-ignored).
+- `seedance_lint.py`: hyphenated modes (`text-to-video`) were truncated and a block label
+  `FORMAT MODE:` was read as the model mode; ambiguous display names resolved silently (now an
+  error listing the candidates); smart duration handled.
+- `evals/run_evals.py`: a mistyped `expect`, a case with no assertions, `enum_legal` on a
+  response with no settings, and a bound-less `word_count` all passed silently — each is now a
+  harness ERROR. An eval flipped by a spec refresh is reported as such, not as a checker
+  regression.
+- The USER-GUIDE generator had not changed since v3.23.0, so 12 releases shipped a PDF with no
+  new content. It now derives What's New, template and failure-mode counts and the model tables
+  from disk (`scripts/user_guide_content.py`), and `validate_user_guide.py` fails when the root
+  version is newer than the content it reflects; `--write-manifest` refuses an unchanged text
+  under a new version.
+- `/validate` said "release-ready" from the non-strict run; `/release` contradicted CLAUDE.md
+  (it tagged the local commit on a protected main). Both fixed.
+
+### Added
+
+- **`scripts/preflight.py`** — a free platform-constraint preflight for any model: enums, ranges,
+  media roles and the catalog's CEL rules, through a small safe evaluator (no `eval`). A rule it
+  cannot read is reported UNCHECKED and fails `--strict` — never a silent pass. All 133 live
+  rules (90 models, incl. 3D) parse; the Seedance 2.5 frame rules have truth-table tests. `seedance_lint.py` uses it for
+  the new `**References**:` / `**Start frame**:` / `**End frame**:` header lines.
+- **`scripts/claims_lint.py` + `evals/spec-claims.json`** — 21 registry entries binding doctrine
+  phrasings ("2.5 caps at 720p", "no start_image role", "Grok Image is not on Higgsfield",
+  "longest clip 15s", "LLM text" as a utility…) to the spec fact each restates. Run by
+  `validate.py --strict`. Plant proof in the same commit: the v3.35.0 doctrine fails today's
+  specs on ≥5 distinct Seedance 2.5 lines and passes the 2026-08-07 specs.
+- **`scripts/snapshot_crosscheck.py` + `specs/crosscheck_allowlist.json`** — the two-way
+  snapshot ↔ CLI check used for v3.36.0, productized; every known CLI↔MCP difference is an
+  allowlist entry with model, field, date and exact detail, and fails again if the detail moves.
+- **`/refresh-specs`** — the Tier-2 refresh as one guided command; `sync_specs.py --changed`
+  lists the models that moved and the eval cases that name them.
+- Eval traps `trap-wan3-1s` (red on v3.36.0's specs) and `wan3-smart-duration-legal`.
+
+### Independent review (fixed before release)
+
+A fresh Opus reader (with two forked sub-readers) went through the raw diff, ran mutants and
+swapped in the v3.36.0 files: no spend path and no evaluator escape, but three gates could still
+report green on an unchecked subject. Fixed, each with a test shown red first (two test-only
+gaps were shown red on a mutant instead):
+
+- `preflight.py` passed any value on a model with no spec entry (every 3D model — the 3d spec
+  file was not loaded) and ran `--check-rules` green on 0/0 rules; a model with no spec entry or
+  no rules on record is now UNCHECKED (fails `--strict`), media on a model that accepts none
+  fails, MCP `image` and CLI `image_references` are one slot, integer types are enforced.
+- `snapshot_crosscheck.py` said "agree" with zero shared models and never failed on catalog
+  membership; zero shared / no snapshot is UNCHECKED, and a model in only one source fails unless
+  allowlisted with a reason (23 membership entries, each checked live); list-hidden studio models
+  are compared through `model get` (25 more entries); a STALE allowlist entry fails.
+- `seedance_lint.py` regressed on plain-text `- Mode: fast` headers (read again; FORMAT MODE etc.
+  still excluded, and so are qualified labels after another `Label:` — `Tip: extension mode:`);
+  undeclared mode is evaluated with the platform default; only the leading duration value counts;
+  a reference count is the max of the stated count, the handles and the highest handle index.
+- `refresh_specs.py --update-baseline` accepted an empty pull; a default appearing or vanishing
+  was invisible; a crash shared exit 1 with "pull failed" (now exit 5); capture dates are per
+  type; the CLI's own line reaches public surfaces only through an allowlist redaction (quoted
+  strings and any token with a digit, `_`, `=` or a `:`-value become `[redacted]`), and the step
+  summary and issue body carry only the catalog report plus kind and remedy; CI installs
+  the CLI pinned and checksum-verified instead of `curl | sh`.
+- A hand-added tombstone whitelisted any id in the ledger — a tombstone must now be proven by a
+  well-formed dump in the committed snapshot history (shape, not provenance — the trust boundary
+  is the reviewed snapshot set), and `log-gen` refuses new rows for a retired id (an amendment must
+  supersede a row of the same model). The validator cannot tell a history row from a hand-appended
+  one; that ceiling is marked in the code.
+- `claims_lint.py` skipped non-UTF-8 files and passed an empty root; both are errors now.
+- The two CLI-only utility models that appeared on 2026-09-26 (`depth_anything_video`,
+  `fps_boost`) are accepted into the baseline and allowlisted as CLI-only.
+- `preflight.py` ignored the CLI baseline's params and enums whenever a spec entry existed
+  (`gpt_image_2 background=bogus` passed); a param unknown to both sources or a value outside a CLI
+  enum now fails, and a value legal in only one source passes with a disagreement note.
+- A second reader of this fix pass found six more real defects (the `supersedes` bypass, the
+  fake-snapshot tombstone proof, redaction gaps, the qualified-label regression, STALE entries
+  passing, the CLI enums above); all fixed with red-first tests. The live comparison of list-hidden
+  models also found that `nano_banana_2` names Nano Banana Pro on the CLI (see `image-models.md`).
+
+### For the maintainer
+
+- The spec-drift job needs a fresh `HIGGSFIELD_CREDENTIALS` secret, and `HIGGSFIELD_WORKSPACE_ID`
+  if "No workspace selected." persists.
+
 ## v3.36.0 — 2026-09-26
 
 **The catalog refresh.** The specs were 50–56 days stale and the weekly drift tripwire had

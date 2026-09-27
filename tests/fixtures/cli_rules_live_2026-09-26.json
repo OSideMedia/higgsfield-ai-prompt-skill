@@ -1,0 +1,501 @@
+{
+  "captured": "2026-09-26",
+  "_source": "Verbatim `rules` (cel + message) and params from `higgsfield model get <id> --json` (CLI 1.1.23), read 2026-09-26 -- a free read, no generation. Test fixture for scripts/preflight.py: the committed specs/cli_baseline.json (captured 2026-08-07) predates these rules.",
+  "video": {
+    "seedance_2_5": {
+      "id": "seedance_2_5",
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "auto",
+            "21:9",
+            "16:9",
+            "4:3",
+            "1:1",
+            "3:4",
+            "9:16"
+          ],
+          "default": "16:9",
+          "type": "string"
+        },
+        "audio_references": {
+          "options": [],
+          "default": null,
+          "type": "array"
+        },
+        "bitrate_mode": {
+          "options": [
+            "standard",
+            "high"
+          ],
+          "default": "standard",
+          "type": "string"
+        },
+        "duration": {
+          "options": [],
+          "default": 5,
+          "type": "integer"
+        },
+        "end_image": {
+          "options": [],
+          "default": null,
+          "type": "object|null"
+        },
+        "extension_mode": {
+          "options": [
+            "backward",
+            "forward"
+          ],
+          "default": null,
+          "type": "string|null"
+        },
+        "generate_audio": {
+          "options": [],
+          "default": true,
+          "type": "boolean"
+        },
+        "image_references": {
+          "options": [],
+          "default": null,
+          "type": "array"
+        },
+        "mode": {
+          "options": [
+            "t2v",
+            "omni_reference",
+            "video_edit",
+            "video_extension"
+          ],
+          "default": "t2v",
+          "type": "string"
+        },
+        "prompt": {
+          "options": [],
+          "default": null,
+          "type": "string"
+        },
+        "resolution": {
+          "options": [
+            "480p",
+            "720p",
+            "1080p"
+          ],
+          "default": "720p",
+          "type": "string"
+        },
+        "start_image": {
+          "options": [],
+          "default": null,
+          "type": "object|null"
+        },
+        "video_references": {
+          "options": [],
+          "default": null,
+          "type": "array"
+        }
+      },
+      "rules": [
+        {
+          "cel": "params.mode != \"t2v\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) == 0",
+          "message": "mode 't2v' does not accept reference media"
+        },
+        {
+          "cel": "params.mode != \"omni_reference\" || size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) > 0",
+          "message": "mode 'omni_reference' requires at least one reference media item"
+        },
+        {
+          "cel": "size(params.image_references) + size(params.video_references) + size(params.audio_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) <= 50",
+          "message": "at most 50 reference media items are allowed in total"
+        },
+        {
+          "cel": "params.mode != \"video_edit\" || size(params.video_references) == 1",
+          "message": "mode 'video_edit' requires exactly one video reference"
+        },
+        {
+          "cel": "params.mode != \"video_extension\" || size(params.video_references) >= 1",
+          "message": "mode 'video_extension' requires at least one video reference"
+        },
+        {
+          "cel": "params.mode != \"video_extension\" || !(params.extension_mode == null)",
+          "message": "'extension_mode' is required for mode 'video_extension'"
+        },
+        {
+          "cel": "params.mode == \"video_extension\" || params.extension_mode == null",
+          "message": "'extension_mode' is only allowed for mode 'video_extension'"
+        },
+        {
+          "cel": "size(params.image_references) + (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) <= 30",
+          "message": "at most 30 images are allowed (counting start_image and end_image)"
+        },
+        {
+          "cel": "params.mode == \"omni_reference\" || (params.start_image == null && params.end_image == null)",
+          "message": "start_image and end_image are only allowed for mode 'omni_reference'"
+        }
+      ]
+    },
+    "wan3_0": {
+      "id": "wan3_0",
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "auto",
+            "16:9",
+            "9:16",
+            "1:1",
+            "4:3",
+            "3:4"
+          ],
+          "default": "auto",
+          "type": "string"
+        },
+        "audio_references": {
+          "options": [],
+          "default": null,
+          "type": "array"
+        },
+        "duration": {
+          "options": [],
+          "default": 5,
+          "type": "integer"
+        },
+        "enable_thinking": {
+          "options": [],
+          "default": false,
+          "type": "boolean"
+        },
+        "end_image": {
+          "options": [],
+          "default": null,
+          "type": "object|null"
+        },
+        "generate_audio": {
+          "options": [],
+          "default": true,
+          "type": "boolean"
+        },
+        "image_references": {
+          "options": [],
+          "default": null,
+          "type": "array"
+        },
+        "prompt": {
+          "options": [],
+          "default": null,
+          "type": "string"
+        },
+        "resolution": {
+          "options": [
+            "480p",
+            "720p",
+            "1080p"
+          ],
+          "default": "720p",
+          "type": "string"
+        },
+        "start_image": {
+          "options": [],
+          "default": null,
+          "type": "object|null"
+        },
+        "video_references": {
+          "options": [],
+          "default": null,
+          "type": "array"
+        }
+      },
+      "rules": [
+        {
+          "cel": "params.end_image == null || !(params.start_image == null)",
+          "message": "end_image requires start_image"
+        },
+        {
+          "cel": "(params.start_image == null && params.end_image == null) || size(params.image_references) + size(params.video_references) + size(params.audio_references) == 0",
+          "message": "start_image/end_image cannot be combined with reference media"
+        },
+        {
+          "cel": "params.duration == -1 || params.duration >= 2",
+          "message": "duration must be -1 (smart duration) or between 2 and 30"
+        }
+      ]
+    },
+    "gemini_omni_flash_1_1": {
+      "id": "gemini_omni_flash_1_1",
+      "params": {
+        "aspect_ratio": {
+          "options": [
+            "16:9",
+            "9:16"
+          ],
+          "default": "16:9",
+          "type": "string"
+        },
+        "duration": {
+          "options": [],
+          "default": 8,
+          "type": "integer"
+        },
+        "end_image": {
+          "options": [],
+          "default": null,
+          "type": "object|null"
+        },
+        "image_references": {
+          "options": [],
+          "default": null,
+          "type": "array"
+        },
+        "mode": {
+          "options": [
+            "text-to-video",
+            "image-to-video",
+            "reference-to-video",
+            "edit"
+          ],
+          "default": null,
+          "type": "string"
+        },
+        "prompt": {
+          "options": [],
+          "default": null,
+          "type": "string"
+        },
+        "resolution": {
+          "options": [
+            "360p",
+            "720p",
+            "1080p",
+            "4k"
+          ],
+          "default": "720p",
+          "type": "string"
+        },
+        "start_image": {
+          "options": [],
+          "default": null,
+          "type": "object|null"
+        },
+        "video_references": {
+          "options": [],
+          "default": null,
+          "type": "array"
+        }
+      },
+      "rules": [
+        {
+          "cel": "params.mode != \"text-to-video\" || (params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) + size(params.image_references) + size(params.video_references) == 0",
+          "message": "mode 'text-to-video' does not accept media"
+        },
+        {
+          "cel": "params.mode != \"image-to-video\" || (!(params.start_image == null) && size(params.image_references) == 0 && size(params.video_references) == 0)",
+          "message": "mode 'image-to-video' requires start_image, accepts an optional end_image, and does not accept reference media"
+        },
+        {
+          "cel": "params.mode != \"reference-to-video\" || ((params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) == 0 && size(params.image_references) + size(params.video_references) > 0)",
+          "message": "mode 'reference-to-video' requires at least one image_references or video_references item and does not accept start_image or end_image"
+        },
+        {
+          "cel": "params.mode != \"edit\" || ((params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) == 0 && size(params.image_references) == 0 && size(params.video_references) == 1)",
+          "message": "mode 'edit' requires exactly one video reference and no images"
+        },
+        {
+          "cel": "size(params.video_references) == 0 || size(params.image_references) <= 5",
+          "message": "when a video reference is provided, at most 5 image references are allowed"
+        },
+        {
+          "cel": "(params.start_image == null ? 0 : 1) + (params.end_image == null ? 0 : 1) + size(params.image_references) + size(params.video_references) <= 8",
+          "message": "at most 8 media items are allowed in total"
+        }
+      ]
+    }
+  },
+  "3d": {
+    "meshy_v6_text_to_3d": {
+      "id": "meshy_v6_text_to_3d",
+      "params": {
+        "animation_action_id": {
+          "options": [],
+          "default": null,
+          "type": "integer|null"
+        },
+        "enable_animation": {
+          "options": [],
+          "default": false,
+          "type": "boolean"
+        },
+        "enable_pbr": {
+          "options": [],
+          "default": false,
+          "type": "boolean"
+        },
+        "enable_prompt_expansion": {
+          "options": [],
+          "default": false,
+          "type": "boolean"
+        },
+        "enable_rigging": {
+          "options": [],
+          "default": false,
+          "type": "boolean"
+        },
+        "enable_safety_checker": {
+          "options": [],
+          "default": true,
+          "type": "boolean"
+        },
+        "mode": {
+          "options": [
+            "preview",
+            "full"
+          ],
+          "default": "full",
+          "type": "string"
+        },
+        "model_type": {
+          "options": [
+            "standard",
+            "lowpoly"
+          ],
+          "default": "standard",
+          "type": "string"
+        },
+        "pose_mode": {
+          "options": [
+            "",
+            "a-pose",
+            "t-pose"
+          ],
+          "default": "",
+          "type": "string"
+        },
+        "prompt": {
+          "options": [],
+          "default": null,
+          "type": "string"
+        },
+        "rigging_height_meters": {
+          "options": [],
+          "default": null,
+          "type": "number|null"
+        },
+        "seed": {
+          "options": [],
+          "default": null,
+          "type": "integer|null"
+        },
+        "should_remesh": {
+          "options": [],
+          "default": true,
+          "type": "boolean"
+        },
+        "symmetry_mode": {
+          "options": [
+            "off",
+            "auto",
+            "on"
+          ],
+          "default": "auto",
+          "type": "string"
+        },
+        "target_polycount": {
+          "options": [],
+          "default": 30000,
+          "type": "integer"
+        },
+        "texture_image_url": {
+          "options": [],
+          "default": null,
+          "type": "string|null"
+        },
+        "texture_prompt": {
+          "options": [],
+          "default": null,
+          "type": "string|null"
+        },
+        "topology": {
+          "options": [
+            "triangle",
+            "quad"
+          ],
+          "default": "triangle",
+          "type": "string"
+        }
+      },
+      "rules": [
+        {
+          "cel": "params.mode == \"full\" || (type(params.texture_prompt) != string && type(params.texture_image_url) != string && !params.enable_pbr)",
+          "message": "texture options require mode=full"
+        },
+        {
+          "cel": "!params.enable_animation || params.enable_rigging",
+          "message": "enable_animation requires enable_rigging=true"
+        },
+        {
+          "cel": "!params.enable_animation || type(params.animation_action_id) == int",
+          "message": "animation_action_id is required when enable_animation=true"
+        },
+        {
+          "cel": "type(params.rigging_height_meters) != double || params.enable_rigging",
+          "message": "rigging_height_meters requires enable_rigging=true"
+        }
+      ]
+    },
+    "hunyuan3d_v3_1_text_to_3d": {
+      "id": "hunyuan3d_v3_1_text_to_3d",
+      "params": {
+        "enable_pbr": {
+          "options": [],
+          "default": false,
+          "type": "boolean"
+        },
+        "face_count": {
+          "options": [],
+          "default": null,
+          "type": "integer|null"
+        },
+        "generate_type": {
+          "options": [
+            "Normal",
+            "Geometry"
+          ],
+          "default": null,
+          "type": "string|null"
+        },
+        "mode": {
+          "options": [
+            "std",
+            "pro"
+          ],
+          "default": "std",
+          "type": "string"
+        },
+        "prompt": {
+          "options": [],
+          "default": null,
+          "type": "string"
+        }
+      },
+      "rules": [
+        {
+          "cel": "params.mode != \"std\" || size(params.prompt) <= 200",
+          "message": "prompt must contain at most 200 characters when mode=std"
+        },
+        {
+          "cel": "params.mode != \"std\" || type(params.generate_type) != string",
+          "message": "generate_type requires mode=pro"
+        },
+        {
+          "cel": "params.mode != \"std\" || type(params.face_count) != int",
+          "message": "face_count requires mode=pro"
+        },
+        {
+          "cel": "params.mode != \"std\" || !params.enable_pbr",
+          "message": "enable_pbr=true requires mode=pro for GLB output"
+        },
+        {
+          "cel": "type(params.generate_type) != string || params.generate_type != \"Geometry\" || !params.enable_pbr",
+          "message": "enable_pbr is ignored when generate_type=Geometry"
+        }
+      ]
+    }
+  }
+}

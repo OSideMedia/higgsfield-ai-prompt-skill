@@ -34,21 +34,21 @@ mode.
 - Four modes, picked **before** writing: `t2v` · `omni_reference` · `video_edit` · `video_extension`; the mode changes what the prompt *is* [→](#the-mode-router)
 - Higgsfield surface: **480p/720p/1080p** (no 4K), duration **4–30s**, `start_image`/`end_image` **only in `omni_reference`**, `t2v` takes zero references, no genre hint, `extension_mode` required for (and only for) `video_extension` [→](#the-higgsfield-parameter-surface)
 - `video_edit` **ignores** `duration` and `aspect_ratio` and bills by the source video's length; `video_extension` inherits the source's aspect ratio [→](#the-higgsfield-parameter-surface)
-- Every reference material gets an explicit role **and** an exclusion — "what to use" plus "what not to use"; never let the model infer the mapping [→](#reference-roles-say-what-to-use-and-what-not-to-use)
-- Each material also declares a **fidelity grade** — full-preserve / partial-preserve / attribute-transfer (name the target) / loose-guide; beat lines name characters (name + one visible marker), never handles [→](#fidelity-say-how-much-of-each-material-must-survive)
+- Every reference material gets an explicit role **and** an exclusion — "what to use" plus "what not to use"; never let the model infer the mapping [→](#reference-roles--say-what-to-use-and-what-not-to-use)
+- Each material also declares a **fidelity grade** — full-preserve / partial-preserve / attribute-transfer (name the target) / loose-guide; beat lines name characters (name + one visible marker), never handles [→](#fidelity--say-how-much-of-each-material-must-survive)
 - Material budget: 30 images / 10 videos ≤30s total / 10 audio ≤30s total, 50 materials max — a platform `start_image`/`end_image` counts against both the 30-image and the 50-material caps; stability ranges are 1–8 subjects (images), 1–5 subjects at 5–10s (video/audio) [→](#material-budget)
-- Multi-reference is a 5-step workflow — map → group → profile → select-by-scene, one line per subject; `@Images 1 through 4 define four characters` is the canonical failure [→](#multi-reference-the-five-step-workflow)
-- Long videos are **staged**, not paragraphed: one primary change per stage + an explicit **end state**; timestamps allocate a budget, they are not frame-accurate edit points [→](#long-video-stages-and-end-states)
+- Multi-reference is a 5-step workflow — map → group → profile → select-by-scene, one line per subject; `@Images 1 through 4 define four characters` is the canonical failure [→](#multi-reference--the-five-step-workflow)
+- Long videos are **staged**, not paragraphed: one primary change per stage + an explicit **end state**; timestamps allocate a budget, they are not frame-accurate edit points [→](#long-video--stages-and-end-states)
 - Staging fixes too many EVENTS; two incompatible JOBS in one generation (physics + performance) is a separate cut — split into two prompts and stitch [→](#split-by-job-not-only-by-length)
-- Bracket syntax: `()` music · `<>` SFX · `{}` dialogue · `【】` subtitles; non-Chinese dialogue needs a language line before the line [→](#audio-and-text-bracket-syntax)
+- Bracket syntax: `()` music · `<>` SFX · `{}` dialogue · `【】` subtitles; non-Chinese dialogue needs a language line before the line [→](#audio-and-text--bracket-syntax)
 - First/last frames are `omni_reference` work: the platform `start_image`/`end_image` roles **or** an in-prompt declaration (`@Image 1 is the first frame`) — which holds better is unmeasured; keyframes 3+ are always in the prompt; never merge two anchors into one sentence [→](#first-last-frame-and-multi-keyframe-control)
 - Editing needs a **sole editing master** + edit scope + Timeline Inheritance; extension needs the **boundary frame aligned before** any new content: `MODE-PLAYBOOKS.md`
 - Storyboard grids, coarse-vs-fine blockouts, one-click video, seamless transitions: `MODE-PLAYBOOKS.md`
 - **AI-VFX production pipeline** — model-per-asset-class routing, the size-ref frame, location batching, the `omni_reference` v2v lane (source ≥4s, duration = source), the four-batch rule, the slop catalog: `VFX-PIPELINE.md`
 - Emotion needs 2–4 **observable** cues, not adjectives; niche camera terms get translated into a visible result [→](#emotional-direction-and-camera-terms)
 - The real-person formula is 7 slots — and slot 1 is **role, never age**: the age-blind engine rule outranks the source guide's `[Age/Race]` label [→](#the-real-person-character-formula)
-- Hard limits that must not be over-promised (frame accuracy, locked parameters, pixel-identical transitions) [→](#hard-limits-do-not-over-promise-these)
-- Dreamina-product features that are **not** on the Higgsfield surface — Ultra Long Video 180s, mark-based editing, Clay Renderer [→](#dreamina-only-what-higgsfield-does-not-expose)
+- Hard limits that must not be over-promised (frame accuracy, locked parameters, pixel-identical transitions) [→](#hard-limits--do-not-over-promise-these)
+- Dreamina-product features that are **not** on the Higgsfield surface — Ultra Long Video 180s, mark-based editing, Clay Renderer [→](#dreamina-only--what-higgsfield-does-not-expose)
 
 ---
 

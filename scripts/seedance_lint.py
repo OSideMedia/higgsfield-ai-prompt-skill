@@ -36,6 +36,31 @@ Settings (aspect ratio / resolution / mode / duration) are read from the
 prompt's settings header lines (e.g. `**Aspect ratio**: 16:9  **Duration**: 8s`)
 and can be overridden per-field with --ar / --resolution / --mode / --duration.
 
+Header syntax (a label starts a line or follows `**` / a comma / 2+ spaces):
+  **Mode**: text-to-video           mode ids keep their hyphens; only a bare
+                                    `Mode`, `Generation mode` or `Quality mode`
+                                    label is the model mode — `FORMAT MODE:`,
+                                    `Extension mode`, `Shot Mode` are not
+  **Duration**: 8s                  a length; `-1` or `smart` = the smart-
+                                    duration sentinel (models that document it)
+  **References**: 2 images, 1 video, 1 audio
+  **References**: @Image 1, @Image 2, @Video 1     (distinct handles counted)
+  **References**: none
+  **Start frame**: @Image 1         (`none` = no start frame)
+  **End frame**: @Image 2
+Declaring ANY media line (References / Start frame / End frame) makes the
+media declaration complete — roles it does not mention count as zero. With
+no media line, the platform rules that read media roles are reported as not
+evaluated (the media may be attached in the UI). --media ROLE=N overrides
+per role (roles: start_image, end_image, image_references,
+video_references, audio_references).
+
+Platform rules: with --model, the model's CEL validation rules from
+specs/cli_baseline.json are evaluated through scripts/preflight.py (the same
+evaluator the free any-model preflight uses) — a violated rule is a FAIL
+(`platform-rule`), a rule the evaluator cannot read is a WARN
+(`platform-rule-unchecked`), never a silent pass.
+
 Exit codes: 0 = PASS or WARN only, 1 = any FAIL, 2 = usage error.
 
 Filter-memory loopback:
@@ -58,6 +83,10 @@ import sys
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import preflight  # noqa: E402 — flat sibling module in scripts/
+from preflight import AmbiguousModelError  # noqa: E402,F401 — re-exported
 
 
 # ── Rule data ───────────────────────────────────────────────────────────────
@@ -230,22 +259,184 @@ class Settings:
     mode: str | None = None
     duration: int | None = None
     extension_mode: str | None = None
+    # Declared media roles → counts (start_image/end_image 0|1, *_references
+    # n). None = no media declaration at all (the rules that read media are
+    # then not evaluated); a dict = a complete declaration.
+    media: dict | None = None
+    # A media header line that was present but could not be read — reported,
+    # never silently treated as "no media".
+    media_error: str | None = None
+
+    def declared(self) -> bool:
+        return any([self.ar, self.resolution, self.mode, self.extension_mode,
+                    self.duration is not None, self.media is not None])
 
 
 SPECS_DEFAULT = Path(__file__).resolve().parent.parent / "specs" / "model-specs.json"
+
+MEDIA_ROLES = ("start_image", "end_image", "image_references",
+               "video_references", "audio_references")
 
 _SETTINGS_PATTERNS = {
     # Tolerant of **bold**, fullwidth ：, and inline comma-run headers.
     "ar": re.compile(r"aspect[\s_-]*ratio\**\s*[:：]\s*\**\s*(auto|\d+:\d+)", re.I),
     "resolution": re.compile(r"\bresolution\**\s*[:：]\s*\**\s*(\d{3,4}p?|4k)", re.I),
-    # extension_mode must be matched BEFORE the bare `mode` pattern can claim it —
-    # merge_settings/parse order keeps them distinct because the `mode` regex
-    # requires a word boundary that `extension_mode` does not satisfy.
     "extension_mode": re.compile(
         r"\bextension[\s_-]*mode\**\s*[:：]\s*\**\s*(forward|backward)", re.I),
-    "mode": re.compile(r"(?<!extension[\s_-])\bmode\**\s*[:：]\s*\**\s*([a-z0-9_]+)", re.I),
-    "duration": re.compile(r"\bduration\**\s*[:：]\s*\**\s*(\d+)\s*s", re.I),
 }
+
+# Duration: the label, then ONLY its leading value is parsed — up to the
+# first separator (`,` `;` `(` `|` `**` or 2+ spaces). A length needs its `s`
+# ("8s", "8 s", "8 seconds"); the smart-duration sentinel is `-1` (optional
+# `s`) or `smart` / `smart duration`. Anything else in the leading value
+# ("auto", "TBD", "smart pacing", "5-10s") declares no checkable duration —
+# later numbers on the line ("beats at 2s and 5s", "(was 10s)") are prose.
+# The sentinel is only LEGAL on models whose spec documents it —
+# structural_lint decides that, not the parser.
+_DURATION_LABEL_RE = re.compile(r"\bduration\**[ \t]*[:：][ \t]*(?P<val>[^\n]*)", re.I)
+_LEADING_VALUE_RE = re.compile(r"^[*\s]*(?P<v>.*?)(?=[,;(|]|\*\*|[ \t]{2,}|$)")
+_SENTINEL_VALUE_RE = re.compile(r"^(?:-1(?:[ \t]*s)?|smart(?:[ \t]+duration)?)$", re.I)
+_LENGTH_VALUE_RE = re.compile(r"^(\d+)[ \t]*s(?:ec(?:ond)?s?)?$", re.I)
+
+
+def _parse_duration(text: str) -> int | None:
+    for m in _DURATION_LABEL_RE.finditer(text):
+        lead = _LEADING_VALUE_RE.match(m.group("val")).group("v").strip().rstrip(".")
+        if _SENTINEL_VALUE_RE.match(lead):
+            return -1
+        length = _LENGTH_VALUE_RE.match(lead)
+        if length:
+            return int(length.group(1))
+    return None
+
+
+# The model-mode label. Mode ids keep their hyphens (gemini_omni_flash_1_1:
+# text-to-video / image-to-video / reference-to-video). The key may carry a
+# `Generation` / `Quality` qualifier (UI labels for the same parameter);
+# any other qualifier makes it a different label — `FORMAT MODE:` (block
+# scaffold), `Extension mode`, `Shot Mode`, `Image mode` are not the mode.
+_MODE_RE = re.compile(
+    r"(?P<key>\b(?:(?:generation|quality)[ \t_-]+)?mode)\**[ \t]*[:：][ \t]*\**[ \t]*"
+    r"(?P<val>[a-z0-9]+(?:[-_][a-z0-9]+)*)", re.I)
+
+
+_LIST_MARKER_RE = re.compile(r"^[ \t>]*(?:[-*+•]|\d{1,3}[.)])$")
+# Words that, right before `mode` / `references` / `start frame`, make the key
+# the tail of a DIFFERENT label ("extension mode", "failure mode", "style
+# references") — decided by the word itself, not by what precedes it, so
+# "Tip: extension mode: forward" is not the model mode.
+# ponytail: a hand-kept qualifier word list — a prose word missing here after
+# a `Label:` reads as the mode (a loud mode-not-supported FAIL, never a silent
+# pass). Upgrade path: a label grammar (the known header keys) instead of
+# excluding qualifiers.
+_QUALIFIER_WORDS = {
+    "extension", "failure", "format", "shot", "image", "video", "audio", "camera",
+    "motion", "render", "rendering", "edit", "editing", "color", "colour", "blend",
+    "blending", "fallback", "safe", "safety", "debug", "test", "playback", "display",
+    "dark", "light", "lighting", "game", "burst", "portrait", "night", "scene", "style",
+    "character", "voice", "pose", "outfit", "face", "error", "privacy", "draft",
+    "preview", "multi", "single", "split", "loop", "photo", "focus", "exposure", "flash",
+    "macro", "manual", "sync", "lip", "legacy", "compatibility", "batch", "story",
+    "storyboard", "physics", "sound", "music", "prompt", "reference", "blocking",
+}
+
+
+def _label_starts_here(text: str, start: int) -> bool:
+    """True when position `start` opens a header label: line start, a list
+    bullet (`- Mode:`, `1. Mode:`), right after `**`, after a separator
+    (comma, pipe, semicolon, 2+ spaces), or after the VALUE of a previous
+    label on the same line (`Aspect ratio: 16:9 Mode: fast`,
+    `Aspect: auto Mode: fast`). A plain qualifier word before it (`FORMAT
+    MODE`, `Shot Mode`, `the failure mode`) or a glued compound
+    (`extension-mode`) means the key is the tail of a different label."""
+    line_start = text.rfind("\n", 0, start) + 1
+    before = text[line_start:start]
+    stripped = before.rstrip("*")
+    if len(stripped) < len(before):          # **Mode**
+        return True
+    tail = stripped.rstrip(" \t")
+    if not tail or _LIST_MARKER_RE.match(tail):
+        return True                          # line start / "- Mode: fast"
+    if len(stripped) - len(tail) >= 2 or "\t" in stripped[len(tail):]:
+        return True                          # "16:9  Mode: …"
+    if len(stripped) == len(tail):           # glued: "extension-mode", "x_mode"
+        return not (tail[-1].isalnum() or tail[-1] in "_-")
+    token = tail.split()[-1]                 # one space before the key
+    if not (token[-1].isalnum() or token[-1] in "_-"):
+        return True                          # "1080p, mode:" / "fast; mode:"
+    if token in ("-", "–", "—") or re.search(r"[\d:：]", token):
+        return True                          # "16:9 Mode:", "1080p Mode:", " - Mode:"
+    # A plain word right before the key: a known qualifier makes it a
+    # different label ("Tip: extension mode:", "**Watch**: failure mode:");
+    # otherwise the value of a preceding `Label:` opens a new label ("Aspect:
+    # auto Mode: fast"), and any other word qualifies the key ("FORMAT MODE").
+    if token.lower() in _QUALIFIER_WORDS:
+        return False
+    return tail[:len(tail) - len(token)].rstrip(" \t*").endswith((":", "："))
+
+
+def _find_mode(text: str) -> str | None:
+    for m in _MODE_RE.finditer(text):
+        if _label_starts_here(text, m.start("key")):
+            return m.group("val").lower()
+    return None
+
+
+_MEDIA_LINE_RE = re.compile(
+    r"(?P<key>\b(?:references|reference media|start[ _-]?(?:frame|image)"
+    r"|end[ _-]?(?:frame|image)))\**[ \t]*[:：][ \t]*\**[ \t]*(?P<val>[^*\n]*)", re.I)
+_NONE_RE = re.compile(r"^\s*(none|no|n/a|—|-|0)\s*\.?\s*$", re.I)
+_COUNT_RE = re.compile(r"\b(\d+)\s*(image|video|clip|audio)s?\b", re.I)
+_HANDLE_REF_RE = re.compile(r"@\s*(image|video|audio)\s*(\d+)", re.I)
+_ROLE_KV_RE = re.compile(
+    r"\b(start_image|end_image|image_references|video_references|audio_references)"
+    r"\s*[=:×x]\s*(\d+)", re.I)
+_KIND_ROLE = {"image": "image_references", "video": "video_references",
+              "clip": "video_references", "audio": "audio_references"}
+
+
+def _parse_media(text: str) -> tuple[dict | None, str | None]:
+    """(media counts or None, error text or None) from the media header lines."""
+    media: dict[str, int] | None = None
+    errors = []
+    for m in _MEDIA_LINE_RE.finditer(text):
+        if not _label_starts_here(text, m.start("key")):
+            continue
+        key = m.group("key").lower()
+        val = m.group("val").strip()
+        media = media if media is not None else {r: 0 for r in MEDIA_ROLES}
+        if key.startswith(("start", "end")):
+            role = "start_image" if key.startswith("start") else "end_image"
+            media[role] = 0 if (not val or _NONE_RE.match(val)) else 1
+            continue
+        if _NONE_RE.match(val) or not val:
+            continue
+        kv = _ROLE_KV_RE.findall(val)
+        counts = _COUNT_RE.findall(val)
+        handles = {(k.lower(), int(n)) for k, n in _HANDLE_REF_RE.findall(val)}
+        if not (kv or counts or handles):
+            errors.append(f"References line not understood: {val!r}")
+            continue
+        for role, n in kv:
+            media[role.lower()] = max(media[role.lower()], int(n))
+        # "2 images (@Image 1, @Image 2)" names the SAME two images twice:
+        # per role, the stated count, the distinct handles and the highest
+        # handle index (`@Image 3` implies three) are views of one set — take
+        # the largest, never the sum.
+        stated: dict[str, int] = {}
+        named: dict[str, int] = {}
+        highest: dict[str, int] = {}
+        for n, kind in counts:
+            role = _KIND_ROLE[kind.lower()]
+            stated[role] = stated.get(role, 0) + int(n)
+        for kind, idx in handles:
+            role = _KIND_ROLE[kind]
+            named[role] = named.get(role, 0) + 1
+            highest[role] = max(highest.get(role, 0), idx)
+        for role in set(stated) | set(named):
+            media[role] += max(stated.get(role, 0), named.get(role, 0),
+                               highest.get(role, 0))
+    return media, ("; ".join(errors) or None)
 
 
 def parse_settings_header(text: str) -> Settings:
@@ -254,41 +445,51 @@ def parse_settings_header(text: str) -> Settings:
     for field, pat in _SETTINGS_PATTERNS.items():
         m = pat.search(text)
         if m:
-            value = m.group(1).lower()
-            setattr(s, field, int(value) if field == "duration" else value)
+            setattr(s, field, m.group(1).lower())
+    s.duration = _parse_duration(text)
+    s.mode = _find_mode(text)
+    s.media, s.media_error = _parse_media(text)
     return s
 
 
 def merge_settings(header: Settings, cli: Settings) -> Settings:
-    """CLI flags win per-field over header-declared values."""
+    """CLI flags win per-field over header-declared values (media: per role)."""
+    media = header.media
+    if cli.media:
+        media = dict(media or {r: 0 for r in MEDIA_ROLES})
+        media.update(cli.media)
     return Settings(
         ar=cli.ar or header.ar,
         resolution=cli.resolution or header.resolution,
         mode=cli.mode or header.mode,
         duration=cli.duration if cli.duration is not None else header.duration,
         extension_mode=cli.extension_mode or header.extension_mode,
+        media=media,
+        media_error=header.media_error,
     )
+
+
+def index_spec(spec: dict) -> dict:
+    """Index one parsed model-specs document (see load_specs)."""
+    if not spec.get("models"):
+        return {}
+    index = preflight.index_models(spec["models"])
+    index["_snapshot_date"] = spec.get("snapshot_date")
+    return index
 
 
 def load_specs(path: Path) -> dict:
     """Index specs/model-specs.json by id, alias, and normalized name.
 
+    A display name shared by two ids (both "Cinema Studio Video") is not
+    indexed — resolve_model() raises AmbiguousModelError listing them.
     Returns {} when the specs file is absent — structural enum checks then
     degrade to INFO, they never guess."""
     try:
         spec = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return {}
-    if not spec.get("models"):
-        return {}
-    index: dict[str, dict] = {}
-    for m in spec["models"]:
-        index[m["id"]] = m
-        for alias in m.get("aliases", []):
-            index[alias] = m
-        index[re.sub(r"[^a-z0-9]+", "", m["name"].lower())] = m
-    index["_snapshot_date"] = spec.get("snapshot_date")
-    return index
+    return index_spec(spec)
 
 
 def snapshot_age_finding(index: dict) -> "Finding | None":
@@ -315,8 +516,9 @@ def snapshot_age_finding(index: dict) -> "Finding | None":
 
 
 def resolve_model(index: dict, model_arg: str) -> dict | None:
-    return index.get(model_arg) or index.get(
-        re.sub(r"[^a-z0-9]+", "", model_arg.lower()))
+    """Id / alias, then unambiguous display name. Raises AmbiguousModelError
+    (with .candidates) instead of silently picking one of several ids."""
+    return preflight.resolve_model(index, model_arg)
 
 
 # Shot-count declarations, EN + ZH house format.
@@ -363,11 +565,18 @@ HANDLE_RE = re.compile(r"@([\w-]+)")
 HANDLE_DECL_RE = re.compile(r"^\s*[*\-•]?\s*\**@([\w-]+)\**\s*[:=（(—–]")
 
 
-def structural_lint(text: str, settings: Settings, spec: dict | None) -> list[Finding]:
+def structural_lint(text: str, settings: Settings, spec: dict | None,
+                    baseline: dict | None = None) -> list[Finding]:
     """Structural preflight: the failures that waste credits, not the ones
     that trip the content filter. Enum legality comes ONLY from the specs
-    layer — when no model/spec is available the checks downgrade to INFO."""
+    layer — when no model/spec is available the checks downgrade to INFO.
+    `baseline` is a preflight.load_baseline() dict (default: the committed
+    specs/cli_baseline.json) supplying the model's platform rules."""
     findings: list[Finding] = []
+    dur_policy = preflight.duration_policy(spec) if spec else None
+    # A negative duration is never a length (legal only as a documented
+    # smart-duration sentinel — the enum check below rules on that).
+    smart_duration = settings.duration is not None and settings.duration < 0
 
     # ── Shot count: declared vs actual block markers ─────────────────────
     declared = None
@@ -419,18 +628,20 @@ def structural_lint(text: str, settings: Settings, spec: dict | None) -> list[Fi
                         "Gap between beats — the engine improvises uncovered "
                         "seconds. Make ranges contiguous ([0-2s][2-4s]…)."))
         end = max(b for _, b in beats)
-        envelope = settings.duration
+        # A smart duration (-1) is not a length: the model picks it, so the
+        # only envelope is the model's max.
+        envelope = None if smart_duration else settings.duration
         env_src = "declared duration"
-        if envelope is None and spec and spec.get("duration"):
-            d = spec["duration"]
-            envelope = d["max"] if "max" in d else max(d["values"])
+        if envelope is None and dur_policy is not None:
+            envelope = max(dur_policy.values) if dur_policy.values else dur_policy.max
             env_src = f"{spec['id']} max duration"
         if envelope is not None and end > envelope:
             findings.append(Finding(
                 "FAIL", "beats-exceed-envelope", f"beats run to {end}s, {env_src} is {envelope}s",
                 "Timed beats must fit inside the clip duration — trailing "
                 "beats are silently truncated."))
-        elif settings.duration is not None and end < settings.duration:
+        elif settings.duration is not None and not smart_duration \
+                and end < settings.duration:
             findings.append(Finding(
                 "WARN", "beats-undershoot-envelope",
                 f"beats end at {end}s, declared duration is {settings.duration}s",
@@ -487,9 +698,15 @@ def structural_lint(text: str, settings: Settings, spec: dict | None) -> list[Fi
                 "bound in the UI Elements panel — otherwise declare each "
                 "(`@Name: description`) before first use."))
 
+    if settings.media_error:
+        findings.append(Finding(
+            "WARN", "media-declaration-unparsed", settings.media_error,
+            "Write the media line as `**References**: 2 images, 1 video` or "
+            "`**References**: @Image 1, @Video 1` (or `none`) so the platform "
+            "role rules can be checked."))
+
     # ── Enum legality per specs ──────────────────────────────────────────
-    declared_any = any([settings.ar, settings.resolution, settings.mode,
-                        settings.duration is not None])
+    declared_any = settings.declared()
     if spec is None:
         if declared_any:
             findings.append(Finding(
@@ -512,18 +729,21 @@ def structural_lint(text: str, settings: Settings, spec: dict | None) -> list[Fi
                "resolution-not-supported", "resolution")
     enum_check(settings.mode, spec.get("modes"), "mode-not-supported", "mode")
 
-    if settings.duration is not None and spec.get("duration"):
-        d = spec["duration"]
-        if "min" in d:
-            ok = d["min"] <= settings.duration <= d["max"]
-            allowed_fmt = f"{d['min']}–{d['max']}s"
-        else:
-            ok = settings.duration in d["values"]
-            allowed_fmt = "/".join(map(str, d["values"])) + "s"
-        if not ok:
+    if settings.duration is not None and dur_policy is not None:
+        # preflight.duration_policy reads a negative spec min as the
+        # smart-duration sentinel (wan3_0: -1 or 2–30, never 0/1).
+        status, note = dur_policy.check(settings.duration)
+        shown = "-1 (smart)" if settings.duration == dur_policy.sentinel \
+            else f"{settings.duration}s"
+        if status == "FAIL":
             findings.append(Finding(
-                "FAIL", "duration-out-of-range", f"{settings.duration}s",
-                f"{spec['name']} supports {allowed_fmt}."))
+                "FAIL", "duration-out-of-range", shown,
+                f"{spec['name']} supports {dur_policy.describe()}."
+                + (f" ({note})" if note else "")))
+        elif status == "UNCHECKED":
+            findings.append(Finding(
+                "WARN", "duration-unverified", shown,
+                f"{spec['name']}: {note}."))
 
     # Cross-parameter constraints from the snapshot (e.g. fast forbids 1080p).
     declared_map = {"mode": settings.mode, "resolution": settings.resolution,
@@ -555,6 +775,126 @@ def structural_lint(text: str, settings: Settings, spec: dict | None) -> list[Fi
                     f"Illegal combination on {spec['name']}: {c['source']}."))
 
     findings.extend(_mode_pairing_findings(spec, settings))
+    findings.extend(_platform_findings(text, settings, spec, baseline))
+    return findings
+
+
+_BASELINE_CACHE: dict = {}
+
+
+def default_baseline() -> dict:
+    """The committed CLI baseline (platform rules), loaded once. An
+    unreadable baseline yields an empty rule set, reported by the caller."""
+    if "b" not in _BASELINE_CACHE:
+        try:
+            _BASELINE_CACHE["b"] = preflight.load_baseline(preflight.BASELINE_DEFAULT)
+        except (OSError, json.JSONDecodeError) as e:
+            _BASELINE_CACHE["b"] = {"captured": None, "rules": {}, "params": {},
+                                    "error": str(e)}
+    return _BASELINE_CACHE["b"]
+
+
+def _platform_findings(text: str, settings: Settings, spec: dict,
+                       baseline: dict | None) -> list[Finding]:
+    """Media-role legality (specs) + the model's platform CEL rules
+    (specs/cli_baseline.json), both via scripts/preflight.py so the linter
+    and the any-model preflight can never disagree. Undeclared settings are
+    UNKNOWN to the rules, not absent — a rule that needs them is reported as
+    not evaluated instead of guessed."""
+    findings: list[Finding] = []
+    media = settings.media
+    if media is not None:
+        for c in preflight.spec_surface_checks(spec, {}, media):
+            if c.status == "FAIL":
+                findings.append(Finding(
+                    "FAIL", "media-role-not-supported", c.what,
+                    f"{c.detail} — per specs/model-specs.json media roles."))
+
+    baseline = baseline if baseline is not None else default_baseline()
+    rules = baseline.get("rules", {}).get(spec["id"])
+    section = baseline.get("sections", {}).get(spec["id"])
+    captured = (baseline.get("captured_by_type") or {}).get(section) \
+        or baseline.get("captured") or "?"
+    if rules is None:
+        # Not on record ≠ no rules: say so instead of returning silently.
+        findings.append(Finding(
+            "INFO", "platform-rules-not-on-record", spec["id"],
+            f"{spec['name']} has no platform rules on record in "
+            f"specs/cli_baseline.json (captured {captured}) — its cross-parameter "
+            f"rules were NOT checked. Verify live with `higgsfield model get "
+            f"{spec['id']} --json`, or refresh the baseline."))
+        return findings
+    if not rules:
+        return findings                  # on record: the CLI gives it no rules
+
+    by_name = {p.get("name"): p for p in spec.get("params", [])}
+    values: dict = {"prompt": text}
+    # An undeclared mode is not "unknown" to the platform: the request is
+    # submitted with the model's default mode (seedance_2_5: t2v, which
+    # rejects a start frame). Evaluate the rules with it, and say so.
+    mode_default = None
+    if settings.mode is None:
+        mode_default = (by_name.get("mode") or {}).get("default") or \
+            ((baseline.get("params", {}).get(spec["id"]) or {}).get("mode") or {}).get("default")
+        if mode_default is not None:
+            values["mode"] = mode_default
+    for key, val in (("mode", settings.mode), ("resolution", settings.resolution),
+                     ("aspect_ratio", settings.ar), ("duration", settings.duration),
+                     ("extension_mode", settings.extension_mode)):
+        if val is None:
+            continue
+        opts = (by_name.get(key) or {}).get("options") or \
+            (spec.get("aspect_ratios") if key == "aspect_ratio" else None)
+        canon = preflight._option_match(val, opts) if opts else None
+        values[key] = canon if canon is not None else val
+    if media is not None:
+        full = {r: 0 for r in set(MEDIA_ROLES) | preflight.media_roles(spec)}
+        full.update(media)
+        values.update(preflight.media_param_values(full))
+
+    unknown_media: set[str] = set()
+    mode_used = False
+    for r in preflight.evaluate_rules(rules, values, missing="unknown"):
+        label = r.rule.message or r.rule.cel
+        on_default = False
+        if mode_default is not None and r.status in ("PASS", "FAIL"):
+            try:
+                on_default = "mode" in preflight.referenced_params(
+                    preflight.parse_rule(r.rule.cel))
+            except preflight.CelParseError:
+                on_default = False
+            mode_used = mode_used or on_default
+        if r.status == "FAIL":
+            findings.append(Finding(
+                "FAIL", "platform-rule", label,
+                f"Higgsfield rejects this request at submit time — platform rule "
+                f"`{r.rule.cel}` (specs/cli_baseline.json, captured {captured}). "
+                + (f"No mode is declared, so it was evaluated with the platform "
+                   f"default mode={mode_default}; declare the mode you will use. "
+                   if on_default else "")
+                + "Change the declared settings or media so the rule holds."))
+        elif r.status == "UNCHECKED":
+            findings.append(Finding(
+                "WARN", "platform-rule-unchecked", r.rule.cel,
+                f"The preflight evaluator could not check this rule ({r.detail}) — "
+                f"verify live with `higgsfield model get {spec['id']} --json`. "
+                f"Not counted as a pass."))
+        elif r.status == "UNKNOWN" and media is None:
+            unknown_media.update(d for d in r.depends_on
+                                 if d in MEDIA_ROLES or d.endswith("_references"))
+    if mode_used:
+        findings.append(Finding(
+            "INFO", "mode-defaulted", f"mode={mode_default}",
+            f"No mode declared — {spec['name']}'s platform rules on the mode were "
+            f"evaluated with its default mode={mode_default} (what the platform "
+            f"uses when none is sent). Declare `**Mode**:` to check another."))
+    if unknown_media:
+        findings.append(Finding(
+            "INFO", "platform-rules-need-media", ", ".join(sorted(unknown_media)),
+            f"{spec['name']} has platform rules on these media roles; this prompt "
+            f"declares none, so those rules were not evaluated. Add a "
+            f"`**References**:` / `**Start frame**:` header line (or --media "
+            f"ROLE=N) to check them."))
     return findings
 
 
@@ -963,9 +1303,16 @@ def main() -> int:
                         help="Declared extension direction (Seedance 2.5 "
                              "video_extension mode; overrides header)")
     parser.add_argument("--duration", type=int,
-                        help="Declared duration in seconds (overrides header)")
+                        help="Declared duration in seconds (overrides header; "
+                             "-1 = smart duration where the model documents it)")
+    parser.add_argument("--media", action="append", default=[], metavar="ROLE=N",
+                        help="Declared media role count, e.g. start_image=1 or "
+                             "image_references=3 (repeatable; overrides header)")
     parser.add_argument("--specs", type=Path, default=SPECS_DEFAULT,
                         help="Path to model-specs.json (default: specs/model-specs.json)")
+    parser.add_argument("--baseline", type=Path, default=preflight.BASELINE_DEFAULT,
+                        help="Path to the CLI baseline carrying the platform "
+                             "rules (default: specs/cli_baseline.json)")
     parser.add_argument("--preflight", action="store_true",
                         help="Full chained preflight: filter lint → structural "
                              "lint → learning-memory recall, one report")
@@ -1004,13 +1351,26 @@ def main() -> int:
             print(f"ERROR: specs file missing or invalid: {args.specs} — "
                   f"run: python3 scripts/sync_specs.py", file=sys.stderr)
             return 2
-        spec = resolve_model(index, args.model)
+        try:
+            spec = resolve_model(index, args.model)
+        except AmbiguousModelError as e:
+            print(f"ERROR: {e}", file=sys.stderr)
+            return 2
         if spec is None:
             known = ", ".join(sorted(
                 k for k in index if "_" in k and not k.startswith("_")))
             print(f"ERROR: unknown model {args.model!r}. Known ids: {known}",
                   file=sys.stderr)
             return 2
+
+    cli_media = {}
+    for item in args.media:
+        role, _, count = item.partition("=")
+        if role not in MEDIA_ROLES or not count.strip().isdigit():
+            print(f"ERROR: --media expects ROLE=N with ROLE in "
+                  f"{', '.join(MEDIA_ROLES)}; got {item!r}", file=sys.stderr)
+            return 2
+        cli_media[role] = int(count)
 
     settings = merge_settings(
         parse_settings_header(prompt),
@@ -1019,12 +1379,22 @@ def main() -> int:
                  mode=args.mode.lower() if args.mode else None,
                  duration=args.duration,
                  extension_mode=(args.extension_mode.lower()
-                                 if args.extension_mode else None)))
+                                 if args.extension_mode else None),
+                 media=cli_media or None))
+
+    baseline = None
+    if spec is not None:
+        try:
+            baseline = preflight.load_baseline(args.baseline)
+        except (OSError, json.JSONDecodeError) as e:
+            print(f"ERROR: CLI baseline unreadable: {args.baseline} ({e})",
+                  file=sys.stderr)
+            return 2
 
     filter_findings = lint(prompt, regime=args.regime)
-    run_structural = args.preflight or spec is not None or any(
-        [settings.ar, settings.resolution, settings.mode, settings.duration is not None])
-    structural = structural_lint(prompt, settings, spec) if run_structural else []
+    run_structural = args.preflight or spec is not None or settings.declared()
+    structural = (structural_lint(prompt, settings, spec, baseline=baseline)
+                  if run_structural else [])
     if age_finding is not None:
         structural.insert(0, age_finding)
 

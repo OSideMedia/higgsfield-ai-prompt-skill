@@ -54,6 +54,35 @@
       ]
     },
     {
+      "id": "trap-wan3-1s",
+      "description": "STALE-SPEC TRAP — Wan 3.0's legal durations are -1 (smart) or 2–30; a 1s header must be flagged (the pre-v3.37 specs encoded min=-1 and let 0/1 through)",
+      "model": "wan3_0",
+      "request": "(trap) Wan 3.0 header below the 2s floor",
+      "response": "**Model**: Wan 3.0\n**Aspect ratio**: 16:9  **Duration**: 1s  **Resolution**: 480p\n\nA lighthouse keeper climbs a spiral staircase, lamp swinging, the beam sweeping the fog outside.",
+      "assertions": [
+        {
+          "type": "enum_legal",
+          "expect": "illegal"
+        }
+      ]
+    },
+    {
+      "id": "wan3-smart-duration-legal",
+      "description": "Wan 3.0 smart duration (-1, billed as 10s) is a legal header value when the user asked the model to pick the length",
+      "model": "wan3_0",
+      "request": "Wan 3.0, let the model pick the length.",
+      "response": "**Model**: Wan 3.0\n**Aspect ratio**: 16:9  **Duration**: -1  **Resolution**: 480p\n\nSmart duration — the model chooses the length and it bills as 10s. A lighthouse keeper climbs a spiral staircase, lamp swinging, the beam sweeping the fog outside.",
+      "assertions": [
+        {
+          "type": "enum_legal"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)bills? as 10\\s?s"
+        }
+      ]
+    },
+    {
       "id": "lanes-smart-duration-never-default",
       "description": "Wan 3.0 with no runtime named: ask, never silently default to smart duration -1",
       "model": "wan3_0",

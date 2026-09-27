@@ -28,7 +28,7 @@ Underscore-prefixed names are **reserved**.
 {
   "id": "adze-0042",                  // <project>-NNNN, generated
   "ts": "2026-06-12T18:40:11Z",
-  "model": "seedance_2_0",            // canonical specs/model-specs.json id (aliases resolved at write)
+  "model": "seedance_2_0",            // canonical specs id — video/image/audio/3d (aliases resolved at write)
   "mode": "std",                      // optional
   "resolution": "1080p",              // optional
   "aspect": "21:9",                   // optional
@@ -57,7 +57,11 @@ Underscore-prefixed names are **reserved**.
 - `supersedes` points at an **earlier id in the same file**, and each id can
   be superseded **at most once** — to correct a correction, supersede the
   latest amendment.
-- Models are stored as **canonical specs ids** only. Optional fields
+- Models are stored as **canonical specs ids** only — from any spec type
+  (`specs/{model,image-model,audio-model,3d-model}-specs.json`). An id that
+  later leaves the catalog stays valid history through the append-only
+  tombstones in `specs/retired-model-ids.json` (written by `sync_specs.py`),
+  so a spec refresh never turns an existing ledger red. Optional fields
   (resolution/aspect/duration) are not cross-validated against per-model
   enums in v1 — model-id membership only (use `scripts/seedance_lint.py --preflight`
   for enum legality before generating).

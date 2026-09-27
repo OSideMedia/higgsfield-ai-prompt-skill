@@ -59,11 +59,11 @@ DB_FILES = {
     "filter": ROOT / "db/filter-memory.json",
     "quality": ROOT / "db/quality-memory.json",
 }
-FILTER_REQUIRED_FIELDS = {"id", "category", "blocked_terms", "error_message",
-                           "substitution", "fix_confirmed", "substitution_worked", "tags"}
-QUALITY_REQUIRED_FIELDS = {"id", "failure_type", "model_used", "original_prompt",
-                            "failure_description", "outcome", "fix_confirmed",
-                            "improvement_confirmed", "tags"}
+# Entry schemas live in higgsfield_memory (its add-* commands enforce the same
+# set on write) — one definition, so the writer and this checker cannot drift.
+from higgsfield_memory import FILTER_REQUIRED_FIELDS, QUALITY_REQUIRED_FIELDS  # noqa: E402
+# Every tree walk prunes .claude/worktrees/ and nested checkouts.
+from repo_walk import walk_files  # noqa: E402
 # Supported top-level SKILL.md frontmatter attributes (tags now lives inside metadata)
 FRONTMATTER_REQUIRED = {"name", "description", "user-invocable"}
 # Fields that must live nested under `metadata:` per the CLAUDE.md contract.
@@ -107,10 +107,15 @@ def repo_filename_index() -> set:
     if _repo_filename_index is None:
         _repo_filename_index = {
             p.name for ext in ("md", "py", "json")
-            for p in ROOT.rglob(f"*.{ext}")
-            if ".git" not in p.parts and "__pycache__" not in p.parts
+            for p in walk_files(ROOT, f"*.{ext}")
         }
     return _repo_filename_index
+
+
+def find_skill_files() -> list:
+    """Every SKILL.md of THIS checkout — never one inside `.claude/worktrees/`
+    or any nested checkout (see scripts/repo_walk.py)."""
+    return walk_files(ROOT, "SKILL.md")
 
 PASS = "\033[32m✓\033[0m"
 FAIL = "\033[31m✗\033[0m"
@@ -230,7 +235,7 @@ def check_template_paths():
     part 1 — templates link back to root reference docs, and a bad `../`
     prefix silently strands the reader; the v3.18 ad-asset-prep link rotted
     exactly this way). Bare refs are left to prose."""
-    for md in sorted(ROOT.glob("templates/**/*.md")):
+    for md in walk_files(ROOT / "templates", "*.md", repo_root=ROOT):
         text = md.read_text(encoding="utf-8")
         refs = re.findall(r'`((?:\.\.\/|[\w-]+\/)[\w./%-]+\.(?:md|py|json))`', text)
         for ref in sorted(set(refs)):
@@ -409,6 +414,12 @@ def parse_args():
                         help="Also run the golden-case eval harness "
                              "(evals/run_evals.py). Opt-in so corpus growth "
                              "doesn't slow the default health check.")
+    parser.add_argument("--snapshot-age", action="store_true",
+                        help="Run ONLY the spec-snapshot age gate for every "
+                             "type (video/image/audio/3d), strict: >"
+                             f"{SNAPSHOT_MAX_AGE_DAYS}d fails. Auth-free — the "
+                             "weekly spec-drift job runs it so staleness "
+                             "surfaces even when the CLI cannot log in.")
     return parser.parse_args()
 
 
@@ -434,6 +445,43 @@ def check_evals():
               summary + ("; " + "; ".join(failing[:3]) if failing else ""))
 
 
+# ── Prompt-side gates (v3.37.0) — self-contained; one call site in main() ──
+def check_prompt_gates():
+    """Run the three prompt-side gates as subprocesses (a crash in one must
+    not take this report down):
+      * preflight.py --check-rules --strict — every CLI-baseline CEL rule
+        parses (fail-closed coverage; always a hard check);
+      * claims_lint.py — doctrine claims vs the current specs;
+      * validate_user_guide.py --check-content — the guide's derived content
+        reflects the root version.
+    The last two judge doctrine state: FAIL under --strict, WARN otherwise."""
+    gates = [
+        ("platform-rule coverage (preflight.py --check-rules)",
+         ["preflight.py", "--check-rules", "--strict"], True),
+        ("doctrine claims vs specs (claims_lint.py)", ["claims_lint.py"], False),
+        ("USER-GUIDE derived content (validate_user_guide.py --check-content)",
+         ["validate_user_guide.py", "--check-content"], False),
+    ]
+    for label, argv, hard in gates:
+        try:
+            r = subprocess.run([sys.executable, str(ROOT / "scripts" / argv[0]), *argv[1:]],
+                               capture_output=True, text=True, timeout=120)
+        except subprocess.TimeoutExpired:
+            check(False, label, "timeout after 120s")
+            continue
+        lines = [l.strip() for l in (r.stdout or "").splitlines() if l.strip()]
+        bad = [l for l in lines if l.startswith(("✗", "?"))] or lines[1:4]
+        detail = (lines[0] if lines else (r.stderr or "").strip()[:150]) + (
+            "; " + "; ".join(bad[:3]) if r.returncode and bad else "")
+        if r.returncode == 0:
+            check(True, label, lines[0] if lines else "exit 0")
+        elif hard or STRICT or r.returncode == 2:
+            check(False, label, f"exit {r.returncode}: {detail}")
+        else:
+            warn(label, f"exit {r.returncode} (fails under --strict): {detail}")
+# ── end prompt-side gates ──────────────────────────────────────────────────
+
+
 def _norm_model_name(s: str) -> str:
     s = re.sub(r"\*\*", "", s)
     s = re.sub(r"\([^)]*\)", "", s)  # strip qualifiers like "(legacy)"
@@ -443,10 +491,20 @@ def _norm_model_name(s: str) -> str:
 def _parse_duration_cell(cell: str):
     """Parse a guide Duration cell into a comparable shape.
 
-    Returns ("range", (lo, hi)) | ("values", [..]) | ("single", n) | None.
+    Returns ("range", (lo, hi)) | ("smart", (lo, hi, sentinel)) |
+    ("values", [..]) | ("single", n) | None.
     Only these number patterns are ever read, so stars/emoji/notes in other
-    columns can't produce false positives."""
+    columns can't produce false positives.
+
+    "smart" is the Wan 3.0 envelope — "2–30s or −1 smart" (the `s` unit is
+    optional there, and the minus may be U+2212): a real range plus a
+    negative sentinel meaning "model picks the length". Checked FIRST — the
+    plain range pattern would otherwise read it as just "2–30s"."""
     cell = cell.replace("**", "")
+    m = re.search(r"(\d+)\s*[–\-]\s*(\d+)\s*s?\s*,?\s*or\s*`?[−\-](\d+)`?\s*\(?\s*smart",
+                  cell, re.IGNORECASE)
+    if m:
+        return ("smart", (int(m.group(1)), int(m.group(2)), -int(m.group(3))))
     m = re.search(r"(\d+)\s*[–\-]\s*(\d+)\s*s", cell)
     if m:
         return ("range", (int(m.group(1)), int(m.group(2))))
@@ -502,7 +560,14 @@ def check_guide_against_specs(guide_text: str, spec: dict) -> list:
         spec_env = ((d["min"], d["max"]) if "min" in d
                     else (min(d["values"]), max(d["values"])))
         kind, val = parsed
-        if kind == "range":
+        if kind == "smart":
+            # Both halves must hold: the real range AND the sentinel.
+            ok = "min" in d and (val[0], val[1]) == spec_env and d.get("smart") == val[2]
+        elif "smart" in d:
+            # The spec's envelope includes the sentinel; a cell that omits it
+            # hides a legal value (e.g. plain "2–30s" for Wan 3.0).
+            ok = False
+        elif kind == "range":
             if "values" in d:
                 # A discrete enum is only honestly writable as a range when it
                 # is a contiguous integer run — "4–8s" against [4,6,8] invites
@@ -518,6 +583,8 @@ def check_guide_against_specs(guide_text: str, spec: dict) -> list:
             ok = spec_env == (val, val) or d.get("values") == [val]
         spec_fmt = (f"{d['min']}–{d['max']}s" if "min" in d
                     else "/".join(map(str, d["values"])) + "s")
+        if "smart" in d:
+            spec_fmt += f" or {d['smart']} (smart)"
         results.append((
             ok,
             f"model-guide.md: '{cells[0].replace('**', '')}' duration matches specs ({mid})",
@@ -545,6 +612,77 @@ def _snapshot_age_gate(label: str, stamp: str, age: int):
         check(True, f"{label} fresh ({stamp}, {age}d old)")
 
 
+def check_specs_regeneration(sync_specs) -> bool:
+    """Every spec type (video/image/audio/3d) regenerated from its NEWEST
+    snapshot must byte-match the committed files; the retired-id tombstones
+    must be complete. A type with neither snapshot nor spec is a TODO (warn);
+    a spec without a snapshot is a failure. Returns True when all passed."""
+    all_ok = True
+    for t in sync_specs.TYPES:
+        json_path = sync_specs.output_paths(t, SPECS_DIR)[1]
+        try:
+            snap, stale = sync_specs.stale_outputs(t, SPECS_DIR)
+        except FileNotFoundError:
+            if t == "video" or json_path.exists():
+                all_ok &= check(False, f"{t} specs generated from a {t} snapshot",
+                                f"no {t} snapshot in specs/ — dump models_explore "
+                                f"(type={t}) and run python3 scripts/sync_specs.py --type {t}")
+            else:
+                warn(f"{t}-model specs are TODO (no type={t} snapshot yet)",
+                     f"dump models_explore type={t} into specs/ when ready")
+            continue
+        except Exception as e:  # noqa: BLE001 — report, don't crash the validator
+            all_ok &= check(False, f"{t} specs regeneration check", f"{type(e).__name__}: {e}")
+            continue
+        detail = ""
+        if stale:
+            try:
+                cited = json.loads(json_path.read_text(encoding="utf-8")).get("snapshot_file")
+            except (OSError, json.JSONDecodeError):
+                cited = None
+            detail = f"stale: {', '.join(stale)}"
+            if cited and cited != snap.name:
+                detail += f" (generated from {cited}; newest snapshot is {snap.name})"
+            detail += f" — rerun python3 scripts/sync_specs.py --type {t}"
+        all_ok &= check(not stale, f"{t} specs match regeneration from newest snapshot "
+                                   f"({snap.name})", detail)
+    retired_stale = sync_specs.retired_is_stale(SPECS_DIR)
+    problems = sync_specs.retired_problems(SPECS_DIR) if retired_stale else []
+    all_ok &= check(not retired_stale,
+                    f"specs/{sync_specs.RETIRED_FILE} tombstones every retired model id, "
+                    "each proven by the snapshot history",
+                    "" if not retired_stale else
+                    "; ".join(problems[:4]) + " — rerun python3 scripts/sync_specs.py "
+                    "(it keeps every proven entry and drops unproven ones)")
+    return all_ok
+
+
+def check_typed_snapshot_ages(types=("image", "audio", "3d")):
+    """Snapshot age per generated spec file — same trust line for every type.
+    Until v3.2x only the video file aged out loudly; 3d joined in v3.37.0."""
+    import sync_specs
+    for t in types:
+        path = sync_specs.output_paths(t, SPECS_DIR)[1]
+        label = f"{t} specs snapshot"
+        if not path.exists():
+            # A missing spec file has no age to check — that is UNCHECKED,
+            # never fresh: it fails under --strict (and --snapshot-age, which
+            # is always strict); a missing video spec always fails.
+            if t == "video" or STRICT:
+                check(False, f"{label} present", f"{path.name} missing — its age "
+                      "cannot be checked; run python3 scripts/sync_specs.py --type " + t)
+            else:
+                warn(f"{label} not checked", f"{path.name} missing")
+            continue
+        try:
+            stamp = json.loads(path.read_text(encoding="utf-8")).get("snapshot_date")
+            side_age = (date.today() - date.fromisoformat(stamp)).days
+        except (json.JSONDecodeError, TypeError, ValueError) as e:
+            check(False, f"{label} snapshot_date parses", f"{path.name}: {e}")
+            continue
+        _snapshot_age_gate(label, stamp, side_age)
+
+
 def check_model_specs():
     """The specs layer: present, fresh, regenerable, and not contradicted."""
     if not check(SPECS_JSON.exists(), "specs/model-specs.json exists",
@@ -565,24 +703,17 @@ def check_model_specs():
         return
     _snapshot_age_gate("video specs snapshot", spec["snapshot_date"], age)
 
-    # Generated files must match a regeneration from the committed snapshot —
-    # catches hand-edits of generated files AND snapshot/generator changes.
+    # Generated files must match a regeneration from EACH type's NEWEST
+    # snapshot. Two holes closed in v3.37.0: only video was ever regenerated
+    # (a hand-edited image/audio spec passed), and it was rebuilt from the
+    # snapshot the JSON names ITSELF — so a newer dump committed without a
+    # sync passed too. Now every type is rebuilt from find_snapshot().
     try:
         import sync_specs
-        snapshot_path = SPECS_DIR / spec["snapshot_file"]
-        rebuilt = sync_specs.build_spec(snapshot_path)
-        regen = {
-            sync_specs.YAML_OUT: sync_specs.emit_yaml(rebuilt),
-            sync_specs.JSON_OUT: sync_specs.emit_json(rebuilt),
-            sync_specs.MD_OUT: sync_specs.emit_markdown(rebuilt),
-        }
-        stale = [p.name for p, content in regen.items()
-                 if not p.exists() or p.read_text(encoding="utf-8") != content]
-        check(not stale, "specs files match regeneration from snapshot",
-              "" if not stale else f"stale: {', '.join(stale)} — rerun python3 scripts/sync_specs.py")
-    except Exception as e:  # noqa: BLE001 — report, don't crash the validator
-        check(False, "specs regeneration check", f"{type(e).__name__}: {e}")
+    except ImportError as e:
+        check(False, "sync_specs.py imports", str(e))
         return
+    check_specs_regeneration(sync_specs)
 
     # model-guide.md numbers must not contradict the snapshot.
     guide = ROOT / "model-guide.md"
@@ -598,35 +729,8 @@ def check_model_specs():
               "name-index rot is silently dropping guide rows — extend "
               "GUIDE_NAME_OVERRIDES or lower GUIDE_CHECK_MIN_ROWS deliberately")
 
-    # Image side (Brief #2 item 9): WARN while the type=image snapshot TODO
-    # stands; once specs/image-model-specs.json exists this flips to a real
-    # freshness check mirroring the video side.
-    image_specs = SPECS_DIR / "image-model-specs.json"
-    image_snapshots = list(SPECS_DIR.glob("models_explore_snapshot_image_*.json"))
-    if image_specs.exists() or image_snapshots:
-        check(image_specs.exists() and bool(image_snapshots),
-              "image specs generated from an image snapshot",
-              "run: python3 scripts/sync_specs.py --type image")
-    else:
-        warn("image-model specs are TODO (no type=image snapshot yet)",
-             "image-models.md / photodump-presets.md stay hand-maintained; "
-             "dump models_explore type=image into specs/ when ready")
-
-    # Image + audio snapshot age — same trust line as the video specs. Until
-    # this gate, only the video file aged out loudly; the other two went
-    # stale in silence.
-    for label, fname in (("image specs snapshot", "image-model-specs.json"),
-                         ("audio specs snapshot", "audio-model-specs.json")):
-        path = SPECS_DIR / fname
-        if not path.exists():
-            continue
-        try:
-            stamp = json.loads(path.read_text(encoding="utf-8")).get("snapshot_date")
-            side_age = (date.today() - date.fromisoformat(stamp)).days
-        except (json.JSONDecodeError, TypeError, ValueError) as e:
-            check(False, f"{label} snapshot_date parses", f"{fname}: {e}")
-            continue
-        _snapshot_age_gate(label, stamp, side_age)
+    # Image / audio / 3d snapshot age — same trust line as the video specs.
+    check_typed_snapshot_ages()
     for name in ("image-models.md", "photodump-presets.md"):
         path = ROOT / name
         if path.exists():
@@ -715,6 +819,13 @@ def check_memory_summary():
         check(True, "db/memory-summary.md is current")
         return
 
+    if STRICT:
+        # A release gate must not quietly repair the tree it is certifying —
+        # in CI the regenerated file was discarded and the run went green.
+        check(False, "db/memory-summary.md is current",
+              "stale — run: python3 scripts/higgsfield_memory.py export-summary, "
+              "review and commit it")
+        return
     warn("db/memory-summary.md was stale — regenerated",
          "review and commit the refreshed summary")
     tmp = summary_path.with_suffix(".tmp")
@@ -744,6 +855,7 @@ def check_ledger():
         return
     model_ids = hm.load_specs_models()
     check(bool(model_ids), "specs model ids available for ledger validation")
+    retired_ids = hm.load_retired_ids()
 
     for path in sorted(ledger_dir.glob("*.json")):
         if path.name == "_global.json":
@@ -769,8 +881,13 @@ def check_ledger():
             if row.get("supersedes"):
                 superseded.add(row["supersedes"])
             prior.add(row.get("id"))
+        retired_rows = sum(1 for r in rows if isinstance(r, dict)
+                           and r.get("model") in retired_ids)
+        honest = (f"{retired_rows} row(s) use a retired model id — accepted as history; "
+                  "this check cannot tell history from a hand-appended row") \
+            if retired_rows else ""
         check(not problems, f"{rel}: {len(rows)} row(s) schema-valid",
-              "" if not problems else "; ".join(problems[:3])
+              honest if not problems else "; ".join(problems[:3])
               + (f" (+{len(problems) - 3} more)" if len(problems) > 3 else ""))
 
     # _global.json is a generated view — regenerate on drift.
@@ -782,6 +899,10 @@ def check_ledger():
         on_disk = None
     if on_disk == fresh:
         check(True, "db/ledger/_global.json matches regeneration")
+    elif STRICT:
+        check(False, "db/ledger/_global.json matches regeneration",
+              "stale — run: python3 scripts/validate.py (non-strict regenerates it), "
+              "then commit the refreshed view")
     else:
         warn("db/ledger/_global.json was stale — regenerated",
              "commit the refreshed view (generated, never hand-edit)")
@@ -847,8 +968,8 @@ def check_rule8_restatements():
     the surfaces where the cap actually gets restated: every sub-skill,
     every template, and the PDF generator's hardcoded copy."""
     targets = sorted(
-        [*(ROOT / "skills").rglob("*.md"),
-         *(ROOT / "templates").rglob("*.md"),
+        [*walk_files(ROOT / "skills", "*.md", repo_root=ROOT),
+         *walk_files(ROOT / "templates", "*.md", repo_root=ROOT),
          ROOT / "scripts" / "generate_user_guide.py"])
     offenders = []
     for path in targets:
@@ -904,13 +1025,26 @@ def main():
     args = parse_args()
     global STRICT
     STRICT = args.strict
+    if args.snapshot_age:
+        # Auth-free staleness gate for the weekly spec-drift job: always strict
+        # (a stale snapshot is the failure this mode exists to surface).
+        STRICT = True
+        print("\n[ SPEC SNAPSHOT AGE — all types, strict ]")
+        check_typed_snapshot_ages(("video", "image", "audio", "3d"))
+        if issues:
+            print(f"\n\033[31m  FAILED — {len(issues)} stale snapshot(s):\033[0m")
+            for i in issues:
+                print(f"    • {i}")
+            sys.exit(1)
+        print("\n\033[32m  ALL SNAPSHOTS FRESH\033[0m")
+        sys.exit(0)
     print(f"\nHiggsfield Skill Repo — Validation Report"
           + (" (--strict)" if args.strict else ""))
     print(f"Root: {ROOT}\n")
 
     # ── 1. Find all SKILL.md files ──────────────────────────────────────────
     print("[ SKILL.md FILES ]")
-    skill_files = list(ROOT.rglob("SKILL.md"))
+    skill_files = find_skill_files()
     print(f"  Found {len(skill_files)} SKILL.md files")
 
     for sf in sorted(skill_files):
@@ -1009,6 +1143,9 @@ def main():
                 "generate_user_guide.py --dry-run",
                 f"exit {result.returncode}; stderr: {stderr_excerpt[:150]}",
             )
+
+    print("\n[ PROMPT GATES ]")
+    check_prompt_gates()
 
     # ── 6. Eval harness (opt-in) ────────────────────────────────────────────
     if args.evals:

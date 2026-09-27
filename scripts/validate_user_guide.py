@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the regenerated USER-GUIDE.pdf against a frozen baseline.
+r"""Validate the regenerated USER-GUIDE.pdf against a frozen baseline.
 
 WHAT THIS VALIDATES
 -------------------
@@ -94,11 +94,26 @@ text-layer sha256 of the last shipped guide. Two consequences:
     `python3 scripts/validate_user_guide.py --write-manifest` and upload the PDF to
     the GitHub release (`gh release upload`) instead of committing it.
 
+CONTENT GUARD (v3.37.0+)
+------------------------
+The v3.22.0 lesson: a manifest hash was blessed over a PDF with zero new
+content, and the generator then went twelve releases (v3.23 → v3.36)
+without a content change. Two guards close that:
+
+  * --check-content (no PDF, no fpdf2 — validate.py runs it): FAILS when
+    the root SKILL.md version is newer than the newest CHANGELOG entry the
+    guide's derived What's New section reflects, or when any derived source
+    (templates/, FAILURE-MODES.md, specs/) comes back empty.
+  * --write-manifest REFUSES to bless a new version whose normalized text is
+    identical to the previous manifest's — a release that changes nothing
+    in the guide is exactly the failure the manifest was meant to catch.
+
 USAGE
 -----
   python3 scripts/validate_user_guide.py [baseline_path] [candidate_path]
   python3 scripts/validate_user_guide.py --write-manifest   # refresh MANIFEST.json
                                                     # from the candidate PDF
+  python3 scripts/validate_user_guide.py --check-content    # derived-content guard
 
 Defaults:
   baseline_path  = docs/user-guide/USER-GUIDE.pdf.baseline-v<X.Y.Z>
@@ -229,12 +244,41 @@ def build_manifest(candidate_path):
     }
 
 
+def check_content(root=REPO):
+    """Layer 0b: the derived-content guard (see CONTENT GUARD above).
+    Returns the problem list; empty = the guide reflects the root version."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import user_guide_content
+    return user_guide_content.check_content(root)
+
+
+def manifest_progress_problem(old, new):
+    """Refuse a manifest that re-blesses identical content under a new
+    version. None when the refresh is legitimate."""
+    if not old or old.get("version") == new.get("version"):
+        return None
+    if old.get("normalized_text_sha256") == new.get("normalized_text_sha256"):
+        return (f"the v{new.get('version')} guide's normalized text is identical to "
+                f"the v{old.get('version')} manifest — zero new content for this "
+                "release. Regenerate AFTER the CHANGELOG entry lands (the What's New "
+                "section derives from it) instead of re-blessing the old guide.")
+    return None
+
+
 def write_manifest(candidate_path):
     if not candidate_path.exists():
         print(f"ERROR: candidate not found: {candidate_path} — regenerate first "
               "(python3 scripts/generate_user_guide.py)")
         sys.exit(2)
     manifest = build_manifest(candidate_path)
+    try:
+        old = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        old = None
+    problem = manifest_progress_problem(old, manifest)
+    if problem:
+        print(f"REFUSED: {problem}")
+        sys.exit(1)
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {MANIFEST_PATH.relative_to(REPO)} (v{manifest['version']}, "
           f"text sha256 {manifest['normalized_text_sha256'][:12]}…)")
@@ -275,15 +319,33 @@ def validate_against_manifest(candidate_path):
     sys.exit(0)
 
 
+def report_content(problems):
+    if problems:
+        print("[Layer 0b] Derived-content check: FAIL")
+        for p in problems:
+            print(f"  {p}")
+        return False
+    print("[Layer 0b] Derived-content check: PASS")
+    print(f"  Root v{_VERSION} is covered by the guide's derived What's New.")
+    return True
+
+
 def main():
+    if "--check-content" in sys.argv:
+        sys.exit(0 if report_content(check_content()) else 1)
+
     if "--write-manifest" in sys.argv:
         validate_sub_skill_descriptions()
+        if not report_content(check_content()):
+            sys.exit(1)
         print()
         write_manifest(DEFAULT_CANDIDATE)
         return
 
-    # Layer 0: source-data check before baseline/candidate comparison.
+    # Layer 0: source-data checks before baseline/candidate comparison.
     validate_sub_skill_descriptions()
+    if not report_content(check_content()):
+        sys.exit(1)
     print()
 
     baseline_path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_BASELINE

@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.36.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.37.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--09--26-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
@@ -184,7 +184,12 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 │   ├── validate.py                   ← Pre-release validation script
 │   ├── build_index.py                ← Regenerates INDEX.md + checks QUICK FACTS anchors
 │   ├── sync_specs.py                 ← Regenerates specs/ from a models_explore snapshot
-│   ├── refresh_specs.py              ← Spec-drift tripwire (live CLI vs baseline)
+│   ├── refresh_specs.py              ← Spec-drift tripwire (live CLI vs baseline; params, ranges, media roles)
+│   ├── snapshot_crosscheck.py        ← Two-way structural check: models_explore snapshot vs live CLI
+│   ├── preflight.py                  ← Free any-model platform-constraint preflight (enums + CEL rules, fails closed)
+│   ├── claims_lint.py                ← Doctrine claims vs today's specs (registry: evals/spec-claims.json)
+│   ├── repo_walk.py                  ← Repo file walks that skip agent worktrees
+│   ├── user_guide_content.py         ← USER-GUIDE content derived from disk (dependency-free)
 │   ├── generate_user_guide.py        ← USER-GUIDE.pdf generator (Path B refactor — v3.7.0)
 │   ├── validate_user_guide.py        ← USER-GUIDE.pdf drift validator (text-extract + binary diff)
 │   └── sub_skill_descriptions.py     ← Canonical sub-skill roster (shared data module)
@@ -352,4 +357,4 @@ acting on the tail. A small sample is not evidence a skill is dead.
 
 ---
 
-Built February 2026 · v3.36.0 (updated 2026-09-26) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.37.0 (updated 2026-09-26) · Platform: [higgsfield.ai](https://higgsfield.ai)

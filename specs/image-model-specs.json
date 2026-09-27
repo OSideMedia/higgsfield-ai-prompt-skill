@@ -307,6 +307,7 @@
         {
           "description": "Optional folder placement for the generated image.",
           "name": "folder_id",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }
@@ -465,6 +466,7 @@
         {
           "description": "Background handling. Omit to keep the model default.",
           "name": "background",
+          "nullable": true,
           "options": [
             "auto",
             "opaque",
@@ -1111,6 +1113,7 @@
         {
           "description": "Optional folder placement for the generated image.",
           "name": "folder_id",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }
@@ -1174,6 +1177,7 @@
         {
           "description": "Optional #RRGGBB background color with no alpha channel, or null. Use for controlled flat backgrounds, brand swatches, product mockups, icons, and vector-style work.",
           "name": "background_color",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }
@@ -1225,6 +1229,7 @@
           "description": "Optional width stored in generation metadata; not sent to the provider.",
           "min": 1,
           "name": "width",
+          "nullable": true,
           "required": "optional",
           "type": "number"
         },
@@ -1232,6 +1237,7 @@
           "description": "Optional height stored in generation metadata; not sent to the provider.",
           "min": 1,
           "name": "height",
+          "nullable": true,
           "required": "optional",
           "type": "number"
         }
@@ -1359,6 +1365,7 @@
           "description": "Optional output width stored with the generation.",
           "min": 1,
           "name": "width",
+          "nullable": true,
           "required": "optional",
           "type": "number"
         },
@@ -1366,6 +1373,7 @@
           "description": "Optional output height stored with the generation.",
           "min": 1,
           "name": "height",
+          "nullable": true,
           "required": "optional",
           "type": "number"
         },
@@ -1661,6 +1669,7 @@
         {
           "description": "Destination folder id.",
           "name": "folder_id",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }

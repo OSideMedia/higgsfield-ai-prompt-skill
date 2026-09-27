@@ -41,10 +41,10 @@ needs filter-safety, mode selection, or engine rules, defer to it.
 - **Three levels** of difficulty: L1 swap the world · L2 change an element in-frame · L3 full handheld cinematic [→](#three-levels)
 - Two modes: **add an element** to the plate, or **replace the environment** around a preserved subject [→](#two-transformation-modes)
 - **Color matching alone looks pasted-in** — match key direction, bounce, optics/haze, edges/grounding [→](#lighting-integration-the-part-that-makes-or-breaks-it)
-- Photoreal creatures need **biological accuracy** (wrinkled, cracked, asymmetric, matte — never smooth/glossy/inflated) + a real contact shadow; a reference image beats a description [→](#photoreal-creature-element-integration)
+- Photoreal creatures need **biological accuracy** (wrinkled, cracked, asymmetric, matte — never smooth/glossy/inflated) + a real contact shadow; a reference image beats a description [→](#photoreal-creature--element-integration)
 - Timed zoom synced to a line: anchor it **twice** — semantic (`On the line "…"`) + numeric (`At about Ts`); see `references/dialogue-timing.md` [→](#timed-camera-moves-synced-to-dialogue)
 - Prepended-intro budget: `total − intro = surviving window` for the source performance; recompute on every change [→](#duration-discipline)
-- Generate the transformed **start frame** first to lock the look before spending video credits; see `references/first-frame.md` [→](#first-start-frame-workflow)
+- Generate the transformed **start frame** first to lock the look before spending video credits; see `references/first-frame.md` [→](#first--start-frame-workflow)
 - Output is **plain-text English**, no markdown inside the prompt, easy to copy [→](#output-format)
 
 ---

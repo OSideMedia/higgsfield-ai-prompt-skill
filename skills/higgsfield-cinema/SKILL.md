@@ -13,22 +13,22 @@ metadata:
 
 ## QUICK FACTS
 *Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
-- Four Cinema Studio versions are on the platform (2.5 / 3.0 / 3.5 / 4.0) — user-selected, no auto-routing; always detect the version first [→](#version-detection-ask-first)
+- Four Cinema Studio versions are on the platform (2.5 / 3.0 / 3.5 / 4.0) — user-selected, no auto-routing; always detect the version first [→](#-version-detection--ask-first)
 - **Cinema Studio 4.0** (`cinematic_studio_video_4_0`, CLI workflow schema 2026-09-26): the same four modes as `seedance_2_5` (t2v / omni_reference / video_edit / video_extension), 480p–1080p, start/end image + image/video/audio refs; the 3.5 enum pills are GONE — camera / lens / aperture / era / genre / pacing are free `*_id` strings with no published values, so never invent one [→](#cinema-studio-40)
 - 4.0 vs 3.5 at the API: no `multi_shots` / `multi_prompt`, no `genre` enum, no `enhance_prompt`; `prompt` now REQUIRED; audio defaults ON; duration default 5s (range unpublished) [→](#what-changed-from-35-at-the-api)
-- Hard 512-character prompt cap; 2.5 @ Element chips eat ~80–100 hidden chars each [→](#prompt-character-limit-512-characters)
-- Elements System: define @Characters/@Locations/@Props once, call everywhere [→](#elements-system-define-once-call-everywhere)
+- Hard 512-character prompt cap; 2.5 @ Element chips eat ~80–100 hidden chars each [→](#-prompt-character-limit--512-characters)
+- Elements System: define @Characters/@Locations/@Props once, call everywhere [→](#elements-system--define-once-call-everywhere)
 - 3.5 main UI = three pills (Genre / Style / Camera), each Auto by default — override only with a creative reason [→](#the-three-pill-main-surface)
 - 7 confirmed 3.5 genres: General · Action · Horror · Comedy · Noir · Drama · Epic — never invent genre names [→](#cinema-studio-35-genres)
-- Style presets: 8 Color Palettes · 6 Lighting · 9 Camera Moveset Styles, or free-form Manual Style [→](#style-settings-three-operating-modes)
-- Camera axes: 3 bodies · 5 lenses · focal 8/14/35/50/75mm · aperture f/1.4–f/4–f/11; two camera vocabularies coexist — vocabulary follows the selected model [→](#camera-settings-four-axis-panel)
+- Style presets: 8 Color Palettes · 6 Lighting · 9 Camera Moveset Styles, or free-form Manual Style [→](#style-settings--three-operating-modes)
+- Camera axes: 3 bodies · 5 lenses · focal 8/14/35/50/75mm · aperture f/1.4–f/4–f/11; two camera vocabularies coexist — vocabulary follows the selected model [→](#camera-settings--four-axis-panel)
 - Output enums: 7 aspect ratios incl. 21:9 · 480p/720p/1080p · duration 4–15s · Sound On/Off [→](#cinema-studio-35-output-controls)
 - Lead every delivered shot with the one-line settings strip (UI presets ≠ prompt text; never restate strip values in the body) [→](#per-shot-settings-strip)
 - The UI shot counter caps internal cuts — "strictly N shots" must keep N within it (observed cap 4; API exposes no max — UI behavior, verify live) [→](#per-shot-settings-strip)
-- Manual Style = saved ≤2,000-char block of project LAWS (grade, lighting law, texture, performance register); it replaces the preset axes [→](#manual-style-authoring-guide)
+- Manual Style = saved ≤2,000-char block of project LAWS (grade, lighting law, texture, performance register); it replaces the preset axes [→](#manual-style--authoring-guide)
 - 480p drafts validate the prompt, NOT the take — no seed param; transfer a look via Hero Frame + start/end-frame pinning [→](#drafts-validate-the-prompt-not-the-take)
-- Resolution matrix has two axes: shot physics × delivery context; 4K-finish pipelines master at model max res in std mode [→](#physics-rendering-resolution-decision-matrix)
-- Seedance fast mode cannot output 1080p — drafting in fast then "switching up" silently changes mode AND res [→](#physics-rendering-resolution-decision-matrix)
+- Resolution matrix has two axes: shot physics × delivery context; 4K-finish pipelines master at model max res in std mode [→](#physics-rendering--resolution-decision-matrix)
+- Seedance fast mode cannot output 1080p — drafting in fast then "switching up" silently changes mode AND res [→](#physics-rendering--resolution-decision-matrix)
 - Big reference blocks live beside this file: 2.5 + 3.0 per-mode output templates in `references/output-formats-2-5-3-0.md`; Motion / Outfit / Palette / Product sheet specs in `references/reference-sheet-types.md` [→](#per-version-delivery-templates)
 
 

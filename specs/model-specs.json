@@ -92,6 +92,7 @@
         {
           "description": "Extension direction; required for mode 'video_extension' and not allowed otherwise.",
           "name": "extension_mode",
+          "nullable": true,
           "options": [
             "backward",
             "forward"
@@ -618,6 +619,7 @@
         {
           "description": "Optional folder to place the generated output in.",
           "name": "folder_id",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }
@@ -1352,6 +1354,7 @@
         {
           "description": "Optional folder to place the generated video in.",
           "name": "folder_id",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }
@@ -1423,6 +1426,7 @@
         {
           "description": "Optional folder to place the generated video in.",
           "name": "folder_id",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }
@@ -1524,6 +1528,7 @@
           "description": "Number of frames to process. Defaults to the full clip when omitted.",
           "min": 1,
           "name": "frames_count",
+          "nullable": true,
           "required": "optional",
           "type": "number"
         }
@@ -1906,6 +1911,7 @@
         {
           "description": "Extension direction; required for mode 'video_extension' and not allowed otherwise.",
           "name": "extension_mode",
+          "nullable": true,
           "options": [
             "backward",
             "forward"
@@ -1954,6 +1960,7 @@
         {
           "description": "Optional folder to place the generated output in.",
           "name": "folder_id",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }
@@ -1998,12 +2005,14 @@
         {
           "description": "Enhancement settings (omit to use Topaz defaults).",
           "name": "enhancement",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         },
         {
           "description": "Frame interpolation (omit to disable).",
           "name": "frame_interpolation",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }
@@ -2196,12 +2205,14 @@
           "description": "Optional duration of the output video in seconds.",
           "min": 0,
           "name": "duration",
+          "nullable": true,
           "required": "optional",
           "type": "number"
         },
         {
           "description": "Optional folder to place the generated output in.",
           "name": "folder_id",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }
@@ -2228,12 +2239,14 @@
           "description": "Duration of the source video in seconds. Optional; derived from the video metadata when omitted.",
           "min": 0,
           "name": "duration",
+          "nullable": true,
           "required": "optional",
           "type": "number"
         },
         {
           "description": "Optional folder to place the generated output in.",
           "name": "folder_id",
+          "nullable": true,
           "required": "optional",
           "type": "string"
         }
@@ -2361,7 +2374,8 @@
       "constraints": [],
       "duration": {
         "max": 30,
-        "min": -1
+        "min": 2,
+        "smart": -1
       },
       "id": "wan3_0",
       "media_roles": {
@@ -2433,7 +2447,8 @@
       "constraints": [],
       "duration": {
         "max": 30,
-        "min": -1
+        "min": 2,
+        "smart": -1
       },
       "id": "wan3_0_prime",
       "media_roles": {

@@ -30,13 +30,13 @@ honest micro-performance in close-up dialogue come from.
 - FACS = facial expressions as **Action Unit codes** (muscle movements), not emotion labels; you write the codes into the prompt [→](#what-facs-is)
 - **Provenance split:** the AU vocabulary is standard human science; Seedance's *interpretation* of codes in a prompt is **[EMPIRICAL]** — high success rate, **not a guarantee** [→](#provenance-and-the-not-a-guarantee-rule)
 - **Plan first.** Decide the 3–4 expressions you need → generate a FACS sheet for *only those* → write the codes. Generating the full 49-AU sheet and cherry-picking is the anti-pattern [→](#the-plan-first-workflow)
-- **3–4 expressions max per generation.** Accuracy drops as you stack more AUs into one clip [→](#step-2-put-au-codes-in-the-seedance-prompt)
-- Two specification styles — **codes-only** (`AU12`) vs **codes + short anatomical description**; test both, neither is universally better [→](#step-2-put-au-codes-in-the-seedance-prompt)
-- The reference sheet is a **labelled-grid image** (GPT Image 2 / Nano Banana Pro); the LLM can **mislabel AUs**, so iterate and verify [→](#step-1-generate-the-facs-reference-sheet)
-- The character photo is **optional** — codes work without it; attach it only for identity consistency [→](#step-2-put-au-codes-in-the-seedance-prompt)
-- Common emotions decompose to standard AU recipes (Duchenne smile = AU6+AU12; sadness = AU1+AU4+AU15) [→](#emotion-au-recipes)
-- The payoff is **dialogue / monologue**: AU-per-beat schedule, combined with the `[AUDIO: Xs]` lip-sync block; every line gets pre / during / post-line beats [→](#dialogue-monologue-facial-acting)
-- [OFFICIAL] Body-level micro-beat recipes beyond the face (throat, breath, skin, posture) + the no-perfect-sync stagger (0.3–0.5s) and listeners-in-bokeh rules [→](#physical-micro-beats-the-body-beyond-the-face)
+- **3–4 expressions max per generation.** Accuracy drops as you stack more AUs into one clip [→](#step-2--put-au-codes-in-the-seedance-prompt)
+- Two specification styles — **codes-only** (`AU12`) vs **codes + short anatomical description**; test both, neither is universally better [→](#step-2--put-au-codes-in-the-seedance-prompt)
+- The reference sheet is a **labelled-grid image** (GPT Image 2 / Nano Banana Pro); the LLM can **mislabel AUs**, so iterate and verify [→](#step-1--generate-the-facs-reference-sheet)
+- The character photo is **optional** — codes work without it; attach it only for identity consistency [→](#step-2--put-au-codes-in-the-seedance-prompt)
+- Common emotions decompose to standard AU recipes (Duchenne smile = AU6+AU12; sadness = AU1+AU4+AU15) [→](#emotion--au-recipes)
+- The payoff is **dialogue / monologue**: AU-per-beat schedule, combined with the `[AUDIO: Xs]` lip-sync block; every line gets pre / during / post-line beats [→](#dialogue--monologue-facial-acting)
+- [OFFICIAL] Body-level micro-beat recipes beyond the face (throat, breath, skin, posture) + the no-perfect-sync stagger (0.3–0.5s) and listeners-in-bokeh rules [→](#physical-micro-beats--the-body-beyond-the-face)
 
 ---
 

@@ -6,7 +6,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, troubleshoot, fix, quality, failure, improve]
-  version: 3.2.0
+  version: 3.2.1
   updated: 2026-08-09
   parent: higgsfield
 ---
@@ -15,20 +15,20 @@ metadata:
 
 ## QUICK FACTS
 *Generated-checked block (scripts/build_index.py verifies anchors). Read the linked sections for full context — these lines are routing aids, not the rules themselves.*
-- Face inconsistency, dead camera moves, ignored prompts, static i2v, blocked dark content — the per-problem fix list [→](#common-problems-fixes)
+- Face inconsistency, dead camera moves, ignored prompts, static i2v, blocked dark content — the per-problem fix list [→](#common-problems--fixes)
 - Kling 3.0 Motion Control failures are almost always upstream of the prompt: reference clip, character image, or orientation/scene-source settings [→](#motion-control-failures-kling-30)
 - Pre-generation checklist: subject, action, named camera preset, style, grade, aspect, <200 words (short-form regime) [→](#pre-generation-checklist)
-- Seedance/Cinema Studio symptom table + diagnostic flowchart: blurry = overspecified; chaotic camera = One-Move Rule violated; wrong character = prompt re-describes the reference [→](#cinema-studio-30-seedance-20-diagnostic-tree)
-- Every delivered take gets ONE of five verdicts before anything re-fires: keep / fix-in-post / edit / re-roll / rewrite [→](#take-triage-five-verdicts-for-a-delivered-take)
-- Two takes with the same flaw = rewrite, by rule; different flaws per roll = stochastic → batch-and-cull, not rewrite [→](#take-triage-five-verdicts-for-a-delivered-take)
-- Re-roll = same prompt again, unchanged — no seed parameter on this surface; every roll is a fresh sample [→](#take-triage-five-verdicts-for-a-delivered-take)
+- Seedance/Cinema Studio symptom table + diagnostic flowchart: blurry = overspecified; chaotic camera = One-Move Rule violated; wrong character = prompt re-describes the reference [→](#cinema-studio-30--seedance-20-diagnostic-tree)
+- Every delivered take gets ONE of five verdicts before anything re-fires: keep / fix-in-post / edit / re-roll / rewrite [→](#take-triage--five-verdicts-for-a-delivered-take)
+- Two takes with the same flaw = rewrite, by rule; different flaws per roll = stochastic → batch-and-cull, not rewrite [→](#take-triage--five-verdicts-for-a-delivered-take)
+- Re-roll = same prompt again, unchanged — no seed parameter on this surface; every roll is a fresh sample [→](#take-triage--five-verdicts-for-a-delivered-take)
 - Change exactly one variable between takes so causality stays readable [→](#one-variable-per-retake)
-- Declare the take budget AND a written "good enough" bar before take one; half-budget with no progress forces a strategy change [→](#attempt-budget-declared-before-take-one-heuristic)
+- Declare the take budget AND a written "good enough" bar before take one; half-budget with no progress forces a strategy change [→](#attempt-budget--declared-before-take-one-heuristic)
 - The shot log is the ledger row — one line per take, changed variable in `notes` [→](#the-shot-log-is-the-ledger-row)
-- Continuation/extension defects: 12-row symptom → cause → single-repair-variable atlas (planned-vs-observed opening, motion-vector drop, prop contradictions, chain-depth drift…) [→](#sequence-continuation-failure-atlas)
-- Retry Ladder: 4 terminating rungs — re-run once verbatim → treat 2nd failure as over-packing → switch model for that shot → stop after 3 paid attempts with named options [→](#retry-ladder-a-failed-take-edits-the-plan-not-just-the-dice)
-- Log EVERY confirmed fix to learning memory, and check memory first before troubleshooting [→](#log-the-outcome-always)
-- Vision-grounded diagnosis (stills only): vision proposes the `reject_reason`, the human confirms — advisory until a class clears the agreement gate [→](#vision-grounded-diagnosis-classify-the-rejected-still-dont-guess)
+- Continuation/extension defects: 12-row symptom → cause → single-repair-variable atlas (planned-vs-observed opening, motion-vector drop, prop contradictions, chain-depth drift…) [→](#sequence--continuation-failure-atlas)
+- Retry Ladder: 4 terminating rungs — re-run once verbatim → treat 2nd failure as over-packing → switch model for that shot → stop after 3 paid attempts with named options [→](#retry-ladder--a-failed-take-edits-the-plan-not-just-the-dice)
+- Log EVERY confirmed fix to learning memory, and check memory first before troubleshooting [→](#log-the-outcome--always)
+- Vision-grounded diagnosis (stills only): vision proposes the `reject_reason`, the human confirms — advisory until a class clears the agreement gate [→](#vision-grounded-diagnosis--classify-the-rejected-still-dont-guess)
 
 ## Common Problems & Fixes
 
@@ -352,7 +352,7 @@ After ANY confirmed fix from this skill, write it to the learning memory
   generation): `python3 scripts/seedance_lint.py --confirmed "<prompt that passed>"`
 - **Quality fix confirmed** (the improved prompt fixed motion / identity /
   blocking / audio): `python3 scripts/higgsfield_memory.py add-quality '<json>'` with
-  `original_prompt`, `failure_description`, `improved_prompt`, `model_used` —
+  `failure_type`, `original_prompt`, `failure_description`, `improved_prompt`, `model_used` —
   then `update-quality <id> improved` once verified.
 - **Outcome learned later** for an entry that already exists:
   `python3 scripts/higgsfield_memory.py update-filter <id> <fixed|workaround|still-blocked>`
