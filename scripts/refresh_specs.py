@@ -67,13 +67,22 @@ falsely read as "fresh", which is worse than the reactive WARN we already have):
   3  change detected — Tier 2 refresh + audit evals/cases/, then --update-baseline
   1  pull failed — the CLI could not answer. The failure is CLASSIFIED from the
      CLI's own stderr (kind=auth "Session expired" / kind=workspace "No
-     workspace selected" / kind=missing-cli / kind=no-baseline / kind=other) and
-     the verbatim CLI line is carried through, so CI names the right remedy
+     workspace selected" / kind=missing-cli / kind=no-baseline / kind=empty —
+     the CLI listed zero models of a type / kind=other) and the CLI line is
+     carried through — REDACTED of anything that looks like an email, token or
+     id, because CI posts it in a public issue — so CI names the right remedy
      instead of always blaming the credentials
   2  usage error
   4  CLI output shape changed — the CLI's JSON no longer matches what this script
      parses (e.g. the 1.0.1 `job_set_type`→`job_type` rename, a `rules: null`, a
      non-object payload); fix the parser, do NOT re-auth
+  5  this script crashed (an unexpected Python exception — a local bug, not the
+     CLI). Before v3.37.0 a crash exited 1 and read as "pull failed"
+
+--update-baseline refuses an EMPTY pull (zero models of a type): accepting
+it would make every later run "Fresh" against nothing. Each type's capture
+date is kept in `captured_by_type` (a partial `--type video` re-capture no
+longer re-dates the image/audio/3d views); `captured` is the OLDEST of them.
 """
 import argparse
 import json
@@ -137,8 +146,13 @@ REMEDIES = {
                    "--update-baseline (after a reviewed Tier 2 refresh)",
     "shape": "the CLI's JSON output shape changed — update the parser in "
              "scripts/refresh_specs.py (ShapeError sites), verify locally, and "
-             "bump LAST_VERIFIED_CLI in .github/workflows/spec-drift.yml. Do "
-             "NOT rotate credentials",
+             "bump LAST_VERIFIED_CLI + CLI_SHA256 in .github/workflows/"
+             "spec-drift.yml. Do NOT rotate credentials",
+    "empty": "the CLI listed zero models of this type — a partial or failed "
+             "listing (wrong workspace? CLI outage?), never an accepted state; "
+             "rerun, and do not accept it as the baseline",
+    "crash": "refresh_specs.py itself crashed (a local bug, not the CLI) — "
+             "read the traceback, fix the script; do NOT re-auth",
     "other": "unrecognized CLI failure — read the verbatim CLI line and fix "
              "that cause; do not assume an auth problem",
 }
@@ -156,6 +170,31 @@ def classify_cli_failure(text: str) -> str:
                             "token expired", "invalid token", "login required")):
         return "auth"
     return "other"
+
+
+_REDACTIONS = (
+    (re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"), "<email>"),
+    (re.compile(r"\beyJ[\w-]+\.[\w-]+(?:\.[\w-]+)?"), "<token>"),        # JWT
+    (re.compile(r"(?i)\b(bearer|basic)\s+[^\s)\]\"',;]+"), r"\1 <token>"),
+    (re.compile(r"(?i)\b(token|secret|password|passwd|api[_-]?key|key|session|"
+                r"credential|auth)(\s*[=:]\s*)[^\s)\]\"',;]+"), r"\1\2<redacted>"),
+    (re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
+                r"[0-9a-fA-F]{12}\b"), "<id>"),                              # UUID
+    (re.compile(r"\b[0-9a-fA-F]{16,}\b"), "<id>"),                          # long hex
+    (re.compile(r"\b(?=[A-Za-z0-9+/=-]*\d)[A-Za-z0-9+/=-]{24,}"), "<token>"),  # base64-ish
+    (re.compile(r"\b\d{6,}\b"), "<id>"),                                    # numeric id
+)
+
+
+def redact(text: str) -> str:
+    """The CLI line with anything that looks like an email, token or id
+    replaced. The spec-drift workflow quotes this line in a PUBLIC issue and
+    job log; the classified kind + remedy carry the meaning, the line is
+    only corroboration. Model ids (snake_case words) survive."""
+    out = text or ""
+    for rx, repl in _REDACTIONS:
+        out = rx.sub(repl, out)
+    return out
 
 
 def _verbatim_line(text: str) -> str:
@@ -344,7 +383,15 @@ def diff_model(old: dict, new: dict) -> dict:
                 notice.append({"kind": "options_removed", "param": pname, "removed": removed})
         elif op["options"] != np["options"]:
             notice.append({"kind": "options_undetailed", "param": pname})
-        if op["default"] is not None and np["default"] is not None \
+        # Same source (CLI vs CLI baseline): a default that APPEARS or
+        # DISAPPEARS is a change too — preflight fills omitted params from
+        # the baseline's defaults. Across sources (snapshot vs CLI) one side
+        # often simply does not state a default, so only a value change counts.
+        if same_source:
+            if op.get("default") != np.get("default"):
+                drift.append({"kind": "default", "param": pname,
+                              "from": op.get("default"), "to": np.get("default")})
+        elif op["default"] is not None and np["default"] is not None \
                 and op["default"] != np["default"]:
             drift.append({"kind": "default", "param": pname,
                           "from": op["default"], "to": np["default"]})
@@ -397,7 +444,7 @@ def _cli_json(args: list) -> object:
     proc = subprocess.run([CLI, *args, "--json"], capture_output=True, text=True)
     if proc.returncode != 0:
         text = "\n".join(x for x in (proc.stderr, proc.stdout) if x)
-        line = _verbatim_line(text) or f"exit {proc.returncode}"
+        line = redact(_verbatim_line(text)) or f"exit {proc.returncode}"
         raise PullError(f"`{CLI} {' '.join(args)}` failed: {line}",
                         kind=classify_cli_failure(text), line=line)
     try:
@@ -405,7 +452,7 @@ def _cli_json(args: list) -> object:
     except json.JSONDecodeError as e:
         # A non-JSON answer on exit 0 is usually a login/workspace prompt or an
         # HTML error page — classify it like a failure so the remedy is right.
-        line = _verbatim_line(proc.stdout) or str(e)
+        line = redact(_verbatim_line(proc.stdout)) or str(e)
         raise PullError(f"`{CLI} {' '.join(args)}` returned non-JSON: {e}",
                         kind=classify_cli_failure(proc.stdout), line=line)
 
@@ -437,6 +484,12 @@ def pull_cli_views(output_type: str, ids: set = None) -> tuple:
             raise ShapeError(f"{ctx}: rows carry no `type` field, so {output_type} "
                              f"models cannot be selected — update refresh_specs.py")
         catalog = [m for m in catalog if m.get("type") == output_type]
+    if not catalog:
+        # Zero models is never a real state of the catalog; accepted as a
+        # baseline it made every later run "Fresh" against nothing.
+        raise PullError(f"{ctx}: the CLI listed zero {output_type} models", kind="empty",
+                        line=f"`{CLI} {' '.join(args)} --json` returned an empty "
+                             f"{output_type} list")
     catalog_ids = {mid: m.get("display_name", mid)
                    for m in catalog
                    for mid in (_model_id(m, ctx),)}
@@ -546,18 +599,44 @@ def load_baseline() -> dict:
 
 
 def capture_baseline(types) -> dict:
-    """Pull every catalog model and snapshot the live CLI surface. The captured
-    date is informational; the views are what the self-diff compares."""
+    """Pull every catalog model and snapshot the live CLI surface, dated per
+    type. The views are what the self-diff compares. An empty pull raises
+    PullError(kind="empty") in pull_cli_views — never accepted."""
     from datetime import date
-    out = {"captured": date.today().isoformat()}
+    today = date.today().isoformat()
+    out = {"captured_by_type": {}}
     for t in types:
         views, _ = pull_cli_views(t, ids=None)
+        if not views:          # belt and braces: pull_cli_views already refuses
+            raise PullError(f"no {t} models captured", kind="empty")
         out[t] = views
+        out["captured_by_type"][t] = today
     return out
 
 
+def merge_baseline(old: dict, fresh: dict) -> dict:
+    """The committed baseline with the freshly captured types replaced. Each
+    type keeps its OWN capture date (`captured_by_type`); `captured` is the
+    oldest one, so a partial re-capture never re-dates views it did not
+    pull. A pre-v3.37 baseline (one global `captured`) seeds every type it
+    carries with that date."""
+    by_type = dict(old.get("captured_by_type") or
+                   {t: old["captured"] for t in TYPES if t in old and old.get("captured")})
+    by_type.update(fresh.get("captured_by_type") or {})
+    merged = {"captured": min(by_type.values()) if by_type else None,
+              "captured_by_type": {t: by_type[t] for t in TYPES if t in by_type}}
+    for k, v in old.items():
+        if k not in ("captured", "captured_by_type"):
+            merged[k] = v
+    for t in TYPES:
+        if t in fresh:
+            merged[t] = fresh[t]
+    return merged
+
+
 def render_self_diff(output_type: str, baseline: dict, diff: dict) -> str:
-    when = baseline.get("captured", "?")
+    when = (baseline.get("captured_by_type") or {}).get(output_type) \
+        or baseline.get("captured", "?")
     lines = [f"[{output_type}] live CLI vs baseline ({when})"]
     for mid in diff["models_added"]:
         lines.append(f"  ⚠ CHANGED — new model in CLI: {mid}")
@@ -596,6 +675,36 @@ def _status(code: int, state: str, kind: str = None, output_type: str = None,
 
 
 def main(argv=None) -> int:
+    """Exit-code wrapper: any unexpected exception is a CRASH (exit 5, state
+    "crashed" in --status-json), never the pull-failed 1 a traceback used to
+    exit with."""
+    status_path = None
+    if argv is None:
+        argv = sys.argv[1:]
+    for i, a in enumerate(argv):
+        if a == "--status-json" and i + 1 < len(argv):
+            status_path = argv[i + 1]
+        elif a.startswith("--status-json="):
+            status_path = a.split("=", 1)[1]
+    try:
+        return _main(argv)
+    except Exception as e:  # noqa: BLE001 — classify, never misfile as a pull failure
+        import traceback
+        traceback.print_exc()
+        print(f"CRASHED: {type(e).__name__}: {e}\n  → remedy: {REMEDIES['crash']}",
+              file=sys.stderr)
+        if status_path:
+            from pathlib import Path
+            try:
+                Path(status_path).write_text(json.dumps(
+                    _status(5, "crashed", "crash", None, "", f"{type(e).__name__}: {e}"),
+                    indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            except OSError:
+                pass
+        return 5
+
+
+def _main(argv=None) -> int:
     p = argparse.ArgumentParser(
         prog="scripts/refresh_specs.py", description=__doc__.splitlines()[0])
     p.add_argument("--type", choices=(*TYPES, "both", "all"),
@@ -646,11 +755,12 @@ def main(argv=None) -> int:
             return shape_changed(e)
         except PullError as e:
             return pull_failed(e)
-        merged = {**load_baseline(), **fresh}
+        merged = merge_baseline(load_baseline(), fresh)
         BASELINE_PATH.write_text(json.dumps(merged, indent=2, ensure_ascii=False) + "\n",
                                  encoding="utf-8")
+        counts = ", ".join(f"{t} {len(fresh[t])}" for t in types)
         print(f"baseline updated for {', '.join(types)} → {BASELINE_PATH.name} "
-              f"(captured {fresh['captured']})")
+              f"({counts} model(s); captured {', '.join(sorted(set(fresh['captured_by_type'].values())))})")
         return finish(_status(0, "baseline-updated"))
 
     baseline = {} if args.vs_snapshot else load_baseline()

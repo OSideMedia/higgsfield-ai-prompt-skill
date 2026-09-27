@@ -64,3 +64,17 @@ def test_refresh_specs_command_says_membership_and_unchecked_block():
     text = (CMD / "refresh-specs.md").read_text(encoding="utf-8")
     assert "`snapshot-only` | `cli-only`" in text      # membership entries documented
     assert "exit 3 (`UNCHECKED`" in text and "never a pass" in text
+
+
+def test_refresh_specs_step6_can_go_red():
+    # "--update-baseline, then the tripwire must be Fresh" could never fail:
+    # the self-diff compares the live CLI with what was just captured. The
+    # tripwire runs BEFORE the accept, every non-0/3 exit stops, and the
+    # capture's per-type counts are checked.
+    text = (CMD / "refresh-specs.md").read_text(encoding="utf-8")
+    step6 = text[text.index("6. **Accept the live CLI surface**"):text.index("7. **Report")]
+    before = step6.index("First the tripwire BEFORE accepting")
+    assert before < step6.index("--update-baseline")
+    for code in ("1 = pull failed", "4 = the CLI output", "5 = the script crashed"):
+        assert code in step6, code
+    assert "refuses" in step6 and "model count per type" in step6

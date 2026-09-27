@@ -470,3 +470,102 @@ def test_3d_rows_without_type_field_are_shape_error(monkeypatch):
 
 def test_all_types_include_3d():
     assert r.TYPES == ("video", "image", "audio", "3d")
+
+
+# ── v3.37.0 review: empty pulls, default appear/vanish, crashes, dates, redaction ──
+
+def _cli_view_with_default(default):
+    return {"id": "m", "view": 2, "output_type": "video", "aspect_ratios": [],
+            "params": {"resolution": {"options": ["720p", "1080p"], "default": default,
+                                      "type": "string", "required": False}},
+            "rules": []}
+
+
+@pytest.mark.parametrize("old,new", [(None, "720p"), ("720p", None)])
+def test_a_default_that_appears_or_vanishes_is_a_change(old, new):
+    # preflight fills omitted params from the baseline defaults, so a default
+    # appearing/disappearing changes verdicts — it used to be invisible.
+    d = r.diff_model(_cli_view_with_default(old), _cli_view_with_default(new))
+    assert {"kind": "default", "param": "resolution", "from": old, "to": new} in d["drift"]
+    assert r.any_change({"models_added": [], "models_removed": [],
+                         "models_changed": {"m": d}})
+
+
+def test_cross_source_default_gap_is_still_not_drift():
+    snap = {"id": "m", "source": "snapshot", "aspect_ratios": [],
+            "params": {"resolution": {"options": ["720p"], "default": None}}}
+    cli = _cli_view_with_default("720p")
+    assert [c for c in r.diff_model(snap, cli)["drift"] if c["kind"] == "default"] == []
+
+
+@pytest.fixture
+def tmp_baseline(tmp_path, monkeypatch):
+    path = tmp_path / "cli_baseline.json"
+    monkeypatch.setattr(r, "BASELINE_PATH", path)
+    return path
+
+
+def test_update_baseline_refuses_an_empty_pull(monkeypatch, tmp_baseline, tmp_path):
+    tmp_baseline.write_text(json.dumps({"captured": "2026-09-26", "video": {"m": {}}}))
+    before = tmp_baseline.read_text()
+    monkeypatch.setattr(r, "_cli_json", lambda args: [])
+    out = tmp_path / "s.json"
+    assert r.main(["--update-baseline", "--type", "video", "--status-json", str(out)]) == 1
+    assert tmp_baseline.read_text() == before          # nothing accepted
+    assert json.loads(out.read_text())["kind"] == "empty"
+
+
+def test_an_empty_3d_selection_is_refused_too(monkeypatch):
+    monkeypatch.setattr(r, "_cli_json", lambda args: [{"job_type": "v", "type": "video"}])
+    with pytest.raises(r.PullError) as e:
+        r.pull_cli_views("3d")
+    assert e.value.kind == "empty"
+
+
+def test_partial_recapture_keeps_each_types_own_date(monkeypatch, tmp_baseline):
+    from datetime import date
+    tmp_baseline.write_text(json.dumps({"captured": "2026-08-07", "video": {},
+                                        "image": {"i": {"id": "i"}}}))
+    get = json.loads((FIXTURES / "cli_1_1_23_model_get_seedance_2_5.json").read_text())
+    monkeypatch.setattr(r, "_cli_json",
+                        lambda args: [{"job_type": "seedance_2_5", "type": "video"}]
+                        if args[:2] == ["model", "list"] else get)
+    assert r.main(["--update-baseline", "--type", "video"]) == 0
+    doc = json.loads(tmp_baseline.read_text())
+    today = date.today().isoformat()
+    assert doc["captured_by_type"] == {"video": today, "image": "2026-08-07"}
+    assert doc["captured"] == "2026-08-07"            # the oldest view's date
+    assert doc["image"] == {"i": {"id": "i"}} and "seedance_2_5" in doc["video"]
+
+
+def test_a_crash_is_exit_5_not_a_pull_failure(monkeypatch, tmp_path, capsys):
+    def boom():
+        raise KeyError("specs")
+    monkeypatch.setattr(r, "load_baseline", boom)
+    out = tmp_path / "s.json"
+    assert r.main(["--type", "video", "--status-json", str(out)]) == 5
+    st = json.loads(out.read_text())
+    assert (st["code"], st["state"], st["kind"]) == (5, "crashed", "crash")
+    assert "Traceback" in capsys.readouterr().err
+
+
+def test_cli_line_is_redacted_before_it_reaches_status_or_logs(monkeypatch, tmp_path, capsys):
+    stderr = ("Error: session expired for peter@example.com "
+              "(token=abcdef0123456789abcdef0123) workspace 3f2b1c9e-1111-2222-3333-444455556666\n")
+    monkeypatch.setattr(r.shutil, "which", lambda name: "/usr/bin/higgsfield")
+    monkeypatch.setattr(r.subprocess, "run", lambda *a, **k: _Proc(1, "", stderr))
+    monkeypatch.setattr(r, "load_baseline", lambda: {"captured": "x", "video": {}})
+    out = tmp_path / "s.json"
+    assert r.main(["--type", "video", "--status-json", str(out)]) == 1
+    st = json.loads(out.read_text())
+    printed = capsys.readouterr().err + out.read_text()
+    for secret in ("peter@example.com", "abcdef0123456789abcdef0123",
+                   "3f2b1c9e-1111-2222-3333-444455556666"):
+        assert secret not in printed
+    assert st["kind"] == "auth" and "<email>" in st["line"]
+
+
+@pytest.mark.parametrize("text", ['Error: No model with job_type "nano_banana_2_skin_enhancer"',
+                                  "Error: No workspace selected."])
+def test_redaction_keeps_model_ids_and_plain_errors(text):
+    assert r.redact(text) == text

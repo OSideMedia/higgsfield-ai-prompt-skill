@@ -1,5 +1,11 @@
 {
   "captured": "2026-09-26",
+  "captured_by_type": {
+    "video": "2026-09-26",
+    "image": "2026-09-26",
+    "audio": "2026-09-26",
+    "3d": "2026-09-26"
+  },
   "video": {
     "ad_multiplier": {
       "id": "ad_multiplier",

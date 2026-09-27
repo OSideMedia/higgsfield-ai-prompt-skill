@@ -434,3 +434,14 @@ def test_platform_rules_see_the_cli_role_for_an_mcp_spelling():
     rep = pf.run_preflight("soul_cinematic", {}, {"image": 2})
     assert [r.rule.cel for r in rep.rules if r.status == "FAIL"] == \
         ["size(params.image_references) <= 1"]
+
+
+def test_rules_staleness_uses_the_models_own_capture_date(tmp_path):
+    # A partial re-capture re-dated the whole baseline; the per-type date is
+    # what says whether THIS model's rules predate its specs snapshot.
+    b = tmp_path / "b.json"
+    b.write_text(json.dumps({"captured": "2026-09-26",
+                             "captured_by_type": {"video": "2026-08-07"},
+                             "video": {"wan3_0": {"params": {}, "rules": []}}}))
+    rep = pf.run_preflight("wan3_0", {}, {}, baseline=pf.load_baseline(b))
+    assert any("captured 2026-08-07 predate" in n for n in rep.notes), rep.notes

@@ -164,3 +164,67 @@ def test_validate_yml_has_no_directory_scaffolding():
     text = (WF / "validate.yml").read_text(encoding="utf-8")
     assert "if [ -d tests ]" not in text and "if [ -d evals ]" not in text
     assert "python3 -m pytest -q" in text and "validate.py --evals" in text
+
+
+# ── v3.37.0 review: crashes are named; the CLI is pinned and checksum-verified ──
+
+@pytest.mark.parametrize("code,kind,fragment", [
+    ("5", "crash", "crashed (exit 5)"),
+    ("1", "", "without writing a classified status"),
+    ("1", "auth", "CLI said (redacted)"),
+])
+def test_spec_drift_names_a_crash_and_redacted_lines(tmp_path, code, kind, fragment):
+    out = tmp_path / "out"
+    out.write_text("")
+    script = step_run("spec-drift.yml", "Classify the outcome")
+    r = run_bash(script, tmp_path, {"CODE": code, "KIND": kind, "LINE": "Session expired",
+                                    "REMEDY": "re-login", "GITHUB_OUTPUT": str(out)})
+    assert "state=blind" in out.read_text().splitlines()
+    err = [l for l in r.stdout.splitlines() if l.startswith("::error::")]
+    assert len(err) == 1 and fragment in err[0], err
+
+
+def _fake_release(tmp_path, body="#!/bin/sh\necho 'higgsfield 1.1.23 (test)'\n"):
+    import hashlib
+    import tarfile
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "hf").write_text(body)
+    (src / "hf").chmod(0o755)
+    archive = tmp_path / "release.tar.gz"
+    with tarfile.open(archive, "w:gz") as t:
+        t.add(src / "hf", arcname="hf")
+    fakebin = tmp_path / "fakebin"
+    fakebin.mkdir()
+    # curl stand-in: honor `-o PATH`, "download" the fake archive, log the URL.
+    (fakebin / "curl").write_text(
+        '#!/bin/bash\nwhile [ $# -gt 0 ]; do case "$1" in -o) OUT="$2"; shift 2;; '
+        f'-*) shift;; *) echo "$1" >> "{tmp_path}/urls"; shift;; esac; done\n'
+        f'cp "{archive}" "$OUT"\n')
+    (fakebin / "curl").chmod(0o755)
+    return hashlib.sha256(archive.read_bytes()).hexdigest(), fakebin
+
+
+def test_cli_install_is_pinned_and_checksum_verified(tmp_path):
+    script = step_run("spec-drift.yml", "Install Higgsfield CLI")
+    assert not re.search(r"\|\s*(?:ba)?sh(?:\s|$)", script) and "install.sh" not in script
+    sha, fakebin = _fake_release(tmp_path)
+    (tmp_path / "home").mkdir()
+    (tmp_path / "rt").mkdir()
+    env = {"PATH": f"{fakebin}:{os.environ['PATH']}", "HOME": str(tmp_path / "home"),
+           "RUNNER_TEMP": str(tmp_path / "rt"), "GITHUB_PATH": str(tmp_path / "gp"),
+           "LAST_VERIFIED_CLI": "1.1.23", "CLI_SHA256": sha}
+    ok = run_bash(script, tmp_path, env)
+    assert ok.returncode == 0, ok.stdout + ok.stderr
+    assert (tmp_path / "home" / ".local" / "bin" / "higgsfield").exists()
+    assert "releases/download/v1.1.23/hf_1.1.23_linux_amd64.tar.gz" in (tmp_path / "urls").read_text()
+    bad = run_bash(script, tmp_path, {**env, "CLI_SHA256": "0" * 64,
+                                      "HOME": str(tmp_path / "home2")})
+    assert bad.returncode != 0 and "does not match CLI_SHA256" in bad.stdout
+    assert not (tmp_path / "home2" / ".local" / "bin" / "higgsfield").exists()
+
+
+def test_pinned_cli_checksum_is_well_formed():
+    text = (WF / "spec-drift.yml").read_text(encoding="utf-8")
+    m = re.search(r'CLI_SHA256: "([0-9a-f]+)"', text)
+    assert m and len(m.group(1)) == 64

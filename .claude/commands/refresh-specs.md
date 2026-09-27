@@ -71,11 +71,21 @@ Steps — stop at the first failure and report it:
    snapshot stamps in `image-models.md` / `photodump-presets.md` — update
    them to the new date if it flags them.
 
-6. **Accept the live CLI surface:**
-   `python3 scripts/refresh_specs.py --update-baseline` (read-only CLI
-   calls), then `python3 scripts/refresh_specs.py` — it must exit 0 (Fresh).
-   If it exits 1, quote its `kind=` and `CLI said:` lines and the remedy;
-   exit 4 means the CLI output shape changed (fix the parser, not the auth).
+6. **Accept the live CLI surface** (read-only CLI calls):
+   - First the tripwire BEFORE accepting: `python3 scripts/refresh_specs.py`.
+     Exit 0 (fresh) or 3 (changed — the diff it prints is exactly what you
+     are about to accept; quote it in the report). Any other exit stops the
+     command: 1 = pull failed (quote its `kind=` and `CLI said:` lines and
+     the remedy; `kind=empty` is a zero-model listing), 4 = the CLI output
+     shape changed (fix the parser, not the auth), 5 = the script crashed
+     (fix the script).
+   - Then `python3 scripts/refresh_specs.py --update-baseline`. It refuses
+     an empty pull and prints the model count per type — each must match
+     that type's model count in `specs/` give or take the allowlisted
+     membership differences; a short count is a partial listing, stop.
+   - Finally `python3 scripts/refresh_specs.py` must exit 0 (Fresh); a
+     non-zero exit right after accepting means the capture was incomplete
+     or the live CLI moved during it.
 
 7. **Report:** snapshot files written, model counts per type, added/removed
    models, tombstones added, cross-check result (allowlist changes with
