@@ -28,6 +28,10 @@
           "pattern": "(?i)\\b(write|add|use|brighten|boost|include|give|put|ask for|request|light for)\\b[^.\\n]{0,40}\\bcatch-?lights?\\b|\\bwith\\s+(bright\\s+|live\\s+|living\\s+|visible\\s+|strong\\s+)?catch-?lights?\\b"
         },
         {
+          "type": "regex_absent",
+          "pattern": "(?i)\\bcatch-?lights?\\b[^.\\n]{0,50}(?<!never )(?<!not )(?<!n't )\\b(fix|fixes|cure|cures|bring|brings|revive|revives|restore|restores|wake|wakes)\\b"
+        },
+        {
           "type": "antislop_absent"
         }
       ]
@@ -68,7 +72,11 @@
         },
         {
           "type": "regex_absent",
-          "pattern": "(?i)^•\\s*Goal\\b[^\\n]*\\bHolds\\b"
+          "pattern": "(?i)^•\\s*Goal\\b[^\\n]*\\b(Holds|Strong|Solid|Passes|Works|Clear|Fine|OK|Sound|Good)\\b"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?i)\\bwhat is (she|he|the hero|your hero|your character|the protagonist) (ultimately |really )?(fighting for|after|trying to (get|achieve))\\?"
         }
       ]
     }

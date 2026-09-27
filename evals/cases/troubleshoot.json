@@ -4,8 +4,8 @@
     {
       "id": "stop-ladder-two-same-flaw-rewrite",
       "description": "Two takes with the same flaw trip the rewrite rung; the 65–100-per-kept-shot benchmark is never a license to keep re-rolling (house-rulings P1-2)",
-      "request": "My Seedance 2.0 shot came back twice with the exact same extra-finger glitch. References and mapping are right. Should I keep re-rolling? I read that 65–100 generations per kept shot is normal.",
-      "response": "Routing to higgsfield-troubleshoot (§ Stop-Rule Ladder + § Take Triage).\n\nNo — stop re-rolling this prompt. Two takes with the same flaw is rung 1 of the stop-rule ladder: the miss is systematic, not luck, so the verdict is **rewrite**. Diagnose it against `higgsfield-seedance/FAILURE-MODES.md` § Orphan limbs in a group shot (a close-up on hands needs an explicit headcount and each hand's entry point), change that one variable, and log the change in the ledger row's `notes`.\n\nBudget: with no declared budget, this shot gets three paid attempts in total before I stop and hand you named options — accept the best take, re-scope the shot, defer it, or ship a `placeholder: missing clip` note.\n\nThe 65–100 figure is a project-level planning benchmark — how many generations a finished film burned per kept shot, counted after the fact. It is not a stop rule, and it does not justify another roll of a prompt that has already failed the same way twice.",
+      "request": "My Seedance 2.0 shot — a close-up of her hands on a lock — came back twice with the exact same glitch: a third hand. References and mapping are right. Should I keep re-rolling? I read that 65–100 generations per kept shot is normal.",
+      "response": "Routing to higgsfield-troubleshoot (§ Stop-Rule Ladder + § Take Triage).\n\nNo — stop re-rolling this prompt. Two takes with the same flaw is rung 1 of the stop-rule ladder: the miss is systematic, not luck, so the verdict is **rewrite**. Diagnose it against `higgsfield-seedance/FAILURE-MODES.md` § Orphan limbs in a group shot — its solo close-up case: a close-up on hands needs an explicit headcount and each hand's entry point, change that one variable, and log the change in the ledger row's `notes`.\n\nBudget: with no declared budget, this shot gets three paid attempts in total before I stop and hand you named options — accept the best take, re-scope the shot, defer it, or ship a `placeholder: missing clip` note.\n\nThe 65–100 figure is a project-level planning benchmark — how many generations a finished film burned per kept shot, counted after the fact. It is not a stop rule, and it does not justify another roll of a prompt that has already failed the same way twice.",
       "assertions": [
         {
           "type": "regex_present",
@@ -42,6 +42,10 @@
         {
           "type": "regex_absent",
           "pattern": "(?i)\\b(a couple|a few|some|one|two|three)\\s+more\\s+(re-?rolls?|rolls?|takes?|tries|generations?|attempts?)\\b|\\bluck varies\\b"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\b(re-?roll|roll|run|generate|fire|try)\\b[^.\\n]{0,20}\\bonce more\\b|\\b(give|try|do|run|fire)\\s+(it\\s+|this\\s+)?(another|one more)\\s+(roll|take|try|go|generation|re-?roll)s?\\b"
         }
       ]
     },
@@ -82,6 +86,10 @@
         {
           "type": "regex_absent",
           "pattern": "(?i)\\b(one more|another|a few more|one last|a couple more)\\s+(\\w+\\s+){0,2}(tweak|iteration|pass|change|rewrite|rewording|version|try|attempt)s?\\b"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?i)\\bup to (1[0-5]|ten|fifteen)\\b|\\b(has|have)\\s*n[o']t\\s+(yet\\s+)?fired\\b|\\bnot yet fired\\b|\\bwould fire\\b|\\bstill (have|got) room\\b"
         }
       ]
     }

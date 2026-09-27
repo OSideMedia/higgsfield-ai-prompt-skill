@@ -258,7 +258,7 @@
         },
         {
           "type": "regex_absent",
-          "pattern": "(?i)(?<!never )(?<!not )(?<!n't )\\b(use|attach|set|give|put|load|place|assign)\\s+(it|the (map|diagram|drawing|staging reference))\\s+((as|in|into|to)\\s+)?(the\\s+)?(first|start(ing)?)[- ]frame"
+          "pattern": "(?i)(?<!never )(?<!not )(?<!n't )\\b(use|attach|set|give|put|load|place|assign)\\s+(it|the (map|diagram|drawing|staging reference))\\s+((as|in|into|to)\\s+)?(the\\s+|a\\s+|an\\s+)?(first|start(ing)?)[- ]frame"
         },
         {
           "type": "regex_absent",
@@ -283,6 +283,10 @@
         {
           "type": "regex_present",
           "pattern": "15\\.2\\s*s"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "(?im)^(No|Probably not|Not)\\b"
         },
         {
           "type": "regex_present",

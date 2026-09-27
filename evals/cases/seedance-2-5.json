@@ -206,7 +206,7 @@
         },
         {
           "type": "regex_absent",
-          "pattern": "(?i)\\b(boys?|girls?|child(ren)?|kids?|young(er|est)?|teens?|teenagers?|teenage|little)\\b|男孩|女孩|孩子|少年|少女|小孩|年轻"
+          "pattern": "(?i)\\b(boys?|girls?|child(ren)?|kids?|young(er|est)?|youthful|youths?|teens?|teenagers?|teenage|little|adults?|old(er)?|elderly|middle-aged|aged)\\b|\\b\\d{1,2}\\s*-?\\s*years?\\s*-?\\s*old\\b|\\bin (his|her|their) (early |mid-?|late )?(teens|twenties|thirties|forties|fifties|sixties|seventies|eighties|\\d0s)\\b|男孩|女孩|孩子|少年|少女|小孩|年轻"
         },
         {
           "type": "antislop_absent"
@@ -278,6 +278,10 @@
         {
           "type": "regex_present",
           "pattern": "(?is)\\[Audio\\][^\\[`]*?(room tone|diegetic)[^\\[`]*?(NO BGM|No music\\.)"
+        },
+        {
+          "type": "regex_absent",
+          "pattern": "(?is)\\[Audio\\][^`]*\\([^)`]*\\b(music|score|bgm|soundtrack|melody|song|piano|strings|instrumental|underscore)\\b"
         },
         {
           "type": "antislop_absent"
