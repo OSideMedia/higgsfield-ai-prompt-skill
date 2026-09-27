@@ -27,7 +27,9 @@ side is clearly the cheaper failure; a *plain error* is just fixed.
   shot is a project benchmark, never a stop rule. Most rungs count different things; two points
   where they count the same thing are recorded **OPEN** — rung 1 vs rung 3 in v2v (default: the
   earliest stop, the cheaper failure) and "different flaws → batch-and-cull" vs the Retry Ladder's
-  "second failure = over-packed → split" (no cost default; a `[HOUSE]` near-hit tie-break). Cited
+  "second failure = over-packed → split" (no default and no tie-break: the agent names both moves
+  with their costs and the user picks; at five or more logged rows the ledger's fork verdict
+  decides). Cited
   from Hell Grind, VFX-PIPELINE, production-benchmarks and the Seedance failure loop.
 - A root dispatcher row and Load Map row for `FAILURE-MODES.md` (which doubled to 15 entries
   and was barely routed), and a technique row for `templates/seedance/staging-reference.md`
@@ -35,8 +37,9 @@ side is clearly the cheaper failure; a *plain error* is just fixed.
 - 7 eval cases (stop-ladder ×2, routing to acting and scene-engine, NO BGM outside 2.5's `()`
   music bracket, the staging reference is not a blocking lock, Seedance 2.0's 15.2 s
   audio-reference total cap). The independent review found wrong answers passing five of them
-  (and the older catchlight case); after the fixes below, 25 wrong-answer mutants across 9 cases
-  all fail and every golden passes.
+  (and the older catchlight case); a second reader then found 16 more wrong answers passing
+  across 8 cases. After both rounds, all 47 recorded wrong-answer mutants fail and every golden
+  passes.
 
 ### Changed — scope-resolved
 
@@ -49,8 +52,7 @@ side is clearly the cheaper failure; a *plain error* is just fixed.
   Banana 2 pass softens a sheet, default: mask the fix back onto the base), scale (the size-ref
   image is scoped to ratios no true, visible landmark can express; Hell Grind's 30 m giant — about
   16× a human — is stated as its brief states it, which does not say whether a size-ref image was
-  also attached), the anamorphic bake rule (one studio's `[FIELD]` report; it applies to the Style
-  Prefix too, because the prefix is pasted into every scene prompt), negation
+  also attached), negation
   exceptions (a test plus seven legitimate bans in `negative-constraints.md`), Style Prefix
   "moving" vs the first-second wide (a `[HOUSE]` reading, narrowed to what the brief withholds —
   a scripted action beat and a camera move), handles as sentence subjects (2.5 names the
@@ -65,14 +67,20 @@ side is clearly the cheaper failure; a *plain error* is just fixed.
 
 - P1-1 (description volume with a reference attached — `higgsfield-troubleshoot`'s identity fix
   now deletes contradicting text first in every regime and "delete ALL appearance text" only on a
-  start frame / I2V), P2-2 (what "describe the voice once" means on 2.5 — `[HOUSE]` default: once
-  per prompt, in the role sentence), P2-4 (film grain on a reference plate — **no default**: baked
+  start frame / I2V), P2-2 (what "describe the voice once" means on 2.5 — **no default**:
+  re-stating the voice may fight the sheet, leaving it out may leave a later shot unprotected;
+  settled either way: the voice goes in the role sentence, verbatim from the voice bible), P2-4 (film grain on a reference plate — **no default**: baked
   grain and an AI-uniform grain-free plate are both inherited by every shot), P2-7 (`NO BGM` vs the
   field-proven `No music.` — both legal; lead with the positive diegetic list; `(no music)` inside
   2.5's `()` bracket reads as a music cue is a labelled `[HOUSE]` inference; `higgsfield-audio`
-  3.9.0's section relabelled EMPIRICAL and its "short form" made actually short), P3-2 (the
-  clothing edit-vs-from-scratch split is a labelled `[HOUSE]` note), P3-6 (the sync budget read as
-  a per-clip total, `[HOUSE]`, with the rate-reading arithmetic beside it).
+  3.9.0's section relabelled EMPIRICAL and its "short form" made actually short), **P2-6** (the
+  anamorphic bake rule is one studio's `[FIELD]` report; whether a Style Prefix — pasted into every
+  scene prompt — keeps the lens words over location plates that carry the look is **no default**:
+  Hell Grind `[OFFICIAL]` keeps the look in both the locations and the video prompts), P3-2
+  (clothing edit vs from-scratch sheets — no default; a per-character comparison across 2–3 models
+  decides), P3-6 (whether the sync budget is a per-clip total or a rate — no default; the
+  filler-babble run was transcript-graded, from an outside product's registry, and is not
+  lip-sync evidence; scripting the silence or cutting the shot to the line works under either).
 
 ### Fixed — plain errors
 
@@ -97,12 +105,15 @@ side is clearly the cheaper failure; a *plain error* is just fixed.
   Seedance templates, scene-engine listed), Seedream 4.0 → 5.0 in the platform list.
 - **Age-blind examples.** `templates/ad-asset-prep.md`'s related-character example named a
   13–14-year-old; the technique (derive the relative from the same source face) is kept as "his
-  sister, an adult woman of slighter build", per the age-blind engine rule — the content filter
-  tightens on any minor. A repo-wide sweep removed age words and trigger tokens from every other
-  example, template and eval golden (gpt-image-2, seedance, style, camera, the models deep
-  reference, audio, character-design, pipeline, recipes, soul, prompt-examples, and a v2v golden
-  that said "young man", now guarded by a `regex_absent` on the English + Chinese trigger list).
-  Rule statements that list the words, quoted vendor demo prompts and titles were left as quoted.
+  sister, a woman of slighter build", per the age-blind engine rule — the content filter
+  tightens on any minor. A repo-wide sweep (completed in a second round after a reader found nine
+  places the first missed) removed age words and trigger tokens from character descriptions in
+  every example, template, format card and eval golden, incl. a v2v golden that said "young man",
+  now guarded by a `regex_absent` on an English + Chinese age list. Two recorded quotes (a GPT
+  Image 2 corpus example and a Dreamina dialogue example) were altered and are marked *adapted*;
+  the stored filter-memory record that suggests an "age range" is left as data and overridden in
+  `higgsfield-recall` (engine rule 1 wins). Rule statements that list the words, eval requests that
+  test the rule, quoted vendor demo prompts, titles and voice-design settings were left as they are.
 - `s25-v2v-routes-to-omni-reference` now asserts Duration equals the stated source length;
   `trap-s25-four-batch-rule` now also rejects "run another four batches".
 
@@ -117,11 +128,18 @@ side is clearly the cheaper failure; a *plain error* is just fixed.
 A fresh Opus reader of the raw diff found 1 wrong-answer defect and 8 real ones; all fixed before
 release and reflected above. The wrong-answer one: `higgsfield-troubleshoot`'s Quick Diagnostic
 still told every reference-attached shot to "delete ALL physical descriptions" (P1-1's contested
-side) — and `higgsfield-prompt` (3.7.1) had the same over-extension of the I2V rule. Also: P2-6
-had been marked OPEN in a case its own rule decides; the Style Prefix template still carried
+side) — and `higgsfield-prompt` (3.7.1) had the same over-extension of the I2V rule. Also: the
+Style Prefix template still carried
 `[16:9]` and `8K`; acting rule 6 had no 2.5 scope; shotlist's staging entry used a slot-1
 filename; `@video1` is the upload-order form, not a named tag; Draw-to-Video was unscoped
 against the first-frame rule; house-rulings paths did not resolve from `skills/shared/`.
+
+A second reader of that fix pass then found one more wrong-answer defect and eight real ones, all
+fixed: the first pass had relabelled P2-6 SCOPE although Hell Grind `[OFFICIAL]` argues the other
+side (now OPEN, no default); P2-2, P3-2, P3-6 and the P1-2 different-flaws case had defaults or
+tie-breaks without the cheaper-failure test (withdrawn); the age sweep had missed nine places;
+two recorded quotes had been altered without a mark; QUICK FACTS stated both sides of an OPEN as
+settled; and 16 wrong answers still passed the new evals.
 
 ## v3.37.0 — 2026-09-26
 
