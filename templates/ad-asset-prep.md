@@ -157,15 +157,15 @@ makes it improvise and "the face drips off of him."
 
 [FIELD — 13-project harvest] For siblings/relatives, don't describe family
 resemblance independently — **generate the relative from the same face**:
-"his sister, an adult woman of slighter build and his spitting image — take the
+"his sister, a woman of slighter build and his spitting image — take the
 exact face from the man in the reference and translate it onto her: same eyes,
 brows, nose, lips, same moles and freckles in matching positions."
 Resemblance generated from one source face holds across shots; two
 independently-described faces drift apart. (The harvested prompt named a
 teenager; rewritten to role + build per the age-blind rule —
-`../skills/higgsfield-seedance/ENGINE-RULES.md` rule 1, whose trigger list
-includes *young*, so *younger* is out too — because the content filter tightens
-sharply on any minor.)
+`../skills/higgsfield-seedance/ENGINE-RULES.md` rule 1, which bans describing a
+character by age at all, so neither *younger* nor *adult* stays — because the
+content filter tightens sharply on any minor.)
 
 The same production's 3-frame character sheet is a strong human-sheet shape:
 Frame 1 face portrait · Frame 2 **ghost-mannequin outfit display** ("garments

@@ -4,8 +4,8 @@ description: "Controls facial expressions in Seedance 2.0 with FACS (Facial Acti
 user-invocable: true
 metadata:
   tags: [higgsfield, seedance, seedance-2.0, facs, action-units, facial-expression, micro-expression, dialogue, lip-sync, performance]
-  version: 1.1.1
-  updated: 2026-07-26
+  version: 1.1.2
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -158,7 +158,7 @@ all 49 unless you genuinely need them:
 
 ```
 Create a clean educational FACS Action Unit expression grid featuring
-[CHARACTER — e.g. a realistic adult female character]. Use minimal studio
+[CHARACTER — e.g. a realistic woman: role, build, one visible marker]. Use minimal studio
 lighting, neutral white background, high readability, professional facial
 anatomy reference-sheet aesthetic, realistic skin texture, consistent identity
 across all panels.

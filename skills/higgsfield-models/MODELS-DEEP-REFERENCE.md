@@ -556,7 +556,7 @@ The Jimeng platform hosts two separate tools. Seedance 2.0 is the **Video Genera
 
 **Character card format** — write once, reuse across all prompts:
 ```
-[Name]: [age range], [build], [skin tone], [hair style/color],
+[Name]: [role], [build], [skin tone], [hair style/color],
 [defining features], [wardrobe], [emotional energy].
 ```
 

@@ -213,7 +213,7 @@ Apply Bullet Time preset at the moment of the throw.
 Model: Seedance 2.0 (Reference-Based mode)
 Aspect: 16:9 | Duration: 8s | Style: Cinematic
 
-[Reference image: hero character — woman, late 20s, charcoal track jacket,
+[Reference image: hero character — athletic woman, charcoal track jacket,
 short cropped hair — as the main character]
 
 Style & Mood: cold sodium-vapor underground, deep shadows under concrete pillars,
@@ -278,7 +278,7 @@ Aspect: 21:9 | Duration: 6s | Style: Naturalistic
 Continuing from the prior clip — the husband framed at the bedside, head
 bowed, his hand on hers, the heart monitor's rhythm filling the silence.
 
-[Identity block verbatim: man in his late 40s, lined face, three-day stubble,
+[Identity block verbatim: man with a lined face, grey at the temples, three-day stubble,
 grey sweater frayed at the cuffs, wedding ring loose on his finger, exhausted
 but composed.]
 

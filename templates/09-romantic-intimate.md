@@ -55,13 +55,13 @@ Ambient: quiet city hum, distant traffic, gentle wind.
 
 ### Identity Block (Character A)
 ```
-A woman in her early 30s, dark wavy hair, wearing a light linen jacket,
+A slender woman, dark wavy hair, wearing a light linen jacket,
 delicate silver earrings. Relaxed posture, feet tucked under her on the chair.
 ```
 
 ### Identity Block (Character B)
 ```
-A man in his early 30s, short beard, kind eyes, wearing a soft navy sweater
+A lanky man, short beard, kind eyes, wearing a soft navy sweater
 with the sleeves pushed up. Leaning forward slightly, elbows on his knees.
 ```
 
