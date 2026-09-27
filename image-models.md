@@ -376,6 +376,13 @@ NBP is the strongest single image model on the platform for sharpness, multi-ele
 
 **Masked inpaint** `[OFFICIAL — platform, snapshot 2026-09-26]`: `nano_banana_2` takes a `mask` media role plus `is_inpaint` (default false — "Whether to restrict the edit to the supplied mask"); resolution 1k / 2k / 4k. See § Inpaint, Mask & Background Parameters.
 
+> **Same id, different model on the CLI** `[OFFICIAL — platform, checked 2026-09-26]`: the MCP's
+> `nano_banana_2` ("Nano Banana 2": default 1k, `auto` aspect, `mask` + `is_inpaint`) matches the
+> CLI's **`nano_banana_flash`** parameter for parameter, while `higgsfield model get nano_banana_2`
+> answers as **Nano Banana Pro** (default 2k, no `auto` aspect, no mask). On the CLI, use
+> `nano_banana_flash` for this model; `--model nano_banana_2` there most likely runs Nano Banana Pro.
+> Recorded in `specs/crosscheck_allowlist.json`; re-check when either surface changes.
+
 ---
 
 ### Nano Banana 2 Lite
