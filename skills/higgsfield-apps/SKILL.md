@@ -6,8 +6,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, apps, one-click, workflow, influencer, ad, product]
-  version: 3.0.1
-  updated: 2026-05-04
+  version: 3.0.2
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -125,7 +125,7 @@ workflow tool for creating longer, multi-shot cinematic content.
 **Workflow:**
 1. Define your scene with storyboard or text description
 2. Generate key frames with Soul 2.0 or Nano Banana
-3. Animate with Kling 2.6/3.0 or Sora 2
+3. Animate with Kling 2.6/3.0
 4. Chain shots in Cinema Studio timeline
 5. Add audio with Kling 3.0 or Lipsync Studio
 

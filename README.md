@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.38.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.39.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--09--26-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
@@ -13,7 +13,7 @@ A comprehensive Claude skill library for generating high-quality prompts on
 Transforms natural language requests into production-ready Higgsfield prompts using:
 - The **MCSLA formula** (Model · Camera · Subject · Look · Action)
 - Named camera controls and motion presets the platform recognizes
-- Model selection guidance across Kling 3.0 / 3.0 Omni / 3.0 Motion Control, Sora 2, Veo 3.1, Wan, Seedance 2.5 / 2.0, FLUX 3 Video, Minimax Hailuo, Higgsfield DoP, and more
+- Model selection guidance across Kling 3.0 / 3.0 Omni / 3.0 Motion Control, Veo 3.1, Wan, Seedance 2.5 / 2.0, FLUX 3 Video, Minimax Hailuo, Higgsfield DoP, and more
 - Genre recipe templates for action, horror, romance, sci-fi, product ads, and more
 - Soul ID character consistency guidance + Character Sheet creation
 - Troubleshooting for failed or poor generations
@@ -98,7 +98,7 @@ THIS SKILL — higgsfield-ai-prompt-skill
    • appends shared negative constraints
    • outputs a production-grade Higgsfield prompt
    ↓
-PRE-FLIGHT (optional, recommended for Veo / Kling / Sora / Seedance video):
+PRE-FLIGHT (optional, recommended for Veo / Kling / Seedance video):
 
    SCHEMA VERIFY (recommended for any model you haven't called recently):
    CLI path:        higgsfield model get kling3_0
@@ -271,7 +271,7 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
     ├── higgsfield-acting/SKILL.md        ← Performance craft: objective, beats, eye life, master profile
     ├── higgsfield-scene-engine/SKILL.md  ← Structural scene audit: goal · obstacle · tactic · reversal · value shift
     ├── higgsfield-vibe-motion/SKILL.md   ← Vibe-based motion direction
-    └── higgsfield-workspaces/SKILL.md    ← Workspace-first decision layer (Cinema Studio / Lipsync / Draw-to-Video / Sora 2 Trends / Click to Ad / Higgsfield Audio)
+    └── higgsfield-workspaces/SKILL.md    ← Workspace-first decision layer (Cinema Studio / Lipsync / Draw-to-Video / Viral Hub presets / Click to Ad / Higgsfield Audio)
 ```
 
 ## Generation Ledger
@@ -341,7 +341,7 @@ acting on the tail. A small sample is not evidence a skill is dead.
 > "I have a Soul ID character. Write 3 different scene prompts with her — office, party, rooftop"
 
 **Model question:**
-> "Should I use Kling 3.0 or Sora 2 for a large-scale battle scene?"
+> "Should I use Kling 3.0 or Seedance 2.0 for a large-scale battle scene?"
 
 **Troubleshoot:**
 > "My image-to-video isn't animating, it's just static. What am I doing wrong?"
@@ -358,4 +358,4 @@ acting on the tail. A small sample is not evidence a skill is dead.
 
 ---
 
-Built February 2026 · v3.38.0 (updated 2026-09-26) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.39.0 (updated 2026-09-26) · Platform: [higgsfield.ai](https://higgsfield.ai)

@@ -1,5 +1,67 @@
 # Changelog
 
+## v3.39.0 — 2026-09-26
+
+**Sora 2 retired from the recommendations.** OpenAI's deprecations page ("2026-03-24: Sora 2
+video generation models and Videos API") records that developers were notified on 2026-03-24 and
+that the Videos API, `sora-2`, `sora-2-pro` and their dated snapshots were removed from the API on
+**2026-09-24**, with no recommended replacement. OpenAI's video-generation guide now opens: "The
+Sora 2 models and Videos API were shut down on September 24, 2026 and are no longer available."
+Higgsfield never exposed Sora 2 in its API/MCP catalog (UI-only, confirmed in the UI 2026-07-06).
+On 2026-09-26 it was still absent from `higgsfield model list --video` (CLI 1.1.23, 37 video
+models), `higgsfield workflow list`, and the MCP `models_explore`, `apps_search` and
+`get_presets`. **Whether Sora 2 still works in Higgsfield's web UI after 09-24 is unconfirmed**:
+higgsfield.ai/sora-2 was still up with no shutdown notice. The skill therefore stops steering users to it
+everywhere and keeps the history, marked retired, instead of deleting it.
+
+### Changed
+
+- **Replacements come from the repo's own doctrine.** Where Sora 2 shared a row, it was dropped
+  and the other picks kept. Where it was the only pick, the row now names the fallback already
+  written for that shot type: the catalog-verified scale / physics fallbacks **Seedance 2.0,
+  Minimax Hailuo 2.3** (`model-guide.md` § Model + Camera Control Compatibility), Veo 3.1 for
+  vehicle chases (the `higgsfield-pipeline` car/vehicle row), Seedance 2.0 for the fight example
+  (the deep reference's "Complex fight" row), and Minimax Hailuo 2.3 for concert crowds (template
+  10's own crowd rule). Every named model is in today's `higgsfield model list --video`
+  (Hailuo 2.3 is `minimax_hailuo`'s default `minimax-2.3` variant).
+- `model-guide.md`: the Sora 2 row became a retired entry (old variant lineup kept as reference);
+  decision tree, camera-control table (Crane Up / Super Dolly Out → Seedance 2.0, Minimax Hailuo
+  2.3; FPV Drone and Hyperlapse keep their other picks), motion-preset table (Elemental, Explosion,
+  Bullet Time keep their other picks) and the credit table updated. Both † footnotes now record the
+  retirement.
+- Root `SKILL.md`: Sora 2 left the trigger description's model list and the platform list, and a
+  one-paragraph retirement note points to the fallbacks.
+- `higgsfield-models` 3.3.2 (+ `MODELS-DEEP-REFERENCE.md` 3.3.1): the comparison row and the deep
+  entry are now "retired" entries, the old entry kept under a *reference only* banner; the
+  flowchart and quick-decision rows drop the "UI-only — verify" caveat for a retirement pointer.
+- `higgsfield-pipeline` 3.6.1: the Stage 3 stunt and epic rows → Seedance 2.0 / Minimax Hailuo 2.3,
+  the vehicle row keeps Veo 3.1, and QUICK FACTS and the chain diagram follow. The Scene 3 example keeps
+  its prompt and is labelled as written for Sora 2, with the model to rerun it on. The "Sora 2 Upscale"
+  tip now says not to plan around it.
+- `higgsfield-recipes` 3.1.1, `higgsfield-apps` 3.0.2, `higgsfield-cinema` 3.5.2,
+  `higgsfield-style` 3.1.2, `higgsfield-vibe-motion` 3.0.2, `higgsfield-assist` 3.1.2 (its garbled
+  "UI / live UI" caveat replaced) and `higgsfield-stack` 1.3.1 (preflight model lists): Sora 2
+  dropped or replaced as above.
+- **`higgsfield-workspaces` 1.3.0**: "fast short-form or viral-style content" now routes to the
+  **Viral Hub presets**, a new section citing the MCP tool schema (`get_presets`,
+  `source: 'viral'` lists the Viral Hub chain presets; browsing never runs `execute_preset`). The
+  **Sora 2 Trends** section is kept under a banner: built on Sora 2, likely affected by the
+  shutdown, unconfirmed in the UI.
+- Templates 01, 05, 07 and 10 recommend the fallbacks. Template 05's example and the two
+  `prompt-examples.md` Sora examples (Rooftop Fight, Zero Gravity Breach) keep their prompt text.
+  Their `Model:` lines are marked RETIRED and name the model to rerun on, not rewritten as if they
+  had been written for another model.
+- README (feature list, preflight line, workspaces tree, the example model question) and the
+  USER-GUIDE generator's model table ("Epic scale, big environments" → Seedance 2.0 / Minimax
+  Hailuo 2.3).
+
+### Not changed
+
+- CHANGELOG history, `db/` (memory and ledger history), `docs/archive/` and the `tests/` fixture
+  that uses "Sora 2" as sample text. Sora 2 never appeared in a `models_explore` snapshot, so
+  `specs/retired-model-ids.json` (generated from snapshot history) has no entry for it. No eval
+  case or `evals/spec-claims.json` entry named Sora.
+
 ## v3.38.0 — 2026-09-26
 
 **The reconciliation pass.** Twelve releases of harvested doctrine (v3.24–v3.35) had been

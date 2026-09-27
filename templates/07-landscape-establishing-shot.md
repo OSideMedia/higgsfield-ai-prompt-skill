@@ -7,7 +7,7 @@ Wide establishing shots, nature/environment sequences, time-lapse landscapes, ep
 User asks for an establishing shot, landscape, nature video, environment reveal, aerial view, timelapse, or any prompt where no character is the primary focus.
 
 ## Recommended model
-**Veo 3 / 3.1** for nature and environment (best at stable, realistic landscapes). **Sora 2** for epic scale and physics (weather, water, destruction). **Wan 2.5** for painterly/fantasy landscapes.
+**Veo 3 / 3.1** for nature and environment (best at stable, realistic landscapes). **Seedance 2.0** or **Minimax Hailuo 2.3** for epic scale and physics (weather, water, destruction) — the scale/physics fallbacks in `model-guide.md`; Sora 2 held this slot until OpenAI shut the Sora 2 API down on 2026-09-24. **Wan 2.5** for painterly/fantasy landscapes.
 
 ## Example prompt
 

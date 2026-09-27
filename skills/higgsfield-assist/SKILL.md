@@ -7,8 +7,8 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, assist, GPT-5, copilot, credits, pricing, optimization, efficiency]
-  version: 3.1.1
-  updated: 2026-07-06
+  version: 3.1.2
+  updated: 2026-09-26
   parent: higgsfield
 ---
 
@@ -96,8 +96,8 @@ for final in-platform prompt refinement and quick generation.
 **Apps:** Vary widely — one-click apps are generally efficient
 
 > "Seedance Pro" is a legacy UI label — not in the API catalog (2026-07-05);
-> its budget slot is now Seedance 2.0 Fast / Mini. Sora 2 is UI-only (confirmed in the UI 2026-07-06) — not in
-> the API catalog as of 2026-07-05; verify in the live UI before recommending.
+> its budget slot is now Seedance 2.0 Fast / Mini. Sora 2 is retired — OpenAI shut the Sora 2 API down on 2026-09-24
+> and Higgsfield UI availability is unconfirmed; don't recommend it (`../../model-guide.md`).
 
 ### Quote From the Ledger, Not From Vibes
 
@@ -182,8 +182,7 @@ The credit math almost always favors this approach.
 **Mid budget (Pro plan — 700 credits):**
 - Primary models: Kling 3.0 Turbo, Kling 2.6 (legacy), Wan 2.5/2.7, Minimax Hailuo 2.3
 - Reserve Kling 3.0 (pro/4K) / Seedance 2.0 4K for hero shots only
-  (Sora 2 is UI-only, confirmed present in the UI 2026-07-06 — not in the API catalog; UI
-  live UI before recommending it)
+  (Sora 2 is retired — OpenAI shut its API down 2026-09-24; don't budget for it)
 - Use Cinema Studio for your two or three most important scenes
 - Strategy: Iterate in image first, commit in video second
 

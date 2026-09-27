@@ -7,12 +7,12 @@ Science fiction environments, zero-gravity sequences, cyberpunk streets, futuris
 User asks for sci-fi, cyberpunk, futuristic, space, zero gravity, energy effects, transformation, portal, or any prompt requiring VFX motion presets in a speculative setting.
 
 ## Recommended model
-**Sora 2** for large-scale environments and physics-heavy spectacle. **Kling 3.0** for character-driven sci-fi with audio. **Wan 2.5** for stylized/artistic sci-fi.
+**Seedance 2.0** or **Minimax Hailuo 2.3** for large-scale environments and physics-heavy spectacle (the scale/physics fallbacks in `model-guide.md`; Sora 2 held this slot until OpenAI shut the Sora 2 API down on 2026-09-24). **Kling 3.0** for character-driven sci-fi with audio. **Wan 2.5** for stylized/artistic sci-fi.
 
 ## Example prompt
 
 ```
-Model: Sora 2
+Model: Sora 2 — RETIRED (OpenAI shut the Sora 2 API down 2026-09-24). Written for Sora 2; rerun on Seedance 2.0 or Minimax Hailuo 2.3.
 Aspect: 16:9 | Duration: 10s | Style: Cinematic
 
 A battle-worn space station corridor, emergency lighting, debris floating in zero gravity.
@@ -50,7 +50,7 @@ Apply Plasma Explosion preset at the detonation moment.
 - **Cyberpunk street**: Ground-level, neon magenta/cyan palette, Dolly Out camera, add Glitch preset
 - **Portal/dimensional**: Use Portal preset, Crane Up camera, "energy builds in a ring of light"
 - **Transformation**: Use Cyborg or Turning Metal preset, Crash Zoom In on the transformation point
-- **Space exterior**: Sora 2 + Super Dolly Out, "vast starfield, tiny ship approaching a planet"
+- **Space exterior**: Seedance 2.0 or Minimax Hailuo 2.3 + Super Dolly Out, "vast starfield, tiny ship approaching a planet"
 
 ### Identity Block (if using Soul ID character)
 ```

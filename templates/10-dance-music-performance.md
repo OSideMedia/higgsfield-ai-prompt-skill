@@ -7,7 +7,7 @@ Dance sequences, music video scenes, concert performances, choreography showcase
 User asks for dance video, music performance, choreography, concert scene, DJ set, or any prompt where the body in motion is the hero subject.
 
 ## Recommended model
-**Minimax Hailuo 2.3** for best fluid body motion and dance. **Kling 3.0** for character-focused performance with audio. **Sora 2** for large-scale concert/crowd scenes.
+**Minimax Hailuo 2.3** for best fluid body motion and dance. **Kling 3.0** for character-focused performance with audio. **Minimax Hailuo 2.3** with a wider shot for large-scale concert/crowd scenes (this template's own crowd rule below; Sora 2 held this slot until OpenAI shut the Sora 2 API down on 2026-09-24).
 
 ## Example prompt
 
@@ -49,7 +49,7 @@ Apply Glow Trace preset — her movement leaves a trail of white light.
 
 ## Variations
 - **Hip-hop/street**: 9:16 vertical, Rap Flex camera (quick zooms), "sharp isolated movements", neon lighting
-- **Concert/live performance**: Sora 2, wide shot, "stage lighting sweeping the crowd", Apply Live Concert preset
+- **Concert/live performance**: Minimax Hailuo 2.3, wide shot, "stage lighting sweeping the crowd", Apply Live Concert preset
 - **Slow/emotional dance**: Dolly In instead of Orbit, "minimal movement, arms reaching", Cinematic + shallow DOF
 - **Music video energy**: Crash Zoom In on beat drops, Apply Color Rain preset, fast cuts (separate generations per beat)
 

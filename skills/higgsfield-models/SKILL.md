@@ -2,7 +2,7 @@
 name: higgsfield-models
 description: >
   Use when the user asks which model to use, wants to compare models,
-  or needs guidance on selecting between Kling, Sora 2, Wan (incl. Wan 3.0),
+  or needs guidance on selecting between Kling, Wan (incl. Wan 3.0),
   Seedance (incl. 2.5), Veo 3, Minimax Hailuo / MiniMax H3, FLUX 3 Video,
   Gemini Omni Flash, Soul, Nano Banana, GPT Image 2.5, or other Higgsfield
   engines — including which lane edits existing footage (video_edit, Kling
@@ -13,7 +13,7 @@ metadata:
   references:
     - MODELS-DEEP-REFERENCE.md
   tags: [higgsfield, models, Kling, Sora, Wan, Seedance, Veo, Soul, NanoBanana, GPT-Image-2.5, FLUX-3, Genjutsu, edit-lanes, long-take]
-  version: 3.3.1
+  version: 3.3.2
   updated: 2026-09-26
   parent: higgsfield
 
@@ -39,7 +39,7 @@ Fast lookup — for detailed comparisons see the full tables below.
 | Need | Recommended Model | Tier |
 |------|-------------------|------|
 | Top-tier cinematic video + audio | Kling 3.0 | Premium |
-| Epic scale / spectacle | Seedance 2.0 or Minimax Hailuo 2.3 (Sora 2 is UI-only — verify live) | Premium |
+| Epic scale / spectacle | Seedance 2.0 or Minimax Hailuo 2.3 (Sora 2 is retired — OpenAI shut its API down 2026-09-24) | Premium |
 | Nature / landscapes | Veo 3.1 | Premium |
 | Artistic / stylized video | Wan 2.6 | Mid |
 | One clip longer than 15s | Seedance 2.5 · Wan 3.0 / Prime · FLUX 3 Video (to 20s) → `model-guide.md` § Long-Take Chooser | — |
@@ -73,7 +73,7 @@ Fast lookup — for detailed comparisons see the full tables below.
 | Genjutsu — replace object | — | — | — | — | — | — | `hf_mult_replace_object`: replace objects in a source video from reference images; 480p–1080p. Not yet field-rated |
 | Kling 2.6 (legacy) | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★☆☆ | 5/10s | ✅ | Character drama, realism; native audio via `sound` toggle (default on) |
 | Kling 2.5 Turbo | ★★★★☆ | ★★★★☆ | ★★★★☆ | ★★★☆☆ | 5–10s | ❌ | Fast Kling iteration |
-| Sora 2 (UI-only) | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | 4–12s | ✅ | Epic scale, physics, action — UI generations only; not in the API catalog (2026-09-26) |
+| Sora 2 (retired) | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★★☆ | 4–12s | ✅ | **Retired — do not recommend.** OpenAI shut the Sora 2 API down on 2026-09-24; Higgsfield UI availability is unconfirmed. Scale / physics → Seedance 2.0 or Minimax Hailuo 2.3 (`../../model-guide.md`). Was: epic scale, physics, action — UI-only |
 | Wan 3.0 | — | — | — | — | 2–30s or −1 smart (billed as 10s) | ✅ | T2V, first/last frame, multimodal reference (image/video/audio), `enable_thinking`; frames and references never combined. Not yet field-rated |
 | Wan 3.0 Prime | — | — | — | — | 2–30s or −1 smart (billed as 10s) | ✅ | Same parameter surface as Wan 3.0; how Prime differs is not stated. Not yet field-rated |
 | Wan 2.7 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★★ | 2–15s | ✅ | 60fps, T2V/I2V/R2V/edit, first+last frame |
@@ -150,7 +150,7 @@ Is this image or video?
     │   └── Artistic, painterly, fantasy → Wan 2.5/2.6
     │
     ├── Is it action/spectacle?
-    │   ├── Epic scale, crowds, physics → Seedance 2.0 (Sora 2 is UI-only — verify)
+    │   ├── Epic scale, crowds, physics → Seedance 2.0 (Sora 2 is retired)
     │   ├── VFX, anime, fluid motion → Minimax Hailuo 2.3
     │   └── Dance, sports, budget motion → Minimax Hailuo 02
     │

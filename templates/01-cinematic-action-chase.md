@@ -7,7 +7,7 @@ High-energy pursuit sequences — foot chases, vehicle pursuits, rooftop escapes
 User asks for a chase scene, pursuit, escape, running sequence, parkour, or any prompt where the primary energy is "someone moving fast through a space while something is at stake."
 
 ## Recommended model
-**Kling 3.0** for character-focused chases (face stays consistent, native audio for footsteps/impacts). **Sora 2** for large-scale or vehicle chases where environment physics matter more than character fidelity.
+**Kling 3.0** for character-focused chases (face stays consistent, native audio for footsteps/impacts). **Seedance 2.0** or **Minimax Hailuo 2.3** for large-scale chases where environment physics matter more than character fidelity, and **Veo 3.1** for vehicle chases (the scale/physics fallbacks in `model-guide.md` and the car/vehicle row in `higgsfield-pipeline` § Stage 3). Sora 2 held this slot until OpenAI shut the Sora 2 API down on 2026-09-24.
 
 ## Example prompt
 
@@ -50,7 +50,7 @@ Style: Cinematic. Cold blue shadows, warm amber market light, high contrast. 16:
 
 ## Variations
 - **Grittier/handheld feel**: Swap camera to Handheld, add "shaky, documentary urgency" to style
-- **Vehicle chase**: Use Sora 2 + Car Chasing camera preset, describe the vehicles specifically
+- **Vehicle chase**: Use Veo 3.1 + Car Chasing camera preset, describe the vehicles specifically
 - **Vertical/social format**: Change to 9:16, keep Action Run but note "close framing, face visible"
 - **Sci-fi chase**: Add zero gravity or corridor environment, swap to FPV Drone camera
 

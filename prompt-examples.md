@@ -195,7 +195,7 @@ Style: Cinematic. Cold blue shadows, amber market light, high contrast. 16:9.
 
 ### Rooftop Fight
 ```
-Model: Sora 2
+Model: Sora 2 — RETIRED (OpenAI shut the Sora 2 API down 2026-09-24). Written for Sora 2; rerun on Seedance 2.0.
 Aspect: 16:9 | Duration: 10s | Style: Anamorphic
 
 Two silhouettes grapple on a rain-slicked rooftop at night, city spread below them.
@@ -315,7 +315,7 @@ Prompt Formula apply.
 
 ### Zero Gravity Breach
 ```
-Model: Sora 2
+Model: Sora 2 — RETIRED (OpenAI shut the Sora 2 API down 2026-09-24). Written for Sora 2; rerun on Seedance 2.0 or Minimax Hailuo 2.3.
 Aspect: 16:9 | Duration: 10s | Style: Cinematic
 
 A battle-worn space station corridor, emergency lighting, debris floating in zero gravity.
