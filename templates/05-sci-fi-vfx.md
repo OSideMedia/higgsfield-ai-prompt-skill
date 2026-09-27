@@ -7,7 +7,7 @@ Science fiction environments, zero-gravity sequences, cyberpunk streets, futuris
 User asks for sci-fi, cyberpunk, futuristic, space, zero gravity, energy effects, transformation, portal, or any prompt requiring VFX motion presets in a speculative setting.
 
 ## Recommended model
-**Seedance 2.0** or **Minimax Hailuo 2.3** for large-scale environments and physics-heavy spectacle (the scale/physics fallbacks in `model-guide.md`; Sora 2 held this slot until OpenAI shut the Sora 2 API down on 2026-09-24). **Kling 3.0** for character-driven sci-fi with audio. **Wan 2.5** for stylized/artistic sci-fi.
+**Seedance 2.0** or **Minimax Hailuo 2.3** for large-scale environments and physics-heavy spectacle (the scale/physics fallbacks in `model-guide.md`; Sora 2 held this slot until OpenAI shut the Sora 2 API down on 2026-09-24). **Kling 3.0** for character-driven sci-fi with audio. **Wan 2.6** (the catalog's stylized Wan) or **Wan 2.5** for stylized/artistic sci-fi (Wan 2.5 is not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending).
 
 ## Example prompt
 

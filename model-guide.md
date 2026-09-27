@@ -55,7 +55,7 @@
 
 `[OFFICIAL — platform, snapshot 2026-09-26]` for every new row above (ids, enums, roles, and the quoted catalog descriptions); CLI rules are from `higgsfield model get <id>` on the same day.
 
-**Catalog check 2026-09-26** (`higgsfield model list` + `higgsfield workflow list`, CLI 1.1.23, and the `models_explore` snapshot): **Kling 3.0 Omni, Kling O1 Video / Video Edit, Kling 2.5 Turbo, Wan 2.5 / 2.5 Fast and Higgsfield DoP are not in the API catalog** — they may be UI-only, so verify in the live UI before recommending them; each row names the catalog pick for its job. Minimax Hailuo 02 has no catalog variant by that name. Renamed in the catalog: Grok Imagine → **Grok Video** (`grok_video`), Grok Imagine 1.5 → **Grok Video 1.5** (`grok_video_v15`). Present as variants: **Veo 3.1 Fast** and **Veo 3 Fast** (`variant: veo-3-1-fast` / `veo-3-fast` — both the defaults) and Minimax Hailuo 2.3 / 2.3 Fast (`minimax-2.3` / `minimax-2.3-fast`). Kling 3.0 Motion Control is a CLI **workflow** (`kling3_0_motion_control`), not a model id (§ Motion Transfer).
+**Catalog check 2026-09-26** (`higgsfield model list` + `higgsfield workflow list`, CLI 1.1.23, and the `models_explore` snapshot): **Kling 3.0 Omni, Kling O1 Video / Video Edit, Kling 2.5 Turbo, Wan 2.5 / 2.5 Fast and Higgsfield DoP are not in the API catalog** — they may be UI-only, so verify in the live UI before recommending them; each row names a catalog pick where the repo has one on record. Minimax Hailuo 02 has no catalog variant by that name. Renamed in the catalog: Grok Imagine → **Grok Video** (`grok_video`), Grok Imagine 1.5 → **Grok Video 1.5** (`grok_video_v15`). Present as variants: **Veo 3.1 Fast** and **Veo 3 Fast** (`variant: veo-3-1-fast` / `veo-3-fast` — both the defaults) and Minimax Hailuo 2.3 / 2.3 Fast (`minimax-2.3` / `minimax-2.3-fast`). Kling 3.0 Motion Control is a CLI **workflow** (`kling3_0_motion_control`), not a model id (§ Motion Transfer).
 
 > The catalog also lists utility/system entries — AutoSprite (game sprite-sheet animation), MS Image (Marketing Studio ad images), upscalers (Topaz, Bytedance Video Upscale, Video Upscale), background removers (Remove Background `sam_3_video`, Video Background Remover), Video Deflicker, outpaint, Clipify, Sync Lipsync 3 (audio-driven lipsync retiming). These are pipeline tools, not prompt-crafted generation models, and are intentionally out of scope for these tables. (**LLM text left the video catalog in the 2026-09-26 snapshot. Explainer Video left in the 2026-08-07 snapshot** — it had already dropped out of the CLI list at 2026-08-01. Verify in the UI before referencing either.)
 
@@ -70,7 +70,7 @@
 | Model | Quality | Faces | Style range | Speed | Best for |
 |-------|---------|-------|-------------|-------|----------|
 | Soul 2.0 | ★★★★★ | ★★★★★ | ★★★☆☆ | ★★★★☆ | Fashion, portrait, aesthetic |
-| Soul Cinema | ★★★★★ | ★★★★★ | ★★★☆☆ | ★★★★☆ | Cinematic keyframes, close-ups, film grain (`soul_cinematic`; the stars were rated under its earlier UI name, Soul Cinema Preview) |
+| Soul Cinema Preview | ★★★★★ | ★★★★★ | ★★★☆☆ | ★★★★☆ | Cinematic keyframes, close-ups, film grain — **no catalog model by this name as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending**; the catalog's `soul_cinematic` is *Soul Cinema*, which the repo documents as a distinct model (`skills/higgsfield-soul/SKILL.md` § Soul Cinema) |
 | Soul Cast | ★★★★☆ | ★★★★★ | ★★★☆☆ | ★★★☆☆ | Consistent cinematic character identity (16:9, `budget` 10–500) |
 | Soul Location | ★★★★☆ | — | ★★★☆☆ | ★★★★☆ | Environment / location generation, 9 aspect ratios incl. 21:9 + 9:21 |
 | Kling Image 3.0 | ★★★★★ | ★★★★★ | ★★★★☆ | ★★★★☆ | Native 4K, series mode, storyboarding — **not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending** |
@@ -102,7 +102,8 @@
 Is this image or video?
 ├── IMAGE
 │   ├── Is it a person / portrait? → Soul 2.0
-│   ├── Need cinematic keyframe for I2V pipeline? → Soul Cinema
+│   ├── Need cinematic keyframe for I2V pipeline? → Soul Cinema (`soul_cinematic`);
+│   │   Soul Cinema Preview has no catalog model by that name — verify in the live UI
 │   ├── Same character identity across many shots? → Soul Cast
 │   ├── Environment / location plate? → Soul Location
 │   ├── Need an image series / storyboarding? → Kling Image 3.0 (not in the
@@ -317,7 +318,7 @@ Some camera controls perform better on certain models:
 
 † Sora 2 held these two rows (and shared FPV Drone and Hyperlapse) until its retirement: OpenAI shut the Sora 2 API down on 2026-09-24, and whether Higgsfield's UI still offers it is unconfirmed — do not recommend it. Catalog-verified fallbacks for scale/physics shots: Seedance 2.0, Minimax Hailuo 2.3. They are the repo's scale fallbacks, not a per-control field rating.
 
-‡ Wan 2.5 is not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending (the catalog's Wan models are 2.6, 2.7, 3.0 and 3.0 Prime). Where it was the only pick, the catalog pick is named first: **Wan 2.6** for stylized / surreal work (its row above: artistic, stylized) and **Minimax Hailuo 2.3** for Elemental (the decision tree's VFX / fluid-motion / physics pick).
+‡ Wan 2.5 is not in the API catalog as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending (the catalog's Wan models are 2.6, 2.7, 3.0 and 3.0 Prime). Where it was the only pick for stylized / surreal work, **Wan 2.6** is named first (its row above: artistic, stylized). Elemental keeps Wan 2.5 alone: no catalog model is on record for elemental presets.
 
 ---
 
@@ -326,7 +327,7 @@ Some camera controls perform better on certain models:
 | Preset type | Best model |
 |-------------|-----------|
 | Transformation (Werewolf, Cyborg, Animalization) | Kling 2.6, Wan 2.5‡ |
-| Elemental (Fire, Water, Earth, Air) | Minimax Hailuo 2.3, Wan 2.5‡ |
+| Elemental (Fire, Water, Earth, Air) | Wan 2.5‡ |
 | Explosion / Destruction | Seedance 2.0 |
 | Surreal / Glitch / Multiverse | Wan 2.6, Wan 2.5‡ |
 | Horror presets | Kling 2.6, Wan 2.5‡ |

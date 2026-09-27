@@ -55,11 +55,11 @@ These rules apply to every Higgsfield response. They are written as a pre-delive
 Higgsfield is a cinematic AI video and image generation platform built for filmmakers and
 creators. Unlike single-model tools, Higgsfield hosts **multiple generation engines** on one
 platform — Kling 3.0/3.0 Omni/3.0 Motion Control, Google Veo 3.1/3.1 Lite, Wan 2.7/2.6/2.5,
-Seedance 2.5/2.0/Pro, FLUX 3 Video, Minimax Hailuo 2.3/02, Higgsfield DoP (Lite/Standard/Turbo) for video; Soul 2.0, Soul Cinema,
+Seedance 2.5/2.0/Pro, FLUX 3 Video, Minimax Hailuo 2.3/02, Higgsfield DoP (Lite/Standard/Turbo) for video; Soul 2.0, Soul Cinema Preview,
 Soul Cast, Nano Banana Pro/2, Kling Image 3.0/Omni, Seedream 5.0 Pro/Lite/Flash + 4.5, GPT Image 2.0 / 2.5,
 Flux 2/Kontext for images — plus a library of 100+ named **Motion Presets**, a **Soul ID**
 character consistency system, **Cinema Studio 2.5**, **Cinema Studio 3.0** (Business/Team plan), and **Cinema Studio 3.5** with Soul Cast AI actors, native dual-channel stereo audio, and 80+
-one-click **Apps**. **Sora 2 is retired from this skill's recommendations:** OpenAI shut the Sora 2 API down on 2026-09-24; Higgsfield only ever offered it in its web UI, and whether the UI still does is unconfirmed. For scale / physics shots use Seedance 2.0 or Minimax Hailuo 2.3 (`model-guide.md`). **Catalog check (2026-09-26):** Kling 3.0 Omni, Wan 2.5, Seedance Pro, Higgsfield DoP and Kling Image 3.0 / Omni are not in the API catalog (`higgsfield model list` / `workflow list`). They may be UI-only — verify in the live UI before recommending them, and prefer the catalog picks `model-guide.md` names beside them. No catalog variant of Minimax Hailuo is named 02.
+one-click **Apps**. **Sora 2 is retired from this skill's recommendations:** OpenAI shut the Sora 2 API down on 2026-09-24; Higgsfield only ever offered it in its web UI, and whether the UI still does is unconfirmed. For scale / physics shots use Seedance 2.0 or Minimax Hailuo 2.3 (`model-guide.md`). **Catalog check (2026-09-26):** Kling 3.0 Omni, Wan 2.5, Seedance Pro, Higgsfield DoP, Soul Cinema Preview and Kling Image 3.0 / Omni are not in the API catalog (`higgsfield model list` / `workflow list`). They may be UI-only — verify in the live UI before recommending them, and prefer a catalog pick where `model-guide.md` names one. No catalog variant of Minimax Hailuo is named 02.
 
 ---
 

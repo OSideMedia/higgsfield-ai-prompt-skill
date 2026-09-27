@@ -85,17 +85,17 @@ combine.
 
 ---
 
-### Soul Cinema
-**Model id:** `soul_cinematic` — named *Soul Cinema* in every image snapshot since 2026-06-22 (the CLI lists it as "Soul Cinematic"); `quality` 1.5k / 2k, `soul_id` `[OFFICIAL — platform, snapshot 2026-09-26]`. This entry was written in 2026-03 as *Soul Cinema Preview*.
+### Soul Cinema Preview
+**Catalog:** no catalog model by this name as of the 2026-09-26 snapshot; may be UI-only — verify in the live UI before recommending. The catalog's `soul_cinematic` is *Soul Cinema*, which the repo documents as a distinct model (`skills/higgsfield-soul/SKILL.md` § Soul Cinema); it is named *Soul Cinema* in every image snapshot since 2026-06-22 (the CLI lists it as "Soul Cinematic"; `quality` 1.5k / 2k, `soul_id`). Do not treat the two as one model. Catalog pick for cinematic stills: Soul Cinema (§ Routing by Asset Class — "most cinematic frames").
 **Credits:** Low (cheaper per generation than most models)
 **Best for:** Cinematic-grade image generation — rich textures, natural compositions, "spontaneous look," deep depth of field, film grain aesthetics
 **Excels at:** Close-up shots specifically
 **Unique:** No preset selection panel — unlike Soul 2.0, it's **purely prompt-driven**
-**Key workflow:** Generate cinematic keyframe with Soul Cinema → feed into video model (e.g., Kling 3.0 I2V) for best results
+**Key workflow:** Generate cinematic keyframe with Soul Cinema Preview → feed into video model (e.g., Kling 3.0 I2V) for best results
 **Works with:** Soul ID (character consistency) and Soul HEX (precise color control)
-**Status:** Out of preview — the catalog name is Soul Cinema (see Model id above)
+**Status:** Preview version — full Soul Cinema coming soon (the 2026-03 wording; see Catalog above)
 
-**Soul HEX** — Extracts color palettes from reference photos for brand-consistent, color-matched visuals. Works across Soul 2.0, Soul Cinema, and Cinema Studio 2.5.
+**Soul HEX** — Extracts color palettes from reference photos for brand-consistent, color-matched visuals. Works across Soul 2.0, Soul Cinema Preview, and Cinema Studio 2.5.
 
 ---
 
@@ -673,7 +673,7 @@ These are upload-based transformation tools, not text-to-image generators.
 | Wan 2.2 | 1 | — | Artistic · not in API catalog |
 | Reve | 1 | — | New (2026-03) · not in API catalog |
 | Soul 2.0 | Free | 2K | 5K free gens |
-| Soul Cinema | Low | — | Cinematic keyframes · `soul_cinematic` |
+| Soul Cinema Preview | Low | — | Cinematic keyframes · no catalog model by this name |
 | Soul Cast | TBD | — | Character identity, 16:9, `budget` 10–500 |
 | Soul Location | TBD | — | Environments, 9 aspect ratios |
 | Kling Image 3.0 | TBD | 4K | Native 4K, series mode · not in API catalog |
@@ -681,7 +681,7 @@ These are upload-based transformation tools, not text-to-image generators.
 | Nano Banana 2 | 1.5 | 1K | Pro quality at Flash speed |
 | Nano Banana 2 Lite | TBD | 1K only | Budget NB2, `thinking` MINIMAL/HIGH |
 | FLUX.2 Pro | 1.5 | 2K | ⚠ External |
-| Flux Kontext Max | 1.5 | — | ⚠ Edit · now Flux Kontext (`flux_kontext`) |
+| Flux Kontext Max | 1.5 | — | ⚠ Edit · UI price; the API id `flux_kontext` carried this name on 2026-06-22 |
 | Multi Reference | 1.5 | — | Multi-image blend · not in API catalog |
 | Recraft 4.1 | varies | 1K/2K | ⚠ External · standard/vector/utility/utility_vector · hex palettes |
 | GPT Image | 2 | — | Character slot · not in API catalog |

@@ -51,7 +51,7 @@ Fast lookup — for detailed comparisons see the full tables below.
 | Fashion / aesthetic images | Soul 2.0 | Free |
 | Photorealistic sharp images | Nano Banana Pro | Low |
 | AI actor generation | Soul Cast | Low |
-| Native 4K images | Nano Banana Pro (`resolution` to 4k) — Kling Image 3.0 is not in the API catalog, 2026-09-26 — verify in the live UI | Low |
+| Native 4K images | Nano Banana Pro (`resolution` to 4k) — Kling Image 3.0 is not in the API catalog, 2026-09-26 — verify in the live UI | — (NB Pro's listed price is for 1K; verify the 4K price) |
 | Transparent-background image | GPT Image 2.5 (`background: transparent`) | — |
 | Photo style transformation | Photodump (29 presets) | Low |
 
@@ -91,7 +91,7 @@ Fast lookup — for detailed comparisons see the full tables below.
 | Veo 3 | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★☆☆ | 4–8s | ✅ | Nature, environment, stable model |
 | Gemini Omni Flash | ★★★★☆ | ★★★★☆ | ★★★☆☆ | ★★★☆☆ | 4–10s | ✅ | Reference-driven video (image + video refs), native audio, 720p |
 | Gemini Omni Flash 1.1 | — | — | — | — | 3–10s | ✅ | Required `mode` (t2v / i2v / reference / **edit** — source ≤30s); start/end frames; 360p–4K. Not yet field-rated |
-| Grok Video | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★☆ | 1–15s | ✅ | Animate images, social clips (`grok_video`, named Grok Imagine until the 2026-06-22 snapshot; the catalog exposes no source-video input — editing unverified on Higgsfield) |
+| Grok Video | ★★★★☆ | ★★★☆☆ | ★★★★☆ | ★★★★☆ | 1–15s | ✅ | Animate images, social clips (`grok_video`, named Grok Imagine through the 2026-06-22 snapshot; the catalog exposes no source-video input — editing unverified on Higgsfield) |
 | Minimax Hailuo 2.3 | ★★★★★ | ★★★★☆ | ★★★★★ | ★★★★☆ | 6/10s | ❌ | VFX, fluid motion, anime, physics |
 | Minimax Hailuo 02 | ★★★★☆ | ★★★☆☆ | ★★★★★ | ★★★☆☆ | 6/10s | ❌ | Dance, sports, fluid motion — no catalog variant is named 02 (`minimax_hailuo`: minimax, minimax-fast, minimax-2.3, minimax-2.3-fast); verify in the live UI |
 | MiniMax H3 | — | — | — | — | 4–15s | — | Keyframes or image/video/audio refs, 2K, `batch_size` 1–4. Not yet field-rated |
@@ -109,7 +109,8 @@ Fast lookup — for detailed comparisons see the full tables below.
 Is this image or video?
 ├── IMAGE
 │   ├── Person / portrait? → Soul 2.0
-│   ├── Cinematic keyframe for I2V pipeline? → Soul Cinema
+│   ├── Cinematic keyframe for I2V pipeline? → Soul Cinema (`soul_cinematic`) ·
+│   │   Soul Cinema Preview (no catalog model by that name — verify in the live UI)
 │   ├── Native 4K? → Nano Banana Pro · image series / storyboarding? → Kling
 │   │   Image 3.0 (not in the API catalog, 2026-09-26 — verify in the live UI)
 │   ├── Maximum sharpness / 4K? → Nano Banana Pro
@@ -180,14 +181,14 @@ Is this image or video?
 | Need | Model | Credits |
 |------|-------|---------|
 | Fashion / cultural portrait | Soul 2.0 | Free |
-| Cinematic keyframe for I2V | Soul Cinema | Low |
+| Cinematic keyframe for I2V | Soul Cinema (`soul_cinematic`) · Soul Cinema Preview (no catalog model by that name, 2026-09-26 — verify in the live UI) | — · Low |
 | Consistent character identity (16:9) | Soul Cast | `budget` 10–500 |
 | Environment / location plate | Soul Location | — |
 | Cheapest generation | Z-Image | 0.15 |
 | Low-cost portrait | Soul 2.0 · Higgsfield Soul (not in the API catalog, 2026-09-26 — verify in the live UI) | Free · 0.5 |
 | Low-cost 2K square | Kling O1 Image (`kling_omni_image`) | 0.5 |
-| Native 4K / image series | Nano Banana Pro (4K) · Kling Image 3.0 (series; not in the API catalog, 2026-09-26 — verify in the live UI) | 2 · — |
-| 4K + advanced editing | Nano Banana 2 (edits, to 4k) · Kling Image 3.0 Omni (not in the API catalog, 2026-09-26 — verify in the live UI) | 1.5 · — |
+| Native 4K / image series | Nano Banana Pro (4K) · Kling Image 3.0 (series; not in the API catalog, 2026-09-26 — verify in the live UI) | 2 at 1K (4K: verify) · — |
+| 4K + advanced editing | Nano Banana 2 (edits, to 4k) · Kling Image 3.0 Omni (not in the API catalog, 2026-09-26 — verify in the live UI) | 1.5 at 1K (4K: verify) · — |
 | Fast versatile 2K | Seedream 5.0 Lite | 1 |
 | Fast generation + instruction editing up to 2K | Seedream 5.0 Flash (not yet field-rated) | — |
 | 4K versatile | Seedream 4.5 | 1 |
@@ -215,7 +216,7 @@ Full Photodump preset library (29 named styles) → `../../photodump-presets.md`
 **Image models — by credit cost:**
 - **Free / near-free:** Soul 2.0 (5K gens) · Z-Image (0.15) · Face Swap (2 free)
 - **Budget (0.5–1):** Kling O1 Image · Seedream family · Nano Banana · Higgsfield Soul, Wan 2.2, Reve (these three: not in the API catalog, 2026-09-26 — verify in the live UI)
-- **Mid (1.5–2):** Nano Banana 2 · FLUX.2 Pro · Flux Kontext (was Flux Kontext Max) · NB Pro · Character Swap · Multi Reference, GPT Image (not in the API catalog, 2026-09-26 — verify in the live UI)
+- **Mid (1.5–2):** Nano Banana 2 · FLUX.2 Pro · Flux Kontext Max (UI tier — the API's `flux_kontext` is now named Flux Kontext) · NB Pro · Character Swap · Multi Reference, GPT Image (not in the API catalog, 2026-09-26 — verify in the live UI)
 - **Premium (5–6):** FLUX.2 Flex · FLUX.2 Max
 
 **General pricing tiers (video + image, approximate):**
@@ -250,7 +251,7 @@ Catalog-backed rows cite `[OFFICIAL — platform, snapshot 2026-09-26]` (media r
 | Soul Cast AI actors (General 2K / Character 4K / Location 4K) | Cinema Studio 3.0 (Business/Team) |
 | Built-in color grading | Cinema Studio 2.5 (full grading suite) · Cinema Studio 3.5 (Color Palette axis in Style Settings — 8 named palettes) |
 | Native dual-channel stereo audio | Cinema Studio 3.0 (Business/Team) · Kling 3.0 · Seedance 2.0/1.5 Pro · Veo 3/3.1 · Wan 2.7 · (Kling 3.0 Omni, Wan 2.5 — not in the API catalog) |
-| Soul HEX color matching | Soul 2.0 · Soul Cinema · Cinema Studio 2.5 |
+| Soul HEX color matching | Soul 2.0 · Cinema Studio 2.5 · Soul Cinema Preview (no catalog model by that name — verify in the live UI) |
 | Native 4K image series | Kling Image 3.0 — not in the API catalog, 2026-09-26 — verify in the live UI (native 4K alone: Nano Banana Pro) |
 | Style presets + Color Transfer | Soul 2.0 (the CLI forbids `style_id` + image references in one Soul 2.0 call — see `../../image-models.md` § Soul 2.0) |
 | Transparent-background image output | GPT Image 2.5 `background: transparent` (the CLI also lists `background` on GPT Image 2 — see `../../image-models.md` § GPT Image 2) |

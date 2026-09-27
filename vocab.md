@@ -422,7 +422,7 @@ what recurs, not from what gets explained.
 | Soul ID | Upload 20+ photos of a real person to train identity consistency across generations |
 | Soul Cast | Generate AI actors from parameters (no photos needed) — Cinema Studio 2.5 feature, powered by Nano Banana 2 |
 | Soul HEX | Extract color palettes from reference photos for brand-consistent, color-matched visuals |
-| Soul Cinema | Higgsfield proprietary cinematic-grade image model (`soul_cinematic`; formerly shown as Soul Cinema Preview), prompt-driven only, excels at close-ups |
+| Soul Cinema Preview | Higgsfield proprietary cinematic-grade image model, prompt-driven only, excels at close-ups — no catalog model by this name (2026-09-26); the catalog's `soul_cinematic` is Soul Cinema, documented as a distinct model |
 | Elements 3.0 | Reference system using `@element_name` syntax for cross-shot subject consistency (Kling 3.0) |
 | Voice Binding | Lock specific voice profiles to specific characters across shots (Kling 3.0) |
 | Performance Cloning | Act out a scene on camera → AI re-renders preserving likeness and voice (Kling 3.0 Omni — not in the API catalog, 2026-09-26 — verify in the live UI) |
