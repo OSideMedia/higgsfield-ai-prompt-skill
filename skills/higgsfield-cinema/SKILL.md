@@ -1621,9 +1621,10 @@ header. Check settings against the table below by hand.
 schema's `cost_params`). In 3.5 and 3.0 only `duration` + `resolution` priced a run — in
 4.0 the **mode and the video references move the price too**, so a `video_edit` or a
 video-referenced run can quote differently from a `t2v` run of the same length. Preflight
-the exact combination **by model id**: `higgsfield generate cost cinematic_studio_video_4_0
---prompt "…" --mode video_edit --resolution 1080p --duration 8` (verified 2026-09-26: a 480p 5s
-`t2v` estimate returned 15 credits and created no job). The `generate cost workflow <name>` form
+the exact combination **by model id**, with the source clip attached: `higgsfield generate cost
+cinematic_studio_video_4_0 --prompt "…" --mode video_edit --video_references <clip> --resolution
+1080p --duration 8`. Only a prompt-only 480p 5s `t2v` estimate is verified (2026-09-26: 15 credits,
+no job created); the form with media attached is unverified. The `generate cost workflow <name>` form
 **rejects** this id ("Unknown workflow") although `workflow list` shows it. Local file paths
 passed to the estimate are auto-uploaded.
 

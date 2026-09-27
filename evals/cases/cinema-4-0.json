@@ -5,7 +5,7 @@
       "id": "cinema-4-0-extension-strip",
       "description": "A Cinema Studio 4.0 delivery leads with the 4.0 strip (not the 3.5 strip), stays within 480p–1080p, and names extension direction (CLI workflow schema 2026-09-26)",
       "request": "Set up a Cinema Studio 4.0 shot that continues my clip forward by 6 seconds.",
-      "response": "Routing to higgsfield-cinema (§ Cinema Studio 4.0).\n\nCinema Studio 4.0 · Mode: video_extension · AR: 16:9 · Resolution: 1080p · Duration: 6s · Audio: On · Camera: Auto / Auto / Auto · Era: Auto · Genre: Auto · Pacing: Auto · Light: Auto · Palette: Auto\nRefs: video_references — your clip (the one being extended)\nExtension: forward\n\nPrompt box: Continue from the last frame: she reaches the top of the stairwell, pauses with one hand on the rail, and looks back down the way she came.\n\nNothing about 4.0 has been fired from this library yet — treat this first extension as a probe. Preflight it with `higgsfield generate cost cinematic_studio_video_4_0` (by model id — the `workflow` form rejects this id) using the same mode, resolution and duration.",
+      "response": "Routing to higgsfield-cinema (§ Cinema Studio 4.0).\n\nCinema Studio 4.0 · Mode: video_extension · AR: 16:9 · Resolution: 1080p · Duration: 6s · Audio: On · Camera: Auto / Auto / Auto · Era: Auto · Genre: Auto · Pacing: Auto · Light: Auto · Palette: Auto\nRefs: video_references — your clip (the one being extended)\nExtension: forward\n\nPrompt box: Continue from the last frame: she reaches the top of the stairwell, pauses with one hand on the rail, and looks back down the way she came.\n\nNothing about 4.0 has been fired from this library yet — treat this first extension as a probe. Preflight it with `higgsfield generate cost cinematic_studio_video_4_0 --mode video_extension --video_references <your clip>` (by model id — the `workflow` form rejects this id) at the same resolution and duration; the estimate with a clip attached is unverified.",
       "assertions": [
         {
           "type": "regex_present",
@@ -29,6 +29,10 @@
         },
         {
           "type": "antislop_absent"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "--video_references"
         }
       ]
     },

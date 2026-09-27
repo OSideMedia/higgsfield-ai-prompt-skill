@@ -109,8 +109,11 @@ free `model get` / `workflow get` calls: no wrong-answer defects; fixed here —
 
 - `generate cost workflow cinematic_studio_video_4_0` and `… workflow voice_change` were taught
   as preflights; both are rejected ("Unknown workflow", checked 2026-09-26). Cinema Studio 4.0
-  is estimated by model id; `voice_change` by model id with the clip and voice attached (it takes
-  no `duration`).
+  is estimated by model id with its source clip attached (`--video_references`, which moves the
+  price); `voice_change` by model id with the clip, the voice and its `--voice_type` attached (it
+  takes no `duration`). Only a prompt-only 480p `t2v` estimate is verified; the forms with media
+  attached are not. A second reader of this fix found the first rewrite still omitted the clip and
+  the voice type, and that two eval assertions could not go red — fixed and proven on mutants.
 - `higgsfield-stack` said this library "never loads `get_workflow_instructions`" while quoting
   the connector rule that requires it — the agent follows the connector's routing and loads the
   workflow; this library supplies the inputs.

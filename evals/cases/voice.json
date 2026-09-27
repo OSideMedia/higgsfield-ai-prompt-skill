@@ -5,7 +5,7 @@
       "id": "audio-voice-change-element-voice",
       "description": "voice_change takes no prompt; a cloned voice is used as voice_type element only once completed + is_audio_eligible; priced by duration (MCP schema + CLI workflow 2026-09-26)",
       "request": "Swap the narrator's voice in my finished 20-second clip for the voice I cloned yesterday.",
-      "response": "Routing to higgsfield-audio (§ Voice change and voice cloning).\n\n1. **Check the clone is ready** — `list_voices`: your voice must show `status: completed` and `is_audio_eligible: true`. A clone still `processing` is not usable yet.\n2. **Revoice** — `voice_change` with `video_id` = your clip, `voice_id` = the clone's id, `voice_type: element`. There is nothing to write: the tool takes no text, keeps the original timing and visuals, and takes the output size from the source.\n3. **Cost** — it is priced by length; estimate it by model id with the clip and voice attached (`higgsfield generate cost voice_change --input_video … --voice_id …`) — the `workflow` form rejects `voice_change`.",
+      "response": "Routing to higgsfield-audio (§ Voice change and voice cloning).\n\n1. **Check the clone is ready** — `list_voices`: your voice must show `status: completed` and `is_audio_eligible: true`. A clone still `processing` is not usable yet.\n2. **Revoice** — `voice_change` with `video_id` = your clip, `voice_id` = the clone's id, `voice_type: element`. There is nothing to write: the tool takes no text, keeps the original timing and visuals, and takes the output size from the source.\n3. **Cost** — it is priced by length; estimate it by model id with the clip and voice attached (`higgsfield generate cost voice_change --input_video … --voice_id … --voice_type element`) — the `workflow` form rejects `voice_change`.",
       "assertions": [
         {
           "type": "regex_present",
@@ -25,11 +25,15 @@
         },
         {
           "type": "regex_absent",
-          "pattern": "(?i)cost workflow voice_change|voice_change --duration"
+          "pattern": "(?i)\\bprompt\\s*[:=]"
         },
         {
           "type": "regex_absent",
-          "pattern": "(?i)\\bprompt\\s*[:=]"
+          "pattern": "(?i)cost workflow voice_change|generate cost voice_change[^\\n`]*--duration"
+        },
+        {
+          "type": "regex_present",
+          "pattern": "generate cost voice_change[^\\n`]*--voice_type element"
         }
       ]
     },

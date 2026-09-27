@@ -86,7 +86,7 @@
       "assertions": [
         {
           "type": "regex_present",
-          "pattern": "(?i)tie-break"
+          "pattern": "(?i)tie-break: you described the [^.]* in words, so Seedance 2\\.5 `video_edit` leads"
         },
         {
           "type": "regex_present",
