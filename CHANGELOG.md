@@ -20,18 +20,23 @@ side is clearly the cheaper failure; a *plain error* is just fixed.
   `[FIELD]`, `[EMPIRICAL]`, `[HOUSE]` and `[MEASURED]` mean and the evidence each requires
   (MEASURED needs route, model / mode / resolution, n and date); third-party skill material is
   EMPIRICAL — judged sound, not measured on our routes. Linked from root `SKILL.md`.
-- **The Stop-Rule Ladder** (`higgsfield-troubleshoot` § Stop-Rule Ladder) — five stop numbers
-  that measure different things, ordered: 2 same-flaw re-rolls → rewrite · 3 paid attempts with
-  no declared budget → named options · 4 v2v batches → a prompt/source fault · 10–15 surgical
-  iterations inside a declared budget → simplify the shot · 65–100 generations per kept shot is a
-  project benchmark, never a stop rule. The earliest tripwire wins; cited from Hell Grind,
-  VFX-PIPELINE, production-benchmarks and the Seedance failure loop.
+- **The Stop-Rule Ladder** (`higgsfield-troubleshoot` § Stop-Rule Ladder) — six stop numbers,
+  ordered: 2 same-flaw re-rolls → rewrite · the half-budget tripwire (rung 2b) · 3 paid attempts
+  with no declared budget → named options · 4 v2v batches → a prompt/source fault · 10–15
+  surgical iterations inside a declared budget → simplify the shot · 65–100 generations per kept
+  shot is a project benchmark, never a stop rule. Most rungs count different things; two points
+  where they count the same thing are recorded **OPEN** — rung 1 vs rung 3 in v2v (default: the
+  earliest stop, the cheaper failure) and "different flaws → batch-and-cull" vs the Retry Ladder's
+  "second failure = over-packed → split" (no cost default; a `[HOUSE]` near-hit tie-break). Cited
+  from Hell Grind, VFX-PIPELINE, production-benchmarks and the Seedance failure loop.
 - A root dispatcher row and Load Map row for `FAILURE-MODES.md` (which doubled to 15 entries
   and was barely routed), and a technique row for `templates/seedance/staging-reference.md`
   (unreachable from the dispatcher).
 - 7 eval cases (stop-ladder ×2, routing to acting and scene-engine, NO BGM outside 2.5's `()`
   music bracket, the staging reference is not a blocking lock, Seedance 2.0's 15.2 s
-  audio-reference total cap); each passes its golden and fails every wrong-answer mutation.
+  audio-reference total cap). The independent review found wrong answers passing five of them
+  (and the older catchlight case); after the fixes below, 25 wrong-answer mutants across 9 cases
+  all fail and every golden passes.
 
 ### Changed — scope-resolved
 
@@ -41,24 +46,33 @@ side is clearly the cheaper failure; a *plain error* is just fixed.
   volume; both agree the wording is fixed and never contradicts the reference.
 - States vs chained actions (pick by the shot's job), voice on 2.0 vs 2.5, second passes (the
   identity base never takes a second full pass; a derived look frame may — OPEN whether one Nano
-  Banana 2 pass softens a sheet, default: mask the fix back onto the base), scale (a true,
-  visible body landmark; the Hell Grind giant now cited), the anamorphic bake rule (applies only
-  when a baked plate is on every shot — marked one studio's `[FIELD]` report), negation
+  Banana 2 pass softens a sheet, default: mask the fix back onto the base), scale (the size-ref
+  image is scoped to ratios no true, visible landmark can express; Hell Grind's 30 m giant — about
+  16× a human — is stated as its brief states it, which does not say whether a size-ref image was
+  also attached), the anamorphic bake rule (one studio's `[FIELD]` report; it applies to the Style
+  Prefix too, because the prefix is pasted into every scene prompt), negation
   exceptions (a test plus seven legitimate bans in `negative-constraints.md`), Style Prefix
-  "moving" vs the first-second wide, handles as sentence subjects (2.5 names the character; 2.0
-  leads with the tag), tag versioning, the movement lock vs per-scene rewrite, and a
+  "moving" vs the first-second wide (a `[HOUSE]` reading, narrowed to what the brief withholds —
+  a scripted action beat and a camera move), handles as sentence subjects (2.5 names the
+  character, 2.0 leads with the tag — stated in acting rule 6 too), tag versioning, the movement lock vs per-scene rewrite, and a
   scene-engine ↔ acting term map.
 - **Sheet laws** restated five to six times with drifting shades and mechanisms: `templates/
   ad-asset-prep.md` is now the single canonical home for the grey background and the
-  one-readable-face law; soul, VFX-PIPELINE, character-design, Hell Grind and 2.5 cite it.
+  one-readable-face law; every sheet surface now cites it (soul incl. its split panel, VFX-PIPELINE,
+  character-design, Hell Grind, 2.5, gpt-image-2's reference-sheet workflow, cinema's sheet types).
 
 ### Recorded OPEN (with named settling probes)
 
-- P1-1 (description volume with a reference attached), P2-4 (film grain on a reference plate —
-  default: drop it; baked grain is inherited by every shot), P2-6 (a Style Prefix that names the
-  lens over baked plates), P2-7 (`NO BGM` vs the field-proven `No music.` — both legal; lead with
-  the positive diegetic list; never inside 2.5's `()` bracket; `higgsfield-audio` 3.9.0's section
-  relabelled EMPIRICAL and its "short form" made actually short).
+- P1-1 (description volume with a reference attached — `higgsfield-troubleshoot`'s identity fix
+  now deletes contradicting text first in every regime and "delete ALL appearance text" only on a
+  start frame / I2V), P2-2 (what "describe the voice once" means on 2.5 — `[HOUSE]` default: once
+  per prompt, in the role sentence), P2-4 (film grain on a reference plate — **no default**: baked
+  grain and an AI-uniform grain-free plate are both inherited by every shot), P2-7 (`NO BGM` vs the
+  field-proven `No music.` — both legal; lead with the positive diegetic list; `(no music)` inside
+  2.5's `()` bracket reads as a music cue is a labelled `[HOUSE]` inference; `higgsfield-audio`
+  3.9.0's section relabelled EMPIRICAL and its "short form" made actually short), P3-2 (the
+  clothing edit-vs-from-scratch split is a labelled `[HOUSE]` note), P3-6 (the sync budget read as
+  a per-clip total, `[HOUSE]`, with the rate-reading arithmetic beside it).
 
 ### Fixed — plain errors
 
@@ -69,18 +83,26 @@ side is clearly the cheaper failure; a *plain error* is just fixed.
   attached last.
 - The walking fix told a prompt to match "the camera speed of shot 9", which it cannot see — the
   same absolute speed now goes into both prompts.
-- Provenance normalised: six labels for one kind of source collapsed to EMPIRICAL; SD25-PE
+- Provenance normalised: the labels for third-party skill material collapsed to EMPIRICAL
+  everywhere (incl. the seedance-2.0 repo v6.6.0 community material in audio, seedance and
+  pipeline); the legend reads HYPOTHESIS / INFERENCE / heuristic tags as HOUSE; SD25-PE
   (OFFICIAL → EMPIRICAL — no authorship record) added to the 2.5 Provenance table; "every
   template here is [OFFICIAL]" and acting's file-wide header corrected; filler-babble's
-  `[MEASURED]` marked *record incomplete* and its citation of an outside product dropped.
+  `[MEASURED]` marked *record incomplete* and its citation of an outside product dropped; the
+  staging reference is "measured safe in one incomplete-record run", not flatly "measured safe".
 - Hell Grind residue (references are not "assets only"; the removed `@TAG` age form; 3,000–4,000
   words is above the register ladder, not its top; parameters are not prompt text), catchlight
   residue, an anatomically impossible example, three dangling § references, QUICK FACTS pointers
   for sections that lacked them, README / root counts (19 template files, 15 failure modes, 10
   Seedance templates, scene-engine listed), Seedream 4.0 → 5.0 in the platform list.
-- `templates/ad-asset-prep.md`'s related-character example named a 13–14-year-old; the technique
-  (derive the relative from the same source face) is kept with role + build, per the age-blind
-  engine rule — the content filter tightens on any minor.
+- **Age-blind examples.** `templates/ad-asset-prep.md`'s related-character example named a
+  13–14-year-old; the technique (derive the relative from the same source face) is kept as "his
+  sister, an adult woman of slighter build", per the age-blind engine rule — the content filter
+  tightens on any minor. A repo-wide sweep removed age words and trigger tokens from every other
+  example, template and eval golden (gpt-image-2, seedance, style, camera, the models deep
+  reference, audio, character-design, pipeline, recipes, soul, prompt-examples, and a v2v golden
+  that said "young man", now guarded by a `regex_absent` on the English + Chinese trigger list).
+  Rule statements that list the words, quoted vendor demo prompts and titles were left as quoted.
 - `s25-v2v-routes-to-omni-reference` now asserts Duration equals the stated source length;
   `trap-s25-four-batch-rule` now also rejects "run another four batches".
 
@@ -88,7 +110,18 @@ side is clearly the cheaper failure; a *plain error* is just fixed.
 
 - v3.33.0's "describe everything, every time" was recorded as settled; it is scope-bound (P1-1).
 - v3.34.0 called the bake case "measured"; it is one studio's field report (P2-6).
-- v3.35.0's scale limitation cited two field reports; there are three (Hell Grind's giant).
+- v3.35.0's scale limitation cited two field reports; there are three (Hell Grind's giant, ~16×).
+
+### Independent review (fixed before release)
+
+A fresh Opus reader of the raw diff found 1 wrong-answer defect and 8 real ones; all fixed before
+release and reflected above. The wrong-answer one: `higgsfield-troubleshoot`'s Quick Diagnostic
+still told every reference-attached shot to "delete ALL physical descriptions" (P1-1's contested
+side) — and `higgsfield-prompt` (3.7.1) had the same over-extension of the I2V rule. Also: P2-6
+had been marked OPEN in a case its own rule decides; the Style Prefix template still carried
+`[16:9]` and `8K`; acting rule 6 had no 2.5 scope; shotlist's staging entry used a slot-1
+filename; `@video1` is the upload-order form, not a named tag; Draw-to-Video was unscoped
+against the first-frame rule; house-rulings paths did not resolve from `skills/shared/`.
 
 ## v3.37.0 — 2026-09-26
 
