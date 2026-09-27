@@ -18,8 +18,8 @@ was run red against the pre-fix code.
   re-captured in the new format, with a 3D section.
 - **The weekly spec-drift job gave the wrong diagnosis.** Since 2026-08-31 the CLI has said
   "No workspace selected.", not "Session expired". The job now classifies the CLI's own
-  stderr (auth / workspace / missing CLI / no baseline / other), quotes it, names the matching
-  remedy, handles every exit code (unknown codes used to go green), opens a "tripwire BLIND
+  stderr (auth / workspace / not-found / missing CLI / no baseline / other), names the matching
+  remedy, quotes the CLI line only after an allowlist redaction, handles every exit code (unknown codes used to go green), opens a "tripwire BLIND
   since <date>" issue on a blind run and closes it on the next sighted one, runs the auth-free
   snapshot-age gate first, and can select a workspace from an optional
   `HIGGSFIELD_WORKSPACE_ID` secret. GitHub disables scheduled workflows in a public repo after
@@ -83,7 +83,8 @@ was run red against the pre-fix code.
 
 A fresh Opus reader (with two forked sub-readers) went through the raw diff, ran mutants and
 swapped in the v3.36.0 files: no spend path and no evaluator escape, but three gates could still
-report green on an unchecked subject. Fixed, each with a test shown red first:
+report green on an unchecked subject. Fixed, each with a test shown red first (two test-only
+gaps were shown red on a mutant instead):
 
 - `preflight.py` passed any value on a model with no spec entry (every 3D model — the 3d spec
   file was not loaded) and ran `--check-rules` green on 0/0 rules; a model with no spec entry or
@@ -91,19 +92,33 @@ report green on an unchecked subject. Fixed, each with a test shown red first:
   fails, MCP `image` and CLI `image_references` are one slot, integer types are enforced.
 - `snapshot_crosscheck.py` said "agree" with zero shared models and never failed on catalog
   membership; zero shared / no snapshot is UNCHECKED, and a model in only one source fails unless
-  allowlisted with a reason (23 membership entries, each checked live).
+  allowlisted with a reason (23 membership entries, each checked live); list-hidden studio models
+  are compared through `model get` (25 more entries); a STALE allowlist entry fails.
 - `seedance_lint.py` regressed on plain-text `- Mode: fast` headers (read again; FORMAT MODE etc.
-  still excluded); undeclared mode is evaluated with the platform default; stated reference counts
-  no longer double-count.
+  still excluded, and so are qualified labels after another `Label:` — `Tip: extension mode:`);
+  undeclared mode is evaluated with the platform default; only the leading duration value counts;
+  a reference count is the max of the stated count, the handles and the highest handle index.
 - `refresh_specs.py --update-baseline` accepted an empty pull; a default appearing or vanishing
   was invisible; a crash shared exit 1 with "pull failed" (now exit 5); capture dates are per
-  type; the CLI's own error line is redacted before it reaches logs or the public issue; CI installs
+  type; the CLI's own line reaches public surfaces only through an allowlist redaction (quoted
+  strings and any token with a digit, `_`, `=` or a `:`-value become `[redacted]`), and the step
+  summary and issue body carry only the catalog report plus kind and remedy; CI installs
   the CLI pinned and checksum-verified instead of `curl | sh`.
-- A hand-added tombstone whitelisted any id in the ledger — a tombstone must now be proven by the
-  snapshot history, and a retired id takes no new ledger rows.
+- A hand-added tombstone whitelisted any id in the ledger — a tombstone must now be proven by a
+  well-formed dump in the committed snapshot history (shape, not provenance — the trust boundary
+  is the reviewed snapshot set), and `log-gen` refuses new rows for a retired id (an amendment must
+  supersede a row of the same model). The validator cannot tell a history row from a hand-appended
+  one; that ceiling is marked in the code.
 - `claims_lint.py` skipped non-UTF-8 files and passed an empty root; both are errors now.
 - The two CLI-only utility models that appeared on 2026-09-26 (`depth_anything_video`,
   `fps_boost`) are accepted into the baseline and allowlisted as CLI-only.
+- `preflight.py` ignored the CLI baseline's params and enums whenever a spec entry existed
+  (`gpt_image_2 background=bogus` passed); a param unknown to both sources or a value outside a CLI
+  enum now fails, and a value legal in only one source passes with a disagreement note.
+- A second reader of this fix pass found six more real defects (the `supersedes` bypass, the
+  fake-snapshot tombstone proof, redaction gaps, the qualified-label regression, STALE entries
+  passing, the CLI enums above); all fixed with red-first tests. The live comparison of list-hidden
+  models also found that `nano_banana_2` names Nano Banana Pro on the CLI (see `image-models.md`).
 
 ### For the maintainer
 
