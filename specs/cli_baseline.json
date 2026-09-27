@@ -285,6 +285,67 @@
         "size(params.urls) == 1"
       ]
     },
+    "depth_anything_video": {
+      "id": "depth_anything_video",
+      "view": 2,
+      "output_type": "video",
+      "aspect_ratios": [],
+      "params": {
+        "colormap": {
+          "options": [
+            "grayscale",
+            "inferno",
+            "magma",
+            "turbo",
+            "viridis"
+          ],
+          "default": "grayscale",
+          "type": "string",
+          "required": false
+        },
+        "max_frames": {
+          "options": [],
+          "default": null,
+          "type": "integer|null",
+          "required": false
+        },
+        "resolution": {
+          "options": [
+            "1080p",
+            "360p",
+            "480p",
+            "720p",
+            "auto"
+          ],
+          "default": "auto",
+          "type": "string",
+          "required": false
+        },
+        "side_by_side": {
+          "options": [],
+          "default": false,
+          "type": "boolean",
+          "required": false
+        },
+        "variant": {
+          "options": [
+            "VDA-Base",
+            "VDA-Large",
+            "VDA-Small"
+          ],
+          "default": "VDA-Large",
+          "type": "string",
+          "required": false
+        },
+        "video_references": {
+          "options": [],
+          "default": null,
+          "type": "array",
+          "required": true
+        }
+      },
+      "rules": []
+    },
     "flux_3_video": {
       "id": "flux_3_video",
       "view": 2,
@@ -399,6 +460,38 @@
         }
       },
       "rules": []
+    },
+    "fps_boost": {
+      "id": "fps_boost",
+      "view": 2,
+      "output_type": "video",
+      "aspect_ratios": [],
+      "params": {
+        "fps": {
+          "options": [],
+          "default": null,
+          "type": "integer",
+          "required": true
+        },
+        "variant": {
+          "options": [
+            "bytedance",
+            "topaz"
+          ],
+          "default": null,
+          "type": "string",
+          "required": true
+        },
+        "video_references": {
+          "options": [],
+          "default": null,
+          "type": "array",
+          "required": true
+        }
+      },
+      "rules": [
+        "params.variant != \"bytedance\" || params.fps >= 24"
+      ]
     },
     "gemini_omni": {
       "id": "gemini_omni",

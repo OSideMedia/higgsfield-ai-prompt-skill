@@ -11,9 +11,9 @@ was run red against the pre-fix code.
 ### Fixed
 
 - **The tripwire was blind to new parameters.** `refresh_specs.py` walked only the baseline's
-  own params and kept only enum + default, so a new param, a range / type / `required` change,
+  own params and kept only enum + default, so a new param, a type or `required` change,
   or a new media role exited 0 "Fresh" — 8 existing models gained params after 2026-08-07 and
-  none were reported. It now diffs both sides, reports media-role changes as such, and files
+  none were reported. It now diffs both sides (min/max are compared too, but CLI 1.1.23's `model get` reports no bounds — no baseline param carries min/max — so a range change is not yet visible), reports media-role changes as such, and files
   CLI shape surprises as exit 4 (fix the parser) instead of exit 1 (re-auth). Baseline
   re-captured in the new format, with a 3D section.
 - **The weekly spec-drift job gave the wrong diagnosis.** Since 2026-08-31 the CLI has said
@@ -64,8 +64,8 @@ was run red against the pre-fix code.
 
 - **`scripts/preflight.py`** — a free platform-constraint preflight for any model: enums, ranges,
   media roles and the catalog's CEL rules, through a small safe evaluator (no `eval`). A rule it
-  cannot read is reported UNCHECKED and fails `--strict` — never a silent pass. All 107 live
-  rules parse; the Seedance 2.5 frame rules have truth-table tests. `seedance_lint.py` uses it for
+  cannot read is reported UNCHECKED and fails `--strict` — never a silent pass. All 133 live
+  rules (90 models, incl. 3D) parse; the Seedance 2.5 frame rules have truth-table tests. `seedance_lint.py` uses it for
   the new `**References**:` / `**Start frame**:` / `**End frame**:` header lines.
 - **`scripts/claims_lint.py` + `evals/spec-claims.json`** — 21 registry entries binding doctrine
   phrasings ("2.5 caps at 720p", "no start_image role", "Grok Image is not on Higgsfield",
@@ -78,6 +78,32 @@ was run red against the pre-fix code.
 - **`/refresh-specs`** — the Tier-2 refresh as one guided command; `sync_specs.py --changed`
   lists the models that moved and the eval cases that name them.
 - Eval traps `trap-wan3-1s` (red on v3.36.0's specs) and `wan3-smart-duration-legal`.
+
+### Independent review (fixed before release)
+
+A fresh Opus reader (with two forked sub-readers) went through the raw diff, ran mutants and
+swapped in the v3.36.0 files: no spend path and no evaluator escape, but three gates could still
+report green on an unchecked subject. Fixed, each with a test shown red first:
+
+- `preflight.py` passed any value on a model with no spec entry (every 3D model — the 3d spec
+  file was not loaded) and ran `--check-rules` green on 0/0 rules; a model with no spec entry or
+  no rules on record is now UNCHECKED (fails `--strict`), media on a model that accepts none
+  fails, MCP `image` and CLI `image_references` are one slot, integer types are enforced.
+- `snapshot_crosscheck.py` said "agree" with zero shared models and never failed on catalog
+  membership; zero shared / no snapshot is UNCHECKED, and a model in only one source fails unless
+  allowlisted with a reason (23 membership entries, each checked live).
+- `seedance_lint.py` regressed on plain-text `- Mode: fast` headers (read again; FORMAT MODE etc.
+  still excluded); undeclared mode is evaluated with the platform default; stated reference counts
+  no longer double-count.
+- `refresh_specs.py --update-baseline` accepted an empty pull; a default appearing or vanishing
+  was invisible; a crash shared exit 1 with "pull failed" (now exit 5); capture dates are per
+  type; the CLI's own error line is redacted before it reaches logs or the public issue; CI installs
+  the CLI pinned and checksum-verified instead of `curl | sh`.
+- A hand-added tombstone whitelisted any id in the ledger — a tombstone must now be proven by the
+  snapshot history, and a retired id takes no new ledger rows.
+- `claims_lint.py` skipped non-UTF-8 files and passed an empty root; both are errors now.
+- The two CLI-only utility models that appeared on 2026-09-26 (`depth_anything_video`,
+  `fps_boost`) are accepted into the baseline and allowlisted as CLI-only.
 
 ### For the maintainer
 

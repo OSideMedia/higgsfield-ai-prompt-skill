@@ -66,10 +66,10 @@ workspace/                ← Git-ignored working area (input/ → processed/, o
 - `python3 scripts/build_index.py` — regenerate INDEX.md after any heading change
 - `python3 scripts/sync_specs.py --type video|image|audio|3d` — regenerate specs/ from the newest dated snapshot; `--changed` lists models that moved since the previous snapshot and the eval cases naming them
 - `python3 scripts/snapshot_crosscheck.py --type all` — two-way structural cross-check of the snapshots against the live CLI (read-only calls)
-- `python3 scripts/preflight.py <model> …` — free preflight of a planned generation against the platform's enums and rules
+- `python3 scripts/preflight.py --model <id> [--param K=V …] [--media ROLE=N …] [--strict]` — free preflight of a planned generation against the platform's enums, types, media roles and rules (a model with no spec entry or no rules on record is UNCHECKED, which fails --strict)
 - `python3 scripts/claims_lint.py` — doctrine claims vs today's specs (also run by `validate.py --strict`)
 - `python3 scripts/validate.py --snapshot-age` — auth-free snapshot staleness gate (the weekly CI job runs it first)
-- `python3 scripts/refresh_specs.py` — spec-drift tripwire (exit 0 fresh / 3 changed / 1 pull-failed / 4 CLI-shape-changed); `--update-baseline` to accept a reviewed change
+- `python3 scripts/refresh_specs.py` — spec-drift tripwire (exit 0 fresh / 3 changed / 1 pull-failed / 4 CLI-shape-changed / 5 crashed); `--update-baseline` to accept a reviewed change (refuses an empty pull)
 - `python3 scripts/higgsfield_memory.py stats` — memory database statistics
 - `/validate` — run validation via slash command (claims release-ready only when all three gates pass)
 - `/refresh-specs` — the whole Tier-2 spec refresh as one guided command
