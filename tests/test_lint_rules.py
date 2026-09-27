@@ -476,3 +476,87 @@ def test_cli_media_flag_reaches_the_rules():
                         "--media", "start_image=1", CLEAN],
                        capture_output=True, text=True)
     assert r.returncode == 1 and "platform-rule" in r.stdout
+
+
+# ── v3.37.0 review: plain-text headers declare the mode again (regression) ──
+
+@pytest.mark.parametrize("header,mode", [
+    ("- Mode: fast", "fast"),                        # bullet (v3.36.0 read this)
+    ("* Mode: fast", "fast"),
+    ("1. Mode: fast", "fast"),
+    ("Aspect ratio: 16:9 Mode: fast", "fast"),       # inline, one space after a value
+    ("Resolution: 1080p Mode: fast", "fast"),
+    ("Aspect: auto Mode: fast", "fast"),             # value is a plain word
+])
+def test_plain_text_headers_declare_the_mode(header, mode):
+    assert sl.parse_settings_header(header + "\n" + CLEAN).mode == mode
+
+
+@pytest.mark.parametrize("label", ["extension-mode: forward", "Camera: dolly Shot Mode: x"])
+def test_qualified_mode_labels_stay_excluded(label):
+    assert sl.parse_settings_header(label + "\n" + CLEAN).mode is None
+
+
+def test_bullet_header_fast_1080p_fails_end_to_end():
+    text = "- Mode: fast\n- Resolution: 1080p\n\n" + CLEAN
+    r = subprocess.run([sys.executable, str(LINT), "--model", "seedance_2_0", text],
+                       capture_output=True, text=True)
+    assert r.returncode == 1 and "mode-constraint" in r.stdout, r.stdout
+
+
+# ── v3.37.0 review: the platform-rule bridge never goes silent ──────────────
+
+def test_model_without_rules_on_record_says_so():
+    findings = sl.structural_lint(CLEAN, sl.Settings(mode="std"), repo_spec("seedance_2_0"),
+                                  baseline={"rules": {}})
+    info = [f for f in findings if f.rule == "platform-rules-not-on-record"]
+    assert info and info[0].severity == "INFO" and "NOT checked" in info[0].fix
+
+
+def test_undeclared_mode_is_evaluated_with_the_platform_default():
+    # seedance_2_5 default mode is t2v, which rejects a start frame: the
+    # prompt used to get a WARN about handles and nothing else.
+    live = preflight.load_baseline(LIVE_RULES)
+    text = "**Start frame**: @Image 1\n\n" + CLEAN
+    findings = lint_header(text, repo_spec("seedance_2_5"), baseline=live)
+    assert "platform-rule" in fails(findings)
+    assert any(f.rule == "mode-defaulted" and "t2v" in f.hit for f in findings)
+    declared = lint_header("**Mode**: omni_reference\n" + text, repo_spec("seedance_2_5"),
+                           baseline=live)
+    assert "platform-rule" not in fails(declared)
+    assert not any(f.rule == "mode-defaulted" for f in declared)
+
+
+# ── v3.37.0 review: media counts and duration values read what was written ──
+
+@pytest.mark.parametrize("line,n", [
+    ("**References**: 2 images (@Image 1, @Image 2)", 2),   # was counted 4
+    ("**References**: @Image 1, @Image 2, @Image 3", 3),
+    ("**References**: 2 images", 2),
+    ("**References**: 1 image, @Image 1, @Image 2", 2),
+])
+def test_stated_count_and_handles_are_one_set(line, n):
+    assert sl.parse_settings_header(line + "\n" + CLEAN).media["image_references"] == n
+
+
+@pytest.mark.parametrize("header,duration", [
+    ("**Duration**: smart pacing, 8s", 8),                  # was read as -1
+    ("**Duration**: smart", -1),
+    ("Duration: smart duration", -1),
+    ("Duration: smart (the model picks)", -1),
+    ("Duration: 8 seconds", 8),
+    ("Duration: 5-10s", None),                              # a range is not a length
+    ("**Duration**: smart  **Mode**: t2v", -1),
+])
+def test_duration_value_parsing(header, duration):
+    assert sl.parse_settings_header(header + "\n" + CLEAN).duration == duration
+
+
+def test_duration_unverified_when_the_floor_is_unknown():
+    # A spec whose smart-duration floor cannot be derived: a length inside
+    # the max is UNVERIFIED (WARN), never passed and never failed.
+    spec = dict(WAN3, params=[{"name": "duration", "type": "number", "min": -1,
+                               "max": 30, "description": "Duration, or -1 for smart."}])
+    findings = sl.structural_lint(CLEAN, sl.Settings(duration=5), spec, baseline=NO_RULES)
+    assert "duration-unverified" in warns(findings)
+    assert "duration-out-of-range" not in fails(findings)
