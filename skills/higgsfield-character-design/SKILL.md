@@ -161,8 +161,9 @@ register and physical signature stay pinned the way the Visual DNA pins the look
 fix the *words*, not where they go: the movement lock is copied verbatim wherever that
 movement can happen and transformed, not deleted, where it cannot
 (`../higgsfield-acting/SKILL.md` § Scene adaptation, `../shared/house-rulings.md` P3-4); the
-voice lock goes into the audio field each time on Seedance 2.0 and once, into the role
-sentence, on 2.5 (`../higgsfield-acting/SKILL.md` § Voice, P2-2).
+voice lock goes into the audio field each time on Seedance 2.0 and into the role sentence on
+2.5 — whether once per prompt or once per project is OPEN (`../higgsfield-acting/SKILL.md`
+§ Voice, `../shared/house-rulings.md` P2-2).
 
 **Build it by interview, not by questionnaire dump.** Scope first (how big is this — one
 short, or a series?), then the spine (premise, thesis, timeline, aesthetic), then factions,
@@ -238,7 +239,7 @@ The bible tells you who the character *is*; the generated stills tell you they *
 
 Six steps, in order — the user chooses at step 5; never skip ahead to the final prompt:
 
-1. **Casting read.** Interpret the locked character sheet as casting material, not lore: presence, playable age range, status, inner wound, external mask, likely voice, likely movement. Pull straight from the 9 questions — Silhouette and Contradiction do most of the work here.
+1. **Casting read.** Interpret the locked character sheet as casting material, not lore: presence, how weathered the character reads on screen, status, inner wound, external mask, likely voice, likely movement. The casting read is analysis for you; the audition prompt never states an age (`../higgsfield-seedance/ENGINE-RULES.md` rule 1 — describe by role, build and visible markers). Pull straight from the 9 questions — Silhouette and Contradiction do most of the work here.
 2. **Role options (3–6).** Offer contrasting role types the character could be cast as — lead, antagonist, mentor, tragic hero, villain-with-restraint, silent presence… Each option must state **what the audition has to prove** ("can he menace without raising his voice?"). An option with nothing to prove is not an option.
 3. **Three audition lines.** Real scene dialogue with subtext, implying an off-camera reader, each playable more than one way. **Not trailer narration, not lore recitation** — if it sounds like a voice-over, it cannot be *acted*.
 4. **Three voice triggers.** Each is **≤3 comma-separated qualities** ("authoritative, grief, controlled") — a *how*, never the spoken line itself. The three must contrast with each other, not be synonyms.
@@ -256,7 +257,7 @@ Six steps, in order — the user chooses at step 5; never skip ahead to the fina
 
 ### Worked mini-example (the tide-city fixer from Step 3)
 
-- **Casting read:** late 20s reading older; low status wearing borrowed confidence; mask of the indispensable broker over a wound of being kept only while useful; voice quick and transactional, dropping register when cornered; moves like his Silhouette — half-crouched at doorways, weight on the back foot.
+- **Casting read:** reads more worn than his build suggests; low status wearing borrowed confidence; mask of the indispensable broker over a wound of being kept only while useful; voice quick and transactional, dropping register when cornered; moves like his Silhouette — half-crouched at doorways, weight on the back foot.
 - **Role option — villain-with-restraint.** Must prove: he can threaten someone *while doing them a favor*, without ever raising his voice.
 - **Audition line:** *"You've still got both your water jars. That's not luck — that's me. So sit down, and let me tell you the second half of the favor."* (Playable warm or menacing; the off-camera reader is whoever owes him.)
 - **Voice trigger:** `quiet, transactional, barely controlled`.

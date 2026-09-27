@@ -258,12 +258,13 @@ speak more words than it can keep synced to the mouth.
 | Japanese / Korean | Under-tested | No reliable field numbers yet |
 
 This is a ceiling for reliable sync across a clip; the floor for one short shot is
-`../higgsfield-seedance/FAILURE-MODES.md` § Filler-babble on a short dialogue line. **Which
-reading** `[HOUSE]`: the budget is a **per-clip total with a per-line cap** (5–10 words a
-line), not a rate. Read as a rate (~1.1–1.3 words/s), an 8-word line in a 4 s shot (2 w/s)
-would already be over it — and the one run here (record incomplete) found 8- and 12-word
-4 s lines syncing clean, a direction against the rate reading, not proof. On the total
-reading the two meet at one 8–10-word line in a 4 s shot (`../shared/house-rulings.md` P3-6).
+`../higgsfield-seedance/FAILURE-MODES.md` § Filler-babble on a short dialogue line. **How to
+read this budget is OPEN** (`../shared/house-rulings.md` P3-6). As a **per-clip total with a
+per-line cap** (5–10 words a line), the floor and the ceiling meet at one 8–10-word line in a
+4 s shot. As a **rate** (~1.1–1.3 words/s), an 8-word line in a 4 s shot (2 w/s) is already
+over it. Nothing here measures lip-sync at that density — the filler-babble run graded
+transcripts only. Scripting the silence (FAILURE-MODES counter 2) or cutting the shot down to
+the line satisfies both readings.
 
 Cross-language sizing unit: **"one short sentence ≈ one breath."** Write dialogue
 in breath-sized sentences and count breaths, not seconds.

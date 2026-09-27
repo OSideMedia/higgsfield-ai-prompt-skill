@@ -492,8 +492,8 @@ The AI-vs-VFX build routes "clothing, wardrobe changes, branded garments" to GPT
 (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1); this comparison picked Seedream 5.0
 Pro for costume texture on a sheet generated from scratch. The build does not split by job —
 reading the two as *edits on an existing sheet* vs *texture from scratch* is a `[HOUSE]`
-inference that lets both stand. Two productions, no measurement here
-(`../shared/house-rulings.md` P3-2).
+inference that would let both stand — not a default. Two productions, no measurement here;
+OPEN (`../shared/house-rulings.md` P3-2), and the method below decides per character.
 
 [UNPROVEN HERE] — one production's comparison, on two characters. Treat the
 *method* as the finding, not the table: **run the same sheet prompt through

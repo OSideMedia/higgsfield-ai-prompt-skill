@@ -75,9 +75,11 @@ directory. All entries dated **2026-09-26** unless marked.
 - **OPEN — two failed takes with different flaws:** troubleshoot § Take Triage
   `[EMPIRICAL — Emily2040]` (with `../higgsfield-prompt/SKILL.md` § Before You Iterate) reads them
   as stochastic (batch-and-cull); troubleshoot § Retry Ladder step 2 `[EMPIRICAL — MiniMax H3]`
-  reads a second failure as over-packing (split). At n = 2 the ledger verdict is `low-n`. No default on cost — a wasted batch and a needless split are comparable. Tie-break
-  `[HOUSE]`, from Before You Iterate's own wording ("with the occasional near-hit"): a near-hit
-  on the shot's primary job → batch-and-cull; no near-hit → split.
+  reads a second failure as over-packing (split). At n = 2 the ledger verdict is `low-n`.
+  **No default** — a wasted batch and a needless split are comparable. The agent names both
+  moves and their cost and lets the user pick; at five or more logged rows the ledger's fork
+  verdict decides. (A `[HOUSE]` near-hit tie-break given earlier in this release was a default
+  in all but name and is withdrawn.)
 - **Settling probe:** for the first OPEN point, the ledger — log every v2v batch with its defect
   class, and read how often a same-defect pair at batch 2 recovered by batch 4.
 
@@ -100,7 +102,7 @@ directory. All entries dated **2026-09-26** unless marked.
 
 ### P2-2 · Voice: paste every time, or once?
 
-- **Ruling:** SCOPE — by model — plus **OPEN** on what "once" means on 2.5, with a default.
+- **Ruling:** SCOPE — by model — plus **OPEN** on what "once" means on 2.5, no default.
 - **Scope:** Seedance **2.0**, or any shot where no reused reference carries the voice → the
   voice-bible line verbatim in the audio field each time the character speaks. **2.5** with the
   same character-sheet reference reused → the sheet carries the voice; it goes in the role
@@ -113,14 +115,16 @@ directory. All entries dated **2026-09-26** unless marked.
   "rather than re-specifying it in every prompt" — readable as once per *project*. Against
   that, the Dreamina core formula's Audio slot lists "voice characteristics" per prompt
   (`../higgsfield-seedance-2-5/SKILL.md` § The Core Prompt Formula `[OFFICIAL — Dreamina]`), and
-  the same build's § Emotion with no video reference writes "how the voice sounds" into the
-  prompt at hand. Nothing here measures it.
-- **Default `[HOUSE]`:** once per **prompt**, in the role sentence. Each generation reads only its
-  own prompt (`../higgsfield-seedance/SKILL.md` § Context isolation); a line pasted from the
-  voice bible is the same words the sheet was built to, so it can only fight the sheet if the
-  bible and the sheet already disagree — a failure the wording discipline forbids anyway —
-  while an omitted line leaves a dialogue shot with no protection if the sheet under-carries
-  the voice, and that costs a re-render.
+  the same build writes "how the voice sounds" into the prompt at hand
+  (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Direction patterns from the build, **Emotion
+  with no video reference**). Nothing here measures it.
+- **Why no default:** once per prompt reads against the voice lock's literal wording, and
+  whether re-stating the voice fights a sheet that already carries it is unmeasured; once per
+  project leaves every later dialogue shot with no voice text if the sheet under-carries it.
+  Both failures cost re-renders of dialogue shots; neither is shown to be cheaper. (A
+  once-per-prompt default was given earlier in this release on a one-sided cost argument and
+  is withdrawn.) Settled either way: role sentence, not the audio field; verbatim from the
+  voice bible.
 - **Unmeasured edge:** whether also repeating the voice in the 2.5 audio field helps or fights.
 - **Settling probe:** one 480p pair on 2.5, same sheet reference, second prompt with vs without
   the role-sentence voice line, voice match scored against the first.
@@ -185,21 +189,28 @@ directory. All entries dated **2026-09-26** unless marked.
 
 ### P2-6 · Anamorphic in the video prompt vs baking it into the asset
 
-- **Ruling:** SCOPE — by whether a baked plate exists. (Was recorded OPEN at the Style Prefix;
-  relabelled: the bake rule already decides that case and nothing argues the other way.)
+- **Ruling:** SCOPE where no plate exists; **OPEN — unmeasured**, no default, where the location
+  plates already carry the look. (Briefly relabelled SCOPE in this release on the claim that
+  nothing argued the other side; Hell Grind does, so it is OPEN again.)
 - **Scope:** a standalone shot, a t2v shot or a genre recipe has nothing to bake into — the lens
   words in the Look line are the only route (`../higgsfield-recipes/SKILL.md`,
-  `../higgsfield-seedance/SKILL.md` § Name the thing, `../../SKILL.md` HARD RULE 7). A sequence
-  whose baked plate is attached to **every** shot → the optics words leave the video prompt
-  (`../higgsfield-seedance/SKILL.md` § Bake it into the asset `[FIELD — ONEIRIC]`, one studio,
-  not measured here) — **including the Style Prefix**, which is pasted verbatim into every
-  scene prompt and so *is* the video prompt
-  (`../../templates/seedance/global-style-prefix.md`).
-- **Why not OPEN:** the harvest prefixes that name a lens
-  (`../../templates/seedance/global-style-prefix.md` § Field specimens `[FIELD — 13-project
-  harvest]`) never report baked plates — they sit in the first regime and are no second source
-  for the second. If a production is found that names the lens over a baked plate *and* reports
-  the result, this reopens.
+  `../higgsfield-seedance/SKILL.md` § Name the thing, `../../SKILL.md` HARD RULE 7).
+- **OPEN — a sequence whose location plates carry the lens or look:** does the video prompt —
+  the Style Prefix included, since it is pasted verbatim into every scene prompt — still name it?
+  - *Drop the words:* `../higgsfield-seedance/SKILL.md` § Bake it into the asset `[FIELD —
+    ONEIRIC]` — once the plate carries the lens, the optics vocabulary never appears in the video
+    prompt. One studio, not measured here.
+  - *Name it in both:* `../higgsfield-seedance/HELL-GRIND.md` § The character sheet `[OFFICIAL —
+    Hell Grind brief]` — "the cinema look lives in the locations **and** the video prompts", and
+    its Style Prefix is pasted word for word into every scene prompt (§ Two extra blocks).
+  - The harvest prefixes that name a lens (`../../templates/seedance/global-style-prefix.md`
+    § Field specimens `[FIELD — 13-project harvest]`) cannot be placed in either regime: the
+    record here does not say whether their plates carried the lens.
+- **Why no default:** words over a baked plate risk the drift and fight the bake rule reports;
+  dropping them risks the look thinning on shots where the plate fills little of the frame (a
+  close-up, an insert). Neither is shown to be cheaper.
+- **Settling probe:** one 480p pair on one baked location plate, Style Prefix with vs without the
+  lens words, scored for lens character held and for flare/streak garbage.
 
 ### P2-7 · `NO BGM` or `No music.`?
 
@@ -308,15 +319,18 @@ beside it — a file named `image_1` would sit in the character's slot.
 
 ### P3-2 · Clothing: GPT Image 2 or Seedream 5.0 Pro?
 
-- **Ruling:** **OPEN — unmeasured**, with a `[HOUSE]` job split as the working reading. The
+- **Ruling:** **OPEN — unmeasured**, no default. The
   AI-vs-VFX build routes "clothing, wardrobe changes, branded garments" to GPT Image 2
   (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1 `[FIELD — AI-vs-VFX]`); one tutorial
   comparison picked Seedream 5.0 Pro for costume **texture and wear** on a from-scratch sheet
   (`../higgsfield-soul/SKILL.md` § Pick the Sheet Model per JOB `[DEMO]`). Neither source splits
-  by job. The house reading — **edits** on an existing sheet → GPT Image 2, **texture from
-  scratch** → Seedream 5.0 Pro — makes both true but is an inference, and it is labelled as one
-  in the source rows (`../higgsfield-seedance-2-5/VFX-PIPELINE.md`, `../../image-models.md`).
-  Two productions, no measurement; the method (run the sheet through 2–3 models) stands.
+  by job. One `[HOUSE]` reading would make both true — **edits** on an existing sheet → GPT
+  Image 2, **texture from scratch** → Seedream 5.0 Pro — but it is an inference, not a default,
+  and the source rows label it as one (`../higgsfield-seedance-2-5/VFX-PIPELINE.md`,
+  `../../image-models.md`). What stands is the method both productions support: run the sheet
+  through 2–3 models and compare on the character's hardest axis — a per-character measurement,
+  not a pick between the two sources. (Earlier in this release the split was called "the working
+  reading", a default in all but name; withdrawn.)
 
 ### P3-3 · Tag versioning
 
@@ -339,15 +353,19 @@ beside it — a file named `image_1` would sit in the character's slot.
 
 ### P3-6 · Filler-babble's 8+-word floor vs the ~16–20-words-per-15 s sync budget
 
-- **Ruling:** SCOPE — a floor against dead air in one short shot vs a ceiling for reliable
-  lip-sync across a clip. The meeting point depends on how the budget is read: `[HOUSE]` reads
-  "~16–20 words per ~15 s clip (5–10 per line)" as a **per-clip total with a per-line cap**, and
-  on that reading they meet at one 8–10-word line in a 4 s shot. As a **rate** (~1.1–1.3 w/s)
-  that line (2–2.5 w/s) would be over budget; the one house run (record incomplete) found 8-
-  and 12-word 4 s lines clean — a direction against the rate reading, not proof. When the line
-  cannot grow inside the budget, script the silence. `../higgsfield-seedance/FAILURE-MODES.md`
-  § Filler-babble (its `[MEASURED]` tag is now marked record-incomplete: no route, no n at ≤6
-  words, record held outside this repo) · `../higgsfield-audio/SKILL.md` § Per-language
+- **Ruling:** SCOPE on the axes — a floor against dead air in one short shot vs a ceiling for
+  reliable lip-sync across a clip — and **OPEN — unmeasured**, no default, on how the budget
+  reads. Read "~16–20 words per ~15 s clip (5–10 per line)" as a **per-clip total with a
+  per-line cap** and the two meet at one 8–10-word line in a 4 s shot; read it as a **rate**
+  (~1.1–1.3 w/s) and that line (2–2.5 w/s) is over budget. (Earlier in this release a `[HOUSE]`
+  reading picked the total, citing the filler-babble run as evidence. That run was
+  transcript-graded — it found no filler-babble in 8- and 12-word takes and says nothing about
+  lip-sync — and it was ported from an outside product's registry, so it was neither evidence
+  on the budget nor "here". Withdrawn.) Not a default but a dominant move: scripting the
+  silence, or cutting the shot down to the line, satisfies both readings.
+  `../higgsfield-seedance/FAILURE-MODES.md` § Filler-babble on a short dialogue line (its
+  `[MEASURED]` tag is marked record-incomplete: no route, no mode, no n at ≤6 words, record held
+  outside this repo) · `../higgsfield-audio/SKILL.md` § Per-language
   dialogue-sync budgets `[EMPIRICAL — community seedance-2.0 repo v6.6.0]` (relabelled from FIELD in audio, seedance and pipeline alike).
 
 ---

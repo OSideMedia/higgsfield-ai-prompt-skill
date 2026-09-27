@@ -37,7 +37,7 @@ prompt. It does not change camera, light, wardrobe, or grade.
 - Every tic carries a **trigger**; every mask carries a **crack** — at least one "However, when X…" clause per profile [→](#the-acting-master-profile)
 - **Eye life is mandatory and never optional** — give the eyes a **task** aimed at the partner, then saccades, blink quality, eyes-lead-thought; catchlights only make the task legible, they never fix a dead stare. Dead eyes are the number-one tell of AI acting [→](#eye-life)
 - Scene adaptation **transforms, never deletes**: a behavior that can't physically happen is displaced into another outlet, not removed [→](#scene-adaptation)
-- The **voice prompt is locked** — one per character, from one voice bible, never adapted per scene; on 2.0 pasted verbatim into the audio field each time they speak, on 2.5 written in the character's role sentence, not the audio field, because the reused sheet carries the voice (once per prompt by default — what "once" means is OPEN, P2-2) [→](#voice--fixed-identity-never-adapted)
+- The **voice prompt is locked** — one per character, from one voice bible, never adapted per scene; on 2.0 pasted verbatim into the audio field each time they speak, on 2.5 written in the character's role sentence, not the audio field, because the reused sheet carries the voice (once per prompt or once per project is OPEN, no default — P2-2) [→](#voice--fixed-identity-never-adapted)
 - **States, not transitions.** Models fail process and nail state: "mid-throw, arm extended", not "reaches in, pulls out, winds up" — for a peak reached through a reversing process; simple same-direction motion that must fill the clip is chained instead [→](#states-not-transitions)
 - Ensemble reactions travel in a **wave, never in sync**; the strong are still and quiet, the weak fidget and shout [→](#ensemble-and-space)
 - 15 named bad-acting symptoms with prompt-level fixes, and a 0–5 self-check scale — **aim every hero shot at 4+** [→](#the-atlas-of-bad-acting)
@@ -411,10 +411,10 @@ never modified. If the character appears but says nothing, omit it.
 > voice together with the appearance (`../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Direction
 > patterns from the build — the voice lock, `[FIELD]` + `[OFFICIAL — prompt-builder 2.5]`): the voice goes in the character's
 > **role sentence**, not repeated in the audio field — still copied from the voice bible, never
-> retyped. Whether "once" there means once per *prompt* or once per *project* is **OPEN**
-> (P2-2); the default is once per prompt, in the role sentence, because each generation reads
-> only its own prompt. Whether also repeating it in the audio field helps or fights on 2.5 is
-> unmeasured here.
+> retyped. Whether "once" there means once per *prompt* or once per *project* is **OPEN, no
+> default** (P2-2): re-stating it may fight the sheet, leaving it out may leave a later shot
+> unprotected, and neither is measured. Whether also repeating it in the audio field helps or
+> fights on 2.5 is unmeasured here.
 
 > **Not even a synonym.** `[FIELD — Higgsfield Studio, ONEIRIC breakdown, 2026-08-13]`
 > "Verbatim" is stricter than it sounds, and the way it gets broken is not carelessness —

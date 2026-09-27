@@ -378,7 +378,10 @@ prompt:
 - **Are they failing in varied ways, with the occasional near-hit?**
   (performance flat on one roll, camera off on another, physics odd on a third)
   → **stochastic.** The prompt is right; the roll wasn't. **Stop touching the
-  prompt. Lock it, fire a batch, and cull.**
+  prompt. Lock it, fire a batch, and cull.** (When only two takes exist and both
+  failed, the troubleshoot Retry Ladder reads a second failure as over-packing
+  instead — OPEN, no default: `../higgsfield-troubleshoot/SKILL.md` § Stop-Rule
+  Ladder, `../shared/house-rulings.md` P1-2.)
 
 You don't have to eyeball this. The ledger already classifies every reject as
 structural or stochastic, and `ratio <project>` prints a **verdict** per shot

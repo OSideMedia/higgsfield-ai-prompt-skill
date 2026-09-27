@@ -457,6 +457,10 @@ Dialogue language: authentic Los Angeles English. The man says in natural Los An
 vernacular: {No way, you actually made it.}
 ```
 
+*Adapted: as first recorded here, this example inside the `[OFFICIAL — Dreamina]` section
+named the speaker by an age word; rewritten age-blind per
+`../higgsfield-seedance/ENGINE-RULES.md` rule 1. The structure is Dreamina's.*
+
 Two house rules carry over from `../higgsfield-audio/SKILL.md` and the film pipeline in
 `../higgsfield-seedance/HELL-GRIND.md`:
 
@@ -471,12 +475,12 @@ Two house rules carry over from `../higgsfield-audio/SKILL.md` and the film pipe
 - **Diegetic-only is a project choice, and 2.5 finally obeys it.** Random subtitles and
   unrequested BGM were 2.0's most-reported nuisance; ByteDance calls suppression of both a
   headline 2.5 fix `[OFFICIAL — Dreamina]`. Still say it — and no `【】` block — rather
-  than trusting the improvement. Two parts of this are settled: **lead with the positive
-  diegetic list** (the sources and room tone the audio *is*), and **never put the
+  than trusting the improvement. One part is settled: **lead with the positive diegetic
+  list** (the sources and room tone the audio *is*). One is a default: **never put the
   suppression inside the `()` bracket** — `()` is the music channel, so `(no music)` there
-  is most likely read as a music cue. That last step is a `[HOUSE]` inference, not a
-  measurement; it stands as the default because writing the suppression as plain audio text
-  after the list costs nothing. Which token to write —
+  is most likely read as a music cue. That is a `[HOUSE]` inference, not a measurement; it
+  stands as the default because writing the suppression as plain audio text after the list
+  costs nothing (`../shared/house-rulings.md` P2-7). Which token to write —
   **`NO BGM`** (one third-party skill: a production term reads as a hard spec,
   `../higgsfield-audio/SKILL.md` § Suppressing music `[EMPIRICAL]`) or **`No music.`** (the
   form 12 of 13 harvested projects shipped, `../../templates/seedance/global-style-prefix.md`

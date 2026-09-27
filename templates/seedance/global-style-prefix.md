@@ -52,11 +52,14 @@ Notes on the fields:
   (4K in `mode=std` only); the preflight linter catches out-of-enum values.
   `24fps-cadence` in the Technical line is a motion register, not a setting —
   Seedance has no frame-rate parameter.
-- **Lens words** — name a lens character in the Style line only when the
-  location plates do **not** already carry it. In a sequence whose plates were
-  generated with the lens baked in, the prefix drops the optics words like every
-  other part of the video prompt
-  (`../../skills/higgsfield-seedance/SKILL.md` § Bake it into the asset;
+- **Lens words** — with no baked plate, the Style line is the only route to a
+  lens character. When the location plates already carry it, whether the prefix
+  still names it is **OPEN, no default**: the bake rule drops the optics words
+  from the video prompt, and this prefix *is* the video prompt
+  (`../../skills/higgsfield-seedance/SKILL.md` § Bake it into the asset, one
+  studio); Hell Grind keeps "the cinema look … in the locations and the video
+  prompts" and pastes this prefix verbatim
+  (`../../skills/higgsfield-seedance/HELL-GRIND.md` § The character sheet;
   `../../skills/shared/house-rulings.md` P2-6).
 - **Color `60:30:10`** — dominant / secondary / accent ratio; name the three
   colours in the per-scene Scene block, not here.
@@ -105,10 +108,10 @@ hard positive rule, always ending on continuity/no-drift + audio policy.**
 Axes observed across the corpus (pick what the project needs):
 
 - **Format** — "4K anamorphic widescreen" / "8K cinematic photoreal", quoted as
-  harvested. None of these projects reports a baked plate, so they are the
-  no-plate regime; on Higgsfield the numbers go in the job settings (see the
-  Format note above), and over baked plates the lens word leaves too
-  (`../../skills/shared/house-rulings.md` P2-6)
+  harvested. On Higgsfield the numbers go in the job settings (see the Format
+  note above). The record here does not say whether these projects' plates
+  carried the lens, so they are not evidence for either side of the baked-plate
+  question (`../../skills/shared/house-rulings.md` P2-6, OPEN)
 - **Medium negative** — "photoreal live-action — no 3D render, no game
   engine, no animated-film aesthetic"
 - **Camera language, per world/scene when it varies** — "adventure-film

@@ -29,9 +29,9 @@ metadata:
 - Performance — objective, obstacle, tactics, beats, subtext, eye life, the acting master profile: `../higgsfield-acting/SKILL.md`
 - Hard engine rules (age-blind, exit-frame = cut, off-screen = nonexistent, no reflections, ≤3 tracked characters, double-contrast cuts) + high-risk shot table: `ENGINE-RULES.md` in this directory
 - **Render failures** (the take came back wrong, not flagged) — 15 named failures with symptom · mechanism · counter, incl. action-reversal fill, filler-babble, truncated action, mimed manipulation, orphan limbs / the solo third hand, walking + cross-shot camera speed, fights as separate clips — plus a self-repair checklist: `FAILURE-MODES.md` in this directory
-- [FIELD] **Bake it into the asset**: a property that drifts however well it is written (a lens character, a grain, a colour cast) moves one step earlier, into the plate — then leaves the video prompt entirely; bake only what should stay constant [→](#bake-it-into-the-asset-when-the-prompt-will-not-hold-it)
+- [FIELD] **Bake it into the asset**: a property that drifts however well it is written (a lens character, a grain, a colour cast) moves one step earlier, into the plate — then, in one studio's practice, leaves the video prompt entirely (OPEN: Hell Grind keeps the look in the prompt too, P2-6); bake only what should stay constant [→](#bake-it-into-the-asset-when-the-prompt-will-not-hold-it)
 - [FIELD] **Depth map** as a reference role — greyscale, light = near; a geometry input that stops a space re-planning itself between shots, carries no style [→](#depth-map)
-- Contested doctrine (character-text volume with a reference attached, `NO BGM` vs `No music.`, the stop numbers) and scope rulings (anamorphic words vs a baked plate) are recorded — not silently resolved — in `../shared/house-rulings.md`; label meanings in `../shared/provenance.md`
+- Contested doctrine (character-text volume with a reference attached, anamorphic words vs a baked plate, `NO BGM` vs `No music.`, the stop numbers) is recorded — not silently resolved — in `../shared/house-rulings.md`; label meanings in `../shared/provenance.md`
 - Reference roles: Character / Last-Frame / Environment / Prop — role determines what the prompt may re-describe [→](#reference-roles)
 - Working modes: Exploration / Continuation / Bridging / Repair (distinct from prompt modes) [→](#working-modes-vs-prompt-modes--two-taxonomies)
 - Layer 1 briefing vs Layer 2 production prompt — never paste Layer 1 into the prompt box [→](#two-layer-prompt-authoring)
@@ -179,8 +179,8 @@ named, narrowly-trained referent**:
 
 Positive form of `../higgsfield-prompt/SKILL.md` § Anti-Slop Vocabulary. The lens-spec row is
 short-form, single-shot doctrine: for a **sequence** whose location plates are generated with
-the lens already in them, the optics words leave the video prompt (§ Bake it into the asset) —
-the Style Prefix included, since it is pasted into every prompt
+the lens already in them, one studio drops the optics words from the video prompt (§ Bake it
+into the asset) while Hell Grind keeps the look in both the plates and the prompt — OPEN
 (`../shared/house-rulings.md` P2-6).
 
 > **Official override on director names.** Higgsfield's own prompt-writing
@@ -488,7 +488,8 @@ harvest]` — the model's own instincts, each needing a standing lock:
    never floats.
 3. **Scale drift on wide shots.** A human anchor shrinks to a speck across
    cuts. Lock it: `"the rider stays the calm human-sized anchor — never
-   shrunk to a tiny distant dot."`
+   shrunk to a tiny distant dot."` (Adapted: the harvested lock named the
+   anchor by an age word; rewritten age-blind per `ENGINE-RULES.md` rule 1.)
 
 ### Cut-format ladder
 
@@ -799,7 +800,7 @@ over her shoulder. The continuation prompt:
 
 ```
 Continuing from the prior clip — the detective framed in the doorway, head
-turned, rain behind her. [Identity block verbatim: weathered woman, mid-40s,
+turned, rain behind her. [Identity block verbatim: weathered woman, lean build,
 short dark hair, charcoal trench coat, leather gloves, tired but alert.]
 Following her glance back, she steps fully into the corridor, lets the door
 swing shut behind her, and begins walking toward camera. Slow dolly-back
@@ -1045,10 +1046,12 @@ NO lens flares, NO light streaks, NO floating bokeh circles. 2.39:1.
 Dose with *subtle / gentle / moderate / strong / maximum*. Ban the garbage that tags along
 (flares, streaks, floating bokeh orbs) **at the image stage only**.
 
-> **Then never say those words again.** In the video prompt the optics vocabulary does not
-> appear at all — **not even as a ban** — because naming a thing under a negation summons
-> it (`../shared/negative-constraints.md`). The video prompt describes only clean glass and
-> contained glows; the anamorphic character arrives with the asset.
+> **Then never say those words again** — this studio's practice. In the video prompt the
+> optics vocabulary does not appear at all — **not even as a ban** — because naming a thing
+> under a negation summons it (`../shared/negative-constraints.md`). The video prompt
+> describes only clean glass and contained glows; the anamorphic character arrives with the
+> asset. (Hell Grind takes the other line — the look lives in the locations **and** the video
+> prompts. OPEN, see Scope below.)
 
 This generalises past optics: a grain structure, a lens character, a colour cast, a crowd
 that costs a paragraph to specify — anything the text keeps losing is a candidate for
@@ -1059,10 +1062,12 @@ so bake only what should be *constant* across the sequence.
 the baked plate is attached to **every** shot that needs the property. A standalone shot, a
 t2v shot with no plate, or a genre recipe on another model has nothing to bake into — there
 the lens words in the Look line are the only route (`../higgsfield-recipes/SKILL.md`,
-§ Name the thing above). **The Style Prefix is part of the video prompt** — it is pasted
-verbatim into every scene prompt (`../../templates/seedance/global-style-prefix.md`) — so in
-a baked-plate sequence the prefix drops the lens words too. The harvest prefixes that name a
-lens never report baked plates; they are the first regime, not a counter-source.
+§ Name the thing above). Where the plates **do** carry the look, whether the video prompt
+still names it is **OPEN, no default**: this studio drops the words; the Hell Grind brief
+(`HELL-GRIND.md` § The character sheet `[OFFICIAL]`) keeps "the cinema look … in the
+locations and the video prompts", with its Style Prefix — which is part of the video prompt,
+pasted verbatim into every scene prompt (`../../templates/seedance/global-style-prefix.md`) —
+naming it. Nothing here measures which holds better.
 
 ### Per-Image Role Convention
 
@@ -1738,8 +1743,14 @@ to work on past flagged prompts.
 ### Real names → archetype description
 
 ❌ "Keanu Reeves walking into a boardroom"
-✅ "A lean man in his late 50s, dark shoulder-length hair, stubble, intense
+✅ "A lean man, grey threading his dark shoulder-length hair, stubble, intense
   calm expression, in a dark suit, walking into a modern glass boardroom"
+
+The memory record behind this row (`../../db/filter-memory.json`, F-001) says
+"age range" and its confirmed example names an age ("in his late 50s"). On
+Seedance, `ENGINE-RULES.md` rule 1 wins: describe by build and visible markers,
+never an age. The age-free form above is adapted, so only the record's own
+wording carries its "confirmed to pass".
 
 ### Brand / IP → visual attributes only
 

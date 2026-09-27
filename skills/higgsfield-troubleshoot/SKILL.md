@@ -20,13 +20,13 @@ metadata:
 - Pre-generation checklist: subject, action, named camera preset, style, grade, aspect, <200 words (short-form regime) [→](#pre-generation-checklist)
 - Seedance/Cinema Studio symptom table + diagnostic flowchart: blurry = overspecified; chaotic camera = One-Move Rule violated; wrong character = prompt text contradicts the reference — delete the contradicting text first; delete ALL appearance text only on a start-frame / I2V shot (P1-1) [→](#cinema-studio-30--seedance-20-diagnostic-tree)
 - Every delivered take gets ONE of five verdicts before anything re-fires: keep / fix-in-post / edit / re-roll / rewrite [→](#take-triage--five-verdicts-for-a-delivered-take)
-- Two takes with the same flaw = rewrite, by rule; different flaws per roll = stochastic → batch-and-cull, not rewrite [→](#take-triage--five-verdicts-for-a-delivered-take)
+- Two takes with the same flaw = rewrite, by rule; different flaws per roll = stochastic → batch-and-cull, not rewrite — against Retry Ladder rung 2 when both takes failed: OPEN, no default (§ Stop-Rule Ladder) [→](#take-triage--five-verdicts-for-a-delivered-take)
 - Re-roll = same prompt again, unchanged — no seed parameter on this surface; every roll is a fresh sample [→](#take-triage--five-verdicts-for-a-delivered-take)
 - Change exactly one variable between takes so causality stays readable [→](#one-variable-per-retake)
 - Declare the take budget AND a written "good enough" bar before take one; half-budget with no progress forces a strategy change [→](#attempt-budget--declared-before-take-one-heuristic)
 - The shot log is the ledger row — one line per take, changed variable in `notes` [→](#the-shot-log-is-the-ledger-row)
 - Continuation/extension defects: 12-row symptom → cause → single-repair-variable atlas (planned-vs-observed opening, motion-vector drop, prop contradictions, chain-depth drift…) [→](#sequence--continuation-failure-atlas)
-- Retry Ladder: 4 terminating rungs — re-run once verbatim → treat 2nd failure as over-packing → switch model for that shot → stop after 3 paid attempts with named options [→](#retry-ladder--a-failed-take-edits-the-plan-not-just-the-dice)
+- Retry Ladder: 4 terminating rungs — re-run once verbatim → treat 2nd failure as over-packing (when the two failures differ, Take Triage reads them as stochastic: OPEN, no default — § Stop-Rule Ladder) → switch model for that shot → stop after 3 paid attempts with named options [→](#retry-ladder--a-failed-take-edits-the-plan-not-just-the-dice)
 - Six stop numbers, one ladder: 2 same-flaw re-rolls → rewrite · 3 paid attempts (no declared budget) → named options · half a declared budget with no progress → change strategy · 4 v2v batches (ceiling) → prompt/source fault · 10–15 surgical iterations (declared budget) → simplify the shot · 65–100 generations per kept shot is a project benchmark, never a stop rule. The earliest tripwire wins; where 2 and 4 count the same v2v runs it is OPEN, default the earlier stop [→](#stop-rule-ladder--which-number-governs)
 - Log EVERY confirmed fix to learning memory, and check memory first before troubleshooting [→](#log-the-outcome--always)
 - Vision-grounded diagnosis (stills only): vision proposes the `reject_reason`, the human confirms — advisory until a class clears the agreement gate [→](#vision-grounded-diagnosis--classify-the-rejected-still-dont-guess)
@@ -253,7 +253,7 @@ into the same wall, but *different* flaws on every roll mean the miss is
 stochastic — that's batch-and-cull territory, not a rewrite
 (`../higgsfield-prompt/SKILL.md` § Before You Iterate). When two *failed* takes
 differ, the Retry Ladder below reads them the other way (over-packed → split);
-that disagreement is recorded OPEN, with its tie-break, in § Stop-Rule Ladder.
+that disagreement is recorded OPEN, with no default, in § Stop-Rule Ladder.
 When the verdict is
 re-roll or rewrite and the failure keeps recurring, escalation is governed by
 the Retry Ladder below.
@@ -341,7 +341,7 @@ Each rung terminates — never loop on one rung:
    density split triggers apply), then re-run the preflight linter on **both** halves
    before firing either. A second identical re-roll pays twice for the same overload.
    (If the two failures differ, § Take Triage reads them as stochastic instead —
-   OPEN; tie-break in § Stop-Rule Ladder.)
+   OPEN, no default — § Stop-Rule Ladder.)
 3. **Switch models for that one shot.** One shot on a different engine beats bending
    the whole piece around a shot the current engine won't hold.
 4. **Stop after three paid attempts and present named options** — accept the best
@@ -383,9 +383,10 @@ How they compose:
   Iterate) and § Retry Ladder rung 2 (a *second* failure is evidence the shot is over-packed →
   split it) read the same two failures in opposite directions. Both are third-party
   practitioner material, and at n = 2 the ledger's fork verdict is `low-n` — it cannot decide.
-  Tie-break `[HOUSE]`, unmeasured: § Before You Iterate's own test is "varied ways, **with the
-  occasional near-hit**". If either take nearly delivered the shot's primary job, batch-and-cull;
-  if neither did, treat it as over-packing and split.
+  **No default:** a wasted batch and a needless split cost about the same, and nothing here
+  measures which reading is right. Name both moves and what each costs, and let the user pick;
+  once the shot has five or more logged rows, the ledger's fork verdict (`iterate` /
+  `batch+sel`) decides instead (`../higgsfield-prompt/SKILL.md` § Before You Iterate).
 - **Rung 2 vs rungs 2b and 4 is decided by § Attempt budget.** With no declared budget the
   agent stops at three paid attempts and hands the choice back. A user who declared a budget —
   a feature, a hero shot — has replaced that default with two tripwires, and whichever fires

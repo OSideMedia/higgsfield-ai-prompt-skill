@@ -68,7 +68,7 @@ Adil's framing of this single shot is instructive: the 72-generation cost for a 
 
 Use the 72-generations-per-10-seconds anchor as an upper-bound planning point for a single iteration-heavy establishing shot, not as a per-shot average.
 
-> **A planning number is not a stop rule.** Neither this anchor nor the 65–100-per-kept-shot corpus ratio below says how long to keep firing at a failing shot — that is the job of `skills/higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder (2 same-flaw re-rolls → rewrite; 3 paid attempts with no declared budget → named options; 10–15 surgical iterations inside a declared budget → simplify the shot). These figures describe a finished project's funnel after the fact (`skills/shared/house-rulings.md` P1-2).
+> **A planning number is not a stop rule.** Neither this anchor nor the 65–100-per-kept-shot corpus ratio below says how long to keep firing at a failing shot — that is the job of `skills/higgsfield-troubleshoot/SKILL.md` § Stop-Rule Ladder (2 same-flaw re-rolls → rewrite; 3 paid attempts with no declared budget → named options; half a declared budget with no progress → change strategy; 4 v2v batches → prompt/source fault; 10–15 surgical iterations inside a declared budget → simplify the shot). These figures describe a finished project's funnel after the fact (`skills/shared/house-rulings.md` P1-2).
 
 ---
 

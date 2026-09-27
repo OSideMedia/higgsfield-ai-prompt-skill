@@ -82,7 +82,7 @@ and switching between them mid-project is the normal case, not a fallback.
 | Human character sheet, face matching | **Nano Banana 2** | Strongest face match on the platform |
 | Small corrective edits to an existing sheet | **Nano Banana 2** | Holds its input images best — the model to switch *to* when something needs fixing rather than rebuilding |
 | Fantasy creature / non-human character sheet | **Seedream 5.0** (the build does not say Lite or Pro) | Best at fantasy creatures |
-| Clothing, wardrobe changes, branded garments | **GPT Image 2** | Handles clothing best. (`[HOUSE]` note, not the build's words: another single production picked Seedream 5.0 Pro for costume texture and wear on a from-scratch sheet — `../higgsfield-soul/SKILL.md` § Pick the Sheet Model per JOB; this repo reads the two as edits vs from-scratch, unmeasured — `../shared/house-rulings.md` P3-2) |
+| Clothing, wardrobe changes, branded garments | **GPT Image 2** | Handles clothing best. (`[HOUSE]` note, not the build's words: another single production picked Seedream 5.0 Pro for costume texture and wear on a from-scratch sheet — `../higgsfield-soul/SKILL.md` § Pick the Sheet Model per JOB; one reading splits the two as edits vs from-scratch — an inference, not a default; P3-2 is OPEN — `../shared/house-rulings.md` P3-2) |
 | Locations and environment stills | **Soul Cinema** | Most cinematic frames; GPT skews yellow, Nano Banana makes locations too clean and too symmetrical |
 
 Full specs, pricing and UI controls for each of these live in `../../image-models.md`;
@@ -483,9 +483,9 @@ wording discipline is shared — the voice line in the role sentence is still co
 voice bible, never retyped or "improved". **What "once" means is OPEN** (P2-2): the build's
 wording ("rather than re-specifying it in every prompt") can be read as once per *project*,
 while the Dreamina core formula (`SKILL.md` § The Core Prompt Formula `[OFFICIAL — Dreamina]`)
-and § Emotion with no video reference above both put the voice's description in the prompt
-at hand. Default `[HOUSE]`: once per **prompt**, in the role sentence — each generation reads
-only its own prompt, and a verbatim line cannot drift.
+and **Emotion with no video reference** above both put the voice's description in the prompt
+at hand. No default: re-stating the voice may fight the sheet (unmeasured), and leaving it out
+of later prompts leaves them unprotected if the sheet under-carries it.
 
 **The high-speed kit.** For chase and fly-by shots, three clauses do most of the work:
 a **180° camera orbit** around the subject, **speed shake** (a constant fine vibration with

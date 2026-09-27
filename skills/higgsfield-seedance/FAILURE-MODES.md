@@ -236,7 +236,7 @@ consistent with the shot is more speech-shaped sound in the same voice.
 `[MEASURED — sync-budget ladder, Seedance 2.0, EN, 4 s, 480p, 2026-08-09;
 record incomplete: route not recorded, mode not recorded, take count at ≤6
 words not recorded, record held outside this repo]`: every take at ≤6 words carried it; 8- and
-12-word lines came back 4/4 clean each. Read it as a **direction**, not a rate
+12-word lines came back 4/4 free of filler-babble each (transcript-graded). Read it as a **direction**, not a rate
 (`../shared/provenance.md` § Modifiers): the risk sits with the **short**
 line, not the long one — no truncation was observed up to 12 words (≈3 words
 per second).
@@ -250,10 +250,11 @@ the model, and state the mouth state of every face that is visible:
    `../higgsfield-audio/SKILL.md` § Per-language dialogue-sync budgets).
    The two numbers sit on different axes — this one is a floor against dead
    air in one short shot, that one a ceiling for reliable lip-sync across a
-   clip, read `[HOUSE]` as a per-clip total with a per-line cap, not a rate
-   (as a rate, ~1.1–1.3 w/s, an 8-word 4 s line would be over it) — and on
-   that reading they meet at one 8–10-word line in a 4 s shot. When the line
-   cannot grow inside the budget, use counter 2 instead.
+   clip. Whether they meet at one 8–10-word line in a 4 s shot depends on
+   reading the budget as a per-clip total (they do) or as a rate (~1.1–1.3
+   w/s, and an 8-word 4 s line is over it) — OPEN, `../shared/house-rulings.md`
+   P3-6. The run above graded transcripts, not lip-sync, so it does not settle
+   that. Counter 2, or cutting the shot to the line, holds under both.
 2. **Script the silence.** If the line has to stay short, write what
    occupies the rest of the window — a named pause beat, an ambient or
    SFX event, action prose covering the gap before and after the line.

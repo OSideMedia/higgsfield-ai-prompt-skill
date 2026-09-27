@@ -76,7 +76,9 @@ and it fixed a whole class of broken shots.
 **Keep the sheet deliberately boring.** Neutral grey background, flat light, real skin with
 visible pores, no retouch. The cinema look lives in the locations and the video prompts — bake
 film grain and a cinematic lens into the sheet and the character carries that look into every
-scene and stops reacting to new light. (The grey-background and one-readable-face laws are
+scene and stops reacting to new light. (Naming the look in the video prompts over location
+assets that already carry it is the opposite of `SKILL.md` § Bake it into the asset, one
+studio's practice — OPEN, no default, `../shared/house-rulings.md` P2-6. The grey-background and one-readable-face laws are
 stated once, with every source's shade and mechanism, in `../../templates/ad-asset-prep.md`
 § Design for win rate. `../higgsfield-soul/SKILL.md` § The Reference Plate's capture phrase
 adds *soft natural film grain* to a plate; that disagreement is OPEN, with no default, in
@@ -120,8 +122,8 @@ descriptor: **register, tempo, accent, manner.** It is pasted into the audio fie
 every time that character speaks, and it never changes. (This is the Seedance **2.0** form.
 On **2.5** the reused character-sheet reference carries the voice together with the
 appearance, so the voice line goes in the character's role sentence instead of the audio
-field — still verbatim from the voice bible, once per prompt by default (whether "once" means
-per prompt or per project is OPEN): `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Direction
+field — still verbatim from the voice bible; whether "once" means per prompt or per project is
+OPEN, with no default: `../higgsfield-seedance-2-5/VFX-PIPELINE.md` § Direction
 patterns from the build (the voice lock), `../shared/house-rulings.md` P2-2.)
 
 ```
