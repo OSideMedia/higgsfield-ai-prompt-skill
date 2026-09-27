@@ -562,10 +562,43 @@ def test_cli_line_is_redacted_before_it_reaches_status_or_logs(monkeypatch, tmp_
     for secret in ("peter@example.com", "abcdef0123456789abcdef0123",
                    "3f2b1c9e-1111-2222-3333-444455556666"):
         assert secret not in printed
-    assert st["kind"] == "auth" and "<email>" in st["line"]
+    assert st["kind"] == "auth" and "[redacted]" in st["line"]
 
 
-@pytest.mark.parametrize("text", ['Error: No model with job_type "nano_banana_2_skin_enhancer"',
-                                  "Error: No workspace selected."])
-def test_redaction_keeps_model_ids_and_plain_errors(text):
+# The reviewer's seven leaks: each secret must be gone, whatever its shape.
+@pytest.mark.parametrize("line,secret", [
+    ('Error: {"access_token":"hf_sk_9Qx7Lm2PzWq"}', "hf_sk_9Qx7Lm2PzWq"),
+    ('Error: {"refresh_token": "rt_A1b2C3d4"}', "rt_A1b2C3d4"),
+    ("request failed: x-api-key: 'hfk_12ab34cd'", "hfk_12ab34cd"),
+    ("invalid api key hf_live_Zk9Wq", "hf_live_Zk9Wq"),
+    ("Authorization: Token abcdefghijklmnop rejected", "abcdefghijklmnop"),
+    ("cookie session_id=Zm9vYmFyYmF6 expired", "Zm9vYmFyYmF6"),
+    ('Error: workspace "Peter Csanky Studio" (ws_7Hq2Kd9) not found', "Peter Csanky Studio"),
+    ('Error: workspace "Peter Csanky Studio" (ws_7Hq2Kd9) not found', "ws_7Hq2Kd9"),
+])
+def test_allowlist_redaction_removes_every_leak_shape(line, secret):
+    out = r.redact(line)
+    assert secret not in out and "[redacted]" in out
+    for part in secret.split():
+        assert part not in out.split()
+
+
+@pytest.mark.parametrize("text", ["Error: No workspace selected.", "Error: Session expired.",
+                                  "Error: token expired, run login"])
+def test_plain_error_lines_survive_redaction_readable(text):
     assert r.redact(text) == text
+
+
+def test_not_found_is_classified_from_the_raw_text():
+    assert r.classify_cli_failure('Error: No model with job_type "sync_so".') == "not-found"
+
+
+def test_crash_output_redacts_the_exception_message(monkeypatch, tmp_path, capsys):
+    def boom():
+        raise RuntimeError('CLI said: workspace "Peter Csanky Studio" token=hf_sk_Zz9')
+    monkeypatch.setattr(r, "load_baseline", boom)
+    out = tmp_path / "s.json"
+    assert r.main(["--type", "video", "--status-json", str(out)]) == 5
+    printed = capsys.readouterr().err + out.read_text()
+    assert "Peter Csanky" not in printed and "hf_sk_Zz9" not in printed
+    assert "refresh_specs.py" in printed          # still says WHERE it crashed

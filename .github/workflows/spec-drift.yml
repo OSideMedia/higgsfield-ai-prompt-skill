@@ -146,8 +146,10 @@ jobs:
           fi
           # A failure here is not fatal on its own: the tripwire pull that follows
           # classifies the CLI's answer ("No workspace selected." → kind=workspace).
-          if ! OUT=$(higgsfield workspace set "$WORKSPACE_ID" 2>&1); then
-            echo "::warning::higgsfield workspace set failed: $(printf '%s' "$OUT" | head -n 1 | tr -d '\r')"
+          # The CLI's own words are NOT echoed: this log is public, and the answer
+          # can name the workspace; refresh_specs.py reports it classified + redacted.
+          if ! higgsfield workspace set "$WORKSPACE_ID" >/dev/null 2>&1; then
+            echo "::warning::higgsfield workspace set failed — the tripwire pull below classifies why."
           fi
 
       - name: Run spec-drift tripwire
@@ -162,7 +164,12 @@ jobs:
             CODE=1
             printf '%s\n' '{"code": 1, "state": "pull-failed", "kind": "no-credentials", "line": "", "remedy": "add the HIGGSFIELD_CREDENTIALS repo secret (see the spec-drift.yml header, SETUP)"}' > "$STATUS"
           else
-            OUT=$(python3 scripts/refresh_specs.py --status-json "$STATUS" 2>&1); CODE=$?
+            # stdout = the drift report (catalog data); stderr = diagnostics. Only
+            # stdout reaches the step summary and the issue body — every CLI line
+            # in stderr is already allowlist-redacted by refresh_specs.py, and the
+            # public surfaces carry the classified kind + remedy from the status.
+            OUT=$(python3 scripts/refresh_specs.py --status-json "$STATUS" 2>"$RUNNER_TEMP/drift-stderr.txt"); CODE=$?
+            cat "$RUNNER_TEMP/drift-stderr.txt" >&2
           fi
           echo "$OUT"
           echo "$OUT" >> "$GITHUB_STEP_SUMMARY"

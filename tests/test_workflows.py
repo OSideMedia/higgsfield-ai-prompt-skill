@@ -228,3 +228,47 @@ def test_pinned_cli_checksum_is_well_formed():
     text = (WF / "spec-drift.yml").read_text(encoding="utf-8")
     m = re.search(r'CLI_SHA256: "([0-9a-f]+)"', text)
     assert m and len(m.group(1)) == 64
+
+
+# ── v3.37.0 review 2: nothing the CLI says reaches a public surface raw ─────
+
+def _fake_bin(tmp_path, name, body):
+    d = tmp_path / "fakebin"
+    d.mkdir(exist_ok=True)
+    (d / name).write_text("#!/bin/bash\n" + body)
+    (d / name).chmod(0o755)
+    return d
+
+
+def test_workspace_step_does_not_echo_the_cli_answer(tmp_path):
+    script = step_run("spec-drift.yml", "Select workspace")
+    fb = _fake_bin(tmp_path, "higgsfield",
+                   'echo \'Error: workspace "Peter Csanky Studio" (ws_7Hq2Kd9) not found\'; exit 1\n')
+    r = run_bash(script, tmp_path, {"PATH": f"{fb}:{os.environ['PATH']}", "WORKSPACE_ID": "x"})
+    assert r.returncode == 0
+    assert "Peter Csanky" not in r.stdout + r.stderr and "ws_7Hq2Kd9" not in r.stdout
+    assert "::warning::" in r.stdout
+
+
+def test_drift_step_keeps_stderr_out_of_the_summary_and_issue_body(tmp_path):
+    script = step_run("spec-drift.yml", "Run spec-drift tripwire")
+    (tmp_path / "scripts").mkdir()
+    (tmp_path / "scripts" / "refresh_specs.py").write_text(
+        "import json, sys\n"
+        "path = sys.argv[sys.argv.index('--status-json') + 1]\n"
+        "json.dump({'code': 1, 'kind': 'auth', 'line': 'Session expired.', 'remedy': 'r'},"
+        " open(path, 'w'))\n"
+        "print('[video] live CLI vs baseline')\n"
+        "print('diagnostic: token=hf_sk_LEAKED9', file=sys.stderr)\n"
+        "sys.exit(1)\n")
+    summary, out = tmp_path / "summary", tmp_path / "out"
+    summary.write_text("")
+    out.write_text("")
+    (tmp_path / "rt").mkdir()
+    r = run_bash(script, tmp_path, {"CREDS_PRESENT": "true", "RUNNER_TEMP": str(tmp_path / "rt"),
+                                    "GITHUB_STEP_SUMMARY": str(summary),
+                                    "GITHUB_OUTPUT": str(out)})
+    assert r.returncode == 0, r.stderr
+    assert "hf_sk_LEAKED9" not in summary.read_text() + out.read_text()
+    assert "[video] live CLI vs baseline" in summary.read_text()
+    assert "code=1" in out.read_text() and "kind=auth" in out.read_text()

@@ -151,6 +151,9 @@ REMEDIES = {
     "empty": "the CLI listed zero models of this type — a partial or failed "
              "listing (wrong workspace? CLI outage?), never an accepted state; "
              "rerun, and do not accept it as the baseline",
+    "not-found": "the CLI does not know this model id (`model get` answered "
+                 "\"No model with job_type\") — for a listed model that is a CLI "
+                 "inconsistency: rerun, and report it if it persists",
     "crash": "refresh_specs.py itself crashed (a local bug, not the CLI) — "
              "read the traceback, fix the script; do NOT re-auth",
     "other": "unrecognized CLI failure — read the verbatim CLI line and fix "
@@ -163,6 +166,8 @@ def classify_cli_failure(text: str) -> str:
     message ("Error: No workspace selected.") carries no auth words, but an
     auth message may mention a workspace in passing."""
     t = (text or "").lower()
+    if "no model with job_type" in t:
+        return "not-found"
     if "no workspace selected" in t or re.search(r"workspace\b.*\b(select|not found|required)", t):
         return "workspace"
     if any(s in t for s in ("session expired", "not logged in", "not authenticated",
@@ -172,29 +177,61 @@ def classify_cli_failure(text: str) -> str:
     return "other"
 
 
-_REDACTIONS = (
-    (re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"), "<email>"),
-    (re.compile(r"\beyJ[\w-]+\.[\w-]+(?:\.[\w-]+)?"), "<token>"),        # JWT
-    (re.compile(r"(?i)\b(bearer|basic)\s+[^\s)\]\"',;]+"), r"\1 <token>"),
-    (re.compile(r"(?i)\b(token|secret|password|passwd|api[_-]?key|key|session|"
-                r"credential|auth)(\s*[=:]\s*)[^\s)\]\"',;]+"), r"\1\2<redacted>"),
-    (re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-"
-                r"[0-9a-fA-F]{12}\b"), "<id>"),                              # UUID
-    (re.compile(r"\b[0-9a-fA-F]{16,}\b"), "<id>"),                          # long hex
-    (re.compile(r"\b(?=[A-Za-z0-9+/=-]*\d)[A-Za-z0-9+/=-]{24,}"), "<token>"),  # base64-ish
-    (re.compile(r"\b\d{6,}\b"), "<id>"),                                    # numeric id
-)
+REDACTED = "[redacted]"
+_HIDDEN = "\ue000"             # placeholder for a redacted quoted string while tokenizing
+# Quoted strings are redacted whole ("Peter Csanky Studio", 'hfk_…', `…`).
+_QUOTED_RE = re.compile(r"\"[^\"]*\"?|'[^']*'?|`[^`]*`?|“[^”]*”?|‘[^’]*’?")
+# What survives, token by token: plain words — lowercase, Capitalized, or a
+# short ACRONYM — optionally hyphenated, 24 letters at most (a longer
+# letters-only run is base64-ish). Everything else is [redacted].
+_PLAIN_WORD_RE = re.compile(r"^(?:[a-z]+|[A-Z][a-z]+|[A-Z]{1,5})(?:-[a-z]+)*$")
+_LEAD_PUNCT, _TRAIL_PUNCT = "([{<", ".,;:!?)]}>"
+# `Label:` / `label=` words after which the VALUE is a credential even when
+# it looks like a plain word ("Authorization: Token abcdefgh"), and the
+# auth schemes whose next token is one.
+_CREDENTIAL_LABELS = {"authorization", "token", "key", "secret", "password", "passwd",
+                      "cookie", "credential", "credentials", "apikey", "api-key",
+                      "x-api-key", "signature"}
+_AUTH_SCHEMES = {"bearer", "basic"}
 
 
 def redact(text: str) -> str:
-    """The CLI line with anything that looks like an email, token or id
-    replaced. The spec-drift workflow quotes this line in a PUBLIC issue and
-    job log; the classified kind + remedy carry the meaning, the line is
-    only corroboration. Model ids (snake_case words) survive."""
-    out = text or ""
-    for rx, repl in _REDACTIONS:
-        out = rx.sub(repl, out)
-    return out
+    """ALLOWLIST redaction for anything headed to a PUBLIC surface (the
+    spec-drift BLIND / drift issue body, the job step summary, the ::error::
+    line, the job log). A blocklist of token shapes kept missing forms
+    (`"access_token":"hf_sk_…"`, `api key hf_live_…`, `session_id=Zm9v…`, a
+    quoted workspace name), so it fails closed instead: every quoted string,
+    and every token that is not a plain word — anything with a digit, `_`,
+    `=`, `/`, `@`, a `:`-value, non-ASCII, or a long letters-only run — is
+    replaced, and so is the value after a credential label or auth scheme.
+    The classified kind + remedy carry the meaning; the redacted line is only
+    corroboration. "Error: No workspace selected." and "Error: Session
+    expired." survive readable."""
+    out = _QUOTED_RE.sub(_HIDDEN, text or "")
+    pieces, secret_next = [], False
+    for part in re.split(r"(\s+)", out):
+        if not part or part.isspace():
+            pieces.append(part)
+            continue
+        lead = len(part) - len(part.lstrip(_LEAD_PUNCT))
+        core_end = max(lead, len(part.rstrip(_TRAIL_PUNCT)))
+        head, core, tail = part[:lead], part[lead:core_end], part[core_end:]
+        plain = bool(_PLAIN_WORD_RE.match(core)) and len(core) <= 24
+        if not core.replace(_HIDDEN, "") and not secret_next:
+            pieces.append(part)                       # only redacted quotes + punctuation
+            continue
+        low = core.lower()
+        if secret_next and plain and (low in _CREDENTIAL_LABELS or low in _AUTH_SCHEMES):
+            pieces.append(part)                       # "Authorization: Token <secret>"
+            continue
+        if secret_next or not plain:
+            pieces.append(head + REDACTED + tail)
+            secret_next = False
+            continue
+        pieces.append(part)
+        secret_next = (low in _CREDENTIAL_LABELS and tail[:1] in (":", "=")) or \
+            (low in _AUTH_SCHEMES and not tail)
+    return "".join(pieces).replace(_HIDDEN, REDACTED)
 
 
 def _verbatim_line(text: str) -> str:
@@ -690,14 +727,18 @@ def main(argv=None) -> int:
         return _main(argv)
     except Exception as e:  # noqa: BLE001 — classify, never misfile as a pull failure
         import traceback
-        traceback.print_exc()
-        print(f"CRASHED: {type(e).__name__}: {e}\n  → remedy: {REMEDIES['crash']}",
-              file=sys.stderr)
+        # The job log is public: print WHERE it crashed (our own code), but
+        # the exception message — which may carry CLI output — only redacted.
+        print("Traceback (most recent call last):", file=sys.stderr)
+        for fr in traceback.extract_tb(e.__traceback__):
+            print(f'  File "{fr.filename}", line {fr.lineno}, in {fr.name}', file=sys.stderr)
+        msg = f"{type(e).__name__}: {redact(str(e))}"
+        print(f"{msg}\nCRASHED — remedy: {REMEDIES['crash']}", file=sys.stderr)
         if status_path:
             from pathlib import Path
             try:
                 Path(status_path).write_text(json.dumps(
-                    _status(5, "crashed", "crash", None, "", f"{type(e).__name__}: {e}"),
+                    _status(5, "crashed", "crash", None, "", msg),
                     indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
             except OSError:
                 pass
