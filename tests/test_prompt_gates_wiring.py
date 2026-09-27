@@ -2,7 +2,6 @@
 lint, USER-GUIDE content guard): reached from main(), strict/non-strict
 severity as documented, and a hard gate that goes red in both modes."""
 
-import inspect
 import subprocess
 from types import SimpleNamespace
 
@@ -11,8 +10,24 @@ import pytest
 import validate
 
 
-def test_main_calls_the_gates():
-    assert "check_prompt_gates()" in inspect.getsource(validate.main)
+def test_main_calls_the_gates(monkeypatch):
+    """Behavioral: main() must actually RUN check_prompt_gates. The old test
+    matched the source text, which a commented-out call also satisfies."""
+    calls = []
+    for name in dir(validate):
+        if name.startswith("check_") and name != "check_prompt_gates" \
+                and callable(getattr(validate, name)):
+            monkeypatch.setattr(validate, name, lambda *a, **k: True)
+    monkeypatch.setattr(validate, "find_skill_files", lambda: [])
+    monkeypatch.setattr(validate, "check_prompt_gates", lambda: calls.append("gates"))
+    monkeypatch.setattr(subprocess, "run",
+                        lambda *a, **k: SimpleNamespace(returncode=0, stdout="", stderr=""))
+    monkeypatch.setattr(validate.sys, "argv", ["validate.py"])
+    monkeypatch.setattr(validate, "issues", [])
+    monkeypatch.setattr(validate, "warnings", [])
+    with pytest.raises(SystemExit):
+        validate.main()
+    assert calls == ["gates"]
 
 
 @pytest.fixture

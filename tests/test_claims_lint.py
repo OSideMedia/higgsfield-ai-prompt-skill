@@ -73,7 +73,7 @@ def specs_2026_08_07(tmp_path_factory):
     d = tmp_path_factory.mktemp("specs_0807")
     (d / "model-specs.json").write_text(sync_specs.emit_json(sync_specs.build_spec(snap)),
                                         encoding="utf-8")
-    for name in ("image-model-specs.json", "audio-model-specs.json"):
+    for name in ("image-model-specs.json", "audio-model-specs.json", "3d-model-specs.json"):
         shutil.copy(REPO / "specs" / name, d / name)
     return d
 
@@ -152,6 +152,7 @@ def _specs(tmp_path, s25_res=("480p", "720p"), roles=("image_references",),
         {"id": i, "name": i, "aspect_ratios": ["1:1", "16:9"], "media_roles": {}, "params": []}
         for i in image_models]}), encoding="utf-8")
     (d / "audio-model-specs.json").write_text(json.dumps({"models": []}), encoding="utf-8")
+    (d / "3d-model-specs.json").write_text(json.dumps({"models": []}), encoding="utf-8")
     return cl.load_specs(d)
 
 
@@ -291,3 +292,39 @@ def test_v3_36_0_true_phrasings_do_not_fire_but_the_old_ones_still_do(tmp_path, 
     bad_tree = _doc(tmp_path / "old", "old.md", old_text)
     bad = [h for h in cl.lint(bad_tree, specs, claims) if h.claim.id in ids and not h.ok]
     assert {h.claim.id for h in bad} == ids and len(bad) == 3
+
+
+# ── v3.37.0 review: a lint over nothing is not clean ───────────────────────
+
+def test_non_utf8_doctrine_file_is_an_error_not_a_skip(tmp_path):
+    tree = tmp_path / "tree"
+    tree.mkdir()
+    (tree / "ok.md").write_text("Seedance 2.5 notes.\n", encoding="utf-8")
+    (tree / "latin1.md").write_bytes("Seedance 2.5 caps at 720p, caf\xe9\n".encode("latin-1"))
+    r = subprocess.run([sys.executable, str(SCRIPT), "--root", str(tree)],
+                       capture_output=True, text=True)
+    assert r.returncode == 2, r.stdout
+    assert "UNCHECKED latin1.md" in r.stdout
+
+
+def test_empty_root_is_zero_files_scanned_not_clean(tmp_path):
+    r = subprocess.run([sys.executable, str(SCRIPT), "--root", str(tmp_path)],
+                       capture_output=True, text=True)
+    assert r.returncode == 2 and "zero doctrine files scanned" in r.stdout
+
+
+@pytest.mark.parametrize("catalog", ["imgae", "videos", "all"])
+def test_catalog_typo_is_a_registry_error(tmp_path, catalog):
+    reg = tmp_path / "reg.json"
+    reg.write_text(json.dumps({"claims": [{
+        "id": "x", "finding": "f", "pattern": "grok",
+        "assert": {"kind": "model_present", "model": "grok_image", "catalog": catalog}}]}))
+    with pytest.raises(cl.RegistryError, match="catalog"):
+        cl.load_registry(reg)
+
+
+def test_3d_catalog_is_its_own_pool():
+    today = cl.load_specs(REPO / "specs")
+    a = {"kind": "model_present", "model": "seedance_2_5", "catalog": "3d"}
+    assert cl.evaluate(a, today)[0] is False             # was "all catalogs" → True
+    assert cl.evaluate(dict(a, model="tripo_3d"), today)[0] is True

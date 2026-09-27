@@ -160,7 +160,9 @@ def _fmt_duration(d) -> str:
     if "values" in d:
         return "/".join(str(v) for v in d["values"]) + "s"
     lo, hi = d.get("min"), d.get("max")
-    if lo is not None and lo < 0:          # smart-duration sentinel (wan3_0)
+    if "smart" in d:                       # {min: 2, max: 30, smart: -1} (wan3_0)
+        return f"{lo}-{hi}s or {d['smart']} (smart)"
+    if lo is not None and lo < 0:          # un-normalized sentinel: floor unknown
         return f"up to {hi}s / auto"
     return f"{lo}-{hi}s"
 

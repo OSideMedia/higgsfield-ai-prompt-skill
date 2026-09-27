@@ -665,8 +665,14 @@ def check_typed_snapshot_ages(types=("image", "audio", "3d")):
         path = sync_specs.output_paths(t, SPECS_DIR)[1]
         label = f"{t} specs snapshot"
         if not path.exists():
-            if t == "video":
-                check(False, f"{label} present", f"{path.name} missing")
+            # A missing spec file has no age to check — that is UNCHECKED,
+            # never fresh: it fails under --strict (and --snapshot-age, which
+            # is always strict); a missing video spec always fails.
+            if t == "video" or STRICT:
+                check(False, f"{label} present", f"{path.name} missing — its age "
+                      "cannot be checked; run python3 scripts/sync_specs.py --type " + t)
+            else:
+                warn(f"{label} not checked", f"{path.name} missing")
             continue
         try:
             stamp = json.loads(path.read_text(encoding="utf-8")).get("snapshot_date")

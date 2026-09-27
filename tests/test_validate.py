@@ -290,3 +290,13 @@ def test_strict_fails_without_fpdf2(tmp_path):
                            capture_output=True, text=True)
     assert loose.returncode == 0, loose.stdout[-1500:]
     assert "generate_user_guide.py --dry-run" in loose.stdout and "[SKIP]" in loose.stdout
+
+
+@pytest.mark.parametrize("missing", ["image-model-specs.json", "3d-model-specs.json"])
+def test_snapshot_age_fails_on_a_missing_spec_file(scratch_specs, monkeypatch, missing):
+    # --snapshot-age skipped a missing non-video spec: no age checked, green.
+    import sync_specs
+    (scratch_specs / missing).unlink()
+    monkeypatch.setattr(validate, "STRICT", True)
+    validate.check_typed_snapshot_ages(sync_specs.TYPES)
+    assert any("present" in i and missing in i for i in validate.issues), validate.issues

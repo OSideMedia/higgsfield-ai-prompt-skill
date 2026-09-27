@@ -27,7 +27,8 @@ Assertion kinds (all evaluated against specs/*.json):
   has / lacks        value is / is not in `field` (resolutions, aspect_ratios,
                      modes, media_roles, params)
   model_present      the model id is in the catalog (optional "catalog":
-                     video | image | audio)
+                     video | image | audio | 3d — anything else is a registry
+                     error, never "all catalogs")
   longest_duration   model's max duration == value AND no other video model
                      is longer
   listed_set_equals  the tokens the pattern captures in group `list` equal
@@ -49,7 +50,9 @@ Usage:
   python3 scripts/claims_lint.py --verbose         # also list entries with no hits
 
 Exit codes: 0 = no false claims, 1 = at least one false claim,
-2 = registry / specs unreadable or malformed.
+2 = the gate could not run honestly: registry / specs unreadable or
+malformed, a doctrine file that cannot be read as UTF-8, or zero files
+scanned (an empty or wrong --root is not "0 hits, clean").
 """
 
 from __future__ import annotations
@@ -66,7 +69,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REGISTRY_DEFAULT = ROOT / "evals" / "spec-claims.json"
 SPEC_FILES = {"video": "model-specs.json", "image": "image-model-specs.json",
-              "audio": "audio-model-specs.json"}
+              "audio": "audio-model-specs.json", "3d": "3d-model-specs.json"}
 KINDS = {"enum_max", "has", "lacks", "model_present", "longest_duration",
          "listed_set_equals"}
 FIELDS = {"resolutions", "aspect_ratios", "modes", "media_roles", "params"}
@@ -128,6 +131,9 @@ def load_registry(path: Path) -> list[Claim]:
         if a["kind"] in ("enum_max", "has", "lacks", "longest_duration") \
                 and "value" not in a:
             raise RegistryError(f"{where}: assert needs a 'value'")
+        if "catalog" in a and a["catalog"] not in SPEC_FILES:
+            raise RegistryError(f"{where}: catalog {a['catalog']!r} is not one of "
+                                f"{sorted(SPEC_FILES)} (a typo used to mean every catalog)")
         polarity = raw.get("polarity", "asserts")
         if polarity not in ("asserts", "denies"):
             raise RegistryError(f"{where}: polarity must be asserts|denies")
@@ -199,7 +205,7 @@ def evaluate(assertion: dict, specs: dict, match: re.Match | None = None) -> tup
     assertion can't be evaluated (model gone) — callers fail closed."""
     kind, mid = assertion["kind"], assertion["model"]
     if kind == "model_present":
-        pool = specs["by_type"].get(assertion.get("catalog"), specs["by_id"]) \
+        pool = specs["by_type"][assertion["catalog"]] \
             if assertion.get("catalog") else specs["by_id"]
         present = mid in pool
         return present, (f"{mid} is in the {assertion.get('catalog') or 'specs'} catalog"
@@ -240,8 +246,10 @@ def evaluate(assertion: dict, specs: dict, match: re.Match | None = None) -> tup
     raise RegistryError(f"unhandled kind {kind}")  # pragma: no cover
 
 
-def iter_doctrine(root: Path):
-    """(relative posix path, text) for every scanned file under root."""
+def iter_doctrine(root: Path, unreadable: list | None = None):
+    """(relative posix path, text) for every scanned file under root. A file
+    that cannot be read (or is not UTF-8) is appended to `unreadable` as
+    (path, error) — never skipped silently: its claims were not checked."""
     root = Path(root)
     for dirpath, dirnames, filenames in os.walk(root):
         rel_dir = Path(dirpath).relative_to(root).as_posix()
@@ -256,9 +264,12 @@ def iter_doctrine(root: Path):
             elif not (rel.startswith("evals/cases/") and name.endswith(".json")):
                 continue
             try:
-                yield rel, (Path(dirpath) / name).read_text(encoding="utf-8")
-            except (OSError, UnicodeDecodeError):
+                text = (Path(dirpath) / name).read_text(encoding="utf-8")
+            except (OSError, UnicodeDecodeError) as e:
+                if unreadable is not None:
+                    unreadable.append((rel, f"{type(e).__name__}: {e}"))
                 continue
+            yield rel, text
 
 
 def _nearest_heading(text: str, pos: int) -> str:
@@ -268,11 +279,17 @@ def _nearest_heading(text: str, pos: int) -> str:
     return last
 
 
-def lint(root: Path, specs: dict, claims: list[Claim]) -> list[Hit]:
+def lint(root: Path, specs: dict, claims: list[Claim],
+         report: dict | None = None) -> list[Hit]:
+    """Hits for every claim pattern in the tree. `report`, when given, gets
+    "scanned" (files read) and "unreadable" ([(path, error)])."""
     hits: list[Hit] = []
+    unreadable: list = []
+    scanned = 0
     static = {c.id: evaluate(c.assertion, specs) for c in claims
               if c.assertion["kind"] != "listed_set_equals"}
-    for rel, text in iter_doctrine(root):
+    for rel, text in iter_doctrine(root, unreadable):
+        scanned += 1
         for c in claims:
             if c.paths and not any(fnmatch.fnmatch(rel, g) for g in c.paths):
                 continue
@@ -287,6 +304,8 @@ def lint(root: Path, specs: dict, claims: list[Claim]) -> list[Hit]:
                 line = text.count("\n", 0, m.start()) + 1
                 excerpt = " ".join(m.group(0).split())[:100]
                 hits.append(Hit(c, rel, line, excerpt, ok, why))
+    if report is not None:
+        report.update(scanned=scanned, unreadable=unreadable)
     return hits
 
 
@@ -307,8 +326,14 @@ def main(argv: list[str] | None = None) -> int:
     except RegistryError as e:
         print(f"ERROR: {e}", file=sys.stderr)
         return 2
-    hits = lint(args.root, specs, claims)
+    report: dict = {}
+    hits = lint(args.root, specs, claims, report)
     bad = [h for h in hits if not h.ok]
+    # The gate over nothing is not a pass: an unreadable doctrine file was
+    # never checked, and zero files scanned means --root saw no doctrine.
+    unchecked = [f"{p}: {e}" for p, e in report["unreadable"]]
+    if report["scanned"] == 0:
+        unchecked.append(f"zero doctrine files scanned under {args.root}")
 
     if args.json:
         print(json.dumps({
@@ -316,11 +341,15 @@ def main(argv: list[str] | None = None) -> int:
                               "text": h.text, "specs": h.why,
                               "finding": h.claim.finding} for h in bad],
             "checked_hits": len(hits),
+            "scanned_files": report["scanned"],
+            "unchecked": unchecked,
             "entries_without_hits": sorted({c.id for c in claims} - {h.claim.id for h in hits}),
         }, indent=2, ensure_ascii=False))
     else:
-        print(f"Claims lint — {len(claims)} registry entries, {len(hits)} hit(s), "
-              f"{len(bad)} false against today's specs")
+        print(f"Claims lint — {len(claims)} registry entries, {report['scanned']} file(s) "
+              f"scanned, {len(hits)} hit(s), {len(bad)} false against today's specs")
+        for u in unchecked:
+            print(f"  ? UNCHECKED {u}")
         for h in bad:
             print(f"  ✗ {h.path}:{h.line}  [{h.claim.id}] “{h.text}”")
             print(f"      specs: {h.why}")
@@ -331,7 +360,9 @@ def main(argv: list[str] | None = None) -> int:
                     print(f"  ✓ {h.path}:{h.line}  [{h.claim.id}] {h.why}")
             for cid in sorted({c.id for c in claims} - {h.claim.id for h in hits}):
                 print(f"  · [{cid}] no hits in this tree")
-    return 1 if bad else 0
+    if bad:
+        return 1
+    return 2 if unchecked else 0
 
 
 if __name__ == "__main__":

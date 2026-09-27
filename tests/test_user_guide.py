@@ -192,3 +192,13 @@ def test_dry_run_stays_fast():
                         "--dry-run"], capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
     assert time.monotonic() - t < 15
+
+
+def test_guide_renders_the_smart_duration_sentinel():
+    # {min: 2, max: 30, smart: -1} rendered as "2-30s", dropping the -1 the
+    # guide's own readers need (wan3_0 smart duration).
+    import user_guide_content as ugc
+    assert ugc._fmt_duration({"min": 2, "max": 30, "smart": -1}) == "2-30s or -1 (smart)"
+    assert ugc._fmt_duration({"min": 4, "max": 15}) == "4-15s"
+    rows = {mid: dur for _, mid, dur, _ in ugc.catalog()["video"]}
+    assert rows["wan3_0"] == "2-30s or -1 (smart)"
