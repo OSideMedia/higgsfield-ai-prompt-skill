@@ -12,6 +12,7 @@ import os
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
 
@@ -29,6 +30,8 @@ from conftest import REPO
     ("cowork/higgsfield-ai-prompt-skill-main", False),    # a Cowork workspace
     ("Projects/higgsfield/.claude/worktrees/agent-1", False),
     ("skills/.claude/higgsfield", False),                 # both words, wrong order
+    ("tmp/.claude/skills/archive/higgsfield", False),     # a clone nested deeper
+    ("Users/me/.CLAUDE/Skills/higgsfield", True),         # another casing, same folder
 ])
 def test_default_db_dir_follows_the_install_path(tmp_path, rel, installed):
     root = tmp_path / rel
@@ -44,6 +47,16 @@ def test_a_symlinked_dev_checkout_keeps_its_own_db(tmp_path):
     link.parent.mkdir(parents=True)
     link.symlink_to(checkout)
     assert hm.default_db_dir(link) == hm.SEED_DIR         # resolved: a checkout
+
+
+def test_an_install_under_a_symlinked_dot_claude_is_still_an_install(tmp_path):
+    real = tmp_path / "dotfiles" / "claude"               # ~/.claude -> dotfiles/claude
+    (real / "skills" / "higgsfield").mkdir(parents=True)
+    home = tmp_path / "home"
+    home.mkdir()
+    (home / ".claude").symlink_to(real)
+    for root in (home / ".claude" / "skills" / "higgsfield", real / "skills" / "higgsfield"):
+        assert hm.default_db_dir(root, home=home) == hm.USER_DB_DIR
 
 
 # ── seed_db_dir: first use only, never a merge ───────────────────────────────
@@ -62,7 +75,7 @@ def test_seed_copies_the_whole_db_once(tmp_path):
     assert (dest / "filter-memory.json").read_text(encoding="utf-8") == \
         (seed / "filter-memory.json").read_text(encoding="utf-8")
     assert (dest / "ledger" / "README.md").exists()
-    assert not list(dest.parent.glob(".db.seeding-*"))   # no temp folder left behind
+    assert not list(dest.parent.glob(".db.*"))            # no temp folder left behind
     (dest / "filter-memory.json").write_text('{"entries": []}', encoding="utf-8")
     assert hm.seed_db_dir(dest, seed) is False            # an existing memory is never touched
     assert (dest / "filter-memory.json").read_text(encoding="utf-8") == '{"entries": []}'
@@ -81,7 +94,33 @@ def test_seed_loses_a_race_cleanly(tmp_path, monkeypatch):
     monkeypatch.setattr(hm.shutil, "copytree", copy_while_another_process_wins)
     assert hm.seed_db_dir(dest, seed) is False
     assert (dest / "winner").exists()                     # the winner's folder is intact
-    assert not list(dest.parent.glob(".db.seeding-*"))
+    assert not list(dest.parent.glob(".db.*"))
+
+
+def test_a_read_only_seed_gives_a_writable_memory(tmp_path):
+    seed, dest = _seed(tmp_path), tmp_path / "home" / ".higgsfield-skill" / "db"
+    paths = [seed / "filter-memory.json", seed / "ledger" / "README.md", seed / "ledger", seed]
+    for path in paths:
+        path.chmod(0o555 if path.is_dir() else 0o444)    # an install made read-only
+    try:
+        assert hm.seed_db_dir(dest, seed) is True
+        for path in (dest, dest / "ledger", dest / "filter-memory.json"):
+            assert os.access(path, os.W_OK), path
+    finally:
+        for path in paths:
+            path.chmod(0o755 if path.is_dir() else 0o644)
+
+
+def test_an_incomplete_memory_gets_the_missing_databases(tmp_path):
+    seed, home = _seed(tmp_path), tmp_path / "home" / ".higgsfield-skill"
+    dest = home / "db"
+    (dest / "ledger").mkdir(parents=True)                 # a ledger written while no seed existed
+    (dest / "ledger" / "adze.json").write_text('{"rows": []}', encoding="utf-8")
+    kept = hm.prepare_user_db(dest, seed, home / "sources.json", home / "unmerged")
+    assert kept is None
+    assert (dest / "filter-memory.json").read_text(encoding="utf-8") == \
+        (seed / "filter-memory.json").read_text(encoding="utf-8")
+    assert (dest / "ledger" / "adze.json").read_text(encoding="utf-8") == '{"rows": []}'
 
 
 # ── end to end: a real install layout under a throwaway HOME ─────────────────
@@ -95,22 +134,49 @@ def install(tmp_path):
     for part in ("scripts", "db", "specs"):
         shutil.copytree(REPO / part, skill / part,
                         ignore=shutil.ignore_patterns("__pycache__"))
-    env = {k: v for k, v in os.environ.items() if k != "HF_DB_DIR"}
-    env["HOME"] = str(home)
-    return home, skill, env
+    return home, skill, _env(home)
+
+
+def _env(home):
+    """The environment with `home` as the home folder on every platform."""
+    env = {k: v for k, v in os.environ.items()
+           if k not in ("HF_DB_DIR", "HOMEDRIVE", "HOMEPATH")}
+    env["HOME"] = env["USERPROFILE"] = str(home)
+    return env
+
+
+def _install(home, rel, extra=None):
+    """Install the skill at home/rel; `extra` adds a filter entry of the
+    user's own, as an install older than v3.42.0 would hold."""
+    skill = home / rel
+    skill.mkdir(parents=True)
+    for part in ("scripts", "db", "specs"):
+        shutil.copytree(REPO / part, skill / part,
+                        ignore=shutil.ignore_patterns("__pycache__"))
+    if extra:
+        path = skill / "db" / "filter-memory.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["entries"].append({"id": extra, "category": "c", "blocked_terms": [],
+                                "error_message": "e", "tags": []})
+        path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    return skill
+
+
+def _ids(path):
+    return {e["id"] for e in json.loads(path.read_text(encoding="utf-8"))["entries"]}
 
 
 def _run(env, script, *args):
     r = subprocess.run([sys.executable, str(script), *args],
                        capture_output=True, text=True, env=env)
-    return r.returncode, r.stdout
+    return r.returncode, r.stdout, r.stderr
 
 
 def test_an_install_keeps_its_memory_outside_the_skill_folder(install):
     home, skill, env = install
     shipped = (skill / "db" / "filter-memory.json").read_bytes()
-    code, out = _run(env, skill / "scripts" / "higgsfield_memory.py", "where")
-    assert code == 0, out
+    code, out, err = _run(env, skill / "scripts" / "higgsfield_memory.py", "where")
+    assert code == 0, out + err
     where = json.loads(out)
     user_db = home / ".higgsfield-skill" / "db"
     assert where["db_dir"] == str(user_db) and where["source"] == "skill install"
@@ -118,8 +184,8 @@ def test_an_install_keeps_its_memory_outside_the_skill_folder(install):
 
     entry = json.dumps({"category": "c", "blocked_terms": ["x"], "error_message": "blocked",
                         "failed_prompt": "x", "tags": ["t"]})
-    code, out = _run(env, skill / "scripts" / "higgsfield_memory.py", "add-filter", entry)
-    assert code == 0, out
+    code, out, err = _run(env, skill / "scripts" / "higgsfield_memory.py", "add-filter", entry)
+    assert code == 0, out + err
     assert (skill / "db" / "filter-memory.json").read_bytes() == shipped   # install untouched
     added = json.loads((user_db / "filter-memory.json").read_text(encoding="utf-8"))
     assert len(added["entries"]) == len(json.loads(shipped)["entries"]) + 1
@@ -127,18 +193,40 @@ def test_an_install_keeps_its_memory_outside_the_skill_folder(install):
 
 def test_the_linter_can_be_the_first_script_an_install_runs(install):
     home, skill, env = install
-    code, out = _run(env, skill / "scripts" / "seedance_lint.py", "--preflight",
-                     "A woman walks through a quiet street at dusk.")
-    assert code in (0, 1), out                            # a verdict, never a crash
+    code, out, err = _run(env, skill / "scripts" / "seedance_lint.py", "--preflight",
+                          "A woman walks through a quiet street at dusk.")
+    assert code in (0, 1) and "Traceback" not in err, out + err
     assert (home / ".higgsfield-skill" / "db" / "filter-memory.json").exists()   # seeded on import
+    assert "memory-recall — F-" in out                    # and the recall read it
 
 
 def test_a_checkout_keeps_its_memory_in_db(tmp_path):
-    env = {k: v for k, v in os.environ.items() if k != "HF_DB_DIR"}
-    env["HOME"] = str(tmp_path)                           # nothing may be seeded here
-    code, out = _run(env, REPO / "scripts" / "higgsfield_memory.py", "where")
+    env = _env(tmp_path)                                  # nothing may be seeded here
+    code, out, _ = _run(env, REPO / "scripts" / "higgsfield_memory.py", "where")
     assert code == 0 and json.loads(out)["db_dir"] == str(REPO / "db")
     assert not (tmp_path / ".higgsfield-skill").exists()
+
+
+def test_a_second_older_install_keeps_its_own_memory(tmp_path):
+    home = tmp_path / "home"
+    env = _env(home)
+    personal = _install(home, ".claude/skills/higgsfield", extra="F-901")
+    project = _install(home, "film/.claude/skills/higgsfield", extra="F-902")
+    fresh = _install(home, "ads/.claude/skills/higgsfield")
+    shared = home / ".higgsfield-skill" / "db" / "filter-memory.json"
+    where = personal / "scripts" / "higgsfield_memory.py"
+
+    _, _, err = _run(env, where, "where")                 # the first install seeds
+    assert "not merged" not in err and "F-901" in _ids(shared)
+    code, out, err = _run(env, project / "scripts" / "higgsfield_memory.py", "where")
+    assert code == 0 and "not merged" in err, err         # told once...
+    [kept] = json.loads(out)["unmerged"]
+    assert "F-902" in _ids(Path(kept) / "filter-memory.json")
+    assert "F-902" not in _ids(shared)                    # ...kept, not merged
+    _, _, err = _run(env, project / "scripts" / "higgsfield_memory.py", "where")
+    assert "not merged" not in err                        # and only once
+    _, out, err = _run(env, fresh / "scripts" / "higgsfield_memory.py", "where")
+    assert "not merged" not in err and len(json.loads(out)["unmerged"]) == 1
 
 
 # ── validate certifies the shipped db/, not whichever memory is active ───────
@@ -156,10 +244,15 @@ def test_validate_reads_the_shipped_db_not_the_active_memory(tmp_path, monkeypat
         (shipped / name).write_text(json.dumps({"entries": []}), encoding="utf-8")
     monkeypatch.setattr(hm, "FILTER_DB", shipped / "filter-memory.json")
     monkeypatch.setattr(hm, "QUALITY_DB", shipped / "quality-memory.json")
+    monkeypatch.setattr(hm, "LEDGER_DIR", shipped / "ledger")
     (shipped / "memory-summary.md").write_text(hm.build_summary(), encoding="utf-8")
-    # The active memory is a user's, with this repo's real entries in it.
+    # The active memory is a user's: this repo's real entries and a project ledger.
+    active_ledger = tmp_path / "user-db" / "ledger"
+    active_ledger.mkdir(parents=True)
+    shutil.copyfile(REPO / "db" / "ledger" / "_demo.json", active_ledger / "demo.json")
     monkeypatch.setattr(hm, "FILTER_DB", REPO / "db" / "filter-memory.json")
     monkeypatch.setattr(hm, "QUALITY_DB", REPO / "db" / "quality-memory.json")
+    monkeypatch.setattr(hm, "LEDGER_DIR", active_ledger)
     monkeypatch.setattr(validate, "ROOT", tmp_path / "repo")
     monkeypatch.setattr(validate, "STRICT", True)
     validate.check_memory_summary()

@@ -20,7 +20,8 @@ Usage:
 The memory folder: db/ in the skill's folder, except in a Claude Code skill
 install (.claude/skills/<name>/), where it is ~/.higgsfield-skill/db/, seeded
 from the skill's db/ on first use. HF_DB_DIR overrides both. Paths below
-written db/... mean that folder.
+written db/... mean that folder. `where` also lists any older install's
+memory kept unmerged in ~/.higgsfield-skill/unmerged/.
 
 Generation ledger (db/ledger/ — see db/ledger/README.md):
   python3 scripts/higgsfield_memory.py log-gen <project> --model X --tags a,b --outcome kept
@@ -46,9 +47,11 @@ Per-project namespacing:
   first write; reads from a missing project DB return empty results.
 """
 
+import hashlib
 import json
 import os
 import shutil
+import stat
 import sys
 import re
 from datetime import datetime, timezone
@@ -61,10 +64,24 @@ REPO_ROOT = Path(__file__).resolve().parent.parent  # scripts/ → repo root
 # The db/ this skill ships: starter entries, the ledger README, the _demo fixture.
 SEED_DIR = REPO_ROOT / "db"
 # Where the memory lives when the skill is a Claude Code skill install.
-USER_DB_DIR = Path.home() / ".higgsfield-skill" / "db"
+MEMORY_HOME = Path.home() / ".higgsfield-skill"
+USER_DB_DIR = MEMORY_HOME / "db"
+# An older install's own memory, kept when another install already seeded USER_DB_DIR.
+UNMERGED_DIR = MEMORY_HOME / "unmerged"
+# The installs whose db/ has been seeded from or checked, so each is handled once.
+SOURCES_FILE = MEMORY_HOME / "sources.json"
+# The databases a memory folder needs; an incomplete folder gets them from the seed.
+CORE_FILES = ("filter-memory.json", "quality-memory.json", "routing-log.json")
 
 
-def default_db_dir(root: Path = REPO_ROOT) -> Path:
+def _is_install_dir(path: Path) -> bool:
+    """`path` is `<...>/.claude/skills/<name>`, compared case-insensitively as
+    the macOS and Windows file systems compare names."""
+    return (path.parent.name.casefold() == "skills"
+            and path.parent.parent.name.casefold() == ".claude")
+
+
+def default_db_dir(root: Path = REPO_ROOT, home: Path | None = None) -> Path:
     """The memory folder when HF_DB_DIR is unset.
 
     A Claude Code skill install (`.claude/skills/<name>/`, personal or project)
@@ -73,47 +90,134 @@ def default_db_dir(root: Path = REPO_ROOT) -> Path:
     lives in USER_DB_DIR, one folder per user, shared across projects.
     Anywhere else (a Cowork workspace, a checkout of this repo) the folder is
     the user's own and survives, so the memory stays in its db/.
-    (ponytail: decided by path shape, `.claude` then `skills`, on the resolved
-    path, so a symlinked dev checkout counts as a checkout; add an explicit
-    marker file if an install ever lives elsewhere.)"""
-    parts = root.resolve().parts
-    installed = any(a == ".claude" and b == "skills" for a, b in zip(parts, parts[1:]))
+
+    Decided on the real path, so the way a script is invoked never splits the
+    memory across two folders: the skill folder sits directly in a
+    `.claude/skills/` folder, or in the real folder `~/.claude/skills/` points
+    to (a symlinked `~/.claude`). A dev checkout symlinked into
+    `.claude/skills/` resolves to the checkout and keeps its own db/.
+    (ponytail: a project install under a symlinked `<project>/.claude` resolves
+    elsewhere and keeps its db/ as before v3.42.0; add a marker file if that
+    layout turns up.)"""
+    real = root.resolve()
+    skills = ((home or Path.home()) / ".claude" / "skills").resolve()
+    installed = _is_install_dir(real) or real.parent == skills
     return USER_DB_DIR if installed else SEED_DIR
+
+
+def _copy_tree(src: Path, dest: Path) -> bool:
+    """Copy `src` to a new `dest`; False when `dest` already exists. The copy
+    is built beside `dest`, made writable by its owner (an install's files may
+    be read-only) and renamed into place, so a process racing it finds either
+    no folder or a complete one."""
+    if dest.exists():
+        return False
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dest.with_name(f".{dest.name}.copying-{os.getpid()}")
+    shutil.rmtree(tmp, ignore_errors=True)
+    shutil.copytree(src, tmp)
+    for folder, _, files in os.walk(tmp):
+        os.chmod(folder, os.stat(folder).st_mode | stat.S_IRWXU)
+        for name in files:
+            path = os.path.join(folder, name)
+            os.chmod(path, os.stat(path).st_mode | stat.S_IRUSR | stat.S_IWUSR)
+    try:
+        tmp.rename(dest)
+    except OSError:  # another process created it first
+        shutil.rmtree(tmp, ignore_errors=True)
+        return False
+    return True
 
 
 def seed_db_dir(dest: Path, seed: Path = SEED_DIR) -> bool:
     """Create `dest` as a copy of the skill's db/ if it does not exist yet;
     return True when this call created it. The copy carries the starter data
-    and, for an install that predates v3.42.0, the user's own entries. It is
-    built beside `dest` and renamed into place, so a second process racing it
-    finds either no folder or a complete one. Never merges into an existing
-    folder.
+    and, for an install that predates v3.42.0, the user's own entries. Never
+    merges into an existing folder.
     (ponytail: seeds once, so starter entries a later release adds do not
     reach an existing memory; add a versioned merge if the seed starts
     changing.)"""
-    if dest.exists() or not seed.is_dir():
-        return False
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    tmp = dest.with_name(f".{dest.name}.seeding-{os.getpid()}")
-    shutil.rmtree(tmp, ignore_errors=True)
-    shutil.copytree(seed, tmp)
+    return seed.is_dir() and _copy_tree(seed, dest)
+
+
+def _records(path: Path) -> set:
+    """The entries or ledger rows in one memory file, as canonical JSON."""
     try:
-        tmp.rename(dest)
-    except OSError:  # another process seeded it first
-        shutil.rmtree(tmp, ignore_errors=True)
-        return False
-    return True
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return set()
+    items = (data.get("entries") or data.get("rows")) if isinstance(data, dict) else None
+    return ({json.dumps(i, sort_keys=True) for i in items if isinstance(i, dict)}
+            if isinstance(items, list) else set())
+
+
+def unmerged_count(src: Path, dest: Path) -> int:
+    """How many entries and ledger rows in `src` are missing from `dest`.
+    Underscore files (the generated _global view, the _demo fixture) are
+    skipped."""
+    return sum(len(_records(path) - _records(dest / path.relative_to(src)))
+               for path in src.rglob("*.json") if not path.name.startswith("_"))
+
+
+def prepare_user_db(dest: Path = USER_DB_DIR, seed: Path = SEED_DIR,
+                    sources_file: Path = SOURCES_FILE,
+                    unmerged_dir: Path = UNMERGED_DIR) -> Path | None:
+    """Get the shared memory folder ready for this install, once per install.
+
+    The first install seeds `dest`. A later install's db/ may hold memory of
+    its own from before v3.42.0: its missing core databases fill an
+    incomplete `dest`, and if entries are still missing from `dest`, the
+    install's db/ is copied to `unmerged_dir` so a reinstall cannot erase it.
+    Returns that copy's folder, or None.
+    (ponytail: keeps the second install's memory but does not merge it, since
+    entry ids collide; add an import command that renumbers if two-install
+    upgrades turn out common.)"""
+    key = str(seed.resolve().parent)
+    try:
+        sources = json.loads(sources_file.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        sources = {}
+    if not isinstance(sources, dict):
+        sources = {}
+    if key in sources or not seed.is_dir():
+        return None
+    kept = None
+    if seed_db_dir(dest, seed):
+        sources[key] = "seeded"
+    elif dest.is_dir():
+        for name in CORE_FILES:
+            if (seed / name).is_file() and not (dest / name).exists():
+                shutil.copyfile(seed / name, dest / name)
+        missing = unmerged_count(seed, dest)
+        if missing:
+            slug = hashlib.sha256(key.encode("utf-8")).hexdigest()[:8]
+            kept = unmerged_dir / f"{seed.parent.name}-{slug}" / "db"
+            _copy_tree(seed, kept)
+            print(f"higgsfield: {missing} memory entries in {seed} are not in {dest}; "
+                  f"kept a copy in {kept} (not merged)", file=sys.stderr)
+        sources[key] = str(kept) if kept else "checked"
+    else:
+        return None
+    sources_file.parent.mkdir(parents=True, exist_ok=True)
+    tmp = sources_file.with_name(f".{sources_file.name}.{os.getpid()}")
+    tmp.write_text(json.dumps(sources, indent=2) + "\n", encoding="utf-8")
+    os.replace(tmp, sources_file)
+    return kept
 
 
 # HF_DB_DIR overrides the location (tests point it at a temp dir; works both
 # in-process and across subprocess boundaries, unlike monkeypatched constants).
 # Otherwise default_db_dir() decides. Inside the skill's own db/ the directory
 # is created lazily on first write (see save_db / export_summary); the per-user
-# folder is seeded here, once, the first time any script loads this module in
-# an install, so the linter's memory recall finds it as the memory CLI does.
+# folder is prepared here, the first time any script loads this module in an
+# install, so the linter's memory recall finds it as the memory CLI does.
 DB_DIR = Path(os.environ["HF_DB_DIR"]) if os.environ.get("HF_DB_DIR") else default_db_dir()
 if DB_DIR == USER_DB_DIR:
-    seed_db_dir(DB_DIR)
+    try:
+        prepare_user_db(DB_DIR)
+    except OSError as e:  # an unwritable home: commands report the missing files
+        print(f"higgsfield: could not prepare the memory folder {DB_DIR}: {e}",
+              file=sys.stderr)
 FILTER_DB = DB_DIR / "filter-memory.json"
 QUALITY_DB = DB_DIR / "quality-memory.json"
 # Item 6: which sub-skills the dispatcher opened per request. Instrumentation —
@@ -1648,7 +1752,7 @@ def build_summary(db_dir: Path | None = None) -> str:
     # Generation ledger — current ratios at a glance (real projects only;
     # underscore-prefixed ledgers are reserved/fixture data).
     lines.append("\n---\n\n## Generation Ledger\n")
-    projects = project_ledger_files()
+    projects = project_ledger_files(db_dir / "ledger" if db_dir else None)
     if not projects:
         lines.append("No project ledgers yet — log generations with "
                      "`scripts/higgsfield_memory.py log-gen <project> ...`.")
@@ -1800,8 +1904,10 @@ if __name__ == "__main__":
     elif cmd == "where":
         source = ("HF_DB_DIR" if os.environ.get("HF_DB_DIR")
                   else "skill install" if DB_DIR == USER_DB_DIR else "skill folder")
+        unmerged = (sorted(str(d / "db") for d in UNMERGED_DIR.iterdir() if (d / "db").is_dir())
+                    if UNMERGED_DIR.is_dir() else [])
         print(json.dumps({"status": "ok", "db_dir": str(DB_DIR), "source": source,
-                          "exists": DB_DIR.is_dir()}, indent=2))
+                          "exists": DB_DIR.is_dir(), "unmerged": unmerged}, indent=2))
     else:
         print(f"Unknown command: {cmd}")
         print(__doc__)

@@ -135,6 +135,8 @@ reinstall or update cannot erase it. Anywhere else (a Cowork workspace, a clone 
 repo) it is this skill's own `db/`. The `HF_DB_DIR` environment variable overrides both.
 `python3 <this skill's folder>/scripts/higgsfield_memory.py where` prints the folder in
 use; give the user that path when they ask where their memory is or before a reinstall.
+If its `unmerged` list is not empty, a second install older than v3.42.0 had memory of
+its own: it was kept in that folder, not merged. Tell the user once.
 
 ## Handling a Request
 
