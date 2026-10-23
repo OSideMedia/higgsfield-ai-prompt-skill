@@ -106,16 +106,82 @@ def test_contents_refreshes_a_stale_block():
 
 @pytest.mark.parametrize("text", [
     _doc([(2, "A"), (2, "B")], filler=5),                          # 100 lines or fewer
-    _doc([(2, "QUICK FACTS"), (2, "B")]),                          # QUICK FACTS already opens it
+    _doc([(2, "QUICK FACTS"), (2, "B")], filler=60),               # QUICK FACTS already opens it
     _doc([(2, "Only one section")], filler=120),                   # nothing to choose between
 ])
 def test_contents_not_owed(text):
     assert b.with_contents(text) == text
 
 
-def test_contents_unterminated_block_is_an_error():
+def test_contents_not_owed_cases_are_long_enough_to_owe_one_otherwise():
+    # each not-owed case above must fail on its own rule, not on length
+    assert len(_doc([(2, "QUICK FACTS"), (2, "B")], filler=60).splitlines()) > b.CONTENTS_THRESHOLD
+    assert b.with_contents(_doc([(2, "Quick look"), (2, "B")], filler=60)) != \
+        _doc([(2, "Quick look"), (2, "B")], filler=60)
+
+
+@pytest.mark.parametrize("text", [
+    b.CONTENTS_BEGIN + "\n# Title\n",                                   # begin, no end
+    "# Title\n" + b.CONTENTS_END + "\n",                                # end, no begin
+    _doc(SECTIONS).replace("Intro line.", "\n".join(                    # two blocks
+        [b.CONTENTS_BEGIN, b.CONTENTS_END, b.CONTENTS_BEGIN, b.CONTENTS_END])),
+])
+def test_contents_marker_damage_is_an_error(text):
     with pytest.raises(ValueError):
-        b.with_contents(b.CONTENTS_BEGIN + "\n# Title\n")
+        b.with_contents(text)
+
+
+def test_contents_markers_inside_a_code_fence_are_not_a_block():
+    example = ["```markdown", b.CONTENTS_BEGIN, "- [kept](#kept)", b.CONTENTS_END, "```"]
+    text = _doc(SECTIONS).replace("Intro line.", "\n".join(example))
+    fixed = b.with_contents(text)
+    assert "\n".join(example) in fixed                  # the example survives verbatim
+    assert fixed.count(b.CONTENTS_BEGIN) == 2            # plus one real block
+    assert b.with_contents(fixed) == fixed
+
+
+def test_contents_ignores_a_comment_line_in_frontmatter():
+    text = _doc(SECTIONS, frontmatter=True).replace("name: x", "name: x\n# a yaml comment")
+    lines = b.with_contents(text).split("\n")
+    assert lines[:6] == ["---", "name: x", "# a yaml comment", "---", "", "# Title"]
+    assert lines[7] == b.CONTENTS_BEGIN
+
+
+def test_contents_moves_a_misplaced_block_back_under_the_title():
+    fixed = b.with_contents(_doc(SECTIONS))
+    body = b.without_contents(fixed)
+    block = fixed[fixed.index(b.CONTENTS_BEGIN):fixed.index(b.CONTENTS_END) + len(b.CONTENTS_END)]
+    moved = body + "\n" + block + "\n"
+    assert b.with_contents(moved) == fixed
+
+
+def test_contents_keeps_crlf_line_endings():
+    text = _doc(SECTIONS).replace("\n", "\r\n")
+    fixed = b.with_contents(text)
+    assert fixed.count(b.CONTENTS_BEGIN) == 1 and "\n" not in fixed.replace("\r\n", "")
+    assert b.with_contents(fixed) == fixed
+
+
+@pytest.mark.parametrize("heading", [
+    "See [the guide](guide.md)", "<b>Bold</b> setup", "The _real_ rule", r"Escaped \* star",
+])
+def test_contents_refuses_a_heading_the_slugger_cannot_read(heading):
+    with pytest.raises(ValueError, match="slugs differently"):
+        b.with_contents(_doc([(2, "Fine"), (2, heading)], filler=60))
+
+
+@pytest.mark.parametrize("heading", ["`snake_case_name` flag", "Duration < 5 s", "a_b_c"])
+def test_contents_accepts_plain_heading_punctuation(heading):
+    fixed = b.with_contents(_doc([(2, "Fine"), (2, heading)], filler=60))
+    assert b.CONTENTS_BEGIN in fixed and b.with_contents(fixed) == fixed
+
+
+def test_quick_facts_rule_survives_marker_damage(tmp_path, monkeypatch):
+    monkeypatch.setattr(b, "ROOT", tmp_path)
+    sub = tmp_path / "skills" / "x" / "SKILL.md"
+    sub.parent.mkdir(parents=True)
+    sub.write_text("# Sub\n" + b.CONTENTS_BEGIN + "\n", encoding="utf-8")
+    assert b.quick_facts_problems(sub) == []             # contents_problems() reports it
 
 
 def test_contents_gate_flags_a_missing_block(tmp_path, monkeypatch):

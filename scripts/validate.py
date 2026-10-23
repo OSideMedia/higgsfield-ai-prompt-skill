@@ -755,22 +755,44 @@ def check_model_specs():
 
 def reference_files() -> list:
     """Every file the skill may send a reader to, as repo-relative paths: the
-    root reference docs, every non-SKILL.md file under skills/, every template,
-    and docs/ outside docs/archive/ (sub-skill SKILL.md files are
-    check_dispatcher_parity's)."""
+    root reference docs, every file under skills/ but a SKILL.md, every file
+    under templates/, and docs/*.md outside docs/archive/ (sub-skill SKILL.md
+    files are check_dispatcher_parity's). skills/ and templates/ take any
+    extension, so a reference saved as .txt or .json is still owed a link;
+    dotfiles (.DS_Store) are not references."""
     def rel(p):
         return p.relative_to(ROOT).as_posix()
     out = sorted(ROOT_REFERENCE_DOCS)
-    out += [rel(p) for p in walk_files(ROOT / "skills", "*.md", repo_root=ROOT)
-            if p.name != "SKILL.md"]
-    out += [rel(p) for p in walk_files(ROOT / "templates", "*.md", repo_root=ROOT)]
+    out += [rel(p) for p in walk_files(ROOT / "skills", "*", repo_root=ROOT)
+            if p.name != "SKILL.md" and not p.name.startswith(".")]
+    out += [rel(p) for p in walk_files(ROOT / "templates", "*", repo_root=ROOT)
+            if not p.name.startswith(".")]
     out += [rel(p) for p in walk_files(ROOT / "docs", "*.md", repo_root=ROOT)
-            if "archive" not in p.relative_to(ROOT / "docs").parts]
+            if p.relative_to(ROOT / "docs").parts[0] != "archive"]
     return out
 
 
+def linked_paths(text: str) -> set:
+    """Paths `text` names as live links: a backticked path or a Markdown link
+    target, outside HTML comments and code fences — a path inside an example
+    block or a commented-out row sends no reader anywhere."""
+    text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
+    live, in_fence = [], False
+    for line in text.splitlines():
+        if re.match(r"^\s*(```|~~~)", line):
+            in_fence = not in_fence
+        elif not in_fence:
+            live.append(line)
+    text = "\n".join(live)
+    found = set(re.findall(r"`([^`\n]+)`", text))
+    found |= {t.split("#")[0] for t in re.findall(r"\]\(<?([^)>\s]+)>?\)", text)}
+    found |= {t.replace("%20", " ") for t in found}
+    return found
+
+
 def check_reference_reachability():
-    """Root SKILL.md names every reference file by its full path, in backticks.
+    """Root SKILL.md names every reference file by its full path, in backticks
+    or as a Markdown link target (linked_paths()).
 
     Anthropic's skill-authoring guidance: keep references one level deep from
     SKILL.md, because a file reached only through another file tends to get a
@@ -785,7 +807,8 @@ def check_reference_reachability():
           "add to ROOT_REFERENCE_DOCS (and link it from root SKILL.md) or to "
           "REPO_DOCS: " + ", ".join(unclassified))
     files = reference_files()
-    missing = [f for f in files if f"`{f}`" not in skill_text]
+    linked = linked_paths(skill_text)
+    missing = [f for f in files if f not in linked]
     check(not missing, f"root SKILL.md links all {len(files)} reference files by path",
           "" if not missing else
           "add a Shared Resources / reference-file row for: " + ", ".join(missing[:6])

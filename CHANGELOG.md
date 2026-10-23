@@ -19,8 +19,8 @@ Two new gates keep the fixes from drifting back.
   the folders are not git-ignored, and the skill asks before editing the user's `.gitignore`.
 - **Sub-skills were called "auto-loaded"** (#110 item 1). Claude Code registers only
   `~/.claude/skills/<name>/SKILL.md`, so the 35 files under `skills/` are never separate skills.
-  The heading now says to open them, a **Paths** note says every path is relative to the skill's
-  own folder, and every route in the routing table, the load map and the sub-skill table names
+  The heading now says to open them, a **Paths** note says a path in root `SKILL.md` is relative
+  to the skill's own folder and a path in any other file to that file's own folder, and every route in the routing table, the load map and the sub-skill table names
   the full path (`skills/higgsfield-camera/SKILL.md`, not `higgsfield-camera`).
 - **MCP tools named without their server** (#110 item 5). The HARD RULES and routing rows now
   write `Higgsfield:models_explore` (and `Higgsfield:voice_change`, `create_voice`,
@@ -40,13 +40,19 @@ Two new gates keep the fixes from drifting back.
   templates, both live `docs/` files, and `HELL-GRIND.md` / `VFX-PIPELINE.md`, which were named
   only bare). New Shared Resources rows and a **Reference files
   inside sub-skills** table name each by path. New gate `check_reference_reachability`
-  (`validate.py`): every root reference doc, non-`SKILL.md` file under `skills/`, template and
-  live `docs/` file must appear by full path in root `SKILL.md`, and a root `.md` that is neither
-  a reference doc nor a repo doc fails as unclassified. Red-proven on the v3.40.0 `SKILL.md`.
+  (`validate.py`): every root reference doc, every non-`SKILL.md` file under `skills/` and
+  `templates/` (any extension), and every `docs/` file outside `docs/archive/` must appear by full
+  path in root `SKILL.md`, backticked or as a Markdown link target. A mention inside an HTML
+  comment or a code fence does not count, and a root `.md` that is neither a reference doc nor a
+  repo doc fails as unclassified. Red-proven on the v3.40.0 `SKILL.md`.
 - **CONTENTS blocks** (#110 item 3). `scripts/build_index.py` now writes an anchor-linked
   heading list under the title of every skill file over 100 lines that has no QUICK FACTS block
   (45 files), and `--check` (run by `validate.py`) fails when one is missing or stale: the gate is
-  "the writer is a no-op". Run `python3 scripts/build_index.py` after any heading change.
+  "the writer is a no-op". Run `python3 scripts/build_index.py` after any heading change. The
+  writer reads its markers only outside code fences and frontmatter, refuses a second block or a
+  dangling marker, moves a misplaced block back under the title, keeps CRLF line endings, and
+  refuses a heading whose GitHub slug it cannot predict (a link, inline HTML, a backslash escape
+  or `_emphasis_`) rather than write a dead link.
 - Root `SKILL.md` gains a `## Handling a Request` heading over Fast Path → Output Format, which
   sat under Working Folders.
 
@@ -58,6 +64,8 @@ Two new gates keep the fixes from drifting back.
   so it is out of scope. Line counts for the rule no longer include a CONTENTS block.
 - `vocab.md` cited `docs/Seedance 2 Skill.md:178` by line number, which the CONTENTS block would
   move; it now cites the section.
+- `skills/higgsfield-stack/SKILL.md` pointed at `templates/text-overlays/` from the repo root; it
+  now writes `../../templates/text-overlays/` like every other path in a sub-skill.
 - README install notes: how Claude Code sees the sub-skills, where `workspace/` lives, and that
   the learning memory in `db/` stays in the skill folder (back it up before a reinstall).
 

@@ -246,7 +246,7 @@ workflow's scope.
 | A narrator take, a locked-voice read, a presenter composite | `narrator` | Voice choice, cloned voices, voice change | `higgsfield-audio` § Voice change and voice cloning |
 | Product photography / packshots / static ad packs | `product-photoshoot` | A product reference sheet; static-ad recreation when the user wants to author the prompt | `higgsfield-gpt-image-2` · `higgsfield-cinema` (`../higgsfield-cinema/references/reference-sheet-types.md`) |
 | A logo, brand kit, brandbook, deck, merch | `brand-asset-creation` | A style anchor or moodboard if the brand look needs directing | `higgsfield-moodboard` |
-| Burned-in captions | `subtitles` | Nothing — in-generation text is a different job | (`templates/text-overlays/` covers text rendered *by* the model) |
+| Burned-in captions | `subtitles` | Nothing — in-generation text is a different job | (`../../templates/text-overlays/` covers text rendered *by* the model) |
 | Cuts, trims, soundtrack, titles on supplied footage | `video-editing` (Higgsedit) | Where the cuts land on the music | `higgsfield-audio` § Cutting to music |
 | A website, web app or browser game | `website-builder-flow` | Nothing | — |
 

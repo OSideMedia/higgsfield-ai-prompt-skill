@@ -339,3 +339,36 @@ def test_reference_reachability_flags_an_unclassified_root_doc(ref_repo):
     (ref_repo / "NEW-GUIDE.md").write_text("# x\n", encoding="utf-8")
     issues = _reach(ref_repo, LINKED)
     assert len(issues) == 1 and "NEW-GUIDE.md" in issues[0]
+
+
+@pytest.mark.parametrize("hidden", [
+    "<!-- `skills/x/B.md` -->",                       # commented-out row
+    "```\n`skills/x/B.md`\n```",                      # example block
+])
+def test_reference_reachability_ignores_dead_mentions(ref_repo, hidden):
+    issues = _reach(ref_repo, LINKED.replace("`skills/x/B.md`", "") + "\n" + hidden + "\n")
+    assert len(issues) == 1 and "skills/x/B.md" in issues[0]
+
+
+def test_reference_reachability_accepts_a_markdown_link(ref_repo):
+    (ref_repo / "docs/Big Guide.md").write_text("# x\n", encoding="utf-8")
+    text = (LINKED.replace("`skills/x/B.md`", "[B](skills/x/B.md#usage)")
+            + " [guide](docs/Big%20Guide.md)")
+    assert _reach(ref_repo, text) == []
+
+
+def test_reference_reachability_exempts_only_the_top_level_archive(ref_repo):
+    nested = ref_repo / "docs/guides/archive/kept.md"     # not docs/archive/
+    nested.parent.mkdir(parents=True)
+    nested.write_text("# x\n", encoding="utf-8")
+    issues = _reach(ref_repo, LINKED)
+    assert len(issues) == 1 and "docs/guides/archive/kept.md" in issues[0]
+    assert "docs/archive/old.md" not in issues[0]
+
+
+def test_reference_reachability_covers_any_extension_under_skills(ref_repo):
+    (ref_repo / "skills/x/notes.txt").write_text("x\n", encoding="utf-8")
+    (ref_repo / "skills/x/.DS_Store").write_bytes(b"\0")
+    issues = _reach(ref_repo, LINKED)
+    assert len(issues) == 1 and "skills/x/notes.txt" in issues[0]
+    assert ".DS_Store" not in issues[0]

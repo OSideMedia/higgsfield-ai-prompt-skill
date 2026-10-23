@@ -46,9 +46,11 @@ metadata:
 
 **Language rule:** Reply in whatever language the user writes in.
 
-**Paths:** every path in this skill (`skills/…`, `templates/…`, `specs/…`, `scripts/…`,
+**Paths:** every path in this file (`skills/…`, `templates/…`, `specs/…`, `scripts/…`,
 `db/…`) is relative to the folder this `SKILL.md` lives in, not to the user's working
-directory. The one exception is `workspace/` (§ Working Folders). Sub-skills are plain
+directory. A path inside any other file is relative to that file's own folder
+(`../../specs/…` in a sub-skill climbs back to this one). The one exception is
+`workspace/`, which lives in the user's working directory (§ Working Folders). Sub-skills are plain
 files, not separately registered skills: nothing loads them for you, so open
 `skills/<name>/SKILL.md` yourself.
 

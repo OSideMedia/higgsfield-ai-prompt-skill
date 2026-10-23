@@ -149,39 +149,93 @@ def contents_files() -> list[Path]:
     return out
 
 
+# Heading markup the slugger cannot see through: a Markdown link, inline HTML,
+# a backslash escape, or `_emphasis_` outside a code span. GitHub slugs the
+# RENDERED text, so a CONTENTS link built from the raw text would 404. The
+# writer refuses such a heading rather than emit a dead link (none occur today).
+UNSLUGGABLE_RE = re.compile(r"\]\(|<[A-Za-z/!]|\\|(?:^|\W)_[^_\s][^_]*_(?:\W|$)")
+
+
 def _link_text(heading: str) -> str:
     return heading.replace("[", "\\[").replace("]", "\\]")
 
 
-def without_contents(text: str) -> str:
-    """`text` minus its CONTENTS block and the blank line the writer put
-    above it, if it has one."""
-    lines = text.split("\n")
-    if CONTENTS_BEGIN not in lines or CONTENTS_END not in lines:
-        return text
-    begin = lines.index(CONTENTS_BEGIN)
-    end = lines.index(CONTENTS_END, begin)
+def _frontmatter_end(lines: list[str]) -> int:
+    """Index of the first line after a leading `---` frontmatter block (0 if none)."""
+    if lines and lines[0] == "---":
+        close = next((i for i in range(1, len(lines)) if lines[i] == "---"), None)
+        if close is not None:
+            return close + 1
+    return 0
+
+
+def _block_span(lines: list[str]) -> tuple[int, int] | None:
+    """(begin, end) line indices of the one CONTENTS block outside code fences
+    and frontmatter, or None. A begin without an end, a second block, or an
+    end without a begin is an error: the writer must never guess which lines
+    are its own."""
+    spans, begin, in_fence = [], None, False
+    for i in range(_frontmatter_end(lines), len(lines)):
+        line = lines[i]
+        if FENCE_RE.match(line):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        if line == CONTENTS_BEGIN:
+            if begin is not None:
+                raise ValueError(f"nested {CONTENTS_BEGIN!r}")
+            begin = i
+        elif line == CONTENTS_END:
+            if begin is None:
+                raise ValueError(f"{CONTENTS_END!r} with no {CONTENTS_BEGIN!r}")
+            spans.append((begin, i))
+            begin = None
+    if begin is not None:
+        raise ValueError(f"{CONTENTS_BEGIN!r} with no {CONTENTS_END!r}")
+    if len(spans) > 1:
+        raise ValueError(f"{len(spans)} CONTENTS blocks; keep one")
+    return spans[0] if spans else None
+
+
+def _split(text: str) -> tuple[list[str], str]:
+    newline = "\r\n" if "\r\n" in text else "\n"
+    return text.replace("\r\n", "\n").split("\n"), newline
+
+
+def _remove_block(lines: list[str]) -> list[str]:
+    """`lines` minus the CONTENTS block and the blank line the writer put above it."""
+    span = _block_span(lines)
+    if span is None:
+        return lines
+    begin, end = span
     if begin > 0 and lines[begin - 1] == "":
         begin -= 1
-    return "\n".join(lines[:begin] + lines[end + 1:])
+    return lines[:begin] + lines[end + 1:]
+
+
+def without_contents(text: str) -> str:
+    """`text` minus its CONTENTS block, if it has one."""
+    lines, newline = _split(text)
+    return newline.join(_remove_block(lines))
 
 
 def with_contents(text: str) -> str:
-    """`text` with its CONTENTS block inserted or refreshed — the fixer whose
-    no-op IS the check. A block already present is always refreshed; a new one
-    is owed only past CONTENTS_THRESHOLD lines; none is kept beside a QUICK
-    FACTS block (which already opens the file with anchored facts) or with
-    fewer than two sections to list. Lists the shallowest heading level below
-    the title and the level under it."""
-    lines = text.split("\n")
-    begin = next((i for i, l in enumerate(lines) if l == CONTENTS_BEGIN), None)
-    end = (next((i for i in range(begin, len(lines)) if lines[i] == CONTENTS_END), None)
-           if begin is not None else None)
-    if begin is not None and end is None:
-        raise ValueError(f"{CONTENTS_BEGIN!r} with no {CONTENTS_END!r}")
-    body = lines if begin is None else lines[:begin] + lines[end + 1:]
+    """`text` with its CONTENTS block inserted, refreshed or moved back into
+    place — the fixer whose no-op IS the check. A block already present is
+    always kept current; a new one is owed only past CONTENTS_THRESHOLD lines;
+    none is kept beside a QUICK FACTS block (which already opens the file with
+    anchored facts) or with fewer than two sections to list. The block sits
+    right under the title, or under the frontmatter when the file has no
+    title in its first 40 lines. Lists the shallowest heading level below the
+    title and the level under it. Raises ValueError on marker damage or on a
+    heading UNSLUGGABLE_RE matches."""
+    lines, newline = _split(text)
+    had_block = _block_span(lines) is not None
+    body = _remove_block(lines)
 
-    found = heading_lines(body)
+    fm_end = _frontmatter_end(body)
+    found = [(i + fm_end, level, t) for i, level, t in heading_lines(body[fm_end:])]
     slugs = anchors_for([(level, t) for _, level, t in found])
     title = next((k for k, (_, level, _) in enumerate(found) if level == 1), None)
     entries = [(level, t, slug) for k, ((_, level, t), slug) in enumerate(zip(found, slugs))
@@ -190,27 +244,24 @@ def with_contents(text: str) -> str:
         top = min(level for level, _, _ in entries)
         entries = [e for e in entries if e[0] <= top + 1]
     has_quick_facts = any(t.strip().upper() == "QUICK FACTS" for _, _, t in found)
-    long_enough = begin is not None or len("\n".join(body).splitlines()) > CONTENTS_THRESHOLD
+    long_enough = had_block or len("\n".join(body).splitlines()) > CONTENTS_THRESHOLD
     if has_quick_facts or len(entries) < 2 or not long_enough:
-        return "\n".join(body)
+        return newline.join(body)
+    bad = [t for _, t, _ in entries if UNSLUGGABLE_RE.search(re.sub(r"`[^`]*`", "", t))]
+    if bad:
+        raise ValueError(f"heading markup GitHub slugs differently: {bad[0]!r}")
+
     block = [CONTENTS_BEGIN, "**Contents**", ""]
     block += [f"{'  ' * (level - top)}- [{_link_text(t)}](#{slug})"
               for level, t, slug in entries]
     block += ["", CONTENTS_END]
-    if begin is not None:
-        return "\n".join(lines[:begin] + block + lines[end + 1:])
-
-    # New block: right under the title, or under the frontmatter if the file
-    # has no title near the top.
-    at = 0
-    if body and body[0] == "---":
-        at = next((i for i in range(1, len(body)) if body[i] == "---"), -1) + 1
-    if title is not None and found[title][0] < at + 40:
+    at = fm_end
+    if title is not None and found[title][0] < fm_end + 40:
         at = found[title][0] + 1
     tail = body[at:]
     lead = [""] if at > 0 else []
     trail = [""] if tail and tail[0] != "" else []
-    return "\n".join(body[:at] + lead + block + trail + tail)
+    return newline.join(body[:at] + lead + block + trail + tail)
 
 
 def contents_problems() -> list[str]:
@@ -245,7 +296,10 @@ def quick_facts_problems(path: Path) -> list[str]:
     text = path.read_text(encoding="utf-8")
     rel = path.relative_to(ROOT)
     heads = headings(text)
-    line_count = len(without_contents(text).splitlines())
+    try:
+        line_count = len(without_contents(text).splitlines())
+    except ValueError:  # marker damage: contents_problems() reports it
+        line_count = len(text.splitlines())
     has_block = any(t.strip().upper() == "QUICK FACTS" for _, t in heads)
 
     problems = []
