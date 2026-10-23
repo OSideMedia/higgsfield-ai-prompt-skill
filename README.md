@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/badge/version-3.41.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
+[![Version](https://img.shields.io/badge/version-3.42.0-blue)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
 [![Specs snapshot](https://img.shields.io/badge/specs%20snapshot-2026--09--26-informational)](specs/MODEL-SPECS.md)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Claude%20Cowork%20%7C%20Claude%20Code-purple)](https://github.com/OSideMedia/higgsfield-ai-prompt-skill)
@@ -49,7 +49,7 @@ git clone https://github.com/OSideMedia/higgsfield-ai-prompt-skill ~/.claude/ski
 
 Claude Code registers the root `SKILL.md` as one skill, `higgsfield`. The 35 sub-skills under `skills/` are not registered separately; the root routes to each by its full path and Claude opens it from there. The skill's scripts need only `python3` (standard library).
 
-Your documents and the skill's deliverables go in a `workspace/` folder (`input/`, `output/`, `processed/`) inside the project you are working in, created on first use. Your documents and deliverables are never written into `~/.claude/skills/higgsfield/`, so updating or reinstalling the skill never touches them. The learning memory and generation ledger are the exception: they live in the skill's own `db/` folder, so back up `db/` before you reinstall.
+Your documents and the skill's deliverables go in a `workspace/` folder (`input/`, `output/`, `processed/`) inside the project you are working in, created on first use. Your documents and deliverables are never written into `~/.claude/skills/higgsfield/`, so updating or reinstalling the skill never touches them. The learning memory and generation ledger live in `~/.higgsfield-skill/db/`, outside the skill folder, so an update or reinstall keeps them too. The skill creates that folder on first use from its own `db/`, which also carries over the memory from an install older than v3.42.0. In Cowork, or when you run the skill from a clone of this repo, the memory stays in the skill's own `db/`. To see which folder is in use, run `python3 scripts/higgsfield_memory.py where` from the skill's folder.
 
 ### Claude Cowork
 Drop the repo folder into your Cowork workspace. The skill dispatcher is at `SKILL.md` in the repo root.
@@ -281,7 +281,7 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 ## Generation Ledger
 
 Every generation attempt — kept, rejected, or filter-flagged — gets one row in
-`db/ledger/<project>.json`, logged by the agent in ≤5 seconds (one question,
+`ledger/<project>.json` in the memory folder, logged by the agent in ≤5 seconds (one question,
 one command — never a form). After ~30–40 rows a production has empirical
 takes-per-kept ratios per shot type instead of vibes:
 
@@ -369,4 +369,4 @@ acting on the tail. A small sample is not evidence a skill is dead.
 
 ---
 
-Built February 2026 · v3.41.0 (updated 2026-10-23) · Platform: [higgsfield.ai](https://higgsfield.ai)
+Built February 2026 · v3.42.0 (updated 2026-10-23) · Platform: [higgsfield.ai](https://higgsfield.ai)

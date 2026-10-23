@@ -15,6 +15,12 @@ Usage:
   python3 scripts/higgsfield_memory.py stats
   python3 scripts/higgsfield_memory.py export-summary
   python3 scripts/higgsfield_memory.py health
+  python3 scripts/higgsfield_memory.py where      # the memory folder in use, and why
+
+The memory folder: db/ in the skill's folder, except in a Claude Code skill
+install (.claude/skills/<name>/), where it is ~/.higgsfield-skill/db/, seeded
+from the skill's db/ on first use. HF_DB_DIR overrides both. Paths below
+written db/... mean that folder.
 
 Generation ledger (db/ledger/ — see db/ledger/README.md):
   python3 scripts/higgsfield_memory.py log-gen <project> --model X --tags a,b --outcome kept
@@ -42,6 +48,7 @@ Per-project namespacing:
 
 import json
 import os
+import shutil
 import sys
 import re
 from datetime import datetime, timezone
@@ -51,12 +58,62 @@ from sub_skill_descriptions import SUB_SKILL_DESCRIPTIONS  # canonical sub-skill
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 REPO_ROOT = Path(__file__).resolve().parent.parent  # scripts/ → repo root
-# DB files live under the repo root (db/), one level above scripts/.
-# The directory is created lazily on first write (see save_db / export_summary),
-# not at import time — importing this module should have no filesystem side effects.
+# The db/ this skill ships: starter entries, the ledger README, the _demo fixture.
+SEED_DIR = REPO_ROOT / "db"
+# Where the memory lives when the skill is a Claude Code skill install.
+USER_DB_DIR = Path.home() / ".higgsfield-skill" / "db"
+
+
+def default_db_dir(root: Path = REPO_ROOT) -> Path:
+    """The memory folder when HF_DB_DIR is unset.
+
+    A Claude Code skill install (`.claude/skills/<name>/`, personal or project)
+    is replaced by a reinstall and updated by `git pull`, so entries written
+    into its db/ would be lost or conflict with upstream: there the memory
+    lives in USER_DB_DIR, one folder per user, shared across projects.
+    Anywhere else (a Cowork workspace, a checkout of this repo) the folder is
+    the user's own and survives, so the memory stays in its db/.
+    (ponytail: decided by path shape, `.claude` then `skills`, on the resolved
+    path, so a symlinked dev checkout counts as a checkout; add an explicit
+    marker file if an install ever lives elsewhere.)"""
+    parts = root.resolve().parts
+    installed = any(a == ".claude" and b == "skills" for a, b in zip(parts, parts[1:]))
+    return USER_DB_DIR if installed else SEED_DIR
+
+
+def seed_db_dir(dest: Path, seed: Path = SEED_DIR) -> bool:
+    """Create `dest` as a copy of the skill's db/ if it does not exist yet;
+    return True when this call created it. The copy carries the starter data
+    and, for an install that predates v3.42.0, the user's own entries. It is
+    built beside `dest` and renamed into place, so a second process racing it
+    finds either no folder or a complete one. Never merges into an existing
+    folder.
+    (ponytail: seeds once, so starter entries a later release adds do not
+    reach an existing memory; add a versioned merge if the seed starts
+    changing.)"""
+    if dest.exists() or not seed.is_dir():
+        return False
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dest.with_name(f".{dest.name}.seeding-{os.getpid()}")
+    shutil.rmtree(tmp, ignore_errors=True)
+    shutil.copytree(seed, tmp)
+    try:
+        tmp.rename(dest)
+    except OSError:  # another process seeded it first
+        shutil.rmtree(tmp, ignore_errors=True)
+        return False
+    return True
+
+
 # HF_DB_DIR overrides the location (tests point it at a temp dir; works both
 # in-process and across subprocess boundaries, unlike monkeypatched constants).
-DB_DIR = Path(os.environ["HF_DB_DIR"]) if os.environ.get("HF_DB_DIR") else REPO_ROOT / "db"
+# Otherwise default_db_dir() decides. Inside the skill's own db/ the directory
+# is created lazily on first write (see save_db / export_summary); the per-user
+# folder is seeded here, once, the first time any script loads this module in
+# an install, so the linter's memory recall finds it as the memory CLI does.
+DB_DIR = Path(os.environ["HF_DB_DIR"]) if os.environ.get("HF_DB_DIR") else default_db_dir()
+if DB_DIR == USER_DB_DIR:
+    seed_db_dir(DB_DIR)
 FILTER_DB = DB_DIR / "filter-memory.json"
 QUALITY_DB = DB_DIR / "quality-memory.json"
 # Item 6: which sub-skills the dispatcher opened per request. Instrumentation —
@@ -450,23 +507,26 @@ def resolve_effective(rows: list) -> list:
     return [r for r in rows if r.get("id") not in masked]
 
 
-def project_ledger_files() -> list:
+def project_ledger_files(ledger_dir: Path | None = None) -> list:
     """All real project ledgers. Underscore-prefixed names are reserved
     (_global generated view, _demo test fixture) and excluded."""
-    if not LEDGER_DIR.is_dir():
+    ledger_dir = ledger_dir or LEDGER_DIR
+    if not ledger_dir.is_dir():
         return []
-    return sorted(p for p in LEDGER_DIR.glob("*.json")
+    return sorted(p for p in ledger_dir.glob("*.json")
                   if not p.name.startswith("_"))
 
 
-def build_global() -> dict:
+def build_global(ledger_dir: Path | None = None) -> dict:
     """The _global.json view: raw rows from every project ledger, each
     annotated with its project. Generated, never hand-written; consumers
     re-run supersedes resolution (ids are project-prefixed, so masks
-    cannot cross projects). Deterministic: filename order, then file order."""
+    cannot cross projects). Deterministic: filename order, then file order.
+    `ledger_dir` defaults to the memory folder's ledger/; validate.py passes
+    the skill's own db/ledger/, the shipped view it certifies."""
     rows = []
     sources = []
-    for path in project_ledger_files():
+    for path in project_ledger_files(ledger_dir):
         db = load_ledger(path)
         sources.append(path.name)
         for r in db["rows"]:
@@ -480,14 +540,15 @@ def build_global() -> dict:
     }
 
 
-def write_global():
-    fresh = build_global()
-    LEDGER_DIR.mkdir(parents=True, exist_ok=True)
-    tmp = GLOBAL_LEDGER.with_suffix(".tmp")
+def write_global(ledger_dir: Path | None = None):
+    target = GLOBAL_LEDGER if ledger_dir is None else ledger_dir / "_global.json"
+    fresh = build_global(ledger_dir)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    tmp = target.with_suffix(".tmp")
     try:
         with open(tmp, "w", encoding="utf-8") as f:
             json.dump(fresh, f, indent=2, ensure_ascii=False)
-        tmp.replace(GLOBAL_LEDGER)
+        tmp.replace(target)
     except OSError as e:
         tmp.unlink(missing_ok=True)
         print(json.dumps({"status": "error", "message": f"Failed to write _global: {e}"}))
@@ -1547,13 +1608,15 @@ def stats():
     }, indent=2))
 
 
-def build_summary() -> str:
+def build_summary(db_dir: Path | None = None) -> str:
     """Render the markdown summary of both databases (no file writes).
 
     Split out from export_summary so validate.py can compare a fresh render
-    against db/memory-summary.md without side effects."""
-    f_db = load_db(FILTER_DB)
-    q_db = load_db(QUALITY_DB)
+    against db/memory-summary.md without side effects. `db_dir` reads that
+    folder's two databases instead of the active ones (validate.py passes the
+    skill's own db/)."""
+    f_db = load_db(db_dir / "filter-memory.json" if db_dir else FILTER_DB)
+    q_db = load_db(db_dir / "quality-memory.json" if db_dir else QUALITY_DB)
 
     lines = ["# Higgsfield Memory Summary\n"]
     lines.append(f"Generated: {now_iso()}\n")
@@ -1734,6 +1797,11 @@ if __name__ == "__main__":
         export_summary()
     elif cmd == "health":
         health()
+    elif cmd == "where":
+        source = ("HF_DB_DIR" if os.environ.get("HF_DB_DIR")
+                  else "skill install" if DB_DIR == USER_DB_DIR else "skill folder")
+        print(json.dumps({"status": "ok", "db_dir": str(DB_DIR), "source": source,
+                          "exists": DB_DIR.is_dir()}, indent=2))
     else:
         print(f"Unknown command: {cmd}")
         print(__doc__)

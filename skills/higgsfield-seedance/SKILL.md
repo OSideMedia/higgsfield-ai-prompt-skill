@@ -1698,8 +1698,8 @@ Settings are read from the prompt's own header lines (`**Aspect ratio**: …`,
 `Resolution: …`, `mode: …`, `Duration: Ns`); override per-field with
 `--ar / --resolution / --mode / --duration`.
 
-**3. Memory recall**: the most relevant past failures from
-`../../db/filter-memory.json` / `../../db/quality-memory.json` surface as INFO notes.
+**3. Memory recall**: the most relevant past failures from the filter and quality
+memory (the memory folder, `../../SKILL.md` § Working Folders) surface as INFO notes.
 
 Output is `PASS`, `WARN`, or `FAIL` with the specific fix for each rule hit.
 Treat `FAIL` as "do not hit generate." Treat `WARN` as "likely to pass, but
@@ -2018,7 +2018,7 @@ If the user tells you Seedance has flagged them multiple times in a row:
      filter issue): `python3 scripts/higgsfield_memory.py add-quality '<json entry>'`
      with the original prompt, the failure description, and the improved prompt.
    - For production-specific lessons that shouldn't pollute global memory, add
-     `--project <name>` (entries land in `../../db/projects/`).
+     `--project <name>` (entries land in `projects/` in the memory folder).
 
 Do not let the user regenerate the same prompt with one word changed. That
 is the loop that wastes hours.

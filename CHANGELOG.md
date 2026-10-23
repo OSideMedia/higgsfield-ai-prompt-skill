@@ -1,5 +1,47 @@
 # Changelog
 
+## v3.42.0 — 2026-10-23
+
+**The learning memory survives a reinstall.** With the README's Claude Code install the filter
+memory, quality memory and generation ledger lived in `~/.claude/skills/higgsfield/db/`, the one
+folder a reinstall replaces and a `git pull` can overwrite. The README told users to back it up
+by hand. A Claude Code skill install now keeps its memory in `~/.higgsfield-skill/db/`.
+
+### Fixed
+
+- **Memory inside the skill install.** When the skill runs from a `.claude/skills/<name>/` folder
+  (personal or project install), `scripts/higgsfield_memory.py` uses `~/.higgsfield-skill/db/`.
+  On first use it copies the skill's `db/` there: the starter entries, and for an install older
+  than v3.42.0 the user's own entries and ledger, so nothing is lost on the upgrade. The copy is
+  built beside the target and renamed into place, so two scripts starting at once cannot leave a
+  half-copied folder. It never merges into an existing memory. The copy happens when the script
+  is imported, so a `seedance_lint.py --preflight` that runs before any memory command still
+  finds it.
+- **Cowork and repo clones are unchanged.** Anywhere else (a Cowork workspace, a clone of this
+  repo, a symlinked dev checkout) the memory stays in the skill's own `db/`, which is where those
+  setups already keep it safe. `HF_DB_DIR` still overrides both.
+- **`validate.py` certified the active memory.** The `memory-summary.md` and `_global.json`
+  checks read whichever memory the scripts were using. They now always read the shipped `db/`,
+  so a developer with a personal memory still gets a true verdict on the repo.
+
+### Added
+
+- **`higgsfield_memory.py where`** prints the memory folder in use, why it was chosen
+  (`HF_DB_DIR`, `skill install` or `skill folder`), and whether it exists. Root `SKILL.md`
+  § Working Folders tells the agent to give the user that path when they ask where their memory
+  is or before a reinstall; the sub-skills, `DISCIPLINE.md` and the README now say "the memory
+  folder" wherever they mean the user's data.
+- **The dispatcher check read a folder name as a route.** It counted every `higgsfield-*` token
+  in root `SKILL.md` as a sub-skill, so naming `~/.higgsfield-skill/` failed `--strict`. A name
+  right after a `.` (a hidden folder) no longer counts; a dangling `skills/higgsfield-*/` route
+  still fails.
+- 15 tests: 13 in `tests/test_memory_location.py`, including an end-to-end run of a real install
+  layout under a throwaway `HOME`, and 2 for the dispatcher check. Every one that tests new
+  behaviour fails on v3.41.0, and eight planted defects (the install path ignored, the symlink not
+  resolved, every run sent to the user folder, no copy on import, a merging copy, a temp folder
+  left after a lost race, validate reading the active memory, a dispatcher skip that also drops
+  real routes) each turn at least one red.
+
 ## v3.41.0 — 2026-10-23
 
 **Skill-authoring review: sub-skills by path, every reference one level deep, `workspace/` in the

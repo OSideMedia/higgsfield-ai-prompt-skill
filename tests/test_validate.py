@@ -225,6 +225,8 @@ def _quiet(fn):
 @pytest.mark.parametrize("strict", [True, False])
 def test_stale_memory_summary(tmp_path, monkeypatch, fresh_report, strict):
     (tmp_path / "db").mkdir()
+    for name in ("filter-memory.json", "quality-memory.json"):    # the summary's sources
+        (tmp_path / "db" / name).write_text(json.dumps({"entries": []}), encoding="utf-8")
     stale = tmp_path / "db" / "memory-summary.md"
     stale.write_text("# STALE hand-edited summary\n", encoding="utf-8")
     monkeypatch.setattr(validate, "ROOT", tmp_path)
@@ -379,3 +381,30 @@ def test_reference_reachability_covers_any_extension_under_skills(ref_repo):
     issues = _reach(ref_repo, LINKED)
     assert len(issues) == 1 and "skills/x/notes.txt" in issues[0]
     assert ".DS_Store" not in issues[0]
+
+
+# ── v3.42.0: a hidden folder named in root SKILL.md is not a sub-skill route ──
+
+def _dispatch(tmp_path, monkeypatch, skill_text):
+    (tmp_path / "skills" / "higgsfield-camera").mkdir(parents=True)
+    (tmp_path / "skills" / "higgsfield-camera" / "SKILL.md").write_text("x\n", encoding="utf-8")
+    (tmp_path / "SKILL.md").write_text(skill_text, encoding="utf-8")
+    monkeypatch.setattr(validate, "ROOT", tmp_path)
+    monkeypatch.setattr(validate, "issues", [])
+    monkeypatch.setattr(validate, "warnings", [])
+    _quiet(validate.check_dispatcher_parity)
+    return validate.issues
+
+
+ROUTED = "| Camera | `skills/higgsfield-camera/SKILL.md` |\n"
+
+
+def test_dispatcher_skips_a_hidden_folder_name(tmp_path, monkeypatch):
+    text = ROUTED + "The memory folder is `~/.higgsfield-skill/db/`.\n"
+    assert _dispatch(tmp_path, monkeypatch, text) == []
+
+
+def test_dispatcher_still_flags_a_dangling_route(tmp_path, monkeypatch):
+    text = ROUTED + "Then open `skills/higgsfield-nope/SKILL.md`.\n"
+    issues = _dispatch(tmp_path, monkeypatch, text)
+    assert len(issues) == 1 and "higgsfield-nope" in issues[0]

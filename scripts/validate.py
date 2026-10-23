@@ -385,13 +385,15 @@ def check_dispatcher_parity():
         if d.is_dir() and d.name != "shared" and (d / "SKILL.md").exists()
     )
     skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-    referenced = set(re.findall(r"higgsfield-[a-z0-9-]+", skill_text))
+    # A name right after a "." is a hidden folder (~/.higgsfield-skill/), not a sub-skill.
+    ref_re = re.compile(r"(?<!\.)higgsfield-[a-z0-9-]+")
+    referenced = set(ref_re.findall(skill_text))
     # A routing entry is a TABLE ROW naming the sub-skill — a mention in prose
     # or a load-map listing is not a route the dispatcher can follow.
     routed = set()
     for line in skill_text.splitlines():
         if line.lstrip().startswith("|"):
-            routed.update(re.findall(r"higgsfield-[a-z0-9-]+", line))
+            routed.update(ref_re.findall(line))
 
     for name in disk_skills:
         ok = name in routed
@@ -874,7 +876,7 @@ def check_memory_summary():
 
     try:
         import higgsfield_memory as hm
-        fresh = hm.build_summary()
+        fresh = hm.build_summary(ROOT / "db")   # the shipped db/, not the user's memory
     except SystemExit:
         check(False, "memory summary renders", "memory databases missing/corrupt")
         return
@@ -958,7 +960,7 @@ def check_ledger():
               + (f" (+{len(problems) - 3} more)" if len(problems) > 3 else ""))
 
     # _global.json is a generated view — regenerate on drift.
-    fresh = hm.build_global()
+    fresh = hm.build_global(ledger_dir)   # the shipped db/ledger/, not the user's memory
     global_path = ledger_dir / "_global.json"
     try:
         on_disk = json.loads(global_path.read_text(encoding="utf-8"))
@@ -973,7 +975,7 @@ def check_ledger():
     else:
         warn("db/ledger/_global.json was stale — regenerated",
              "commit the refreshed view (generated, never hand-edit)")
-        hm.write_global()
+        hm.write_global(ledger_dir)
 
 
 def check_hard_rules_canonical():

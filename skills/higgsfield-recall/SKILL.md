@@ -17,7 +17,7 @@ metadata:
   compatibility:
     tools: [bash]
     scripts: [scripts/higgsfield_memory.py]
-    databases: [db/filter-memory.json, db/quality-memory.json]
+    databases: [filter-memory.json, quality-memory.json]
 ---
 
 # Higgsfield Recall — Pre-Generation Memory Check
@@ -198,7 +198,7 @@ Before finalizing any prompt, check:
 ## Log the Generation Result — One Question, One Command
 
 Every generation attempt belongs in the **generation ledger**
-(`../../db/ledger/` — kept AND rejected; the denominator is what makes
+(`ledger/` in the memory folder, `../../SKILL.md` § Working Folders — kept AND rejected; the denominator is what makes
 takes-per-kept ratios possible). The write path is agent-side and obeys the
 **5-second rule**: at most one short question, then the agent runs one
 command. The human never formats JSON, never fills a form.

@@ -550,8 +550,8 @@ def test_validate_says_what_the_ledger_gate_cannot_tell(tmp_path, monkeypatch, c
     monkeypatch.setattr(validate, "ROOT", tmp_path)
     monkeypatch.setattr(validate, "issues", [])
     monkeypatch.setattr(validate, "warnings", [])
-    monkeypatch.setattr(hm, "build_global", lambda: None)
-    monkeypatch.setattr(hm, "write_global", lambda: None)
+    monkeypatch.setattr(hm, "build_global", lambda *a: None)
+    monkeypatch.setattr(hm, "write_global", lambda *a: None)
     validate.check_ledger()
     out = capsys.readouterr().out
     assert "1 row(s) use a retired model id" in out
