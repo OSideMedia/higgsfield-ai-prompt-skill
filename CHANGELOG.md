@@ -51,7 +51,7 @@ by hand. A Claude Code skill install now keeps its memory in `~/.higgsfield-skil
   Root `SKILL.md` § Working Folders tells the agent to give the user that path when they ask
   where their memory is or before a reinstall; the sub-skills, `DISCIPLINE.md` and the README
   now say "the memory folder" wherever they mean the user's data.
-- 27 tests: 25 in `tests/test_memory_location.py`, including end-to-end runs of real install
+- 28 tests: 26 in `tests/test_memory_location.py`, including end-to-end runs of real install
   layouts under a throwaway home folder, and 2 for the dispatcher check. Twenty-two planted defects
   each turn at least one test red. Among them: the install path ignored, a symlinked `~/.claude`
   missed, letter case or a nested clone misread, no copy on import, a merging or read-only copy, a

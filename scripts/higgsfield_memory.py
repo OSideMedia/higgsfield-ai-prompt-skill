@@ -139,8 +139,15 @@ def _copy_tree(src: Path, dest: Path, extra: dict | None = None) -> bool:
 def _records(path: Path) -> set:
     """The entries or ledger rows in one memory file, as canonical JSON."""
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+        return _parse_records(path.read_bytes())
+    except OSError:
+        return set()
+
+
+def _parse_records(raw: bytes) -> set:
+    try:
+        data = json.loads(raw.decode("utf-8"))
+    except ValueError:
         return set()
     items = (data.get("entries") or data.get("rows")) if isinstance(data, dict) else None
     return ({json.dumps(i, sort_keys=True) for i in items if isinstance(i, dict)}
@@ -165,8 +172,9 @@ def _digests(root: Path, files) -> set:
 
 def _add_seed_records(dest: Path, digests: set) -> None:
     """Add `digests` to the records `dest` started with.
-    (ponytail: read-modify-write; a racing fill can drop the other's digests,
-    which only makes a later check keep a copy it did not need.)"""
+    (ponytail: read-modify-write, and written after the file it describes; a
+    racing fill or a failed write can drop digests, which only makes a later
+    check keep a copy it did not need. Journal pending fills if that bites.)"""
     path = dest / SEED_RECORDS
     try:
         have = set(json.loads(path.read_text(encoding="utf-8")))
@@ -228,8 +236,9 @@ def _fill_missing(dest: Path, seed: Path) -> None:
     for name in CORE_FILES:
         if not (seed / name).is_file() or (dest / name).exists():
             continue
-        if _publish(dest / name, (seed / name).read_bytes()):  # read first: a failed read leaves nothing
-            _add_seed_records(dest, _digests(seed, [seed / name]))
+        data = (seed / name).read_bytes()  # read first: a failed read leaves nothing behind
+        if _publish(dest / name, data):     # the records of exactly the bytes published
+            _add_seed_records(dest, {_digest(name, r) for r in _parse_records(data)})
 
 
 def prepare_user_db(dest: Path = USER_DB_DIR, seed: Path = SEED_DIR,

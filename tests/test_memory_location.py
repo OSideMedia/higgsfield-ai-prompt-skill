@@ -207,6 +207,24 @@ def test_a_filled_database_counts_as_a_starting_record(tmp_path):
     assert not unmerged.exists()
 
 
+def test_the_seed_records_are_the_bytes_that_were_filled(tmp_path, monkeypatch):
+    home = tmp_path / "home" / ".higgsfield-skill"
+    dest, sources, unmerged = home / "db", home / "sources", home / "unmerged"
+    (dest / "ledger").mkdir(parents=True)
+    seed = tmp_path / "a" / "db"
+    _entries(seed / "filter-memory.json", "F-001")
+    real_publish = hm._publish
+
+    def seed_changes_after_the_copy(target, data):          # a write lands mid-fill
+        done = real_publish(target, data)
+        _entries(seed / "filter-memory.json", "F-001", "F-902")
+        return done
+
+    monkeypatch.setattr(hm, "_publish", seed_changes_after_the_copy)
+    kept = hm.prepare_user_db(dest, seed, sources, unmerged)
+    assert kept and "F-902" in _ids(kept / "filter-memory.json")   # not taken as seeded
+
+
 def test_a_copy_that_fails_is_not_recorded_as_kept(tmp_path, monkeypatch):
     home = tmp_path / "home" / ".higgsfield-skill"
     dest, sources, unmerged = home / "db", home / "sources", home / "unmerged"
