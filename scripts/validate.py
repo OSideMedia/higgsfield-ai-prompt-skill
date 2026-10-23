@@ -785,7 +785,8 @@ def linked_paths(text: str) -> set:
     text = "\n".join(line for line, fenced in zip(lines, fence_mask(lines)) if not fenced)
     spans = re.findall(r"`([^`\n]+)`", text)
     prose = re.sub(r"`[^`\n]+`", "", text)
-    targets = re.findall(r"\]\(\s*(?:<([^>\n]+)>|([^)\s]+))", prose)
+    targets = re.findall(r"\]\(\s*(?:<([^>\n]+)>|([^)\s<>]+))"
+                         r"(?:\s+(?:\"[^\"\n]*\"|'[^'\n]*'))?\s*\)", prose)
     found = {span.split("#")[0] for span in spans}
     found |= {unquote((angled or bare).split("#")[0]) for angled, bare in targets}
     return found

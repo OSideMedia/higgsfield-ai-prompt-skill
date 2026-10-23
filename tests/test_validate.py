@@ -346,6 +346,8 @@ def test_reference_reachability_flags_an_unclassified_root_doc(ref_repo):
     "```\n`skills/x/B.md`\n```",                      # example block
     "```\n~~~\n`skills/x/B.md`\n```",                 # a tilde line does not close it
     "`[B](skills/x/B.md)`",                           # a link inside inline code is an example
+    "[B](skills/x/B.md",                              # an unclosed link is not a link
+    "[B](<skills/x/B.md>",
 ])
 def test_reference_reachability_ignores_dead_mentions(ref_repo, hidden):
     issues = _reach(ref_repo, LINKED.replace("`skills/x/B.md`", "") + "\n" + hidden + "\n")
@@ -358,7 +360,7 @@ def test_reference_reachability_accepts_a_markdown_link(ref_repo):
             + " [guide](docs/Big%20Guide.md)")
     assert _reach(ref_repo, text) == []
     text = (LINKED.replace("`skills/x/B.md`", "`skills/x/B.md#usage`")
-            + " [guide](<docs/Big Guide.md>)")
+            + " [guide](<docs/Big Guide.md> \"The guide\")")       # with a link title
     assert _reach(ref_repo, text) == []
 
 
