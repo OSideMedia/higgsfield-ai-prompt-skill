@@ -140,6 +140,30 @@ def test_contents_markers_inside_a_code_fence_are_not_a_block():
     assert b.with_contents(fixed) == fixed
 
 
+@pytest.mark.parametrize("fence", [
+    ["````", "```"],              # a shorter fence cannot close a longer one
+    ["```", "~~~"],               # nor a tilde fence a backtick one
+])
+def test_contents_markers_inside_an_unclosed_inner_fence_are_not_a_block(fence):
+    opener, inner = fence
+    example = [opener, inner, b.CONTENTS_BEGIN, "EXAMPLE", b.CONTENTS_END, inner, opener]
+    text = _doc(SECTIONS) + "\n".join(example) + "\n"
+    fixed = b.with_contents(text)
+    assert "\n".join(example) in fixed
+    assert fixed.count(b.CONTENTS_BEGIN) == 2 and b.with_contents(fixed) == fixed
+
+
+def test_contents_indented_backticks_are_not_a_fence():
+    fixed = b.with_contents(_doc(SECTIONS))
+    text = fixed.replace("## Beta\n", "    ```\n\n## Beta\n", 1)   # indented code, not a fence
+    assert b.with_contents(text) == text                         # the real block still counts
+
+
+def test_fence_mask_follows_commonmark_closers():
+    lines = ["````md", "```", "# inside", "````", "# outside", "``` a`b", "# not fenced"]
+    assert b.fence_mask(lines) == [True, True, True, True, False, False, False]
+
+
 def test_contents_ignores_a_comment_line_in_frontmatter():
     text = _doc(SECTIONS, frontmatter=True).replace("name: x", "name: x\n# a yaml comment")
     lines = b.with_contents(text).split("\n")
@@ -164,13 +188,15 @@ def test_contents_keeps_crlf_line_endings():
 
 @pytest.mark.parametrize("heading", [
     "See [the guide](guide.md)", "<b>Bold</b> setup", "The _real_ rule", r"Escaped \* star",
+    "__Bold__ setup", "[Guide][ref] notes", "R&amp;D",
 ])
 def test_contents_refuses_a_heading_the_slugger_cannot_read(heading):
     with pytest.raises(ValueError, match="slugs differently"):
         b.with_contents(_doc([(2, "Fine"), (2, heading)], filler=60))
 
 
-@pytest.mark.parametrize("heading", ["`snake_case_name` flag", "Duration < 5 s", "a_b_c"])
+@pytest.mark.parametrize("heading", ["`snake_case_name` flag", "Duration < 5 s", "a_b_c",
+                                     "Verified surface [OFFICIAL — model spec 2026-08-01]"])
 def test_contents_accepts_plain_heading_punctuation(heading):
     fixed = b.with_contents(_doc([(2, "Fine"), (2, heading)], filler=60))
     assert b.CONTENTS_BEGIN in fixed and b.with_contents(fixed) == fixed
@@ -182,6 +208,9 @@ def test_quick_facts_rule_survives_marker_damage(tmp_path, monkeypatch):
     sub.parent.mkdir(parents=True)
     sub.write_text("# Sub\n" + b.CONTENTS_BEGIN + "\n", encoding="utf-8")
     assert b.quick_facts_problems(sub) == []             # contents_problems() reports it
+    long_body = "\n".join(["line"] * (b.QUICK_FACTS_THRESHOLD + 50))
+    sub.write_text("# Sub\n" + b.CONTENTS_BEGIN + "\n" + long_body, encoding="utf-8")
+    assert "no '## QUICK FACTS' block" in b.quick_facts_problems(sub)[0]   # still enforced
 
 
 def test_contents_gate_flags_a_missing_block(tmp_path, monkeypatch):

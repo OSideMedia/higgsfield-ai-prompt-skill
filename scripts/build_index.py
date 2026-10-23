@@ -57,7 +57,9 @@ REPO_DOCS = {"README.md", "CHANGELOG.md", "CONTRIBUTING.md", "CLAUDE.md"}
 
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
 INDEX_MAX_LEVEL = 3  # INDEX.md lists h1-h3; anchor validation covers all levels
-FENCE_RE = re.compile(r"^\s*(```|~~~)")
+# A code-fence line: up to three spaces, then three or more backticks or
+# tildes, then an info string (CommonMark § Fenced code blocks).
+FENCE_RE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
 
 
 def anchor(heading: str) -> str:
@@ -109,14 +111,34 @@ def anchors_for(heads: list[tuple[int, str]]) -> list[str]:
     return out
 
 
+def fence_mask(lines: list[str]) -> list[bool]:
+    """True for each line that opens, closes or sits inside a code fence. A
+    fence closes only on the same character, at least as long as its opener,
+    with nothing after it but spaces; an unclosed fence runs to the end. A
+    backtick opener whose info string holds a backtick is not a fence.
+    (ponytail: fences inside list items and block quotes are not modelled, so
+    one indented past three spaces counts as indented code, as it would at the
+    top level; swap in a CommonMark parser if a container fence ever holds a
+    heading or a CONTENTS marker.)"""
+    mask, opener = [], None
+    for line in lines:
+        m = FENCE_RE.match(line)
+        if opener is None:
+            opener = m.group(1) if m and not (m.group(1)[0] == "`" and "`" in m.group(2)) else None
+            mask.append(opener is not None)
+            continue
+        mask.append(True)
+        if (m and m.group(1)[0] == opener[0] and len(m.group(1)) >= len(opener)
+                and not m.group(2).strip()):
+            opener = None
+    return mask
+
+
 def heading_lines(lines: list[str]) -> list[tuple[int, int, str]]:
     """(line index, level, text) for every markdown heading outside code fences."""
-    out, in_fence = [], False
-    for i, line in enumerate(lines):
-        if FENCE_RE.match(line):
-            in_fence = not in_fence
-            continue
-        if in_fence:
+    out = []
+    for i, (line, fenced) in enumerate(zip(lines, fence_mask(lines))):
+        if fenced:
             continue
         m = HEADING_RE.match(line)
         if m:
@@ -149,11 +171,16 @@ def contents_files() -> list[Path]:
     return out
 
 
-# Heading markup the slugger cannot see through: a Markdown link, inline HTML,
-# a backslash escape, or `_emphasis_` outside a code span. GitHub slugs the
-# RENDERED text, so a CONTENTS link built from the raw text would 404. The
-# writer refuses such a heading rather than emit a dead link (none occur today).
-UNSLUGGABLE_RE = re.compile(r"\]\(|<[A-Za-z/!]|\\|(?:^|\W)_[^_\s][^_]*_(?:\W|$)")
+# Heading markup GitHub renders away before it slugs, so a CONTENTS link
+# built from the raw text would 404: an inline or reference link, inline
+# HTML, a backslash escape, an entity, or `_` / `__` emphasis (an intraword
+# `_` is literal). Checked with code spans removed. The writer refuses such
+# a heading rather than emit a dead link; none occurs today. A bare bracket
+# tag such as `[EMPIRICAL]` renders as itself and slugs the same, so it passes.
+# (ponytail: a deny-list of inline syntax; render the heading with a
+# CommonMark parser if headings ever need richer markup.)
+UNSLUGGABLE_RE = re.compile(r"\]\(|\]\[|<[A-Za-z/!]|\\|&#?\w+;"
+                            r"|(?<![A-Za-z0-9])_|_(?![A-Za-z0-9])")
 
 
 def _link_text(heading: str) -> str:
@@ -174,13 +201,11 @@ def _block_span(lines: list[str]) -> tuple[int, int] | None:
     and frontmatter, or None. A begin without an end, a second block, or an
     end without a begin is an error: the writer must never guess which lines
     are its own."""
-    spans, begin, in_fence = [], None, False
-    for i in range(_frontmatter_end(lines), len(lines)):
+    spans, begin = [], None
+    start = _frontmatter_end(lines)
+    for i, fenced in enumerate(fence_mask(lines[start:]), start):
         line = lines[i]
-        if FENCE_RE.match(line):
-            in_fence = not in_fence
-            continue
-        if in_fence:
+        if fenced:
             continue
         if line == CONTENTS_BEGIN:
             if begin is not None:
@@ -312,20 +337,11 @@ def quick_facts_problems(path: Path) -> list[str]:
     # higher-level heading.
     lines = text.splitlines()
     start = end = None
-    in_fence = False
-    for i, line in enumerate(lines):
-        if FENCE_RE.match(line):
-            in_fence = not in_fence
-            continue
-        if in_fence:
-            continue
-        m = HEADING_RE.match(line)
-        if not m:
-            continue
-        if start is None and m.group(2).strip().upper() == "QUICK FACTS":
+    for i, h_level, h_text in heading_lines(lines):
+        if start is None and h_text.strip().upper() == "QUICK FACTS":
             start = i
-            level = len(m.group(1))
-        elif start is not None and len(m.group(1)) <= level:
+            level = h_level
+        elif start is not None and h_level <= level:
             end = i
             break
     block = "\n".join(lines[start:end])

@@ -23,6 +23,7 @@ import subprocess
 import sys
 from datetime import date
 from pathlib import Path
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parent.parent  # scripts/ → repo root
 SPECS_DIR = ROOT / "specs"
@@ -773,20 +774,20 @@ def reference_files() -> list:
 
 
 def linked_paths(text: str) -> set:
-    """Paths `text` names as live links: a backticked path or a Markdown link
-    target, outside HTML comments and code fences — a path inside an example
-    block or a commented-out row sends no reader anywhere."""
+    """Paths `text` names as live links: an exact backticked path or a
+    Markdown link target, either one with any `#fragment` dropped. Nothing
+    inside an HTML comment or a code fence counts (build_index.fence_mask, the
+    same fence rules the CONTENTS writer uses), and a link written inside
+    inline code is an example, not a link."""
+    from build_index import fence_mask
     text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
-    live, in_fence = [], False
-    for line in text.splitlines():
-        if re.match(r"^\s*(```|~~~)", line):
-            in_fence = not in_fence
-        elif not in_fence:
-            live.append(line)
-    text = "\n".join(live)
-    found = set(re.findall(r"`([^`\n]+)`", text))
-    found |= {t.split("#")[0] for t in re.findall(r"\]\(<?([^)>\s]+)>?\)", text)}
-    found |= {t.replace("%20", " ") for t in found}
+    lines = text.splitlines()
+    text = "\n".join(line for line, fenced in zip(lines, fence_mask(lines)) if not fenced)
+    spans = re.findall(r"`([^`\n]+)`", text)
+    prose = re.sub(r"`[^`\n]+`", "", text)
+    targets = re.findall(r"\]\(\s*(?:<([^>\n]+)>|([^)\s]+))", prose)
+    found = {span.split("#")[0] for span in spans}
+    found |= {unquote((angled or bare).split("#")[0]) for angled, bare in targets}
     return found
 
 

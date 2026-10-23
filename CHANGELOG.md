@@ -49,10 +49,12 @@ Two new gates keep the fixes from drifting back.
   heading list under the title of every skill file over 100 lines that has no QUICK FACTS block
   (45 files), and `--check` (run by `validate.py`) fails when one is missing or stale: the gate is
   "the writer is a no-op". Run `python3 scripts/build_index.py` after any heading change. The
-  writer reads its markers only outside code fences and frontmatter, refuses a second block or a
-  dangling marker, moves a misplaced block back under the title, keeps CRLF line endings, and
-  refuses a heading whose GitHub slug it cannot predict (a link, inline HTML, a backslash escape
-  or `_emphasis_`) rather than write a dead link.
+  writer reads its markers only outside code fences (CommonMark's closing rules: same character,
+  at least as long, no more than three spaces of indent) and frontmatter, refuses a second block
+  or a dangling marker, moves a misplaced block back under the title, keeps CRLF line endings,
+  and refuses a heading whose GitHub slug it cannot predict (an inline or reference link, inline
+  HTML, a backslash escape, an entity, or `_` emphasis) rather than write a dead link. The
+  reachability gate reads fences the same way.
 - Root `SKILL.md` gains a `## Handling a Request` heading over Fast Path → Output Format, which
   sat under Working Folders.
 
