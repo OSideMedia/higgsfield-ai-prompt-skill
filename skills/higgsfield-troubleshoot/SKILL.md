@@ -289,7 +289,7 @@ that forces the strategy change.
 ### The shot log is the ledger row
 
 One line per take — what changed, what resulted — and the repo already has
-the surface for it: the generation ledger (`../../db/ledger/`, § Log the
+the surface for it: the generation ledger (`ledger/` in the memory folder, § Log the
 Outcome below, 5-second rule). Put the one changed variable in `notes`
 ("changed: lens lock line"); `prompt_hash` already dedupes identical
 re-rolls. Two rows sharing a flaw is the rewrite tripwire made auditable —
@@ -405,7 +405,8 @@ How they compose:
 
 Troubleshooting that isn't logged is troubleshooting the next session repeats.
 After ANY confirmed fix from this skill, write it to the learning memory
-(`../../scripts/higgsfield_memory.py`, databases in `../../db/`):
+(`../../scripts/higgsfield_memory.py`, databases in the memory folder, `../../SKILL.md`
+§ Working Folders):
 
 - **Filter workaround confirmed** (the rewritten prompt passed in a real
   generation): `python3 scripts/seedance_lint.py --confirmed "<prompt that passed>"`
@@ -416,7 +417,7 @@ After ANY confirmed fix from this skill, write it to the learning memory
 - **Outcome learned later** for an entry that already exists:
   `python3 scripts/higgsfield_memory.py update-filter <id> <fixed|workaround|still-blocked>`
 - **Project-specific lessons**: add `--project <name>` to keep them scoped
-  under `../../db/projects/` instead of global memory.
+  under `projects/` in the memory folder instead of global memory.
 
 Before troubleshooting, also CHECK memory first — that's `higgsfield-recall`'s
 job (`query-filter` / `query-quality`); the preflight's MEMORY RECALL section

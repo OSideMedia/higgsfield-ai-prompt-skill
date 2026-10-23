@@ -14,7 +14,7 @@ description: >
 user-invocable: true
 metadata:
   tags: [higgsfield, video, image, prompt, cinematic, AI, filmmaking, motion, camera]
-  version: 3.41.0
+  version: 3.42.0
   updated: 2026-10-23
   author: O-Side Media
   license: MIT
@@ -49,8 +49,9 @@ metadata:
 **Paths:** every path in this file (`skills/…`, `templates/…`, `specs/…`, `scripts/…`,
 `db/…`) is relative to the folder this `SKILL.md` lives in, not to the user's working
 directory. A path inside any other file is relative to that file's own folder
-(`../../specs/…` in a sub-skill climbs back to this one). The one exception is
-`workspace/`, which lives in the user's working directory (§ Working Folders). Sub-skills are plain
+(`../../specs/…` in a sub-skill climbs back to this one). Two exceptions:
+`workspace/` lives in the user's working directory, and the learning memory may live
+outside this folder (both in § Working Folders). Sub-skills are plain
 files, not separately registered skills: nothing loads them for you, so open
 `skills/<name>/SKILL.md` yourself.
 
@@ -125,6 +126,18 @@ Rules:
 - Never scatter user uploads or generated files across the project root or skill folders — route them through `workspace/`.
 - Treat `workspace/input/` as the canonical place to look when the user says "the script / bible / reference I gave you."
 - In this repo the three folders' contents are git-ignored. In another project they are not unless the user ignores them: never assume anything in them is committed or private, and ask before editing the user's `.gitignore`.
+
+**The memory folder.** The filter memory, quality memory and generation ledger live in
+one folder, and only `scripts/higgsfield_memory.py` reads or writes it. When this skill
+runs from a Claude Code skill install (a `.claude/skills/<name>/` folder), the memory
+folder is `~/.higgsfield-skill/db/`, copied from this skill's `db/` on first use, so a
+reinstall or update cannot erase it. Anywhere else (a Cowork workspace, a clone of the
+repo) it is this skill's own `db/`. The `HF_DB_DIR` environment variable overrides both.
+`python3 <this skill's folder>/scripts/higgsfield_memory.py where` prints the folder in
+use; give the user that path when they ask where their memory is or before a reinstall.
+If its `unmerged` list is not empty, another install held entries the memory folder
+lacks (its own memory from before v3.42.0, or starter entries from a newer release): they
+were kept there, not merged. Tell the user once.
 
 ## Handling a Request
 
@@ -364,14 +377,15 @@ Quick summary — five layers, every prompt:
 ## Generation Ledger — log every result
 
 Every generation attempt the user reports — kept, rejected, or filter-flagged —
-gets one row in `db/ledger/<project>.json`. The denominator (successes too,
+gets one row in the ledger (`ledger/<project>.json` in the memory folder, § Working
+Folders). The denominator (successes too,
 not just failures) is what turns the memory system into takes-per-kept ratios
 and credit budgets.
 
 **The 5-second rule:** when the user reports a result, ask at most ONE
 question ("keep or reject — what failed?") and write the row yourself with
 one `scripts/higgsfield_memory.py log-gen` command (run it as `python3
-<this skill's folder>/scripts/higgsfield_memory.py`; it finds `db/` itself). Never ask
+<this skill's folder>/scripts/higgsfield_memory.py`; it finds the memory folder itself). Never ask
 twice; never present a form. Every script this skill runs needs only `python3` and its
 standard library — no `pip install`. Full workflow: `skills/higgsfield-recall/SKILL.md` § Log the Generation
 Result. Ratios and budgeting: `skills/higgsfield-assist/SKILL.md`.

@@ -8,7 +8,8 @@ Higgsfield AI Prompt Skill — a Cowork skill library for generating high-qualit
 
 - **Skill format:** Cowork SKILL.md with YAML frontmatter
 - **Scripts:** Python 3 (no dependencies beyond stdlib)
-- **Data:** JSON databases in `db/`
+- **Data:** JSON databases in `db/` (the shipped seed; a Claude Code skill install keeps
+  its live memory in `~/.higgsfield-skill/db/` — `higgsfield_memory.py where`)
 - **Docs:** Markdown throughout
 
 ## Directory Structure

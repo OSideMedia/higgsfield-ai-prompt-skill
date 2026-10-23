@@ -1,5 +1,65 @@
 # Changelog
 
+## v3.42.0 — 2026-10-23
+
+**The learning memory survives a reinstall.** With the README's Claude Code install the filter
+memory, quality memory and generation ledger lived in `~/.claude/skills/higgsfield/db/`, the one
+folder a reinstall replaces and a `git pull` can overwrite. The README told users to back it up
+by hand. A Claude Code skill install now keeps its memory in `~/.higgsfield-skill/db/`.
+
+### Fixed
+
+- **Memory inside the skill install.** When the skill runs from a `.claude/skills/<name>/` folder
+  (personal or project install), `scripts/higgsfield_memory.py` uses `~/.higgsfield-skill/db/`.
+  On first use it copies the skill's `db/` there: the starter entries, and for an install older
+  than v3.42.0 the user's own entries and ledger, so nothing is lost on the upgrade. The copy is
+  built beside the target and renamed into place, so two scripts starting at once cannot leave a
+  half-copied folder, and the copy is made writable even when the install's files are read-only.
+  The copy happens when the script is imported, so a `seedance_lint.py --preflight` that runs
+  before any memory command still finds it.
+- **Install detection follows the real path.** The skill folder must sit directly in a
+  `.claude/skills/` folder (any letter case), or in the real folder a symlinked `~/.claude/skills/`
+  points to. A clone nested deeper inside `.claude/skills/` is not an install, and a dev checkout
+  symlinked into `.claude/skills/` keeps its own `db/` however a script is invoked.
+- **A second older install keeps its own memory.** Each install is checked once, and leaves a
+  marker in `~/.higgsfield-skill/sources/`. When a later install's `db/` holds entries the shared
+  memory lacks (a personal install and a project install that both predate v3.42.0), its `db/` is
+  copied to `~/.higgsfield-skill/unmerged/`, so a reinstall cannot erase it. You see one warning,
+  and `where` lists the copy. It is not merged: entry ids would collide. The marker is written
+  only after the copy exists. The shared memory remembers the records it started with, each tied
+  to its own file, so a starter entry you have since updated does not make a fresh install look
+  like it holds memory of its own. A shared memory folder that lacks a core database (one created
+  while the skill's `db/` was missing) gets it from the next install that has it. The file is
+  written in full and then linked into place, so no run sees a partial file and a database another
+  install just wrote is never replaced.
+- **Cowork and repo clones are unchanged.** Anywhere else (a Cowork workspace, a clone of this
+  repo, a symlinked dev checkout) the memory stays in the skill's own `db/`, which is where those
+  setups already keep it safe. `HF_DB_DIR` still overrides both.
+- **`validate.py` certified the active memory.** The `memory-summary.md` and `_global.json`
+  checks read whichever memory the scripts were using, including the ledger ratios in the summary.
+  They now always read the shipped `db/`, so a developer with a personal memory still gets a true
+  verdict on the repo, and a non-strict run never writes personal ratios into the shipped summary.
+- **The dispatcher check read a folder name as a route.** It counted every `higgsfield-*` token
+  in root `SKILL.md` as a sub-skill, so naming `~/.higgsfield-skill/` failed `--strict`. A name
+  right after a `.` (a hidden folder) no longer counts; a dangling `skills/higgsfield-*/` route
+  still fails.
+
+### Added
+
+- **`higgsfield_memory.py where`** prints the memory folder in use, why it was chosen
+  (`HF_DB_DIR`, `skill install` or `skill folder`), whether it exists, and any unmerged copies.
+  Root `SKILL.md` § Working Folders tells the agent to give the user that path when they ask
+  where their memory is or before a reinstall; the sub-skills, `DISCIPLINE.md` and the README
+  now say "the memory folder" wherever they mean the user's data.
+- 28 tests: 26 in `tests/test_memory_location.py`, including end-to-end runs of real install
+  layouts under a throwaway home folder, and 2 for the dispatcher check. Twenty-two planted defects
+  each turn at least one test red. Among them: the install path ignored, a symlinked `~/.claude`
+  missed, letter case or a nested clone misread, no copy on import, a merging or read-only copy, a
+  second install's memory dropped, warned about twice or recorded as kept when the copy failed, an
+  updated starter entry or another project's identical record mistaken for an install's own, a
+  fill that replaces a file or leaves an empty one after a failed read, and validate reading the
+  active memory or ledger.
+
 ## v3.41.0 — 2026-10-23
 
 **Skill-authoring review: sub-skills by path, every reference one level deep, `workspace/` in the

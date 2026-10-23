@@ -12,7 +12,7 @@ or `get_cost: true` on the MCP `generate_*` tools) immediately before firing, an
 spend. Costs are itemised per model; never quote the total alone.
 
 **Protocol for every row:** fire the cheapest config that answers the question, same prompt
-across arms, one variable changed. Log each generation to the ledger (`db/ledger/`, one row per
+across arms, one variable changed. Log each generation to the ledger (`ledger/` in the memory folder, one row per
 attempt — `SKILL.md` § HARD RULES). A single generation is an observation, not a rating: a model
 gets star rows in `model-guide.md` only after enough runs to judge it, and the verdict names
 route, model id, resolution, n, and date (tag `[MEASURED]`).

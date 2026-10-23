@@ -137,7 +137,8 @@ generation began).
 ### Log-Every-Generation
 
 Every generation attempt — kept, rejected, or filter-flagged — gets one
-row in the generation ledger (`db/ledger/`). Failure-only logging cannot
+row in the generation ledger (`ledger/` in the memory folder, `SKILL.md`
+§ Working Folders). Failure-only logging cannot
 produce hit rates; the denominator (successes too) is what turns memory
 into takes-per-kept ratios and credit budgets. The write path obeys the
 **5-second rule**: at most one short command or one agent question
