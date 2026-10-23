@@ -68,8 +68,10 @@ MEMORY_HOME = Path.home() / ".higgsfield-skill"
 USER_DB_DIR = MEMORY_HOME / "db"
 # An older install's own memory, kept when another install already seeded USER_DB_DIR.
 UNMERGED_DIR = MEMORY_HOME / "unmerged"
-# The installs whose db/ has been seeded from or checked, so each is handled once.
-SOURCES_FILE = MEMORY_HOME / "sources.json"
+# One marker per install whose db/ has been seeded from or checked, so each is handled once.
+SOURCES_DIR = MEMORY_HOME / "sources"
+# Inside a seeded memory folder: digests of every record it was seeded with.
+SEED_RECORDS = ".seed-records.json"
 # The databases a memory folder needs; an incomplete folder gets them from the seed.
 CORE_FILES = ("filter-memory.json", "quality-memory.json", "routing-log.json")
 
@@ -105,11 +107,12 @@ def default_db_dir(root: Path = REPO_ROOT, home: Path | None = None) -> Path:
     return USER_DB_DIR if installed else SEED_DIR
 
 
-def _copy_tree(src: Path, dest: Path) -> bool:
-    """Copy `src` to a new `dest`; False when `dest` already exists. The copy
-    is built beside `dest`, made writable by its owner (an install's files may
-    be read-only) and renamed into place, so a process racing it finds either
-    no folder or a complete one."""
+def _copy_tree(src: Path, dest: Path, extra: dict | None = None) -> bool:
+    """Copy `src` to a new `dest`, adding the `extra` files ({name: text});
+    False when `dest` already exists. The copy is built beside `dest`, made
+    writable by its owner (an install's files may be read-only) and renamed
+    into place, so a process racing it finds either no folder or a complete
+    one."""
     if dest.exists():
         return False
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -121,23 +124,16 @@ def _copy_tree(src: Path, dest: Path) -> bool:
         for name in files:
             path = os.path.join(folder, name)
             os.chmod(path, os.stat(path).st_mode | stat.S_IRUSR | stat.S_IWUSR)
+    for name, text in (extra or {}).items():
+        (tmp / name).write_text(text, encoding="utf-8")
     try:
         tmp.rename(dest)
-    except OSError:  # another process created it first
+    except OSError:
         shutil.rmtree(tmp, ignore_errors=True)
-        return False
+        if dest.is_dir():  # another process created it first
+            return False
+        raise
     return True
-
-
-def seed_db_dir(dest: Path, seed: Path = SEED_DIR) -> bool:
-    """Create `dest` as a copy of the skill's db/ if it does not exist yet;
-    return True when this call created it. The copy carries the starter data
-    and, for an install that predates v3.42.0, the user's own entries. Never
-    merges into an existing folder.
-    (ponytail: seeds once, so starter entries a later release adds do not
-    reach an existing memory; add a versioned merge if the seed starts
-    changing.)"""
-    return seed.is_dir() and _copy_tree(seed, dest)
 
 
 def _records(path: Path) -> set:
@@ -151,57 +147,103 @@ def _records(path: Path) -> set:
             if isinstance(items, list) else set())
 
 
+def _memory_files(root: Path) -> list:
+    """The memory files under `root`. Underscore files (the generated _global
+    view, the _demo fixture) and dotfiles are not memory."""
+    return [p for p in root.rglob("*.json") if not p.name.startswith(("_", "."))]
+
+
+def _digest(record: str) -> str:
+    return hashlib.sha256(record.encode("utf-8")).hexdigest()[:16]
+
+
+def seed_db_dir(dest: Path, seed: Path = SEED_DIR) -> bool:
+    """Create `dest` as a copy of the skill's db/ if it does not exist yet;
+    return True when this call created it. The copy carries the starter data
+    and, for an install that predates v3.42.0, the user's own entries, plus
+    SEED_RECORDS: the digest of every record it started with, so a later
+    install's unchanged copy of a starter entry the user has since updated is
+    not mistaken for memory of its own. Never merges into an existing folder.
+    (ponytail: seeds once, so starter entries a later release adds do not
+    reach an existing memory; add a versioned merge if the seed starts
+    changing.)"""
+    if not seed.is_dir():
+        return False
+    digests = sorted({_digest(r) for p in _memory_files(seed) for r in _records(p)})
+    return _copy_tree(seed, dest, {SEED_RECORDS: json.dumps(digests) + "\n"})
+
+
 def unmerged_count(src: Path, dest: Path) -> int:
-    """How many entries and ledger rows in `src` are missing from `dest`.
-    Underscore files (the generated _global view, the _demo fixture) are
-    skipped."""
-    return sum(len(_records(path) - _records(dest / path.relative_to(src)))
-               for path in src.rglob("*.json") if not path.name.startswith("_"))
+    """How many entries and ledger rows in `src` are neither in `dest` nor
+    among the records `dest` was seeded with."""
+    try:
+        seeded = set(json.loads((dest / SEED_RECORDS).read_text(encoding="utf-8")))
+    except (OSError, ValueError, TypeError):
+        seeded = set()
+    return sum(1 for path in _memory_files(src)
+               for r in _records(path) - _records(dest / path.relative_to(src))
+               if _digest(r) not in seeded)
+
+
+def _fill_missing(dest: Path, seed: Path) -> None:
+    """Give an incomplete memory folder (one created while the skill's db/ was
+    missing) the core databases it lacks. Exclusive create: an existing file,
+    including one a racing process just wrote, is never replaced.
+    (ponytail: a reader racing the write can see a partial file for an
+    instant; publish through a hard link if that ever bites.)"""
+    for name in CORE_FILES:
+        if not (seed / name).is_file() or (dest / name).exists():
+            continue
+        try:
+            with open(dest / name, "xb") as f:
+                f.write((seed / name).read_bytes())
+        except FileExistsError:
+            pass
 
 
 def prepare_user_db(dest: Path = USER_DB_DIR, seed: Path = SEED_DIR,
-                    sources_file: Path = SOURCES_FILE,
+                    sources_dir: Path = SOURCES_DIR,
                     unmerged_dir: Path = UNMERGED_DIR) -> Path | None:
-    """Get the shared memory folder ready for this install, once per install.
+    """Get the shared memory folder ready for this install.
 
     The first install seeds `dest`. A later install's db/ may hold memory of
     its own from before v3.42.0: its missing core databases fill an
     incomplete `dest`, and if entries are still missing from `dest`, the
     install's db/ is copied to `unmerged_dir` so a reinstall cannot erase it.
-    Returns that copy's folder, or None.
+    Each install is checked once (a marker in `sources_dir`), and only after
+    its copy exists. Returns that copy's folder, or None.
     (ponytail: keeps the second install's memory but does not merge it, since
     entry ids collide; add an import command that renumbers if two-install
     upgrades turn out common.)"""
-    key = str(seed.resolve().parent)
-    try:
-        sources = json.loads(sources_file.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        sources = {}
-    if not isinstance(sources, dict):
-        sources = {}
-    if key in sources or not seed.is_dir():
+    if not seed.is_dir():
         return None
-    kept = None
+    key = str(seed.resolve().parent)
+    slug = f"{seed.parent.name}-{hashlib.sha256(key.encode('utf-8')).hexdigest()[:8]}"
+    marker = sources_dir / slug
     if seed_db_dir(dest, seed):
-        sources[key] = "seeded"
+        outcome, kept = "seeded", None
     elif dest.is_dir():
-        for name in CORE_FILES:
-            if (seed / name).is_file() and not (dest / name).exists():
-                shutil.copyfile(seed / name, dest / name)
+        _fill_missing(dest, seed)
+        if marker.exists():
+            return None
+        kept = None
         missing = unmerged_count(seed, dest)
         if missing:
-            slug = hashlib.sha256(key.encode("utf-8")).hexdigest()[:8]
-            kept = unmerged_dir / f"{seed.parent.name}-{slug}" / "db"
+            kept = unmerged_dir / slug / "db"
             _copy_tree(seed, kept)
+            if not kept.is_dir():
+                raise OSError(f"could not keep {seed} in {kept}")
             print(f"higgsfield: {missing} memory entries in {seed} are not in {dest}; "
                   f"kept a copy in {kept} (not merged)", file=sys.stderr)
-        sources[key] = str(kept) if kept else "checked"
+        outcome = str(kept) if kept else "checked"
     else:
         return None
-    sources_file.parent.mkdir(parents=True, exist_ok=True)
-    tmp = sources_file.with_name(f".{sources_file.name}.{os.getpid()}")
-    tmp.write_text(json.dumps(sources, indent=2) + "\n", encoding="utf-8")
-    os.replace(tmp, sources_file)
+    sources_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        with open(marker, "x", encoding="utf-8") as f:
+            f.write(f"{key}\n{outcome}\n")
+    except FileExistsError:  # a racing process recorded it
+        pass
     return kept
 
 

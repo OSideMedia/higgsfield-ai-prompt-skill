@@ -116,11 +116,65 @@ def test_an_incomplete_memory_gets_the_missing_databases(tmp_path):
     dest = home / "db"
     (dest / "ledger").mkdir(parents=True)                 # a ledger written while no seed existed
     (dest / "ledger" / "adze.json").write_text('{"rows": []}', encoding="utf-8")
-    kept = hm.prepare_user_db(dest, seed, home / "sources.json", home / "unmerged")
+    kept = hm.prepare_user_db(dest, seed, home / "sources", home / "unmerged")
     assert kept is None
     assert (dest / "filter-memory.json").read_text(encoding="utf-8") == \
         (seed / "filter-memory.json").read_text(encoding="utf-8")
     assert (dest / "ledger" / "adze.json").read_text(encoding="utf-8") == '{"rows": []}'
+
+
+def _entries(path, *ids):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"entries": [{"id": i, "outcome": "unknown"} for i in ids]}),
+                    encoding="utf-8")
+
+
+def test_a_racing_fill_never_replaces_the_other_installs_file(tmp_path, monkeypatch):
+    home = tmp_path / "home" / ".higgsfield-skill"
+    dest, seed = home / "db", tmp_path / "b" / "db"
+    (dest / "ledger").mkdir(parents=True)                 # incomplete: no filter memory
+    _entries(seed / "filter-memory.json", "F-902")        # install B's own entry
+    real_open = open
+
+    def install_a_writes_first(file, mode="r", *a, **k):  # A wins the gap after the check
+        if mode == "xb" and Path(file).name == "filter-memory.json" and not Path(file).exists():
+            _entries(Path(file), "F-901")
+        return real_open(file, mode, *a, **k)
+
+    monkeypatch.setattr(hm, "open", install_a_writes_first, raising=False)
+    kept = hm.prepare_user_db(dest, seed, home / "sources", home / "unmerged")
+    assert _ids(dest / "filter-memory.json") == {"F-901"}           # A's file intact
+    assert kept and _ids(kept / "filter-memory.json") == {"F-902"}  # B's entry kept
+
+
+def test_an_updated_starter_entry_is_not_an_installs_own_memory(tmp_path):
+    home = tmp_path / "home" / ".higgsfield-skill"
+    dest, sources, unmerged = home / "db", home / "sources", home / "unmerged"
+    first, second = tmp_path / "a" / "db", tmp_path / "b" / "db"
+    for seed in (first, second):
+        _entries(seed / "filter-memory.json", "F-001")    # the same starter entry
+    assert hm.prepare_user_db(dest, first, sources, unmerged) is None
+    data = json.loads((dest / "filter-memory.json").read_text(encoding="utf-8"))
+    data["entries"][0]["outcome"] = "fixed"               # the user updates it
+    (dest / "filter-memory.json").write_text(json.dumps(data), encoding="utf-8")
+    assert hm.prepare_user_db(dest, second, sources, unmerged) is None
+    assert not unmerged.exists()
+
+
+def test_a_copy_that_fails_is_not_recorded_as_kept(tmp_path, monkeypatch):
+    home = tmp_path / "home" / ".higgsfield-skill"
+    dest, sources, unmerged = home / "db", home / "sources", home / "unmerged"
+    _entries(dest / "filter-memory.json", "F-901")
+    seed = tmp_path / "b" / "db"
+    _entries(seed / "filter-memory.json", "F-902")
+
+    def rename_fails(self, target):
+        raise PermissionError("sharing violation")
+
+    monkeypatch.setattr(type(tmp_path), "rename", rename_fails)
+    with pytest.raises(OSError):
+        hm.prepare_user_db(dest, seed, sources, unmerged)
+    assert not sources.exists() or not list(sources.iterdir())    # checked again next time
 
 
 # ── end to end: a real install layout under a throwaway HOME ─────────────────

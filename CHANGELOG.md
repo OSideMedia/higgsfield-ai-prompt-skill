@@ -21,13 +21,16 @@ by hand. A Claude Code skill install now keeps its memory in `~/.higgsfield-skil
   `.claude/skills/` folder (any letter case), or in the real folder a symlinked `~/.claude/skills/`
   points to. A clone nested deeper inside `.claude/skills/` is not an install, and a dev checkout
   symlinked into `.claude/skills/` keeps its own `db/` however a script is invoked.
-- **A second older install keeps its own memory.** Each install is handled once, and the list is
-  kept in `~/.higgsfield-skill/sources.json`. When a later install's `db/` holds entries the shared
+- **A second older install keeps its own memory.** Each install is checked once, and leaves a
+  marker in `~/.higgsfield-skill/sources/`. When a later install's `db/` holds entries the shared
   memory lacks (a personal install and a project install that both predate v3.42.0), its `db/` is
   copied to `~/.higgsfield-skill/unmerged/`, so a reinstall cannot erase it. You see one warning,
-  and `where` lists the copy. It is not merged: entry ids would collide. A shared memory folder
-  that lacks a core database (one created while the skill's `db/` was missing) gets it from the
-  next install that has it, and no existing file is ever overwritten.
+  and `where` lists the copy. It is not merged: entry ids would collide. The marker is written
+  only after the copy exists. The shared memory remembers the records it was seeded with, so a
+  starter entry you have since updated does not make a fresh install look like it holds memory
+  of its own. A shared memory folder that lacks a core database (one created while the skill's
+  `db/` was missing) gets it from the next install that has it; the file is created exclusively,
+  so a database another install just wrote is never replaced.
 - **Cowork and repo clones are unchanged.** Anywhere else (a Cowork workspace, a clone of this
   repo, a symlinked dev checkout) the memory stays in the skill's own `db/`, which is where those
   setups already keep it safe. `HF_DB_DIR` still overrides both.
@@ -47,12 +50,13 @@ by hand. A Claude Code skill install now keeps its memory in `~/.higgsfield-skil
   Root `SKILL.md` § Working Folders tells the agent to give the user that path when they ask
   where their memory is or before a reinstall; the sub-skills, `DISCIPLINE.md` and the README
   now say "the memory folder" wherever they mean the user's data.
-- 21 tests: 19 in `tests/test_memory_location.py`, including end-to-end runs of real install
-  layouts under a throwaway home folder, and 2 for the dispatcher check. Sixteen planted defects
+- 24 tests: 22 in `tests/test_memory_location.py`, including end-to-end runs of real install
+  layouts under a throwaway home folder, and 2 for the dispatcher check. Nineteen planted defects
   each turn at least one test red. Among them: the install path ignored, a symlinked `~/.claude`
   missed, letter case or a nested clone misread, no copy on import, a merging or read-only copy, a
-  second install's memory dropped or warned about twice, and validate reading the active memory
-  or ledger.
+  second install's memory dropped, warned about twice or recorded as kept when the copy failed, an
+  updated starter entry mistaken for an install's own, a racing fill that overwrites, and
+  validate reading the active memory or ledger.
 
 ## v3.41.0 — 2026-10-23
 
