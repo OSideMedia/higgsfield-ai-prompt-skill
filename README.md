@@ -360,6 +360,13 @@ acting on the tail. A small sample is not evidence a skill is dead.
 | L | Look | Cinematic, cold blue shadows, 16:9 |
 | A | Action | She sprints, slides under a gate |
 
+## Acknowledgements
+
+- [@vitaesomniastore-commits](https://github.com/vitaesomniastore-commits) — skill-authoring
+  review of v3.40.0 against Anthropic's skill best practices
+  ([#110](https://github.com/OSideMedia/higgsfield-ai-prompt-skill/issues/110)), which shaped
+  v3.41.0.
+
 ---
 
 Built February 2026 · v3.41.0 (updated 2026-10-23) · Platform: [higgsfield.ai](https://higgsfield.ai)
