@@ -300,3 +300,42 @@ def test_snapshot_age_fails_on_a_missing_spec_file(scratch_specs, monkeypatch, m
     monkeypatch.setattr(validate, "STRICT", True)
     validate.check_typed_snapshot_ages(sync_specs.TYPES)
     assert any("present" in i and missing in i for i in validate.issues), validate.issues
+
+
+# ── v3.41.0: every reference file one level deep from root SKILL.md (#110) ──
+
+@pytest.fixture
+def ref_repo(tmp_path, monkeypatch, fresh_report):
+    monkeypatch.setattr(validate, "ROOT", tmp_path)
+    monkeypatch.setattr(validate, "ROOT_REFERENCE_DOCS", {"vocab.md"})
+    for rel in ("vocab.md", "README.md", "skills/x/SKILL.md", "skills/x/A.md",
+                "skills/x/B.md", "templates/t.md", "docs/live.md", "docs/archive/old.md"):
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / rel).write_text("# x\n", encoding="utf-8")
+    return tmp_path
+
+
+def _reach(root, skill_text):
+    (root / "SKILL.md").write_text(skill_text, encoding="utf-8")
+    validate.issues.clear()
+    _quiet(validate.check_reference_reachability)
+    return list(validate.issues)
+
+
+LINKED = "`vocab.md` `skills/x/A.md` `skills/x/B.md` `templates/t.md` `docs/live.md`"
+
+
+def test_reference_reachability_passes_when_all_are_linked(ref_repo):
+    assert _reach(ref_repo, LINKED) == []
+
+
+def test_reference_reachability_flags_an_unlinked_file(ref_repo):
+    issues = _reach(ref_repo, LINKED.replace("`skills/x/B.md`", "`B.md`"))  # bare name ≠ a path
+    assert len(issues) == 1 and "skills/x/B.md" in issues[0]
+    assert "skills/x/A.md" not in issues[0] and "archive" not in issues[0]
+
+
+def test_reference_reachability_flags_an_unclassified_root_doc(ref_repo):
+    (ref_repo / "NEW-GUIDE.md").write_text("# x\n", encoding="utf-8")
+    issues = _reach(ref_repo, LINKED)
+    assert len(issues) == 1 and "NEW-GUIDE.md" in issues[0]

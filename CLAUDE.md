@@ -35,12 +35,12 @@ scripts/                  ← Python tooling (run from the repo root)
   ├── repo_walk.py        ← Shared repo walk (skips .claude/worktrees and nested repos)
   ├── generate_user_guide.py ← Release PDF generator (+ validate_user_guide.py,
   │                         sub_skill_descriptions.py)
-  └── build_index.py      ← Regenerates INDEX.md + checks QUICK FACTS anchors
+  └── build_index.py      ← Regenerates INDEX.md + CONTENTS blocks; checks QUICK FACTS anchors
 specs/                    ← Machine-readable model specs (generated — never hand-edit;
                             video + image + audio + 3d, each generated from a dated
                             models_explore snapshot; retired-model-ids.json keeps
                             ledger history valid after a model leaves the catalog)
-INDEX.md                  ← Generated heading index of every SKILL.md
+INDEX.md                  ← Generated heading index of every SKILL.md (linked from root SKILL.md)
 tests/                    ← pytest suite for the Python tooling (CI-run)
 evals/                    ← Behavioral eval cases + run_evals.py (CI-run)
 skills/                   ← 35 sub-skill directories + shared/
@@ -63,7 +63,7 @@ workspace/                ← Git-ignored working area (input/ → processed/, o
 - `python3 scripts/validate.py --strict` — release gate (skips become failures)
 - `python3 -m pytest tests/ -q` — Python tooling test suite (CI-run)
 - `python3 scripts/validate.py --evals` — behavioral eval cases (evals/cases/)
-- `python3 scripts/build_index.py` — regenerate INDEX.md after any heading change
+- `python3 scripts/build_index.py` — regenerate INDEX.md and every CONTENTS block after any heading change
 - `python3 scripts/sync_specs.py --type video|image|audio|3d` — regenerate specs/ from the newest dated snapshot; `--changed` lists models that moved since the previous snapshot and the eval cases naming them
 - `python3 scripts/snapshot_crosscheck.py --type all` — two-way structural cross-check of the snapshots against the live CLI (read-only calls)
 - `python3 scripts/preflight.py --model <id> [--param K=V …] [--media ROLE=N …] [--strict]` — free preflight of a planned generation against the platform's enums, types, media roles and rules (a model with no spec entry or no rules on record is UNCHECKED, which fails --strict)

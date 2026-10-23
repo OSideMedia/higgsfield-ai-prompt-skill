@@ -12,6 +12,7 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [HARD RULES — pre-delivery checklist](SKILL.md#hard-rules--pre-delivery-checklist)
   - [What Is Higgsfield?](SKILL.md#what-is-higgsfield)
   - [Working Folders — file handling](SKILL.md#working-folders--file-handling)
+  - [Handling a Request](SKILL.md#handling-a-request)
     - [Fast Path — Simple Creative Requests](SKILL.md#fast-path--simple-creative-requests)
     - [Full Path — Production Requests](SKILL.md#full-path--production-requests)
     - [Route to the Right Skill](SKILL.md#route-to-the-right-skill)
@@ -22,7 +23,8 @@ anchors instead of archaeology. Link format: `path#anchor`.
   - [Generation Ledger — log every result](SKILL.md#generation-ledger--log-every-result)
   - [@ Reference Rules](SKILL.md#-reference-rules)
   - [Shared Resources](SKILL.md#shared-resources)
-  - [Sub-Skills (auto-loaded as needed)](SKILL.md#sub-skills-auto-loaded-as-needed)
+    - [Reference files inside sub-skills](SKILL.md#reference-files-inside-sub-skills)
+  - [Sub-Skills — open `skills/<name>/SKILL.md` yourself](SKILL.md#sub-skills--open-skillsnameskillmd-yourself)
 
 ## skills/higgsfield-3d/SKILL.md
 

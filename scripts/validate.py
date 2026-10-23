@@ -75,7 +75,11 @@ METADATA_REQUIRED_SUBSKILL = {"parent"}
 ROOT_REFERENCE_DOCS = {
     "vocab.md", "model-guide.md", "image-models.md", "prompt-examples.md",
     "photodump-presets.md", "production-benchmarks.md", "DISCIPLINE.md",
+    "INDEX.md",
 }
+# Root .md files that document the repo, not the skill — never routed to.
+# Every other root .md must be in ROOT_REFERENCE_DOCS (check_reference_reachability).
+REPO_DOCS = {"SKILL.md", "README.md", "CHANGELOG.md", "CONTRIBUTING.md", "CLAUDE.md"}
 # Bare backticked filenames that are PROSE CITATIONS of files living outside
 # this repo (source corpus, sibling team skills). They intentionally do not
 # resolve here and must not be flagged. Keep this list short and reviewed —
@@ -749,6 +753,45 @@ def check_model_specs():
               else f"badge={badge_date}, snapshot={spec['snapshot_date']}")
 
 
+def reference_files() -> list:
+    """Every file the skill may send a reader to, as repo-relative paths: the
+    root reference docs, every non-SKILL.md file under skills/, every template,
+    and docs/ outside docs/archive/ (sub-skill SKILL.md files are
+    check_dispatcher_parity's)."""
+    def rel(p):
+        return p.relative_to(ROOT).as_posix()
+    out = sorted(ROOT_REFERENCE_DOCS)
+    out += [rel(p) for p in walk_files(ROOT / "skills", "*.md", repo_root=ROOT)
+            if p.name != "SKILL.md"]
+    out += [rel(p) for p in walk_files(ROOT / "templates", "*.md", repo_root=ROOT)]
+    out += [rel(p) for p in walk_files(ROOT / "docs", "*.md", repo_root=ROOT)
+            if "archive" not in p.relative_to(ROOT / "docs").parts]
+    return out
+
+
+def check_reference_reachability():
+    """Root SKILL.md names every reference file by its full path, in backticks.
+
+    Anthropic's skill-authoring guidance: keep references one level deep from
+    SKILL.md, because a file reached only through another file tends to get a
+    partial read. Issue #110 found 11 such files (v3.40.0); this gate keeps the
+    count at zero. A root .md in neither ROOT_REFERENCE_DOCS nor REPO_DOCS
+    fails too, so a new root file cannot dodge the scan by being unclassified."""
+    skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+    unclassified = sorted(p.name for p in ROOT.glob("*.md")
+                          if p.name not in ROOT_REFERENCE_DOCS | REPO_DOCS)
+    check(not unclassified, "every root .md is a reference doc or a repo doc",
+          "" if not unclassified else
+          "add to ROOT_REFERENCE_DOCS (and link it from root SKILL.md) or to "
+          "REPO_DOCS: " + ", ".join(unclassified))
+    files = reference_files()
+    missing = [f for f in files if f"`{f}`" not in skill_text]
+    check(not missing, f"root SKILL.md links all {len(files)} reference files by path",
+          "" if not missing else
+          "add a Shared Resources / reference-file row for: " + ", ".join(missing[:6])
+          + (f" (+{len(missing) - 6} more)" if len(missing) > 6 else ""))
+
+
 def check_description_coverage():
     """Every skills/<dir>/ has a SUB_SKILL_DESCRIPTIONS entry and vice versa.
 
@@ -1083,6 +1126,7 @@ def main():
     # ── 4b. Dispatcher ↔ disk sub-skill parity ──────────────────────────────
     print("\n[ DISPATCHER / SKILL PARITY ]")
     check_dispatcher_parity()
+    check_reference_reachability()
     check_description_coverage()
 
     # ── 4c. Model specs layer ───────────────────────────────────────────────
