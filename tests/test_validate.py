@@ -300,3 +300,82 @@ def test_snapshot_age_fails_on_a_missing_spec_file(scratch_specs, monkeypatch, m
     monkeypatch.setattr(validate, "STRICT", True)
     validate.check_typed_snapshot_ages(sync_specs.TYPES)
     assert any("present" in i and missing in i for i in validate.issues), validate.issues
+
+
+# ── v3.41.0: every reference file one level deep from root SKILL.md (#110) ──
+
+@pytest.fixture
+def ref_repo(tmp_path, monkeypatch, fresh_report):
+    monkeypatch.setattr(validate, "ROOT", tmp_path)
+    monkeypatch.setattr(validate, "ROOT_REFERENCE_DOCS", {"vocab.md"})
+    for rel in ("vocab.md", "README.md", "skills/x/SKILL.md", "skills/x/A.md",
+                "skills/x/B.md", "templates/t.md", "docs/live.md", "docs/archive/old.md"):
+        (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / rel).write_text("# x\n", encoding="utf-8")
+    return tmp_path
+
+
+def _reach(root, skill_text):
+    (root / "SKILL.md").write_text(skill_text, encoding="utf-8")
+    validate.issues.clear()
+    _quiet(validate.check_reference_reachability)
+    return list(validate.issues)
+
+
+LINKED = "`vocab.md` `skills/x/A.md` `skills/x/B.md` `templates/t.md` `docs/live.md`"
+
+
+def test_reference_reachability_passes_when_all_are_linked(ref_repo):
+    assert _reach(ref_repo, LINKED) == []
+
+
+def test_reference_reachability_flags_an_unlinked_file(ref_repo):
+    issues = _reach(ref_repo, LINKED.replace("`skills/x/B.md`", "`B.md`"))  # bare name ≠ a path
+    assert len(issues) == 1 and "skills/x/B.md" in issues[0]
+    assert "skills/x/A.md" not in issues[0] and "archive" not in issues[0]
+
+
+def test_reference_reachability_flags_an_unclassified_root_doc(ref_repo):
+    (ref_repo / "NEW-GUIDE.md").write_text("# x\n", encoding="utf-8")
+    issues = _reach(ref_repo, LINKED)
+    assert len(issues) == 1 and "NEW-GUIDE.md" in issues[0]
+
+
+@pytest.mark.parametrize("hidden", [
+    "<!-- `skills/x/B.md` -->",                       # commented-out row
+    "```\n`skills/x/B.md`\n```",                      # example block
+    "```\n~~~\n`skills/x/B.md`\n```",                 # a tilde line does not close it
+    "`[B](skills/x/B.md)`",                           # a link inside inline code is an example
+    "[B](skills/x/B.md",                              # an unclosed link is not a link
+    "[B](<skills/x/B.md>",
+])
+def test_reference_reachability_ignores_dead_mentions(ref_repo, hidden):
+    issues = _reach(ref_repo, LINKED.replace("`skills/x/B.md`", "") + "\n" + hidden + "\n")
+    assert len(issues) == 1 and "skills/x/B.md" in issues[0]
+
+
+def test_reference_reachability_accepts_a_markdown_link(ref_repo):
+    (ref_repo / "docs/Big Guide.md").write_text("# x\n", encoding="utf-8")
+    text = (LINKED.replace("`skills/x/B.md`", "[B](skills/x/B.md#usage)")
+            + " [guide](docs/Big%20Guide.md)")
+    assert _reach(ref_repo, text) == []
+    text = (LINKED.replace("`skills/x/B.md`", "`skills/x/B.md#usage`")
+            + " [guide](<docs/Big Guide.md> \"The guide\")")       # with a link title
+    assert _reach(ref_repo, text) == []
+
+
+def test_reference_reachability_exempts_only_the_top_level_archive(ref_repo):
+    nested = ref_repo / "docs/guides/archive/kept.md"     # not docs/archive/
+    nested.parent.mkdir(parents=True)
+    nested.write_text("# x\n", encoding="utf-8")
+    issues = _reach(ref_repo, LINKED)
+    assert len(issues) == 1 and "docs/guides/archive/kept.md" in issues[0]
+    assert "docs/archive/old.md" not in issues[0]
+
+
+def test_reference_reachability_covers_any_extension_under_skills(ref_repo):
+    (ref_repo / "skills/x/notes.txt").write_text("x\n", encoding="utf-8")
+    (ref_repo / "skills/x/.DS_Store").write_bytes(b"\0")
+    issues = _reach(ref_repo, LINKED)
+    assert len(issues) == 1 and "skills/x/notes.txt" in issues[0]
+    assert ".DS_Store" not in issues[0]

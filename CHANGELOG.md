@@ -1,5 +1,76 @@
 # Changelog
 
+## v3.41.0 — 2026-10-23
+
+**Skill-authoring review: sub-skills by path, every reference one level deep, `workspace/` in the
+user's project.** Fixes the seven findings in #110, an outside review of v3.40.0 by
+@vitaesomniastore-commits against Anthropic's [skill authoring best
+practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
+Two new gates keep the fixes from drifting back.
+
+### Fixed
+
+- **`workspace/` resolved inside the skill install** (#110 item 4). With the README's Claude Code
+  install, "the project's `workspace/`" was `~/.claude/skills/higgsfield/workspace/`, and the skill
+  told Claude to *move* the user's uploads there, out of their own project and into a folder a
+  reinstall replaces. `workspace/` now lives in the user's current working directory (created on
+  first use; this repo's own folder when the session starts here, as in Cowork). A file from
+  elsewhere is **copied** into `workspace/input/` and the original stays put. Outside this repo
+  the folders are not git-ignored, and the skill asks before editing the user's `.gitignore`.
+- **Sub-skills were called "auto-loaded"** (#110 item 1). Claude Code registers only
+  `~/.claude/skills/<name>/SKILL.md`, so the 35 files under `skills/` are never separate skills.
+  The heading now says to open them, a **Paths** note says a path in root `SKILL.md` is relative
+  to the skill's own folder and a path in any other file to that file's own folder, and every route in the routing table, the load map and the sub-skill table names
+  the full path (`skills/higgsfield-camera/SKILL.md`, not `higgsfield-camera`).
+- **MCP tools named without their server** (#110 item 5). The HARD RULES and routing rows now
+  write `Higgsfield:models_explore` (and `Higgsfield:voice_change`, `create_voice`,
+  `generate_3d`, `scene_builder_3d_*`); a one-time **MCP tools** note says what the prefix means
+  and how the claude.ai connector appears in Claude Code.
+- **Description said when, not what** (#110 item 6). It now opens by saying what the skill does;
+  the trigger list is unchanged.
+- **Python requirement unstated** (#110 item 7). The ledger section says every script the skill
+  runs needs only `python3` and its standard library, and how to run `higgsfield_memory.py` from
+  another working directory.
+
+### Added
+
+- **Every reference file is linked from root `SKILL.md`** (#110 item 2). 28 files were reachable
+  only through another file (the review listed 11; the full scan also found the Cinema and
+  Seedance-VFX `references/`, `ENGINE-RULES.md`, the six character-design worksheets, two Seedance
+  templates, both live `docs/` files, and `HELL-GRIND.md` / `VFX-PIPELINE.md`, which were named
+  only bare). New Shared Resources rows and a **Reference files
+  inside sub-skills** table name each by path. New gate `check_reference_reachability`
+  (`validate.py`): every root reference doc, every non-`SKILL.md` file under `skills/` and
+  `templates/` (any extension), and every `docs/` file outside `docs/archive/` must appear by full
+  path in root `SKILL.md`, backticked or as a Markdown link target. A mention inside an HTML
+  comment or a code fence does not count, and a root `.md` that is neither a reference doc nor a
+  repo doc fails as unclassified. Red-proven on the v3.40.0 `SKILL.md`.
+- **CONTENTS blocks** (#110 item 3). `scripts/build_index.py` now writes an anchor-linked
+  heading list under the title of every skill file over 100 lines that has no QUICK FACTS block
+  (45 files), and `--check` (run by `validate.py`) fails when one is missing or stale: the gate is
+  "the writer is a no-op". Run `python3 scripts/build_index.py` after any heading change. The
+  writer reads its markers only outside code fences (CommonMark's closing rules: same character,
+  at least as long, no more than three spaces of indent) and frontmatter, refuses a second block
+  or a dangling marker, moves a misplaced block back under the title, keeps CRLF line endings,
+  and refuses a heading whose GitHub slug it cannot predict (an inline or reference link, inline
+  HTML, a backslash escape, an entity, or `_` emphasis) rather than write a dead link. The
+  reachability gate reads fences the same way.
+- Root `SKILL.md` gains a `## Handling a Request` heading over Fast Path → Output Format, which
+  sat under Working Folders.
+
+### Changed
+
+- **QUICK FACTS rule scoped to sub-skills.** Its docstring always described it as the
+  large-*sub-skill* mitigation; the code also caught the root dispatcher, which now passes 400
+  lines. The root is a mandatory full read (HARD RULE 2) and opens with the HARD RULES checklist,
+  so it is out of scope. Line counts for the rule no longer include a CONTENTS block.
+- `vocab.md` cited `docs/Seedance 2 Skill.md:178` by line number, which the CONTENTS block would
+  move; it now cites the section.
+- `skills/higgsfield-stack/SKILL.md` pointed at `templates/text-overlays/` from the repo root; it
+  now writes `../../templates/text-overlays/` like every other path in a sub-skill.
+- README install notes: how Claude Code sees the sub-skills, where `workspace/` lives, and that
+  the learning memory in `db/` stays in the skill folder (back it up before a reinstall).
+
 ## v3.40.0 — 2026-09-26
 
 **Model-catalog drift: every recommended model name checked against the live catalog.** On
