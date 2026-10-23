@@ -153,8 +153,28 @@ def _memory_files(root: Path) -> list:
     return [p for p in root.rglob("*.json") if not p.name.startswith(("_", "."))]
 
 
-def _digest(record: str) -> str:
-    return hashlib.sha256(record.encode("utf-8")).hexdigest()[:16]
+def _digest(rel: str, record: str) -> str:
+    """A record's digest, keyed by its file's path inside the memory folder,
+    so the same record in another project's file is a different record."""
+    return hashlib.sha256(f"{rel}\0{record}".encode("utf-8")).hexdigest()[:16]
+
+
+def _digests(root: Path, files) -> set:
+    return {_digest(p.relative_to(root).as_posix(), r) for p in files for r in _records(p)}
+
+
+def _add_seed_records(dest: Path, digests: set) -> None:
+    """Add `digests` to the records `dest` started with.
+    (ponytail: read-modify-write; a racing fill can drop the other's digests,
+    which only makes a later check keep a copy it did not need.)"""
+    path = dest / SEED_RECORDS
+    try:
+        have = set(json.loads(path.read_text(encoding="utf-8")))
+    except (OSError, ValueError, TypeError):
+        have = set()
+    tmp = path.with_name(f"{path.name}.{os.getpid()}")
+    tmp.write_text(json.dumps(sorted(have | digests)) + "\n", encoding="utf-8")
+    os.replace(tmp, path)
 
 
 def seed_db_dir(dest: Path, seed: Path = SEED_DIR) -> bool:
@@ -169,7 +189,7 @@ def seed_db_dir(dest: Path, seed: Path = SEED_DIR) -> bool:
     changing.)"""
     if not seed.is_dir():
         return False
-    digests = sorted({_digest(r) for p in _memory_files(seed) for r in _records(p)})
+    digests = sorted(_digests(seed, _memory_files(seed)))
     return _copy_tree(seed, dest, {SEED_RECORDS: json.dumps(digests) + "\n"})
 
 
@@ -182,23 +202,34 @@ def unmerged_count(src: Path, dest: Path) -> int:
         seeded = set()
     return sum(1 for path in _memory_files(src)
                for r in _records(path) - _records(dest / path.relative_to(src))
-               if _digest(r) not in seeded)
+               if _digest(path.relative_to(src).as_posix(), r) not in seeded)
+
+
+def _publish(target: Path, data: bytes) -> bool:
+    """Create `target` holding `data`; False when it already exists. The data
+    is written in full to a temporary file and hard-linked into place, so no
+    reader or later run sees a partial file, and an existing file (one a
+    racing process just wrote) is never replaced."""
+    tmp = target.with_name(f".{target.name}.filling-{os.getpid()}")
+    try:
+        tmp.write_bytes(data)
+        os.link(tmp, target)
+    except FileExistsError:
+        return False
+    finally:
+        tmp.unlink(missing_ok=True)
+    return True
 
 
 def _fill_missing(dest: Path, seed: Path) -> None:
     """Give an incomplete memory folder (one created while the skill's db/ was
-    missing) the core databases it lacks. Exclusive create: an existing file,
-    including one a racing process just wrote, is never replaced.
-    (ponytail: a reader racing the write can see a partial file for an
-    instant; publish through a hard link if that ever bites.)"""
+    missing) the core databases it lacks, and count their records among the
+    ones it started with."""
     for name in CORE_FILES:
         if not (seed / name).is_file() or (dest / name).exists():
             continue
-        try:
-            with open(dest / name, "xb") as f:
-                f.write((seed / name).read_bytes())
-        except FileExistsError:
-            pass
+        if _publish(dest / name, (seed / name).read_bytes()):  # read first: a failed read leaves nothing
+            _add_seed_records(dest, _digests(seed, [seed / name]))
 
 
 def prepare_user_db(dest: Path = USER_DB_DIR, seed: Path = SEED_DIR,

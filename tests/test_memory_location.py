@@ -134,14 +134,14 @@ def test_a_racing_fill_never_replaces_the_other_installs_file(tmp_path, monkeypa
     dest, seed = home / "db", tmp_path / "b" / "db"
     (dest / "ledger").mkdir(parents=True)                 # incomplete: no filter memory
     _entries(seed / "filter-memory.json", "F-902")        # install B's own entry
-    real_open = open
+    real_link = os.link
 
-    def install_a_writes_first(file, mode="r", *a, **k):  # A wins the gap after the check
-        if mode == "xb" and Path(file).name == "filter-memory.json" and not Path(file).exists():
-            _entries(Path(file), "F-901")
-        return real_open(file, mode, *a, **k)
+    def install_a_writes_first(src, dst, *a, **k):        # A wins the gap after the check
+        if Path(dst).name == "filter-memory.json" and not Path(dst).exists():
+            _entries(Path(dst), "F-901")
+        return real_link(src, dst, *a, **k)
 
-    monkeypatch.setattr(hm, "open", install_a_writes_first, raising=False)
+    monkeypatch.setattr(hm.os, "link", install_a_writes_first)
     kept = hm.prepare_user_db(dest, seed, home / "sources", home / "unmerged")
     assert _ids(dest / "filter-memory.json") == {"F-901"}           # A's file intact
     assert kept and _ids(kept / "filter-memory.json") == {"F-902"}  # B's entry kept
@@ -154,6 +154,52 @@ def test_an_updated_starter_entry_is_not_an_installs_own_memory(tmp_path):
     for seed in (first, second):
         _entries(seed / "filter-memory.json", "F-001")    # the same starter entry
     assert hm.prepare_user_db(dest, first, sources, unmerged) is None
+    data = json.loads((dest / "filter-memory.json").read_text(encoding="utf-8"))
+    data["entries"][0]["outcome"] = "fixed"               # the user updates it
+    (dest / "filter-memory.json").write_text(json.dumps(data), encoding="utf-8")
+    assert hm.prepare_user_db(dest, second, sources, unmerged) is None
+    assert not unmerged.exists()
+
+
+def test_a_record_in_another_projects_file_is_its_own(tmp_path):
+    home = tmp_path / "home" / ".higgsfield-skill"
+    dest, sources, unmerged = home / "db", home / "sources", home / "unmerged"
+    first, second = tmp_path / "a" / "db", tmp_path / "b" / "db"
+    _entries(first / "projects" / "alpha-filter-memory.json", "F-001")
+    _entries(second / "projects" / "beta-filter-memory.json", "F-001")   # the same record
+    assert hm.prepare_user_db(dest, first, sources, unmerged) is None
+    kept = hm.prepare_user_db(dest, second, sources, unmerged)
+    assert kept and (kept / "projects" / "beta-filter-memory.json").exists()
+
+
+def test_a_failed_read_leaves_no_empty_database(tmp_path, monkeypatch):
+    home = tmp_path / "home" / ".higgsfield-skill"
+    dest, sources, unmerged = home / "db", home / "sources", home / "unmerged"
+    (dest / "ledger").mkdir(parents=True)
+    seed = tmp_path / "a" / "db"
+    _entries(seed / "filter-memory.json", "F-001")
+    real_read = type(seed).read_bytes
+
+    def unreadable(self):
+        raise PermissionError("denied")
+
+    monkeypatch.setattr(type(seed), "read_bytes", unreadable)
+    with pytest.raises(OSError):
+        hm.prepare_user_db(dest, seed, sources, unmerged)
+    assert not (dest / "filter-memory.json").exists()
+    monkeypatch.setattr(type(seed), "read_bytes", real_read)
+    hm.prepare_user_db(dest, seed, sources, unmerged)              # the next run fills it
+    assert _ids(dest / "filter-memory.json") == {"F-001"}
+
+
+def test_a_filled_database_counts_as_a_starting_record(tmp_path):
+    home = tmp_path / "home" / ".higgsfield-skill"
+    dest, sources, unmerged = home / "db", home / "sources", home / "unmerged"
+    (dest / "ledger").mkdir(parents=True)                 # created while no seed existed
+    first, second = tmp_path / "a" / "db", tmp_path / "b" / "db"
+    for seed in (first, second):
+        _entries(seed / "filter-memory.json", "F-001")
+    assert hm.prepare_user_db(dest, first, sources, unmerged) is None   # fills it
     data = json.loads((dest / "filter-memory.json").read_text(encoding="utf-8"))
     data["entries"][0]["outcome"] = "fixed"               # the user updates it
     (dest / "filter-memory.json").write_text(json.dumps(data), encoding="utf-8")
