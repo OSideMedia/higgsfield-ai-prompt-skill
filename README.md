@@ -5,6 +5,12 @@
 
 # Higgsfield AI Prompt Skill
 
+> **⚠️ No longer maintained (archived November 2026).** Our work has moved to a different AI
+> filmmaking tool, so this skill gets no further updates, fixes or model refreshes. v3.42.0 is
+> the final release. Its model specs are a snapshot from 2026-09-26 and will fall behind the
+> Higgsfield platform as models change. The repo is archived and kept for reference: issues and
+> pull requests are closed. It is MIT-licensed, so you are welcome to fork it and carry it on.
+
 A comprehensive Claude skill library for generating high-quality prompts on
 [Higgsfield AI](https://higgsfield.ai) — the cinematic video and image generation platform.
 

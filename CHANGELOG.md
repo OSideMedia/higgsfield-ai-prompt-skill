@@ -1,5 +1,8 @@
 # Changelog
 
+> **2026-11-16: this project is no longer maintained and the repo is archived.** v3.42.0 below
+> is the final release. See the notice at the top of the README.
+
 ## v3.42.0 — 2026-10-23
 
 **The learning memory survives a reinstall.** With the README's Claude Code install the filter
