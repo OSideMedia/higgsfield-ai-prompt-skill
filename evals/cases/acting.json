@@ -1,41 +1,6 @@
 {
-  "skill": "higgsfield-acting / higgsfield-scene-engine",
+  "skill": "higgsfield-scene-engine",
   "cases": [
-    {
-      "id": "acting-routes-dead-eyes",
-      "description": "A 'wooden, dead-eyed' performance complaint routes to higgsfield-acting and fixes eyes with a TASK, not with catchlights",
-      "request": "My characters look wooden and dead-eyed in every Seedance shot. How do I fix the performance?",
-      "response": "Routing to higgsfield-acting (§ The five pillars, § Eye life) + higgsfield-seedance (the PERFORMANCE block it fills).\n\nWooden acting is almost always missing pressure, not missing emotion words. For each character in frame, write:\n\n- **An objective** — a verb aimed at the partner: *make him admit he took it*.\n- **Business** — a physical task the hands are doing, and the moment they stop it.\n- **An eye task** — give the eyes a task aimed at the partner: *checking after each sentence whether it landed · stealing a look at the door and snapping back*. Catchlights only make that legible; they never fix a dead stare.\n\n```\nPERFORMANCE\nMARA wants to make him admit he took the keys. She keeps folding the same towel while she talks; her eyes check his face after every sentence, then drop to his jacket pocket and back. When he laughs, her hands stop mid-fold — one slow blink, jaw set — and she waits.\n```",
-      "assertions": [
-        {
-          "type": "regex_present",
-          "pattern": "^Routing to [^\\n]*higgsfield-acting"
-        },
-        {
-          "type": "regex_present",
-          "pattern": "(?i)\\bobjective\\b"
-        },
-        {
-          "type": "regex_present",
-          "pattern": "(?i)(give the eyes a task|eye task)"
-        },
-        {
-          "type": "regex_absent",
-          "pattern": "(?i)\\b(add|use|brighten|boost|include)\\s+(more\\s+|live\\s+|bright\\s+|stronger\\s+)?catch-?lights?\\b"
-        },
-        {
-          "type": "regex_absent",
-          "pattern": "(?i)\\b(write|add|use|brighten|boost|include|give|put|ask for|request|light for)\\b[^.\\n]{0,40}\\bcatch-?lights?\\b|\\bwith\\s+(bright\\s+|live\\s+|living\\s+|visible\\s+|strong\\s+)?catch-?lights?\\b"
-        },
-        {
-          "type": "regex_absent",
-          "pattern": "(?i)\\bcatch-?lights?\\b[^.\\n]{0,50}(?<!never )(?<!not )(?<!n't )\\b(fix|fixes|cure|cures|bring|brings|revive|revives|restore|restores|wake|wakes)\\b"
-        },
-        {
-          "type": "antislop_absent"
-        }
-      ]
-    },
     {
       "id": "scene-engine-routes-flat-sequence",
       "description": "'Generates cleanly but lands flat' routes to the scene-engine structural audit (not to prompt rewriting), flags an inert reversal, and asks for the story goal instead of passing Goal on an invented one (§ Audit procedure step 1)",

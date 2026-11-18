@@ -68,7 +68,7 @@
       "id": "seedance-reflection-mitigation",
       "description": "Reflection hero-image request gets the documented workaround, not silent rule-breaking",
       "request": "My hero image is the character seen in a mirror — build the scene around it",
-      "response": "Routing to higgsfield-seedance (high-risk shot type: reflections — ENGINE-RULES.md rule 8).\n\nSeedance breaks scene geography rendering reflector + reflected together, so we flag this rather than prompt it directly. Workaround: shoot the reflection **as** the scene — pin your mirror image as the start frame of its own dedicated reflection-frame composition, then cut (double-contrast) to the physical subject in a separate beat. Never show the mirror and the subject in one continuous beat.",
+      "response": "Routing to higgsfield-seedance (high-risk shot type: reflections — ENGINE-RULES.md rule 8).\n\nSeedance breaks scene geography rendering reflector + reflected together, so we flag this rather than prompt it directly. Workaround: shoot the reflection **as** the scene — pin your mirror image as the start frame of its own dedicated reflection-frame composition, then cut (double-contrast, defined in `vocab.md` § Cut & Continuity Vocabulary) to the physical subject in a separate beat. Never show the mirror and the subject in one continuous beat.",
       "assertions": [
         {
           "type": "regex_present",
@@ -111,7 +111,7 @@
       "id": "seedance-exit-frame-rule",
       "description": "Exit-frame = implicit cut respected in multi-beat prompts",
       "request": "Character walks out of frame then comes back",
-      "response": "Routing to higgsfield-seedance (exit-frame = implicit cut — ENGINE-RULES.md rule 6).\n\nA character who leaves frame is gone for the remainder of that continuous beat — exit + re-entry in one beat is unpromptable. Structure it as two beats instead: beat one ends on the exit; beat two re-anchors position and facing direction after a double-contrast cut.",
+      "response": "Routing to higgsfield-seedance (exit-frame = implicit cut — ENGINE-RULES.md rule 6).\n\nA character who leaves frame is gone for the remainder of that continuous beat — exit + re-entry in one beat is unpromptable. Structure it as two beats instead: beat one ends on the exit; beat two re-anchors position and facing direction after a double-contrast cut (`vocab.md` § Cut & Continuity Vocabulary).",
       "assertions": [
         {
           "type": "regex_present",
@@ -226,7 +226,7 @@
       "id": "seedance-staging-reference-not-a-blocking-lock",
       "description": "A staging diagram is sold as what one incomplete-record run found — no bleed, not a blocking lock — attached last, never in the first-frame role, backed by prose blocking (house-rulings P2-11)",
       "request": "Can I attach a diagram to lock where my three characters stand in a Seedance shot?",
-      "response": "Routing to higgsfield-seedance (§ Spatial Layout Block) + templates/seedance/staging-reference.md.\n\nYou can attach one, but not to lock positions. A staging reference — thin, muted outline figures drawn front-on from the camera's side, no fills, no letters — was tested here once, in a run whose record is incomplete — so read it as a direction, not a rate: it did not reliably move the blocking (renders tracked the map's orientation 6/12, which is chance), and it showed no bleed (0/18) with all three anti-bleed layers in place.\n\nHow to use it:\n\n1. Attach the location and character references first and the staging reference last, as a position reference only.\n2. Never give it the first-frame role — a drawing there becomes frame one.\n3. Never name the map's graphic style in the video prompt, not even negated.\n4. Put the positions that must hold into a written Spatial Layout Block — screen position, depth layer, orientation, contact points for all three — because the prose is what carries the blocking.",
+      "response": "Routing to higgsfield-seedance (§ Spatial Layout Block) + templates/seedance/staging-reference.md.\n\nYou can attach one, but not to lock positions. A staging reference — thin, muted outline figures drawn front-on from the camera's side, no fills, no letters — was tested here once, in a run whose record is incomplete — so read it as a direction, not a rate: it did not reliably move the blocking (renders tracked the map's orientation no better than chance), and it showed no bleed.\n\nHow to use it:\n\n1. Attach the location and character references first and the staging reference last, as a position reference only.\n2. Never give it the first-frame role — a drawing there becomes frame one.\n3. Never name the map's graphic style in the video prompt, not even negated.\n4. Put the positions that must hold into a written Spatial Layout Block — screen position, depth layer, orientation, contact points for all three — because the prose is what carries the blocking.",
       "assertions": [
         {
           "type": "regex_present",

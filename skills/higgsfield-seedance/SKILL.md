@@ -25,9 +25,7 @@ metadata:
 - Extend an existing clip: attach it as a video reference + open with "The scene continues." — match source resolution AND duration; chain cap ~2 (hard 3), then re-anchor from ORIGINAL references [→](#extension-prompting--video-reference-continuation)
 - **This file is Seedance 2.0.** For **2.5** — four modes incl. `video_edit` / `video_extension`, 4–30s, 30/10/10 references, first-last frames in `omni_reference`, up to 1080p (no 4K, no genre) — use `../higgsfield-seedance-2-5/SKILL.md`
 - Tutorial-demonstrated patterns (reference-role vocabulary incl. VARIETY reference, SCREEN REALISM + duration-match composites, 60:30:10 grade, red-arrow prop annotation): `PRODUCTION-PATTERNS.md` in this directory
-- [OFFICIAL] Feature-film pipeline (asset construction, per-scene GEO SPATIAL LAYOUT, the position-fixing first second, dialogue construction, ban dictionary, the 10–15 iteration rule, crowds / giants / thresholds): `HELL-GRIND.md` in this directory
-- Performance — objective, obstacle, tactics, beats, subtext, eye life, the acting master profile: `../higgsfield-acting/SKILL.md`
-- Hard engine rules (age-blind, exit-frame = cut, off-screen = nonexistent, no reflections, ≤3 tracked characters, double-contrast cuts) + high-risk shot table: `ENGINE-RULES.md` in this directory
+- High-risk shot table + enforcement notes (the numbered engine-rule list was withdrawn in November 2026): `ENGINE-RULES.md` in this directory
 - **Render failures** (the take came back wrong, not flagged) — 15 named failures with symptom · mechanism · counter, incl. action-reversal fill, filler-babble, truncated action, mimed manipulation, orphan limbs / the solo third hand, walking + cross-shot camera speed, fights as separate clips — plus a self-repair checklist: `FAILURE-MODES.md` in this directory
 - [FIELD] **Bake it into the asset**: a property that drifts however well it is written (a lens character, a grain, a colour cast) moves one step earlier, into the plate — then, in one studio's practice, leaves the video prompt entirely (OPEN: Hell Grind keeps the look in the prompt too, P2-6); bake only what should stay constant [→](#bake-it-into-the-asset-when-the-prompt-will-not-hold-it)
 - [FIELD] **Depth map** as a reference role — greyscale, light = near; a geometry input that stops a space re-planning itself between shots, carries no style [→](#depth-map)
@@ -42,20 +40,16 @@ metadata:
 - Flagged prompt → rewrite playbook per linter rule, then voice pass [→](#the-rewrite-playbook)
 - Repeated flags → full loop-breaker procedure + LOG THE OUTCOME (`--confirmed` / `add-quality`) [→](#when-the-user-is-already-in-a-failure-loop)
 
-
 Use this skill whenever the user wants a Seedance 2.0 / Seedance Pro prompt, OR
 whenever a Seedance generation has been blocked, flagged, or silently failed.
 This skill's job is to stop credit waste on filter rejections.
 
-> **Engine rules (read with this file):** the hard rendering constraints of the
-> Seedance 2.0 engine — age-blind characters, exit-frame = implicit cut,
-> off-screen = nonexistent, no reflection shots, ≤3 tracked characters, the
-> double-contrast cut rule — live in `ENGINE-RULES.md` in this directory,
-> together with the high-risk shot table (reflections, same-character doubles,
-> crowds, text rendering) and its mitigations. This SKILL.md is the
-> `EN-director` *profile* of that rule core; the `ZH-house` and
-> `bilingual-JSON` profiles (`../../docs/Seedance 2 Skill.md`) obey the same
-> core. Flag high-risk shot types at authoring time — never silently break a
+> **Engine rules (read with this file):** `ENGINE-RULES.md` in this directory keeps
+> the high-risk shot table (reflections, same-character doubles,
+> crowds, text rendering) and its mitigations. Its numbered list of hard rendering
+> constraints was withdrawn in November 2026 — see `THIRD_PARTY_NOTICES.md`. This SKILL.md is the
+> `EN-director` *profile* of the rule core that list defined; the `ZH-house` profile obeys the
+> same core; the `bilingual-JSON` profile was withdrawn. Flag high-risk shot types at authoring time — never silently break a
 > rule the project's hero image happens to conflict with.
 
 > **Production patterns (sibling reference):** patterns demonstrated working
@@ -231,7 +225,7 @@ requirement is already documented for Cinema Studio 3.0 in
 `../shared/negative-constraints.md`, which also carries the test for when a short, specific ban
 *is* correct (§ Where a ban is still correct — is the model's default already the failure?).
 
-### Ambiguous verbs — the homograph trap (v1.10, Peter's find 2026-07-14)
+### Ambiguous verbs — the homograph trap (v1.10, 2026-07-14)
 
 If a word has a plausible second reading, Seedance may take it. The observed
 case: *"wind tearing at her coat"* — meant as fabric pulled violently; the
@@ -302,8 +296,8 @@ rest of this section (strong heuristics — confirm on your own material).
   **low-complexity, same-vector** motion whose job is to fill the clip — walks
   to the window, pulls the curtain, leans into the glass. A multi-step process
   that reverses direction on the way to a peak (reaches in, pulls out, winds
-  up) is the case `../higgsfield-acting/SKILL.md` § States, not transitions
-  opens *already in* the state instead; an object that must visibly change
+  up) is the case that opens *already in* the state instead (source:
+  `../higgsfield-acting/SKILL.md` § States, not transitions, withdrawn in November 2026); an object that must visibly change
   under the hands takes the causal chain in `FAILURE-MODES.md` § Mimed
   manipulation. Pick by what the shot is for.
 - **Name the camera endpoint.** A camera move needs a destination, not just
@@ -1064,9 +1058,9 @@ t2v shot with no plate, or a genre recipe on another model has nothing to bake i
 the lens words in the Look line are the only route (`../higgsfield-recipes/SKILL.md`,
 § Name the thing above). Where the plates **do** carry the look, whether the video prompt
 still names it is **OPEN, no default**: this studio drops the words; the Hell Grind brief
-(`HELL-GRIND.md` § The character sheet `[OFFICIAL]`) keeps "the cinema look … in the
+(`HELL-GRIND.md` § The character sheet `[OFFICIAL]`, withdrawn in November 2026) kept "the cinema look … in the
 locations and the video prompts", with its Style Prefix — which is part of the video prompt,
-pasted verbatim into every scene prompt (`../../templates/seedance/global-style-prefix.md`) —
+pasted verbatim into every scene prompt (`../../templates/seedance/global-style-prefix.md`; its default block was withdrawn too) —
 naming it. Nothing here measures which holds better.
 
 ### Per-Image Role Convention
@@ -1280,7 +1274,7 @@ never attached. To *show* positions to the model:
 `../../templates/seedance/staging-reference.md` — a front-on outline drawing
 attached **last**, as a position reference only, never as the first frame.
 One house run, record incomplete — a direction, not a rate — found it safe
-(no bleed, 0/18) and **not** reliable at moving blocking (6/12, chance), so
+(no bleed) and **not** reliable at moving blocking (chance level), so
 the block you write here stays the load-bearing instruction.
 
 ---
@@ -1832,11 +1826,8 @@ wrong. Do this pass on every Seedance prompt:
    ambiguous intent. For the muscle-level extreme of this rule — facial
    expressions as FACS Action Unit codes (AU4+AU5+AU7 for anger) in close-up and
    dialogue — see `../higgsfield-facs/SKILL.md`.
-4. **Describe force and direction, not destruction sequence.** "Driven into
-   the car, metal buckling" not "thrown into side door, glass shatters, uses
-   rebound to sweep leg."
-5. **Present tense, active voice.** "She turns" not "she is turning."
-6. **Cut the antislop words.** Breathtaking, stunning, epic, masterfully,
+4. **Present tense, active voice.** "She turns" not "she is turning."
+5. **Cut the antislop words.** Breathtaking, stunning, epic, masterfully,
    cinematic masterpiece — these signal marketing copy, not a shot description,
    and correlate with flags.
 
@@ -1864,9 +1855,6 @@ shot-by-shot if multi-cut. This is the main block.]
 
 **Camera:** [exact movement name]
 ```
-
-For the full bilingual EN+ZH director output format (used in Seedance's
-web UI), see the extended reference at `../../docs/Seedance 2 Skill.md`.
 
 ### Runtime arithmetic for multi-shot prompts
 
@@ -2056,21 +2044,13 @@ before reaching for it.
   forward/backward extension. Caps at 1080p — route there when the job is long,
   edit-shaped, or reference-heavy; stay here when it needs 4K, `mode=fast`, or a
   genre hint
-- `../higgsfield-acting/SKILL.md` — the performance layer that fills the
-  PERFORMANCE / CHARACTER ACTING block: objective, obstacle, tactics, beats,
-  subtext, status, mandatory eye life, the acting master profile
-- `HELL-GRIND.md` (this directory) — Higgsfield's open-sourced feature-film
-  pipeline: asset construction, the per-scene GEO SPATIAL LAYOUT block, the
-  position-fixing first second, dialogue construction, iteration discipline
 - `higgsfield-seedance-vfx` — the video-to-video sibling: transform footage the
   user already shot (preserve subject + camera, add a VFX element / swap the
   world / drop a creature / relight to match / sync a timed zoom), std-4K
-- `higgsfield-prompt` — MCSLA formula, archetype router, general prompt structure;
+- `higgsfield-prompt` — MCSLA formula, general prompt structure;
   the Iteration Rule and 6-Pass Diagnostic Sequence for when generations are
   off-target and you can't name why
 - `higgsfield-troubleshoot` — diagnosis for non-filter failures (render quality, etc.)
 - `higgsfield-recall` — pre-generation memory check against past failures
 - `../shared/negative-constraints.md` — full negative-constraint reference,
   including the Content Filter / Safety section
-- `../../docs/Seedance 2 Skill.md` — extended bilingual director reference
-  (archetypes, cut rules, camera language appendix)

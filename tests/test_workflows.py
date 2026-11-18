@@ -243,10 +243,10 @@ def _fake_bin(tmp_path, name, body):
 def test_workspace_step_does_not_echo_the_cli_answer(tmp_path):
     script = step_run("spec-drift.yml", "Select workspace")
     fb = _fake_bin(tmp_path, "higgsfield",
-                   'echo \'Error: workspace "Peter Csanky Studio" (ws_7Hq2Kd9) not found\'; exit 1\n')
+                   'echo \'Error: workspace "Example Studio" (ws_7Hq2Kd9) not found\'; exit 1\n')
     r = run_bash(script, tmp_path, {"PATH": f"{fb}:{os.environ['PATH']}", "WORKSPACE_ID": "x"})
     assert r.returncode == 0
-    assert "Peter Csanky" not in r.stdout + r.stderr and "ws_7Hq2Kd9" not in r.stdout
+    assert "Example Studio" not in r.stdout + r.stderr and "ws_7Hq2Kd9" not in r.stdout
     assert "::warning::" in r.stdout
 
 

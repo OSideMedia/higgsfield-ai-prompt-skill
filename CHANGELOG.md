@@ -3,6 +3,15 @@
 > **2026-11-16: this project is no longer maintained and the repo is archived.** v3.42.0 below
 > is the final release. See the notice at the top of the README.
 
+## Post-archive notice — November 2026 (no new version)
+
+Some third-party material that O-Side Media could not confirm a right to redistribute was
+withdrawn from the current tree, and the licence scope was clarified. Other third-party material
+is still present; `THIRD_PARTY_NOTICES.md` lists both. Earlier commits, tags and releases were
+not changed. Two sub-skills, `higgsfield-acting` and `higgsfield-content-factory`, are now
+notice-only stubs and are no longer user-invocable. v3.42.0 remains the final release; no tag or
+release accompanies this change.
+
 ## v3.42.0 — 2026-10-23
 
 **The learning memory survives a reinstall.** With the README's Claude Code install the filter
@@ -854,7 +863,7 @@ they carry no prompt craft and were not mined. The craft is in the briefs.
   breakdowns, **not A/B'd on our material**.
 - **A tension worth stating plainly:** these briefs claim the staging diagram raises
   staging-accurate win rate "dramatically", while our own counterbalanced measurement found
-  it does **not** move blocking (6/12 = chance) though it is safe (0/18 bleed). Both are
+  it does **not** move blocking (chance level) though it showed no bleed. Both are
   recorded. `templates/seedance/staging-reference.md` keeps the measured caveat at the top
   and the field claim is not promoted over it.
 - Deferred rather than dropped, from the same briefs: the tag-naming convention
@@ -894,9 +903,7 @@ practitioner's method rather than a mechanism measured on our material.
   correct shape for a staging reference and shipped no method for producing one** —
   `top-down-map.md` states the shape and lives entirely on the reasoning side. It now
   cross-links here for the showing side. Carries its measurement up front: **the map does
-  NOT reliably move the blocking** (counterbalanced, 6/12 = chance, after a first pass in
-  which the model's compositional prior dominated 11/12 cells), but it **is safe**
-  (0/18 bleed) — so the anti-bleed architecture is settled and reusable while the blocking
+  NOT reliably move the blocking** (chance level), but it **showed no bleed** — so the anti-bleed architecture is settled and reusable while the blocking
   claim is not.
 - **`skills/higgsfield-scene-engine/SKILL.md` — NEW sub-skill** (1.0.0), routed from the
   root dispatcher. A five-element structural audit — Goal · Obstacle · Tactic · Reversal ·
@@ -1127,7 +1134,7 @@ rather than a mechanism, `[UNPROVEN HERE]`.
 ### Added
 - `skills/shared/negative-constraints.md` § **Whole-Frame Degradation — quality words vs. look choices**: the distinction this repo was contradicting itself on. Tokens like `film grain` and `imperfect focus` are read as instructions about the *rendering*, so they land on the whole frame — but the same words are deliberate craft in three legal uses, and the section names all three with where the repo already does them (look choice in a Style lead, optics-as-content attached to an element and a moment, plate matching in the VFX skills). A five-row table gives the degradation case and what to write instead. Governing line: *content* may be imperfect; *image quality* must be sharp.
 - `skills/shared/negative-constraints.md` § **Depth of field — two substitutes, two intents**: "no blur" is two different requests. `sharp focus throughout, deep depth of field` answers "the whole image is mushy"; `subject in sharp focus, background falling into soft bokeh` answers "the background blur ate my subject". Both spellings were already in the repo, unreconciled, giving an agent two contradictory answers to one question.
-- `skills/higgsfield-seedance/FAILURE-MODES.md` § **Filler-babble on a short dialogue line**: a MEASURED failure ported from OSIDE's registry (sync-budget ladder, 2026-08-09, EN × 4s × 480p × Seedance 2.0 — every take at ≤6 words carried it; 8- and 12-word lines came back 4/4 clean). The risk direction is the **short** line, not the long one. Symptom is scoped to what the rig actually graded (transcripts, so audio only — mouth movement was not graded and is not claimed).
+- `skills/higgsfield-seedance/FAILURE-MODES.md` § **Filler-babble on a short dialogue line**: a measured failure (record held outside this repository). The risk direction is the **short** line, not the long one. Symptom is scoped to what was graded (transcripts, so audio only — mouth movement was not graded and is not claimed).
 
 ### Changed
 - `skills/higgsfield-prompt/SKILL.md`: Genre Router gains a texture-word note (a look choice belongs in the Style lead; the same word trailing as a quality plea softens the frame), and the Cinema Studio 3.0 positive-alternatives list splits the "no blur" row by intent. Version 3.7.0.
@@ -1137,7 +1144,7 @@ rather than a mechanism, `[UNPROVEN HERE]`.
 
 ### Known limitations (accepted)
 - The Whole-Frame Degradation section is `[UNPROVEN HERE]` — re-derived from a third-party corpus, not A/B'd on our material. The settling probe is named in the section itself: a two-arm 480p pair on one identical shot, bare `film grain, imperfect focus` versus the named-look substitute, compared for subject detail retention. Nothing blocks a prompt and no linter enforces it.
-- The at-rest mouth fact for non-speaking faces is likewise unproven here; only the filler-babble half of that entry is measured. OSIDE's compiler-side implementation of the same idea was built and then **withdrawn** this session — it emitted "the rest of the shot is silent" directly above the SFX and Ambient layers, cancelling its own sound design. Anyone re-attempting it should read that failure first.
+- The at-rest mouth fact for non-speaking faces is likewise unproven here; only the filler-babble half of that entry is measured.
 
 ## v3.29.0 — 2026-08-09
 
@@ -1179,7 +1186,7 @@ rather than a mechanism, `[UNPROVEN HERE]`.
 - QUICK FACTS routing lines updated in shotlist-director, seedance-2-5, and audio for the new sections.
 - Sub-skill versions: shotlist-director 1.2.0, seedance-2-5 1.1.0, camera 3.5.0, audio 3.5.0, troubleshoot 3.1.0.
 
-- `skills/higgsfield-seedance-2-5/MODE-PLAYBOOKS.md` § Storyboard grids → **Panel-to-timestamp mapping — the optional adherence raiser**. Probe P1 (2026-08-09 A/B, (2.5, Ark), 480p) came back positive: order was followed in BOTH arms, but the mapping landed cuts on the declared stamps and kept each panel's props in its own shot, while the unmapped arm paced itself and leaked a shot-3 prop into shot 1. Shipped `[MEASURED — one pair]` with the vendor non-strict disclaimer and the keyframes pointer kept; same probe day also measured slot order as non-semantic (board-first vs board-last: identical order adherence — SD25-PE confirmed) and the image-reference aspect bound [0.4, 2.5] enforced at create.
+- `skills/higgsfield-seedance-2-5/MODE-PLAYBOOKS.md` § Storyboard grids → **Panel-to-timestamp mapping — the optional adherence raiser**. Shipped `[MEASURED — one pair]` with the vendor non-strict disclaimer and the keyframes pointer kept (record held outside this repository).
 
 ### Known limitations (accepted)
 - The seven evaluation-sweep additions are `[EMPIRICAL — third-party skill corpora, re-derived]` except where marked `[OFFICIAL — SD25-PE]` — transferable craft judged sound by evaluation, **not measured on our routes**. The tempo-budget bands and the 3-consecutive-cuts monotony threshold are re-derived defaults to tune, not findings.
@@ -1376,7 +1383,7 @@ The performance craft layer, distinct from FACS's muscle codes: acting as behavi
 
 ### Added
 - **higgsfield-seedance 1.10.0 — two new Prompt-Craft Laws** (2026-07-14):
-  - *Ambiguous verbs — the homograph trap* (Peter's field find, covered by no
+  - *Ambiguous verbs — the homograph trap* (a field find, covered by no
     known prompt guide): if a verb/noun has a plausible second reading
     ("tearing" = rip vs cry), the model may take it — replace with the phrasing
     only one thing can look like; ships with a seed homograph list.
@@ -1557,7 +1564,7 @@ Privacy hygiene: **untracked `.planning/`** from the public repo. The nine `.pla
 Post-series hygiene: activation docs, a privacy scrub, and a clean Problems panel.
 
 - **README § Maintenance** documents the two one-time activation steps the series left dormant: adding the `HIGGSFIELD_CREDENTIALS` secret to turn on the scheduled spec-drift check, and letting `log-route` routing data accumulate before pruning the long tail. Notes that credentials live only in the GitHub secret, never committed.
-- **Privacy scrub:** removed absolute home-path PII (`/Users/<user>/...`, 5 occurrences) from `.planning/v3.7.16/PHASE-0-VERIFICATION.md` → `~`. Security pass otherwise clean: no tokens/credentials in the tree or git history, `specs/cli_baseline.json` is public model schema only, `workspace/` content is gitignored.
+- **Privacy scrub:** removed absolute home paths from internal build notes. Security pass otherwise clean: no tokens/credentials in the tree or git history, `specs/cli_baseline.json` is public model schema only, `workspace/` content is gitignored.
 - **markdownlint hygiene:** extended `.markdownlint.json` to opt out of the remaining cosmetic rules firing on long historical docs (MD012/MD031/MD038/MD040/MD041), consistent with the existing MD013/MD022/MD032/MD060 opt-outs. No code/CI behavior change; `validate.py --strict` and the eval suite are unaffected.
 
 ## v3.15.0 — 2026-06-22

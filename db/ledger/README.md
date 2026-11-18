@@ -26,7 +26,7 @@ Underscore-prefixed names are **reserved**.
 
 ```json
 {
-  "id": "adze-0042",                  // <project>-NNNN, generated
+  "id": "my-film-0042",               // <project>-NNNN, generated
   "ts": "2026-06-12T18:40:11Z",
   "model": "seedance_2_0",            // canonical specs id — video/image/audio/3d (aliases resolved at write)
   "mode": "std",                      // optional

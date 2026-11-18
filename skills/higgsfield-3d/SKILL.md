@@ -23,7 +23,7 @@ metadata:
 - 3D Jutsu = private Blender 5.2 scene projects: inspect (query) → guarded edit (run) → `show_scene` LAST [→](#3d-jutsu-scene-builder-3d)
 - A generated GLB cannot enter a 3D Jutsu scene — imports are curated-catalog assets only in this version [→](#what-3d-jutsu-cannot-take-in)
 - Film use 1: a mesh turnaround as a multi-angle reference — UNMEASURED [→](#film-use-1--a-3d-turnaround-as-a-multi-angle-reference)
-- Film use 2: a 3D blockout rendered front-on from the camera's side becomes the SOURCE FRAME for the staging template — UNMEASURED [→](#film-use-2--a-3d-blockout-as-a-staging-reference)
+- Film use 2: a 3D blockout rendered front-on from the camera's side becomes the SOURCE FRAME for a staging diagram (the template's conversion step was withdrawn) — UNMEASURED [→](#film-use-2--a-3d-blockout-as-a-staging-reference)
 
 ---
 
@@ -310,8 +310,8 @@ construction. That is the property worth testing.
   Soul ID and character sheets (`../higgsfield-soul/SKILL.md`); a mesh render is not a
   substitute until someone measures it.
 - Whether a rendered-CG reference **bleeds its render look** into a photoreal video. The
-  staging-reference work measured that a graphic-looking reference *can* bleed, and closed
-  it with a three-layer architecture (`../../templates/seedance/staging-reference.md`); the
+  staging-reference template (`../../templates/seedance/staging-reference.md`) treated that bleed
+  as a real risk; the three-layer method it used against it was withdrawn in November 2026. The
   same risk plausibly applies to mesh renders and is untested.
 - A reasonable first probe: a **rigid prop** — no face, no cloth, nothing that deforms — is
   the case with the least to lose.
@@ -326,8 +326,8 @@ Higgsfield's own image-side turnaround path is its `character-sheet` workflow �
 `[HYPOTHESIS — UNMEASURED; nothing below has been fired]`
 
 This library already names the right shape for a reference a video model sees:
-`../../templates/seedance/staging-reference.md` — **front-on, from the camera's side**,
-thin muted-colour outlines, attached **last**, described in positive form only. And
+`../../templates/seedance/staging-reference.md` — an outline drawing made **front-on, from the
+camera's side**. And
 `../../templates/seedance/top-down-map.md` — a floor plan is for **reasoning**, never
 attached. A 3D scene can serve both, because a camera placed in a scene renders exactly
 the shape the doctrine asks for.
@@ -344,22 +344,21 @@ where the shot's camera actually is — the geometry a hand sketch only approxim
    render publishes a PNG without committing a revision) and fetch it with
    `scene_builder_3d_get_artifact`.
 3. **That render is not the staging reference — it is the source frame.** A Blender render
-   has shaded, solid figures; layer 1 of the anti-bleed architecture is *outlines, never
-   fills*. Feed the render to **Step 1** of `staging-reference.md` (the diagram-generation
-   prompt) exactly as the template feeds a real frame: it converts the frame into the thin
-   muted outline drawing, with the same colour legend, tag naming and QA checklist.
+   has shaded, solid figures; a staging reference is an outline drawing. The template's
+   diagram-generation step, which made that conversion, was withdrawn in November 2026
+   (`staging-reference.md` § Step 1 is now a notice), so the conversion is not documented here.
 4. **Write the words from the scene data.** The template requires every figure's
-   position, pose and facing to be spelled out in words ("the words carry the staging").
+   position, pose and facing to be spelled out in words.
    `query_python` returns exact object names, positions in metres and transforms — the
    per-figure lines can be read off the scene instead of eyeballed.
 5. **Optional floor plan:** a render from an overhead camera of the same scene is a
    top-down map — reasoning only, per `top-down-map.md`; never attached.
-6. **Coverage:** move the camera, render again, run Step 1 again. The template's rule —
+6. **Coverage:** move the camera, render again, redraw the diagram from that render. The template's rule —
    *regenerate from the original frame, never from the previous diagram* — holds
    automatically, because every diagram is drawn from a fresh render of the same geometry.
 
 **The measured caveat still governs.** The staging reference tracked the map's
-orientation **6/12 — chance** (`staging-reference.md`). A more accurate source geometry
+orientation **no better than chance** (`staging-reference.md`). A more accurate source geometry
 does not change what the video model does with the map. Offer this as a sharper shared
 *authoring* artifact; when a position must hold, back it with the prose blocking locks the
 template points to.

@@ -171,9 +171,6 @@ feed — see `../higgsfield-workspaces/SKILL.md` § Higgsfield Collab.
 ## 8. Cross-surface context
 
 - Model-specific prompt craft lives in the sibling sub-skills (§ 3 table).
-- For programmatic ad-campaign orchestration (research → plan → generate →
-  publish → report) outside the visual board, see
-  `../higgsfield-content-factory/SKILL.md`.
 - For the static-image asset prep that often seeds a Canvas pipeline
   (product reference sheets), see
   `../higgsfield-gpt-image-2/reference-sheet-workflow.md`.

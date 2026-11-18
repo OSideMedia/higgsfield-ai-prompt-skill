@@ -115,12 +115,12 @@ def test_an_incomplete_memory_gets_the_missing_databases(tmp_path):
     seed, home = _seed(tmp_path), tmp_path / "home" / ".higgsfield-skill"
     dest = home / "db"
     (dest / "ledger").mkdir(parents=True)                 # a ledger written while no seed existed
-    (dest / "ledger" / "adze.json").write_text('{"rows": []}', encoding="utf-8")
+    (dest / "ledger" / "my-film.json").write_text('{"rows": []}', encoding="utf-8")
     kept = hm.prepare_user_db(dest, seed, home / "sources", home / "unmerged")
     assert kept is None
     assert (dest / "filter-memory.json").read_text(encoding="utf-8") == \
         (seed / "filter-memory.json").read_text(encoding="utf-8")
-    assert (dest / "ledger" / "adze.json").read_text(encoding="utf-8") == '{"rows": []}'
+    assert (dest / "ledger" / "my-film.json").read_text(encoding="utf-8") == '{"rows": []}'
 
 
 def _entries(path, *ids):

@@ -164,8 +164,7 @@ unobservable attributes. Visual markers carry across regenerations.
 
 **When to apply:** Any prompt for image or video generation.
 
-**Demonstrated in:** `skills/higgsfield-prompt/SKILL.md` §
-Seedance 2.0 Engine Constraints → Age-blind character rule.
+**Demonstrated in:** the age-blind check in `scripts/seedance_lint.py`.
 
 ### Triple-Redundant Runtime
 
@@ -281,9 +280,9 @@ seedance-2-pro-director skill's anti-empty-words discipline
 (`Avoid: epic, beautiful, cinematic masterpiece, ultra realistic,
 dramatic`). When source material presents craft opinion at HARD
 RULE volume — as cinematic-motion-language.md does throughout —
-apply per-claim register downgrade (see `vocab.md` § Motion
-Physics Anchor as the canonical example, where Adil's "models
-understand physics, not adjectives" universalizing claim is
+apply per-claim register downgrade (the canonical example was `vocab.md`
+§ Motion Physics Anchor, withdrawn in November 2026, where Adil's "models
+understand physics, not adjectives" universalizing claim was
 translated to "a complementary precision technique for
 motion-rate description").
 

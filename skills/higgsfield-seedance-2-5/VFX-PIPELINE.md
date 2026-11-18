@@ -469,7 +469,7 @@ describe the face at the level of what the body is actually doing — what the c
 going through, **what he says**, **how the voice sounds**, and **what his hands are doing**.
 The build's cave monologue works because it specifies the swallow, the twitching fingers,
 the aborted false start, the shaken-out hands, the trembling exhale, and only then the
-sprint. Beat-level acting direction lives in `../higgsfield-acting/SKILL.md`; this is the
+sprint. Beat-level acting direction used to live in `../higgsfield-acting/SKILL.md` (withdrawn in November 2026); this is the
 2.5 note that it must be written *out*, because there is no reference doing it for you.
 
 **The voice lock.** `[FIELD]` 2.5 locks the **voice** together with the appearance in the
@@ -522,10 +522,8 @@ all — is that a studio would quote **at least $50,000** for it.
 ## Related
 
 - `SKILL.md` — the 2.5 dialect: modes, reference roles, staging, bracket syntax, limits
-- `MODE-PLAYBOOKS.md` — `video_edit` and `video_extension` order forms, storyboards, blockouts, transitions
+- `MODE-PLAYBOOKS.md` — `video_edit` and `video_extension` notes, storyboard grids, transitions
 - `../higgsfield-seedance/SKILL.md` — house prompt doctrine: block scaffold, FOV anchors, distributed style, prompt-craft laws, positive locks
-- `../higgsfield-seedance/HELL-GRIND.md` — the feature-film pipeline (asset construction at film scale, iteration discipline)
 - `../higgsfield-seedance-vfx/SKILL.md` — the **2.0** video-to-video lane (4K, `mode=std`)
 - `../higgsfield-character-design/SKILL.md` — what goes on the sheet before any model runs
-- `../higgsfield-acting/SKILL.md` — performance construction for the emotion beats
 - `../../image-models.md` — full specs for Nano Banana 2, Seedream 5.0, GPT Image 2, Soul Cinema
