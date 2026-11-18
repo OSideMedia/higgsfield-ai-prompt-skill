@@ -210,7 +210,7 @@ Tooling-hygiene patch. No skill content, model data, or prompt changes — pure 
 
 ## v3.8.0 — 2026-06-03
 
-Working-folder integration mega-release, and the first **minor** bump of the 3.7→3.8 line — two new top-level sub-skill surfaces take the sub-skill count from 23 to 25 (the largest structural jump in the series). One release closing the `~/Desktop/WORKING FOLDER` arc: a recursive walk of all five subfolders (ADDITIONAL SKIILS, CANVAS, EVEN MORE SKILLS, LEARNING HUB, OTHER SKIILS) plus a cross-reference pass against everything the v3.7.12–16 burst shipped. Substrate carries from v3.7.13–16 (Adil-corpus translation precedent + parent/satellite architecture + per-claim register-downgrade + DO-NOT-WRITE discipline + `.planning/<version>/` convention + dict-parity PDF gate).
+Working-folder integration mega-release, and the first **minor** bump of the 3.7→3.8 line — two new top-level sub-skill surfaces take the sub-skill count from 23 to 25 (the largest structural jump in the series). One release closing the local working-folder arc: a recursive walk of all five subfolders plus a cross-reference pass against everything the v3.7.12–16 burst shipped. Substrate carries from v3.7.13–16 (Adil-corpus translation precedent + parent/satellite architecture + per-claim register-downgrade + DO-NOT-WRITE discipline + `.planning/<version>/` convention + dict-parity PDF gate).
 
 ### Kickoff scope → what the evidence rescoped
 
@@ -234,7 +234,7 @@ Per the non-negotiable rule, items that looked blocked were resolved against Hig
 
 ### Source-evidence discipline
 
-DO-NOT-WRITE lists enforced per gapped surface: **Content Factory** defers all Marketing Studio API ground-truth to `higgsfield-marketing-studio` and reproduces none of the source's known-false API claims (the `generate_video.mode` slug table, nested-`avatars`-in-`params`, the `source` filter field — all refuted in v3.7.13 reconciliations); the Stage 5 traditional-cost dollar figures are framed as a **user-overridable estimate with a mandatory methodology disclaimer, never as Higgsfield fact**; the Meta connector schema is treated as connector-dependent, not asserted. **Canvas** asserts no hard node/fan-in limits, no fixed per-node credit numbers, no plan-gating, and no named on-canvas assistant beyond the generic LLM-assistant node (the audited "Hixie" name appears in no source — see NEEDS PETER below).
+DO-NOT-WRITE lists enforced per gapped surface: **Content Factory** defers all Marketing Studio API ground-truth to `higgsfield-marketing-studio` and reproduces none of the source's known-false API claims (the `generate_video.mode` slug table, nested-`avatars`-in-`params`, the `source` filter field — all refuted in v3.7.13 reconciliations); the Stage 5 traditional-cost dollar figures are framed as a **user-overridable estimate with a mandatory methodology disclaimer, never as Higgsfield fact**; the Meta connector schema is treated as connector-dependent, not asserted. **Canvas** asserts no hard node/fan-in limits, no fixed per-node credit numbers, no plan-gating, and no named on-canvas assistant beyond the generic LLM-assistant node (the audited "Hixie" name appears in no source — see NEEDS MAINTAINER below).
 
 ### Added
 
@@ -271,7 +271,7 @@ DO-NOT-WRITE lists enforced per gapped surface: **Content Factory** defers all M
 - `python3 generate_user_guide.py` — 28 pages. `python3 validate_user_guide.py` — PASSED: Layer 0 all 25 dict entries ≤ 71 chars; Layer 1 text-extract diff PASS; Layer 2 byte-for-byte identical to `USER-GUIDE.pdf.baseline-v3.8.0`.
 - `python3 seedance_lint.py` self-check — clean prompt PASS (exit 0); NSFW-FP + antislop + 【镜头】 prompt surfaces all three new rules; malformed-beat WARN fires.
 
-### Backlog closed by Peter clarification (post-build review)
+### Backlog closed by maintainer clarification (post-build review)
 
 - **G15c — CLOSED, out of scope.** The Canvas assistant is **Higgsie**, a
   conversational chatbot inside Canvas — not part of the prompt-to-generator
@@ -413,7 +413,7 @@ Phase 0 surfaced Adil's Motion Physics Anchor as appearing to contradict our exi
 
 ### Source attribution
 
-Adil Aliyev's `cinematic-motion-language.md` (~8 KB at `~/Desktop/EVEN MORE SKILLS/MORE CUSTOM SKILLS/`; sibling to `marketing-studio-director.md` and `higgsfield-content-factory.md` translated in v3.7.13). 5-pillar system: Camera Contract / Motion Physics Anchor / Spatial Zoning / Lens Behavior Sequence / Negative Space as Compositional Tool. Per-pillar attribution lives inside each new `vocab.md` subsection (closing blockquote callout: *"Translated from Adil Aliyev's `cinematic-motion-language.md` source corpus"*); per-claim translation rationale lives in `.planning/v3.7.15/PHASE-1-INVENTORY.md` §1G.
+Adil Aliyev's `cinematic-motion-language.md` (~8 KB; sibling to `marketing-studio-director.md` and `higgsfield-content-factory.md` translated in v3.7.13). 5-pillar system: Camera Contract / Motion Physics Anchor / Spatial Zoning / Lens Behavior Sequence / Negative Space as Compositional Tool. Per-pillar attribution lives inside each new `vocab.md` subsection (closing blockquote callout: *"Translated from Adil Aliyev's `cinematic-motion-language.md` source corpus"*); per-claim translation rationale lives in `.planning/v3.7.15/PHASE-1-INVENTORY.md` §1G.
 
 ### Added
 
@@ -816,7 +816,7 @@ All CLI syntax and behavior in this release was verified live on 2026-05-18 agai
 
 ### Scope acknowledgment
 
-v3.7.11 is the largest release since v3.7.7 by content surface (5 sub-phases + framework-innovation pattern across 7 files). Justified as the fourth one-time exception per v3.7.8 commitment language. v3.7.12+ returns to single-arc cadence unless audit-corpus continuity creates another comparable case. Same-day release per Peter decision at v3.7.11 planning handoff. USER-GUIDE.pdf modernization remains the deferred dedicated arc (same as v3.7.8, v3.7.9, v3.7.10) — PDF not regenerated for v3.7.11.
+v3.7.11 is the largest release since v3.7.7 by content surface (5 sub-phases + framework-innovation pattern across 7 files). Justified as the fourth one-time exception per v3.7.8 commitment language. v3.7.12+ returns to single-arc cadence unless audit-corpus continuity creates another comparable case. Same-day release per maintainer decision at v3.7.11 planning handoff. USER-GUIDE.pdf modernization remains the deferred dedicated arc (same as v3.7.8, v3.7.9, v3.7.10) — PDF not regenerated for v3.7.11.
 
 ### Backlog — unchanged
 
@@ -902,7 +902,7 @@ v3.7.5, v3.7.6, and v3.7.7 were mega-releases. v3.7.7's release notes committed 
 
 ## v3.7.7 — 2026-05-18
 
-Mega-release. Co-headlined: CH-1 production-benchmarks.md (Hell Grind 90-min Cannes feature anchors) + CH-2 Seedance depth (Frame Coordinate System + Spatial Layout Block + FAILURE-MODES.md new file + Character Anchor Block + Group F/P/G13b/Group H consolidation) + CH-3 templates library bootstrap (7 NEW template files in 2 new sub-directories) + CH-4 image-models expansion (G18 Nano Banana Pro production-team observations + Group H location-handling) + CH-5 DISCIPLINE.md SC1 reframe + SC2 anti-bombast paradox + 7 new patterns. **Third one-time exception to the harder-single-arc commitment**, after v3.7.5 backlog closeout and v3.7.6 — co-headlined by explicit Peter decision at Phase 0 → Phase 1 handoff. Largest release in repo history by sub-phase count (9 content sub-phases + 1 release ceremony sub-phase).
+Mega-release. Co-headlined: CH-1 production-benchmarks.md (Hell Grind 90-min Cannes feature anchors) + CH-2 Seedance depth (Frame Coordinate System + Spatial Layout Block + FAILURE-MODES.md new file + Character Anchor Block + Group F/P/G13b/Group H consolidation) + CH-3 templates library bootstrap (7 NEW template files in 2 new sub-directories) + CH-4 image-models expansion (G18 Nano Banana Pro production-team observations + Group H location-handling) + CH-5 DISCIPLINE.md SC1 reframe + SC2 anti-bombast paradox + 7 new patterns. **Third one-time exception to the harder-single-arc commitment**, after v3.7.5 backlog closeout and v3.7.6 — co-headlined by explicit maintainer decision at Phase 0 → Phase 1 handoff. Largest release in repo history by sub-phase count (9 content sub-phases + 1 release ceremony sub-phase).
 
 ### Third one-time exception mega-release
 
@@ -1070,7 +1070,7 @@ LOCK 3 ceiling was 1005-1335 lines (v3.7.7 scope estimate at Phase 1c). Actual c
 
 ## v3.7.6 — 2026-05-17
 
-Mega-release. Co-headlined: C-arc (Building Complete AI Projects 10-Step Methodology) + G2 (GPT Image 2 flagship integration) + DISCIPLINE.md (cross-cutting discipline patterns meta-arc) + v3.7.5-audit-gap closeout (9 gaps shipped; 2 dropped; 2 deferred). Largest release in repo history by line count and surface count. Second exception to harder-single-arc commitment after v3.7.5 backlog closeout — co-headlined by explicit Peter decision at Phase 1 planning stage, not single-arc by accident.
+Mega-release. Co-headlined: C-arc (Building Complete AI Projects 10-Step Methodology) + G2 (GPT Image 2 flagship integration) + DISCIPLINE.md (cross-cutting discipline patterns meta-arc) + v3.7.5-audit-gap closeout (9 gaps shipped; 2 dropped; 2 deferred). Largest release in repo history by line count and surface count. Second exception to harder-single-arc commitment after v3.7.5 backlog closeout — co-headlined by explicit maintainer decision at Phase 1 planning stage, not single-arc by accident.
 
 ### Building Complete AI Projects — The 10-Step Methodology (Steps 01-05)
 
@@ -1147,7 +1147,7 @@ New `DISCIPLINE.md` at repo root indexing 9 cross-cutting discipline patterns in
 - **Tier 2 — Output Discipline:** Visual-Marker-Only Output Discipline / Triple-Redundant Runtime / Single-Variable Iteration
 - **Tier 3 — Architectural Discipline:** 3-Stage Chain / 4-Phase Loop Architectural Pattern / Closing-Block-Baked-Into-Every-Prompt / Strict-Order Workflow with Refusal-to-Skip Phases
 
-Each pattern lists a concrete demonstration in the existing higgsfield codebase with file-and-section pointer (R6 mitigation: no aspirational content; all 9 cross-references verified resolving to real content at Gate 1 of sub-phase 2e). Two patterns use honest "weaker" framing rather than aspirational literal-source language: **P2 (Explicit-Stop Between Phases)** cites `higgsfield-pipeline` § Pipelines A-E artifact-handoff structure + Pipeline Pitfall 1 ("Never animate a 'good enough' image" — explicit don't-skip-ahead rule); **P8 (Closing-Block-Baked-Into-Every-Prompt)** cites root SKILL.md § MANDATORY WORKFLOW step 4 + `skills/shared/negative-constraints.md` as the single-source closing block applied across every higgsfield prompt. Both verified accurate by Peter at PR #24 review.
+Each pattern lists a concrete demonstration in the existing higgsfield codebase with file-and-section pointer (R6 mitigation: no aspirational content; all 9 cross-references verified resolving to real content at Gate 1 of sub-phase 2e). Two patterns use honest "weaker" framing rather than aspirational literal-source language: **P2 (Explicit-Stop Between Phases)** cites `higgsfield-pipeline` § Pipelines A-E artifact-handoff structure + Pipeline Pitfall 1 ("Never animate a 'good enough' image" — explicit don't-skip-ahead rule); **P8 (Closing-Block-Baked-Into-Every-Prompt)** cites root SKILL.md § MANDATORY WORKFLOW step 4 + `skills/shared/negative-constraints.md` as the single-source closing block applied across every higgsfield prompt. Both verified accurate by the maintainer at PR #24 review.
 
 Tightening pass applied per review directive: 194 lines → 126 lines (-68, -35%). Cuts: folded "How to apply" H2 into "What this is" intro; compressed pattern descriptions from 2-3 sentence multi-line to 1-sentence single-line; tightened "Demonstrated in" cross-refs; compressed Source attribution. Preserved: 9 patterns, 3-3-3 tier symmetry, all 9 cross-references, P2/P8 honest framing, v3.7.5 audit attribution.
 
@@ -1181,19 +1181,19 @@ Tightening pass applied per review directive: 194 lines → 126 lines (-68, -35%
   - **G10 Generic-Emotion Decomposition** — shipped in `higgsfield-prompt` § Generic-Emotion Decomposition (sub-phase 2c-ii)
   - **G11 Top-down spatial-blocking schema** — shipped in `higgsfield-pipeline` § Spatial Blocking (sub-phase 2c-iii)
   - **G12 15s-prompt density heuristic** — shipped in `higgsfield-seedance` § Output Format (sub-phase 2c-i)
-  - **G1 Soul Cinema two-step compositing** — **DEFERRED** to v3.7.7+ pending Peter's hands-on Higgsfield UI testing
+  - **G1 Soul Cinema two-step compositing** — **DEFERRED** to v3.7.7+ pending the maintainer's hands-on Higgsfield UI testing
   - **G13 Multi-shot `【镜头N】` syntax** — **DEFERRED** to v3.7.7+ pending Seedance product-team confirmation of platform-native vs community convention
 
 - **DISCIPLINE.md source (v3.7.5 audit pattern findings)** — 9 cross-cutting discipline patterns named from v3.7.5 ecosystem audit (Joey banana-pro-director + cinema-worldbuilder; screenwriter-skill; shotlist-builder). IP discipline: pattern *form* (structural shape + discipline name) is the audit contribution, IP-safe per pattern-not-text classification; pattern *demonstration* is higgsfield's own existing practice — file / section pointers are observed, not aspirational (R6 mitigation, verified at Gate 1 of sub-phase 2e).
 
 ### Deferred to future releases
 
-- **G1 Soul Cinema two-step compositing flow** — Joey banana-pro-director Mode 1B (outfit-on-neutral-model Step 1B.1 → composite-onto-character Step 1B.2). Requires Peter's hands-on Higgsfield UI testing to verify the two-step flow works as documented before higgsfield ships re-documented guidance. Re-eligible for v3.7.7+ once UI testing completes.
+- **G1 Soul Cinema two-step compositing flow** — Joey banana-pro-director Mode 1B (outfit-on-neutral-model Step 1B.1 → composite-onto-character Step 1B.2). Requires the maintainer's hands-on Higgsfield UI testing to verify the two-step flow works as documented before higgsfield ships re-documented guidance. Re-eligible for v3.7.7+ once UI testing completes.
 - **G13 Multi-shot `【镜头N】` block syntax for Seedance prompts** — from shotlist-builder source. Requires Seedance product-team confirmation of whether `【镜头N】` is a Seedance-supported native convention or external community convention. If native: high-value documentation gap. If community: only worth a one-line reference, if anything. Re-eligible for v3.7.7+ once product-team confirmation arrives.
 
 ### Notes
 
-- **Mega-release exception to harder-single-arc commitment.** v3.7.5 committed harder to single-arc discipline. v3.7.6 is the second exception after v3.7.5's own backlog closeout — co-headlined by explicit Peter decision at Phase 1 planning stage, not single-arc by accident. Rationale: closing the v3.7.5 audit-findings backlog + C-arc integration + DISCIPLINE.md cross-cutting work landed cleaner as a single co-headlined release than as a sequence of smaller releases. Future releases return to harder-single-arc discipline.
+- **Mega-release exception to harder-single-arc commitment.** v3.7.5 committed harder to single-arc discipline. v3.7.6 is the second exception after v3.7.5's own backlog closeout — co-headlined by explicit maintainer decision at Phase 1 planning stage, not single-arc by accident. Rationale: closing the v3.7.5 audit-findings backlog + C-arc integration + DISCIPLINE.md cross-cutting work landed cleaner as a single co-headlined release than as a sequence of smaller releases. Future releases return to harder-single-arc discipline.
 
 - **Catch #14 — planning-doc drift (new catch class, 6 instances).** New catch class opened this release. Cumulative numbering continues from v3.7.5 inheritance-pattern taxonomy which closed at #13. **Root cause:** Phase 1c specifications are estimates and structural placeholders, not authoritative on item counts, H-levels, scope line counts, or implementation step ordering. Phase 2 verifies against current file structure, source extracts, and tooling realities. Six instances surfaced across sub-phases:
   1. **Step 02 contents count** — Phase 1c said 8, source has 9 (Phase 2a discovery)
@@ -1262,7 +1262,7 @@ Commit prefix: `feat: v3.7.6 — mega release: C-arc (Building Complete AI Proje
 
 - **Scene-First slide deck (companion of File 08, same author).** Confirmed cleaner-phrasing-wins precedent applies for File 08 §3 four questions (slide deck tightens "What is missing for it to feel connected rather than isolated?" → "What is missing for it to feel connected?" and "What kind of shot would make that connection readable?" → "What shot would make the connection readable?" — shipped form matches slide deck) and §5 eight axes (slide deck names 8 verbatim with "silence" surfaced as a separate bullet; File 08 prose rhetorically lists 7 — shipped form matches slide deck). New finding for §8: AXIS PIVOT, not just sharper phrasing — slide deck "Screenshots help preserve" 6-element list (emotional state / body angle / prop placement / camera direction / spatial logic / continuity state) vs File 08 §8 "Screenshots are especially useful when" 5-item use-case list. Different editorial choice, not different phrasing. File 08 use-case form shipped per anti-collision with seedance § Reference Roles (which already enumerates preserve-elements as named reference types — Character / Last-Frame / Environment / Prop); use-case form names a different question Reference Roles doesn't answer.
 
-- **Phase 1c triage ledger** for all 7 source files in `~/Desktop/NEW DOCS_5_3_2026/` audit set:
+- **Phase 1c triage ledger** for all 7 source files in the 2026-05-11 audit set:
   - `Workflow Practical Guide English Full.pdf` (File 08) — INTEGRATE row 5 layer (e), shipped this release
   - `A Scene-First Continuity Workflow_ Building Episode One in Seedance.pdf` — DUPLICATE of File 08 (companion slide deck, same author, confirmed cleaner-phrasing-wins on §3 / §5 and AXIS PIVOT discovery on §8)
   - `Building Complete AI Projects from Script to System.pdf` — INTEGRATE deferred to v3.7.6 (C-arc; highest-priority next single-arc release; covers Project Bible / Master Script / GPT Creative Assistant / Prompt Modules / Passes / 10-step end-to-end workflow)
@@ -1272,7 +1272,7 @@ Commit prefix: `feat: v3.7.6 — mega release: C-arc (Building Complete AI Proje
   - `Reference Workflow_.pdf` — DUPLICATE of v3.7.1 Video Reference Capability Surface + v3.7.2 Product Reference Sheet
   - `article nano (2).pdf` — SKIP (marketing copy)
 
-- **B1 Cinema Studio 3.5: TRIAGE FINDING, not deferred.** Scoped for assessment at Phase 1, found UNACTIONABLE — no source PDF in the audit set contained material to close any of the 7 Cinema Studio 3.5 deferrals tracked in `higgsfield-cinema/SKILL.md` (AI Director Toggle behavioral documentation still requires Peter's hands-on UI testing; per-Cinematic-model video-mode picker structure still requires additional UI screenshots). Removed from v3.7.5 release scope prior to Phase 2. Not a deferral — a triage finding that the deferral pile is awaiting external input (UI testing + screenshot capture by Peter), not audit-source identification by Claude Code.
+- **B1 Cinema Studio 3.5: TRIAGE FINDING, not deferred.** Scoped for assessment at Phase 1, found UNACTIONABLE — no source PDF in the audit set contained material to close any of the 7 Cinema Studio 3.5 deferrals tracked in `higgsfield-cinema/SKILL.md` (AI Director Toggle behavioral documentation still requires the maintainer's hands-on UI testing; per-Cinematic-model video-mode picker structure still requires additional UI screenshots). Removed from v3.7.5 release scope prior to Phase 2. Not a deferral — a triage finding that the deferral pile is awaiting external input (UI testing + screenshot capture by the maintainer), not audit-source identification by Claude Code.
 
 - **IP discipline held throughout.** Paraphrased prose per File 08 source discipline; named factual prescriptions verbatim: 8 substrate axes (vocab.md World Through Recurrence), 4 questions (seedance Post-Clip Decisions / Four Questions), 5 problem→solution mappings (seedance Next-Shot Decision Tree), 4 parallel-task categories (pipeline Working in Parallel — bullet leads normalized to noun-phrase form per the bullet-lead normalization rule, see Notes below), 5 screenshot use-cases (pipeline Screenshots as Working Memory — strict verbatim post-application-gate fix). No verbatim long-prose extracts; no verbatim worked-example prompts.
 
@@ -1300,7 +1300,7 @@ Tracked inline in this release-notes context for visibility; convert to a separa
 
 - **USER-GUIDE.pdf modernization arc.** Dedicated single-arc release updating Section 10 (Seedance prompt modes — D4), Section 11 (Soul Cinema + Studio Look — D5), Section 18 (Iteration Rule + 6-Pass Diagnostic — D6), Section 21 (Reference Sheet Types + v3.6.4 piano test / Action Design / Morph-Cut — D7), Section 22 (sub-skill row descriptions via `SUB_SKILL_DESCRIPTIONS` dict updates — D8 data refresh). Would close D4, D5, D6, D7, D8 simultaneously. Scope likely substantial (5 sections × content drift accumulated over 3 releases since v3.6.0); deserves dedicated treatment. The Layer 0 validator added this release will enforce the column ceiling on any `SUB_SKILL_DESCRIPTIONS` updates.
 
-- **Mr. Core methodology additional work.** Deferred from v3.7.5 backlog clarification at Phase 1b — Mr. Core was already integrated v3.6.4 from "Building a Cinematic Universe", a different source than File 08. If additional Mr. Core work is wanted, source PDF needs separate identification by Peter. Lower priority than C-arc and USER-GUIDE modernization.
+- **Mr. Core methodology additional work.** Deferred from v3.7.5 backlog clarification at Phase 1b — Mr. Core was already integrated v3.6.4 from "Building a Cinematic Universe", a different source than File 08. If additional Mr. Core work is wanted, source PDF needs separate identification by the maintainer. Lower priority than C-arc and USER-GUIDE modernization.
 
 Commit prefix: `feat: v3.7.5 — backlog closeout: A-arcs + File 08 layer (e) + Layer 0 validator + 2 cross-link callouts`
 
@@ -1419,7 +1419,7 @@ Commit prefix: `feat: v3.7.3 — Working Modes + Reference Roles + Two-Taxonomie
 
 ### Sourcing
 
-- **Product Reference Sheet** — sourced from File 06 (`PRODUCT REFERENCE SHEET PROMPTS.txt`, ~395 lines) and File 07 Part 1 (slides 1–6 of `Reference Workflow_.pdf`) of the 2026-05-11 `NEW DOCS_5_3_2026` audit (`/tmp/higgsfield-audit-2026-05-11/AUDIT.md` row 3, recommendation INTEGRATE — strong fit with drift catalog item D7's Reference Sheet Types surface, extending it with a Product axis). D7's other items (v3.6.0 Reference Sheet Types expansion + v3.6.4 piano test / Action Design / Morph-Cut breathing room) were already reflected in the live cinema SKILL.md at v3.7.1 release time and are unaffected. Paraphrased content only per File 06 IP discipline — short technical phrases (camera spec, hex color, sheet type name, the six Material Realism axis labels, embroidery realism vocabulary) are factual prescriptions, not paraphrasable, and land as-is.
+- **Product Reference Sheet** — sourced from File 06 (`PRODUCT REFERENCE SHEET PROMPTS.txt`, ~395 lines) and File 07 Part 1 (slides 1–6 of `Reference Workflow_.pdf`) of the 2026-05-11 source audit (row 3, recommendation INTEGRATE — strong fit with drift catalog item D7's Reference Sheet Types surface, extending it with a Product axis). D7's other items (v3.6.0 Reference Sheet Types expansion + v3.6.4 piano test / Action Design / Morph-Cut breathing room) were already reflected in the live cinema SKILL.md at v3.7.1 release time and are unaffected. Paraphrased content only per File 06 IP discipline — short technical phrases (camera spec, hex color, sheet type name, the six Material Realism axis labels, embroidery realism vocabulary) are factual prescriptions, not paraphrasable, and land as-is.
 
 ### Notes
 
@@ -1447,7 +1447,7 @@ Commit prefix: `feat: v3.7.2 — Product Reference Sheet as 6th reference-sheet 
 
 ### Sourcing
 
-- **Video Reference Capability Surface** — sourced from File 07 part 2 of the 2026-05-11 `NEW DOCS_5_3_2026` audit (`/tmp/higgsfield-audit-2026-05-11/AUDIT.md` row 4, recommendation INTEGRATE — high value, low cost).
+- **Video Reference Capability Surface** — sourced from File 07 part 2 of the 2026-05-11 source audit (row 4, recommendation INTEGRATE — high value, low cost).
 - **Rule of 12 — ByteDance / BytePlus citation** added at the canonical Rule of 12 definition (`skills/higgsfield-models/MODELS-DEEP-REFERENCE.md` § The Rule of 12 — Asset Budget, line 274). Sources the 9-image / 3-video / 3-audio limit to official Seedance launch materials at `seed.bytedance.com`. Canonical-only placement: the 4 other repo mentions of "Rule of 12" are brief uses of a now-sourced term, not independent claims, and adding inline citations at each would partially reverse the v3.6.5 marketing-copy strip discipline. Forward compatibility: future limit updates have one source of truth to drift.
 - **Image Reference Notations disambig** — sourced from AUDIT.md topline observation 9 and Row 3 net-new content note.
 
@@ -1524,7 +1524,7 @@ Commit prefix: `refactor: v3.7.0 — generate_user_guide.py Path B refactor (Opt
 
 ### Sourcing
 
-- Marketing-copy strip — sourced from the original 2026-04-25 v3.6.0 review observation, tracked as a backlog row (LOW priority) since v3.6.0. Strip rule applied per Peter's clarification: strip product-marketing modifiers (plan-availability badges like ⭐ EXCLUSIVE, promotional positioning like Current Top Model, superlative claims like best-in-class / class-leading / top differentiators); keep capability and routing language ("Strongest at X" claims, technical specs, concrete capability descriptors).
+- Marketing-copy strip — sourced from the original 2026-04-25 v3.6.0 review observation, tracked as a backlog row (LOW priority) since v3.6.0. Strip rule applied per the maintainer's clarification: strip product-marketing modifiers (plan-availability badges like ⭐ EXCLUSIVE, promotional positioning like Current Top Model, superlative claims like best-in-class / class-leading / top differentiators); keep capability and routing language ("Strongest at X" claims, technical specs, concrete capability descriptors).
 - Audio-block diversity pass — sourced from the 2026-05-03 v3.6.4 release review note, tracked as a v3.6.5+ backlog row added during v3.6.4 cleanup. Five-shape taxonomy applied: foreground-heavy / music-foregrounded / sound-design-anchored / ambient-heavy / dialog-anchored.
 
 ### Notes

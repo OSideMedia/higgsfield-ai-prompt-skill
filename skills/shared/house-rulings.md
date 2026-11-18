@@ -293,8 +293,8 @@ both prompts** — `../higgsfield-seedance/FAILURE-MODES.md` § Walking is the h
 ### P2-11 · Staging reference — does it move blocking, and can it be a first frame? — FIXED + recorded
 
 - **Recorded:** the Higgsfield Studio breakdowns claim the diagram raises staging-accurate win
-  rate "dramatically" `[FIELD]`; the house A/B found orientation tracking at chance (6/12) and no
-  bleed (0/18) `[MEASURED — record incomplete]`. What a user is promised follows the measurement
+  rate "dramatically" `[FIELD]`; the house A/B found orientation tracking at chance and no
+  bleed `[MEASURED — record incomplete]`. What a user is promised follows the measurement
   (`../../templates/seedance/staging-reference.md`, top box).
 - **Fixed:** `../higgsfield-seedance/FAILURE-MODES.md` § A fight generated as separate clips
   comes back choppy called it "first-frame geometry"; it is attached **last**, position only — a
@@ -391,13 +391,11 @@ beside it — a file named `image_1` would sit in the character's slot.
   per-line cap** and the two meet at one 8–10-word line in a 4 s shot; read it as a **rate**
   (~1.1–1.3 w/s) and that line (2–2.5 w/s) is over budget. (Earlier in this release a `[HOUSE]`
   reading picked the total, citing the filler-babble run as evidence. That run was
-  transcript-graded — it found no filler-babble in 8- and 12-word takes and says nothing about
-  lip-sync — and it was ported from an outside product's registry, so it was neither evidence
-  on the budget nor "here". Withdrawn.) Not a default but a dominant move: scripting the
+  transcript-graded and says nothing about lip-sync, and its record is held outside this
+  repository, so it was not evidence on the budget. Withdrawn.) Not a default but a dominant move: scripting the
   silence, or cutting the shot down to the line, satisfies both readings.
   `../higgsfield-seedance/FAILURE-MODES.md` § Filler-babble on a short dialogue line (its
-  `[MEASURED]` tag is marked record-incomplete: no route, no mode, no n at ≤6 words, record held
-  outside this repo) · `../higgsfield-audio/SKILL.md` § Per-language
+  `[MEASURED]` tag is marked record-incomplete, record held outside this repo) · `../higgsfield-audio/SKILL.md` § Per-language
   dialogue-sync budgets `[EMPIRICAL — community seedance-2.0 repo v6.6.0]` (relabelled from FIELD in audio, seedance and pipeline alike).
 
 ---

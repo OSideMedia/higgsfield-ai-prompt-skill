@@ -172,14 +172,14 @@ ANTISLOP = [
 ]
 
 # Antislop, ZH edition — the house-format equivalents of the EN list above.
-# Source: docs/Seedance 2 Skill.md (bilingual-JSON profile), forbidden-terms
-# section. Same severity logic: WARN, with a nudge toward concrete vocabulary.
+# Source: a third-party bilingual-JSON profile document, since withdrawn from
+# this repository. Same severity logic: WARN, with a nudge toward concrete vocabulary.
 ANTISLOP_ZH = [
     "令人叹为观止", "令人惊叹", "令人着迷", "精心打造", "匠心独运", "独具匠心",
     "视觉盛宴", "光影交响", "完美呈现", "极致体验", "引人入胜", "震撼人心", "巧妙融合",
 ]
 
-# ZH prompt hard cap (chars). Source: docs/Seedance 2 Skill.md output contract.
+# ZH prompt hard cap (chars). Source: the same withdrawn third-party document's output contract.
 ZH_CHAR_CAP = 1800
 CJK_RE = re.compile(r"[一-鿿]")
 
@@ -654,7 +654,7 @@ def structural_lint(text: str, settings: Settings, spec: dict | None,
             findings.append(Finding(
                 "FAIL", "zh-overlength", f"{len(text)} chars",
                 f"ZH prompts hard-cap at {ZH_CHAR_CAP} characters "
-                "(docs/Seedance 2 Skill.md output contract). Cut scene-setting "
+                "(ZH profile output contract). Cut scene-setting "
                 "prose; keep blocking, camera, and audio cues."))
         zh_hits = [t for t in ANTISLOP_ZH if t in text]
         if zh_hits:

@@ -550,7 +550,7 @@ def test_a_crash_is_exit_5_not_a_pull_failure(monkeypatch, tmp_path, capsys):
 
 
 def test_cli_line_is_redacted_before_it_reaches_status_or_logs(monkeypatch, tmp_path, capsys):
-    stderr = ("Error: session expired for peter@example.com "
+    stderr = ("Error: session expired for user@example.com "
               "(token=abcdef0123456789abcdef0123) workspace 3f2b1c9e-1111-2222-3333-444455556666\n")
     monkeypatch.setattr(r.shutil, "which", lambda name: "/usr/bin/higgsfield")
     monkeypatch.setattr(r.subprocess, "run", lambda *a, **k: _Proc(1, "", stderr))
@@ -559,7 +559,7 @@ def test_cli_line_is_redacted_before_it_reaches_status_or_logs(monkeypatch, tmp_
     assert r.main(["--type", "video", "--status-json", str(out)]) == 1
     st = json.loads(out.read_text())
     printed = capsys.readouterr().err + out.read_text()
-    for secret in ("peter@example.com", "abcdef0123456789abcdef0123",
+    for secret in ("user@example.com", "abcdef0123456789abcdef0123",
                    "3f2b1c9e-1111-2222-3333-444455556666"):
         assert secret not in printed
     assert st["kind"] == "auth" and "[redacted]" in st["line"]
@@ -573,8 +573,8 @@ def test_cli_line_is_redacted_before_it_reaches_status_or_logs(monkeypatch, tmp_
     ("invalid api key hf_live_Zk9Wq", "hf_live_Zk9Wq"),
     ("Authorization: Token abcdefghijklmnop rejected", "abcdefghijklmnop"),
     ("cookie session_id=Zm9vYmFyYmF6 expired", "Zm9vYmFyYmF6"),
-    ('Error: workspace "Peter Csanky Studio" (ws_7Hq2Kd9) not found', "Peter Csanky Studio"),
-    ('Error: workspace "Peter Csanky Studio" (ws_7Hq2Kd9) not found', "ws_7Hq2Kd9"),
+    ('Error: workspace "Example Studio" (ws_7Hq2Kd9) not found', "Example Studio"),
+    ('Error: workspace "Example Studio" (ws_7Hq2Kd9) not found', "ws_7Hq2Kd9"),
 ])
 def test_allowlist_redaction_removes_every_leak_shape(line, secret):
     out = r.redact(line)
@@ -595,10 +595,10 @@ def test_not_found_is_classified_from_the_raw_text():
 
 def test_crash_output_redacts_the_exception_message(monkeypatch, tmp_path, capsys):
     def boom():
-        raise RuntimeError('CLI said: workspace "Peter Csanky Studio" token=hf_sk_Zz9')
+        raise RuntimeError('CLI said: workspace "Example Studio" token=hf_sk_Zz9')
     monkeypatch.setattr(r, "load_baseline", boom)
     out = tmp_path / "s.json"
     assert r.main(["--type", "video", "--status-json", str(out)]) == 5
     printed = capsys.readouterr().err + out.read_text()
-    assert "Peter Csanky" not in printed and "hf_sk_Zz9" not in printed
+    assert "Example Studio" not in printed and "hf_sk_Zz9" not in printed
     assert "refresh_specs.py" in printed          # still says WHERE it crashed

@@ -80,7 +80,8 @@ ROOT_REFERENCE_DOCS = {
 }
 # Root .md files that document the repo, not the skill — never routed to.
 # Every other root .md must be in ROOT_REFERENCE_DOCS (check_reference_reachability).
-REPO_DOCS = {"SKILL.md", "README.md", "CHANGELOG.md", "CONTRIBUTING.md", "CLAUDE.md"}
+REPO_DOCS = {"SKILL.md", "README.md", "CHANGELOG.md", "CONTRIBUTING.md", "CLAUDE.md",
+             "THIRD_PARTY_NOTICES.md"}
 # Bare backticked filenames that are PROSE CITATIONS of files living outside
 # this repo (source corpus, sibling team skills). They intentionally do not
 # resolve here and must not be flagged. Keep this list short and reviewed —

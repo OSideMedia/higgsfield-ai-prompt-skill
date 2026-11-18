@@ -35,24 +35,13 @@ not a change to the global block.
 
 ## Default prefix block (fill in the blanks, then freeze)
 
-Replace the bracketed fields; keep the labelled structure. Once set, do not edit
-per-prompt — edit it once and re-render the whole shotlist.
+*[The default block that used to sit here was third-party example material. It was withdrawn in
+November 2026 — see `THIRD_PARTY_NOTICES.md`. This template no longer ships a default prefix.]*
 
-```
-Style: [IMAX commercial], photoreal live-action. Photorealistic — no 3D render, no game engine.
-Lighting: [Natural light only — soft, even morning daylight, gentle atmospheric haze throughout. Key light from sky and windows only. No artificial light.]
-Color: [60:30:10] — dominant / secondary / accent.
-Camera: Physical cine lens. 180° shutter motion blur.
-Skin: Pore-level realism — vellus hair, asymmetric moles, capillary flush, pore-shadow matching on-set light.
-Acting: Hollywood — micro-pauses before reactions, precise eye-line, eyes always working on someone or something, chest rise from breathing. Characters never standing, always reacting.
-Physics: Gravity and inertia respected — mass has real weight, correct contact shadows. No floating props.
-Composition: Rule of thirds + golden ratio. Every person moving from frame one.
-Continuity: Characters, props, environment identical across every cut. No identity drift.
-Technical: 24fps-cadence smooth motion. Fine detail held at every distance. No jitter.
-Audio: Diegetic dialogue and environmental SFX only. No music. No subtitles.
-```
+Whatever prefix a project writes for itself: once set, do not edit it per-prompt — edit it once
+and re-render the whole shotlist.
 
-Notes on the fields:
+Notes on the fields the withdrawn block had, kept as reference for a project's own prefix:
 
 - **Format / resolution are job settings, never prefix text.** The prefix is pasted
   verbatim into every scene prompt, so a number in it is a number in the prose — and
@@ -77,7 +66,7 @@ Notes on the fields:
 - **Audio: diegetic-only** — the prompt body names only real-world SFX; layer any
   score in post. See `../../skills/higgsfield-audio/SKILL.md` § Seedance 2.0 and
   the diegetic-only convention. The positive list comes first — that part is
-  settled. Whether the closing token should be `No music.` (this default, the form
+  settled. Whether the closing token should be `No music.` (the withdrawn default, the form
   12 of 13 harvested projects shipped) or `NO BGM` (a third-party skill's claim that
   a production term reads as a harder spec) is **OPEN — unmeasured here**
   (`../../skills/shared/house-rulings.md` P2-7); either is legal, and neither goes

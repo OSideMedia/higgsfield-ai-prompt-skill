@@ -198,7 +198,7 @@ budget constraints, client work), **confirm before generating:**
 | Develop a character / world / story / premise before prompting, build a character sheet / story bible, lock a visual style ("visual DNA"), keep a character consistent across many shots, or "I keep getting generic AI characters" | `skills/higgsfield-character-design/SKILL.md` |
 | Audit or strengthen a scene / sequence / beat outline before generating it, or "is this scene working", "what's weak here", "why doesn't this land" | `skills/higgsfield-scene-engine/SKILL.md` |
 | Cinematic still image prompt (shot framing, angles) | `skills/higgsfield-image-shots/SKILL.md` |
-| GPT Image 2.0 / 2.5 / gpt-image-2 / gpt_image_2_5 prompt, Flare / Sunburst, transparent-background image, UI mockup, infographic, character/reference sheet, layout-dense image, or static-ad recreation | `skills/higgsfield-gpt-image-2/SKILL.md` |
+| GPT Image 2.0 / 2.5 / gpt-image-2 / gpt_image_2_5 model surface, Flare / Sunburst, transparent-background image, product reference sheet | `skills/higgsfield-gpt-image-2/SKILL.md` |
 | Choose the right model — incl. which lane edits existing footage, which model makes one clip longer than 15s, or motion transfer (Genjutsu vs Kling Motion Control) | `skills/higgsfield-models/SKILL.md` + `model-guide.md` (§ Edit-Lane Chooser, § Long-Take Chooser) |
 | Camera movement guidance (video) | `skills/higgsfield-camera/SKILL.md` |
 | Named motion preset (Explosion, Werewolf, etc.) | `skills/higgsfield-motion/SKILL.md` |
@@ -228,7 +228,7 @@ budget constraints, client work), **confirm before generating:**
 | User wants UGC / Tutorial / Unboxing / Hyper Motion / Product Review / TV Spot / Wild Card / UGC Virtual Try On / Pro Virtual Try On ad video | `skills/higgsfield-marketing-studio/SKILL.md` |
 | User mentions hook+setting picklists, preset / custom / text-generated avatars in MS context, or 4–15s ad video constraints | `skills/higgsfield-marketing-studio/SKILL.md` |
 | **Ad Multiplier** ("multiply my ad", many independently edited versions of one 4–30s ad) or a one-off **Genjutsu** edit of a finished ad (swap one object / product / garment using a reference image of the new one, transfer motion) | `skills/higgsfield-marketing-studio/SKILL.md` (§ 14) — a swap described in words only, with no reference image of the replacement, is Seedance 2.5 `video_edit` (`model-guide.md` § Edit-Lane Chooser) |
-| User wants to run a full campaign pipeline — research → plan → generate → publish → report, "create a campaign", "100 UGC videos", content plan, batch ads, cost-savings report | `skills/higgsfield-content-factory/SKILL.md` |
+| Full campaign pipeline (research → plan → generate → publish → report) — **withdrawn in November 2026**; the sub-skill is a retired stub | `skills/higgsfield-content-factory/SKILL.md` |
 | User mentions Higgsfield Canvas, a node-based / node-graph workspace, an infinite board, chaining prompts→images→videos into a pipeline, Shared Canvas, or a ComfyUI-style node workflow | `skills/higgsfield-canvas/SKILL.md` |
 | Multi-shot workflow, chaining tools, full production pipeline | `skills/higgsfield-pipeline/SKILL.md` |
 | Short film, branded content, Popcorn → video → assembly | `skills/higgsfield-pipeline/SKILL.md` |
@@ -245,12 +245,11 @@ budget constraints, client work), **confirm before generating:**
 | **3D** — image→3D / multi-view→3D / text→3D mesh (GLB), rigging or animating a mesh, remesh / retexture, 3D Body, 3D Jutsu / Scene Builder 3D projects, a 3D turnaround as a multi-angle reference, a 3D blockout as a staging reference (`Higgsfield:generate_3d`, `Higgsfield:scene_builder_3d_*`) | `skills/higgsfield-3d/SKILL.md` |
 | **Extend / continue an existing clip** — "make it longer", "what happens next / before", prequel, last-frame handoff, extension chains | a native forward/backward extension on 2.5 → `skills/higgsfield-seedance-2-5/SKILL.md` (`video_extension`); a 2.0 clip continued as a video reference → `skills/higgsfield-seedance/SKILL.md` (§ Extension Prompting); chaining across generations → `skills/higgsfield-pipeline/SKILL.md` (§ Continuation & Extension Handoff) |
 | **Prep assets / reference sheets before video** — character sheet, prop three-view, location plate, "build my elements", variety sheet for crowds | `templates/ad-asset-prep.md` + `skills/higgsfield-gpt-image-2/SKILL.md` (props) + `skills/higgsfield-soul/SKILL.md` (people & crowds) |
-| Audition / screen-test a designed character (how they move, speak, react) before scene generation | `skills/higgsfield-character-design/SKILL.md` (§ Screen Test / Audition) |
+| Audition / screen-test a designed character — withdrawn in November 2026 (third-party material); a short notice only | `skills/higgsfield-character-design/SKILL.md` (§ Screen Test / Audition) |
 | Seedance 2.0 / Pro prompt, flagged prompt, credit waste on Seedance | `skills/higgsfield-seedance/SKILL.md` |
 | **Seedance 2.5** — user names 2.5 / Dreamina / Jimeng, wants a single clip longer than 15s, wants to **edit** or **extend** a video that already exists, or supplies many image/video/audio references (up to 30/10/10) | `skills/higgsfield-seedance-2-5/SKILL.md` |
 | **2.0 vs 2.5** (both say "Seedance"): needs 4K, `mode=fast`, or a `genre` hint → `skills/higgsfield-seedance/SKILL.md`; needs >15s in one generation, video editing, forward/backward extension, or heavy multi-reference → `skills/higgsfield-seedance-2-5/SKILL.md`. Both do 1080p and platform start/end frames (2.5 only in `omni_reference`); 2.5 caps at 1080p | — |
-| **Character performance** — acting, behavior, mannerisms, tics, a gait, subtext, "my characters look wooden / dead-eyed / AI", keeping a character themselves across many shots, an acting master profile | `skills/higgsfield-acting/SKILL.md` |
-| **Feature-film production pipeline on Seedance** — headless character sheets, location sheets, a scene geography block reused across shots, dialogue construction, iteration discipline, giants / crowds / threshold transitions | `skills/higgsfield-seedance/SKILL.md` (`skills/higgsfield-seedance/HELL-GRIND.md`) |
+| Character performance / acting direction — **withdrawn in November 2026**; the sub-skill is a retired stub (facial action units: `skills/higgsfield-facs/SKILL.md`) | `skills/higgsfield-acting/SKILL.md` |
 | **Transform footage the user already has** (video-to-video): "make a Seedance prompt for this video/clip", add a VFX element (set my head/hair on fire, transform my hand, make a limb invisible), swap the world/background around a preserved subject (desert, clouds, lava, neon city), put a giant creature behind me or on a landmark, relight/regrade to match, sync a crash-zoom/push-in to a line — a **real source clip** is the starting point | `skills/higgsfield-seedance-vfx/SKILL.md` |
 | **Replace a VFX/3D pipeline with generation** — "can AI do this instead of VFX", put myself in this plate, put a creature in my footage, a dragon/monster shot without buying or rigging a 3D model, "how do I build a whole VFX shot", asset sheets → size-ref → locations → shots as one pipeline; also "my v2v keeps failing / turns to slop", scale drift between two subjects, which image model for faces vs creatures vs clothing vs locations | `skills/higgsfield-seedance-2-5/SKILL.md` (`skills/higgsfield-seedance-2-5/VFX-PIPELINE.md`) |
 | Precise facial expression / FACS / Action Unit codes (AU12, AU6…), forced or uncanny or mixed expression, close-up micro-performance, monologue/dialogue facial acting, "which AU code for anger/fear", FACS reference sheet | `skills/higgsfield-facs/SKILL.md` |
@@ -309,9 +308,9 @@ prompts where the user request is technique-shaped rather than genre-shaped:
 | Multi-character shot with cross-character relationships | `templates/seedance/multi-character-anchor.md` |
 | Single-character shot with position + pose + contact-point locks | `templates/seedance/single-character-position.md` |
 | Worked example: two-character anchoring end-to-end | `templates/seedance/worked-example-two-character.md` |
-| Anime / stylized-2D animation — layered formula + style block + character turnaround | `templates/seedance/anime-animation.md` |
+| Anime / stylized-2D animation — withdrawn in November 2026 (third-party material); a short notice only | `templates/seedance/anime-animation.md` |
 | Close-up facial acting via FACS Action Unit codes — beat-synced expression schedule | `templates/seedance/facs-expression-beats.md` |
-| Seedance **2.5** multi-reference brief — role map + staged beats with end states | `templates/seedance/omni-reference-2-5.md` |
+| Seedance **2.5** multi-reference brief — platform settings and pre-send checks (the skeleton and filled example were withdrawn in November 2026) | `templates/seedance/omni-reference-2-5.md` |
 | Transform footage the user already has — preserve the subject + camera move, add the VFX element | `templates/seedance/footage-vfx-transform.md` |
 | One style prefix shared by every shot in a sequence | `templates/seedance/global-style-prefix.md` |
 | Show the model WHERE figures stand — a front-on outline position reference attached LAST (one incomplete-record run: no bleed, NOT reliable at moving blocking) | `templates/seedance/staging-reference.md` |
@@ -414,7 +413,6 @@ Result. Ratios and budgeting: `skills/higgsfield-assist/SKILL.md`.
 | `prompt-examples.md` | Production prompt examples by genre | Before writing a prompt from scratch |
 | `photodump-presets.md` | 29 Photodump style presets | Photodump / social-feed photo-dump requests |
 | `production-benchmarks.md` | Production-cost and iteration anchors from a Higgsfield-made 90-minute AI feature | Credit budgets, realistic iteration counts, cost framing |
-| `docs/Seedance 2 Skill.md` | The bilingual EN+ZH JSON Seedance output profile — not the canonical Seedance skill | Only when the user wants bilingual-JSON Seedance output |
 | `docs/field-test-queue.md` | Models and doctrine claims this library states with no O-Side generation behind them yet | Before presenting one of them as tested |
 | `skills/shared/negative-constraints.md` | All generation artifacts + prevention phrases, by category | Check before every prompt — append relevant constraints |
 | `skills/shared/provenance.md` | Repo-wide provenance legend — what [OFFICIAL]/[DEMO]/[FIELD]/[EMPIRICAL]/[HOUSE]/[MEASURED] mean and the evidence each requires | Before leaning on a tagged claim |
@@ -431,11 +429,11 @@ Open these directly when the row applies — alongside their sub-skill, not inst
 
 | File | What it holds | Open when |
 |------|---------------|-----------|
-| `skills/higgsfield-seedance/ENGINE-RULES.md` | Seedance 2.0's hard rendering constraints — the shared core every Seedance dialect cites | Any Seedance 2.0 prompt |
+| `skills/higgsfield-seedance/ENGINE-RULES.md` | Seedance 2.0's high-risk shot table and enforcement notes (the numbered rule list was withdrawn in November 2026) | Any Seedance 2.0 prompt |
 | `skills/higgsfield-seedance/FAILURE-MODES.md` | Catalog of Seedance 2.0 / Pro failure modes and their fixes | A Seedance take came back wrong |
-| `skills/higgsfield-seedance/HELL-GRIND.md` | Higgsfield's open-sourced feature-film pipeline on Seedance | Feature-length or multi-scene Seedance production |
+| `skills/higgsfield-seedance/HELL-GRIND.md` | Withdrawn in November 2026 (third-party material) — a short notice only | Never |
 | `skills/higgsfield-seedance/PRODUCTION-PATTERNS.md` | Tutorial-demonstrated and field-harvested Seedance production patterns | Seedance production work beyond a single prompt |
-| `skills/higgsfield-seedance-2-5/MODE-PLAYBOOKS.md` | Long-form templates for each Seedance 2.5 mode and technique | Writing a 2.5 prompt in a named mode |
+| `skills/higgsfield-seedance-2-5/MODE-PLAYBOOKS.md` | Notes for each Seedance 2.5 mode and technique (the long-form templates were withdrawn in November 2026) | Writing a 2.5 prompt in a named mode |
 | `skills/higgsfield-seedance-2-5/VFX-PIPELINE.md` | The AI-VFX pipeline: how a whole VFX shot gets built | Replacing a VFX/3D pipeline with generation |
 | `skills/higgsfield-seedance-vfx/references/first-frame.md` | Lock an uncertain look as a still first, then animate from it | A footage transform whose look is untested |
 | `skills/higgsfield-seedance-vfx/references/dialogue-timing.md` | Anchoring a timed camera move to a line and to a second mark | A crash zoom, push-in or reveal that must land on a beat |
@@ -443,9 +441,9 @@ Open these directly when the row applies — alongside their sub-skill, not inst
 | `skills/higgsfield-cinema/references/output-formats-2-5-3-0.md` | Per-mode output templates for Cinema Studio 2.5 + 3.0 | Formatting a Cinema Studio 2.5 / 3.0 delivery |
 | `skills/higgsfield-cinema/references/reference-sheet-types.md` | Motion/camera, outfit/material, palette/mood and product reference sheets | A reference sheet that is not a character or location |
 | `skills/higgsfield-gpt-image-2/reference-sheet-workflow.md` | Automatic Product Reference Sheet: one product image → a multi-view studio sheet | Product reference sheets |
-| `skills/higgsfield-gpt-image-2/static-ads-workflow.md` | Recreating an uploaded ad with GPT Image 2.0 | Static-ad recreation |
-| `skills/higgsfield-marketing-studio/cross-surface-workflow.md` | Four-surface ad recipe (GPT Image 2.0 → Soul Cinema → Nano Banana Pro → Marketing Studio) and `ms_image` / DTC Ads | A campaign built across image and video surfaces |
-| `skills/higgsfield-content-factory/publish-and-report-workflow.md` | Campaign Stage 4 (Meta Ads publish or content calendar) and Stage 5 (cost-comparison report) | Publishing or reporting a campaign |
+| `skills/higgsfield-gpt-image-2/static-ads-workflow.md` | Withdrawn in November 2026 (third-party material) — a short notice only | Never |
+| `skills/higgsfield-marketing-studio/cross-surface-workflow.md` | Withdrawn in November 2026 (third-party material) — a short notice only | Never |
+| `skills/higgsfield-content-factory/publish-and-report-workflow.md` | Withdrawn in November 2026 (third-party material) — a short notice only | Never |
 
 ---
 
@@ -459,7 +457,7 @@ Open the file in the Skill column with the read tool (paths are relative to this
 | `skills/higgsfield-workspaces/SKILL.md` | User is choosing a workspace / asking "what should I use for X" / hasn't picked a tool yet |
 | `skills/higgsfield-prompt/SKILL.md` | Any prompt writing or refinement request |
 | `skills/higgsfield-image-shots/SKILL.md` | Cinematic image prompts — shot framing, angles, composition |
-| `skills/higgsfield-gpt-image-2/SKILL.md` | GPT Image 2.0 / 2.5 prompts — when to prefer 2.5 (transparent background, xhigh/max), three-format taxonomy (JSON / prose / meta-prompt), UI mockups, infographics, reference sheets, static-ad recreation |
+| `skills/higgsfield-gpt-image-2/SKILL.md` | GPT Image 2.0 / 2.5 model surface — when to prefer 2.5 (transparent background, xhigh/max), CLI-vs-MCP differences, product reference sheets (prompt-format guidance withdrawn) |
 | `skills/higgsfield-models/SKILL.md` | "Which model should I use?" / model comparison / edit-lane, long-take (>15s) and motion-transfer choosers |
 | `skills/higgsfield-camera/SKILL.md` | Camera movement questions (video) |
 | `skills/higgsfield-motion/SKILL.md` | Named preset requests (Explosion, Werewolf, VFX, etc.) |
@@ -474,18 +472,18 @@ Open the file in the Skill column with the read tool (paths are relative to this
 | `skills/higgsfield-mixed-media/SKILL.md` | Artistic preset overlays (Noir, Sketch, Particles, etc.) |
 | `skills/higgsfield-assist/SKILL.md` | Higgsfield Assist copilot / credit optimization / plan selection |
 | `skills/higgsfield-cinema/SKILL.md` | Cinema Studio 2.5 + 3.0 + 3.5 / Soul Cast / color grading / optical physics / multi-shot / Elements / Smart mode / @ references / Style Settings / Camera Settings / Manual Style |
-| `skills/higgsfield-marketing-studio/SKILL.md` | Marketing Studio / DTC Ads / ad video / UGC video / Hyper Motion / TV Spot / Wild Card / Pro Virtual Try On / hook + setting picklists / 4–15s ad video / `marketing_studio_video` MCP / cross-surface workflow |
-| `skills/higgsfield-content-factory/SKILL.md` | Campaign pipeline (research → plan → generate → publish → report) / UGC-first 5-format mix / batch generation gate / Meta Ads scheduling / cost-savings report |
+| `skills/higgsfield-marketing-studio/SKILL.md` | Marketing Studio / DTC Ads / ad video / UGC video / Hyper Motion / TV Spot / Wild Card / Pro Virtual Try On / hook + setting picklists / 4–15s ad video / `marketing_studio_video` MCP |
+| `skills/higgsfield-content-factory/SKILL.md` | Retired stub — campaign pipeline withdrawn in November 2026 (third-party material) |
 | `skills/higgsfield-canvas/SKILL.md` | Node-based Canvas workspace / infinite board / chain prompts→images→videos / named canvas patterns / build-free generate-paid cost model / Shared Canvas live collaboration |
 | `skills/higgsfield-pipeline/SKILL.md` | Multi-shot workflow / tool chaining / full production pipeline |
 | `skills/higgsfield-vibe-motion/SKILL.md` | Vibe Motion — motion graphics / kinetic typography / brand + logo animation as **Remotion code** (crisp text, exact colors, deployable) |
 | `skills/higgsfield-motion-design/SKILL.md` | Animated-ad flow brief → storyboard → Seedance video (**AI pixel render**, not code; classicMD/highMD) |
 | `skills/higgsfield-recall/SKILL.md` | Pre-generation memory check / apply past failure fixes |
 | `skills/higgsfield-audio/SKILL.md` | Audio design, dialogue, SFX, ambient sound for audio-capable models |
-| `skills/higgsfield-seedance/SKILL.md` | Seedance 2.0 / Pro prompt director + content-filter preflight linter (+ `skills/higgsfield-seedance/HELL-GRIND.md`, Higgsfield's open-sourced feature-film pipeline) |
-| `skills/higgsfield-seedance-2-5/SKILL.md` | Seedance 2.5 omni-reference dialect — the four modes (t2v / omni_reference / video_edit / video_extension), reference-role grammar, 30s staging, editing + forward/backward extension, keyframes, storyboards, blockouts, transitions (+ `skills/higgsfield-seedance-2-5/VFX-PIPELINE.md`, the AI-VFX production pipeline: asset-class model routing, size-ref frame, the `omni_reference` v2v lane, the four-batch rule, the slop catalog) |
+| `skills/higgsfield-seedance/SKILL.md` | Seedance 2.0 / Pro prompt director + content-filter preflight linter |
+| `skills/higgsfield-seedance-2-5/SKILL.md` | Seedance 2.5 omni-reference dialect — the four modes (t2v / omni_reference / video_edit / video_extension), reference-role grammar, 30s staging, editing + forward/backward extension, keyframes, storyboards, transitions (+ `skills/higgsfield-seedance-2-5/VFX-PIPELINE.md`, the AI-VFX production pipeline: asset-class model routing, size-ref frame, the `omni_reference` v2v lane, the four-batch rule, the slop catalog) |
 | `skills/higgsfield-seedance-vfx/SKILL.md` | Video-to-video footage transformation for Seedance 2.0 — preserve a real subject + camera move, add a VFX element / swap the environment / drop a photoreal creature / relight to match / sync a timed zoom, run in std 4K |
-| `skills/higgsfield-acting/SKILL.md` | Character performance as behavior under pressure — objective / obstacle / tactics / beats / subtext, body + status + proxemics, mandatory eye life, the 150–220-word acting master profile and its per-scene rewrite, locked voice prompt |
+| `skills/higgsfield-acting/SKILL.md` | Retired stub — acting direction withdrawn in November 2026 (third-party material) |
 | `skills/higgsfield-shotlist-director/SKILL.md` | Brief/script → one connected Seedance shotlist (style prefix + `@`-glossary + named per-scene prompts) as editable HTML |
 | `skills/higgsfield-facs/SKILL.md` | FACS Action Unit codes for precise facial expressions in Seedance 2.0 — forced/uncanny/mixed expressions, close-up dialogue facial acting, emotion→AU recipes, FACS reference sheets |
 | `skills/higgsfield-stack/SKILL.md` | User mentions the Higgsfield CLI / MCP connector / bundled skills, or asks how this skill coexists with those execution surfaces |

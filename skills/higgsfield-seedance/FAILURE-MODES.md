@@ -239,8 +239,8 @@ Motion-prompt laws.
 **Scope** (`../shared/house-rulings.md` P2-1). The chain is for **simple
 same-direction motion** whose job is to fill the clip. A **result** reached
 through a reversing process (reaches in, pulls out, winds up) is the other
-case — start *in* the state (`../higgsfield-acting/SKILL.md` § States, not
-transitions); an **object that must visibly change** under the hands takes
+case — start *in* the state (source: `../higgsfield-acting/SKILL.md` § States, not
+transitions, withdrawn in November 2026); an **object that must visibly change** under the hands takes
 the causal chain in § Mimed manipulation below. Pick by what the shot is for.
 
 ---
@@ -250,20 +250,16 @@ the causal chain in § Mimed manipulation below. Pick by what the shot is for.
 **Symptom.** A short scripted line in a solo shot comes back wrapped in
 invented mumble — garbled pseudo-speech before or after the words, or
 the scripted line delivered twice. Graded from transcripts, so this is
-an AUDIO symptom; whether the mouth also keeps moving was not graded by
-the rig below and is not claimed here.
+an AUDIO symptom; whether the mouth also keeps moving was not graded and
+is not claimed here.
 
 **Mechanism.** The audio branch fills dead air, the same way § Action-
 reversal fill spends leftover motion time. A line that ends well before
 the clip does leaves a silent window, and the cheapest continuation
 consistent with the shot is more speech-shaped sound in the same voice.
-`[MEASURED — sync-budget ladder, Seedance 2.0, EN, 4 s, 480p, 2026-08-09;
-record incomplete: route not recorded, mode not recorded, take count at ≤6
-words not recorded, record held outside this repo]`: every take at ≤6 words carried it; 8- and
-12-word lines came back 4/4 free of filler-babble each (transcript-graded). Read it as a **direction**, not a rate
-(`../shared/provenance.md` § Modifiers): the risk sits with the **short**
-line, not the long one — no truncation was observed up to 12 words (≈3 words
-per second).
+`[MEASURED — record incomplete; record held outside this repo]` Read it as a
+**direction**, not a rate (`../shared/provenance.md` § Modifiers): the risk sits
+with the **short** line, not the long one.
 
 **Counter.** Give the dead air a job instead of leaving the choice to
 the model, and state the mouth state of every face that is visible:
@@ -283,10 +279,9 @@ the model, and state the mouth state of every face that is visible:
    occupies the rest of the window — a named pause beat, an ambient or
    SFX event, action prose covering the gap before and after the line.
 3. **One speaker, one line, once.** The speaking character says the
-   line and nothing else; `HELL-GRIND.md` § Dialogue construction
-   carries the full audio-block phrasing. A beat that carries a thought
-   rather than a line is typed `INNER (unspoken)` there, which keeps it
-   out of the mouth entirely.
+   line and nothing else. (This step used to point at `HELL-GRIND.md`
+   § Dialogue construction for the audio-block phrasing and its marker for
+   unspoken thoughts; that file was withdrawn in November 2026.)
 4. **Every other visible face gets a positive at-rest mouth fact.** An
    unmarked mouth in frame is a mouth the model may decide is talking.
    State the rest state as something that *is* true — "lips at rest",
@@ -342,10 +337,10 @@ already dark) so the sequence inherits what the cut skipped. The source
 holds the completion for roughly 0.15–0.35s before cutting; treat that
 as the direction to lean, not as a measured figure.
 
-The dialogue form of the second move is already doctrine here: open each new
+The second move has a dialogue form: open each new
 generation on the line that closed the previous one, so the emotion crosses the
-seam together with the text (`HELL-GRIND.md` § Dialogue construction, the seam
-tricks). This is the same move for picture — the next shot inherits what the
+seam together with the text (source: `HELL-GRIND.md` § Dialogue construction,
+withdrawn in November 2026). This is the same move for picture — the next shot inherits what the
 cut skipped.
 
 ---
@@ -624,9 +619,6 @@ majority of preventable failures before credit burn.
   the spatial layout block uses
 - `SKILL.md` § Single-vs-multi-shot decision — multi-shot split
   mechanics referenced from § Multi-motion camera overload
-- `HELL-GRIND.md` § Dialogue construction — the audio-block phrasing
-  and the `INNER (unspoken)` marker that § Filler-babble on a short
-  dialogue line depends on
 - `../higgsfield-troubleshoot/SKILL.md` § Sequence & Continuation
   Failure Atlas — symptom → single-repair-variable table for
   chained/continuation defects (this catalog covers single-clip

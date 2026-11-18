@@ -78,9 +78,8 @@ selection time.
   This bullet is the canonical home of the grey rule; the sheet workflows in
   `../skills/higgsfield-gpt-image-2/reference-sheet-workflow.md`,
   `../skills/higgsfield-soul/SKILL.md` § Character Sheet Creation,
-  `../skills/higgsfield-character-design/SKILL.md` § Sheet Construction Laws,
-  `../skills/higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1 and
-  `../skills/higgsfield-seedance/HELL-GRIND.md` point here.
+  `../skills/higgsfield-character-design/SKILL.md` § Sheet Construction Laws and
+  `../skills/higgsfield-seedance-2-5/VFX-PIPELINE.md` § Stage 1 point here.
 - **One readable face per sheet — the headless figure.** Everything the video
   model reads identity from should offer exactly **one** face, at close-up
   resolution. On wides the model otherwise sources the face from the tiny,
@@ -95,7 +94,7 @@ selection time.
   head when the hair matters. Casting a real person: erase the body panels'
   heads and paste the photograph into the portrait panel
   (`../skills/higgsfield-soul/SKILL.md` § The Hybrid Sheet). This bullet is
-  the canonical home; `../skills/higgsfield-seedance/HELL-GRIND.md`,
+  the canonical home;
   `../skills/higgsfield-seedance-2-5/VFX-PIPELINE.md` § The face-lock crop and
   `../skills/higgsfield-character-design/SKILL.md` § Sheet Construction Laws
   point here.
@@ -316,8 +315,8 @@ input image, the sharper the final video."**
 ## Related
 
 - `../skills/higgsfield-soul/SKILL.md` — character sheets + the anti-slop composite
-- `../skills/higgsfield-gpt-image-2/SKILL.md` + `…/reference-sheet-workflow.md` +
-  `…/static-ads-workflow.md` — product/prop sheets, location editing
+- `../skills/higgsfield-gpt-image-2/SKILL.md` + `…/reference-sheet-workflow.md`
+  — product/prop sheets, location editing
 - `../skills/higgsfield-shotlist-director/SKILL.md` — where these locked assets
   feed the connected shotlist
 - `../DISCIPLINE.md` — the acceptance-rate philosophy "win rate" is the upstream

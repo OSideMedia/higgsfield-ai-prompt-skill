@@ -24,7 +24,6 @@ The rest of this skill library answers *"how do I prompt this?"* This skill answ
 - Specificity beats adjectives: if *any* character could say it, it's a stereotype; keep asking **"why?"** until the answer surprises you [→](#anti-generic-drills)
 - Fillable worksheets live in `../../templates/character-design/` — hand them to the user or fill them together [→](#templates)
 - Construction laws for the sheet as an artifact: **plain grey background** · creature sheets get **two close-ups (mouth open + closed)** · the **face-lock crop** · a **size-ref frame** for scale at extreme ratios no true landmark can express [FIELD] — grey and the one-face law are canonical in `../../templates/ad-asset-prep.md` [→](#sheet-construction-laws)
-- Once the character **looks** right, don't jump to scenes — run a **screen test**: casting read → role options → playable lines → voice triggers → one audition prompt [EMPIRICAL] [→](#screen-test--audition)
 - This skill produces inputs; it does **not** generate. Hand the locked Visual DNA + character sheet to `higgsfield-prompt` [→](#step-6--hand-off-to-generation)
 
 ---
@@ -233,39 +232,8 @@ Asset Class.
 
 ## Screen Test / Audition
 
-> **[EMPIRICAL — community workflow]** Adapted from a community casting-director system prompt. It works in the field; it is not a platform guarantee.
-
-The bible tells you who the character *is*; the generated stills tell you they *look* right. Neither tells you how they **move, speak, and react** — and that is what every scene generation you are about to pay for depends on. So before spending on real scenes, run one cheap audition video and watch the character *act*. This is the same thesis as `../../templates/ad-asset-prep.md`'s generate-many → **test-in-motion** → lock-the-winner loop, applied to a person instead of a product: consistent-looking is not the same as castable.
-
-Six steps, in order — the user chooses at step 5; never skip ahead to the final prompt:
-
-1. **Casting read.** Interpret the locked character sheet as casting material, not lore: presence, how weathered the character reads on screen, status, inner wound, external mask, likely voice, likely movement. The casting read is analysis for you; the audition prompt never states an age (`../higgsfield-seedance/ENGINE-RULES.md` rule 1 — describe by role, build and visible markers). Pull straight from the 9 questions — Silhouette and Contradiction do most of the work here.
-2. **Role options (3–6).** Offer contrasting role types the character could be cast as — lead, antagonist, mentor, tragic hero, villain-with-restraint, silent presence… Each option must state **what the audition has to prove** ("can he menace without raising his voice?"). An option with nothing to prove is not an option.
-3. **Three audition lines.** Real scene dialogue with subtext, implying an off-camera reader, each playable more than one way. **Not trailer narration, not lore recitation** — if it sounds like a voice-over, it cannot be *acted*.
-4. **Three voice triggers.** Each is **≤3 comma-separated qualities** ("authoritative, grief, controlled") — a *how*, never the spoken line itself. The three must contrast with each other, not be synonyms.
-5. **The user picks** one role + one line + one trigger (blending is allowed — the blend still obeys ≤3 qualities).
-6. **One final audition prompt, under 3500 characters.** Build a playable scene, not a showcase:
-   - **Simple setting** — the audition room, not the movie: one location, no spectacle competing with the face.
-   - **Camera:** MCU or locked-off eye-level, shallow depth of field. The frame holds still so the *performance* is what moves.
-   - **Acting spine:** objective, obstacle, tactic, emotional shift, and the subtext under the line.
-   - **Reaction beats and silence** — write the listening, not just the speaking.
-   - **At least one expressive vocal moment** (a stutter, a vocal crack, a whispered threat, a controlled shout) and **subtle physical acting** (blinks, gaze shifts, jaw tension) — muscle, not emotion labels.
-   - **Unresolved ending** — cut the take before the moment closes; resolution reads as trailer, open tension reads as acting.
-   - Finish with film grain + realistic skin, so you judge a performance, not a render.
-
-**Divergence rule:** if the user comes back and picks a *different role type*, rebuild the acting logic from scratch — new objective, new tactics, new beat pattern. A mentor read is not a villain read with softer adjectives; the same beats reworded is the audition-room version of slop.
-
-### Worked mini-example (the tide-city fixer from Step 3)
-
-- **Casting read:** reads more worn than his build suggests; low status wearing borrowed confidence; mask of the indispensable broker over a wound of being kept only while useful; voice quick and transactional, dropping register when cornered; moves like his Silhouette — half-crouched at doorways, weight on the back foot.
-- **Role option — villain-with-restraint.** Must prove: he can threaten someone *while doing them a favor*, without ever raising his voice.
-- **Audition line:** *"You've still got both your water jars. That's not luck — that's me. So sit down, and let me tell you the second half of the favor."* (Playable warm or menacing; the off-camera reader is whoever owes him.)
-- **Voice trigger:** `quiet, transactional, barely controlled`.
-
-### Direct the takes, then lock the winner
-
-- **Facial direction:** for muscle-level control of the audition takes (the jaw tension, the asymmetric almost-smile), hand the beats to `../higgsfield-facs/SKILL.md` — AU codes, not emotion labels.
-- **After the audition:** when a take proves the character is castable, lock that winner's identity with `../higgsfield-soul/SKILL.md` (Soul ID / Soul Cast) so every real scene starts from the version that can act — the lock-the-winner step of the `../../templates/ad-asset-prep.md` loop.
+*[This section adapted a community casting prompt whose author was not identified. It was withdrawn in
+November 2026 — see `THIRD_PARTY_NOTICES.md` at the repository root.]*
 
 ---
 

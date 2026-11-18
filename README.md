@@ -9,7 +9,9 @@
 > filmmaking tool, so this skill gets no further updates, fixes or model refreshes. v3.42.0 is
 > the final release. Its model specs are a snapshot from 2026-09-26 and will fall behind the
 > Higgsfield platform as models change. The repo is archived and kept for reference: issues and
-> pull requests are closed. It is MIT-licensed, so you are welcome to fork it and carry it on.
+> pull requests are closed. O-Side Media licenses its own contributions to it under the MIT licence,
+> so you are welcome to fork it and carry it on; it does not purport to grant rights in
+> third-party material — see [Licence scope](#licence-scope).
 
 A comprehensive Claude skill library for generating high-quality prompts on
 [Higgsfield AI](https://higgsfield.ai) — the cinematic video and image generation platform.
@@ -30,13 +32,11 @@ Transforms natural language requests into production-ready Higgsfield prompts us
 - **Repurposing** (`higgsfield-repurpose`): Shorts Studio, Clipify, Virality Predictor, Video Analysis — with the paid / free split
 - **Cinema Studio 3.5**: three-pill main UI (Genre / Style / Camera), Style Settings panel (8 Color Palette / 6 Lighting / 9 Camera Moveset Style + Manual Style mode), Camera Settings four-axis panel (3 Camera Body / 5 Lens / 5 Focal Length including new 75mm / 3 Aperture), Image Mode with four Cinematic models picker (Soul Cinema default, Cinematic Characters, Cinematic Locations, Cinematic Cameras with 2.5 vocabulary)
 - **Seedance 2.0 prompting best practices** — Intent over Precision, Genre Router, I2V Gate, Anti-Slop, Physics Language, SCELA audio, Reference-Based / Continuation / Expand Shot / Edit Shot / Transformation prompt modes, Continuation Prompt Formula, the Iteration Rule
-- **Seedance 2.5 omni-reference director** — the four generation modes (`t2v` / `omni_reference` / `video_edit` / `video_extension`), explicit `@Image` / `@Video` / `@Audio` reference roles with exclusions, the five-step multi-reference workflow, 30-second staging with end states, timestamp pacing, bracket syntax for music / SFX / dialogue / subtitles, first-last-frame control (platform `start_image`/`end_image` in `omni_reference`, or declared in-prompt) and multi-keyframe control, storyboard grids, coarse-vs-fine blockout rendering, one-click video, seamless transitions, and a 2.0-vs-2.5 routing table
-- **Hell Grind feature-film pipeline** — Higgsfield's open-sourced 95-minute-feature system: headless character sheets, mask-composited point edits, location sheets with anchors and one light logic, the per-scene GEO SPATIAL LAYOUT block, the position-fixing first second, dialogue construction, the ban dictionary, the 10–15 iteration rule, and the crowd / giant / threshold solutions
+- **Seedance 2.5 omni-reference director** — the four generation modes (`t2v` / `omni_reference` / `video_edit` / `video_extension`), explicit `@Image` / `@Video` / `@Audio` reference roles with exclusions, 30-second staging with end states, bracket syntax for music / SFX / dialogue / subtitles, first-last-frame control (platform `start_image`/`end_image` in `omni_reference`, or declared in-prompt) and multi-keyframe control, storyboard grids, seamless transitions, and a 2.0-vs-2.5 routing table
 - **AI-VFX pipeline** — the production layer under Seedance 2.5, from Higgsfield's AI-vs-VFX challenge build: model routing per asset class (faces / creatures / clothing / locations), the plain-grey sheet law, two-close-up creature sheets, the face-lock crop, the size-ref frame for scale between two subjects, location batching selected on light, the `omni_reference` video-to-video lane (source ≥4s, duration = source) with its performance-inheritance clause, the four-batch stop rule and the i2v fallback with a deliberate empty-frame stitch point, and a slop catalog of the tells that give a shot away
-- **Acting director** — performance as behavior under pressure: objective / obstacle / tactics / beats / subtext, listening markers, body + status + proxemics, mandatory eye life, the 150–220-word acting master profile and its per-scene rewrite, the locked voice prompt, a 15-symptom atlas of bad acting, and a 0–5 performance scale
-- **GPT Image 2.0 prompt director** — three-format taxonomy (structured JSON for UI mockups / infographics / reference sheets, dense cinematic prose for single-subject scenes, auto-derive meta-prompt for theme-only concepts) plus reference-sheet and static-ad-recreation workflow satellites
+- **GPT Image 2.0 / 2.5 model surface** — when to prefer 2.5 (transparent background, xhigh/max quality), CLI-vs-MCP differences, plus a product reference-sheet satellite
 - **Higgsfield Canvas** — node-based / infinite-board workspace guidance: chaining prompts → images → videos, named canvas patterns, Shared Canvas live collaboration, build-free / generate-paid cost model
-- **Marketing Studio + Content Factory** — 9 DTC ad presets (UGC / Tutorial / Unboxing / Hyper Motion / TV Spot / Wild Card / Virtual Try-On) with 4–15s ad video, plus an end-to-end campaign pipeline (research → plan → generate → publish → report) with a cost-savings report
+- **Marketing Studio** — 9 DTC ad presets (UGC / Tutorial / Unboxing / Hyper Motion / TV Spot / Wild Card / Virtual Try-On) with 4–15s ad video
 - **Shared negative constraints reference** — categorized artifacts + prevention phrases (positive alternatives for 3.0); Kling 3.0 Motion Control failure diagnostic; Physics Rendering — Resolution Decision Matrix (cross-model 480p / 720p / 1080p routing rule for Seedance 2.0 + Cinema Studio 3.x)
 - **Identity vs. Motion separation** — hard rule for character consistency across shots
 - **Annotated templates library** — 10 genre templates with Cinema Studio 3.0 genre mappings, plus Seedance technique + character-design + text-overlay sub-libraries (19 files across 3 categories)
@@ -178,7 +178,8 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 ├── README.md                         ← This file
 ├── CHANGELOG.md                      ← Version history
 ├── CONTRIBUTING.md                   ← Contribution guidelines
-├── LICENSE                           ← MIT license
+├── LICENSE                           ← MIT license (O-Side Media's own contributions)
+├── THIRD_PARTY_NOTICES.md            ← Third-party material and licence scope
 ├── CLAUDE.md                         ← Project instructions for Claude Code
 ├── .markdownlint.json                ← Linter config (CHANGELOG convention silencing — v3.6.1)
 ├── model-guide.md                    ← Model comparison tables + decision flowchart
@@ -207,7 +208,6 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
 │   ├── filter-memory.json            ← Content filter memory (seeded)
 │   └── quality-memory.json           ← Quality failure memory (seeded)
 ├── docs/                             ← Extended reference documents
-│   ├── Seedance 2 Skill.md           ← Bilingual EN+ZH Seedance director reference
 │   ├── archive/                      ← Historical records
 │   │   ├── HISTORY.md                ← Consolidated v3.0.0–v3.6.0 audit + inventory snapshots
 │   │   └── AUDIT-2026-06-03.md       ← Full repo audit (security, bugs, docs hygiene)
@@ -239,9 +239,9 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
     ├── higgsfield-prompt/SKILL.md        ← Core MCSLA formula + prompt structure + Identity/Motion separation
     ├── higgsfield-image-shots/SKILL.md   ← Cinematic image prompting (shots, angles, composition)
     ├── higgsfield-gpt-image-2/
-    │   ├── SKILL.md                      ← GPT Image 2.0 director (JSON / prose / meta-prompt taxonomy)
+    │   ├── SKILL.md                      ← GPT Image 2.0 / 2.5 model surface
     │   ├── reference-sheet-workflow.md   ← Automatic product reference-sheet workflow
-    │   └── static-ads-workflow.md        ← Static-ad recreation workflow
+    │   └── static-ads-workflow.md        ← Withdrawn (notice only)
     ├── higgsfield-models/
     │   ├── SKILL.md                      ← Compact model selection guide
     │   └── MODELS-DEEP-REFERENCE.md      ← Full per-model documentation (on-demand)
@@ -259,26 +259,26 @@ For the full coexistence rules, detection signals, naming-collision callouts, an
     ├── higgsfield-pipeline/SKILL.md      ← Multi-step generation pipelines
     ├── higgsfield-canvas/SKILL.md        ← Node-based Canvas workspace + named patterns + Shared Canvas
     ├── higgsfield-content-factory/
-    │   ├── SKILL.md                      ← Campaign pipeline (research → plan → generate → publish → report)
-    │   └── publish-and-report-workflow.md ← Publish + cost-savings report satellite
+    │   ├── SKILL.md                      ← Retired stub (withdrawn)
+    │   └── publish-and-report-workflow.md ← Withdrawn (notice only)
     ├── higgsfield-marketing-studio/
     │   ├── SKILL.md                      ← Marketing Studio: 9 ad presets + 4–15s ad video
-    │   └── cross-surface-workflow.md     ← ms_image / DTC Ads cross-surface workflow
+    │   └── cross-surface-workflow.md     ← Withdrawn (notice only)
     ├── higgsfield-recall/SKILL.md        ← Recall + regeneration patterns
     ├── higgsfield-3d/SKILL.md            ← 3D meshes (image / multi-view / text → GLB), rigging, 3D Jutsu scenes
     ├── higgsfield-repurpose/SKILL.md     ← Finished video in: Shorts Studio, Clipify, Virality Predictor, Video Analysis
     ├── higgsfield-cinema/SKILL.md        ← Cinema Studio 2.5 + 3.0 + 3.5 + 4.0 (Soul Cast, Color Grading, 3D Mode, Smart Mode, @ References, Native Audio, three-pill UI, Image Mode, Cinematic models picker)
     ├── higgsfield-seedance/
     │   ├── SKILL.md                      ← Seedance 2.0 prompt director + content-filter preflight
-    │   ├── ENGINE-RULES.md               ← Hard rendering constraints shared across the Seedance family
+    │   ├── ENGINE-RULES.md               ← High-risk shot table + enforcement notes (rule list withdrawn)
     │   ├── PRODUCTION-PATTERNS.md        ← Tutorial-demonstrated production patterns
-    │   ├── HELL-GRIND.md                 ← Higgsfield's open-sourced 95-min feature pipeline
+    │   ├── HELL-GRIND.md                 ← Withdrawn (notice only)
     │   └── FAILURE-MODES.md              ← 15 named Seedance render failures (symptom · mechanism · counter)
     ├── higgsfield-seedance-2-5/
     │   ├── SKILL.md                      ← Seedance 2.5 omni-reference dialect + 4-mode router
-    │   ├── MODE-PLAYBOOKS.md             ← Edit / extend / storyboard / blockout / one-click / transitions
+    │   ├── MODE-PLAYBOOKS.md             ← Edit / extend / storyboard / transition notes (templates withdrawn)
     │   └── VFX-PIPELINE.md               ← AI-VFX pipeline: asset routing, size-ref frame, omni_reference v2v, slop catalog
-    ├── higgsfield-acting/SKILL.md        ← Performance craft: objective, beats, eye life, master profile
+    ├── higgsfield-acting/SKILL.md        ← Retired stub (withdrawn)
     ├── higgsfield-scene-engine/SKILL.md  ← Structural scene audit: goal · obstacle · tactic · reversal · value shift
     ├── higgsfield-vibe-motion/SKILL.md   ← Vibe-based motion direction
     └── higgsfield-workspaces/SKILL.md    ← Workspace-first decision layer (Cinema Studio / Lipsync / Draw-to-Video / Viral Hub presets / Click to Ad / Higgsfield Audio)
@@ -292,10 +292,10 @@ one command — never a form). After ~30–40 rows a production has empirical
 takes-per-kept ratios per shot type instead of vibes:
 
 ```bash
-python3 scripts/higgsfield_memory.py log-gen adze --model seedance_2_0 \
+python3 scripts/higgsfield_memory.py log-gen my-film --model seedance_2_0 \
   --tags dialogue-cu,two-char --outcome rejected --reason extra-cuts
-python3 scripts/higgsfield_memory.py ratio adze --credits     # hit rates + money view
-python3 scripts/higgsfield_memory.py budget adze --shots plan.json   # price before burning
+python3 scripts/higgsfield_memory.py ratio my-film --credits     # hit rates + money view
+python3 scripts/higgsfield_memory.py budget my-film --shots plan.json   # price before burning
 ```
 
 Tags and reject reasons come from controlled vocabularies (`db/ledger/README.md`);
@@ -365,6 +365,21 @@ acting on the tail. A small sample is not evidence a skill is dead.
 | S | Subject | A woman in a tactical jacket |
 | L | Look | Cinematic, cold blue shadows, 16:9 |
 | A | Action | She sprints, slides under a gate |
+
+## Licence scope
+
+O-Side Media licenses its own contributions to this repository — those it is entitled to
+license — under the MIT licence in [`LICENSE`](LICENSE). It does not purport to grant rights it
+does not hold. Some material here comes from, or is adapted from, other sources — vendor
+documentation, vendor catalog data, product names and trademarks, bundled fonts, and other
+authors' guides — and the MIT licence text should not be read as a grant of rights in that
+material. [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) lists what was withdrawn from the
+current tree and what third-party material O-Side Media knows is still present. A credit in this
+repository acknowledges a source; it is not a statement that the source's owner has approved
+its use here.
+
+This is an independent project. It is not affiliated with, endorsed by or sponsored by
+Higgsfield, ByteDance, OpenAI or any other vendor it mentions.
 
 ## Acknowledgements
 

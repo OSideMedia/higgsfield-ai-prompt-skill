@@ -179,7 +179,7 @@ def classify_cli_failure(text: str) -> str:
 
 REDACTED = "[redacted]"
 _HIDDEN = "\ue000"             # placeholder for a redacted quoted string while tokenizing
-# Quoted strings are redacted whole ("Peter Csanky Studio", 'hfk_…', `…`).
+# Quoted strings are redacted whole ("Example Studio", 'hfk_…', `…`).
 _QUOTED_RE = re.compile(r"\"[^\"]*\"?|'[^']*'?|`[^`]*`?|“[^”]*”?|‘[^’]*’?")
 # What survives, token by token: plain words — lowercase, Capitalized, or a
 # short ACRONYM — optionally hyphenated, 24 letters at most (a longer

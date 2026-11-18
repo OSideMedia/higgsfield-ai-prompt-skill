@@ -67,10 +67,11 @@ changes everywhere. It locks the film's global look: format/resolution, lighting
 doctrine, colour ratio, lens/shutter, skin realism, acting register, physics,
 composition, continuity, frame rate, and audio convention.
 
-Ship the reusable fill-in-the-blanks block from
-[`../../templates/seedance/global-style-prefix.md`](../../templates/seedance/global-style-prefix.md).
 **Always check the conversation first** — if the user pasted a custom prefix, use
-that one verbatim. Otherwise use the template default.
+that one verbatim. Otherwise write the project's own prefix from the fields listed above.
+[`../../templates/seedance/global-style-prefix.md`](../../templates/seedance/global-style-prefix.md)
+keeps notes on those fields; the default block it used to ship was withdrawn in November 2026,
+so there is no template default to paste.
 
 ### 2. `@`-asset glossary
 
@@ -329,8 +330,8 @@ into the rest of the repo, which is the whole point:
 
 1. **Read the brief as a director, not a transcriber.** Find the dramatic shape —
    where each scene turns, lands, and breathes.
-2. **Lock the Style Prefix.** Custom from the conversation, or the template
-   default.
+2. **Lock the Style Prefix.** Custom from the conversation, or written for the
+   project — there is no template default.
 3. **Build the `@`-glossary.** One entry per recurring asset; multi-state variants
    get their own locked entry.
 4. **Block the scenes.** Number them; decide how many 15s prompts each beat needs
@@ -426,5 +427,5 @@ scene number as a string):
 - `higgsfield-audio` — `@music_track` beat-sync + diegetic-only convention
 - `higgsfield-soul` — locked character sheets the `@`-glossary points at
 - `higgsfield-recall` — log kept/rejected take outcomes as you shoot the list
-- `../../templates/seedance/global-style-prefix.md` — the reusable prefix block +
-  a per-scene override example
+- `../../templates/seedance/global-style-prefix.md` — notes on the prefix fields +
+  a per-scene override example (its default block was withdrawn)

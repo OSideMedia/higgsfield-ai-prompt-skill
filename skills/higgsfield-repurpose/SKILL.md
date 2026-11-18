@@ -176,9 +176,8 @@ What `segment_seconds` controls beyond its one-line description is not documente
 - **Compare variants, don't chase a number.** The useful question is relative: hook A vs
   hook B on the *same* ad, cut 1 vs cut 2. Rewriting a creative only to move one score is
   optimizing the instrument.
-- Natural pairings: hook variants from `../higgsfield-marketing-studio/SKILL.md`, Ad
-  Multiplier versions (same skill, § 14), campaign batches in
-  `../higgsfield-content-factory/SKILL.md`.
+- Natural pairings: hook variants from `../higgsfield-marketing-studio/SKILL.md` and Ad
+  Multiplier versions (same skill, § 14).
 
 ---
 
@@ -238,5 +237,4 @@ What `segment_seconds` controls beyond its one-line description is not documente
 - `../higgsfield-stack/SKILL.md` — execution surfaces, preflight, Higgsfield's bundled workflows
 - `../higgsfield-audio/SKILL.md` — voice change and cloned voices
 - `../higgsfield-marketing-studio/SKILL.md` — ad creative, Ad Multiplier, Genjutsu
-- `../higgsfield-content-factory/SKILL.md` — campaign batches that virality scores can rank
 - `../higgsfield-shotlist-director/SKILL.md` · `../higgsfield-scene-engine/SKILL.md` — where a scene breakdown goes next

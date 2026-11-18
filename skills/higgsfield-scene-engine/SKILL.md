@@ -40,7 +40,7 @@ does not build. This skill is the cheapest pass in the repo: it runs on text, be
 generation, and its whole job is to stop you paying to render a scene that cannot work.
 
 It decides **which** shots deserve the spend. `higgsfield-shotlist-director` turns the
-settled scene into shots; `higgsfield-acting` writes the performance inside them.
+settled scene into shots. (The performance layer, `higgsfield-acting`, was withdrawn in November 2026.)
 
 ---
 
@@ -183,7 +183,7 @@ Once the chain holds, the scene is worth spending on — and only then:
 | Next | Skill |
 |---|---|
 | Who these people are, and their bible | `../higgsfield-character-design/SKILL.md` |
-| The shared scene direction and each character's fuel | `../higgsfield-acting/SKILL.md` § The layer above the pillars |
+| The shared scene direction and each character's fuel | `../higgsfield-acting/SKILL.md` § The layer above the pillars — withdrawn in November 2026 |
 | Breaking the settled scene into shots | `../higgsfield-shotlist-director/SKILL.md` |
 | Writing the shot itself | `../higgsfield-seedance/SKILL.md` · `../higgsfield-seedance-2-5/SKILL.md` |
 
@@ -193,21 +193,23 @@ survives a read-through, generates beautifully, and still lands flat in the cut.
 
 ### Same words, different layer — the term map to `higgsfield-acting`
 
-This engine and `../higgsfield-acting/SKILL.md` § The five pillars share three words and
-define them differently, on purpose: this file audits **structure** (does the scene earn its
-credits), acting writes **playable behaviour** (what the body does in the shot). Carry an
-audit result into acting through this map, not by assuming the words mean the same thing
+*`higgsfield-acting` was withdrawn in November 2026 (see `THIRD_PARTY_NOTICES.md` at the repository
+root); this map is kept as a historical note.*
+
+This engine and `../higgsfield-acting/SKILL.md` § The five pillars shared three words and
+defined them differently, on purpose: this file audits **structure** (does the scene earn its
+credits), acting wrote **playable behaviour** (what the body does in the shot). An audit
+result was carried into acting through this map, not by assuming the words meant the same thing
 (`../shared/house-rulings.md` P3-5):
 
-| Here (structure) | In acting (performance) | How one feeds the other |
+| Here (structure) | In acting (performance) | How one fed the other |
 |---|---|---|
-| **Goal** — the hero's single unchanging story goal; each scene goal a causal link toward it | **Super-objective** (story-wide) and **objective** — what one character wants *in this scene, from a specific person*, as a verb aimed at the partner | The scene goal names the step; acting turns it into a partner-directed verb for **each** character, including the ones this audit never mentions |
-| **Obstacle** — a circumstance that *jeopardizes* a stage or the whole goal; name what is at risk and its scale | **Obstacle and stakes** — what prevents the want, external *or internal* (pride, disbelief), plus the cost of failure | The audited jeopardy becomes the stakes; acting adds the internal obstacles a structural audit does not look for |
-| **Tactic** — the plot-level move the threat forces, a reasonable guess under uncertainty whose failure must return information | **Tactics** — moment-to-moment action verbs toward the partner (*press · charm · stall*), changed when one fails | One structural tactic is usually played as several acting tactics; a structural wheel-spin shows up in acting as monotactics |
-| **Reversal** and **Value Shift** — judged at the sequence level, in the audience's verdict | **Beats** — each visible change of tactic; **subtext** | A value shift needs a visible beat change to land on screen; if acting cannot point to the beat, the shift will not render |
+| **Goal** — the hero's single unchanging story goal; each scene goal a causal link toward it | **Super-objective** (story-wide) and **objective** — what one character wants *in this scene, from a specific person*, as a verb aimed at the partner | The scene goal named the step; acting turned it into a partner-directed verb for **each** character, including the ones this audit never mentions |
+| **Obstacle** — a circumstance that *jeopardizes* a stage or the whole goal; name what is at risk and its scale | **Obstacle and stakes** — what prevents the want, external *or internal* (pride, disbelief), plus the cost of failure | The audited jeopardy became the stakes; acting added the internal obstacles a structural audit does not look for |
+| **Tactic** — the plot-level move the threat forces, a reasonable guess under uncertainty whose failure must return information | **Tactics** — moment-to-moment action verbs toward the partner (*press · charm · stall*), changed when one fails | One structural tactic was usually played as several acting tactics; a structural wheel-spin showed up in acting as monotactics |
+| **Reversal** and **Value Shift** — judged at the sequence level, in the audience's verdict | **Beats** — each visible change of tactic; **subtext** | A value shift needed a visible beat change to land on screen; if acting could not point to the beat, the shift would not render |
 
 ## Related Skills
 
 - `../higgsfield-character-design/SKILL.md` — premise, world, character, story bible
-- `../higgsfield-acting/SKILL.md` — the performance layer inside a settled scene
 - `../higgsfield-shotlist-director/SKILL.md` — scene → shot list
